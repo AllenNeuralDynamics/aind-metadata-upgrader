@@ -8,7 +8,6 @@ from pathlib import Path
 from typing import List
 
 from aind_data_schema.core.data_description import DataDescription, DataLevel, Funding, Group, RelatedData
-from aind_data_schema.core.processing import DataProcess, PipelineProcess, Processing
 from aind_data_schema.models.institutions import Institution
 from aind_data_schema.models.modalities import Modality
 from aind_data_schema.models.platforms import Platform
@@ -18,10 +17,8 @@ from aind_data_schema.schema_upgrade.data_description_upgrade import (
     InstitutionUpgrade,
     ModalityUpgrade,
 )
-from aind_data_schema.schema_upgrade.processing_upgrade import DataProcessUpgrade, ProcessingUpgrade
 
 DATA_DESCRIPTION_FILES_PATH = Path(__file__).parent / "resources" / "ephys_data_description"
-PROCESSING_FILES_PATH = Path(__file__).parent / "resources" / "ephys_processing"
 
 
 class TestDataDescriptionUpgrade(unittest.TestCase):

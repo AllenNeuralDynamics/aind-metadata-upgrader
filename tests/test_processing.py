@@ -1,3 +1,16 @@
+import unittest
+import os
+from pathlib import Path
+import json
+import datetime
+from typing import List
+
+from aind_data_schema.core.processing import Processing, PipelineProcess, DataProcess
+from aind_data_schema.schema_upgrade.processing_upgrade import ProcessingUpgrade, DataProcessUpgrade
+
+PROCESSING_FILES_PATH = Path(__file__).parent / "resources" / "ephys_processing"
+
+
 class TestProcessingUpgrade(unittest.TestCase):
     """Tests methods in ProcessingUpgrade class"""
 
