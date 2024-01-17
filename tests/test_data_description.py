@@ -1,4 +1,4 @@
-"""Tests methods in schema_upgrade package """
+"""Tests methods for upgrading DataDescriptions"""
 
 import datetime
 import json
