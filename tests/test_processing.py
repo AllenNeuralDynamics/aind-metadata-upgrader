@@ -246,5 +246,6 @@ class TestDataProcessUpgrade(unittest.TestCase):
         self.assertEqual(new_data_process.output_location, "my-output-location")
         self.assertEqual(new_data_process.parameters, {"param1": "value1"})
 
+
 if __name__ == "__main__":
     unittest.main()

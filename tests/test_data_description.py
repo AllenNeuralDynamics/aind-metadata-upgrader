@@ -390,6 +390,5 @@ class TestInstitutionUpgrade(unittest.TestCase):
         self.assertIsNone(InstitutionUpgrade.upgrade_institution(None))
 
 
-
 if __name__ == "__main__":
     unittest.main()
