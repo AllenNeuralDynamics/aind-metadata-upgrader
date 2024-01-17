@@ -160,7 +160,11 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
         modality = self.get_modality(**kwargs)
 
-        old_data_level = self._get_or_default(self.old_model, "data_level", kwargs)
+        data_level = self._get_or_default(self.old_model, "data_level", kwargs)
+        if data_level in ["raw level", "raw data"]:
+            data_level = DataLevel.RAW
+        if data_level in ["derived level", "derived data"]:
+            data_level = DataLevel.DERIVED
 
         experiment_type = self._get_or_default(self.old_model, "experiment_type", kwargs)
         platform = None
@@ -180,7 +184,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
             name=self._get_or_default(self.old_model, "name", kwargs),
             institution=institution,
             funding_source=funding_source,
-            data_level=old_data_level,
+            data_level=data_level,
             group=self._get_or_default(self.old_model, "group", kwargs),
             investigators=self._get_or_default(self.old_model, "investigators", kwargs),
             project_name=self._get_or_default(self.old_model, "project_name", kwargs),

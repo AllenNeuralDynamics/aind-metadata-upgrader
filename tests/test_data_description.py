@@ -6,6 +6,7 @@ import os
 import unittest
 from pathlib import Path
 from typing import List
+from pydantic import ValidationError
 
 from aind_data_schema.core.data_description import (
     DataDescription,
@@ -347,6 +348,47 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         self.assertEqual([], new_data_description.related_data)
         self.assertEqual(Platform.ECEPHYS, new_data_description.platform)
         self.assertIsNone(new_data_description.data_summary)
+
+    def test_data_level_upgrade(self):
+        """Tests data level can be set from legacy versions"""
+        
+        d1 = DataDescription(
+            label="test_data",
+            modality=[Modality.SPIM],
+            platform=Platform.EXASPIM,
+            subject_id="1234",
+            data_level="raw data",
+            creation_time=datetime.datetime(2020, 10, 10, 10, 10, 10),
+            institution=Institution.AIND,
+            funding_source=[Funding(funder=Institution.NINDS, grant_number="grant001")],
+            investigators=["Jane Smith"],
+        )
+        d2 = DataDescription(
+            label="test_data",
+            modality=[Modality.SPIM],
+            platform=Platform.EXASPIM,
+            subject_id="1234",
+            data_level=DataLevel.RAW,
+            creation_time=datetime.datetime(2020, 10, 10, 10, 10, 10),
+            institution=Institution.AIND,
+            funding_source=[Funding(funder=Institution.NINDS, grant_number="grant001")],
+            investigators=["Jane Smith"],
+        )
+        with self.assertRaises(ValidationError) as e:
+            DataDescription(
+                label="test_data",
+                modality=[Modality.SPIM],
+                platform=Platform.EXASPIM,
+                subject_id="1234",
+                data_level=2,
+                creation_time=datetime.datetime(2020, 10, 10, 10, 10, 10),
+                institution=Institution.AIND,
+                funding_source=[Funding(funder=Institution.NINDS, grant_number="grant001")],
+                investigators=["Jane Smith"],
+            )            
+        self.assertTrue("Data Level needs to be string or enum" in repr(e.exception))
+        self.assertEqual(DataLevel.RAW, d1.data_level)
+        self.assertEqual(DataLevel.RAW, d2.data_level)
 
     # def test_edge_cases(self):
     #     """Tests a few edge cases"""
