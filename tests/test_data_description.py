@@ -7,7 +7,13 @@ import unittest
 from pathlib import Path
 from typing import List
 
-from aind_data_schema.core.data_description import DataDescription, DataLevel, Funding, Group, RelatedData
+from aind_data_schema.core.data_description import (
+    DataDescription,
+    DataLevel,
+    Funding,
+    Group,
+    RelatedData,
+)
 from aind_data_schema.models.institutions import Institution
 from aind_data_schema.models.modalities import Modality
 from aind_data_schema.models.platforms import Platform
@@ -54,10 +60,16 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
 
         # Should work by setting platform explicitly
         new_data_description = upgrader.upgrade(platform=Platform.ECEPHYS)
-        self.assertEqual(datetime.datetime(2022, 6, 28, 10, 31, 30), new_data_description.creation_time)
+        self.assertEqual(
+            datetime.datetime(2022, 6, 28, 10, 31, 30),
+            new_data_description.creation_time,
+        )
         self.assertEqual("ecephys_623705_2022-06-28_10-31-30", new_data_description.name)
         self.assertEqual(Institution.AIND, new_data_description.institution)
-        self.assertEqual([Funding(funder=Institution.AI)], new_data_description.funding_source)
+        self.assertEqual(
+            [Funding(funder=Institution.AI)],
+            new_data_description.funding_source,
+        )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertIsNone(new_data_description.group)
         self.assertEqual(["John Doe"], new_data_description.investigators)
@@ -87,10 +99,16 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
 
         # Should work by setting platform explicitly and DataLevel
         new_data_description = upgrader.upgrade(platform=Platform.ECEPHYS, data_level=DataLevel.RAW)
-        self.assertEqual(datetime.datetime(2022, 7, 26, 10, 52, 15), new_data_description.creation_time)
+        self.assertEqual(
+            datetime.datetime(2022, 7, 26, 10, 52, 15),
+            new_data_description.creation_time,
+        )
         self.assertEqual("ecephys_624643_2022-07-26_10-52-15", new_data_description.name)
         self.assertEqual(Institution.AIND, new_data_description.institution)
-        self.assertEqual([Funding(funder=Institution.AI)], new_data_description.funding_source)
+        self.assertEqual(
+            [Funding(funder=Institution.AI)],
+            new_data_description.funding_source,
+        )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertIsNone(new_data_description.group)
         self.assertEqual(["John Doe"], new_data_description.investigators)
@@ -147,10 +165,16 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
 
         # Should work by setting platform explicitly
         new_data_description = upgrader.upgrade()
-        self.assertEqual(datetime.datetime(2023, 4, 13, 14, 35, 51), new_data_description.creation_time)
+        self.assertEqual(
+            datetime.datetime(2023, 4, 13, 14, 35, 51),
+            new_data_description.creation_time,
+        )
         self.assertEqual("ecephys_664438_2023-04-13_14-35-51", new_data_description.name)
         self.assertEqual(Institution.AIND, new_data_description.institution)
-        self.assertEqual([Funding(funder=Institution.AI)], new_data_description.funding_source)
+        self.assertEqual(
+            [Funding(funder=Institution.AI)],
+            new_data_description.funding_source,
+        )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertIsNone(new_data_description.group)
         self.assertEqual(["John Doe"], new_data_description.investigators)
@@ -168,10 +192,16 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
 
         # Should work by setting experiment type explicitly
         new_data_description = upgrader.upgrade()
-        self.assertEqual(datetime.datetime(2023, 4, 10, 17, 9, 26), new_data_description.creation_time)
+        self.assertEqual(
+            datetime.datetime(2023, 4, 10, 17, 9, 26),
+            new_data_description.creation_time,
+        )
         self.assertEqual("ecephys_661278_2023-04-10_17-09-26", new_data_description.name)
         self.assertEqual(Institution.AIND, new_data_description.institution)
-        self.assertEqual([Funding(funder=Institution.AI)], new_data_description.funding_source)
+        self.assertEqual(
+            [Funding(funder=Institution.AI)],
+            new_data_description.funding_source,
+        )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertIsNone(new_data_description.group)
         self.assertEqual(["John Doe"], new_data_description.investigators)
@@ -189,10 +219,16 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
 
         # Should work by setting experiment type explicitly
         new_data_description = upgrader.upgrade()
-        self.assertEqual(datetime.datetime(2023, 3, 23, 22, 31, 18), new_data_description.creation_time)
+        self.assertEqual(
+            datetime.datetime(2023, 3, 23, 22, 31, 18),
+            new_data_description.creation_time,
+        )
         self.assertEqual("661279_2023-03-23_15-31-18", new_data_description.name)
         self.assertEqual(Institution.AIND, new_data_description.institution)
-        self.assertEqual([Funding(funder=Institution.AI)], new_data_description.funding_source)
+        self.assertEqual(
+            [Funding(funder=Institution.AI)],
+            new_data_description.funding_source,
+        )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertEqual(Group.EPHYS, new_data_description.group)
         self.assertEqual(["John Doe", "Mary Smith"], new_data_description.investigators)
@@ -247,10 +283,16 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
 
         # Should work by setting funding_source explicitly
         new_data_description = upgrader.upgrade(funding_source=[Funding(funder=Institution.AIND)])
-        self.assertEqual(datetime.datetime(2023, 3, 23, 22, 31, 18), new_data_description.creation_time)
+        self.assertEqual(
+            datetime.datetime(2023, 3, 23, 22, 31, 18),
+            new_data_description.creation_time,
+        )
         self.assertEqual("661279_2023-03-23_15-31-18", new_data_description.name)
         self.assertEqual(Institution.AIND, new_data_description.institution)
-        self.assertEqual([Funding(funder=Institution.AIND)], new_data_description.funding_source)
+        self.assertEqual(
+            [Funding(funder=Institution.AIND)],
+            new_data_description.funding_source,
+        )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertEqual(Group.EPHYS, new_data_description.group)
         self.assertEqual(["John Doe", "Mary Smith"], new_data_description.investigators)
@@ -285,10 +327,16 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
 
         # Should work by setting experiment type explicitly
         new_data_description = upgrader.upgrade()
-        self.assertEqual(datetime.datetime(2023, 10, 18, 16, 00, 6), new_data_description.creation_time)
+        self.assertEqual(
+            datetime.datetime(2023, 10, 18, 16, 00, 6),
+            new_data_description.creation_time,
+        )
         self.assertEqual("ecephys_691897_2023-10-18_16-00-06", new_data_description.name)
         self.assertEqual(Institution.AIND, new_data_description.institution)
-        self.assertEqual([Funding(funder=Institution.AIND)], new_data_description.funding_source)
+        self.assertEqual(
+            [Funding(funder=Institution.AIND)],
+            new_data_description.funding_source,
+        )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertIsNone(new_data_description.group)
         self.assertEqual(["John Doe"], new_data_description.investigators)
@@ -314,7 +362,10 @@ class TestModalityUpgrade(unittest.TestCase):
     def test_modality_upgrade(self):
         """Tests edge case"""
         self.assertIsNone(ModalityUpgrade.upgrade_modality(None))
-        self.assertEqual(Modality.ECEPHYS, ModalityUpgrade.upgrade_modality(Modality.ECEPHYS))
+        self.assertEqual(
+            Modality.ECEPHYS,
+            ModalityUpgrade.upgrade_modality(Modality.ECEPHYS),
+        )
         self.assertEqual(Modality.ICEPHYS, ModalityUpgrade.upgrade_modality("icephys"))
 
     def test_modality_lookup(self):
@@ -353,7 +404,8 @@ class TestFundingUpgrade(unittest.TestCase):
 
         # Default gets set to AI
         self.assertEqual(
-            Funding(funder=Institution.AI, grant_number=None, fundee=None), FundingUpgrade.upgrade_funding(None)
+            Funding(funder=Institution.AI, grant_number=None, fundee=None),
+            FundingUpgrade.upgrade_funding(None),
         )
 
         # Check static method edge case:

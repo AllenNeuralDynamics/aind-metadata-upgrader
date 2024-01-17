@@ -7,8 +7,15 @@ import json
 import datetime
 from typing import List
 
-from aind_data_schema.core.processing import Processing, PipelineProcess, DataProcess
-from aind_data_schema.schema_upgrade.processing_upgrade import ProcessingUpgrade, DataProcessUpgrade
+from aind_data_schema.core.processing import (
+    Processing,
+    PipelineProcess,
+    DataProcess,
+)
+from aind_data_schema.schema_upgrade.processing_upgrade import (
+    ProcessingUpgrade,
+    DataProcessUpgrade,
+)
 
 PROCESSING_FILES_PATH = Path(__file__).parent / "resources" / "ephys_processing"
 
@@ -51,7 +58,9 @@ class TestProcessingUpgrade(unittest.TestCase):
         self.assertEqual(ephys_preprocessing_process.name, "Ephys preprocessing")
         self.assertEqual(ephys_preprocessing_process.software_version, "0.1.5")
         self.assertEqual(
-            ephys_preprocessing_process.code_url, "https://github.com/AllenNeuralDynamics/aind-data-transfer", "0.1.5"
+            ephys_preprocessing_process.code_url,
+            "https://github.com/AllenNeuralDynamics/aind-data-transfer",
+            "0.1.5",
         )
         self.assertEqual(ephys_preprocessing_process.software_version, "0.1.5")
 
@@ -79,7 +88,8 @@ class TestProcessingUpgrade(unittest.TestCase):
         self.assertEqual(ephys_preprocessing_process.name, "Ephys preprocessing")
         self.assertEqual(ephys_preprocessing_process.software_version, "0.5.0")
         self.assertEqual(
-            ephys_preprocessing_process.code_url, "https://github.com/AllenNeuralDynamics/aind-data-transfer"
+            ephys_preprocessing_process.code_url,
+            "https://github.com/AllenNeuralDynamics/aind-data-transfer",
         )
 
     def test_upgrades_0_2_1(self):
@@ -106,7 +116,8 @@ class TestProcessingUpgrade(unittest.TestCase):
         self.assertEqual(ephys_preprocessing_process.name, "Ephys preprocessing")
         self.assertEqual(ephys_preprocessing_process.software_version, "0.16.2")
         self.assertEqual(
-            ephys_preprocessing_process.code_url, "https://github.com/AllenNeuralDynamics/aind-data-transfer"
+            ephys_preprocessing_process.code_url,
+            "https://github.com/AllenNeuralDynamics/aind-data-transfer",
         )
 
     def test_upgrades_0_2_5(self):
@@ -133,7 +144,8 @@ class TestProcessingUpgrade(unittest.TestCase):
         self.assertEqual(ephys_preprocessing_process.name, "Ephys preprocessing")
         self.assertEqual(ephys_preprocessing_process.software_version, "0.29.3")
         self.assertEqual(
-            ephys_preprocessing_process.code_url, "https://github.com/AllenNeuralDynamics/aind-data-transfer"
+            ephys_preprocessing_process.code_url,
+            "https://github.com/AllenNeuralDynamics/aind-data-transfer",
         )
 
     def test_upgrades_0_3_1(self):
@@ -149,7 +161,8 @@ class TestProcessingUpgrade(unittest.TestCase):
         self.assertEqual(ephys_preprocessing_process.name, "Compression")
         self.assertEqual(ephys_preprocessing_process.software_version, "0.32.0")
         self.assertEqual(
-            ephys_preprocessing_process.code_url, "https://github.com/AllenNeuralDynamics/aind-data-transfer"
+            ephys_preprocessing_process.code_url,
+            "https://github.com/AllenNeuralDynamics/aind-data-transfer",
         )
 
     def test_upgrades_current(self):
@@ -230,7 +243,10 @@ class TestDataProcessUpgrade(unittest.TestCase):
 
         # the upgrader updates version to software_version
         self.assertEqual(new_data_process.software_version, "0.29.3")
-        self.assertEqual(new_data_process.code_url, "https://github.com/AllenNeuralDynamics/aind-data-transfer")
+        self.assertEqual(
+            new_data_process.code_url,
+            "https://github.com/AllenNeuralDynamics/aind-data-transfer",
+        )
         # notes that are None for "Other" data processes are replaced with "missing notes"
         self.assertEqual(new_data_process.notes, "missing notes")
 
