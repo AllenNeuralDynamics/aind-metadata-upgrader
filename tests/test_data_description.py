@@ -351,7 +351,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
 
     def test_data_level_upgrade(self):
         """Tests data level can be set from legacy versions"""
-        
+
         d1 = DataDescription(
             label="test_data",
             modality=[Modality.SPIM],
@@ -385,7 +385,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
                 institution=Institution.AIND,
                 funding_source=[Funding(funder=Institution.NINDS, grant_number="grant001")],
                 investigators=["Jane Smith"],
-            )            
+            )
         self.assertTrue("Data Level needs to be string or enum" in repr(e.exception))
         self.assertEqual(DataLevel.RAW, d1.data_level)
         self.assertEqual(DataLevel.RAW, d2.data_level)

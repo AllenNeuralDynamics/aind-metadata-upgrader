@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Any, Optional, Union
 
 from aind_data_schema.base import AindModel
-from aind_data_schema.core.data_description import DataDescription, Funding
+from aind_data_schema.core.data_description import DataDescription, DataLevel, Funding
 from aind_data_schema.models.institutions import Institution
 from aind_data_schema.models.modalities import Modality
 from aind_data_schema.models.platforms import Platform
