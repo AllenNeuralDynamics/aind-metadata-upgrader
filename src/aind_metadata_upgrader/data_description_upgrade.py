@@ -8,7 +8,8 @@ from aind_data_schema.core.data_description import DataDescription, DataLevel, F
 from aind_data_schema.models.institutions import Institution
 from aind_data_schema.models.modalities import Modality
 from aind_data_schema.models.platforms import Platform
-from aind_data_schema.schema_upgrade.base_upgrade import BaseModelUpgrade
+
+from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 
 
 class ModalityUpgrade:

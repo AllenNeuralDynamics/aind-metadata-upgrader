@@ -5,11 +5,10 @@ from aind_data_schema.core.processing import (
     PipelineProcess,
     Processing,
 )
-from aind_data_schema.schema_upgrade.base_upgrade import (
-    AindModel,
-    BaseModelUpgrade,
-)
 
+from aind_data_schema.base import AindModel
+
+from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 
 class DataProcessUpgrade(BaseModelUpgrade):
     """Handle upgrades for DataProcess class"""

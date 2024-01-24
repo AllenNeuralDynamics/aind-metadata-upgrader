@@ -18,7 +18,8 @@ from aind_data_schema.core.data_description import (
 from aind_data_schema.models.institutions import Institution
 from aind_data_schema.models.modalities import Modality
 from aind_data_schema.models.platforms import Platform
-from aind_data_schema.schema_upgrade.data_description_upgrade import (
+
+from aind_metadata_upgrader.data_description_upgrade import (
     DataDescriptionUpgrade,
     FundingUpgrade,
     InstitutionUpgrade,
