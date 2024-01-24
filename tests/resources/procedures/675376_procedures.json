@@ -1,0 +1,25 @@
+{
+   "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/procedures.py",
+   "schema_version": "0.9.7",
+   "subject_id": "675376",
+   "subject_procedures": [
+      {
+         "start_date": "2023-05-08",
+         "end_date": "2023-05-08",
+         "experimenter_full_name": "30509",
+         "protocol_id": "dx.doi.org/10.17504/protocols.io.bg5vjy66",
+         "iacuc_protocol": null,
+         "animal_weight_prior": null,
+         "animal_weight_post": null,
+         "weight_unit": "gram",
+         "anaesthesia": null,
+         "notes": null,
+         "procedure_type": "Perfusion",
+         "output_specimen_ids": [
+            "675376"
+         ]
+      }
+   ],
+   "specimen_procedures": [],
+   "notes": null
+}
