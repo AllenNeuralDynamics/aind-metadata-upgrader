@@ -4,7 +4,8 @@ from typing import Any, Optional, Union
 import semver
 
 from aind_data_schema.base import AindModel
-from aind_data_schema.schema_upgrade.base_upgrade import BaseModelUpgrade
+from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
+
 
 from aind_data_schema.core.procedures import (
     Procedures, 
@@ -33,9 +34,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
     """Handle upgrades for Procedure models."""
 
     procedure_types_list = {
-        model.procedure_type: model for model in [
-            Procedures, 
-            Surgery,
+        model.model_fields["procedure_type"].default: model for model in [
             Craniotomy,
             FiberImplant,
             Headframe,
@@ -57,6 +56,8 @@ class ProcedureUpgrade(BaseModelUpgrade):
     def upgrade_subject_procedure(self, old_subj_procedure: dict):
         """Map legacy SubjectProcedure model to current version"""
 
+        print("procedure types: ", self.procedure_types_list)
+
         procedure_type = old_subj_procedure.get("procedure_type")
         if procedure_type in self.procedure_types_list.keys():
             return self.procedure_types_list[procedure_type].model_validate(old_subj_procedure)
@@ -70,26 +71,29 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
         if type(old_specimen_procedure) is SpecimenProcedure:
             return old_specimen_procedure
-        elif type(old_specimen_procedure) is dict and old_specimen_procedure.get("procedure_type") is not None:
+        elif type(old_specimen_procedure) is dict and old_specimen_procedure.procedure_type is not None:
             return SpecimenProcedure.model_validate(old_specimen_procedure)
         else:
             logging.error(f"Specimen procedure {old_specimen_procedure} passed in as invalid type")
             return None
 
-    @staticmethod
-    def upgrade_procedure(old_procedure: Any) -> Optional[Procedures]:
+    def upgrade_procedure(self) -> Optional[Procedures]:
         """Map legacy Procedure model to current version"""
 
-        if semver.Version.parse(old_procedure.get("schema_version")) <= semver.Version.parse("0.11.0"):
-            subj_id = old_procedure.get("subject_id")
+        
+        print("from init: ", self.old_model)
+        print(self.old_model.schema_version)
+
+        if semver.Version.parse(self.old_model.schema_version) <= semver.Version.parse("0.11.0"):
+            subj_id = self.old_model.subject_id
 
             loaded_subject_procedures = {}
-            for subj_procedure in old_procedure.get("subject_procedures"): #type: dict
+            for subj_procedure in self.old_model.subject_procedures: #type: dict
                 date = subj_procedure.get("start_date")
 
                 logging.info(f"Upgrading procedure {subj_procedure.get('procedure_type')} for subject {subj_id} on date {date}")
 
-                upgraded_subj_procedure = ProcedureUpgrade.upgrade_subject_procedure(subj_procedure)
+                upgraded_subj_procedure = self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)
                 
                 if not upgraded_subj_procedure:
                     continue
@@ -98,22 +102,22 @@ class ProcedureUpgrade(BaseModelUpgrade):
                 if date not in loaded_subject_procedures.keys():
                     new_surgery = Surgery(
                         start_date=date,
-                        experimenter_full_name=str(subj_procedure.get("experimenter_full_name")),
-                        iacuc_protocol=subj_procedure.get("iacuc_protocol"),
-                        animal_weight_prior=subj_procedure.get("animal_weight_prior"),
-                        animal_weight_post=subj_procedure.get("animal_weight_post"),
-                        weight_unit=subj_procedure.get("weight_unit"),
-                        anaesthesia=subj_procedure.get("anaesthesia"),
-                        workstation_id=subj_procedure.get("workstation_id"),
+                        experimenter_full_name=str(subj_procedure.experimenter_full_name),
+                        iacuc_protocol=subj_procedure.iacuc_protocol,
+                        animal_weight_prior=subj_procedure.animal_weight_prior,
+                        animal_weight_post=subj_procedure.animal_weight_post,
+                        weight_unit=subj_procedure.weight_unit,
+                        anaesthesia=subj_procedure.anaesthesia,
+                        workstation_id=subj_procedure.workstation_id,
                         procedures=[upgraded_subj_procedure],
-                        notes=subj_procedure.get("notes")
+                        notes=subj_procedure.notes
                     )
                     loaded_subject_procedures = {date: new_surgery}
                 else:
                     loaded_subject_procedures[date].procedures.append(upgraded_subj_procedure)
                 
             loaded_spec_procedures = []
-            for spec_procedure in old_procedure.specimen_procedures:
+            for spec_procedure in self.old_model.specimen_procedures:
                 date = spec_procedure.start_date
 
                 logging.info(f"Upgrading procedure {spec_procedure.get('procedure_type')} for subject {subj_id} on date {date}")
@@ -129,7 +133,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
                 subject_id=subj_id,
                 subject_procedures=list(loaded_subject_procedures.values()),
                 specimen_procedures=loaded_spec_procedures,
-                notes=old_procedure.notes,
+                notes=self.old_model.notes,
             )
 
             return new_procedure

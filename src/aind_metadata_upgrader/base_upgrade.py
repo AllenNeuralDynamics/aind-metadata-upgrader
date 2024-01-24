@@ -59,7 +59,7 @@ class BaseModelUpgrade(ABC):
             except AttributeError:
                 return None
 
-    @abstractmethod
-    def upgrade(self, **kwargs) -> AindModel:
-        """Upgrades the old model into the current version"""
-        raise NotImplementedError  # "pragma: no cover"
+    # @abstractmethod
+    # def upgrade(self, **kwargs) -> AindModel:
+    #     """Upgrades the old model into the current version"""
+    #     raise NotImplementedError  # "pragma: no cover"
