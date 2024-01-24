@@ -12,7 +12,7 @@ from aind_data_schema.core.processing import (
     PipelineProcess,
     DataProcess,
 )
-from aind_data_schema.schema_upgrade.processing_upgrade import (
+from aind_metadata_upgrader.processing_upgrade import (
     ProcessingUpgrade,
     DataProcessUpgrade,
 )
