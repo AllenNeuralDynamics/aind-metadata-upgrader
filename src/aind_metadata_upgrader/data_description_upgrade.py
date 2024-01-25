@@ -143,7 +143,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         old_name = self._get_or_default(self.old_model, "name", kwargs)
         if creation_date is not None:
             creation_date = datetime.strptime(creation_date, "%Y-%m-%d").date()
-            creation_time = datetime.strptime(creation_time, "%H:%M:%S").time()
+            creation_time = datetime.strptime(creation_time, "%H:%M:%S.%f").time()
             creation_time = datetime.combine(creation_date, creation_time)
         elif old_name is not None:
             creation_time = DataDescription.parse_name(old_name).get("creation_time")
