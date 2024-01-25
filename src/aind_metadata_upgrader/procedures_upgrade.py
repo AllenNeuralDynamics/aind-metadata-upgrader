@@ -22,12 +22,59 @@ from aind_data_schema.core.procedures import (
     OtherSubjectProcedure,
     RetroOrbitalInjection,
     SpecimenProcedure,
+    ViralMaterial,
+    NonViralMaterial
 )
 
 import logging
 
 
+def pop_unused_fields(instance: dict, model):
+    remove_fields = []
 
+    for field in instance.keys():
+        print("check field: ", field)
+        print("model fields: ", model.model_fields.keys())
+        if field not in model.model_fields.keys():
+            remove_fields.append(field)
+
+    for field in remove_fields:
+        instance.pop(field)
+
+    return instance
+
+
+class InjectionMaterialsUpgrade:
+
+    @staticmethod
+    def upgrade_injection_materials(old_injection_materials: list) -> Optional[dict]:
+        """Map legacy InjectionMaterials model to current version"""
+
+        new_materials = []
+        for injection_material in old_injection_materials: #this wont work like i want, we changed the naming convention
+            new_material = None
+            if injection_material.get("titer") is not None:
+
+                injection_material = pop_unused_fields(injection_material, ViralMaterial)
+                
+                new_material = ViralMaterial.model_construct(injection_material)
+            elif injection_material.get("concentration") is not None:
+
+                injection_material = pop_unused_fields(injection_material, NonViralMaterial)
+
+                new_material = NonViralMaterial.model_construct(injection_material)
+            else:
+                logging.error(f"Injection material with no titer or concentration {injection_material} passed in")
+
+            if new_material:
+                new_materials.append(new_material)
+        
+        return new_materials
+                
+
+                
+
+        
 
 
 class ProcedureUpgrade(BaseModelUpgrade):
@@ -56,10 +103,23 @@ class ProcedureUpgrade(BaseModelUpgrade):
     def upgrade_subject_procedure(self, old_subj_procedure: dict):
         """Map legacy SubjectProcedure model to current version"""
 
-        print("procedure types: ", self.procedure_types_list)
+        print("subj procedure to upgrade: ", old_subj_procedure)
 
         procedure_type = old_subj_procedure.get("procedure_type")
         if procedure_type in self.procedure_types_list.keys():
+            remove_fields = []
+            for field in old_subj_procedure.keys():
+                if field not in self.procedure_types_list[procedure_type].model_fields.keys():
+                    remove_fields.append(field)
+
+            for field in remove_fields:
+                old_subj_procedure.pop(field)
+
+            print("before validation: ", old_subj_procedure)
+
+            if "injection_materials" in old_subj_procedure.keys():
+                old_subj_procedure["injection_materials"] = InjectionMaterialsUpgrade.upgrade_injection_materials(old_subj_procedure["injection_materials"])
+
             return self.procedure_types_list[procedure_type].model_validate(old_subj_procedure)
         else:
             logging.error(f"Procedure type {procedure_type} not found in list of procedure types")
@@ -93,6 +153,8 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
                 logging.info(f"Upgrading procedure {subj_procedure.get('procedure_type')} for subject {subj_id} on date {date}")
 
+                print("full name: ", subj_procedure.get("experimenter_full_name"))
+
                 upgraded_subj_procedure = self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)
                 
                 if not upgraded_subj_procedure:
@@ -102,15 +164,15 @@ class ProcedureUpgrade(BaseModelUpgrade):
                 if date not in loaded_subject_procedures.keys():
                     new_surgery = Surgery(
                         start_date=date,
-                        experimenter_full_name=str(subj_procedure.experimenter_full_name),
-                        iacuc_protocol=subj_procedure.iacuc_protocol,
-                        animal_weight_prior=subj_procedure.animal_weight_prior,
-                        animal_weight_post=subj_procedure.animal_weight_post,
-                        weight_unit=subj_procedure.weight_unit,
-                        anaesthesia=subj_procedure.anaesthesia,
-                        workstation_id=subj_procedure.workstation_id,
+                        experimenter_full_name=str(subj_procedure.get("experimenter_full_name")),
+                        iacuc_protocol=subj_procedure.get("iacuc_protocol"),
+                        animal_weight_prior=subj_procedure.get("animal_weight_prior"),
+                        animal_weight_post=subj_procedure.get("animal_weight_post"),
+                        weight_unit=subj_procedure.get("weight_unit", Surgery.model_fields["weight_unit"].default),
+                        anaesthesia=subj_procedure.get("anaesthesia"),
+                        workstation_id=subj_procedure.get("workstation_id"),
                         procedures=[upgraded_subj_procedure],
-                        notes=subj_procedure.notes
+                        notes=subj_procedure.get("notes")
                     )
                     loaded_subject_procedures = {date: new_surgery}
                 else:
