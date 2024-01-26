@@ -418,7 +418,7 @@ class TestModalityUpgrade(unittest.TestCase):
             "/main/src/aind_data_schema/data_description.py",
             "schema_version": "0.3.0",
             "license": "CC-BY-4.0",
-            "creation_time": "16:01:12",
+            "creation_time": "16:01:12.1245",
             "creation_date": "2022-11-01",
             "name": "SmartSPIM_623711_2022-10-27_16-48-54_stitched_2022-11-01_16-01-12",
             "institution": "AIND",
