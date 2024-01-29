@@ -56,7 +56,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             "platform\n"
             "  Input should be a valid dictionary or object to extract fields"
             " from [type=model_attributes_type, input_value=None, input_type=NoneType]\n"
-            "    For further information visit https://errors.pydantic.dev/2.5/v/model_attributes_type"
+            "    For further information visit https://errors.pydantic.dev/2.6/v/model_attributes_type"
         )
         self.assertEqual(expected_error_message, repr(e.exception))
 
@@ -95,7 +95,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             "platform\n"
             "  Input should be a valid dictionary or object to extract fields"
             " from [type=model_attributes_type, input_value=None, input_type=NoneType]\n"
-            "    For further information visit https://errors.pydantic.dev/2.5/v/model_attributes_type"
+            "    For further information visit https://errors.pydantic.dev/2.6/v/model_attributes_type"
         )
         self.assertEqual(expected_error_message, repr(e.exception))
 
@@ -134,7 +134,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             "data_level\n"
             "  Value error, 'asfnewnjfq' is not a valid DataLevel"
             " [type=value_error, input_value='asfnewnjfq', input_type=str]\n"
-            "    For further information visit https://errors.pydantic.dev/2.5/v/value_error"
+            "    For further information visit https://errors.pydantic.dev/2.6/v/value_error"
         )
 
         self.assertEqual(expected_error_message1, repr(e1.exception))
@@ -147,7 +147,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             "data_level\n"
             "  Value error, Data Level needs to be string or enum"
             " [type=value_error, input_value=['raw'], input_type=list]\n"
-            "    For further information visit https://errors.pydantic.dev/2.5/v/value_error"
+            "    For further information visit https://errors.pydantic.dev/2.6/v/value_error"
         )
 
         self.assertEqual(expected_error_message2, repr(e2.exception))
