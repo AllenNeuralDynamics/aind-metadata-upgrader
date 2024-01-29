@@ -60,7 +60,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             "platform\n"
             "  Input should be a valid dictionary or object to extract fields"
             " from [type=model_attributes_type, input_value=None, input_type=NoneType]\n"
-            "    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/model_attributes_type"
+            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/model_attributes_type"
         )
         self.assertEqual(expected_error_message, repr(e.exception))
 
@@ -99,7 +99,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             "platform\n"
             "  Input should be a valid dictionary or object to extract fields"
             " from [type=model_attributes_type, input_value=None, input_type=NoneType]\n"
-            "    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/model_attributes_type"
+            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/model_attributes_type"
         )
         self.assertEqual(expected_error_message, repr(e.exception))
 
