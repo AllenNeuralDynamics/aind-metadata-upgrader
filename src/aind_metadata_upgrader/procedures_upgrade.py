@@ -33,8 +33,6 @@ def pop_unused_fields(instance: dict, model):
     remove_fields = []
 
     for field in instance.keys():
-        print("check field: ", field)
-        print("model fields: ", model.model_fields.keys())
         if field not in model.model_fields.keys():
             remove_fields.append(field)
 
@@ -53,6 +51,8 @@ class InjectionMaterialsUpgrade:
         new_materials = []
         for injection_material in old_injection_materials: #this wont work like i want, we changed the naming convention
             new_material = None
+
+            print("injection material: ", injection_material)
             if injection_material.get("titer") is not None:
 
                 injection_material = pop_unused_fields(injection_material, ViralMaterial)
@@ -103,7 +103,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
     def upgrade_subject_procedure(self, old_subj_procedure: dict):
         """Map legacy SubjectProcedure model to current version"""
 
-        print("subj procedure to upgrade: ", old_subj_procedure)
+        print("subj procedure to upgrade: ", len(old_subj_procedure.keys()), old_subj_procedure.keys())
 
         procedure_type = old_subj_procedure.get("procedure_type")
         if procedure_type in self.procedure_types_list.keys():
@@ -115,7 +115,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
             for field in remove_fields:
                 old_subj_procedure.pop(field)
 
-            print("before validation: ", old_subj_procedure)
+            print("before validation: ", len(old_subj_procedure.keys()), old_subj_procedure.keys())
 
             if "injection_materials" in old_subj_procedure.keys():
                 old_subj_procedure["injection_materials"] = InjectionMaterialsUpgrade.upgrade_injection_materials(old_subj_procedure["injection_materials"])
