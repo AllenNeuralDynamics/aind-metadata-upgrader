@@ -138,7 +138,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             "data_level\n"
             "  Value error, 'asfnewnjfq' is not a valid DataLevel"
             " [type=value_error, input_value='asfnewnjfq', input_type=str]\n"
-            "    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/value_error"
+            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/value_error"
         )
 
         self.assertEqual(expected_error_message1, repr(e1.exception))
@@ -151,7 +151,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             "data_level\n"
             "  Value error, Data Level needs to be string or enum"
             " [type=value_error, input_value=['raw'], input_type=list]\n"
-            "    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/value_error"
+            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/value_error"
         )
 
         self.assertEqual(expected_error_message2, repr(e2.exception))
