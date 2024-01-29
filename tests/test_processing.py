@@ -46,7 +46,7 @@ class TestProcessingUpgrade(unittest.TestCase):
             "1 validation error for PipelineProcess\n"
             "processor_full_name\n"
             "  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]\n"
-            "    For further information visit https://errors.pydantic.dev/2.6/v/string_type"
+            "    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/string_type"
         )
         self.assertEqual(expected_error_message, repr(e.exception))
 
@@ -76,7 +76,7 @@ class TestProcessingUpgrade(unittest.TestCase):
             "1 validation error for PipelineProcess\n"
             "processor_full_name\n"
             "  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]\n"
-            "    For further information visit https://errors.pydantic.dev/2.6/v/string_type"
+            "    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/string_type"
         )
         self.assertEqual(expected_error_message, repr(e.exception))
 
@@ -104,7 +104,7 @@ class TestProcessingUpgrade(unittest.TestCase):
             "1 validation error for PipelineProcess\n"
             "processor_full_name\n"
             "  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]\n"
-            "    For further information visit https://errors.pydantic.dev/2.6/v/string_type"
+            "    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/string_type"
         )
         self.assertEqual(expected_error_message, repr(e.exception))
 
@@ -132,7 +132,7 @@ class TestProcessingUpgrade(unittest.TestCase):
             "1 validation error for PipelineProcess\n"
             "processor_full_name\n"
             "  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]\n"
-            "    For further information visit https://errors.pydantic.dev/2.6/v/string_type"
+            "    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/string_type"
         )
         self.assertEqual(expected_error_message, repr(e.exception))
 
