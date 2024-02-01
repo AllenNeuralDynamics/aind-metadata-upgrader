@@ -3,8 +3,8 @@
 import datetime
 import json
 import os
-import unittest
 import re
+import unittest
 from pathlib import Path
 from typing import List
 
@@ -15,12 +15,11 @@ from aind_data_schema.core.data_description import (
     Group,
     RelatedData,
 )
-from aind_data_schema.models.organizations import Organization
 from aind_data_schema.models.modalities import Modality
+from aind_data_schema.models.organizations import Organization
 from aind_data_schema.models.platforms import Platform
 from pydantic import ValidationError
 from pydantic import __version__ as pyd_version
-
 
 from aind_metadata_upgrader.data_description_upgrade import (
     DataDescriptionUpgrade,
@@ -140,11 +139,10 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             " [type=value_error, input_value='asfnewnjfq', input_type=str]\n"
             f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/value_error"
         )
-        
+
         print("repr: ", repr(e1.exception))
         print("errr: ", expected_error_message1)
         self.assertEqual(expected_error_message1, repr(e1.exception))
-        
 
         # Should also fail if inputting wrong type
         with self.assertRaises(Exception) as e2:
