@@ -4,8 +4,12 @@ from datetime import datetime
 from typing import Any, Optional, Union
 
 from aind_data_schema.base import AindModel
-from aind_data_schema.core.data_description import DataDescription, DataLevel, Funding
-from aind_data_schema.models.institutions import Institution
+from aind_data_schema.core.data_description import (
+    DataDescription,
+    DataLevel,
+    Funding,
+)
+from aind_data_schema.models.organizations import Organization
 from aind_data_schema.models.modalities import Modality
 from aind_data_schema.models.platforms import Platform
 
@@ -68,10 +72,10 @@ class FundingUpgrade:
             return old_funding
         elif type(old_funding) is dict and old_funding.get("funder") is not None and type(old_funding["funder"]) is str:
             old_funder = old_funding.get("funder")
-            if Institution().name_map.get(old_funder) is not None:
-                new_funder = Institution.from_name(old_funder)
+            if Organization().name_map.get(old_funder) is not None:
+                new_funder = Organization.from_name(old_funder)
             else:
-                new_funder = Institution.from_abbreviation(old_funder)
+                new_funder = Organization.from_abbreviation(old_funder)
             new_funding = deepcopy(old_funding)
             new_funding["funder"] = new_funder
             return Funding.model_validate(new_funding)
@@ -80,7 +84,7 @@ class FundingUpgrade:
         ):
             return Funding.model_validate(old_funding)
         else:
-            return Funding(funder=Institution.AI)
+            return Funding(funder=Organization.AI)
 
     @staticmethod
     def upgrade_funding_source(funding_source):
@@ -98,12 +102,12 @@ class InstitutionUpgrade:
     """Handle upgrades for Institution class"""
 
     @staticmethod
-    def upgrade_institution(old_institution: Any) -> Optional[Institution]:
+    def upgrade_institution(old_institution: Any) -> Optional[Organization]:
         """Map legacy Institution model to current version"""
         if type(old_institution) is str:
-            return Institution.from_abbreviation(old_institution)
+            return Organization.from_abbreviation(old_institution)
         elif type(old_institution) is dict and old_institution.get("abbreviation") is not None:
-            return Institution.from_abbreviation(old_institution.get("abbreviation"))
+            return Organization.from_abbreviation(old_institution.get("abbreviation"))
         else:
             return None
 

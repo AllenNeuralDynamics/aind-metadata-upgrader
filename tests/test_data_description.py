@@ -6,7 +6,6 @@ import os
 import unittest
 from pathlib import Path
 from typing import List
-from pydantic import ValidationError
 
 from aind_data_schema.core.data_description import (
     DataDescription,
@@ -15,9 +14,10 @@ from aind_data_schema.core.data_description import (
     Group,
     RelatedData,
 )
-from aind_data_schema.models.institutions import Institution
+from aind_data_schema.models.organizations import Organization
 from aind_data_schema.models.modalities import Modality
 from aind_data_schema.models.platforms import Platform
+from pydantic import ValidationError
 
 from aind_metadata_upgrader.data_description_upgrade import (
     DataDescriptionUpgrade,
@@ -67,9 +67,9 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             new_data_description.creation_time,
         )
         self.assertEqual("ecephys_623705_2022-06-28_10-31-30", new_data_description.name)
-        self.assertEqual(Institution.AIND, new_data_description.institution)
+        self.assertEqual(Organization.AIND, new_data_description.institution)
         self.assertEqual(
-            [Funding(funder=Institution.AI)],
+            [Funding(funder=Organization.AI)],
             new_data_description.funding_source,
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
@@ -106,9 +106,9 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             new_data_description.creation_time,
         )
         self.assertEqual("ecephys_624643_2022-07-26_10-52-15", new_data_description.name)
-        self.assertEqual(Institution.AIND, new_data_description.institution)
+        self.assertEqual(Organization.AIND, new_data_description.institution)
         self.assertEqual(
-            [Funding(funder=Institution.AI)],
+            [Funding(funder=Organization.AI)],
             new_data_description.funding_source,
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
@@ -172,9 +172,9 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             new_data_description.creation_time,
         )
         self.assertEqual("ecephys_664438_2023-04-13_14-35-51", new_data_description.name)
-        self.assertEqual(Institution.AIND, new_data_description.institution)
+        self.assertEqual(Organization.AIND, new_data_description.institution)
         self.assertEqual(
-            [Funding(funder=Institution.AI)],
+            [Funding(funder=Organization.AI)],
             new_data_description.funding_source,
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
@@ -199,9 +199,9 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             new_data_description.creation_time,
         )
         self.assertEqual("ecephys_661278_2023-04-10_17-09-26", new_data_description.name)
-        self.assertEqual(Institution.AIND, new_data_description.institution)
+        self.assertEqual(Organization.AIND, new_data_description.institution)
         self.assertEqual(
-            [Funding(funder=Institution.AI)],
+            [Funding(funder=Organization.AI)],
             new_data_description.funding_source,
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
@@ -226,9 +226,9 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             new_data_description.creation_time,
         )
         self.assertEqual("661279_2023-03-23_15-31-18", new_data_description.name)
-        self.assertEqual(Institution.AIND, new_data_description.institution)
+        self.assertEqual(Organization.AIND, new_data_description.institution)
         self.assertEqual(
-            [Funding(funder=Institution.AI)],
+            [Funding(funder=Organization.AI)],
             new_data_description.funding_source,
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
@@ -284,15 +284,15 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         self.assertEqual(expected_error_message, repr(e.exception))
 
         # Should work by setting funding_source explicitly
-        new_data_description = upgrader.upgrade(funding_source=[Funding(funder=Institution.AIND)])
+        new_data_description = upgrader.upgrade(funding_source=[Funding(funder=Organization.AIND)])
         self.assertEqual(
             datetime.datetime(2023, 3, 23, 22, 31, 18),
             new_data_description.creation_time,
         )
         self.assertEqual("661279_2023-03-23_15-31-18", new_data_description.name)
-        self.assertEqual(Institution.AIND, new_data_description.institution)
+        self.assertEqual(Organization.AIND, new_data_description.institution)
         self.assertEqual(
-            [Funding(funder=Institution.AIND)],
+            [Funding(funder=Organization.AIND)],
             new_data_description.funding_source,
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
@@ -334,9 +334,9 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             new_data_description.creation_time,
         )
         self.assertEqual("ecephys_691897_2023-10-18_16-00-06", new_data_description.name)
-        self.assertEqual(Institution.AIND, new_data_description.institution)
+        self.assertEqual(Organization.AIND, new_data_description.institution)
         self.assertEqual(
-            [Funding(funder=Institution.AIND)],
+            [Funding(funder=Organization.AIND)],
             new_data_description.funding_source,
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
@@ -360,8 +360,8 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             subject_id="1234",
             data_level="raw data",
             creation_time=datetime.datetime(2020, 10, 10, 10, 10, 10),
-            institution=Institution.AIND,
-            funding_source=[Funding(funder=Institution.NINDS, grant_number="grant001")],
+            institution=Organization.AIND,
+            funding_source=[Funding(funder=Organization.NINDS, grant_number="grant001")],
             investigators=["Jane Smith"],
         )
         d2 = DataDescription(
@@ -371,8 +371,8 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             subject_id="1234",
             data_level=DataLevel.RAW,
             creation_time=datetime.datetime(2020, 10, 10, 10, 10, 10),
-            institution=Institution.AIND,
-            funding_source=[Funding(funder=Institution.NINDS, grant_number="grant001")],
+            institution=Organization.AIND,
+            funding_source=[Funding(funder=Organization.NINDS, grant_number="grant001")],
             investigators=["Jane Smith"],
         )
         with self.assertRaises(ValidationError) as e:
@@ -383,8 +383,8 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
                 subject_id="1234",
                 data_level=2,
                 creation_time=datetime.datetime(2020, 10, 10, 10, 10, 10),
-                institution=Institution.AIND,
-                funding_source=[Funding(funder=Institution.NINDS, grant_number="grant001")],
+                institution=Organization.AIND,
+                funding_source=[Funding(funder=Organization.NINDS, grant_number="grant001")],
                 investigators=["Jane Smith"],
             )
         self.assertTrue("Data Level needs to be string or enum" in repr(e.exception))
@@ -447,7 +447,7 @@ class TestFundingUpgrade(unittest.TestCase):
 
         # Default gets set to AI
         self.assertEqual(
-            Funding(funder=Institution.AI, grant_number=None, fundee=None),
+            Funding(funder=Organization.AI, grant_number=None, fundee=None),
             FundingUpgrade.upgrade_funding(None),
         )
 
@@ -455,7 +455,7 @@ class TestFundingUpgrade(unittest.TestCase):
         self.assertEqual([], FundingUpgrade.upgrade_funding_source(None))
 
         self.assertEqual(
-            Funding(funder=Institution.AIND),
+            Funding(funder=Organization.AIND),
             FundingUpgrade.upgrade_funding(
                 {
                     "funder": {
