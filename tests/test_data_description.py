@@ -135,13 +135,9 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         expected_error_message1 = (
             "1 validation error for DataDescription\n"
             "data_level\n"
-            "  Value error, 'asfnewnjfq' is not a valid DataLevel"
-            " [type=value_error, input_value='asfnewnjfq', input_type=str]\n"
-            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/value_error"
+            "  Input should be 'derived' or 'raw' [type=enum, input_value='asfnewnjfq', input_type=str]"
         )
 
-        print("repr: ", repr(e1.exception))
-        print("errr: ", expected_error_message1)
         self.assertEqual(expected_error_message1, repr(e1.exception))
 
         # Should also fail if inputting wrong type
@@ -150,9 +146,8 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         expected_error_message2 = (
             "1 validation error for DataDescription\n"
             "data_level\n"
-            "  Value error, Data Level needs to be string or enum"
-            " [type=value_error, input_value=['raw'], input_type=list]\n"
-            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/value_error"
+            "  Input should be a valid string [type=string_type, input_value=['raw'], input_type=list]\n"
+            "    For further information visit https://errors.pydantic.dev/2.6/v/string_type"
         )
 
         self.assertEqual(expected_error_message2, repr(e2.exception))
@@ -164,6 +159,19 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         upgrader3 = DataDescriptionUpgrade(old_data_description_model=data_description_copy)
         new_data_description3 = upgrader3.upgrade(platform=Platform.ECEPHYS, data_level=DataLevel.DERIVED)
         self.assertEqual(DataLevel.DERIVED, new_data_description3.data_level)
+
+    def test_upgrades_0_3_0_missing_creation_time(self):
+        """Tests upgrade with missing creation time"""
+
+        data_description_0_3_0_missing_creation_time = self.data_descriptions["data_description_0.3.0_no_creation.json"]
+        upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_3_0_missing_creation_time)
+
+        new_data_description = upgrader.upgrade(platform=Platform.ECEPHYS, data_level=DataLevel.RAW)
+
+        self.assertEqual(
+            new_data_description.creation_time,
+            datetime.datetime(2022, 6, 28, 10, 31, 30)
+        )
 
     def test_upgrades_0_4_0(self):
         """Tests data_description_0.4.0.json is mapped correctly."""
