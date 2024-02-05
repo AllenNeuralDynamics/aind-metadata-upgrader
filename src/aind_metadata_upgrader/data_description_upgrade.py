@@ -1,4 +1,5 @@
 """Module to contain code to upgrade old data description models"""
+
 from copy import deepcopy
 from datetime import datetime
 from typing import Any, Optional, Union

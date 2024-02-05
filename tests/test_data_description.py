@@ -168,10 +168,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
 
         new_data_description = upgrader.upgrade(platform=Platform.ECEPHYS, data_level=DataLevel.RAW)
 
-        self.assertEqual(
-            new_data_description.creation_time,
-            datetime.datetime(2022, 6, 28, 10, 31, 30)
-        )
+        self.assertEqual(new_data_description.creation_time, datetime.datetime(2022, 6, 28, 10, 31, 30))
 
     def test_upgrades_0_4_0(self):
         """Tests data_description_0.4.0.json is mapped correctly."""
@@ -405,7 +402,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             "data_level\n"
             "  Input should be a valid string [type=string_type, input_value=[2, 3], input_type=list]\n"
             f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/string_type",
-            repr(e.exception)
+            repr(e.exception),
         )
         # this no longer throws the expected exception
         self.assertEqual(DataLevel.RAW, d1.data_level)
