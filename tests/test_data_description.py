@@ -5,7 +5,6 @@ import json
 import os
 import re
 import unittest
-import re
 from pathlib import Path
 from typing import List
 
@@ -28,8 +27,6 @@ from aind_metadata_upgrader.data_description_upgrade import (
     InstitutionUpgrade,
     ModalityUpgrade,
 )
-
-from pydantic import __version__ as pyd_version
 
 DATA_DESCRIPTION_FILES_PATH = Path(__file__).parent / "resources" / "ephys_data_description"
 PYD_VERSION = re.match(r"(\d+.\d+).\d+", pyd_version).group(1)
@@ -403,6 +400,13 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
                 funding_source=[Funding(funder=Organization.NINDS, grant_number="grant001")],
                 investigators=["Jane Smith"],
             )
+        self.assertEqual(
+            "1 validation error for DataDescription\n"
+            "data_level\n"
+            "  Input should be a valid string [type=string_type, input_value=[2, 3], input_type=list]\n"
+            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/string_type",
+            repr(e.exception)
+        )
         # this no longer throws the expected exception
         self.assertEqual(DataLevel.RAW, d1.data_level)
         self.assertEqual(DataLevel.RAW, d2.data_level)
