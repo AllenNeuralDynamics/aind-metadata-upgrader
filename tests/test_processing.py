@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import json
 import datetime
+import re
 from typing import List
 
 from aind_data_schema.core.processing import (
@@ -16,6 +17,10 @@ from aind_metadata_upgrader.processing_upgrade import (
     ProcessingUpgrade,
     DataProcessUpgrade,
 )
+
+from pydantic import __version__ as pyd_version
+
+PYD_VERSION = re.match(r"(\d+.\d+).\d+", pyd_version).group(1)
 
 PROCESSING_FILES_PATH = Path(__file__).parent / "resources" / "ephys_processing"
 
@@ -46,7 +51,7 @@ class TestProcessingUpgrade(unittest.TestCase):
             "1 validation error for PipelineProcess\n"
             "processor_full_name\n"
             "  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]\n"
-            "    For further information visit https://errors.pydantic.dev/2.5/v/string_type"
+            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/string_type"
         )
         self.assertEqual(expected_error_message, repr(e.exception))
 
@@ -76,7 +81,7 @@ class TestProcessingUpgrade(unittest.TestCase):
             "1 validation error for PipelineProcess\n"
             "processor_full_name\n"
             "  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]\n"
-            "    For further information visit https://errors.pydantic.dev/2.5/v/string_type"
+            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/string_type"
         )
         self.assertEqual(expected_error_message, repr(e.exception))
 
@@ -104,7 +109,7 @@ class TestProcessingUpgrade(unittest.TestCase):
             "1 validation error for PipelineProcess\n"
             "processor_full_name\n"
             "  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]\n"
-            "    For further information visit https://errors.pydantic.dev/2.5/v/string_type"
+            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/string_type"
         )
         self.assertEqual(expected_error_message, repr(e.exception))
 
@@ -132,7 +137,7 @@ class TestProcessingUpgrade(unittest.TestCase):
             "1 validation error for PipelineProcess\n"
             "processor_full_name\n"
             "  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]\n"
-            "    For further information visit https://errors.pydantic.dev/2.5/v/string_type"
+            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/string_type"
         )
         self.assertEqual(expected_error_message, repr(e.exception))
 
