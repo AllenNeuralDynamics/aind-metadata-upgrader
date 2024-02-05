@@ -1,12 +1,17 @@
 """Module to contain code to upgrade old data description models"""
+
 from copy import deepcopy
 from datetime import datetime
 from typing import Any, Optional, Union
 
 from aind_data_schema.base import AindModel
-from aind_data_schema.core.data_description import DataDescription, DataLevel, Funding
-from aind_data_schema.models.institutions import Institution
+from aind_data_schema.core.data_description import (
+    DataDescription,
+    DataLevel,
+    Funding,
+)
 from aind_data_schema.models.modalities import Modality
+from aind_data_schema.models.organizations import Organization
 from aind_data_schema.models.platforms import Platform
 
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
@@ -68,10 +73,10 @@ class FundingUpgrade:
             return old_funding
         elif type(old_funding) is dict and old_funding.get("funder") is not None and type(old_funding["funder"]) is str:
             old_funder = old_funding.get("funder")
-            if Institution().name_map.get(old_funder) is not None:
-                new_funder = Institution.from_name(old_funder)
+            if Organization().name_map.get(old_funder) is not None:
+                new_funder = Organization.from_name(old_funder)
             else:
-                new_funder = Institution.from_abbreviation(old_funder)
+                new_funder = Organization.from_abbreviation(old_funder)
             new_funding = deepcopy(old_funding)
             new_funding["funder"] = new_funder
             return Funding.model_validate(new_funding)
@@ -80,7 +85,7 @@ class FundingUpgrade:
         ):
             return Funding.model_validate(old_funding)
         else:
-            return Funding(funder=Institution.AI)
+            return Funding(funder=Organization.AI)
 
     @staticmethod
     def upgrade_funding_source(funding_source):
@@ -98,12 +103,12 @@ class InstitutionUpgrade:
     """Handle upgrades for Institution class"""
 
     @staticmethod
-    def upgrade_institution(old_institution: Any) -> Optional[Institution]:
+    def upgrade_institution(old_institution: Any) -> Optional[Organization]:
         """Map legacy Institution model to current version"""
         if type(old_institution) is str:
-            return Institution.from_abbreviation(old_institution)
+            return Organization.from_abbreviation(old_institution)
         elif type(old_institution) is dict and old_institution.get("abbreviation") is not None:
-            return Institution.from_abbreviation(old_institution.get("abbreviation"))
+            return Organization.from_abbreviation(old_institution.get("abbreviation"))
         else:
             return None
 
@@ -141,10 +146,10 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         creation_date = self._get_or_default(self.old_model, "creation_date", kwargs)
         creation_time = self._get_or_default(self.old_model, "creation_time", kwargs)
         old_name = self._get_or_default(self.old_model, "name", kwargs)
-        if creation_date is not None:
-            creation_date = datetime.strptime(creation_date, "%Y-%m-%d").date()
-            creation_time = datetime.strptime(creation_time, "%H:%M:%S").time()
-            creation_time = datetime.combine(creation_date, creation_time)
+        if creation_date is not None and creation_time is not None:
+            creation_time = datetime.fromisoformat(f"{creation_date}T{creation_time}")
+        elif creation_time is not None:
+            creation_time = datetime.fromisoformat(f"{creation_time}")
         elif old_name is not None:
             creation_time = DataDescription.parse_name(old_name).get("creation_time")
         return creation_time

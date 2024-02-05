@@ -1,12 +1,11 @@
 """Module to contain code to upgrade old processing models"""
 
+from aind_data_schema.base import AindModel
 from aind_data_schema.core.processing import (
     DataProcess,
     PipelineProcess,
     Processing,
 )
-
-from aind_data_schema.base import AindModel
 
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 

@@ -1,28 +1,29 @@
 """ tests for Processing upgrades """
 
-import unittest
-import os
-from pathlib import Path
-import json
 import datetime
+import json
+import os
 import re
+import unittest
+from pathlib import Path
 from typing import List
 
 from aind_data_schema.core.processing import (
-    Processing,
-    PipelineProcess,
     DataProcess,
+    PipelineProcess,
+    Processing,
 )
-from aind_metadata_upgrader.processing_upgrade import (
-    ProcessingUpgrade,
-    DataProcessUpgrade,
-)
-
 from pydantic import __version__ as pyd_version
+
+from aind_metadata_upgrader.processing_upgrade import (
+    DataProcessUpgrade,
+    ProcessingUpgrade,
+)
 
 PYD_VERSION = re.match(r"(\d+.\d+).\d+", pyd_version).group(1)
 
 PROCESSING_FILES_PATH = Path(__file__).parent / "resources" / "ephys_processing"
+PYD_VERSION = re.match(r"(\d+.\d+).\d+", pyd_version).group(1)
 
 
 class TestProcessingUpgrade(unittest.TestCase):
