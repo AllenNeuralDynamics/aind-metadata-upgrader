@@ -63,6 +63,36 @@ class ModalityUpgrade:
             return None
 
 
+class PlatformUpgrade:
+    """Handle upgrades for Platform models."""
+
+    legacy_name_mapping = {
+        'trained-behavior': ,
+        'smartspim': ,
+        'single-plane-ophys': ,
+        'HSFP': ,
+        'exaSPIM': ,
+        'ophys': ,
+        'multiplane-ophys': ,
+        'merfish': ,
+        'mesoSPIM': ,
+        'SPIM': ,
+        'test-FIP-opto': ,
+        'confocal': ,
+        'FIP': ,
+        'ecephys': ,
+        'behavior-videos': ,
+        'SmartSPIM': ,
+        'ephys':
+    }
+
+    @classmethod
+    def from_modality(cls, modality: Modality) -> Optional[Platform]:
+        """Get platform from modality"""
+        if modality is not None:
+            return cls.legacy_name_mapping.get(modality.abbreviation)
+            
+
 class FundingUpgrade:
     """Handle upgrades for Funding models."""
 
@@ -182,6 +212,11 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
         if platform is None:
             platform = self._get_or_default(self.old_model, "platform", kwargs)
+            if platform is None and type(modality) is list:
+                platform = [PlatformUpgrade.from_modality(mod) for mod in modality]
+            elif platform is None and type(modality) is str:
+                platform = PlatformUpgrade.from_modality(modality)
+
 
         creation_time = self.get_creation_time(**kwargs)
 
