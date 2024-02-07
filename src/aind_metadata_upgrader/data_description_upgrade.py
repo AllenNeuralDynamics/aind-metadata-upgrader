@@ -66,8 +66,16 @@ class ModalityUpgrade:
 class FundingUpgrade:
     """Handle upgrades for Funding models."""
 
-    @staticmethod
-    def upgrade_funding(old_funding: Any) -> Optional[Funding]:
+    funders_map = {
+        "Allen Institute for Brain Science": Organization.AI,
+        "Allen Institute for Neural Dynamics": Organization.AI,
+        "AIND": Organization.AI,
+        Organization.AIND: Organization.AI,
+        Organization.AIBS: Organization.AI,
+    }
+
+    @classmethod
+    def upgrade_funding(cls, old_funding: Any) -> Optional[Funding]:
         """Map legacy Funding model to current version"""
         if type(old_funding) is Funding:
             return old_funding
@@ -78,7 +86,11 @@ class FundingUpgrade:
             else:
                 new_funder = Organization.from_abbreviation(old_funder)
             new_funding = deepcopy(old_funding)
+            if type(new_funder) in Organization._ALL and new_funder.name in cls.funders_map.keys():
+                new_funder = cls.funders_map[new_funder.name]
             new_funding["funder"] = new_funder
+            print("old: ", old_funding)
+            print("new: ", new_funding)
             return Funding.model_validate(new_funding)
         elif (
             type(old_funding) is dict and old_funding.get("funder") is not None and type(old_funding["funder"]) is dict
@@ -163,6 +175,9 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         funding_source = self._get_or_default(self.old_model, "funding_source", kwargs)
 
         funding_source = FundingUpgrade.upgrade_funding_source(funding_source=funding_source)
+
+        if type(funding_source) is not list:
+            funding_source = [funding_source]
 
         modality = self.get_modality(**kwargs)
 
