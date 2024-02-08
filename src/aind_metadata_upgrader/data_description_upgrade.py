@@ -67,23 +67,23 @@ class PlatformUpgrade:
     """Handle upgrades for Platform models."""
 
     legacy_name_mapping = {
-        'trained-behavior': ,
-        'smartspim': ,
-        'single-plane-ophys': ,
-        'HSFP': ,
-        'exaSPIM': ,
-        'ophys': ,
-        'multiplane-ophys': ,
-        'merfish': ,
-        'mesoSPIM': ,
-        'SPIM': ,
-        'test-FIP-opto': ,
-        'confocal': ,
-        'FIP': ,
-        'ecephys': ,
-        'behavior-videos': ,
-        'SmartSPIM': ,
-        'ephys':
+        'trained-behavior': Platform.BEHAVIOR,
+        'smartspim': Platform.SMARTSPIM,
+        'single-plane-ophys': Platform.SINGLE_PLANE_OPHYS,
+        'HSFP': Platform.HSFP,
+        'exaSPIM': Platform.EXASPIM,
+        'ophys': Platform.SINGLE_PLANE_OPHYS,
+        'multiplane-ophys': Platform.MULTIPLANE_OPHYS,
+        'merfish': Platform.MERFISH,
+        'mesoSPIM': Platform.MESOSPIM,
+        'SPIM': Platform.SMARTSPIM,
+        'test-FIP-opto': Platform.FIP,
+        'confocal': Platform.CONFOCAL,
+        'FIP': Platform.FIP,
+        'ecephys': Platform.ECEPHYS,
+        'behavior-videos': Platform.BEHAVIOR,
+        'SmartSPIM': Platform.SMARTSPIM,
+        'ephys': Platform.ECEPHYS
     }
 
     @classmethod
@@ -213,7 +213,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         if platform is None:
             platform = self._get_or_default(self.old_model, "platform", kwargs)
             if platform is None and type(modality) is list:
-                platform = [PlatformUpgrade.from_modality(mod) for mod in modality]
+                platform = PlatformUpgrade.from_modality(modality[0])
             elif platform is None and type(modality) is str:
                 platform = PlatformUpgrade.from_modality(modality)
 
