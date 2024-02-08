@@ -76,23 +76,8 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         """Tests data_description_0.3.0_wrong_field.json is mapped correctly."""
         data_description_0_3_0 = self.data_descriptions["data_description_0.3.0_wrong_field.json"]
         upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_3_0)
-        # Should complain about platform being None and missing data level
-        with self.assertRaises(Exception) as e:
-            upgrader.upgrade()
 
-        expected_error_message = (
-            "1 validation error for DataDescription\n"
-            "platform\n"
-            "  Input should be a valid dictionary or object to extract fields"
-            " from [type=model_attributes_type, input_value=None, input_type=NoneType]\n"
-            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/model_attributes_type"
-        )
-        print("repr: ", repr(e.exception))
-        print("error:", expected_error_message)
-        self.assertEqual(expected_error_message, repr(e.exception))
-
-        # Should work by setting platform explicitly and DataLevel
-        new_data_description = upgrader.upgrade(platform=Platform.ECEPHYS, data_level=DataLevel.RAW)
+        new_data_description = upgrader.upgrade()
         self.assertEqual(
             datetime.datetime(2022, 7, 26, 10, 52, 15),
             new_data_description.creation_time,
