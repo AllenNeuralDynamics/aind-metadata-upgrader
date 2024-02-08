@@ -50,21 +50,8 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         """Tests data_description_0.3.0.json is mapped correctly."""
         data_description_0_3_0 = self.data_descriptions["data_description_0.3.0.json"]
         upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_3_0)
-        # Should complain about platform being None
-        with self.assertRaises(Exception) as e:
-            upgrader.upgrade()
 
-        expected_error_message = (
-            "1 validation error for DataDescription\n"
-            "platform\n"
-            "  Input should be a valid dictionary or object to extract fields"
-            " from [type=model_attributes_type, input_value=None, input_type=NoneType]\n"
-            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/model_attributes_type"
-        )
-        self.assertEqual(expected_error_message, repr(e.exception))
-
-        # Should work by setting platform explicitly
-        new_data_description = upgrader.upgrade(platform=Platform.ECEPHYS)
+        new_data_description = upgrader.upgrade()
         self.assertEqual(
             datetime.datetime(2022, 6, 28, 10, 31, 30),
             new_data_description.creation_time,
@@ -100,6 +87,8 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             " from [type=model_attributes_type, input_value=None, input_type=NoneType]\n"
             f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/model_attributes_type"
         )
+        print("repr: ", repr(e.exception))
+        print("error:", expected_error_message)
         self.assertEqual(expected_error_message, repr(e.exception))
 
         # Should work by setting platform explicitly and DataLevel
@@ -430,6 +419,7 @@ class TestModalityUpgrade(unittest.TestCase):
 
     def test_modality_lookup(self):
         """Tests old modality lookup case"""
+
         dd_dict = {
             "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema"
             "/main/src/aind_data_schema/data_description.py",
@@ -448,6 +438,66 @@ class TestModalityUpgrade(unittest.TestCase):
             "restrictions": None,
             "modality": "SmartSPIM",
             "platform": Platform.SMARTSPIM,
+            "subject_id": "623711",
+            "input_data_name": "SmartSPIM_623711_2022-10-27_16-48-54",
+        }
+        dd = DataDescription.model_construct(**dd_dict)
+        upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
+        upgrader.upgrade()
+
+class TestPlatformUpgrade(unittest.TestCase):
+    """Tests PlatformUpgrade methods"""
+
+    def test_platform_upgrade(self):
+        """Tests edge case"""
+
+        dd_dict = {
+            "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema"
+            "/main/src/aind_data_schema/data_description.py",
+            "schema_version": "0.3.0",
+            "license": "CC-BY-4.0",
+            "creation_time": "16:01:12.123456",
+            "creation_date": "2022-11-01",
+            "name": "SmartSPIM_623711_2022-10-27_16-48-54_stitched_2022-11-01_16-01-12",
+            "institution": "AIND",
+            "investigators": ["John Doe"],
+            "funding_source": [{"funder": "AI", "grant_number": None, "fundee": None}],
+            "data_level": "derived data",
+            "group": None,
+            "project_name": None,
+            "project_id": None,
+            "restrictions": None,
+            "modality": "SmartSPIM",
+            "platform": None,
+            "subject_id": "623711",
+            "input_data_name": "SmartSPIM_623711_2022-10-27_16-48-54",
+        }
+
+        dd = DataDescription.model_construct(**dd_dict)
+        upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
+        upgrader.upgrade()
+        
+
+    def test_platform_lookup(self):
+        """Tests old platform lookup case"""
+        dd_dict = {
+            "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema"
+            "/main/src/aind_data_schema/data_description.py",
+            "schema_version": "0.3.0",
+            "license": "CC-BY-4.0",
+            "creation_time": "16:01:12.123456",
+            "creation_date": "2022-11-01",
+            "name": "SmartSPIM_623711_2022-10-27_16-48-54_stitched_2022-11-01_16-01-12",
+            "institution": "AIND",
+            "investigators": ["John Doe"],
+            "funding_source": [{"funder": "AI", "grant_number": None, "fundee": None}],
+            "data_level": "derived data",
+            "group": None,
+            "project_name": None,
+            "project_id": None,
+            "restrictions": None,
+            "modality": "ecephys",
+            "platform": None,
             "subject_id": "623711",
             "input_data_name": "SmartSPIM_623711_2022-10-27_16-48-54",
         }
