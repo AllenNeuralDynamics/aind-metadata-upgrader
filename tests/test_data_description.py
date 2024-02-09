@@ -430,6 +430,7 @@ class TestModalityUpgrade(unittest.TestCase):
         upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
         upgrader.upgrade()
 
+
 class TestPlatformUpgrade(unittest.TestCase):
     """Tests PlatformUpgrade methods"""
 
@@ -461,7 +462,6 @@ class TestPlatformUpgrade(unittest.TestCase):
         dd = DataDescription.model_construct(**dd_dict)
         upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
         upgrader.upgrade()
-        
 
     def test_platform_lookup(self):
         """Tests old platform lookup case"""

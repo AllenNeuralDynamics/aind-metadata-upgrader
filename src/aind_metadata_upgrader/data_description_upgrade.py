@@ -5,7 +5,6 @@ from datetime import datetime
 from typing import Any, Optional, Union
 
 import semver
-
 from aind_data_schema.base import AindModel
 from aind_data_schema.core.data_description import (
     DataDescription,
@@ -69,23 +68,23 @@ class PlatformUpgrade:
     """Handle upgrades for Platform models."""
 
     legacy_name_mapping = {
-        'trained-behavior': Platform.BEHAVIOR,
-        'smartspim': Platform.SMARTSPIM,
-        'single-plane-ophys': Platform.SINGLE_PLANE_OPHYS,
-        'HSFP': Platform.HSFP,
-        'exaSPIM': Platform.EXASPIM,
-        'ophys': Platform.SINGLE_PLANE_OPHYS,
-        'multiplane-ophys': Platform.MULTIPLANE_OPHYS,
-        'merfish': Platform.MERFISH,
-        'mesoSPIM': Platform.MESOSPIM,
-        'SPIM': Platform.SMARTSPIM,
-        'test-FIP-opto': Platform.FIP,
-        'confocal': Platform.CONFOCAL,
-        'FIP': Platform.FIP,
-        'ecephys': Platform.ECEPHYS,
-        'behavior-videos': Platform.BEHAVIOR,
-        'SmartSPIM': Platform.SMARTSPIM,
-        'ephys': Platform.ECEPHYS
+        "trained-behavior": Platform.BEHAVIOR,
+        "smartspim": Platform.SMARTSPIM,
+        "single-plane-ophys": Platform.SINGLE_PLANE_OPHYS,
+        "HSFP": Platform.HSFP,
+        "exaSPIM": Platform.EXASPIM,
+        "ophys": Platform.SINGLE_PLANE_OPHYS,
+        "multiplane-ophys": Platform.MULTIPLANE_OPHYS,
+        "merfish": Platform.MERFISH,
+        "mesoSPIM": Platform.MESOSPIM,
+        "SPIM": Platform.SMARTSPIM,
+        "test-FIP-opto": Platform.FIP,
+        "confocal": Platform.CONFOCAL,
+        "FIP": Platform.FIP,
+        "ecephys": Platform.ECEPHYS,
+        "behavior-videos": Platform.BEHAVIOR,
+        "SmartSPIM": Platform.SMARTSPIM,
+        "ephys": Platform.ECEPHYS,
     }
 
     @classmethod
@@ -93,7 +92,7 @@ class PlatformUpgrade:
         """Get platform from modality"""
         if modality is not None:
             return cls.legacy_name_mapping.get(modality.abbreviation)
-            
+
 
 class FundingUpgrade:
     """Handle upgrades for Funding models."""
@@ -220,9 +219,6 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
             if platform is None and version <= "0.8.0":
                 if type(modality) is list:
                     platform = PlatformUpgrade.from_modality(modality[0])
-                elif type(modality) is str:
-                    platform = PlatformUpgrade.from_modality(modality)
-
 
         creation_time = self.get_creation_time(**kwargs)
 
