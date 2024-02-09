@@ -4,6 +4,8 @@ from copy import deepcopy
 from datetime import datetime
 from typing import Any, Optional, Union
 
+import semver
+
 from aind_data_schema.base import AindModel
 from aind_data_schema.core.data_description import (
     DataDescription,
@@ -186,6 +188,9 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
     def upgrade(self, **kwargs) -> AindModel:
         """Upgrades the old model into the current version"""
+
+        version = semver.Version.parse(self._get_or_default(self.old_model, "schema_version", kwargs))
+
         institution = InstitutionUpgrade.upgrade_institution(
             self._get_or_default(self.old_model, "institution", kwargs)
         )
@@ -212,10 +217,11 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
         if platform is None:
             platform = self._get_or_default(self.old_model, "platform", kwargs)
-            if platform is None and type(modality) is list:
-                platform = PlatformUpgrade.from_modality(modality[0])
-            elif platform is None and type(modality) is str:
-                platform = PlatformUpgrade.from_modality(modality)
+            if platform is None and version <= "0.8.0":
+                if type(modality) is list:
+                    platform = PlatformUpgrade.from_modality(modality[0])
+                elif type(modality) is str:
+                    platform = PlatformUpgrade.from_modality(modality)
 
 
         creation_time = self.get_creation_time(**kwargs)
