@@ -89,8 +89,6 @@ class FundingUpgrade:
             if type(new_funder) in Organization._ALL and new_funder.name in cls.funders_map.keys():
                 new_funder = cls.funders_map[new_funder.name]
             new_funding["funder"] = new_funder
-            print("old: ", old_funding)
-            print("new: ", new_funding)
             return Funding.model_validate(new_funding)
         elif (
             type(old_funding) is dict and old_funding.get("funder") is not None and type(old_funding["funder"]) is dict
@@ -175,9 +173,6 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         funding_source = self._get_or_default(self.old_model, "funding_source", kwargs)
 
         funding_source = FundingUpgrade.upgrade_funding_source(funding_source=funding_source)
-
-        if type(funding_source) is not list:
-            funding_source = [funding_source]
 
         modality = self.get_modality(**kwargs)
 

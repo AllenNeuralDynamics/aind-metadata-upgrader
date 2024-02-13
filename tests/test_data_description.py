@@ -502,7 +502,7 @@ class TestFundingUpgrade(unittest.TestCase):
             "name": "SmartSPIM_623711_2022-10-27_16-48-54_stitched_2022-11-01_16-01-12",
             "institution": "AIND",
             "investigators": ["John Doe"],
-            "funding_source": {
+            "funding_source": [{
                 "funder": {
                     "name": "Allen Institute",
                     "abbreviation": "AI",
@@ -514,7 +514,7 @@ class TestFundingUpgrade(unittest.TestCase):
                 },
                 "grant_number": None,
                 "fundee": None,
-            },
+            }],
             "data_level": "derived data",
             "group": None,
             "project_name": None,
@@ -529,13 +529,19 @@ class TestFundingUpgrade(unittest.TestCase):
         upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
         upgrader.upgrade()
 
-        dd.funding_source = [{"funder": "Allen Institute for Neural Dynamics", "grant_number": None, "fundee": None}]
+        self.assertEqual(dd.funding_source, [Funding(funder=Organization.AI).model_dump()])
+
+        dd.funding_source = [{"funder": Organization.AIND, "grant_number": None, "fundee": None}]
         upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
-        upgrader.upgrade()
+        dd2 = upgrader.upgrade()
+
+        self.assertEqual(dd2.funding_source, [Funding(funder=Organization.AI)])
 
         dd.funding_source = ["Allen Institute for Neural Dynamics"]
         upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
-        upgrader.upgrade()
+        dd3 = upgrader.upgrade()
+
+        self.assertEqual(dd3.funding_source, [Funding(funder=Organization.AI)])
 
 
 class TestInstitutionUpgrade(unittest.TestCase):
