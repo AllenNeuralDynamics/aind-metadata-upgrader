@@ -440,7 +440,7 @@ class TestModalityUpgrade(unittest.TestCase):
             "name": "SmartSPIM_623711_2022-10-27_16-48-54_stitched_2022-11-01_16-01-12",
             "institution": "AIND",
             "investigators": ["John Doe"],
-            "funding_source": [{"funder": "AI", "grant_number": None, "fundee": None}],
+            "funding_source": [{"funder": "AIND", "grant_number": None, "fundee": None}],
             "data_level": "derived data",
             "group": None,
             "project_name": None,
@@ -489,6 +489,59 @@ class TestFundingUpgrade(unittest.TestCase):
                 }
             ),
         )
+
+    def test_funding_lookup(self):
+        """Tests old funding lookup case"""
+        dd_dict = {
+            "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema"
+            "/main/src/aind_data_schema/data_description.py",
+            "schema_version": "0.3.0",
+            "license": "CC-BY-4.0",
+            "creation_time": "16:01:12.123456",
+            "creation_date": "2022-11-01",
+            "name": "SmartSPIM_623711_2022-10-27_16-48-54_stitched_2022-11-01_16-01-12",
+            "institution": "AIND",
+            "investigators": ["John Doe"],
+            "funding_source": [{
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR",
+                    },
+                    "registry_identifier": "03cpe7c52",
+                },
+                "grant_number": None,
+                "fundee": None,
+            }],
+            "data_level": "derived data",
+            "group": None,
+            "project_name": None,
+            "project_id": None,
+            "restrictions": None,
+            "modality": "SmartSPIM",
+            "platform": Platform.SMARTSPIM,
+            "subject_id": "623711",
+            "input_data_name": "SmartSPIM_623711_2022-10-27_16-48-54",
+        }
+        dd = DataDescription.model_construct(**dd_dict)
+        upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
+        upgrader.upgrade()
+
+        self.assertEqual(dd.funding_source, [Funding(funder=Organization.AI).model_dump()])
+
+        dd.funding_source = [{"funder": Organization.AIND, "grant_number": None, "fundee": None}]
+        upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
+        dd2 = upgrader.upgrade()
+
+        self.assertEqual(dd2.funding_source, [Funding(funder=Organization.AI)])
+
+        dd.funding_source = ["Allen Institute for Neural Dynamics"]
+        upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
+        dd3 = upgrader.upgrade()
+
+        self.assertEqual(dd3.funding_source, [Funding(funder=Organization.AI)])
 
 
 class TestInstitutionUpgrade(unittest.TestCase):
