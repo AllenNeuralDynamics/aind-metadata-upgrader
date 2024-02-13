@@ -68,7 +68,6 @@ class PlatformUpgrade:
     """Handle upgrades for Platform models."""
 
     legacy_name_mapping = {
-        "trained-behavior": Platform.BEHAVIOR,
         "smartspim": Platform.SMARTSPIM,
         "single-plane-ophys": Platform.SINGLE_PLANE_OPHYS,
         "HSFP": Platform.HSFP,
@@ -79,10 +78,9 @@ class PlatformUpgrade:
         "mesoSPIM": Platform.MESOSPIM,
         "SPIM": Platform.SMARTSPIM,
         "test-FIP-opto": Platform.FIP,
-        "confocal": Platform.CONFOCAL,
         "FIP": Platform.FIP,
         "ecephys": Platform.ECEPHYS,
-        "behavior-videos": Platform.BEHAVIOR,
+        "behavior-videos": Platform.MULTIPLANE_OPHYS,
         "SmartSPIM": Platform.SMARTSPIM,
         "ephys": Platform.ECEPHYS,
     }
