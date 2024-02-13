@@ -11,7 +11,7 @@ from aind_data_schema.base import AindModel
 class BaseModelUpgrade(ABC):
     """Base class for handling upgrades for models"""
 
-    def __init__(self, old_model: Union[AindModel, dict], model_class: Type[AindModel]):
+    def __init__(self, old_model: Union[AindModel, dict], model_class: Type[AindModel], additional_info: Union[AindModel, dict] = {}):
         """
         Handle mapping of old AindModel model versions into current models
 
@@ -22,10 +22,14 @@ class BaseModelUpgrade(ABC):
         model_class : Type[AindModel]
             The class of the model
         """
+        self.old_schema_version = old_model['data']['schema_version']
         if isinstance(old_model, dict):
+            print("reconstructed")
             old_model = model_class.model_construct(**old_model)
+            print("old model post: ", old_model)
         self.old_model = old_model
         self.model_class = model_class
+        self.additional_info = additional_info
 
     def _get_or_default(self, model: AindModel, field_name: str, kwargs: dict) -> Any:
         """
