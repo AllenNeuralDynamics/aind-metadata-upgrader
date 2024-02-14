@@ -21,12 +21,7 @@ class BaseModelUpgrade(ABC):
             The old model to upgrade
         model_class : Type[AindModel]
             The class of the model
-        """
-        self.old_schema_version = old_model['data']['schema_version']
-        if isinstance(old_model, dict):
-            print("reconstructed")
-            old_model = model_class.model_construct(**old_model)
-            print("old model post: ", old_model)
+        """        
         self.old_model = old_model
         self.model_class = model_class
         self.additional_info = additional_info
