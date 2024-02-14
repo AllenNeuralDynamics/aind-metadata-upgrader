@@ -70,11 +70,6 @@ class InjectionMaterialsUpgrade:
                 new_materials.append(new_material)
         
         return new_materials
-                
-
-                
-
-        
 
 
 class ProcedureUpgrade(BaseModelUpgrade):
@@ -97,6 +92,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
     }
 
     def __init__(self, old_procedures_model: Procedures):
+        print(old_procedures_model['data']['schema_version'])
         super().__init__(old_procedures_model, model_class=Procedures)
 
     
@@ -139,12 +135,13 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
     def upgrade_procedure(self) -> Optional[Procedures]:
         """Map legacy Procedure model to current version"""
-
         
         print("from init: ", self.old_model)
         print(self.old_model.schema_version)
 
-        if semver.Version.parse(self.old_model.schema_version) <= semver.Version.parse("0.11.0"):
+        print(self._get_or_default(self.old_model, "subject_id", {})
+
+        if semver.Version.parse(self.old_schema_version) <= semver.Version.parse("0.11.0"):
             subj_id = self.old_model.subject_id
 
             loaded_subject_procedures = {}
