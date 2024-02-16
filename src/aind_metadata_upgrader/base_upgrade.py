@@ -3,8 +3,9 @@
 from abc import ABC, abstractmethod
 from typing import Any, Type, Union
 
-from aind_data_schema.base import AindModel
 from pydantic.fields import PydanticUndefined
+
+from aind_data_schema.base import AindModel
 
 
 class BaseModelUpgrade(ABC):
@@ -20,7 +21,9 @@ class BaseModelUpgrade(ABC):
             The old model to upgrade
         model_class : Type[AindModel]
             The class of the model
-        """        
+        """
+        if isinstance(old_model, dict):
+            old_model = model_class.model_construct(**old_model)
         self.old_model = old_model
         self.model_class = model_class
         self.additional_info = additional_info
