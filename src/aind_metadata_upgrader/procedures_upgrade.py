@@ -1,7 +1,7 @@
 """Module to contain code to uprgade old procedures"""
 from typing import Any, Optional, Union
 
-from aind_metadata_upgrader.utils import check_field
+from aind_metadata_upgrader.utils import check_field, get_or_default
 
 from pydantic import ValidationError
 
@@ -87,16 +87,18 @@ class SubjectProcedureModelsUpgrade:
 
         try:
             return Craniotomy.model_validate(old_subj_procedure)
-        except ValidationError:
-            return Craniotomy.model_construct(old_subj_procedure)
+        except ValidationError as e:
+            logging.error(f"Error validating IntraperitonealInjection: {e}")
+            return Craniotomy.model_construct(**old_subj_procedure)
     
     def upgrade_fiber_implant(old_subj_procedure: dict):
         """Map legacy FiberImplant model to current version"""
-
+        print("FIBER IMPLANT: ", old_subj_procedure)
         try:
             return FiberImplant.model_validate(old_subj_procedure)
-        except ValidationError:
-              return FiberImplant.model_construct(old_subj_procedure)
+        except ValidationError as e:
+            logging.error(f"Error validating Fiber: {e}")
+            return FiberImplant.model_construct(**old_subj_procedure)
     
     def upgrade_headframe(old_subj_procedure: dict):
         """Map legacy Headframe model to current version"""
@@ -109,40 +111,45 @@ class SubjectProcedureModelsUpgrade:
 
         try:
             return Headframe.model_validate(old_subj_procedure)
-        except ValidationError:
-            return Headframe.model_construct(old_subj_procedure)
+        except ValidationError as e:
+            logging.error(f"Error validating Headframe: {e}")
+            return Headframe.model_construct(**old_subj_procedure)
     
     def upgrade_intra_cerebellar_ventricle_injection(old_subj_procedure: dict):
         """Map legacy IntraCerebellarVentricleInjection model to current version"""
 
         try:
             return IntraCerebellarVentricleInjection.model_validate(old_subj_procedure)
-        except ValidationError:
-            return IntraCerebellarVentricleInjection.model_construct(old_subj_procedure)
+        except ValidationError as e:
+            logging.error(f"Error validating IntraperitonealInjection: {e}")
+            return IntraCerebellarVentricleInjection.model_construct(**old_subj_procedure)
     
     def upgrade_intra_cisternal_magna_injection(old_subj_procedure: dict):  
         """Map legacy IntraCisternalMagnaInjection model to current version"""
 
         try:
             return IntraCisternalMagnaInjection.model_validate(old_subj_procedure)
-        except ValidationError:
-            return IntraCisternalMagnaInjection.model_construct(old_subj_procedure)
+        except ValidationError as e:
+            logging.error(f"Error validating IntraCisternalMagnaInjection: {e}")
+            return IntraCisternalMagnaInjection.model_construct(**old_subj_procedure)
     
     def upgrade_intraperitoneal_injection(old_subj_procedure: dict):
         """Map legacy IntraperitonealInjection model to current version"""
 
         try:
             return IntraperitonealInjection.model_validate(old_subj_procedure)
-        except ValidationError:
-            return IntraperitonealInjection.model_construct(old_subj_procedure)
+        except ValidationError as e:
+            logging.error(f"Error validating IntraperitonealInjection: {e}")
+            return IntraperitonealInjection.model_construct(**old_subj_procedure)
     
     def upgrade_iontophoresis_injection(old_subj_procedure: dict):
         """Map legacy IontophoresisInjection model to current version"""
 
         try:
             return IontophoresisInjection.model_validate(old_subj_procedure)
-        except ValidationError:
-            return IontophoresisInjection.model_construct(old_subj_procedure)
+        except ValidationError as e:
+            logging.error(f"Error validating IontophoresisInjection: {e}")
+            return IontophoresisInjection.model_construct(**old_subj_procedure)
     
     def upgrade_nanoject_injection(old_subj_procedure: dict):
         """Map legacy NanojectInjection model to current version"""
@@ -151,26 +158,30 @@ class SubjectProcedureModelsUpgrade:
             old_subj_procedure["injection_materials"] = [None]
 
         if not check_field(old_subj_procedure, "protocol_id"):
-            old_subj_procedure["protocol_id"] = "unknown"
+            old_subj_procedure["protocol_id"] = "dx.doi.org/10.17504/protocols.io.bgpujvnw"
 
         try:
             return NanojectInjection.model_validate(old_subj_procedure)
-        except ValidationError:
+        except ValidationError as e:
+            logging.error(f"Error validating NanojectInjection: {e}")
+            return NanojectInjection.model_construct(**old_subj_procedure)
+            logging.info(f"Constructed NanojectInjection: {constructed}")
             return NanojectInjection(
-                injection_coordinate_ml=,
-                injection_coordinate_ap=,
-                injection_coordinate_depth=, 
-                injection_coordinate_unit=,
-                injection_coordinate_reference=, 
-                bregma_to_lambda_distance= ,
-                bregma_to_lambda_unit= ,
-                injection_angle=,
-                injection_angle_unit=,
-                targeted_structure= ,
-                injection_hemisphere= ,
-                procedure_type=,
-                injection_volume=,
-                injection_volume_unit=
+                protocol_id="dx.doi.org/10.17504/protocols.io.bgpujvnw",
+                injection_coordinate_ml=get_or_default(constructed, "injection_coordinate_ml", {}),
+                injection_coordinate_ap=get_or_default(constructed, "injection_coordinate_ap", {}),
+                injection_coordinate_depth=get_or_default(constructed, "injection_coordinate_depth", {}),
+                injection_coordinate_unit=get_or_default(constructed, "injection_coordinate_unit", {}),
+                injection_coordinate_reference=get_or_default(constructed, "injection_coordinate_reference", {}),
+                bregma_to_lambda_distance=get_or_default(constructed, "bregma_to_lambda_distance", {}),
+                bregma_to_lambda_unit=get_or_default(constructed, "bregma_to_lambda_unit", {}),
+                injection_angle=get_or_default(constructed, "injection_angle", {}),
+                injection_angle_unit=get_or_default(constructed, "injection_angle_unit", {}),
+                targeted_structure=get_or_default(constructed, "targeted_structure", {}),
+                injection_hemisphere=get_or_default(constructed, "injection_hemisphere", {}),
+                procedure_type=get_or_default(constructed, "procedure_type", {}),
+                injection_volume=get_or_default(constructed, "injection_volume", {}),
+                injection_volume_unit=get_or_default(constructed, "injection_volume_unit", {}),
             )
     
     def upgrade_perfusion(old_subj_procedure: dict):
@@ -195,15 +206,18 @@ class SubjectProcedureModelsUpgrade:
 
         try:
             return OtherSubjectProcedure.model_validate(old_subj_procedure)
-        except ValidationError:
+        except ValidationError as e:
+            logging.error(f"Error validating OtherSubjectProcedure: {e}")
             return OtherSubjectProcedure.model_construct(old_subj_procedure)
     
     def upgrade_retro_orbital_injection(old_subj_procedure: dict):
         """Map legacy RetroOrbitalInjection model to current version"""
+        logging.info(f"Upgrading retro-orbital injection {old_subj_procedure}")
 
         try:
             return RetroOrbitalInjection.model_validate(old_subj_procedure)
-        except ValidationError:
+        except ValidationError as e:
+            logging.error(f"Error validating RetroOrbitalInjection: {e}")
             return RetroOrbitalInjection.model_construct(old_subj_procedure)
         
 
@@ -253,6 +267,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
         procedure_type = old_subj_procedure.get("procedure_type")
         if procedure_type in self.procedure_types_list.keys():
             remove_fields = []
+            print("before cleaning: ", old_subj_procedure)
             for field in old_subj_procedure.keys():
                 if field not in self.procedure_types_list[procedure_type].model_fields.keys():
                     remove_fields.append(field)
@@ -264,6 +279,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
                 old_subj_procedure["injection_materials"] = InjectionMaterialsUpgrade.upgrade_injection_materials(old_subj_procedure["injection_materials"])
             elif hasattr(old_subj_procedure, "injection_materials"):
                 old_subj_procedure["injection_materials"] = [None]
+
 
             return self.caller(self.upgrade_funcs[procedure_type], old_subj_procedure)
         else:
@@ -294,14 +310,18 @@ class ProcedureUpgrade(BaseModelUpgrade):
                 date = subj_procedure.get("start_date")
 
                 logging.info(f"Upgrading procedure {subj_procedure.get('procedure_type')} for subject {subj_id} on date {date}")
+                logging.info(f"Old procedure: {subj_procedure}")
 
-                upgraded_subj_procedure = self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)
-                
-                if not upgraded_subj_procedure:
-                    continue
+                # upgraded_subj_procedure = self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)
+                # logging.info(f"repeat procedure: {subj_procedure}")
+                # logging.info(f"Upgraded procedure {subj_procedure.get('procedure_type')} for subject {subj_id} on date {date} to {upgraded_subj_procedure}")
+                # if not upgraded_subj_procedure:
+                #     continue
                 
 
                 if date not in loaded_subject_procedures.keys():
+                    logging.info(f"Creating new surgery for subject {subj_id} on date {date}")
+                    logging.info(f"from {subj_procedure}")
                     new_surgery = Surgery(
                         start_date=date,
                         experimenter_full_name=str(subj_procedure.get("experimenter_full_name")),
@@ -311,12 +331,15 @@ class ProcedureUpgrade(BaseModelUpgrade):
                         weight_unit=subj_procedure.get("weight_unit", Surgery.model_fields["weight_unit"].default),
                         anaesthesia=subj_procedure.get("anaesthesia"),
                         workstation_id=subj_procedure.get("workstation_id"),
-                        procedures=[upgraded_subj_procedure],
-                        notes=subj_procedure.get("notes")
+                        notes=subj_procedure.get("notes"),
+                        procedures=[self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)],
+                        
                     )
-                    loaded_subject_procedures = {date: new_surgery}
+                    logging.info(f"new surgery: {new_surgery}")
+                    loaded_subject_procedures[date] = new_surgery
                 else:
-                    loaded_subject_procedures[date].procedures.append(upgraded_subj_procedure)
+                    logging.info(f"Adding procedure {subj_procedure.get('procedure_type')} for subject {subj_id} on date {date}")
+                    loaded_subject_procedures[date].procedures.append(self.upgrade_subject_procedure(old_subj_procedure=subj_procedure))
                 
             loaded_spec_procedures = []
             for spec_procedure in self.old_model.specimen_procedures:
@@ -331,6 +354,9 @@ class ProcedureUpgrade(BaseModelUpgrade):
                 
                 loaded_spec_procedures.append(upgraded_spec_procedure)
 
+            logging.info(f"Creating new procedure for subject {subj_id}")
+            logging.info(f"Subject procedures: {loaded_subject_procedures}")
+            logging.info(f"Specimen procedures: {loaded_spec_procedures}")
             new_procedure = Procedures(
                 subject_id=subj_id,
                 subject_procedures=list(loaded_subject_procedures.values()),
