@@ -7,7 +7,7 @@ def check_field(model, field):
         return getattr(model, field)
     return None
 
-def get_or_default(model: AindModel, field_name: str, kwargs: dict)
+def get_or_default(model: AindModel, field_name: str, kwargs: dict):
     if kwargs.get(field_name) is not None:
         return kwargs.get(field_name)
     elif hasattr(model, field_name) and getattr(model, field_name) is not None:
