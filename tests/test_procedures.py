@@ -35,12 +35,13 @@ print(procedures_files)
 
 
 for file in procedures_files:
+    if "652742" not in file:
+        continue 
     with open(file) as f:
+        print(" BE GIN WORK ING HAHAHAHAHAHHAA ")
         subject = Path(file).stem
-        print(file)
-        print(subject)
         procedures = json.load(f)
-        print("input procedure: ", procedures)
+        logging.info("PROCEDURES: ", type(procedures))
         ProcedureUpgrader = ProcedureUpgrade(procedures)
 
         test = ProcedureUpgrader.upgrade_procedure()
