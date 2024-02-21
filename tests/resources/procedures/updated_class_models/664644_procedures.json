@@ -79,7 +79,9 @@
                "injection_volume_unit": "nanoliter"
             },
             {
-               "procedure_type": "Fiber implant"
+               "procedure_type": "Fiber implant",
+               "protocol_id": "unknown",
+               "probes": []
             },
             {
                "injection_materials": [
@@ -111,7 +113,9 @@
                "injection_volume_unit": "nanoliter"
             },
             {
-               "procedure_type": "Fiber implant"
+               "procedure_type": "Fiber implant",
+               "protocol_id": "unknown",
+               "probes": []
             }
          ],
          "notes": null

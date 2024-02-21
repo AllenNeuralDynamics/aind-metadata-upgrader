@@ -42,18 +42,21 @@
          "procedures": [
             {
                "procedure_type": "Craniotomy",
+               "protocol_id": "unknown",
+               "craniotomy_type": null,
                "craniotomy_hemisphere": null,
                "craniotomy_coordinates_ml": null,
                "craniotomy_coordinates_ap": null,
                "craniotomy_coordinates_unit": "millimeter",
                "craniotomy_coordinates_reference": null,
-               "bregma_to_lambda_distance": null,
+               "bregma_to_lambda_distance": 4.525,
                "bregma_to_lambda_unit": "millimeter",
+               "craniotomy_size": null,
                "craniotomy_size_unit": "millimeter",
                "implant_part_number": null,
                "dura_removed": null,
                "protective_material": null,
-               "recovery_time": null,
+               "recovery_time": 5.0,
                "recovery_time_unit": "minute"
             },
             {
