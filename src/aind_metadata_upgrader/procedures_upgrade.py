@@ -1,7 +1,7 @@
 """Module to contain code to uprgade old procedures"""
 from typing import Any, Optional, Union
 
-from aind_metadata_upgrader.utils import check_field, get_or_default
+from aind_metadata_upgrader.utils import check_field, get_or_default, drop_unused_fields
 
 from pydantic import ValidationError
 
@@ -27,7 +27,8 @@ from aind_data_schema.core.procedures import (
     RetroOrbitalInjection,
     SpecimenProcedure,
     ViralMaterial,
-    NonViralMaterial
+    NonViralMaterial,
+    OphysProbe
 )
 
 import logging
@@ -93,12 +94,27 @@ class SubjectProcedureModelsUpgrade:
     
     def upgrade_fiber_implant(old_subj_procedure: dict):
         """Map legacy FiberImplant model to current version"""
-        print("FIBER IMPLANT: ", old_subj_procedure)
+        logging.info("FIBER IMPLANT: ", old_subj_procedure.keys())
+
+        probes = []
+        if check_field(old_subj_procedure, "probes"):
+            logging.info("FOUND PROBES")
+            for probe in old_subj_procedure["probes"]:
+                for field in probe.keys():
+                    logging.info(f'FIELD: {field}, Value: {probe[field]}', )
+                probe['core_diameter_unit'] = "um"
+                drop_unused_fields(probe, "ophys_probe")
+                new_probe = OphysProbe.model_construct(probe)
+                probes.append(new_probe)
+
         try:
-            return FiberImplant.model_validate(old_subj_procedure)
+            return FiberImplant(
+                protocol_id="unknown",
+                probes=probes,
+            )
         except ValidationError as e:
             logging.error(f"Error validating Fiber: {e}")
-            return FiberImplant.model_construct(**old_subj_procedure)
+            return FiberImplant.model_construct(old_subj_procedure)
     
     def upgrade_headframe(old_subj_procedure: dict):
         """Map legacy Headframe model to current version"""
@@ -239,20 +255,6 @@ class ProcedureUpgrade(BaseModelUpgrade):
         "Retro-orbital injection": SubjectProcedureModelsUpgrade.upgrade_retro_orbital_injection,
     }
 
-    procedure_types_list = {
-        "Craniotomy": Craniotomy,
-        "Fiber implant": FiberImplant,
-        "Headframe": Headframe,
-        "Intra cerebellar ventricle injection": IntraCerebellarVentricleInjection,
-        "Intra cisternal magna injection": IntraCisternalMagnaInjection,
-        "Intraperitoneal injection": IntraperitonealInjection,
-        "Iontophoresis injection": IontophoresisInjection,
-        "Nanoject injection": NanojectInjection,
-        "Perfusion": Perfusion,
-        "Other subject procedure": OtherSubjectProcedure,
-        "Retro-orbital injection": RetroOrbitalInjection,
-    }
-
     def caller(self, func, model):
         return func(model)
 
@@ -265,21 +267,14 @@ class ProcedureUpgrade(BaseModelUpgrade):
         """Map legacy SubjectProcedure model to current version"""
 
         procedure_type = old_subj_procedure.get("procedure_type")
-        if procedure_type in self.procedure_types_list.keys():
-            remove_fields = []
-            print("before cleaning: ", old_subj_procedure)
-            for field in old_subj_procedure.keys():
-                if field not in self.procedure_types_list[procedure_type].model_fields.keys():
-                    remove_fields.append(field)
+        if procedure_type in self.upgrade_funcs.keys():
 
-            for field in remove_fields:
-                old_subj_procedure.pop(field)
-
+            old_subj_procedure = drop_unused_fields(old_subj_procedure, procedure_type)
+            
             if check_field(old_subj_procedure, "injection_materials"):
                 old_subj_procedure["injection_materials"] = InjectionMaterialsUpgrade.upgrade_injection_materials(old_subj_procedure["injection_materials"])
             elif hasattr(old_subj_procedure, "injection_materials"):
                 old_subj_procedure["injection_materials"] = [None]
-
 
             return self.caller(self.upgrade_funcs[procedure_type], old_subj_procedure)
         else:
@@ -305,9 +300,11 @@ class ProcedureUpgrade(BaseModelUpgrade):
             subj_id = self.old_model.subject_id
 
             loaded_subject_procedures = {}
-            print(self.old_model.subject_procedures)
+            logging.info(f"Upgrading procedures {type(self.old_model.subject_procedures)}")
             for subj_procedure in self.old_model.subject_procedures: #type: dict
+                
                 date = subj_procedure.get("start_date")
+
 
                 logging.info(f"Upgrading procedure {subj_procedure.get('procedure_type')} for subject {subj_id} on date {date}")
                 logging.info(f"Old procedure: {subj_procedure}")
