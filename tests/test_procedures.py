@@ -50,8 +50,8 @@ for file in procedures_files:
     if "652742" not in file:
         continue 
 
-    with open(file, "r", encoding="utf-8") as f:
-        contents = json.loads(f.decode('UTF-8'))
+    with open(file, "r", encoding="UTF-8") as f:
+        contents = json.loads(f.read().encode('UTF-8').decode())
 
     result = replace_placeholders(json.dumps(contents), 'μm', 'um')
     logging.info("replaced file: ", result)
