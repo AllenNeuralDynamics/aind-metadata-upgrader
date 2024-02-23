@@ -50,11 +50,22 @@ for file in procedures_files:
     if "652742" not in file:
         continue 
 
-    with open(file, "r", encoding="UTF-8") as f:
-        contents = json.loads(f.read().encode('UTF-8').decode())
+    with open(file, "r") as f:
+        contents = json.loads(f.read())
 
-    result = replace_placeholders(json.dumps(contents), 'μm', 'um')
-    logging.info("replaced file: ", result)
+    for procedure in contents['subject_procedures']:
+        logging.info(procedure)
+        if 'probes' in procedure.keys():
+            logging.info('replacing: ', procedure)
+            procedure['probes']['core_diameter_unit'] = procedure['probes']['core_diameter_unit'].replace('μm', 'um')
+            logging.info('replaced: ', procedure)
+    
+    logging.info("check: ", contents['subject_procedures'][3]['probes']['core_diameter_unit'])
+    contents['subject_procedures'][3]['probes']['core_diameter_unit'] = contents['subject_procedures'][3]['probes']['core_diameter_unit'].replace('μm', 'um')
+    logging.info("check2: ", contents['subject_procedures'][3]['probes'])
+    contents['subject_procedures'][5]['probes']['core_diameter_unit'] = contents['subject_procedures'][5]['probes']['core_diameter_unit'].replace('μm', 'um')
+    # result = replace_placeholders(json.dumps(contents), 'μm', 'um')
+    logging.info("replaced file: ", contents)
 
     with open(file) as f:
         subject = Path(file).stem
