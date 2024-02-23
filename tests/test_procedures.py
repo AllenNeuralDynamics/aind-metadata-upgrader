@@ -59,6 +59,8 @@ for file in procedures_files:
             logging.info('replacing: ', procedure)
             procedure['probes']['core_diameter_unit'] = procedure['probes']['core_diameter_unit'].replace('μm', 'um')
             logging.info('replaced: ', procedure)
+
+    logging.info("attempted replacement: ", contents)
     
     logging.info("check: ", contents['subject_procedures'][3]['probes']['core_diameter_unit'])
     contents['subject_procedures'][3]['probes']['core_diameter_unit'] = contents['subject_procedures'][3]['probes']['core_diameter_unit'].replace('μm', 'um')
