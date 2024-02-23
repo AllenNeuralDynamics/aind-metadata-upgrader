@@ -33,12 +33,30 @@ logger.addHandler(fh)
 procedures_files = glob("tests/resources/procedures/class_model_examples/*.json")
 print(procedures_files)
 
+import json
+
+
+def replace_placeholders(json_para: str, search_para, replace_para):
+    # Local nested function.
+    def decode_dict(a_dict):
+        if search_para in a_dict.values():
+            for key, value in a_dict.items():
+                if value == search_para:
+                    a_dict[key] = replace_para
+        return a_dict
+    return json.loads(json_para, object_hook=decode_dict)
 
 for file in procedures_files:
     if "652742" not in file:
         continue 
+
+    with open(file, "r", encoding="utf-8") as f:
+        contents = json.loads(f.decode('UTF-8'))
+
+    result = replace_placeholders(json.dumps(contents), 'μm', 'um')
+    logging.info("replaced file: ", result)
+
     with open(file) as f:
-        print(" BE GIN WORK ING HAHAHAHAHAHHAA ")
         subject = Path(file).stem
         procedures = json.load(f)
         logging.info("PROCEDURES: ", type(procedures))
