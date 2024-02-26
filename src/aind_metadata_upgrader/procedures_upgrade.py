@@ -103,13 +103,13 @@ class SubjectProcedureModelsUpgrade:
         #     for field in probe.keys():
         #         logging.info(f'FIELD: {field}, Value: {probe[field]}')
         #     logging.info(f"PROBE: {probe}")
-        if check_field(old_subj_procedure, "probes"):
+        if 'probes' in old_subj_procedure.keys():
             logging.info("FOUND PROBES")
             if isinstance(old_subj_procedure["probes"], dict):
                 logging.info("PROBES IS DICT")
                 for field in old_subj_procedure["probes"].keys():
                     logging.info(f'FIELD: {field}, Value: {old_subj_procedure["probes"][field]}')
-                probes.append(OphysProbe.model_construct(old_subj_procedure["probes"]))
+                probes.append(OphysProbe.model_validate(old_subj_procedure["probes"]))
             elif isinstance(old_subj_procedure["probes"], list):
                 logging.info("PROBES IS LIST")
                 for probe in old_subj_procedure["probes"]:
@@ -117,7 +117,7 @@ class SubjectProcedureModelsUpgrade:
                         logging.info(f'FIELD: {field}, Value: {probe[field]}', )
                     probe['core_diameter_unit'] = "um"
                     drop_unused_fields(probe, "ophys_probe")
-                    new_probe = OphysProbe.model_construct(probe)
+                    new_probe = OphysProbe.model_validate(probe)
                     probes.append(new_probe)
 
         try:

@@ -81,7 +81,16 @@
             {
                "procedure_type": "Fiber implant",
                "protocol_id": "unknown",
-               "probes": []
+               "probes": [
+                  {
+                     "stereotactic_coordinate_unit": "millimeter",
+                     "stereotactic_coordinate_reference": null,
+                     "bregma_to_lambda_distance": null,
+                     "bregma_to_lambda_unit": "millimeter",
+                     "angle_unit": "degrees",
+                     "notes": null
+                  }
+               ]
             },
             {
                "injection_materials": [
@@ -115,7 +124,16 @@
             {
                "procedure_type": "Fiber implant",
                "protocol_id": "unknown",
-               "probes": []
+               "probes": [
+                  {
+                     "stereotactic_coordinate_unit": "millimeter",
+                     "stereotactic_coordinate_reference": null,
+                     "bregma_to_lambda_distance": null,
+                     "bregma_to_lambda_unit": "millimeter",
+                     "angle_unit": "degrees",
+                     "notes": null
+                  }
+               ]
             }
          ],
          "notes": null
