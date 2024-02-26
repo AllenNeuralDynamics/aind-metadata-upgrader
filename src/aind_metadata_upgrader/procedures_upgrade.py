@@ -98,11 +98,11 @@ class SubjectProcedureModelsUpgrade:
         logging.info("FIBER IMPLANT: ", old_subj_procedure.keys())
 
         probes = []
-        for probe in old_subj_procedure.get("probes", []):
-            logging.info("PROBE: ", probe)
-            for field in probe.keys():
-                logging.info(f'FIELD: {field}, Value: {probe[field]}')
-            logging.info(f"PROBE: {probe}")
+        # for probe in old_subj_procedure.get("probes", []):
+        #     logging.info("PROBE: ", probe)
+        #     for field in probe.keys():
+        #         logging.info(f'FIELD: {field}, Value: {probe[field]}')
+        #     logging.info(f"PROBE: {probe}")
         if check_field(old_subj_procedure, "probes"):
             logging.info("FOUND PROBES")
             if isinstance(old_subj_procedure["probes"], dict):
