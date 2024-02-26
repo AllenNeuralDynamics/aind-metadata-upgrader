@@ -72,7 +72,6 @@ for file in procedures_files:
     # result = replace_placeholders(json.dumps(contents), 'μm', 'um')
     logging.info("replaced file: ", contents)
 
-    break
 
     with open(file) as f:
         subject = Path(file).stem
