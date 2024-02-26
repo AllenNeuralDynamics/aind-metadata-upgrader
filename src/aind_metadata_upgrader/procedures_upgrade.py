@@ -94,6 +94,7 @@ class SubjectProcedureModelsUpgrade:
     
     def upgrade_fiber_implant(old_subj_procedure: dict):
         """Map legacy FiberImplant model to current version"""
+        print("upgrading fiber implant")
         logging.info("FIBER IMPLANT: ", old_subj_procedure.keys())
 
         probes = []
@@ -104,13 +105,20 @@ class SubjectProcedureModelsUpgrade:
             logging.info(f"PROBE: {probe}")
         if check_field(old_subj_procedure, "probes"):
             logging.info("FOUND PROBES")
-            for probe in old_subj_procedure["probes"]:
-                for field in probe.keys():
-                    logging.info(f'FIELD: {field}, Value: {probe[field]}', )
-                probe['core_diameter_unit'] = "um"
-                drop_unused_fields(probe, "ophys_probe")
-                new_probe = OphysProbe.model_construct(probe)
-                probes.append(new_probe)
+            if isinstance(old_subj_procedure["probes"], dict):
+                logging.info("PROBES IS DICT")
+                for field in old_subj_procedure["probes"].keys():
+                    logging.info(f'FIELD: {field}, Value: {old_subj_procedure["probes"][field]}')
+                probes.append(OphysProbe.model_construct(old_subj_procedure["probes"]))
+            elif isinstance(old_subj_procedure["probes"], list):
+                logging.info("PROBES IS LIST")
+                for probe in old_subj_procedure["probes"]:
+                    for field in probe.keys():
+                        logging.info(f'FIELD: {field}, Value: {probe[field]}', )
+                    probe['core_diameter_unit'] = "um"
+                    drop_unused_fields(probe, "ophys_probe")
+                    new_probe = OphysProbe.model_construct(probe)
+                    probes.append(new_probe)
 
         try:
             return FiberImplant(
