@@ -10,7 +10,7 @@ import semver
 from aind_data_schema.base import AindModel
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 
-
+from aind_data_schema.models.devices import FiberProbe
 from aind_data_schema.core.procedures import (
     Procedures, 
     Surgery,
@@ -28,51 +28,91 @@ from aind_data_schema.core.procedures import (
     SpecimenProcedure,
     ViralMaterial,
     NonViralMaterial,
+    TarsVirusIdentifiers,
     OphysProbe
 )
 
 import logging
 
 
-def pop_unused_fields(instance: dict, model):
-    remove_fields = []
 
-    for field in instance.keys():
-        if field not in model.model_fields.keys():
-            remove_fields.append(field)
-
-    for field in remove_fields:
-        instance.pop(field)
-
-    return instance
 
 
 class InjectionMaterialsUpgrade:
+
+
+    @staticmethod
+    def upgrade_viral_material(material: dict) -> ViralMaterial:
+        """Map legacy NonViralMaterial model to current version"""
+
+        input = drop_unused_fields(material.copy(), ViralMaterial)
+
+        if input.get("tars_identifiers", None) is not None:
+            tars_data = input.get("tars_identifiers")
+            try:
+                tars_identifier = TarsVirusIdentifiers(
+                    virus_tars_id=tars_data.get("virus_tars_id", None),
+                    plasmid_tars_alias=tars_data.get("plasmid_tars_alias", None),
+                    prep_lot_number=tars_data.get("prep_lot_number", None),
+                    prep_date=tars_data.get("prep_data", None),
+                    prep_type=tars_data.get("prep_type", None),
+                    prep_protocol=tars_data.get("prep_protocol", None),
+                )
+            except ValidationError as e:
+                logging.error(f"Error validating TarsVirusIdentifiers: {e}")
+                tars_identifier = TarsVirusIdentifiers.model_construct(tars_data)
+        else:
+            tars_identifier = None
+        
+        try:
+            return ViralMaterial(
+                name=input.get("name", "unknown"),
+                tars_identifiers=tars_identifier,
+                addgene_id=input.get("addgene_id", None),
+                titer=input.get("titer", None),
+                titer_unit=input.get("titer_unit", None),
+            )
+        except ValidationError as e:
+            logging.error(f"Error validating ViralMaterial: {e}")
+            return ViralMaterial.model_construct(input)
+    
+
+    @staticmethod
+    def upgrade_nonviral_material(material: dict) -> NonViralMaterial:
+        """Map legacy NonViralMaterial model to current version"""
+
+        input = drop_unused_fields(material.copy(), NonViralMaterial)
+
+        try:
+            return NonViralMaterial(
+                concentration=input.get("concentration", None),
+                concentration_unit=get_or_default(input, NonViralMaterial, "concentration_unit"),
+                name=input.get("name", "unknown"),
+                source=get_or_default(input, NonViralMaterial, "source"),
+                rrid=get_or_default(input, NonViralMaterial, "rrid"),
+                lot_number=input.get("lot_number", None),
+                expiration_date=get_or_default(input, NonViralMaterial, "expiration_date")
+            )
+        except ValidationError as e:
+            logging.error(f"Error validating NonViralMaterial: {e}")
+            return NonViralMaterial.model_construct(input)
 
     @staticmethod
     def upgrade_injection_materials(old_injection_materials: list) -> Optional[dict]:
         """Map legacy InjectionMaterials model to current version"""
 
         new_materials = []
-        for injection_material in old_injection_materials: #this wont work like i want, we changed the naming convention
-            new_material = None
-
-            if injection_material.get("titer") is not None:
-
-                injection_material = pop_unused_fields(injection_material, ViralMaterial)
-                
-                new_material = ViralMaterial.model_construct(injection_material)
-            elif injection_material.get("concentration") is not None:
-
-                injection_material = pop_unused_fields(injection_material, NonViralMaterial)
-
-                new_material = NonViralMaterial.model_construct(injection_material)
-            else:
-                logging.error(f"Injection material with no titer or concentration {injection_material} passed in")
-
-            if new_material:
-                new_materials.append(new_material)
+        if isinstance(old_injection_materials, list):
+            for injection_material in old_injection_materials: #this wont work like i want, we changed the naming convention
+                if injection_material.get("titer") is not None:
+                    new_materials.append(InjectionMaterialsUpgrade.upgrade_viral_material(injection_material))
+                    
+                elif injection_material.get("concentration") is not None:
+                    new_materials.append(InjectionMaterialsUpgrade.upgrade_nonviral_material(injection_material))
+                else:
+                    logging.error(f"Injection material with no titer or concentration {injection_material} passed in")
         
+        logging.info(f"new_materials: {new_materials}")
         return new_materials
 
 
@@ -96,28 +136,86 @@ class SubjectProcedureModelsUpgrade:
         """Map legacy FiberImplant model to current version"""
         print("upgrading fiber implant")
         logging.info("FIBER IMPLANT: ", old_subj_procedure.keys())
-
+        procedure_copy = old_subj_procedure.copy()
         probes = []
         # for probe in old_subj_procedure.get("probes", []):
         #     logging.info("PROBE: ", probe)
         #     for field in probe.keys():
         #         logging.info(f'FIELD: {field}, Value: {probe[field]}')
         #     logging.info(f"PROBE: {probe}")
-        if 'probes' in old_subj_procedure.keys():
-            logging.info("FOUND PROBES")
-            if isinstance(old_subj_procedure["probes"], dict):
-                logging.info("PROBES IS DICT")
-                for field in old_subj_procedure["probes"].keys():
-                    logging.info(f'FIELD: {field}, Value: {old_subj_procedure["probes"][field]}')
-                probes.append(OphysProbe.model_validate(old_subj_procedure["probes"]))
-            elif isinstance(old_subj_procedure["probes"], list):
-                logging.info("PROBES IS LIST")
-                for probe in old_subj_procedure["probes"]:
-                    for field in probe.keys():
-                        logging.info(f'FIELD: {field}, Value: {probe[field]}', )
-                    probe['core_diameter_unit'] = "um"
+        if 'probes' in procedure_copy.keys():
+            if isinstance(procedure_copy["probes"], dict):
+                probe=procedure_copy['probes']
+                try:
+                    fiber_probe = FiberProbe(
+                        core_diameter=get_or_default(probe, FiberProbe, "core_diameter"),
+                        core_diameter_unit=get_or_default(probe, FiberProbe, "core_diameter_unit"),
+                        numerical_aperture=get_or_default(probe, FiberProbe, "numerical_aperture"),
+                        ferrule_material=get_or_default(probe, FiberProbe, "ferrule_material"),
+                        active_length=get_or_default(probe, FiberProbe, "active_length"),
+                        total_length=get_or_default(probe, FiberProbe, "total_length"),
+                        length_unit=get_or_default(probe, FiberProbe, "length_unit")
+                    ),
+                except ValidationError as e:
+                    fiber_probe = FiberProbe.model_construct(probe)
+                probe = drop_unused_fields(probe, "ophys_probe")
+                if get_or_default(probe, OphysProbe, "targeted_structure") is None:
+                    probe["targeted_structure"] = "unknown"
+                try:
+                    new_probe = OphysProbe(
+                            ophys_probe=fiber_probe,
+                            targeted_structure=get_or_default(probe, OphysProbe, "targeted_structure"),
+                            stereotactic_coordinate_ap=get_or_default(probe, OphysProbe, "stereotactic_coordinate_ap"),
+                            stereotactic_coordinate_ml=get_or_default(probe, OphysProbe, "stereotactic_coordinate_ml"),
+                            stereotactic_coordinate_dv=get_or_default(probe, OphysProbe, "stereotactic_coordinate_dv"),
+                            stereotactic_coordinate_unit=get_or_default(probe, OphysProbe, "stereotactic_coordinate_unit"),
+                            stereotactic_coordinate_reference=get_or_default(probe, OphysProbe, "steretactic_coordinate_reference"),
+                            bregma_to_lambda_distance=get_or_default(probe, OphysProbe, "bregma_to_lambda_distance"),
+                            bregma_to_lambda_unit=get_or_default(probe, OphysProbe, "bregma_to_lambda_unit"),
+                            angle=get_or_default(probe, OphysProbe, "angle"),
+                            angle_unit=get_or_default(probe, OphysProbe, "angle_unit"),
+                            notes=get_or_default(probe, OphysProbe, "notes"),
+                        )
+                except ValidationError as e:
+                    logging.error(f"validation error: {e}")
+                    new_probe = OphysProbe.model_construct(probe)
+
+                probes.append(new_probe)
+            elif isinstance(procedure_copy["probes"], list):
+                for probe in procedure_copy["probes"]:
+                    try:
+                        fiber_probe = FiberProbe(
+                            core_diameter=get_or_default(probe, FiberProbe, "core_diameter"),
+                            core_diameter_unit=get_or_default(probe, FiberProbe, "core_diameter_unit"),
+                            numerical_aperture=get_or_default(probe, FiberProbe, "numerical_aperture"),
+                            ferrule_material=get_or_default(probe, FiberProbe, "ferrule_material"),
+                            active_length=get_or_default(probe, FiberProbe, "active_length"),
+                            total_length=get_or_default(probe, FiberProbe, "total_length"),
+                            length_unit=get_or_default(probe, FiberProbe, "length_unit")
+                        )
+                    except ValidationError as e:
+                        logging.error(f'validation error: {e}')
+                        fiber_probe = FiberProbe.model_construct(probe)
+                    probe = drop_unused_fields(probe, "ophys_probe")
                     drop_unused_fields(probe, "ophys_probe")
-                    new_probe = OphysProbe.model_validate(probe)
+                    try:
+                        new_probe = OphysProbe(
+                                ophys_probe=fiber_probe,
+                                targeted_structure=get_or_default(probe, OphysProbe, "targeted_structure"),
+                                stereotactic_coordinate_ap=get_or_default(probe, OphysProbe, "stereotactic_coordinate_ap"),
+                                stereotactic_coordinate_ml=get_or_default(probe, OphysProbe, "stereotactic_coordinate_ml"),
+                                stereotactic_coordinate_dv=get_or_default(probe, OphysProbe, "stereotactic_coordinate_dv"),
+                                stereotactic_coordinate_unit=get_or_default(probe, OphysProbe, "stereotactic_coordinate_unit"),
+                                stereotactic_coordinate_reference=get_or_default(probe, OphysProbe, "stereotactic_coordinate_reference"),
+                                bregma_to_lambda_distance=get_or_default(probe, OphysProbe, "bregma_to_lambda_distance"),
+                                bregma_to_lambda_unit=get_or_default(probe, OphysProbe, "bregma_to_lambda_unit"),
+                                angle=get_or_default(probe, OphysProbe, "angle"),
+                                angle_unit=get_or_default(probe, OphysProbe, "angle_unit"),
+                                notes=get_or_default(probe, OphysProbe, "notes"),
+                            )
+                    except ValidationError as e:
+                        logging.error(f"validation error: {e}")
+                        new_probe = OphysProbe.model_construct(probe)
                     probes.append(new_probe)
 
         try:
@@ -127,7 +225,7 @@ class SubjectProcedureModelsUpgrade:
             )
         except ValidationError as e:
             logging.error(f"Error validating Fiber: {e}")
-            return FiberImplant.model_construct(old_subj_procedure)
+            return FiberImplant.model_construct(procedure_copy)
     
     def upgrade_headframe(old_subj_procedure: dict):
         """Map legacy Headframe model to current version"""
@@ -186,7 +284,7 @@ class SubjectProcedureModelsUpgrade:
         if not check_field(old_subj_procedure, "injection_materials"):
             old_subj_procedure["injection_materials"] = [None]
 
-        if not check_field(old_subj_procedure, "protocol_id"):
+        if not old_subj_procedure.get("protocol_id", None):
             old_subj_procedure["protocol_id"] = "dx.doi.org/10.17504/protocols.io.bgpujvnw"
 
         try:
@@ -243,8 +341,21 @@ class SubjectProcedureModelsUpgrade:
         """Map legacy RetroOrbitalInjection model to current version"""
         logging.info(f"Upgrading retro-orbital injection {old_subj_procedure}")
 
+
+
         try:
-            return RetroOrbitalInjection.model_validate(old_subj_procedure)
+            return RetroOrbitalInjection(
+                injection_volume=old_subj_procedure.get("injection_volume", None),
+                injection_volume_unit=get_or_default(old_subj_procedure, "injection_volume_unit", RetroOrbitalInjection),
+                injection_eye=old_subj_procedure.get("injection_eye", None)
+                injection_materials=,
+                recovery_time=,
+                recovery_time_unit=get_or_default(old_subj_procedure, "recovery_time_unit", RetroOrbitalInjection),
+                injection_duration=,
+                injection_duration_unit=get_or_default(old_subj_procedure, "injection_duration_unit", RetroOrbitalInjection),
+                instrument_id=,
+                protocol_id="unknown",
+            )
         except ValidationError as e:
             logging.error(f"Error validating RetroOrbitalInjection: {e}")
             return RetroOrbitalInjection.model_construct(old_subj_procedure)
