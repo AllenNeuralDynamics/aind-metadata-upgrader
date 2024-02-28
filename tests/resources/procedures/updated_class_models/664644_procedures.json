@@ -1,11 +1,11 @@
 {
    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
    "schema_version": "0.11.5",
-   "subject_id": "652742",
+   "subject_id": "664644",
    "subject_procedures": [
       {
          "procedure_type": "Surgery",
-         "start_date": "2023-03-17",
+         "start_date": "2023-05-17",
          "experimenter_full_name": "30361",
          "iacuc_protocol": "2115",
          "animal_weight_prior": null,
@@ -18,7 +18,7 @@
                "procedure_type": "Perfusion",
                "protocol_id": "dx.doi.org/10.17504/protocols.io.bg5vjy66",
                "output_specimen_ids": [
-                  "652742"
+                  "664644"
                ]
             }
          ],
@@ -26,15 +26,15 @@
       },
       {
          "procedure_type": "Surgery",
-         "start_date": "2023-01-18",
+         "start_date": "2023-03-02",
          "experimenter_full_name": "NSB-5313",
          "iacuc_protocol": "2115",
-         "animal_weight_prior": "28.8",
-         "animal_weight_post": "30.5",
+         "animal_weight_prior": "18.0",
+         "animal_weight_post": "19.6",
          "weight_unit": "gram",
          "anaesthesia": {
             "type": "isoflurane",
-            "duration": "168.0",
+            "duration": "120.0",
             "duration_unit": "minute",
             "level": "1.5"
          },
@@ -53,28 +53,28 @@
                "injection_materials": [
                   null
                ],
-               "recovery_time": 26.0,
+               "recovery_time": 10.0,
                "recovery_time_unit": "minute",
                "injection_duration": null,
                "injection_duration_unit": "minute",
-               "instrument_id": "NJ#4",
+               "instrument_id": "NJ#5",
                "protocol_id": "dx.doi.org/10.17504/protocols.io.bgpujvnw",
-               "injection_coordinate_ml": -1.35,
-               "injection_coordinate_ap": 1.0,
+               "injection_coordinate_ml": -0.8,
+               "injection_coordinate_ap": 1.8,
                "injection_coordinate_depth": [
-                  -4.2
+                  -1.6
                ],
                "injection_coordinate_unit": "millimeter",
                "injection_coordinate_reference": "Bregma",
-               "bregma_to_lambda_distance": 4.579,
+               "bregma_to_lambda_distance": 4.265,
                "bregma_to_lambda_unit": "millimeter",
-               "injection_angle": 0.0,
+               "injection_angle": -5.0,
                "injection_angle_unit": "degrees",
                "targeted_structure": null,
                "injection_hemisphere": "Left",
                "procedure_type": "Nanoject injection",
                "injection_volume": [
-                  300.0
+                  200.0
                ],
                "injection_volume_unit": "nanoliter"
             },
@@ -98,14 +98,14 @@
                         "length_unit": "millimeter"
                      },
                      "targeted_structure": "unknown",
-                     "stereotactic_coordinate_ap": "1.0",
-                     "stereotactic_coordinate_ml": "-1.35",
-                     "stereotactic_coordinate_dv": "-4.0",
+                     "stereotactic_coordinate_ap": "1.8",
+                     "stereotactic_coordinate_ml": "-0.8",
+                     "stereotactic_coordinate_dv": "-1.4",
                      "stereotactic_coordinate_unit": "millimeter",
                      "stereotactic_coordinate_reference": null,
-                     "bregma_to_lambda_distance": "4.579",
+                     "bregma_to_lambda_distance": "4.265",
                      "bregma_to_lambda_unit": "millimeter",
-                     "angle": "0.0",
+                     "angle": "-5.0",
                      "angle_unit": "degrees",
                      "notes": null
                   }
@@ -115,28 +115,28 @@
                "injection_materials": [
                   null
                ],
-               "recovery_time": 26.0,
+               "recovery_time": 10.0,
                "recovery_time_unit": "minute",
                "injection_duration": null,
                "injection_duration_unit": "minute",
-               "instrument_id": "NJ#4",
+               "instrument_id": "NJ#5",
                "protocol_id": "dx.doi.org/10.17504/protocols.io.bgpujvnw",
-               "injection_coordinate_ml": 1.35,
-               "injection_coordinate_ap": 1.0,
+               "injection_coordinate_ml": -2.3,
+               "injection_coordinate_ap": -6.2,
                "injection_coordinate_depth": [
-                  -4.2
+                  -2.8
                ],
                "injection_coordinate_unit": "millimeter",
                "injection_coordinate_reference": "Bregma",
-               "bregma_to_lambda_distance": 4.579,
+               "bregma_to_lambda_distance": 4.265,
                "bregma_to_lambda_unit": "millimeter",
                "injection_angle": 0.0,
                "injection_angle_unit": "degrees",
                "targeted_structure": null,
-               "injection_hemisphere": "Right",
+               "injection_hemisphere": "Left",
                "procedure_type": "Nanoject injection",
                "injection_volume": [
-                  300.0
+                  200.0
                ],
                "injection_volume_unit": "nanoliter"
             },
@@ -160,12 +160,12 @@
                         "length_unit": "millimeter"
                      },
                      "targeted_structure": "unknown",
-                     "stereotactic_coordinate_ap": "1.0",
-                     "stereotactic_coordinate_ml": "1.35",
-                     "stereotactic_coordinate_dv": "-4.0",
+                     "stereotactic_coordinate_ap": "-6.2",
+                     "stereotactic_coordinate_ml": "-2.3",
+                     "stereotactic_coordinate_dv": "-2.6",
                      "stereotactic_coordinate_unit": "millimeter",
                      "stereotactic_coordinate_reference": null,
-                     "bregma_to_lambda_distance": "4.579",
+                     "bregma_to_lambda_distance": "4.265",
                      "bregma_to_lambda_unit": "millimeter",
                      "angle": "0.0",
                      "angle_unit": "degrees",
