@@ -46,8 +46,6 @@ def replace_placeholders(json_para: str, search_para, replace_para):
     return json.loads(json_para, object_hook=decode_dict)
 
 for file in procedures_files:
-    if "652742" not in file:
-        continue 
 
     with open(file, "r") as f:
         contents = json.loads(f.read())
@@ -57,20 +55,8 @@ for file in procedures_files:
         if 'probes' in procedure.keys():
             logging.info('replacing: ', procedure)
             if 'um' in procedure['probes']['core_diameter_unit'].replace('μm', 'um'):
-                logging.info('found um')
                 procedure['probes'].pop('core_diameter_unit')
                 procedure['probes']['core_diameter_unit'] = 'um'
-                logging.info('replaced: ', procedure)
-
-    
-    logging.info("attempted replacement: ", contents)
-    
-    logging.info("check: ", contents['subject_procedures'][3]['probes']['core_diameter_unit'])
-    contents['subject_procedures'][3]['probes']['core_diameter_unit'] = contents['subject_procedures'][3]['probes']['core_diameter_unit'].replace('μm', 'um')
-    logging.info("check2: ", contents['subject_procedures'][3]['probes'])
-    contents['subject_procedures'][5]['probes']['core_diameter_unit'] = contents['subject_procedures'][5]['probes']['core_diameter_unit'].replace('μm', 'um')
-    # result = replace_placeholders(json.dumps(contents), 'μm', 'um')
-    logging.info("replaced file: ", contents)
 
 
     with open(file) as f:
