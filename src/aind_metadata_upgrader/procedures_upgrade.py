@@ -115,11 +115,11 @@ class InjectionMaterialsUpgrade:
         return new_materials
 
 
-class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
+class SubjectProcedureModelsUpgrade:
     """Handle upgrades for SubjectProcedure models."""
 
 
-    def upgrade_craniotomy(old_subj_procedure: dict):
+    def upgrade_craniotomy(old_subj_procedure: dict, allow_validation_error):
         """Map legacy Craniotomy model to current version"""
 
         if not check_field(old_subj_procedure, "protocol_id"):
