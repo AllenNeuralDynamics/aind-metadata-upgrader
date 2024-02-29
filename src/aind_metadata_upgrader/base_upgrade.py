@@ -3,9 +3,8 @@
 from abc import ABC, abstractmethod
 from typing import Any, Type, Union
 
-from pydantic.fields import PydanticUndefined
-
 from aind_data_schema.base import AindModel
+from pydantic.fields import PydanticUndefined
 
 
 class BaseModelUpgrade(ABC):

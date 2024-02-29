@@ -1,17 +1,13 @@
-from aind_data_schema.core.procedures import (
-    Procedures, 
-    Surgery,
-)
+import json
+import logging
+from datetime import datetime
+from glob import glob
+from pathlib import Path
+
+from aind_data_schema.core.procedures import Procedures, Surgery
 
 from aind_metadata_upgrader.procedures_upgrade import ProcedureUpgrade
 
-from glob import glob
-import json
-from pathlib import Path
-import logging
-
-import logging
-from datetime import datetime
 # You can set the ouput location to whatever. You may need to create a 'logs' folder in the scratch
 # directory beforehand.
 
