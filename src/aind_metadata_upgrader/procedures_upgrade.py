@@ -1,19 +1,10 @@
 """Module to contain code to uprgade old procedures"""
+import logging
 from typing import Any, Optional, Union
 
-from aind_metadata_upgrader.utils import check_field, get_or_default, drop_unused_fields
-
-from pydantic import ValidationError
-
 import semver
-
 from aind_data_schema.base import AindModel
-from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
-
-from aind_data_schema.models.devices import FiberProbe
 from aind_data_schema.core.procedures import (
-    Procedures, 
-    Surgery,
     Craniotomy,
     FiberImplant,
     Headframe,
@@ -22,20 +13,26 @@ from aind_data_schema.core.procedures import (
     IntraperitonealInjection,
     IontophoresisInjection,
     NanojectInjection,
-    Perfusion,
+    NonViralMaterial,
+    OphysProbe,
     OtherSubjectProcedure,
+    Perfusion,
+    Procedures,
     RetroOrbitalInjection,
     SpecimenProcedure,
-    ViralMaterial,
-    NonViralMaterial,
+    Surgery,
     TarsVirusIdentifiers,
-    OphysProbe
+    ViralMaterial,
 )
+from aind_data_schema.models.devices import FiberProbe
+from pydantic import ValidationError
 
-import logging
-
-
-
+from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
+from aind_metadata_upgrader.utils import (
+    check_field,
+    drop_unused_fields,
+    get_or_default,
+)
 
 
 class InjectionMaterialsUpgrade:
@@ -111,12 +108,14 @@ class InjectionMaterialsUpgrade:
                     new_materials.append(InjectionMaterialsUpgrade.upgrade_nonviral_material(injection_material))
                 else:
                     logging.error(f"Injection material with no titer or concentration {injection_material} passed in")
-        
+        else:
+            logging.error(f"injection materials not a list: {old_injection_materials}")
+
         logging.info(f"new_materials: {new_materials}")
         return new_materials
 
 
-class SubjectProcedureModelsUpgrade:
+class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
     """Handle upgrades for SubjectProcedure models."""
 
 
@@ -341,24 +340,28 @@ class SubjectProcedureModelsUpgrade:
         """Map legacy RetroOrbitalInjection model to current version"""
         logging.info(f"Upgrading retro-orbital injection {old_subj_procedure}")
 
+        if old_subj_procedure.get("injection_materials", None):
+            old_subj_procedure["injection_materials"] = InjectionMaterialsUpgrade.upgrade_injection_materials(old_subj_procedure["injection_materials"])
 
+        if not old_subj_procedure.get("injection_eye", None):
+            old_subj_procedure["injection_eye"] = "unknown"
 
         try:
             return RetroOrbitalInjection(
                 injection_volume=old_subj_procedure.get("injection_volume", None),
                 injection_volume_unit=get_or_default(old_subj_procedure, "injection_volume_unit", RetroOrbitalInjection),
-                injection_eye=old_subj_procedure.get("injection_eye", None)
-                injection_materials=,
-                recovery_time=,
+                injection_eye=old_subj_procedure.get("injection_eye", None),
+                injection_materials=old_subj_procedure.get("injection_materials", None),
+                recovery_time=old_subj_procedure.get("recovery_time", None),
                 recovery_time_unit=get_or_default(old_subj_procedure, "recovery_time_unit", RetroOrbitalInjection),
-                injection_duration=,
+                injection_duration=old_subj_procedure.get("injection_duration", None),
                 injection_duration_unit=get_or_default(old_subj_procedure, "injection_duration_unit", RetroOrbitalInjection),
-                instrument_id=,
+                instrument_id=old_subj_procedure.get("instrument_id", None),
                 protocol_id="unknown",
             )
         except ValidationError as e:
             logging.error(f"Error validating RetroOrbitalInjection: {e}")
-            return RetroOrbitalInjection.model_construct(old_subj_procedure)
+            return RetroOrbitalInjection.model_construct(**old_subj_procedure)
         
 
 
