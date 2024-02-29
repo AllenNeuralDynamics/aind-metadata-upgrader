@@ -1,11 +1,7 @@
-from aind_data_schema.base import AindModel
-from pydantic.fields import PydanticUndefined
-
 import logging
 
+from aind_data_schema.base import AindModel
 from aind_data_schema.core.procedures import (
-    Procedures, 
-    Surgery,
     Craniotomy,
     FiberImplant,
     Headframe,
@@ -14,14 +10,17 @@ from aind_data_schema.core.procedures import (
     IntraperitonealInjection,
     IontophoresisInjection,
     NanojectInjection,
-    Perfusion,
+    NonViralMaterial,
+    OphysProbe,
     OtherSubjectProcedure,
+    Perfusion,
+    Procedures,
     RetroOrbitalInjection,
     SpecimenProcedure,
+    Surgery,
     ViralMaterial,
-    NonViralMaterial,
-    OphysProbe
 )
+from pydantic.fields import PydanticUndefined
 
 
 def check_field(model, field):
