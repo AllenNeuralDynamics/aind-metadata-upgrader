@@ -502,19 +502,21 @@ class TestFundingUpgrade(unittest.TestCase):
             "name": "SmartSPIM_623711_2022-10-27_16-48-54_stitched_2022-11-01_16-01-12",
             "institution": "AIND",
             "investigators": ["John Doe"],
-            "funding_source": [{
-                "funder": {
-                    "name": "Allen Institute",
-                    "abbreviation": "AI",
-                    "registry": {
-                        "name": "Research Organization Registry",
-                        "abbreviation": "ROR",
+            "funding_source": [
+                {
+                    "funder": {
+                        "name": "Allen Institute",
+                        "abbreviation": "AI",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR",
+                        },
+                        "registry_identifier": "03cpe7c52",
                     },
-                    "registry_identifier": "03cpe7c52",
-                },
-                "grant_number": None,
-                "fundee": None,
-            }],
+                    "grant_number": None,
+                    "fundee": None,
+                }
+            ],
             "data_level": "derived data",
             "group": None,
             "project_name": None,
