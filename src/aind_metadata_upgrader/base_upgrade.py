@@ -10,7 +10,7 @@ from pydantic.fields import PydanticUndefined
 class BaseModelUpgrade(ABC):
     """Base class for handling upgrades for models"""
 
-    def __init__(self, old_model: Union[AindModel, dict], model_class: Type[AindModel], additional_info: Union[AindModel, dict] = {}):
+    def __init__(self, old_model: Union[AindModel, dict], model_class: Type[AindModel], allow_validation_errors=False):
         """
         Handle mapping of old AindModel model versions into current models
 
@@ -25,7 +25,7 @@ class BaseModelUpgrade(ABC):
             old_model = model_class.model_construct(**old_model)
         self.old_model = old_model
         self.model_class = model_class
-        self.additional_info = additional_info
+        self.allow_validation_errors = allow_validation_errors
 
     def _get_or_default(self, model: AindModel, field_name: str, kwargs: dict) -> Any:
         """
