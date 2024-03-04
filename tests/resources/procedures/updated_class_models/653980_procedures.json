@@ -21,8 +21,11 @@
                "injection_duration": null,
                "injection_duration_unit": "minute",
                "instrument_id": null,
+               "protocol_id": "unknown",
                "procedure_type": "Retro-orbital injection",
-               "injection_volume_unit": "microliter"
+               "injection_volume": null,
+               "injection_volume_unit": "microliter",
+               "injection_eye": "unknown"
             }
          ],
          "notes": null

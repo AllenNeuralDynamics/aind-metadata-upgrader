@@ -51,7 +51,6 @@
                "craniotomy_coordinates_reference": null,
                "bregma_to_lambda_distance": 4.525,
                "bregma_to_lambda_unit": "millimeter",
-               "craniotomy_size": null,
                "craniotomy_size_unit": "millimeter",
                "implant_part_number": null,
                "dura_removed": null,
@@ -63,7 +62,7 @@
                "procedure_type": "Headframe",
                "protocol_id": "unknown",
                "headframe_type": "WHC NP",
-               "headframe_part_number": "unknown",
+               "headframe_part_number": "0160-100-42",
                "headframe_material": null,
                "well_part_number": "0160-055-08",
                "well_type": "WHC NP"

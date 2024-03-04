@@ -44,15 +44,13 @@
                "procedure_type": "Headframe",
                "protocol_id": "unknown",
                "headframe_type": "AI Straight bar",
-               "headframe_part_number": "unknown",
+               "headframe_part_number": null,
                "headframe_material": null,
                "well_part_number": null,
                "well_type": "No Well"
             },
             {
-               "injection_materials": [
-                  null
-               ],
+               "injection_materials": null,
                "recovery_time": 10.0,
                "recovery_time_unit": "minute",
                "injection_duration": null,
@@ -102,7 +100,7 @@
                      "stereotactic_coordinate_ml": "-0.8",
                      "stereotactic_coordinate_dv": "-1.4",
                      "stereotactic_coordinate_unit": "millimeter",
-                     "stereotactic_coordinate_reference": null,
+                     "stereotactic_coordinate_reference": "Bregma",
                      "bregma_to_lambda_distance": "4.265",
                      "bregma_to_lambda_unit": "millimeter",
                      "angle": "-5.0",
@@ -112,9 +110,7 @@
                ]
             },
             {
-               "injection_materials": [
-                  null
-               ],
+               "injection_materials": null,
                "recovery_time": 10.0,
                "recovery_time_unit": "minute",
                "injection_duration": null,
@@ -164,7 +160,7 @@
                      "stereotactic_coordinate_ml": "-2.3",
                      "stereotactic_coordinate_dv": "-2.6",
                      "stereotactic_coordinate_unit": "millimeter",
-                     "stereotactic_coordinate_reference": null,
+                     "stereotactic_coordinate_reference": "Bregma",
                      "bregma_to_lambda_distance": "4.265",
                      "bregma_to_lambda_unit": "millimeter",
                      "angle": "0.0",
