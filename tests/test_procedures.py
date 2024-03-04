@@ -4,8 +4,6 @@ from datetime import datetime
 from glob import glob
 from pathlib import Path
 
-from aind_data_schema.core.procedures import Procedures, Surgery
-
 from aind_metadata_upgrader.procedures_upgrade import ProcedureUpgrade
 
 # You can set the ouput location to whatever. You may need to create a 'logs' folder in the scratch
@@ -15,11 +13,11 @@ log_file_name = "./tests/resources/procedures/log_files/log_" + datetime.now().s
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 # create file handler which logs even debug messages
-fh = logging.FileHandler(log_file_name, 'w', 'utf-8')
+fh = logging.FileHandler(log_file_name, "w", "utf-8")
 fh.setLevel(logging.DEBUG)
 
 # create formatter and add it to the handlers
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 fh.setFormatter(formatter)
 # add the handlers to logger
 logger.addHandler(fh)
@@ -28,32 +26,33 @@ logger.addHandler(fh)
 procedures_files = glob("tests/resources/procedures/class_model_examples/*.json")
 print(procedures_files)
 
-import json
-
 
 def replace_placeholders(json_para: str, search_para, replace_para):
+    """Jon made this function to replace placeholders in a json file"""
     # Local nested function.
     def decode_dict(a_dict):
+        """Decodes a dictionary and replaces the search parameter with the replace parameter."""
         if search_para in a_dict.values():
             for key, value in a_dict.items():
                 if value == search_para:
                     a_dict[key] = replace_para
         return a_dict
+
     return json.loads(json_para, object_hook=decode_dict)
+
 
 for file in procedures_files:
 
     with open(file, "r") as f:
         contents = json.loads(f.read())
 
-    for procedure in contents['subject_procedures']:
+    for procedure in contents["subject_procedures"]:
         logging.info(procedure)
-        if 'probes' in procedure.keys():
-            logging.info('replacing: ', procedure)
-            if 'um' in procedure['probes']['core_diameter_unit'].replace('μm', 'um'):
-                procedure['probes'].pop('core_diameter_unit')
-                procedure['probes']['core_diameter_unit'] = 'um'
-
+        if "probes" in procedure.keys():
+            logging.info("replacing: ", procedure)
+            if "um" in procedure["probes"]["core_diameter_unit"].replace("μm", "um"):
+                procedure["probes"].pop("core_diameter_unit")
+                procedure["probes"]["core_diameter_unit"] = "um"
 
     with open(file) as f:
         subject = Path(file).stem
@@ -63,5 +62,6 @@ for file in procedures_files:
 
         test = ProcedureUpgrader.upgrade_procedure()
 
-        test.write_standard_file(output_directory=Path("tests/resources/procedures/updated_class_models"), prefix=Path(subject))
-
+        test.write_standard_file(
+            output_directory=Path("tests/resources/procedures/updated_class_models"), prefix=Path(subject)
+        )
