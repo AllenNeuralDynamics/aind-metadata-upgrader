@@ -21,6 +21,16 @@ from aind_data_schema.core.procedures import (
     ViralMaterial,
 )
 from pydantic.fields import PydanticUndefined
+from pydantic import ValidationError
+
+
+
+def construct_new_model(model_inputs: dict, model_type: AindModel, allow_validation_errors=False):
+    try:
+        return model_type.model_validate(model_inputs)
+    except ValidationError as e:
+        logging.error(f"Validation error in {type(model_type)}: {e}")
+        return model_type.model_construct(**model_inputs)
 
 
 def check_field(model, field):
