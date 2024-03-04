@@ -1,6 +1,6 @@
 """Module to contain code to uprgade old procedures"""
 import logging
-from typing import Any, Optional, Union
+from typing import Any, Optional, Type, Union
 
 import semver
 from aind_data_schema.base import AindModel
@@ -32,70 +32,67 @@ from aind_metadata_upgrader.utils import (
     check_field,
     drop_unused_fields,
     get_or_default,
+    construct_new_model
 )
 
 
-class InjectionMaterialsUpgrade:
+class InjectionMaterialsUpgrade(BaseModelUpgrade):
+    """Handle upgrades for InjectionMaterials models."""
+
+    def __init__(self, allow_validation_errors=False):
+        self.allow_validation_errors = allow_validation_errors
 
 
-    @staticmethod
-    def upgrade_viral_material(material: dict) -> ViralMaterial:
+    def upgrade_viral_material(self, material: dict) -> ViralMaterial:
         """Map legacy NonViralMaterial model to current version"""
 
         input = drop_unused_fields(material.copy(), ViralMaterial)
 
-        if input.get("tars_identifiers", None) is not None:
+        if input.get("tars_identifiers", None):
             tars_data = input.get("tars_identifiers")
-            try:
-                tars_identifier = TarsVirusIdentifiers(
-                    virus_tars_id=tars_data.get("virus_tars_id", None),
-                    plasmid_tars_alias=tars_data.get("plasmid_tars_alias", None),
-                    prep_lot_number=tars_data.get("prep_lot_number", None),
-                    prep_date=tars_data.get("prep_data", None),
-                    prep_type=tars_data.get("prep_type", None),
-                    prep_protocol=tars_data.get("prep_protocol", None),
-                )
-            except ValidationError as e:
-                logging.error(f"Error validating TarsVirusIdentifiers: {e}")
-                tars_identifier = TarsVirusIdentifiers.model_construct(tars_data)
+            tars_dict = {
+                "virus_tars_id":tars_data.get("virus_tars_id", None),
+                "plasmid_tars_alias":tars_data.get("plasmid_tars_alias", None),
+                "prep_lot_number":tars_data.get("prep_lot_number", None),
+                "prep_date":tars_data.get("prep_data", None),
+                "prep_type":tars_data.get("prep_type", None),
+                "prep_protocol":tars_data.get("prep_protocol", None),
+            }
+            tars_identifier = construct_new_model(tars_dict, TarsVirusIdentifiers, self.allow_validation_errors)
         else:
             tars_identifier = None
         
-        try:
-            return ViralMaterial(
-                name=input.get("name", "unknown"),
-                tars_identifiers=tars_identifier,
-                addgene_id=input.get("addgene_id", None),
-                titer=input.get("titer", None),
-                titer_unit=input.get("titer_unit", None),
-            )
-        except ValidationError as e:
-            logging.error(f"Error validating ViralMaterial: {e}")
-            return ViralMaterial.model_construct(input)
+        viral_dict = {
+            "name":input.get("name", "unknown"),
+            "tars_identifiers":tars_identifier,
+            "addgene_id":input.get("addgene_id", None),
+            "titer":input.get("titer", None),
+            "titer_unit":input.get("titer_unit", None),
+        }
+
+        return construct_new_model(viral_dict, ViralMaterial, self.allow_validation_errors)
     
 
-    @staticmethod
-    def upgrade_nonviral_material(material: dict) -> NonViralMaterial:
+    def upgrade_nonviral_material(self, material: dict) -> NonViralMaterial:
         """Map legacy NonViralMaterial model to current version"""
 
         input = drop_unused_fields(material.copy(), NonViralMaterial)
 
-        try:
-            return NonViralMaterial(
-                concentration=input.get("concentration", None),
-                concentration_unit=get_or_default(input, NonViralMaterial, "concentration_unit"),
-                name=input.get("name", "unknown"),
-                source=get_or_default(input, NonViralMaterial, "source"),
-                rrid=get_or_default(input, NonViralMaterial, "rrid"),
-                lot_number=input.get("lot_number", None),
-                expiration_date=get_or_default(input, NonViralMaterial, "expiration_date")
-            )
-        except ValidationError as e:
-            logging.error(f"Error validating NonViralMaterial: {e}")
-            return NonViralMaterial.model_construct(input)
+        nonviral_dict = {
+            "concentration":input.get("concentration", None),
+            "concentration_unit":get_or_default(input, NonViralMaterial, "concentration_unit"),
+            "name":input.get("name", "unknown"),
+            "source":get_or_default(input, NonViralMaterial, "source"),
+            "rrid":get_or_default(input, NonViralMaterial, "rrid"),
+            "lot_number":input.get("lot_number", None),
+            "expiration_date":get_or_default(input, NonViralMaterial, "expiration_date")
+        }
+
+        return construct_new_model(nonviral_dict, NonViralMaterial, self.allow_validation_errors)
+    
 
     @staticmethod
-    def upgrade_injection_materials(old_injection_materials: list) -> Optional[dict]:
+    def upgrade_injection_materials(old_injection_materials: list, allow_validation_error) -> Optional[dict]:
         """Map legacy InjectionMaterials model to current version"""
 
         new_materials = []
@@ -115,279 +112,329 @@ class InjectionMaterialsUpgrade:
         return new_materials
 
 
-class SubjectProcedureModelsUpgrade:
+class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
     """Handle upgrades for SubjectProcedure models."""
 
+    def __init__(self, allow_validation_errors=False):
+        self.allow_validation_errors = allow_validation_errors
+        self.injection_upgrader = InjectionMaterialsUpgrade(allow_validation_errors)
 
-    def upgrade_craniotomy(old_subj_procedure: dict, allow_validation_error):
+
+    def upgrade_craniotomy(self, old_subj_procedure: dict):
         """Map legacy Craniotomy model to current version"""
 
-        if not check_field(old_subj_procedure, "protocol_id"):
-            old_subj_procedure["protocol_id"] = "unknown"
+        craniotomy_dict = {
+            "protocol_id":old_subj_procedure.get("protocol_id", "unknown"),
+            "craniotomy_type":old_subj_procedure.get("craniotomy_type", None),
+            "craniotomy_hemisphere":get_or_default(old_subj_procedure, Craniotomy, "craniotomy_hemisphere"),
+            "bregma_to_lambda_distance":old_subj_procedure.get("bregma_to_lambda_distance", None),
+            "bregma_to_lambda_unit":get_or_default(old_subj_procedure, Craniotomy, "bregma_to_lambda_unit"),
+            "implant_part_number":old_subj_procedure.get("implant_part_number", None),
+            "dura_removed":get_or_default(old_subj_procedure, Craniotomy, "dura_removed"),
+            "protective_material":get_or_default(old_subj_procedure, Craniotomy, "protective_material"),
+            "recovery_time": old_subj_procedure.get("recovery_time", None),
+            "recovery_time_unit": get_or_default(old_subj_procedure, Craniotomy, "recovery_time_unit"),
+            "craniotomy_size":old_subj_procedure.get("craniotomy_size", None),
+        }
 
-        try:
-            return Craniotomy.model_validate(old_subj_procedure)
-        except ValidationError as e:
-            logging.error(f"Error validating IntraperitonealInjection: {e}")
-            return Craniotomy.model_construct(**old_subj_procedure)
+        #check for size, and if size exists give it a type based on size
+
+        drop_unused_fields(craniotomy_dict, Craniotomy)
+
+        return construct_new_model(craniotomy_dict, Craniotomy, self.allow_validation_errors)
+
     
-    def upgrade_fiber_implant(old_subj_procedure: dict):
+    def upgrade_fiber_implant(self, old_subj_procedure: dict):
         """Map legacy FiberImplant model to current version"""
-        print("upgrading fiber implant")
-        logging.info("FIBER IMPLANT: ", old_subj_procedure.keys())
-        procedure_copy = old_subj_procedure.copy()
-        probes = []
-        # for probe in old_subj_procedure.get("probes", []):
-        #     logging.info("PROBE: ", probe)
-        #     for field in probe.keys():
-        #         logging.info(f'FIELD: {field}, Value: {probe[field]}')
-        #     logging.info(f"PROBE: {probe}")
-        if 'probes' in procedure_copy.keys():
-            if isinstance(procedure_copy["probes"], dict):
-                probe=procedure_copy['probes']
-                try:
-                    fiber_probe = FiberProbe(
-                        core_diameter=get_or_default(probe, FiberProbe, "core_diameter"),
-                        core_diameter_unit=get_or_default(probe, FiberProbe, "core_diameter_unit"),
-                        numerical_aperture=get_or_default(probe, FiberProbe, "numerical_aperture"),
-                        ferrule_material=get_or_default(probe, FiberProbe, "ferrule_material"),
-                        active_length=get_or_default(probe, FiberProbe, "active_length"),
-                        total_length=get_or_default(probe, FiberProbe, "total_length"),
-                        length_unit=get_or_default(probe, FiberProbe, "length_unit")
-                    ),
-                except ValidationError as e:
-                    fiber_probe = FiberProbe.model_construct(probe)
-                probe = drop_unused_fields(probe, "ophys_probe")
-                if get_or_default(probe, OphysProbe, "targeted_structure") is None:
-                    probe["targeted_structure"] = "unknown"
-                try:
-                    new_probe = OphysProbe(
-                            ophys_probe=fiber_probe,
-                            targeted_structure=get_or_default(probe, OphysProbe, "targeted_structure"),
-                            stereotactic_coordinate_ap=get_or_default(probe, OphysProbe, "stereotactic_coordinate_ap"),
-                            stereotactic_coordinate_ml=get_or_default(probe, OphysProbe, "stereotactic_coordinate_ml"),
-                            stereotactic_coordinate_dv=get_or_default(probe, OphysProbe, "stereotactic_coordinate_dv"),
-                            stereotactic_coordinate_unit=get_or_default(probe, OphysProbe, "stereotactic_coordinate_unit"),
-                            stereotactic_coordinate_reference=get_or_default(probe, OphysProbe, "steretactic_coordinate_reference"),
-                            bregma_to_lambda_distance=get_or_default(probe, OphysProbe, "bregma_to_lambda_distance"),
-                            bregma_to_lambda_unit=get_or_default(probe, OphysProbe, "bregma_to_lambda_unit"),
-                            angle=get_or_default(probe, OphysProbe, "angle"),
-                            angle_unit=get_or_default(probe, OphysProbe, "angle_unit"),
-                            notes=get_or_default(probe, OphysProbe, "notes"),
-                        )
-                except ValidationError as e:
-                    logging.error(f"validation error: {e}")
-                    new_probe = OphysProbe.model_construct(probe)
 
-                probes.append(new_probe)
-            elif isinstance(procedure_copy["probes"], list):
-                for probe in procedure_copy["probes"]:
-                    try:
-                        fiber_probe = FiberProbe(
-                            core_diameter=get_or_default(probe, FiberProbe, "core_diameter"),
-                            core_diameter_unit=get_or_default(probe, FiberProbe, "core_diameter_unit"),
-                            numerical_aperture=get_or_default(probe, FiberProbe, "numerical_aperture"),
-                            ferrule_material=get_or_default(probe, FiberProbe, "ferrule_material"),
-                            active_length=get_or_default(probe, FiberProbe, "active_length"),
-                            total_length=get_or_default(probe, FiberProbe, "total_length"),
-                            length_unit=get_or_default(probe, FiberProbe, "length_unit")
-                        )
-                    except ValidationError as e:
-                        logging.error(f'validation error: {e}')
-                        fiber_probe = FiberProbe.model_construct(probe)
-                    probe = drop_unused_fields(probe, "ophys_probe")
-                    drop_unused_fields(probe, "ophys_probe")
-                    try:
-                        new_probe = OphysProbe(
-                                ophys_probe=fiber_probe,
-                                targeted_structure=get_or_default(probe, OphysProbe, "targeted_structure"),
-                                stereotactic_coordinate_ap=get_or_default(probe, OphysProbe, "stereotactic_coordinate_ap"),
-                                stereotactic_coordinate_ml=get_or_default(probe, OphysProbe, "stereotactic_coordinate_ml"),
-                                stereotactic_coordinate_dv=get_or_default(probe, OphysProbe, "stereotactic_coordinate_dv"),
-                                stereotactic_coordinate_unit=get_or_default(probe, OphysProbe, "stereotactic_coordinate_unit"),
-                                stereotactic_coordinate_reference=get_or_default(probe, OphysProbe, "stereotactic_coordinate_reference"),
-                                bregma_to_lambda_distance=get_or_default(probe, OphysProbe, "bregma_to_lambda_distance"),
-                                bregma_to_lambda_unit=get_or_default(probe, OphysProbe, "bregma_to_lambda_unit"),
-                                angle=get_or_default(probe, OphysProbe, "angle"),
-                                angle_unit=get_or_default(probe, OphysProbe, "angle_unit"),
-                                notes=get_or_default(probe, OphysProbe, "notes"),
-                            )
-                    except ValidationError as e:
-                        logging.error(f"validation error: {e}")
-                        new_probe = OphysProbe.model_construct(probe)
+        def construct_probe(probe: dict):
+            if probe.get("ophys_probe") is not None:
+                fiber_probe_item = probe.get("ophys_probe")
+                fiber_probe_dict = {
+                    "device_type":probe.get("device_type", None),
+                    "name":probe.get("name", None),
+                    "serial_number":probe.get("serial_number", None),
+                    "manufacturer":probe.get("manufacturer", None),
+                    "model":probe.get("model", None),
+                    "path_to_cad":probe.get("path_to_cad", None),
+                    "port_index":probe.get("port_index", None),
+                    "additional_set":get_or_default(probe, OphysProbe, "additional_set"),
+                    "core_diameter":fiber_probe_item.get("core_diameter", None),
+                    "core_diameter_unit":fiber_probe_item.get("core_diameter_unit", None),
+                    "numerical_aperture":fiber_probe_item.get("numerical_aperture", None),
+                    "ferrule_material":fiber_probe_item.get("ferrule_material", None),
+                    "active_length":fiber_probe_item.get("active_length", None),
+                    "total_length":fiber_probe_item.get("total_length", None),
+                    "length_unit":get_or_default(fiber_probe_item, FiberProbe, "length_unit")
+                }
+                fiber_probe = construct_new_model(fiber_probe_dict, FiberProbe, self.allow_validation_errors)
+            else:
+                fiber_probe = FiberProbe.model_construct()
+
+
+            ophys_probe_dict = {
+                "ophys_probe":fiber_probe,
+                "targeted_structure":probe.get("targeted_structure", "unknown"),
+                "stereotactic_coordinate_ap":probe.get("stereotactic_coordinate_ap", None),
+                "stereotactic_coordinate_ml":probe.get("stereotactic_coordinate_ml", None),
+                "stereotactic_coordinate_dv":probe.get("stereotactic_coordinate_dv", None),
+                "stereotactic_coordinate_unit":get_or_default(probe, OphysProbe, "stereotactic_coordinate_unit"),
+                "stereotactic_coordinate_reference":probe.get("stereotactic_coordinate_reference", None),
+                "bregma_to_lambda_distance":probe.get("bregma_to_lambda_distance", None),
+                "bregma_to_lambda_unit":get_or_default(probe, OphysProbe, "bregma_to_lambda_unit"),
+                "angle":probe.get("angle", None),
+                "angle_unit":get_or_default(probe, OphysProbe, "angle_unit"),
+                "notes":get_or_default(probe, OphysProbe, "notes"),
+                
+            }
+
+            return construct_new_model(ophys_probe_dict, OphysProbe, self.allow_validation_errors)
+
+        probes = []
+
+        if 'probes' in old_subj_procedure.keys():
+            if isinstance(old_subj_procedure["probes"], dict):
+                probe = old_subj_procedure["probes"]
+                new_probe = construct_probe(probe)
+                if new_probe:
                     probes.append(new_probe)
 
-        try:
-            return FiberImplant(
-                protocol_id="unknown",
-                probes=probes,
-            )
-        except ValidationError as e:
-            logging.error(f"Error validating Fiber: {e}")
-            return FiberImplant.model_construct(procedure_copy)
+            elif isinstance(old_subj_procedure["probes"], list):
+                for probe in old_subj_procedure["probes"]:
+                    new_probe = construct_probe(probe)
+                    if new_probe:
+                        probes.append(new_probe)
+
+        fiber_implant_dict = {
+            "protocol_id":old_subj_procedure.get("protocol_id", "unknown"),
+            "probes":probes
+        }
+
+        return construct_new_model(fiber_implant_dict, FiberImplant, self.allow_validation_errors)
+
     
-    def upgrade_headframe(old_subj_procedure: dict):
+    def upgrade_headframe(self, old_subj_procedure: dict):
         """Map legacy Headframe model to current version"""
 
-        if not check_field(old_subj_procedure, "protocol_id"):
-            old_subj_procedure["protocol_id"] = "unknown"
+        # headframe part number could be optional
 
-        if not check_field(old_subj_procedure, "headframe_part_number"):
-            old_subj_procedure["headframe_part_number"] = "unknown"
+        headframe_dict = {
+            "protocol_id":old_subj_procedure.get("protocol_id", "unknown"),
+            "headframe_part_number":old_subj_procedure.get("headframe_part_number", "unknown"),
+            "headframe_type":old_subj_procedure.get("headframe_type", "unknown"),
+            "headframe_material":get_or_default(old_subj_procedure, Headframe, "headframe_material"),
+            "well_part_number":get_or_default(old_subj_procedure, Headframe, "well_part_number"),
+            "well_type":get_or_default(old_subj_procedure, Headframe, "well_type"),
+        }
 
-        try:
-            return Headframe.model_validate(old_subj_procedure)
-        except ValidationError as e:
-            logging.error(f"Error validating Headframe: {e}")
-            return Headframe.model_construct(**old_subj_procedure)
+        return construct_new_model(headframe_dict, Headframe, self.allow_validation_errors)
     
-    def upgrade_intra_cerebellar_ventricle_injection(old_subj_procedure: dict):
+    
+    def upgrade_intra_cerebellar_ventricle_injection(self, old_subj_procedure: dict):
         """Map legacy IntraCerebellarVentricleInjection model to current version"""
 
-        try:
-            return IntraCerebellarVentricleInjection.model_validate(old_subj_procedure)
-        except ValidationError as e:
-            logging.error(f"Error validating IntraperitonealInjection: {e}")
-            return IntraCerebellarVentricleInjection.model_construct(**old_subj_procedure)
+        injection_dict = {
+            "injection_volume": old_subj_procedure.get("injection_volume", None),
+            "injection_volume_unit": get_or_default(old_subj_procedure, IntraCerebellarVentricleInjection, "injection_volume_unit"),
+            "injection_materials":old_subj_procedure.get("injection_materials", [None]),
+            "recovery_time":old_subj_procedure.get("recovery_time", None),
+            "recovery_time_unit":get_or_default(old_subj_procedure, IntraCerebellarVentricleInjection, "recovery_time_unit"),
+            "injection_duration":old_subj_procedure.get("injection_duration", None),
+            "injection_duration_unit":get_or_default(old_subj_procedure, IntraCerebellarVentricleInjection, "injection_duration_unit"),
+            "instrument_id":old_subj_procedure.get("instrument_id", None),
+            "protocol_id":old_subj_procedure.get("protocol_id", "unknown"),
+            "injection_coordinate_ml": old_subj_procedure.get("injection_coordinate_ml", None),
+            "injection_coordinate_ap": old_subj_procedure.get("injection_coordinate_ap", None),
+            "injection_coordinate_depth": old_subj_procedure.get("injection_coordinate_depth", None),
+            "injection_coordinate_unit":get_or_default(old_subj_procedure, IntraCerebellarVentricleInjection, "injection_coordinate_unit"),
+            "injection_coordinate_reference": old_subj_procedure.get("injection_coordinate_reference", None),
+            "bregma_to_lambda_distance": old_subj_procedure.get("bregma_to_lambda_distance", None),
+            "bregma_to_lambda_unit": get_or_default(old_subj_procedure, IntraCerebellarVentricleInjection, "bregma_to_lambda_unit"),
+            "injection_angle": old_subj_procedure.get("injection_angle", None),
+            "injection_angle_unit":get_or_default(old_subj_procedure, IntraCerebellarVentricleInjection, "injection_angle_unit"),
+            "targeted_structure":old_subj_procedure.get("targeted_structure", None),
+            "injection_hemisphere":old_subj_procedure.get("injection_hemisphere", None),
+        }
+
+        return construct_new_model(injection_dict, IntraCerebellarVentricleInjection, self.allow_validation_errors)
+
     
-    def upgrade_intra_cisternal_magna_injection(old_subj_procedure: dict):  
+    def upgrade_intra_cisternal_magna_injection(self, old_subj_procedure: dict):  
         """Map legacy IntraCisternalMagnaInjection model to current version"""
 
-        try:
-            return IntraCisternalMagnaInjection.model_validate(old_subj_procedure)
-        except ValidationError as e:
-            logging.error(f"Error validating IntraCisternalMagnaInjection: {e}")
-            return IntraCisternalMagnaInjection.model_construct(**old_subj_procedure)
+        injection_dict = {
+            "injection_volume": old_subj_procedure.get("injection_volume", None),
+            "injection_volume_unit": get_or_default(old_subj_procedure, IntraCisternalMagnaInjection, "injection_volume_unit"),
+            "injection_materials":old_subj_procedure.get("injection_materials", [None]),
+            "recovery_time":old_subj_procedure.get("recovery_time", None),
+            "recovery_time_unit":get_or_default(old_subj_procedure, IntraCisternalMagnaInjection, "recovery_time_unit"),
+            "injection_duration":old_subj_procedure.get("injection_duration", None),
+            "injection_duration_unit":get_or_default(old_subj_procedure, IntraCisternalMagnaInjection, "injection_duration_unit"),
+            "instrument_id":old_subj_procedure.get("instrument_id", None),
+            "protocol_id":old_subj_procedure.get("protocol_id", "unknown"),
+            "injection_coordinate_ml": old_subj_procedure.get("injection_coordinate_ml", None),
+            "injection_coordinate_ap": old_subj_procedure.get("injection_coordinate_ap", None),
+            "injection_coordinate_depth": old_subj_procedure.get("injection_coordinate_depth", None),
+            "injection_coordinate_unit":get_or_default(old_subj_procedure, IntraCisternalMagnaInjection, "injection_coordinate_unit"),
+            "injection_coordinate_reference": old_subj_procedure.get("injection_coordinate_reference", None),
+            "bregma_to_lambda_distance": old_subj_procedure.get("bregma_to_lambda_distance", None),
+            "bregma_to_lambda_unit": get_or_default(old_subj_procedure, IntraCisternalMagnaInjection, "bregma_to_lambda_unit"),
+            "injection_angle": old_subj_procedure.get("injection_angle", None),
+            "injection_angle_unit":get_or_default(old_subj_procedure, IntraCisternalMagnaInjection, "injection_angle_unit"),
+            "targeted_structure":old_subj_procedure.get("targeted_structure", None),
+            "injection_hemisphere":old_subj_procedure.get("injection_hemisphere", None),
+        }
+
+        return construct_new_model(injection_dict, IntraCisternalMagnaInjection, self.allow_validation_errors)
     
-    def upgrade_intraperitoneal_injection(old_subj_procedure: dict):
+    
+    def upgrade_intraperitoneal_injection(self, old_subj_procedure: dict):
         """Map legacy IntraperitonealInjection model to current version"""
 
-        try:
-            return IntraperitonealInjection.model_validate(old_subj_procedure)
-        except ValidationError as e:
-            logging.error(f"Error validating IntraperitonealInjection: {e}")
-            return IntraperitonealInjection.model_construct(**old_subj_procedure)
+
+        injection_dict = {
+            "injection_volume":old_subj_procedure.get("injection_volume", None),
+            "injection_volume_unit":get_or_default(old_subj_procedure, IntraperitonealInjection, "injection_volume_unit"),
+            "injection_materials":old_subj_procedure.get("injection_materials", [None]),
+            "recovery_time":old_subj_procedure.get("recovery_time", None),
+            "recovery_time_unit":get_or_default(old_subj_procedure, IntraperitonealInjection, "recovery_time_unit"),
+            "injection_duration":old_subj_procedure.get("injection_duration", None),
+            "injection_duration_unit":get_or_default(old_subj_procedure, IntraperitonealInjection, "injection_duration_unit"),
+            "instrument_id":old_subj_procedure.get("instrument_id", None),
+            "protocol_id":old_subj_procedure.get("protocol_id", "unknown"),
+        }
+
+        return construct_new_model(injection_dict, IntraperitonealInjection, self.allow_validation_errors)
     
-    def upgrade_iontophoresis_injection(old_subj_procedure: dict):
+    
+    def upgrade_iontophoresis_injection(self, old_subj_procedure: dict):
         """Map legacy IontophoresisInjection model to current version"""
 
-        try:
-            return IontophoresisInjection.model_validate(old_subj_procedure)
-        except ValidationError as e:
-            logging.error(f"Error validating IontophoresisInjection: {e}")
-            return IontophoresisInjection.model_construct(**old_subj_procedure)
-    
-    def upgrade_nanoject_injection(old_subj_procedure: dict):
+        injection_dict = {
+            "injection_current": old_subj_procedure.get("injection_current", None),
+            "injection_current_unit": get_or_default(old_subj_procedure, IontophoresisInjection, "injection_current_unit"),
+            "alternating_current": old_subj_procedure.get("alternating_current", None),
+            "injection_materials":old_subj_procedure.get("injection_materials", [None]),
+            "recovery_time":old_subj_procedure.get("recovery_time", None),
+            "recovery_time_unit":get_or_default(old_subj_procedure, IontophoresisInjection, "recovery_time_unit"),
+            "injection_duration":old_subj_procedure.get("injection_duration", None),
+            "injection_duration_unit":get_or_default(old_subj_procedure, IontophoresisInjection, "injection_duration_unit"),
+            "instrument_id":old_subj_procedure.get("instrument_id", None),
+            "protocol_id":old_subj_procedure.get("protocol_id", "unknown"),
+            "injection_coordinate_ml": old_subj_procedure.get("injection_coordinate_ml", None),
+            "injection_coordinate_ap": old_subj_procedure.get("injection_coordinate_ap", None),
+            "injection_coordinate_depth": old_subj_procedure.get("injection_coordinate_depth", None),
+            "injection_coordinate_unit":get_or_default(old_subj_procedure, IontophoresisInjection, "injection_coordinate_unit"),
+            "injection_coordinate_reference": old_subj_procedure.get("injection_coordinate_reference", None),
+            "bregma_to_lambda_distance": old_subj_procedure.get("bregma_to_lambda_distance", None),
+            "bregma_to_lambda_unit": get_or_default(old_subj_procedure, IontophoresisInjection, "bregma_to_lambda_unit"),
+            "injection_angle": old_subj_procedure.get("injection_angle", None),
+            "injection_angle_unit":get_or_default(old_subj_procedure, IontophoresisInjection, "injection_angle_unit"),
+            "targeted_structure":old_subj_procedure.get("targeted_structure", None),
+            "injection_hemisphere":old_subj_procedure.get("injection_hemisphere", None),    
+        }
+
+        return construct_new_model(injection_dict, IontophoresisInjection, self.allow_validation_errors)
+
+
+    def upgrade_nanoject_injection(self, old_subj_procedure: dict):
         """Map legacy NanojectInjection model to current version"""
 
-        if not check_field(old_subj_procedure, "injection_materials"):
-            old_subj_procedure["injection_materials"] = [None]
+        injection_dict = {
+            "injection_volume":old_subj_procedure.get("injection_volume", None),
+            "injection_volume_unit":get_or_default(old_subj_procedure, NanojectInjection, "injection_volume_unit"),
+            "injection_materials":old_subj_procedure.get("injection_materials", [None]),
+            "recovery_time":old_subj_procedure.get("recovery_time", None),
+            "recovery_time_unit":get_or_default(old_subj_procedure, NanojectInjection, "recovery_time_unit"),
+            "injection_duration":old_subj_procedure.get("injection_duration", None),
+            "injection_duration_unit":get_or_default(old_subj_procedure, NanojectInjection, "injection_duration_unit"),
+            "instrument_id":old_subj_procedure.get("instrument_id", None),
+            "protocol_id":old_subj_procedure.get("protocol_id", "dx.doi.org/10.17504/protocols.io.bgpujvnw"),
+            "injection_coordinate_ml": old_subj_procedure.get("injection_coordinate_ml", None),
+            "injection_coordinate_ap": old_subj_procedure.get("injection_coordinate_ap", None),
+            "injection_coordinate_depth": old_subj_procedure.get("injection_coordinate_depth", None),
+            "injection_coordinate_unit":get_or_default(old_subj_procedure, NanojectInjection, "injection_coordinate_unit"),
+            "injection_coordinate_reference": old_subj_procedure.get("injection_coordinate_reference", None),
+            "bregma_to_lambda_distance": old_subj_procedure.get("bregma_to_lambda_distance", None),
+            "bregma_to_lambda_unit": get_or_default(old_subj_procedure, NanojectInjection, "bregma_to_lambda_unit"),
+            "injection_angle": old_subj_procedure.get("injection_angle", None),
+            "injection_angle_unit":get_or_default(old_subj_procedure, NanojectInjection, "injection_angle_unit"),
+            "targeted_structure":old_subj_procedure.get("targeted_structure", None),
+            "injection_hemisphere":old_subj_procedure.get("injection_hemisphere", None), 
+            "protocol_id":old_subj_procedure.get("protocol_id", "dx.doi.org/10.17504/protocols.io.bgpujvnw"),
+        }
 
-        if not old_subj_procedure.get("protocol_id", None):
-            old_subj_procedure["protocol_id"] = "dx.doi.org/10.17504/protocols.io.bgpujvnw"
+        return construct_new_model(injection_dict, NanojectInjection, self.allow_validation_errors)
 
-        try:
-            return NanojectInjection.model_validate(old_subj_procedure)
-        except ValidationError as e:
-            logging.error(f"Error validating NanojectInjection: {e}")
-            return NanojectInjection.model_construct(**old_subj_procedure)
-            logging.info(f"Constructed NanojectInjection: {constructed}")
-            return NanojectInjection(
-                protocol_id="dx.doi.org/10.17504/protocols.io.bgpujvnw",
-                injection_coordinate_ml=get_or_default(constructed, "injection_coordinate_ml", {}),
-                injection_coordinate_ap=get_or_default(constructed, "injection_coordinate_ap", {}),
-                injection_coordinate_depth=get_or_default(constructed, "injection_coordinate_depth", {}),
-                injection_coordinate_unit=get_or_default(constructed, "injection_coordinate_unit", {}),
-                injection_coordinate_reference=get_or_default(constructed, "injection_coordinate_reference", {}),
-                bregma_to_lambda_distance=get_or_default(constructed, "bregma_to_lambda_distance", {}),
-                bregma_to_lambda_unit=get_or_default(constructed, "bregma_to_lambda_unit", {}),
-                injection_angle=get_or_default(constructed, "injection_angle", {}),
-                injection_angle_unit=get_or_default(constructed, "injection_angle_unit", {}),
-                targeted_structure=get_or_default(constructed, "targeted_structure", {}),
-                injection_hemisphere=get_or_default(constructed, "injection_hemisphere", {}),
-                procedure_type=get_or_default(constructed, "procedure_type", {}),
-                injection_volume=get_or_default(constructed, "injection_volume", {}),
-                injection_volume_unit=get_or_default(constructed, "injection_volume_unit", {}),
-            )
-    
-    def upgrade_perfusion(old_subj_procedure: dict):
+
+    def upgrade_perfusion(self, old_subj_procedure: dict):
         """Map legacy Perfusion model to current version"""
 
-        
-        for field in ["protocol_id"]:
-            protocol_id = check_field(old_subj_procedure, field)
-            if protocol_id:
-                break
 
-        if not protocol_id:
-            protocol_id = "dx.doi.org/10.17504/protocols.io.bg5vjy66"
+        perfusion_dict = {
+            "protocol_id":old_subj_procedure.get("protocol_id", "dx.doi.org/10.17504/protocols.io.bg5vjy66"),
+            "output_specimen_ids":[str(item) for item in old_subj_procedure.get("output_specimen_ids", [])]
+        }
 
-        return Perfusion(
-            protocol_id=protocol_id,
-            output_specimen_ids=set(str(id) for id in old_subj_procedure.get("output_specimen_ids")),
-        )
+        return construct_new_model(perfusion_dict, Perfusion, self.allow_validation_errors)
+
     
-    def upgrade_other_subject_procedure(old_subj_procedure: dict): 
+    def upgrade_other_subject_procedure(self, old_subj_procedure: dict): 
         """Map legacy OtherSubjectProcedure model to current version"""
 
-        try:
-            return OtherSubjectProcedure.model_validate(old_subj_procedure)
-        except ValidationError as e:
-            logging.error(f"Error validating OtherSubjectProcedure: {e}")
-            return OtherSubjectProcedure.model_construct(old_subj_procedure)
+        other_dict = {
+            "protocol_id":old_subj_procedure.get("protocol_id", "unknown"),
+            "description":old_subj_procedure.get("description", None),
+            "notes":old_subj_procedure.get("notes", None),
+        }
+
+        return construct_new_model(other_dict, OtherSubjectProcedure, self.allow_validation_errors)
+
     
-    def upgrade_retro_orbital_injection(old_subj_procedure: dict):
+    def upgrade_retro_orbital_injection(self, old_subj_procedure: dict):
         """Map legacy RetroOrbitalInjection model to current version"""
-        logging.info(f"Upgrading retro-orbital injection {old_subj_procedure}")
 
-        if old_subj_procedure.get("injection_materials", None):
-            old_subj_procedure["injection_materials"] = InjectionMaterialsUpgrade.upgrade_injection_materials(old_subj_procedure["injection_materials"])
 
-        if not old_subj_procedure.get("injection_eye", None):
-            old_subj_procedure["injection_eye"] = "unknown"
+        retro_orbital_dict = {
+            "injection_volume":old_subj_procedure.get("injection_volume", None),
+            "injection_volume_unit":get_or_default(old_subj_procedure, RetroOrbitalInjection, "injection_volume_unit"),
+            "injection_eye":old_subj_procedure.get("injection_eye", "unknown"),
+            "injection_materials":old_subj_procedure.get("injection_materials", None),
+            "recovery_time":old_subj_procedure.get("recovery_time", None),
+            "recovery_time_unit":get_or_default(old_subj_procedure, RetroOrbitalInjection, "recovery_time_unit"),
+            "injection_duration":old_subj_procedure.get("injection_duration", None),
+            "injection_duration_unit":get_or_default(old_subj_procedure, RetroOrbitalInjection, "injection_duration_unit"),
+            "instrument_id":old_subj_procedure.get("instrument_id", None),
+            "protocol_id":old_subj_procedure.get("protocol_id", "unknown"),
+        }
 
-        try:
-            return RetroOrbitalInjection(
-                injection_volume=old_subj_procedure.get("injection_volume", None),
-                injection_volume_unit=get_or_default(old_subj_procedure, "injection_volume_unit", RetroOrbitalInjection),
-                injection_eye=old_subj_procedure.get("injection_eye", None),
-                injection_materials=old_subj_procedure.get("injection_materials", None),
-                recovery_time=old_subj_procedure.get("recovery_time", None),
-                recovery_time_unit=get_or_default(old_subj_procedure, "recovery_time_unit", RetroOrbitalInjection),
-                injection_duration=old_subj_procedure.get("injection_duration", None),
-                injection_duration_unit=get_or_default(old_subj_procedure, "injection_duration_unit", RetroOrbitalInjection),
-                instrument_id=old_subj_procedure.get("instrument_id", None),
-                protocol_id="unknown",
-            )
-        except ValidationError as e:
-            logging.error(f"Error validating RetroOrbitalInjection: {e}")
-            return RetroOrbitalInjection.model_construct(**old_subj_procedure)
-        
+        return construct_new_model(retro_orbital_dict, RetroOrbitalInjection, self.allow_validation_errors)
 
 
 class ProcedureUpgrade(BaseModelUpgrade):
     """Handle upgrades for Procedure models."""
 
-    upgrade_funcs = {
-        "Craniotomy": SubjectProcedureModelsUpgrade.upgrade_craniotomy,
-        "Fiber implant": SubjectProcedureModelsUpgrade.upgrade_fiber_implant,
-        "Headframe": SubjectProcedureModelsUpgrade.upgrade_headframe,
-        "Intra cerebellar ventricle injection": SubjectProcedureModelsUpgrade.upgrade_intra_cerebellar_ventricle_injection,
-        "Intra cisternal magna injection": SubjectProcedureModelsUpgrade.upgrade_intra_cisternal_magna_injection,
-        "Intraperitoneal injection": SubjectProcedureModelsUpgrade.upgrade_intraperitoneal_injection,
-        "Iontophoresis injection": SubjectProcedureModelsUpgrade.upgrade_iontophoresis_injection,
-        "Nanoject injection": SubjectProcedureModelsUpgrade.upgrade_nanoject_injection,
-        "Perfusion": SubjectProcedureModelsUpgrade.upgrade_perfusion,
-        "Other subject procedure": SubjectProcedureModelsUpgrade.upgrade_other_subject_procedure,
-        "Retro-orbital injection": SubjectProcedureModelsUpgrade.upgrade_retro_orbital_injection,
-    }
+    def __init__(self, old_procedures_model: Union[Procedures, dict], allow_validation_errors=False):
+        super().__init__(old_procedures_model, model_class=Procedures, allow_validation_errors=allow_validation_errors)
+
+        self.subj_procedure_upgrader = SubjectProcedureModelsUpgrade(allow_validation_errors)
+
+        self.upgrade_funcs = {
+            "Craniotomy": self.subj_procedure_upgrader.upgrade_craniotomy,
+            "Fiber implant": self.subj_procedure_upgrader.upgrade_fiber_implant,
+            "Headframe": self.subj_procedure_upgrader.upgrade_headframe,
+            "Intra cerebellar ventricle injection": self.subj_procedure_upgrader.upgrade_intra_cerebellar_ventricle_injection,
+            "Intra cisternal magna injection": self.subj_procedure_upgrader.upgrade_intra_cisternal_magna_injection,
+            "Intraperitoneal injection": self.subj_procedure_upgrader.upgrade_intraperitoneal_injection,
+            "Iontophoresis injection": self.subj_procedure_upgrader.upgrade_iontophoresis_injection,
+            "Nanoject injection": self.subj_procedure_upgrader.upgrade_nanoject_injection,
+            "Perfusion": self.subj_procedure_upgrader.upgrade_perfusion,
+            "Other subject procedure": self.subj_procedure_upgrader.upgrade_other_subject_procedure,
+            "Retro-orbital injection": self.subj_procedure_upgrader.upgrade_retro_orbital_injection,
+        }
 
     def caller(self, func, model):
         return func(model)
-
-
-    def __init__(self, old_procedures_model: Procedures):
-        super().__init__(old_procedures_model, model_class=Procedures)
 
     
     def upgrade_subject_procedure(self, old_subj_procedure: dict):
@@ -399,7 +446,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
             old_subj_procedure = drop_unused_fields(old_subj_procedure, procedure_type)
             
             if check_field(old_subj_procedure, "injection_materials"):
-                old_subj_procedure["injection_materials"] = InjectionMaterialsUpgrade.upgrade_injection_materials(old_subj_procedure["injection_materials"])
+                old_subj_procedure["injection_materials"] = InjectionMaterialsUpgrade(self.allow_validation_errors).upgrade_injection_materials(old_subj_procedure["injection_materials"])
             elif hasattr(old_subj_procedure, "injection_materials"):
                 old_subj_procedure["injection_materials"] = [None]
 
@@ -408,8 +455,9 @@ class ProcedureUpgrade(BaseModelUpgrade):
             logging.error(f"Procedure type {procedure_type} not found in list of procedure types")
             return None
         
+
     @staticmethod
-    def upgrade_specimen_procedure(old_specimen_procedure: Any) -> Optional[SpecimenProcedure]:
+    def upgrade_specimen_procedure(self, old_specimen_procedure: Any) -> Optional[SpecimenProcedure]:
         """Map legacy SpecimenProcedure model to current version"""
 
         if type(old_specimen_procedure) is SpecimenProcedure:
@@ -435,12 +483,6 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
                 logging.info(f"Upgrading procedure {subj_procedure.get('procedure_type')} for subject {subj_id} on date {date}")
                 logging.info(f"Old procedure: {subj_procedure}")
-
-                # upgraded_subj_procedure = self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)
-                # logging.info(f"repeat procedure: {subj_procedure}")
-                # logging.info(f"Upgraded procedure {subj_procedure.get('procedure_type')} for subject {subj_id} on date {date} to {upgraded_subj_procedure}")
-                # if not upgraded_subj_procedure:
-                #     continue
                 
 
                 if date not in loaded_subject_procedures.keys():
@@ -457,7 +499,6 @@ class ProcedureUpgrade(BaseModelUpgrade):
                         workstation_id=subj_procedure.get("workstation_id"),
                         notes=subj_procedure.get("notes"),
                         procedures=[self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)],
-                        
                     )
                     logging.info(f"new surgery: {new_surgery}")
                     loaded_subject_procedures[date] = new_surgery
