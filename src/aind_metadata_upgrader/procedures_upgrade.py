@@ -568,18 +568,17 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
             def craniotomy_type(surgery: Surgery):
                 craniotomy = [x for x in surgery.procedures if isinstance(x, Craniotomy)][0]
-                if not craniotomy.craniotomy_type:
-                    if any(isinstance(x, Headframe) for x in surgery.procedures):
-                        
-                        headframe = [x for x in surgery.procedures if isinstance(x, Headframe)][0]
-                        if not headframe.headframe_type:
-                            pass
-                        elif 'WHC' in headframe.headframe_type:
-                            logging.debug(f"replacing craniotomy type in {craniotomy}")
-                            craniotomy.craniotomy_type = CraniotomyType.WHC
-                        elif 'Ctx' in headframe.headframe_type:
-                            logging.debug(f"replacing craniotomy type in {craniotomy}")
-                            craniotomy.craniotomy_type = CraniotomyType.VISCTX
+                if any(isinstance(x, Headframe) for x in surgery.procedures):
+                    
+                    headframe = [x for x in surgery.procedures if isinstance(x, Headframe)][0]
+                    if not headframe.headframe_type:
+                        pass
+                    elif 'WHC' in headframe.headframe_type:
+                        logging.debug(f"replacing craniotomy type in {craniotomy}")
+                        craniotomy.craniotomy_type = CraniotomyType.WHC
+                    elif 'Ctx' in headframe.headframe_type:
+                        logging.debug(f"replacing craniotomy type in {craniotomy}")
+                        craniotomy.craniotomy_type = CraniotomyType.VISCTX
                             
             for surgery in loaded_subject_procedures.values():
                 if any(isinstance(x, Craniotomy) for x in surgery.procedures):
