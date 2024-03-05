@@ -22,7 +22,7 @@
             {
                "procedure_type": "Craniotomy",
                "protocol_id": "unknown",
-               "craniotomy_type": "5 mm",
+               "craniotomy_type": "Visual Cortex",
                "craniotomy_hemisphere": null,
                "craniotomy_coordinates_ml": null,
                "craniotomy_coordinates_ap": null,
