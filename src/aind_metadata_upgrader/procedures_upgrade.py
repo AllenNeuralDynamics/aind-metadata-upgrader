@@ -30,12 +30,7 @@ from aind_data_schema.core.procedures import (
 from aind_data_schema.models.devices import FiberProbe
 
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
-from aind_metadata_upgrader.utils import (
-    check_field,
-    construct_new_model,
-    drop_unused_fields,
-    get_or_default,
-)
+from aind_metadata_upgrader.utils import *
 
 
 class InjectionMaterialsUpgrade(BaseModelUpgrade):
@@ -49,8 +44,8 @@ class InjectionMaterialsUpgrade(BaseModelUpgrade):
     def upgrade_viral_material(self, material: dict) -> ViralMaterial:
         """Map legacy NonViralMaterial model to current version"""
 
-        if input.get("tars_identifiers", None):
-            tars_data = input.get("tars_identifiers")
+        if material.get("tars_identifiers", None):
+            tars_data = material.get("tars_identifiers")
             tars_dict = {
                 "virus_tars_id": tars_data.get("virus_tars_id", None),
                 "plasmid_tars_alias": tars_data.get("plasmid_tars_alias", None),
@@ -64,11 +59,11 @@ class InjectionMaterialsUpgrade(BaseModelUpgrade):
             tars_identifier = None
 
         viral_dict = {
-            "name": input.get("name", "unknown"),
+            "name": material.get("name", "unknown"),
             "tars_identifiers": tars_identifier,
-            "addgene_id": input.get("addgene_id", None),
-            "titer": input.get("titer", None),
-            "titer_unit": input.get("titer_unit", None),
+            "addgene_id": material.get("addgene_id", None),
+            "titer": material.get("titer", None),
+            "titer_unit": material.get("titer_unit", None),
         }
 
         return construct_new_model(viral_dict, ViralMaterial, self.allow_validation_errors)
@@ -77,19 +72,19 @@ class InjectionMaterialsUpgrade(BaseModelUpgrade):
         """Map legacy NonViralMaterial model to current version"""
 
         nonviral_dict = {
-            "concentration": input.get("concentration", None),
-            "concentration_unit": get_or_default(input, NonViralMaterial, "concentration_unit"),
-            "name": input.get("name", "unknown"),
-            "source": get_or_default(input, NonViralMaterial, "source"),
-            "rrid": get_or_default(input, NonViralMaterial, "rrid"),
-            "lot_number": input.get("lot_number", None),
-            "expiration_date": get_or_default(input, NonViralMaterial, "expiration_date"),
+            "concentration": material.get("concentration", None),
+            "concentration_unit": get_or_default(material, NonViralMaterial, "concentration_unit"),
+            "name": material.get("name", "unknown"),
+            "source": get_or_default(material, NonViralMaterial, "source"),
+            "rrid": get_or_default(material, NonViralMaterial, "rrid"),
+            "lot_number": material.get("lot_number", None),
+            "expiration_date": get_or_default(material, NonViralMaterial, "expiration_date"),
         }
 
         return construct_new_model(nonviral_dict, NonViralMaterial, self.allow_validation_errors)
 
-    @staticmethod
-    def upgrade_injection_materials(old_injection_materials: list, allow_validation_error) -> Optional[dict]:
+
+    def upgrade_injection_materials(self, old_injection_materials: list) -> Optional[dict]:
         """Map legacy InjectionMaterials model to current version"""
 
         new_materials = []
@@ -98,10 +93,10 @@ class InjectionMaterialsUpgrade(BaseModelUpgrade):
                 injection_material
             ) in old_injection_materials:  # this wont work like i want, we changed the naming convention
                 if injection_material.get("titer") is not None:
-                    new_materials.append(InjectionMaterialsUpgrade.upgrade_viral_material(injection_material))
+                    new_materials.append(self.upgrade_viral_material(injection_material))
 
                 elif injection_material.get("concentration") is not None:
-                    new_materials.append(InjectionMaterialsUpgrade.upgrade_nonviral_material(injection_material))
+                    new_materials.append(self.upgrade_nonviral_material(injection_material))
                 else:
                     logging.error(f"Injection material with no titer or concentration {injection_material} passed in")
         else:
@@ -241,144 +236,6 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
         return construct_new_model(headframe_dict, Headframe, self.allow_validation_errors)
 
 
-    def upgrade_intra_cerebellar_ventricle_injection(self, old_subj_procedure: dict):
-        """Map legacy IntraCerebellarVentricleInjection model to current version"""
-
-        injection_dict = {
-            "injection_volume": old_subj_procedure.get("injection_volume", None),
-            "injection_volume_unit": get_or_default(
-                old_subj_procedure, IntraCerebellarVentricleInjection, "injection_volume_unit"
-            ),
-            "injection_materials": old_subj_procedure.get("injection_materials", [None]),
-            "recovery_time": old_subj_procedure.get("recovery_time", None),
-            "recovery_time_unit": get_or_default(
-                old_subj_procedure, IntraCerebellarVentricleInjection, "recovery_time_unit"
-            ),
-            "injection_duration": old_subj_procedure.get("injection_duration", None),
-            "injection_duration_unit": get_or_default(
-                old_subj_procedure, IntraCerebellarVentricleInjection, "injection_duration_unit"
-            ),
-            "instrument_id": old_subj_procedure.get("instrument_id", None),
-            "protocol_id": old_subj_procedure.get("protocol_id", "unknown"),
-            "injection_coordinate_ml": old_subj_procedure.get("injection_coordinate_ml", None),
-            "injection_coordinate_ap": old_subj_procedure.get("injection_coordinate_ap", None),
-            "injection_coordinate_depth": old_subj_procedure.get("injection_coordinate_depth", None),
-            "injection_coordinate_unit": get_or_default(
-                old_subj_procedure, IntraCerebellarVentricleInjection, "injection_coordinate_unit"
-            ),
-            "injection_coordinate_reference": old_subj_procedure.get("injection_coordinate_reference", None),
-            "bregma_to_lambda_distance": old_subj_procedure.get("bregma_to_lambda_distance", None),
-            "bregma_to_lambda_unit": get_or_default(
-                old_subj_procedure, IntraCerebellarVentricleInjection, "bregma_to_lambda_unit"
-            ),
-            "injection_angle": old_subj_procedure.get("injection_angle", None),
-            "injection_angle_unit": get_or_default(
-                old_subj_procedure, IntraCerebellarVentricleInjection, "injection_angle_unit"
-            ),
-            "targeted_structure": old_subj_procedure.get("targeted_structure", None),
-            "injection_hemisphere": old_subj_procedure.get("injection_hemisphere", None),
-        }
-
-        return construct_new_model(injection_dict, IntraCerebellarVentricleInjection, self.allow_validation_errors)
-
-    def upgrade_intra_cisternal_magna_injection(self, old_subj_procedure: dict):
-        """Map legacy IntraCisternalMagnaInjection model to current version"""
-
-        injection_dict = {
-            "injection_volume": old_subj_procedure.get("injection_volume", None),
-            "injection_volume_unit": get_or_default(
-                old_subj_procedure, IntraCisternalMagnaInjection, "injection_volume_unit"
-            ),
-            "injection_materials": old_subj_procedure.get("injection_materials", [None]),
-            "recovery_time": old_subj_procedure.get("recovery_time", None),
-            "recovery_time_unit": get_or_default(
-                old_subj_procedure, IntraCisternalMagnaInjection, "recovery_time_unit"
-            ),
-            "injection_duration": old_subj_procedure.get("injection_duration", None),
-            "injection_duration_unit": get_or_default(
-                old_subj_procedure, IntraCisternalMagnaInjection, "injection_duration_unit"
-            ),
-            "instrument_id": old_subj_procedure.get("instrument_id", None),
-            "protocol_id": old_subj_procedure.get("protocol_id", "unknown"),
-            "injection_coordinate_ml": old_subj_procedure.get("injection_coordinate_ml", None),
-            "injection_coordinate_ap": old_subj_procedure.get("injection_coordinate_ap", None),
-            "injection_coordinate_depth": old_subj_procedure.get("injection_coordinate_depth", None),
-            "injection_coordinate_unit": get_or_default(
-                old_subj_procedure, IntraCisternalMagnaInjection, "injection_coordinate_unit"
-            ),
-            "injection_coordinate_reference": old_subj_procedure.get("injection_coordinate_reference", None),
-            "bregma_to_lambda_distance": old_subj_procedure.get("bregma_to_lambda_distance", None),
-            "bregma_to_lambda_unit": get_or_default(
-                old_subj_procedure, IntraCisternalMagnaInjection, "bregma_to_lambda_unit"
-            ),
-            "injection_angle": old_subj_procedure.get("injection_angle", None),
-            "injection_angle_unit": get_or_default(
-                old_subj_procedure, IntraCisternalMagnaInjection, "injection_angle_unit"
-            ),
-            "targeted_structure": old_subj_procedure.get("targeted_structure", None),
-            "injection_hemisphere": old_subj_procedure.get("injection_hemisphere", None),
-        }
-
-        return construct_new_model(injection_dict, IntraCisternalMagnaInjection, self.allow_validation_errors)
-
-    def upgrade_intraperitoneal_injection(self, old_subj_procedure: dict):
-        """Map legacy IntraperitonealInjection model to current version"""
-
-        injection_dict = {
-            "injection_volume": old_subj_procedure.get("injection_volume", None),
-            "injection_volume_unit": get_or_default(
-                old_subj_procedure, IntraperitonealInjection, "injection_volume_unit"
-            ),
-            "injection_materials": old_subj_procedure.get("injection_materials", [None]),
-            "recovery_time": old_subj_procedure.get("recovery_time", None),
-            "recovery_time_unit": get_or_default(old_subj_procedure, IntraperitonealInjection, "recovery_time_unit"),
-            "injection_duration": old_subj_procedure.get("injection_duration", None),
-            "injection_duration_unit": get_or_default(
-                old_subj_procedure, IntraperitonealInjection, "injection_duration_unit"
-            ),
-            "instrument_id": old_subj_procedure.get("instrument_id", None),
-            "protocol_id": old_subj_procedure.get("protocol_id", "unknown"),
-        }
-
-        return construct_new_model(injection_dict, IntraperitonealInjection, self.allow_validation_errors)
-
-    def upgrade_iontophoresis_injection(self, old_subj_procedure: dict):
-        """Map legacy IontophoresisInjection model to current version"""
-
-        injection_dict = {
-            "injection_current": old_subj_procedure.get("injection_current", None),
-            "injection_current_unit": get_or_default(
-                old_subj_procedure, IontophoresisInjection, "injection_current_unit"
-            ),
-            "alternating_current": old_subj_procedure.get("alternating_current", None),
-            "injection_materials": old_subj_procedure.get("injection_materials", [None]),
-            "recovery_time": old_subj_procedure.get("recovery_time", None),
-            "recovery_time_unit": get_or_default(old_subj_procedure, IontophoresisInjection, "recovery_time_unit"),
-            "injection_duration": old_subj_procedure.get("injection_duration", None),
-            "injection_duration_unit": get_or_default(
-                old_subj_procedure, IontophoresisInjection, "injection_duration_unit"
-            ),
-            "instrument_id": old_subj_procedure.get("instrument_id", None),
-            "protocol_id": old_subj_procedure.get("protocol_id", "unknown"),
-            "injection_coordinate_ml": old_subj_procedure.get("injection_coordinate_ml", None),
-            "injection_coordinate_ap": old_subj_procedure.get("injection_coordinate_ap", None),
-            "injection_coordinate_depth": old_subj_procedure.get("injection_coordinate_depth", None),
-            "injection_coordinate_unit": get_or_default(
-                old_subj_procedure, IontophoresisInjection, "injection_coordinate_unit"
-            ),
-            "injection_coordinate_reference": old_subj_procedure.get("injection_coordinate_reference", None),
-            "bregma_to_lambda_distance": old_subj_procedure.get("bregma_to_lambda_distance", None),
-            "bregma_to_lambda_unit": get_or_default(
-                old_subj_procedure, IontophoresisInjection, "bregma_to_lambda_unit"
-            ),
-            "injection_angle": old_subj_procedure.get("injection_angle", None),
-            "injection_angle_unit": get_or_default(old_subj_procedure, IontophoresisInjection, "injection_angle_unit"),
-            "targeted_structure": old_subj_procedure.get("targeted_structure", None),
-            "injection_hemisphere": old_subj_procedure.get("injection_hemisphere", None),
-        }
-
-        return construct_new_model(injection_dict, IontophoresisInjection, self.allow_validation_errors)
-
     def upgrade_nanoject_injection(self, old_subj_procedure: dict):
         """Map legacy NanojectInjection model to current version"""
 
@@ -419,16 +276,6 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
 
         return construct_new_model(perfusion_dict, Perfusion, self.allow_validation_errors)
 
-    def upgrade_other_subject_procedure(self, old_subj_procedure: dict):
-        """Map legacy OtherSubjectProcedure model to current version"""
-
-        other_dict = {
-            "protocol_id": old_subj_procedure.get("protocol_id", "unknown"),
-            "description": old_subj_procedure.get("description", None),
-            "notes": old_subj_procedure.get("notes", None),
-        }
-
-        return construct_new_model(other_dict, OtherSubjectProcedure, self.allow_validation_errors)
 
     def upgrade_retro_orbital_injection(self, old_subj_procedure: dict):
         """Map legacy RetroOrbitalInjection model to current version"""
@@ -489,11 +336,11 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
             old_subj_procedure = drop_unused_fields(old_subj_procedure, procedure_type)
 
-            if check_field(old_subj_procedure, "injection_materials"):
+            if old_subj_procedure.get("injection_materials"):
                 old_subj_procedure["injection_materials"] = InjectionMaterialsUpgrade(
                     self.allow_validation_errors
                 ).upgrade_injection_materials(old_subj_procedure["injection_materials"])
-            elif hasattr(old_subj_procedure, "injection_materials"):
+            else:
                 old_subj_procedure["injection_materials"] = [None]
 
             return self.caller(self.upgrade_funcs[procedure_type], old_subj_procedure)
@@ -571,20 +418,18 @@ class ProcedureUpgrade(BaseModelUpgrade):
                 if any(isinstance(x, Headframe) for x in surgery.procedures):
                     
                     headframe = [x for x in surgery.procedures if isinstance(x, Headframe)][0]
-                    if not headframe.headframe_type:
-                        pass
-                    elif 'WHC' in headframe.headframe_type:
-                        logging.debug(f"replacing craniotomy type in {craniotomy}")
-                        craniotomy.craniotomy_type = CraniotomyType.WHC
-                    elif 'Ctx' in headframe.headframe_type:
-                        logging.debug(f"replacing craniotomy type in {craniotomy}")
-                        craniotomy.craniotomy_type = CraniotomyType.VISCTX
+                    if hasattr(headframe, 'headframe_type'):
+                        if 'WHC' in headframe.headframe_type:
+                            logging.debug(f"replacing craniotomy type in {craniotomy}")
+                            craniotomy.craniotomy_type = CraniotomyType.WHC
+                        elif 'Ctx' in headframe.headframe_type:
+                            logging.debug(f"replacing craniotomy type in {craniotomy}")
+                            craniotomy.craniotomy_type = CraniotomyType.VISCTX
                             
             for surgery in loaded_subject_procedures.values():
                 if any(isinstance(x, Craniotomy) for x in surgery.procedures):
                     craniotomy_type(surgery)
                         
-                            
 
             loaded_spec_procedures = []
             for spec_procedure in self.old_model.specimen_procedures:
