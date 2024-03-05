@@ -50,7 +50,9 @@
                "well_type": "No Well"
             },
             {
-               "injection_materials": null,
+               "injection_materials": [
+                  null
+               ],
                "recovery_time": 26.0,
                "recovery_time_unit": "minute",
                "injection_duration": null,
@@ -137,7 +139,9 @@
                ]
             },
             {
-               "injection_materials": null,
+               "injection_materials": [
+                  null
+               ],
                "recovery_time": 26.0,
                "recovery_time_unit": "minute",
                "injection_duration": null,

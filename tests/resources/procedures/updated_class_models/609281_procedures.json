@@ -15,7 +15,9 @@
          "workstation_id": null,
          "procedures": [
             {
-               "injection_materials": null,
+               "injection_materials": [
+                  null
+               ],
                "recovery_time": null,
                "recovery_time_unit": "minute",
                "injection_duration": null,
