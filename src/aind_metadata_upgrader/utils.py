@@ -43,7 +43,6 @@ def get_or_default(model: dict, model_type: AindModel, field_name: str, kwargs: 
     if kwargs.get(field_name) is not None:
         return kwargs.get(field_name)
     elif model.get(field_name, None) is not None:
-        logging.info(f"field_name: {field_name}, model.get(field_name): {model.get(field_name)}")
         return model.get(field_name)
     else:
         try:
