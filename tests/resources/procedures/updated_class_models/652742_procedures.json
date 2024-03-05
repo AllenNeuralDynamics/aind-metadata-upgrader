@@ -96,9 +96,36 @@
                         "length_unit": "millimeter"
                      },
                      "targeted_structure": "unknown",
-                     "stereotactic_coordinate_ap": "1.0",
-                     "stereotactic_coordinate_ml": "-1.35",
-                     "stereotactic_coordinate_dv": "-4.0",
+                     "stereotactic_coordinate_ap": "1",
+                     "stereotactic_coordinate_ml": "-1.350000000000000088817841970012523233890533447265625",
+                     "stereotactic_coordinate_dv": "-4",
+                     "stereotactic_coordinate_unit": "millimeter",
+                     "stereotactic_coordinate_reference": "Bregma",
+                     "bregma_to_lambda_distance": "4.579",
+                     "bregma_to_lambda_unit": "millimeter",
+                     "angle": "0.0",
+                     "angle_unit": "degrees",
+                     "notes": null
+                  },
+                  {
+                     "ophys_probe": {
+                        "device_type": "Fiber optic probe",
+                        "serial_number": null,
+                        "manufacturer": null,
+                        "model": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "additional_settings": {},
+                        "notes": null,
+                        "core_diameter_unit": "um",
+                        "ferrule_material": null,
+                        "active_length": null,
+                        "length_unit": "millimeter"
+                     },
+                     "targeted_structure": "unknown",
+                     "stereotactic_coordinate_ap": "1",
+                     "stereotactic_coordinate_ml": "1.350000000000000088817841970012523233890533447265625",
+                     "stereotactic_coordinate_dv": "-4",
                      "stereotactic_coordinate_unit": "millimeter",
                      "stereotactic_coordinate_reference": "Bregma",
                      "bregma_to_lambda_distance": "4.579",
@@ -135,39 +162,6 @@
                   300.0
                ],
                "injection_volume_unit": "nanoliter"
-            },
-            {
-               "procedure_type": "Fiber implant",
-               "protocol_id": "unknown",
-               "probes": [
-                  {
-                     "ophys_probe": {
-                        "device_type": "Fiber optic probe",
-                        "serial_number": null,
-                        "manufacturer": null,
-                        "model": null,
-                        "path_to_cad": null,
-                        "port_index": null,
-                        "additional_settings": {},
-                        "notes": null,
-                        "core_diameter_unit": "um",
-                        "ferrule_material": null,
-                        "active_length": null,
-                        "length_unit": "millimeter"
-                     },
-                     "targeted_structure": "unknown",
-                     "stereotactic_coordinate_ap": "1.0",
-                     "stereotactic_coordinate_ml": "1.35",
-                     "stereotactic_coordinate_dv": "-4.0",
-                     "stereotactic_coordinate_unit": "millimeter",
-                     "stereotactic_coordinate_reference": "Bregma",
-                     "bregma_to_lambda_distance": "4.579",
-                     "bregma_to_lambda_unit": "millimeter",
-                     "angle": "0.0",
-                     "angle_unit": "degrees",
-                     "notes": null
-                  }
-               ]
             }
          ],
          "notes": null
