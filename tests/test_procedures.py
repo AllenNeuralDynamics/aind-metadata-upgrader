@@ -27,20 +27,6 @@ procedures_files = glob("tests/resources/procedures/class_model_examples/*.json"
 print(procedures_files)
 
 
-def replace_placeholders(json_para: str, search_para, replace_para):
-    """Jon made this function to replace placeholders in a json file"""
-    # Local nested function.
-    def decode_dict(a_dict):
-        """Decodes a dictionary and replaces the search parameter with the replace parameter."""
-        if search_para in a_dict.values():
-            for key, value in a_dict.items():
-                if value == search_para:
-                    a_dict[key] = replace_para
-        return a_dict
-
-    return json.loads(json_para, object_hook=decode_dict)
-
-
 for file in procedures_files:
 
     with open(file, "r") as f:
@@ -49,7 +35,6 @@ for file in procedures_files:
     for procedure in contents["subject_procedures"]:
         logging.info(procedure)
         if "probes" in procedure.keys():
-            logging.info("replacing: ", procedure)
             if "um" in procedure["probes"]["core_diameter_unit"].replace("μm", "um"):
                 procedure["probes"].pop("core_diameter_unit")
                 procedure["probes"]["core_diameter_unit"] = "um"
