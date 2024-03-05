@@ -29,14 +29,6 @@ def construct_new_model(model_inputs: dict, model_type: AindModel, allow_validat
         return model_type.model_construct(**model_inputs)
 
 
-def check_field(model, field):
-    """Check if field exists in model and is not None, return the value if it exists, else return None"""
-
-    if hasattr(model, field) and getattr(model, field) is not None:
-        return getattr(model, field)
-    return None
-
-
 def get_or_default(model: dict, model_type: AindModel, field_name: str, kwargs: dict = {}):
     """Version of get_or_default that works with a dict instead of a model instance. If field is not explicitly set, will attempt to extract from a model."""
 
