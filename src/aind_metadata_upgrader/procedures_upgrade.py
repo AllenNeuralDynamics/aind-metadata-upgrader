@@ -3,6 +3,8 @@
 import logging
 from typing import Any, Optional, Union
 
+from decimal import Decimal
+
 import semver
 from aind_data_schema.core.procedures import (
     Craniotomy,
@@ -23,6 +25,7 @@ from aind_data_schema.core.procedures import (
     Surgery,
     TarsVirusIdentifiers,
     ViralMaterial,
+    CraniotomyType,
 )
 from aind_data_schema.models.devices import FiberProbe
 
@@ -45,8 +48,6 @@ class InjectionMaterialsUpgrade(BaseModelUpgrade):
 
     def upgrade_viral_material(self, material: dict) -> ViralMaterial:
         """Map legacy NonViralMaterial model to current version"""
-
-        input = drop_unused_fields(material.copy(), ViralMaterial)
 
         if input.get("tars_identifiers", None):
             tars_data = input.get("tars_identifiers")
@@ -74,8 +75,6 @@ class InjectionMaterialsUpgrade(BaseModelUpgrade):
 
     def upgrade_nonviral_material(self, material: dict) -> NonViralMaterial:
         """Map legacy NonViralMaterial model to current version"""
-
-        input = drop_unused_fields(material.copy(), NonViralMaterial)
 
         nonviral_dict = {
             "concentration": input.get("concentration", None),
@@ -138,76 +137,92 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
             "craniotomy_size": old_subj_procedure.get("craniotomy_size", None),
         }
 
-        # check for size, and if size exists give it a type based on size
-
-        drop_unused_fields(craniotomy_dict, Craniotomy)
+        if not craniotomy_dict['craniotomy_type'] and craniotomy_dict['craniotomy_size']:
+            if '3' in craniotomy_dict['craniotomy_size']:
+                craniotomy_dict['craniotomy_type'] = '3 mm'
+            elif '5' in craniotomy_dict['craniotomy_size']:
+                craniotomy_dict['craniotomy_type'] = '5 mm'
+            
+        drop_unused_fields(craniotomy_dict, 'Craniotomy')
 
         return construct_new_model(craniotomy_dict, Craniotomy, self.allow_validation_errors)
 
+
+    def construct_ophys_probe(self, probe: dict):
+        """Map legacy OphysProbe model to current version"""
+
+        if probe.get("ophys_probe") is not None:
+            fiber_probe_item = probe.get("ophys_probe")
+            fiber_probe_dict = {
+                "device_type": probe.get("device_type", None),
+                "name": probe.get("name", None),
+                "serial_number": probe.get("serial_number", None),
+                "manufacturer": probe.get("manufacturer", None),
+                "model": probe.get("model", None),
+                "path_to_cad": probe.get("path_to_cad", None),
+                "port_index": probe.get("port_index", None),
+                "additional_set": get_or_default(probe, OphysProbe, "additional_set"),
+                "core_diameter": fiber_probe_item.get("core_diameter", None),
+                "core_diameter_unit": fiber_probe_item.get("core_diameter_unit", None),
+                "numerical_aperture": fiber_probe_item.get("numerical_aperture", None),
+                "ferrule_material": fiber_probe_item.get("ferrule_material", None),
+                "active_length": fiber_probe_item.get("active_length", None),
+                "total_length": fiber_probe_item.get("total_length", None),
+                "length_unit": get_or_default(fiber_probe_item, FiberProbe, "length_unit"),
+            }
+            fiber_probe = construct_new_model(fiber_probe_dict, FiberProbe, self.allow_validation_errors)
+        else:
+            fiber_probe = FiberProbe.model_construct()
+
+        ophys_probe_dict = {
+            "ophys_probe": fiber_probe,
+            "targeted_structure": probe.get("targeted_structure", "unknown"),
+            "stereotactic_coordinate_ap": Decimal(probe.get("stereotactic_coordinate_ap", None)),
+            "stereotactic_coordinate_ml": Decimal(probe.get("stereotactic_coordinate_ml", None)),
+            "stereotactic_coordinate_dv": Decimal(probe.get("stereotactic_coordinate_dv", None)),
+            "stereotactic_coordinate_unit": get_or_default(probe, OphysProbe, "stereotactic_coordinate_unit"),
+            "stereotactic_coordinate_reference": probe.get("stereotactic_coordinate_reference", None),
+            "bregma_to_lambda_distance": probe.get("bregma_to_lambda_distance", None),
+            "bregma_to_lambda_unit": get_or_default(probe, OphysProbe, "bregma_to_lambda_unit"),
+            "angle": probe.get("angle", None),
+            "angle_unit": get_or_default(probe, OphysProbe, "angle_unit"),
+            "notes": get_or_default(probe, OphysProbe, "notes"),
+        }
+
+        return construct_new_model(ophys_probe_dict, OphysProbe, self.allow_validation_errors)
+
     def upgrade_fiber_implant(self, old_subj_procedure: dict):
         """Map legacy FiberImplant model to current version"""
-
-        def construct_probe(probe: dict):
-            """Map legacy OphysProbe model to current version"""
-
-            if probe.get("ophys_probe") is not None:
-                fiber_probe_item = probe.get("ophys_probe")
-                fiber_probe_dict = {
-                    "device_type": probe.get("device_type", None),
-                    "name": probe.get("name", None),
-                    "serial_number": probe.get("serial_number", None),
-                    "manufacturer": probe.get("manufacturer", None),
-                    "model": probe.get("model", None),
-                    "path_to_cad": probe.get("path_to_cad", None),
-                    "port_index": probe.get("port_index", None),
-                    "additional_set": get_or_default(probe, OphysProbe, "additional_set"),
-                    "core_diameter": fiber_probe_item.get("core_diameter", None),
-                    "core_diameter_unit": fiber_probe_item.get("core_diameter_unit", None),
-                    "numerical_aperture": fiber_probe_item.get("numerical_aperture", None),
-                    "ferrule_material": fiber_probe_item.get("ferrule_material", None),
-                    "active_length": fiber_probe_item.get("active_length", None),
-                    "total_length": fiber_probe_item.get("total_length", None),
-                    "length_unit": get_or_default(fiber_probe_item, FiberProbe, "length_unit"),
-                }
-                fiber_probe = construct_new_model(fiber_probe_dict, FiberProbe, self.allow_validation_errors)
-            else:
-                fiber_probe = FiberProbe.model_construct()
-
-            ophys_probe_dict = {
-                "ophys_probe": fiber_probe,
-                "targeted_structure": probe.get("targeted_structure", "unknown"),
-                "stereotactic_coordinate_ap": probe.get("stereotactic_coordinate_ap", None),
-                "stereotactic_coordinate_ml": probe.get("stereotactic_coordinate_ml", None),
-                "stereotactic_coordinate_dv": probe.get("stereotactic_coordinate_dv", None),
-                "stereotactic_coordinate_unit": get_or_default(probe, OphysProbe, "stereotactic_coordinate_unit"),
-                "stereotactic_coordinate_reference": probe.get("stereotactic_coordinate_reference", None),
-                "bregma_to_lambda_distance": probe.get("bregma_to_lambda_distance", None),
-                "bregma_to_lambda_unit": get_or_default(probe, OphysProbe, "bregma_to_lambda_unit"),
-                "angle": probe.get("angle", None),
-                "angle_unit": get_or_default(probe, OphysProbe, "angle_unit"),
-                "notes": get_or_default(probe, OphysProbe, "notes"),
-            }
-
-            return construct_new_model(ophys_probe_dict, OphysProbe, self.allow_validation_errors)
 
         probes = []
 
         if "probes" in old_subj_procedure.keys():
             if isinstance(old_subj_procedure["probes"], dict):
                 probe = old_subj_procedure["probes"]
-                new_probe = construct_probe(probe)
+                new_probe = self.construct_ophys_probe(probe)
                 if new_probe:
                     probes.append(new_probe)
 
             elif isinstance(old_subj_procedure["probes"], list):
                 for probe in old_subj_procedure["probes"]:
-                    new_probe = construct_probe(probe)
+                    new_probe = self.construct_ophys_probe(probe)
                     if new_probe:
                         probes.append(new_probe)
 
-        fiber_implant_dict = {"protocol_id": old_subj_procedure.get("protocol_id", "unknown"), "probes": probes}
+        fiber_implant_dict = {
+            "protocol_id": old_subj_procedure.get("protocol_id", "unknown"), 
+            "probes": probes
+        }
 
         return construct_new_model(fiber_implant_dict, FiberImplant, self.allow_validation_errors)
+
+
+    def add_probe(self, old_subj_procedure: dict, fiber_implant_model: FiberImplant):
+        """adds a probe to an existing fiber implant model"""
+
+        fiber_implant_model.probes.append(self.construct_ophys_probe(old_subj_procedure["probes"]))
+        
+
 
     def upgrade_headframe(self, old_subj_procedure: dict):
         """Map legacy Headframe model to current version"""
@@ -224,6 +239,7 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
         }
 
         return construct_new_model(headframe_dict, Headframe, self.allow_validation_errors)
+
 
     def upgrade_intra_cerebellar_ventricle_injection(self, old_subj_procedure: dict):
         """Map legacy IntraCerebellarVentricleInjection model to current version"""
@@ -507,6 +523,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
             loaded_subject_procedures = {}
             logging.info(f"Upgrading procedures {type(self.old_model.subject_procedures)}")
+                
             for subj_procedure in self.old_model.subject_procedures:  # type: dict
 
                 date = subj_procedure.get("start_date")
@@ -519,27 +536,56 @@ class ProcedureUpgrade(BaseModelUpgrade):
                 if date not in loaded_subject_procedures.keys():
                     logging.info(f"Creating new surgery for subject {subj_id} on date {date}")
                     logging.info(f"from {subj_procedure}")
-                    new_surgery = Surgery(
-                        start_date=date,
-                        experimenter_full_name=str(subj_procedure.get("experimenter_full_name")),
-                        iacuc_protocol=subj_procedure.get("iacuc_protocol"),
-                        animal_weight_prior=subj_procedure.get("animal_weight_prior"),
-                        animal_weight_post=subj_procedure.get("animal_weight_post"),
-                        weight_unit=subj_procedure.get("weight_unit", Surgery.model_fields["weight_unit"].default),
-                        anaesthesia=subj_procedure.get("anaesthesia"),
-                        workstation_id=subj_procedure.get("workstation_id"),
-                        notes=subj_procedure.get("notes"),
-                        procedures=[self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)],
-                    )
-                    logging.info(f"new surgery: {new_surgery}")
-                    loaded_subject_procedures[date] = new_surgery
+                    new_surgery_dict = {
+                        "start_date":date,
+                        "experimenter_full_name":str(subj_procedure.get("experimenter_full_name")),
+                        "iacuc_protocol":subj_procedure.get("iacuc_protocol"),
+                        "animal_weight_prior":subj_procedure.get("animal_weight_prior"),
+                        "animal_weight_post":subj_procedure.get("animal_weight_post"),
+                        "weight_unit":subj_procedure.get("weight_unit", Surgery.model_fields["weight_unit"].default),
+                        "anaesthesia":subj_procedure.get("anaesthesia"),
+                        "workstation_id":subj_procedure.get("workstation_id"),
+                        "notes":subj_procedure.get("notes"),
+                        "procedures":[self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)],
+                    }
+                    logging.info(f"new surgery: {new_surgery_dict}")
+                    loaded_subject_procedures[date] = new_surgery_dict
                 else:
                     logging.info(
                         f"Adding procedure {subj_procedure.get('procedure_type')} for subject {subj_id} on date {date}"
                     )
-                    loaded_subject_procedures[date].procedures.append(
-                        self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)
-                    )
+                    
+                    if subj_procedure.get("procedure_type") == 'Fiber implant' and any(isinstance(x, FiberImplant) for x in loaded_subject_procedures[date]['procedures']):
+                        logging.info(f"Adding probe to existing fiber implant for subject {subj_id} on date {date}")
+                        existing_retro = [x for x in loaded_subject_procedures[date]['procedures'] if isinstance(x, FiberImplant)]
+                        SubjectProcedureModelsUpgrade().add_probe(subj_procedure, existing_retro[0])
+                    else:
+                        loaded_subject_procedures[date]['procedures'].append(
+                            self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)
+                        )
+
+            loaded_subject_procedures = {date: construct_new_model(surgery, Surgery, self.allow_validation_errors) for date, surgery in loaded_subject_procedures.items()}
+
+            def craniotomy_type(surgery: Surgery):
+                craniotomy = [x for x in surgery.procedures if isinstance(x, Craniotomy)][0]
+                if not craniotomy.craniotomy_type:
+                    if any(isinstance(x, Headframe) for x in surgery.procedures):
+                        
+                        headframe = [x for x in surgery.procedures if isinstance(x, Headframe)][0]
+                        if not headframe.headframe_type:
+                            pass
+                        elif 'WHC' in headframe.headframe_type:
+                            logging.debug(f"replacing craniotomy type in {craniotomy}")
+                            craniotomy.craniotomy_type = CraniotomyType.WHC
+                        elif 'Ctx' in headframe.headframe_type:
+                            logging.debug(f"replacing craniotomy type in {craniotomy}")
+                            craniotomy.craniotomy_type = CraniotomyType.VISCTX
+                            
+            for surgery in loaded_subject_procedures.values():
+                if any(isinstance(x, Craniotomy) for x in surgery.procedures):
+                    craniotomy_type(surgery)
+                        
+                            
 
             loaded_spec_procedures = []
             for spec_procedure in self.old_model.specimen_procedures:
