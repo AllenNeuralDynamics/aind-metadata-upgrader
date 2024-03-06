@@ -413,7 +413,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
             loaded_subject_procedures = {date: construct_new_model(surgery, Surgery, self.allow_validation_errors) for date, surgery in loaded_subject_procedures.items()}
 
-            def craniotomy_type(surgery: Surgery):
+            def set_craniotomy_type(surgery: Surgery):
                 craniotomy = [x for x in surgery.procedures if isinstance(x, Craniotomy)][0]
                 if any(isinstance(x, Headframe) for x in surgery.procedures):
                     
@@ -428,7 +428,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
                             
             for surgery in loaded_subject_procedures.values():
                 if any(isinstance(x, Craniotomy) for x in surgery.procedures):
-                    craniotomy_type(surgery)
+                    set_craniotomy_type(surgery)
                         
 
             loaded_spec_procedures = []
