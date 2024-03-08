@@ -26,7 +26,10 @@ def construct_new_model(model_inputs: dict, model_type: AindModel, allow_validat
         return model_type.model_validate(model_inputs)
     except ValidationError as e:
         logging.error(f"Validation error in {type(model_type)}: {e}")
-        return model_type.model_construct(**model_inputs)
+        if allow_validation_errors:
+            return model_type.model_construct(**model_inputs)
+        else:
+            return None
 
 
 def get_or_default(model: dict, model_type: AindModel, field_name: str, kwargs: dict = {}):
