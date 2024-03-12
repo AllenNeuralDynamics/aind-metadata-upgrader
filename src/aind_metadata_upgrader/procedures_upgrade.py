@@ -33,7 +33,7 @@ from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 from aind_metadata_upgrader.utils import *
 
 
-class InjectionMaterialsUpgrade(BaseModelUpgrade):
+class InjectionMaterialsUpgrade():
     """Handle upgrades for InjectionMaterials models."""
 
     def __init__(self, allow_validation_errors=False):
@@ -46,15 +46,8 @@ class InjectionMaterialsUpgrade(BaseModelUpgrade):
 
         if material.get("tars_identifiers", None):
             tars_data = material.get("tars_identifiers")
-            tars_dict = {
-                "virus_tars_id": tars_data.get("virus_tars_id", None),
-                "plasmid_tars_alias": tars_data.get("plasmid_tars_alias", None),
-                "prep_lot_number": tars_data.get("prep_lot_number", None),
-                "prep_date": tars_data.get("prep_data", None),
-                "prep_type": tars_data.get("prep_type", None),
-                "prep_protocol": tars_data.get("prep_protocol", None),
-            }
-            tars_identifier = construct_new_model(tars_dict, TarsVirusIdentifiers, self.allow_validation_errors)
+
+            tars_identifier = construct_new_model(tars_data, TarsVirusIdentifiers, self.allow_validation_errors)
         else:
             tars_identifier = None
 
