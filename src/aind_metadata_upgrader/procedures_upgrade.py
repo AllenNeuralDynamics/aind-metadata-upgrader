@@ -122,8 +122,10 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
             "protective_material": get_or_default(old_subj_procedure, Craniotomy, "protective_material"),
             "recovery_time": old_subj_procedure.get("recovery_time", None),
             "recovery_time_unit": get_or_default(old_subj_procedure, Craniotomy, "recovery_time_unit"),
-            "craniotomy_size": old_subj_procedure.get("craniotomy_size", None),
+            
         }
+
+        craniotomy_size = old_subj_procedure.get("craniotomy_size", None),
 
         if not craniotomy_dict['craniotomy_type'] and craniotomy_dict['craniotomy_size']:
             if '3' in craniotomy_dict['craniotomy_size']:
@@ -131,8 +133,6 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
             elif '5' in craniotomy_dict['craniotomy_size']:
                 craniotomy_dict['craniotomy_type'] = '5 mm'
             
-        drop_unused_fields(craniotomy_dict, 'Craniotomy')
-
         return construct_new_model(craniotomy_dict, Craniotomy, self.allow_validation_errors)
 
 
@@ -160,7 +160,8 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
             }
             fiber_probe = construct_new_model(fiber_probe_dict, FiberProbe, self.allow_validation_errors)
         else:
-            fiber_probe = FiberProbe.model_construct()
+            # fiber_probe = FiberProbe.model_construct()
+            fiber_probe = None
 
         ophys_probe_dict = {
             "ophys_probe": fiber_probe,
@@ -291,6 +292,20 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
         return construct_new_model(retro_orbital_dict, RetroOrbitalInjection, self.allow_validation_errors)
 
 
+def set_craniotomy_type(surgery: Surgery): # find a better organizational place for this
+    craniotomy = [x for x in surgery.procedures if isinstance(x, Craniotomy)][0]
+    if any(isinstance(x, Headframe) for x in surgery.procedures):
+        
+        headframe = [x for x in surgery.procedures if isinstance(x, Headframe)][0]
+        if hasattr(headframe, 'headframe_type'):
+            if 'WHC' in headframe.headframe_type:
+                logging.debug(f"replacing craniotomy type in {craniotomy}")
+                craniotomy.craniotomy_type = CraniotomyType.WHC
+            elif 'Ctx' in headframe.headframe_type:
+                logging.debug(f"replacing craniotomy type in {craniotomy}")
+                craniotomy.craniotomy_type = CraniotomyType.VISCTX
+
+
 class ProcedureUpgrade(BaseModelUpgrade):
     """Handle upgrades for Procedure models."""
 
@@ -326,8 +341,6 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
         procedure_type = old_subj_procedure.get("procedure_type")
         if procedure_type in self.upgrade_funcs.keys():
-
-            old_subj_procedure = drop_unused_fields(old_subj_procedure, procedure_type)
 
             if old_subj_procedure.get("injection_materials"):
                 old_subj_procedure["injection_materials"] = InjectionMaterialsUpgrade(
@@ -405,19 +418,6 @@ class ProcedureUpgrade(BaseModelUpgrade):
                         )
 
             loaded_subject_procedures = {date: construct_new_model(surgery, Surgery, self.allow_validation_errors) for date, surgery in loaded_subject_procedures.items()}
-
-            def set_craniotomy_type(surgery: Surgery):
-                craniotomy = [x for x in surgery.procedures if isinstance(x, Craniotomy)][0]
-                if any(isinstance(x, Headframe) for x in surgery.procedures):
-                    
-                    headframe = [x for x in surgery.procedures if isinstance(x, Headframe)][0]
-                    if hasattr(headframe, 'headframe_type'):
-                        if 'WHC' in headframe.headframe_type:
-                            logging.debug(f"replacing craniotomy type in {craniotomy}")
-                            craniotomy.craniotomy_type = CraniotomyType.WHC
-                        elif 'Ctx' in headframe.headframe_type:
-                            logging.debug(f"replacing craniotomy type in {craniotomy}")
-                            craniotomy.craniotomy_type = CraniotomyType.VISCTX
                             
             for surgery in loaded_subject_procedures.values():
                 if any(isinstance(x, Craniotomy) for x in surgery.procedures):
@@ -450,3 +450,6 @@ class ProcedureUpgrade(BaseModelUpgrade):
             )
 
             return new_procedure
+        
+        else:
+            # if there's nothing breaking, try to validate it

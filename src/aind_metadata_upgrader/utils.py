@@ -47,32 +47,3 @@ def get_or_default(model: dict, model_type: AindModel, field_name: str, kwargs: 
             return attr_default
         except AttributeError:
             return None
-
-
-procedure_types_list = {
-    "Craniotomy": Craniotomy,
-    "Fiber implant": FiberImplant,
-    "Headframe": Headframe,
-    "Intra cerebellar ventricle injection": IntraCerebellarVentricleInjection,
-    "Intra cisternal magna injection": IntraCisternalMagnaInjection,
-    "Intraperitoneal injection": IntraperitonealInjection,
-    "Iontophoresis injection": IontophoresisInjection,
-    "Nanoject injection": NanojectInjection,
-    "Perfusion": Perfusion,
-    "Other subject procedure": OtherSubjectProcedure,
-    "Retro-orbital injection": RetroOrbitalInjection,
-    "ophys_probe": OphysProbe,
-}
-
-
-def drop_unused_fields(item, model_type):
-    """Drop fields from a dict that are not in the model type given"""
-
-    remove_fields = []
-    for field in item.keys():
-        if field not in procedure_types_list[model_type].model_fields.keys():
-            remove_fields.append(field)
-    for field in remove_fields:
-        item.pop(field)
-
-    return item
