@@ -452,4 +452,4 @@ class ProcedureUpgrade(BaseModelUpgrade):
             return new_procedure
         
         else:
-            # if there's nothing breaking, try to validate it
+            return construct_new_model(self.old_model, Procedures, self.allow_validation_errors)
