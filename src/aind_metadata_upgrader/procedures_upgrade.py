@@ -268,7 +268,7 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
 
 def set_craniotomy_type(surgery: Surgery):  # find a better organizational place for this
     """Set the craniotomy type based on the headframe type"""
-    
+
     craniotomy = [x for x in surgery.procedures if isinstance(x, Craniotomy)][0]
     if any(isinstance(x, Headframe) for x in surgery.procedures):
 
