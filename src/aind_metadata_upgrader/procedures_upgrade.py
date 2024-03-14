@@ -44,16 +44,8 @@ class InjectionMaterialsUpgrade():
     def upgrade_viral_material(self, material: dict) -> ViralMaterial:
         """Map legacy NonViralMaterial model to current version"""
 
-        if material.get("tars_identifiers", None):
-            tars_data = material.get("tars_identifiers")
-
-            tars_identifier = construct_new_model(tars_data, TarsVirusIdentifiers, self.allow_validation_errors)
-        else:
-            tars_identifier = None
-
         viral_dict = {
             "name": material.get("name", "unknown"),
-            "tars_identifiers": tars_identifier,
             "addgene_id": material.get("addgene_id", None),
             "titer": material.get("titer", None),
             "titer_unit": material.get("titer_unit", None),
@@ -81,19 +73,14 @@ class InjectionMaterialsUpgrade():
         """Map legacy InjectionMaterials model to current version"""
 
         new_materials = []
-        if isinstance(old_injection_materials, list):
-            for (
-                injection_material
-            ) in old_injection_materials:  # this wont work like i want, we changed the naming convention
-                if injection_material.get("titer") is not None:
-                    new_materials.append(self.upgrade_viral_material(injection_material))
+        for injection_material in old_injection_materials:
+            if injection_material.get("titer") is not None:
+                new_materials.append(self.upgrade_viral_material(injection_material))
 
-                elif injection_material.get("concentration") is not None:
-                    new_materials.append(self.upgrade_nonviral_material(injection_material))
-                else:
-                    logging.error(f"Injection material with no titer or concentration {injection_material} passed in")
-        else:
-            logging.error(f"injection materials not a list: {old_injection_materials}")
+            elif injection_material.get("concentration") is not None:
+                new_materials.append(self.upgrade_nonviral_material(injection_material))
+            else:
+                logging.error(f"Injection material with no titer or concentration {injection_material} passed in")
 
         logging.info(f"new_materials: {new_materials}")
         return new_materials
@@ -126,10 +113,12 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
 
         craniotomy_size = old_subj_procedure.get("craniotomy_size", None),
 
+        logging.debug(f"CRANIOTOMY SIZE: {craniotomy_size}, {craniotomy_dict['craniotomy_type']}")
+
         if not craniotomy_dict['craniotomy_type'] and craniotomy_size:
-            if '3' in craniotomy_size:
+            if 3 in craniotomy_size:
                 craniotomy_dict['craniotomy_type'] = '3 mm'
-            elif '5' in craniotomy_size:
+            elif 5 in craniotomy_size:
                 craniotomy_dict['craniotomy_type'] = '5 mm'
             
         return construct_new_model(craniotomy_dict, Craniotomy, self.allow_validation_errors)
@@ -138,29 +127,29 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
     def construct_ophys_probe(self, probe: dict):
         """Map legacy OphysProbe model to current version"""
 
-        if probe.get("ophys_probe") is not None:
-            fiber_probe_item = probe.get("ophys_probe")
-            fiber_probe_dict = {
-                "device_type": probe.get("device_type", None),
-                "name": probe.get("name", None),
-                "serial_number": probe.get("serial_number", None),
-                "manufacturer": probe.get("manufacturer", None),
-                "model": probe.get("model", None),
-                "path_to_cad": probe.get("path_to_cad", None),
-                "port_index": probe.get("port_index", None),
-                "additional_set": get_or_default(probe, OphysProbe, "additional_set"),
-                "core_diameter": fiber_probe_item.get("core_diameter", None),
-                "core_diameter_unit": fiber_probe_item.get("core_diameter_unit", None),
-                "numerical_aperture": fiber_probe_item.get("numerical_aperture", None),
-                "ferrule_material": fiber_probe_item.get("ferrule_material", None),
-                "active_length": fiber_probe_item.get("active_length", None),
-                "total_length": fiber_probe_item.get("total_length", None),
-                "length_unit": get_or_default(fiber_probe_item, FiberProbe, "length_unit"),
-            }
-            fiber_probe = construct_new_model(fiber_probe_dict, FiberProbe, self.allow_validation_errors)
-        else:
+        # if probe.get("ophys_probe") is not None:
+        #     fiber_probe_item = probe.get("ophys_probe")
+        #     fiber_probe_dict = {
+        #         "device_type": probe.get("device_type", None),
+        #         "name": probe.get("name", None),
+        #         "serial_number": probe.get("serial_number", None),
+        #         "manufacturer": probe.get("manufacturer", None),
+        #         "model": probe.get("model", None),
+        #         "path_to_cad": probe.get("path_to_cad", None),
+        #         "port_index": probe.get("port_index", None),
+        #         "additional_set": get_or_default(probe, OphysProbe, "additional_set"),
+        #         "core_diameter": fiber_probe_item.get("core_diameter", None),
+        #         "core_diameter_unit": fiber_probe_item.get("core_diameter_unit", None),
+        #         "numerical_aperture": fiber_probe_item.get("numerical_aperture", None),
+        #         "ferrule_material": fiber_probe_item.get("ferrule_material", None),
+        #         "active_length": fiber_probe_item.get("active_length", None),
+        #         "total_length": fiber_probe_item.get("total_length", None),
+        #         "length_unit": get_or_default(fiber_probe_item, FiberProbe, "length_unit"),
+        #     }
+        #     fiber_probe = construct_new_model(fiber_probe_dict, FiberProbe, self.allow_validation_errors)
+        # else:
             # fiber_probe = FiberProbe.model_construct()
-            fiber_probe = None
+        fiber_probe = None
 
         ophys_probe_dict = {
             "ophys_probe": fiber_probe,
@@ -347,17 +336,19 @@ class ProcedureUpgrade(BaseModelUpgrade):
             logging.error(f"Procedure type {procedure_type} not found in list of procedure types")
             return None
 
-    @staticmethod
-    def upgrade_specimen_procedure(self, old_specimen_procedure: Any) -> Optional[SpecimenProcedure]:
-        """Map legacy SpecimenProcedure model to current version"""
+    # @staticmethod
+    # def upgrade_specimen_procedure(self, old_specimen_procedure: Any) -> Optional[SpecimenProcedure]:
+    #     """Map legacy SpecimenProcedure model to current version"""
 
-        if type(old_specimen_procedure) is SpecimenProcedure:
-            return old_specimen_procedure
-        elif type(old_specimen_procedure) is dict and old_specimen_procedure.procedure_type is not None:
-            return SpecimenProcedure.model_validate(old_specimen_procedure)
-        else:
-            logging.error(f"Specimen procedure {old_specimen_procedure} passed in as invalid type")
-            return None
+        # NOTE: current upgrade round lacks any SpecimenProcedures, so this is commented out. 
+        # Can be returned in the future.
+        # if type(old_specimen_procedure) is SpecimenProcedure:
+        #     return old_specimen_procedure
+        # elif type(old_specimen_procedure) is dict and old_specimen_procedure.procedure_type is not None:
+        #     return SpecimenProcedure.model_validate(old_specimen_procedure)
+        # else:
+        #     logging.error(f"Specimen procedure {old_specimen_procedure} passed in as invalid type")
+        #     return None
 
     def upgrade_procedure(self) -> Optional[Procedures]:
         """Map legacy Procedure model to current version"""
@@ -426,19 +417,20 @@ class ProcedureUpgrade(BaseModelUpgrade):
                         
 
             loaded_spec_procedures = []
-            for spec_procedure in self.old_model.specimen_procedures:
-                date = spec_procedure.start_date
+            # NOTE: Current set lacks specimen procedures. Can be returned in the future.
+            # for spec_procedure in self.old_model.specimen_procedures:
+            #     date = spec_procedure.start_date
 
-                logging.info(
-                    f"Upgrading procedure {spec_procedure.get('procedure_type')} for subject {subj_id} on date {date}"
-                )
+            #     logging.info(
+            #         f"Upgrading procedure {spec_procedure.get('procedure_type')} for subject {subj_id} on date {date}"
+            #     )
 
-                upgraded_spec_procedure = ProcedureUpgrade.upgrade_specimen_procedure(spec_procedure)
+            #     upgraded_spec_procedure = ProcedureUpgrade.upgrade_specimen_procedure(spec_procedure)
 
-                if not upgraded_spec_procedure:
-                    continue
+            #     if not upgraded_spec_procedure:
+            #         continue
 
-                loaded_spec_procedures.append(upgraded_spec_procedure)
+            #     loaded_spec_procedures.append(upgraded_spec_procedure)
 
             logging.info(f"Creating new procedure for subject {subj_id}")
             logging.info(f"Subject procedures: {loaded_subject_procedures}")

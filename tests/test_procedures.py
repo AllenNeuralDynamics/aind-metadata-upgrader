@@ -32,14 +32,14 @@ for file in procedures_files:
     with open(file, "r") as f:
         contents = json.loads(f.read())
 
-    for procedure in contents["subject_procedures"]:
-        logging.info(procedure)
-        if "probes" in procedure.keys():
-            if "um" in procedure["probes"]["core_diameter_unit"].replace("μm", "um"):
-                logging.info("UPDATING CORE DIAMETER UNIT")
-                procedure["probes"].pop("core_diameter_unit")
-                procedure["probes"]["core_diameter_unit"] = "um"
-                logging.info(procedure["probes"])
+    # for procedure in contents["subject_procedures"]:
+    #     logging.info(procedure)
+    #     if "probes" in procedure.keys():
+    #         if "um" in procedure["probes"]["core_diameter_unit"].replace("μm", "um"):
+    #             logging.info("UPDATING CORE DIAMETER UNIT")
+    #             procedure["probes"].pop("core_diameter_unit")
+    #             procedure["probes"]["core_diameter_unit"] = "um"
+    #             logging.info(procedure["probes"])
 
     with open(file) as f:
         subject = Path(file).stem

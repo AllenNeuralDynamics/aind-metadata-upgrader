@@ -32,12 +32,10 @@ def construct_new_model(model_inputs: dict, model_type: AindModel, allow_validat
             return None
 
 
-def get_or_default(model: dict, model_type: AindModel, field_name: str, kwargs: dict = {}):
+def get_or_default(model: dict, model_type: AindModel, field_name: str):
     """Version of get_or_default that works with a dict instead of a model instance. If field is not explicitly set, will attempt to extract from a model."""
 
-    if kwargs.get(field_name) is not None:
-        return kwargs.get(field_name)
-    elif model.get(field_name, None) is not None:
+    if model.get(field_name, None) is not None:
         return model.get(field_name)
     else:
         try:
