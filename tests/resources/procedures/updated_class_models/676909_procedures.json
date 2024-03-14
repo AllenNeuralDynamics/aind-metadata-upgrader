@@ -51,7 +51,6 @@
                "craniotomy_coordinates_reference": null,
                "bregma_to_lambda_distance": 4.525,
                "bregma_to_lambda_unit": "millimeter",
-               "craniotomy_size": null,
                "craniotomy_size_unit": "millimeter",
                "implant_part_number": null,
                "dura_removed": null,

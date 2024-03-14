@@ -36,14 +36,16 @@ for file in procedures_files:
         logging.info(procedure)
         if "probes" in procedure.keys():
             if "um" in procedure["probes"]["core_diameter_unit"].replace("μm", "um"):
+                logging.info("UPDATING CORE DIAMETER UNIT")
                 procedure["probes"].pop("core_diameter_unit")
                 procedure["probes"]["core_diameter_unit"] = "um"
+                logging.info(procedure["probes"])
 
     with open(file) as f:
         subject = Path(file).stem
         procedures = json.load(f)
-        logging.info("PROCEDURES: ", type(procedures))
-        ProcedureUpgrader = ProcedureUpgrade(procedures)
+        logging.info(f"PROCEDURES: {type(procedures)}")
+        ProcedureUpgrader = ProcedureUpgrade(procedures, allow_validation_errors=True)
 
         test = ProcedureUpgrader.upgrade_procedure()
 

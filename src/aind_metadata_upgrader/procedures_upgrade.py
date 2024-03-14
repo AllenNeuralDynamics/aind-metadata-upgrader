@@ -122,15 +122,14 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
             "protective_material": get_or_default(old_subj_procedure, Craniotomy, "protective_material"),
             "recovery_time": old_subj_procedure.get("recovery_time", None),
             "recovery_time_unit": get_or_default(old_subj_procedure, Craniotomy, "recovery_time_unit"),
-            
         }
 
         craniotomy_size = old_subj_procedure.get("craniotomy_size", None),
 
-        if not craniotomy_dict['craniotomy_type'] and craniotomy_dict['craniotomy_size']:
-            if '3' in craniotomy_dict['craniotomy_size']:
+        if not craniotomy_dict['craniotomy_type'] and craniotomy_size:
+            if '3' in craniotomy_size:
                 craniotomy_dict['craniotomy_type'] = '3 mm'
-            elif '5' in craniotomy_dict['craniotomy_size']:
+            elif '5' in craniotomy_size:
                 craniotomy_dict['craniotomy_type'] = '5 mm'
             
         return construct_new_model(craniotomy_dict, Craniotomy, self.allow_validation_errors)
@@ -320,14 +319,8 @@ class ProcedureUpgrade(BaseModelUpgrade):
             "Craniotomy": self.subj_procedure_upgrader.upgrade_craniotomy,
             "Fiber implant": self.subj_procedure_upgrader.upgrade_fiber_implant,
             "Headframe": self.subj_procedure_upgrader.upgrade_headframe,
-            "Intra cerebellar ventricle injection":
-            self.subj_procedure_upgrader.upgrade_intra_cerebellar_ventricle_injection,
-            "Intra cisternal magna injection": self.subj_procedure_upgrader.upgrade_intra_cisternal_magna_injection,
-            "Intraperitoneal injection": self.subj_procedure_upgrader.upgrade_intraperitoneal_injection,
-            "Iontophoresis injection": self.subj_procedure_upgrader.upgrade_iontophoresis_injection,
             "Nanoject injection": self.subj_procedure_upgrader.upgrade_nanoject_injection,
             "Perfusion": self.subj_procedure_upgrader.upgrade_perfusion,
-            "Other subject procedure": self.subj_procedure_upgrader.upgrade_other_subject_procedure,
             "Retro-orbital injection": self.subj_procedure_upgrader.upgrade_retro_orbital_injection,
         }
 
@@ -379,6 +372,8 @@ class ProcedureUpgrade(BaseModelUpgrade):
                 
             for subj_procedure in self.old_model.subject_procedures:  # type: dict
 
+                logging.info("intro")
+
                 date = subj_procedure.get("start_date")
 
                 logging.info(
@@ -403,6 +398,8 @@ class ProcedureUpgrade(BaseModelUpgrade):
                     }
                     logging.info(f"new surgery: {new_surgery_dict}")
                     loaded_subject_procedures[date] = new_surgery_dict
+                    logging.info(f"huh?? {loaded_subject_procedures[date]}")
+                    logging.info(f"keys: {loaded_subject_procedures.keys()}")
                 else:
                     logging.info(
                         f"Adding procedure {subj_procedure.get('procedure_type')} for subject {subj_id} on date {date}"
@@ -413,13 +410,17 @@ class ProcedureUpgrade(BaseModelUpgrade):
                         existing_retro = [x for x in loaded_subject_procedures[date]['procedures'] if isinstance(x, FiberImplant)]
                         SubjectProcedureModelsUpgrade().add_probe(subj_procedure, existing_retro[0])
                     else:
+                        logging.info(f"Adding procedure to existing surgery for subject {subj_id} on date {date}: {subj_procedure}")
                         loaded_subject_procedures[date]['procedures'].append(
                             self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)
                         )
 
-            loaded_subject_procedures = {date: construct_new_model(surgery, Surgery, self.allow_validation_errors) for date, surgery in loaded_subject_procedures.items()}
-                            
-            for surgery in loaded_subject_procedures.values():
+            logging.info(f"loaded_subject_procedures: {loaded_subject_procedures.keys()}")
+            logging.info("trying stuff")
+            constructed_subject_procedures = {date: construct_new_model(surgery, Surgery, self.allow_validation_errors) for date, surgery in loaded_subject_procedures.items()}
+
+            for surgery in constructed_subject_procedures.values():
+                logging.info(f"Setting craniotomy type for subject {subj_id}, surgery: {surgery}")
                 if any(isinstance(x, Craniotomy) for x in surgery.procedures):
                     set_craniotomy_type(surgery)
                         
@@ -444,7 +445,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
             logging.info(f"Specimen procedures: {loaded_spec_procedures}")
             new_procedure = Procedures(
                 subject_id=subj_id,
-                subject_procedures=list(loaded_subject_procedures.values()),
+                subject_procedures=list(constructed_subject_procedures.values()),
                 specimen_procedures=loaded_spec_procedures,
                 notes=self.old_model.notes,
             )

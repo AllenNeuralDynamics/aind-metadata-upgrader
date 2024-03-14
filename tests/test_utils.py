@@ -21,5 +21,5 @@ PYD_VERSION = re.match(r"(\d+.\d+).\d+", pyd_version).group(1)
 
 class TestUtils(unittest.TestCase):
     
-    def test_get_or_default():
+    def test_get_or_default(self):
         pass

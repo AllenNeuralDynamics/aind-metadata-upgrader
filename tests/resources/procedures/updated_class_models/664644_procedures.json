@@ -83,59 +83,20 @@
                "protocol_id": "unknown",
                "probes": [
                   {
-                     "ophys_probe": {
-                        "device_type": "Fiber optic probe",
-                        "serial_number": null,
-                        "manufacturer": null,
-                        "model": null,
-                        "path_to_cad": null,
-                        "port_index": null,
-                        "additional_settings": {},
-                        "notes": null,
-                        "core_diameter_unit": "um",
-                        "ferrule_material": null,
-                        "active_length": null,
-                        "length_unit": "millimeter"
-                     },
+                     "ophys_probe": null,
                      "targeted_structure": "unknown",
                      "stereotactic_coordinate_ap": "1.8000000000000000444089209850062616169452667236328125",
                      "stereotactic_coordinate_ml": "-0.8000000000000000444089209850062616169452667236328125",
                      "stereotactic_coordinate_dv": "-1.399999999999999911182158029987476766109466552734375",
                      "stereotactic_coordinate_unit": "millimeter",
                      "stereotactic_coordinate_reference": "Bregma",
-                     "bregma_to_lambda_distance": "4.265",
+                     "bregma_to_lambda_distance": 4.265,
                      "bregma_to_lambda_unit": "millimeter",
-                     "angle": "-5.0",
+                     "angle": -5.0,
                      "angle_unit": "degrees",
                      "notes": null
                   },
-                  {
-                     "ophys_probe": {
-                        "device_type": "Fiber optic probe",
-                        "serial_number": null,
-                        "manufacturer": null,
-                        "model": null,
-                        "path_to_cad": null,
-                        "port_index": null,
-                        "additional_settings": {},
-                        "notes": null,
-                        "core_diameter_unit": "um",
-                        "ferrule_material": null,
-                        "active_length": null,
-                        "length_unit": "millimeter"
-                     },
-                     "targeted_structure": "unknown",
-                     "stereotactic_coordinate_ap": "-6.20000000000000017763568394002504646778106689453125",
-                     "stereotactic_coordinate_ml": "-2.29999999999999982236431605997495353221893310546875",
-                     "stereotactic_coordinate_dv": "-2.600000000000000088817841970012523233890533447265625",
-                     "stereotactic_coordinate_unit": "millimeter",
-                     "stereotactic_coordinate_reference": "Bregma",
-                     "bregma_to_lambda_distance": "4.265",
-                     "bregma_to_lambda_unit": "millimeter",
-                     "angle": "0.0",
-                     "angle_unit": "degrees",
-                     "notes": null
-                  }
+                  null
                ]
             },
             {
