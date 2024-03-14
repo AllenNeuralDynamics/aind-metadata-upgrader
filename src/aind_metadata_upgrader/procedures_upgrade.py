@@ -113,8 +113,6 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
 
         craniotomy_size = old_subj_procedure.get("craniotomy_size", None),
 
-        logging.debug(f"CRANIOTOMY SIZE: {craniotomy_size}, {craniotomy_dict['craniotomy_type']}")
-
         if not craniotomy_dict['craniotomy_type'] and craniotomy_size:
             if 3 in craniotomy_size:
                 craniotomy_dict['craniotomy_type'] = '3 mm'
@@ -174,8 +172,6 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
         probes = []
 
         if "probes" in old_subj_procedure.keys():
-            logging.info(f"probes: {old_subj_procedure['probes']}")
-            logging.info("ceck")
             if isinstance(old_subj_procedure["probes"], dict):
                 probe = old_subj_procedure["probes"]
                 new_probe = self.construct_ophys_probe(probe)
@@ -369,7 +365,6 @@ class ProcedureUpgrade(BaseModelUpgrade):
                 
             for subj_procedure in self.old_model.subject_procedures:  # type: dict
 
-                logging.info("intro")
 
                 date = subj_procedure.get("start_date")
 
@@ -380,7 +375,6 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
                 if date not in loaded_subject_procedures.keys():
                     logging.info(f"Creating new surgery for subject {subj_id} on date {date}")
-                    logging.info(f"from {subj_procedure}")
                     new_surgery_dict = {
                         "start_date":date,
                         "experimenter_full_name":str(subj_procedure.get("experimenter_full_name")),
@@ -395,8 +389,6 @@ class ProcedureUpgrade(BaseModelUpgrade):
                     }
                     logging.info(f"new surgery: {new_surgery_dict}")
                     loaded_subject_procedures[date] = new_surgery_dict
-                    logging.info(f"huh?? {loaded_subject_procedures[date]}")
-                    logging.info(f"keys: {loaded_subject_procedures.keys()}")
                 else:
                     logging.info(
                         f"Adding procedure {subj_procedure.get('procedure_type')} for subject {subj_id} on date {date}"
@@ -412,8 +404,6 @@ class ProcedureUpgrade(BaseModelUpgrade):
                             self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)
                         )
 
-            logging.info(f"loaded_subject_procedures: {loaded_subject_procedures.keys()}")
-            logging.info("trying stuff")
             constructed_subject_procedures = {date: construct_new_model(surgery, Surgery, self.allow_validation_errors) for date, surgery in loaded_subject_procedures.items()}
 
             for surgery in constructed_subject_procedures.values():
