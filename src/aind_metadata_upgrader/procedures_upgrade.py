@@ -174,6 +174,8 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
         probes = []
 
         if "probes" in old_subj_procedure.keys():
+            logging.info(f"probes: {old_subj_procedure['probes']}")
+            logging.info("ceck")
             if isinstance(old_subj_procedure["probes"], dict):
                 probe = old_subj_procedure["probes"]
                 new_probe = self.construct_ophys_probe(probe)
@@ -197,7 +199,11 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
     def add_probe(self, old_subj_procedure: dict, fiber_implant_model: FiberImplant):
         """adds a probe to an existing fiber implant model"""
 
-        fiber_implant_model.probes.append(self.construct_ophys_probe(old_subj_procedure["probes"]))
+        if type(old_subj_procedure["probes"]) is list:
+            for probe in old_subj_procedure["probes"]:
+                fiber_implant_model.probes.append(self.construct_ophys_probe(probe))
+        else:
+            fiber_implant_model.probes.append(self.construct_ophys_probe(old_subj_procedure["probes"]))
         
 
 
