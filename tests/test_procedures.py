@@ -35,6 +35,7 @@ fh.setFormatter(formatter)
 # add the handlers to logger
 logger.addHandler(fh)
 
+
 class TestProceduresUpgrade(unittest.TestCase):
     """Test methods in ProceduresUpgrade class"""
 
@@ -56,3 +57,54 @@ class TestProceduresUpgrade(unittest.TestCase):
         cls.procedures = dict(procedures)
 
         logging.info(f"test procedures: {cls.procedures}")
+
+    def test_upgrade_procedure(self):
+        """Test the upgrade_procedure method."""
+
+        for file, procedure in self.procedures.items():
+            logging.info(f"PROCEDURE: {procedure}")
+            ProcedureUpgrader = ProcedureUpgrade(procedure, allow_validation_errors=True)
+
+            test = ProcedureUpgrader.upgrade_procedure()
+
+            test.write_standard_file(
+                output_directory=Path("tests/resources/procedures/updated_class_models"), prefix=Path(file)
+            )
+    
+    def test_craniotomy_upgrade(self):
+        """Test the upgrade_craniotomy method."""
+        
+        test_file = self.procedures["676909.json"]
+
+        
+        upgrader = ProcedureUpgrade(test_file, allow_validation_errors=False)
+
+        with self.assertRaises(Exception) as e:
+            test = upgrader.upgrade_procedure()
+
+
+for file in procedures_files:
+
+    with open(file, "r") as f:
+        contents = json.loads(f.read())
+
+    # for procedure in contents["subject_procedures"]:
+    #     logging.info(procedure)
+    #     if "probes" in procedure.keys():
+    #         if "um" in procedure["probes"]["core_diameter_unit"].replace("μm", "um"):
+    #             logging.info("UPDATING CORE DIAMETER UNIT")
+    #             procedure["probes"].pop("core_diameter_unit")
+    #             procedure["probes"]["core_diameter_unit"] = "um"
+    #             logging.info(procedure["probes"])
+
+    with open(file) as f:
+        subject = Path(file).stem
+        procedures = json.load(f)
+        logging.info(f"PROCEDURES: {type(procedures)}")
+        ProcedureUpgrader = ProcedureUpgrade(procedures, allow_validation_errors=True)
+
+        test = ProcedureUpgrader.upgrade_procedure()
+
+        test.write_standard_file(
+            output_directory=Path("tests/resources/procedures/updated_class_models"), prefix=Path(subject)
+        )
