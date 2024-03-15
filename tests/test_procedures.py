@@ -1,15 +1,26 @@
-""""Test the upgrading of procedures."""
+""" tests for Procedures upgrades """
 
-import json
-import logging
 from datetime import datetime
+import json
+import os
+import re
+import unittest
+import logging
 from glob import glob
 from pathlib import Path
+from typing import List
+
 
 from aind_metadata_upgrader.procedures_upgrade import ProcedureUpgrade
+from aind_data_schema.core.procedures import Procedures
 
-# You can set the ouput location to whatever. You may need to create a 'logs' folder in the scratch
-# directory beforehand.
+
+from pydantic import __version__ as pyd_version
+
+PYD_VERSION = re.match(r"(\d+.\d+).\d+", pyd_version).group(1)
+
+PROCESSING_FILES_PATH = Path(__file__).parent / "resources" / "procedures" / "class_model_examples"
+PYD_VERSION = re.match(r"(\d+.\d+).\d+", pyd_version).group(1)
 
 log_file_name = "./tests/resources/procedures/log_files/log_" + datetime.now().strftime("%Y%m%d_%H%M%S") + ".log"
 logger = logging.getLogger()
@@ -24,33 +35,24 @@ fh.setFormatter(formatter)
 # add the handlers to logger
 logger.addHandler(fh)
 
+class TestProceduresUpgrade(unittest.TestCase):
+    """Test methods in ProceduresUpgrade class"""
 
-procedures_files = glob("tests/resources/procedures/class_model_examples/*.json")
-print(procedures_files)
+    @classmethod
+    def setUpClass(cls):
+        """Load json files before running tests."""
 
+        print("hi")
 
-for file in procedures_files:
+        logging.info("BEGIN ERROR TESTING")
 
-    with open(file, "r") as f:
-        contents = json.loads(f.read())
+        procedure_files: List[str] = os.listdir(PROCESSING_FILES_PATH)
+        procedures = []
 
-    # for procedure in contents["subject_procedures"]:
-    #     logging.info(procedure)
-    #     if "probes" in procedure.keys():
-    #         if "um" in procedure["probes"]["core_diameter_unit"].replace("μm", "um"):
-    #             logging.info("UPDATING CORE DIAMETER UNIT")
-    #             procedure["probes"].pop("core_diameter_unit")
-    #             procedure["probes"]["core_diameter_unit"] = "um"
-    #             logging.info(procedure["probes"])
+        for file in procedure_files:
+            with open(PROCESSING_FILES_PATH / file, "r") as f:
+                contents = json.load(f)
+            procedures.append((file, Procedures.model_construct(**contents)))
+        cls.procedures = dict(procedures)
 
-    with open(file) as f:
-        subject = Path(file).stem
-        procedures = json.load(f)
-        logging.info(f"PROCEDURES: {type(procedures)}")
-        ProcedureUpgrader = ProcedureUpgrade(procedures, allow_validation_errors=True)
-
-        test = ProcedureUpgrader.upgrade_procedure()
-
-        test.write_standard_file(
-            output_directory=Path("tests/resources/procedures/updated_class_models"), prefix=Path(subject)
-        )
+        logging.info(f"test procedures: {cls.procedures}")
