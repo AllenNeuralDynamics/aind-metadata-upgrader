@@ -96,8 +96,7 @@ class FundingUpgrade:
             # check that the funder is valid. If not, set it to Allen Institute
             possible_funders = [f() for f in get_args(get_args(Organization.FUNDERS)[0])]
             if Organization.from_name(old_funding["funder"]["name"]) not in possible_funders:
-                print(f"Invalid funder: {old_funding['funder']['name']}")
-                old_funding["funder"] = Organization.from_name("Allen Institute")
+                old_funding["funder"] = Organization.AI
             return Funding.model_validate(old_funding)
         else:
             return Funding(funder=Organization.AI)
