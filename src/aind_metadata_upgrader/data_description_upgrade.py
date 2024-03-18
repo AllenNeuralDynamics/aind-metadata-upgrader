@@ -2,7 +2,7 @@
 
 from copy import deepcopy
 from datetime import datetime
-from typing import Any, Optional, Union, get_args
+from typing import Any, Optional, Union, List, get_args
 
 from aind_data_schema.base import AindModel
 from aind_data_schema.core.data_description import (
@@ -132,7 +132,7 @@ class InvestigatorsUpgrade:
     """Handle upgrades for Investigators field"""
 
     @staticmethod
-    def upgrade_investigators(old_investigators: Any) -> Optional[list[PIDName]]:
+    def upgrade_investigators(old_investigators: Any) -> List[PIDName]:
         """Map legacy Institution model to current version"""
         if type(old_investigators) is str:
             return [PIDName(name=old_investigators)]
