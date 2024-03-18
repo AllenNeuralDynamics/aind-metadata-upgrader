@@ -27,6 +27,7 @@ from aind_metadata_upgrader.data_description_upgrade import (
     FundingUpgrade,
     InstitutionUpgrade,
     ModalityUpgrade,
+    InvestigatorsUpgrade,
 )
 
 DATA_DESCRIPTION_FILES_PATH = Path(__file__).parent / "resources" / "ephys_data_description"
@@ -581,6 +582,21 @@ class TestInstitutionUpgrade(unittest.TestCase):
     def test_institution_upgrade(self):
         """Tests edge case"""
         self.assertIsNone(InstitutionUpgrade.upgrade_institution(None))
+
+
+class TestInvestigatorsUpgrade(unittest.TestCase):
+    """Tests InvestigatorsUpgrade methods"""
+
+    def test_investigators_upgrade(self):
+        """Tests edge case"""
+        self.assertEqual(InvestigatorsUpgrade.upgrade_investigators(["John Doe"]), [PIDName(name="John Doe")])
+        self.assertEqual(
+            InvestigatorsUpgrade.upgrade_investigators([PIDName(name="John Doe")]), [PIDName(name="John Doe")]
+        )
+        self.assertEqual(InvestigatorsUpgrade.upgrade_investigators("John Doe"), [PIDName(name="John Doe")])
+        self.assertEqual(
+            InvestigatorsUpgrade.upgrade_investigators([dict(name="John Doe")]), [PIDName(name="John Doe")]
+        )
 
 
 if __name__ == "__main__":

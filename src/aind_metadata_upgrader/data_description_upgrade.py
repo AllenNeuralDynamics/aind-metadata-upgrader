@@ -134,8 +134,12 @@ class InvestigatorsUpgrade:
     @staticmethod
     def upgrade_investigators(old_investigators: Any) -> List[PIDName]:
         """Map legacy investigators model to current version"""
-        if type(old_investigators) is list and isinstance(old_investigators[0], str):
+        if type(old_investigators) is str:
+            return [PIDName(name=old_investigators)]
+        elif type(old_investigators) is list and isinstance(old_investigators[0], str):
             return [PIDName(name=inv) for inv in old_investigators]
+        elif type(old_investigators) is list and isinstance(old_investigators[0], dict):
+            return [PIDName(**inv) for inv in old_investigators]
         else:
             return old_investigators
 
