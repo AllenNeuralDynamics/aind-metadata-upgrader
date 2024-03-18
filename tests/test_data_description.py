@@ -18,6 +18,7 @@ from aind_data_schema.core.data_description import (
 from aind_data_schema.models.modalities import Modality
 from aind_data_schema.models.organizations import Organization
 from aind_data_schema.models.platforms import Platform
+from aind_data_schema.models.pid_names import PIDName
 from pydantic import ValidationError
 from pydantic import __version__ as pyd_version
 
@@ -77,7 +78,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertIsNone(new_data_description.group)
-        self.assertEqual(["John Doe"], new_data_description.investigators)
+        self.assertEqual([PIDName(name="John Doe")], new_data_description.investigators)
         self.assertIsNone(new_data_description.project_name)
         self.assertIsNone(new_data_description.restrictions)
         self.assertEqual([Modality.ECEPHYS], new_data_description.modality)
@@ -116,7 +117,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertIsNone(new_data_description.group)
-        self.assertEqual(["John Doe"], new_data_description.investigators)
+        self.assertEqual([PIDName(name="John Doe")], new_data_description.investigators)
         self.assertIsNone(new_data_description.project_name)
         self.assertIsNone(new_data_description.restrictions)
         self.assertEqual([Modality.ECEPHYS], new_data_description.modality)
@@ -189,7 +190,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertIsNone(new_data_description.group)
-        self.assertEqual(["John Doe"], new_data_description.investigators)
+        self.assertEqual([PIDName(name="John Doe")], new_data_description.investigators)
         self.assertIsNone(new_data_description.project_name)
         self.assertIsNone(new_data_description.restrictions)
         self.assertEqual([Modality.ECEPHYS], new_data_description.modality)
@@ -216,7 +217,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertIsNone(new_data_description.group)
-        self.assertEqual(["John Doe"], new_data_description.investigators)
+        self.assertEqual([PIDName(name="John Doe")], new_data_description.investigators)
         self.assertIsNone(new_data_description.project_name)
         self.assertIsNone(new_data_description.restrictions)
         self.assertEqual([Modality.ECEPHYS], new_data_description.modality)
@@ -243,7 +244,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertEqual(Group.EPHYS, new_data_description.group)
-        self.assertEqual(["John Doe", "Mary Smith"], new_data_description.investigators)
+        self.assertEqual([PIDName(name="John Doe"), PIDName(name="Mary Smith")], new_data_description.investigators)
         self.assertEqual("mri-guided-electrophysiology", new_data_description.project_name)
         self.assertIsNone(new_data_description.restrictions)
         self.assertEqual([Modality.ECEPHYS], new_data_description.modality)
@@ -307,7 +308,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertEqual(Group.EPHYS, new_data_description.group)
-        self.assertEqual(["John Doe", "Mary Smith"], new_data_description.investigators)
+        self.assertEqual([PIDName(name="John Doe"), PIDName(name="Mary Smith")], new_data_description.investigators)
         self.assertEqual("mri-guided-electrophysiology", new_data_description.project_name)
         self.assertIsNone(new_data_description.restrictions)
         self.assertEqual([Modality.ECEPHYS], new_data_description.modality)
@@ -351,7 +352,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertIsNone(new_data_description.group)
-        self.assertEqual(["John Doe"], new_data_description.investigators)
+        self.assertEqual([PIDName(name="John Doe")], new_data_description.investigators)
         self.assertIsNone(new_data_description.project_name)
         self.assertIsNone(new_data_description.restrictions)
         self.assertEqual([Modality.ECEPHYS], new_data_description.modality)
@@ -379,7 +380,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         self.assertEqual(Organization.AIND, new_data_description.institution)
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertIsNone(new_data_description.group)
-        self.assertEqual(["John Doe"], new_data_description.investigators)
+        self.assertEqual([PIDName(name="John Doe")], new_data_description.investigators)
         self.assertIsNone(new_data_description.project_name)
         self.assertIsNone(new_data_description.restrictions)
         self.assertEqual([Modality.ECEPHYS], new_data_description.modality)
@@ -400,7 +401,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             creation_time=datetime.datetime(2020, 10, 10, 10, 10, 10),
             institution=Organization.AIND,
             funding_source=[Funding(funder=Organization.NINDS, grant_number="grant001")],
-            investigators=["Jane Smith"],
+            investigators=[PIDName(name="Jane Smith")],
         )
         d2 = DataDescription(
             label="test_data",
@@ -411,7 +412,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             creation_time=datetime.datetime(2020, 10, 10, 10, 10, 10),
             institution=Organization.AIND,
             funding_source=[Funding(funder=Organization.NINDS, grant_number="grant001")],
-            investigators=["Jane Smith"],
+            investigators=[PIDName(name="Jane Smith")],
         )
         with self.assertRaises(ValidationError) as e:
             DataDescription(
@@ -423,7 +424,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
                 creation_time=datetime.datetime(2020, 10, 10, 10, 10, 10),
                 institution=Organization.AIND,
                 funding_source=[Funding(funder=Organization.NINDS, grant_number="grant001")],
-                investigators=["Jane Smith"],
+                investigators=[PIDName(name="Jane Smith")],
             )
         self.assertEqual(
             "1 validation error for DataDescription\n"

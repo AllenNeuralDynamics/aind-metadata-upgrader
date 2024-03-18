@@ -13,6 +13,7 @@ from aind_data_schema.core.data_description import (
 from aind_data_schema.models.modalities import Modality
 from aind_data_schema.models.organizations import Organization
 from aind_data_schema.models.platforms import Platform
+from aind_data_schema.models.pid_names import PIDName
 
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 
@@ -127,6 +128,22 @@ class InstitutionUpgrade:
             return None
 
 
+class InvestigatorsUpgrade:
+    """Handle upgrades for Investigators field"""
+
+    @staticmethod
+    def upgrade_investigators(old_investigators: Any) -> Optional[list[PIDName]]:
+        """Map legacy Institution model to current version"""
+        if type(old_investigators) is str:
+            return [PIDName(name=old_investigators)]
+        elif type(old_investigators) is list and isinstance(old_investigators[0], str):
+            return [PIDName(name=inv) for inv in old_investigators]
+        elif type(old_investigators) is list and isinstance(old_investigators[0], dict):
+            return [PIDName(**inv) for inv in old_investigators]
+        else:
+            return old_investigators
+
+
 class DataDescriptionUpgrade(BaseModelUpgrade):
     """Handle upgrades for DataDescription class"""
 
@@ -197,6 +214,9 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         if platform is None:
             platform = self._get_or_default(self.old_model, "platform", kwargs)
 
+        investigators = self._get_or_default(self.old_model, "investigators", kwargs)
+        investigators = InvestigatorsUpgrade.upgrade_investigators(investigators)
+
         creation_time = self.get_creation_time(**kwargs)
 
         return DataDescription(
@@ -206,7 +226,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
             funding_source=funding_source,
             data_level=data_level,
             group=self._get_or_default(self.old_model, "group", kwargs),
-            investigators=self._get_or_default(self.old_model, "investigators", kwargs),
+            investigators=investigators,
             project_name=self._get_or_default(self.old_model, "project_name", kwargs),
             restrictions=self._get_or_default(self.old_model, "restrictions", kwargs),
             modality=modality,
