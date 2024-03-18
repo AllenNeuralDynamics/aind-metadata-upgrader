@@ -360,6 +360,34 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         self.assertEqual(Platform.ECEPHYS, new_data_description.platform)
         self.assertIsNone(new_data_description.data_summary)
 
+    def test_upgrades_0_11_0_wrong_funding(self):
+        """Tests data_description_0.11.0.json is mapped correctly."""
+        data_description_0_11_0 = self.data_descriptions["data_description_0.11.0_wrong_funder.json"]
+        upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_11_0)
+
+        new_data_description = upgrader.upgrade()
+        # AIND should be set to AI by upgrader
+        self.assertEqual(
+            [Funding(funder=Organization.AI)],
+            new_data_description.funding_source,
+        )
+        self.assertEqual(
+            datetime.datetime(2023, 3, 6, 15, 8, 24),
+            new_data_description.creation_time,
+        )
+        self.assertEqual("ecephys_649038_2023-03-06_15-08-24", new_data_description.name)
+        self.assertEqual(Organization.AIND, new_data_description.institution)
+        self.assertEqual(DataLevel.RAW, new_data_description.data_level)
+        self.assertIsNone(new_data_description.group)
+        self.assertEqual(["John Doe"], new_data_description.investigators)
+        self.assertIsNone(new_data_description.project_name)
+        self.assertIsNone(new_data_description.restrictions)
+        self.assertEqual([Modality.ECEPHYS], new_data_description.modality)
+        self.assertEqual("649038", new_data_description.subject_id)
+        self.assertEqual([], new_data_description.related_data)
+        self.assertEqual(Platform.ECEPHYS, new_data_description.platform)
+        self.assertIsNone(new_data_description.data_summary)
+
     def test_data_level_upgrade(self):
         """Tests data level can be set from legacy versions"""
 

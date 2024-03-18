@@ -2,7 +2,7 @@
 
 from copy import deepcopy
 from datetime import datetime
-from typing import Any, Optional, Union
+from typing import Any, Optional, Union, get_args
 
 from aind_data_schema.base import AindModel
 from aind_data_schema.core.data_description import (
@@ -93,6 +93,11 @@ class FundingUpgrade:
         elif (
             type(old_funding) is dict and old_funding.get("funder") is not None and type(old_funding["funder"]) is dict
         ):
+            # check that the funder is valid. If not, set it to Allen Institute
+            possible_funders = [f() for f in get_args(get_args(Organization.FUNDERS)[0])]
+            if Organization.from_name(old_funding["funder"]["name"]) not in possible_funders:
+                print(f"Invalid funder: {old_funding['funder']['name']}")
+                old_funding["funder"] = Organization.from_name("Allen Institute")
             return Funding.model_validate(old_funding)
         else:
             return Funding(funder=Organization.AI)
