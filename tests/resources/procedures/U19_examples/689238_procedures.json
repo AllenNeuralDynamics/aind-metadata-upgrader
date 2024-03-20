@@ -1,0 +1,199 @@
+{
+   "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/procedures.py",
+   "schema_version": "0.9.7",
+   "subject_id": "689238",
+   "subject_procedures": [
+      {
+         "start_date": "2023-08-04",
+         "end_date": "2023-08-04",
+         "experimenter_full_name": "30509",
+         "protocol_id": "dx.doi.org/10.17504/protocols.io.bg5vjy66",
+         "iacuc_protocol": null,
+         "animal_weight_prior": null,
+         "animal_weight_post": null,
+         "weight_unit": "gram",
+         "anaesthesia": null,
+         "notes": null,
+         "procedure_type": "Perfusion",
+         "output_specimen_ids": [
+            "689238"
+         ]
+      },
+      {
+         "start_date": "2023-07-07",
+         "end_date": "2023-07-07",
+         "experimenter_full_name": "NSB-5756",
+         "protocol_id": "dx.doi.org/10.17504/protocols.io.bgpujvnw",
+         "iacuc_protocol": "2109",
+         "animal_weight_prior": 16.5,
+         "animal_weight_post": 16.5,
+         "weight_unit": "gram",
+         "anaesthesia": {
+            "type": "isoflurane",
+            "duration": 60.0,
+            "duration_unit": "minute",
+            "level": 1.75
+         },
+         "notes": null,
+         "injection_materials": [
+            {
+               "name": "AAVrg-Syn-H2B-Turquoise",
+               "material_id": null,
+               "full_genome_name": null,
+               "plasmid_name": "AAVrg-Syn-H2B-Turquoise",
+               "genome_copy": null,
+               "titer": 296000000000000,
+               "titer_unit": "gc/mL",
+               "concentration": null,
+               "concentration_unit": null,
+               "prep_lot_number": "230526-13",
+               "prep_date": null,
+               "prep_type": null,
+               "prep_protocol": null
+            }
+         ],
+         "recovery_time": 10.0,
+         "recovery_time_unit": "minute",
+         "injection_duration": null,
+         "injection_duration_unit": "minute",
+         "workstation_id": "SWS 6",
+         "instrument_id": null,
+         "injection_coordinate_ml": 0.6,
+         "injection_coordinate_ap": 2.0,
+         "injection_coordinate_depth": [
+            0.6
+         ],
+         "injection_coordinate_unit": "millimeter",
+         "injection_coordinate_reference": "Bregma",
+         "bregma_to_lambda_distance": null,
+         "bregma_to_lambda_unit": "millimeter",
+         "injection_angle": 0.0,
+         "injection_angle_unit": "degrees",
+         "targeted_structure": "Isocortex",
+         "injection_hemisphere": "Right",
+         "procedure_type": "Nanoject injection",
+         "injection_volume": [
+            50.0
+         ],
+         "injection_volume_unit": "nanoliter"
+      },
+      {
+         "start_date": "2023-07-07",
+         "end_date": "2023-07-07",
+         "experimenter_full_name": "NSB-5756",
+         "protocol_id": "dx.doi.org/10.17504/protocols.io.bgpujvnw",
+         "iacuc_protocol": "2109",
+         "animal_weight_prior": 16.5,
+         "animal_weight_post": 16.5,
+         "weight_unit": "gram",
+         "anaesthesia": {
+            "type": "isoflurane",
+            "duration": 60.0,
+            "duration_unit": "minute",
+            "level": 1.75
+         },
+         "notes": null,
+         "injection_materials": [
+            {
+               "name": "AAVrg-Syn-H2B-tdTomato",
+               "material_id": null,
+               "full_genome_name": null,
+               "plasmid_name": "AAVrg-Syn-H2B-tdTomato",
+               "genome_copy": null,
+               "titer": 51000000000000,
+               "titer_unit": "gc/mL",
+               "concentration": null,
+               "concentration_unit": null,
+               "prep_lot_number": "221111-23",
+               "prep_date": null,
+               "prep_type": null,
+               "prep_protocol": null
+            }
+         ],
+         "recovery_time": 10.0,
+         "recovery_time_unit": "minute",
+         "injection_duration": null,
+         "injection_duration_unit": "minute",
+         "workstation_id": "SWS 6",
+         "instrument_id": null,
+         "injection_coordinate_ml": 0.2,
+         "injection_coordinate_ap": 2.0,
+         "injection_coordinate_depth": [
+            1.8
+         ],
+         "injection_coordinate_unit": "millimeter",
+         "injection_coordinate_reference": "Bregma",
+         "bregma_to_lambda_distance": null,
+         "bregma_to_lambda_unit": "millimeter",
+         "injection_angle": 0,
+         "injection_angle_unit": "degrees",
+         "targeted_structure": "Isocortex",
+         "injection_hemisphere": "Right",
+         "procedure_type": "Nanoject injection",
+         "injection_volume": [
+            50
+         ],
+         "injection_volume_unit": "nanoliter"
+      },
+      {
+         "start_date": "2023-07-07",
+         "end_date": "2023-07-07",
+         "experimenter_full_name": "NSB-5756",
+         "protocol_id": "dx.doi.org/10.17504/protocols.io.bgpujvnw",
+         "iacuc_protocol": "2109",
+         "animal_weight_prior": 16.5,
+         "animal_weight_post": 16.5,
+         "weight_unit": "gram",
+         "anaesthesia": {
+            "type": "isoflurane",
+            "duration": 60.0,
+            "duration_unit": "minute",
+            "level": 1.75
+         },
+         "notes": null,
+         "injection_materials": [
+            {
+               "name": "AAVrg-Syn-H2B-EGFP",
+               "material_id": null,
+               "full_genome_name": null,
+               "plasmid_name": "AAVrg-Syn-H2B-EGFP",
+               "genome_copy": null,
+               "titer": 136000000000000,
+               "titer_unit": "gc/mL",
+               "concentration": null,
+               "concentration_unit": null,
+               "prep_lot_number": "221104-8",
+               "prep_date": null,
+               "prep_type": null,
+               "prep_protocol": null
+            }
+         ],
+         "recovery_time": 10.0,
+         "recovery_time_unit": "minute",
+         "injection_duration": null,
+         "injection_duration_unit": "minute",
+         "workstation_id": "SWS 6",
+         "instrument_id": null,
+         "injection_coordinate_ml": 1.0,
+         "injection_coordinate_ap": 2.0,
+         "injection_coordinate_depth": [
+            0.6
+         ],
+         "injection_coordinate_unit": "millimeter",
+         "injection_coordinate_reference": "Bregma",
+         "bregma_to_lambda_distance": null,
+         "bregma_to_lambda_unit": "millimeter",
+         "injection_angle": 0.0,
+         "injection_angle_unit": "degrees",
+         "targeted_structure": "Isocortex",
+         "injection_hemisphere": "Right",
+         "procedure_type": "Nanoject injection",
+         "injection_volume": [
+            50.0
+         ],
+         "injection_volume_unit": "nanoliter"
+      }
+   ],
+   "specimen_procedures": [],
+   "notes": null
+}

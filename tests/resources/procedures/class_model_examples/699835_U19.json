@@ -1,0 +1,214 @@
+{
+   "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/procedures.py",
+   "schema_version": "0.9.7",
+   "subject_id": "699835",
+   "subject_procedures": [
+      {
+         "start_date": "2023-10-05",
+         "end_date": "2023-10-05",
+         "experimenter_full_name": "30509",
+         "protocol_id": "dx.doi.org/10.17504/protocols.io.bg5vjy66",
+         "iacuc_protocol": null,
+         "animal_weight_prior": null,
+         "animal_weight_post": null,
+         "weight_unit": "gram",
+         "anaesthesia": null,
+         "notes": null,
+         "procedure_type": "Perfusion",
+         "output_specimen_ids": [
+            "699835"
+         ]
+      },
+      {
+         "start_date": "2023-09-08",
+         "end_date": "2023-09-08",
+         "experimenter_full_name": "NSB-5756",
+         "protocol_id": "dx.doi.org/10.17504/protocols.io.bgpujvnw",
+         "iacuc_protocol": "2109",
+         "animal_weight_prior": 17.6,
+         "animal_weight_post": 17.6,
+         "weight_unit": "gram",
+         "anaesthesia": {
+            "type": "isoflurane",
+            "duration": 90.0,
+            "duration_unit": "minute",
+            "level": 1.5
+         },
+         "notes": null,
+         "injection_materials": [
+            {
+               "name": "SL1-hSyn-Cre",
+               "material_id": null,
+               "full_genome_name": null,
+               "plasmid_name": "SL1-hSyn-Cre",
+               "genome_copy": null,
+               "titer": 37500000000000,
+               "titer_unit": "gc/mL",
+               "concentration": null,
+               "concentration_unit": null,
+               "prep_lot_number": "221118-11",
+               "prep_date": null,
+               "prep_type": null,
+               "prep_protocol": null
+            },
+            {
+               "name": "CTB-647",
+               "material_id": null,
+               "full_genome_name": null,
+               "plasmid_name": null,
+               "genome_copy": null,
+               "titer": null,
+               "titer_unit": null,
+               "concentration": 0.5,
+               "concentration_unit": "mg/mL",
+               "prep_lot_number": "2454759",
+               "prep_date": null,
+               "prep_type": null,
+               "prep_protocol": null
+            }
+         ],
+         "recovery_time": 15.0,
+         "recovery_time_unit": "minute",
+         "injection_duration": null,
+         "injection_duration_unit": "minute",
+         "workstation_id": "SWS 2",
+         "instrument_id": null,
+         "injection_coordinate_ml": 0.2,
+         "injection_coordinate_ap": 2.0,
+         "injection_coordinate_depth": [
+            1.8
+         ],
+         "injection_coordinate_unit": "millimeter",
+         "injection_coordinate_reference": "Bregma",
+         "bregma_to_lambda_distance": null,
+         "bregma_to_lambda_unit": "millimeter",
+         "injection_angle": 0,
+         "injection_angle_unit": "degrees",
+         "targeted_structure": "IL",
+         "injection_hemisphere": "Right",
+         "procedure_type": "Nanoject injection",
+         "injection_volume": [
+            50
+         ],
+         "injection_volume_unit": "nanoliter"
+      },
+      {
+         "start_date": "2023-09-08",
+         "end_date": "2023-09-08",
+         "experimenter_full_name": "NSB-5756",
+         "protocol_id": "dx.doi.org/10.17504/protocols.io.bgpujvnw",
+         "iacuc_protocol": "2109",
+         "animal_weight_prior": 17.6,
+         "animal_weight_post": 17.6,
+         "weight_unit": "gram",
+         "anaesthesia": {
+            "type": "isoflurane",
+            "duration": 90.0,
+            "duration_unit": "minute",
+            "level": 1.5
+         },
+         "notes": null,
+         "injection_materials": [
+            {
+               "name": "AAV-Syn-DIO-TVA66T-dTomato-CVS N2cG",
+               "material_id": null,
+               "full_genome_name": null,
+               "plasmid_name": "AAV-Syn-DIO-TVA66T-dTomato-CVS N2cG",
+               "genome_copy": null,
+               "titer": 18000000000000.0,
+               "titer_unit": "gc/mL",
+               "concentration": null,
+               "concentration_unit": null,
+               "prep_lot_number": "220916-4",
+               "prep_date": null,
+               "prep_type": null,
+               "prep_protocol": null
+            }
+         ],
+         "recovery_time": 15.0,
+         "recovery_time_unit": "minute",
+         "injection_duration": null,
+         "injection_duration_unit": "minute",
+         "workstation_id": "SWS 2",
+         "instrument_id": null,
+         "injection_coordinate_ml": 0.0,
+         "injection_coordinate_ap": -0.3,
+         "injection_coordinate_depth": [
+            -4.3
+         ],
+         "injection_coordinate_unit": "millimeter",
+         "injection_coordinate_reference": "Bregma",
+         "bregma_to_lambda_distance": null,
+         "bregma_to_lambda_unit": "millimeter",
+         "injection_angle": 0,
+         "injection_angle_unit": "degrees",
+         "targeted_structure": "aPVT",
+         "injection_hemisphere": "Right",
+         "procedure_type": "Nanoject injection",
+         "injection_volume": [
+            100
+         ],
+         "injection_volume_unit": "nanoliter"
+      },
+      {
+         "start_date": "2023-09-25",
+         "end_date": "2023-09-25",
+         "experimenter_full_name": "NSB-5756",
+         "protocol_id": "dx.doi.org/10.17504/protocols.io.bgpujvnw",
+         "iacuc_protocol": "2109",
+         "animal_weight_prior": 19.9,
+         "animal_weight_post": 19.8,
+         "weight_unit": "gram",
+         "anaesthesia": {
+            "type": "isoflurane",
+            "duration": 60.0,
+            "duration_unit": "minute",
+            "level": 1.5
+         },
+         "notes": null,
+         "injection_materials": [
+            {
+               "name": "EnvA CVS-N2C-histone-GFP",
+               "material_id": null,
+               "full_genome_name": null,
+               "plasmid_name": "EnvA CVS-N2C-histone-GFP",
+               "genome_copy": null,
+               "titer": 10700000000.0,
+               "titer_unit": "gc/mL",
+               "concentration": null,
+               "concentration_unit": null,
+               "prep_lot_number": "221110",
+               "prep_date": null,
+               "prep_type": null,
+               "prep_protocol": null
+            }
+         ],
+         "recovery_time": 7.0,
+         "recovery_time_unit": "minute",
+         "injection_duration": null,
+         "injection_duration_unit": "minute",
+         "workstation_id": "SWS 3",
+         "instrument_id": null,
+         "injection_coordinate_ml": 0.0,
+         "injection_coordinate_ap": -0.3,
+         "injection_coordinate_depth": [
+            -4.3
+         ],
+         "injection_coordinate_unit": "millimeter",
+         "injection_coordinate_reference": "Bregma",
+         "bregma_to_lambda_distance": null,
+         "bregma_to_lambda_unit": "millimeter",
+         "injection_angle": 0,
+         "injection_angle_unit": "degrees",
+         "targeted_structure": "aPVT",
+         "injection_hemisphere": "Right",
+         "procedure_type": "Nanoject injection",
+         "injection_volume": [
+            100
+         ],
+         "injection_volume_unit": "nanoliter"
+      }
+   ],
+   "specimen_procedures": [],
+   "notes": null
+}

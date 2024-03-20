@@ -1,0 +1,269 @@
+{
+   "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+   "schema_version": "0.10.3",
+   "subject_id": "674182",
+   "subject_procedures": [
+      {
+         "procedure_type": "Perfusion",
+         "start_date": "2023-05-05",
+         "end_date": "2023-05-05",
+         "experimenter_full_name": "30509",
+         "protocol_id": "dx.doi.org/10.17504/protocols.io.bg5vjy66",
+         "iacuc_protocol": null,
+         "animal_weight_prior": null,
+         "animal_weight_post": null,
+         "weight_unit": "gram",
+         "anaesthesia": null,
+         "notes": null,
+         "output_specimen_ids": [
+            "674182"
+         ]
+      },
+      {
+         "procedure_type": "Nanoject injection",
+         "start_date": "2023-04-07",
+         "end_date": "2023-04-07",
+         "experimenter_full_name": "NSB-5756",
+         "protocol_id": "dx.doi.org/10.17504/protocols.io.bgpujvnw",
+         "iacuc_protocol": "2109",
+         "animal_weight_prior": 22.2,
+         "animal_weight_post": 22.1,
+         "weight_unit": "gram",
+         "anaesthesia": {
+            "type": "isoflurane",
+            "duration": 60.0,
+            "duration_unit": "minute",
+            "level": 1.75
+         },
+         "notes": null,
+         "injection_materials": [
+            {
+               "name": "AAVrg-Syn-H2B-Turquoise",
+               "material_id": null,
+               "full_genome_name": null,
+               "plasmid_name": "AAVrg-Syn-H2B-Turquoise",
+               "genome_copy": null,
+               "titer": 48000000000000,
+               "titer_unit": "gc/mL",
+               "concentration": null,
+               "concentration_unit": null,
+               "prep_lot_number": "221111-22",
+               "prep_date": null,
+               "prep_type": null,
+               "prep_protocol": null
+            }
+         ],
+         "recovery_time": 10.0,
+         "recovery_time_unit": "minute",
+         "injection_duration": null,
+         "injection_duration_unit": "minute",
+         "workstation_id": "SWS 6",
+         "instrument_id": null,
+         "injection_coordinate_ml": 0.6,
+         "injection_coordinate_ap": 2.4,
+         "injection_coordinate_depth": [
+            1.0
+         ],
+         "injection_coordinate_unit": "millimeter",
+         "injection_coordinate_reference": "Bregma",
+         "bregma_to_lambda_distance": null,
+         "bregma_to_lambda_unit": "millimeter",
+         "injection_angle": 0.0,
+         "injection_angle_unit": "degrees",
+         "targeted_structure": "Isocortex",
+         "injection_hemisphere": "Right",
+         "injection_volume": [
+            50.0
+         ],
+         "injection_volume_unit": "nanoliter"
+      },
+      {
+         "procedure_type": "Nanoject injection",
+         "start_date": "2023-04-07",
+         "end_date": "2023-04-07",
+         "experimenter_full_name": "NSB-5756",
+         "protocol_id": "dx.doi.org/10.17504/protocols.io.bgpujvnw",
+         "iacuc_protocol": "2109",
+         "animal_weight_prior": 22.2,
+         "animal_weight_post": 22.1,
+         "weight_unit": "gram",
+         "anaesthesia": {
+            "type": "isoflurane",
+            "duration": 60.0,
+            "duration_unit": "minute",
+            "level": 1.75
+         },
+         "notes": null,
+         "injection_materials": [
+            {
+               "name": "AAVrg-Syn-H2B-tdTomato",
+               "material_id": null,
+               "full_genome_name": null,
+               "plasmid_name": "AAVrg-Syn-H2B-tdTomato",
+               "genome_copy": null,
+               "titer": 51000000000000,
+               "titer_unit": "gc/mL",
+               "concentration": null,
+               "concentration_unit": null,
+               "prep_lot_number": "221111-23",
+               "prep_date": null,
+               "prep_type": null,
+               "prep_protocol": null
+            }
+         ],
+         "recovery_time": 10.0,
+         "recovery_time_unit": "minute",
+         "injection_duration": null,
+         "injection_duration_unit": "minute",
+         "workstation_id": "SWS 6",
+         "instrument_id": null,
+         "injection_coordinate_ml": 1.0,
+         "injection_coordinate_ap": 2.4,
+         "injection_coordinate_depth": [
+            1.0
+         ],
+         "injection_coordinate_unit": "millimeter",
+         "injection_coordinate_reference": "Bregma",
+         "bregma_to_lambda_distance": null,
+         "bregma_to_lambda_unit": "millimeter",
+         "injection_angle": 0,
+         "injection_angle_unit": "degrees",
+         "targeted_structure": "Isocortex",
+         "injection_hemisphere": "Right",
+         "injection_volume": [
+            50
+         ],
+         "injection_volume_unit": "nanoliter"
+      }
+   ],
+   "specimen_procedures": [
+      {
+         "specimen_procedure_type": "SpecimenProcedure",
+         "specimen_id": "674182",
+         "procedure_name": "SHIELD OFF",
+         "procedure_type": "Fixation",
+         "start_date": "2023-05-15",
+         "end_date": "2023-05-18",
+         "experimenter_full_name": "DT",
+         "protocol_id": "none",
+         "reagents": [
+            {
+               "name": "SHIELD Epoxy",
+               "source": "LiveCanvas Technologies",
+               "rrid": null,
+               "lot_number": "unknown",
+               "expiration_date": null
+            },
+            {
+               "name": "SHIELD Buffer",
+               "source": "LiveCanvas Technologies",
+               "rrid": null,
+               "lot_number": "unknown",
+               "expiration_date": null
+            }
+         ],
+         "notes": "None"
+      },
+      {
+         "specimen_procedure_type": "SpecimenProcedure",
+         "specimen_id": "674182",
+         "procedure_name": "SHIELD ON",
+         "procedure_type": "Fixation",
+         "start_date": "2023-05-18",
+         "end_date": "2023-05-19",
+         "experimenter_full_name": "DT",
+         "protocol_id": "none",
+         "reagents": [
+            {
+               "name": "SHIELD ON",
+               "source": "LiveCanvas Technologies",
+               "rrid": null,
+               "lot_number": "unknown",
+               "expiration_date": null
+            }
+         ],
+         "notes": "None"
+      },
+      {
+         "specimen_procedure_type": "SpecimenProcedure",
+         "specimen_id": "674182",
+         "procedure_name": "24h Delipidation",
+         "procedure_type": "Delipidation",
+         "start_date": "2023-05-22",
+         "end_date": "2023-05-23",
+         "experimenter_full_name": "DT",
+         "protocol_id": "none",
+         "reagents": [
+            {
+               "name": "Delipidation Buffer",
+               "source": "LiveCanvas Technologies",
+               "rrid": null,
+               "lot_number": "unknown",
+               "expiration_date": null
+            }
+         ],
+         "notes": "None"
+      },
+      {
+         "specimen_procedure_type": "SpecimenProcedure",
+         "specimen_id": "674182",
+         "procedure_name": "Active Delipidation",
+         "procedure_type": "Delipidation",
+         "start_date": "2023-05-23",
+         "end_date": "2023-05-25",
+         "experimenter_full_name": "DT",
+         "protocol_id": "none",
+         "reagents": [
+            {
+               "name": "Conduction Buffer",
+               "source": "LiveCanvas Technologies",
+               "rrid": null,
+               "lot_number": "unknown",
+               "expiration_date": null
+            }
+         ],
+         "notes": "None"
+      },
+      {
+         "specimen_procedure_type": "SpecimenProcedure",
+         "specimen_id": "674182",
+         "procedure_name": "50% EasyIndex",
+         "procedure_type": "Refractive index matching",
+         "start_date": "2023-05-25",
+         "end_date": "2023-05-26",
+         "experimenter_full_name": "DT",
+         "protocol_id": "none",
+         "reagents": [
+            {
+               "name": "EasyIndex",
+               "source": "LiveCanvas Technologies",
+               "rrid": null,
+               "lot_number": "unknown",
+               "expiration_date": null
+            }
+         ],
+         "notes": "None"
+      },
+      {
+         "specimen_procedure_type": "SpecimenProcedure",
+         "specimen_id": "674182",
+         "procedure_name": "100% EasyIndex",
+         "procedure_type": "Refractive index matching",
+         "start_date": "2023-05-26",
+         "end_date": "2023-05-28",
+         "experimenter_full_name": "DT",
+         "protocol_id": "none",
+         "reagents": [
+            {
+               "name": "EasyIndex",
+               "source": "LiveCanvas Technologies",
+               "rrid": null,
+               "lot_number": "unknown",
+               "expiration_date": null
+            }
+         ],
+         "notes": "None"
+      }
+   ],
+   "notes": null
+}
