@@ -68,7 +68,7 @@ class TestProceduresUpgrade(unittest.TestCase):
             test = ProcedureUpgrader.upgrade_procedure()
 
             test.write_standard_file(
-                output_directory=Path("tests/resources/procedures/updated_class_models"), prefix=Path(file)
+                output_directory=Path("tests/resources/procedures/updated_class_models"), prefix=Path(file.split(".")[0])
             )
     
     def test_craniotomy_upgrade(self):
@@ -83,28 +83,28 @@ class TestProceduresUpgrade(unittest.TestCase):
             test = upgrader.upgrade_procedure()
 
 
-for file in procedures_files:
+# for file in procedures_files:
 
-    with open(file, "r") as f:
-        contents = json.loads(f.read())
+#     with open(file, "r") as f:
+#         contents = json.loads(f.read())
 
-    # for procedure in contents["subject_procedures"]:
-    #     logging.info(procedure)
-    #     if "probes" in procedure.keys():
-    #         if "um" in procedure["probes"]["core_diameter_unit"].replace("μm", "um"):
-    #             logging.info("UPDATING CORE DIAMETER UNIT")
-    #             procedure["probes"].pop("core_diameter_unit")
-    #             procedure["probes"]["core_diameter_unit"] = "um"
-    #             logging.info(procedure["probes"])
+#     # for procedure in contents["subject_procedures"]:
+#     #     logging.info(procedure)
+#     #     if "probes" in procedure.keys():
+#     #         if "um" in procedure["probes"]["core_diameter_unit"].replace("μm", "um"):
+#     #             logging.info("UPDATING CORE DIAMETER UNIT")
+#     #             procedure["probes"].pop("core_diameter_unit")
+#     #             procedure["probes"]["core_diameter_unit"] = "um"
+#     #             logging.info(procedure["probes"])
 
-    with open(file) as f:
-        subject = Path(file).stem
-        procedures = json.load(f)
-        logging.info(f"PROCEDURES: {type(procedures)}")
-        ProcedureUpgrader = ProcedureUpgrade(procedures, allow_validation_errors=True)
+#     with open(file) as f:
+#         subject = Path(file).stem
+#         procedures = json.load(f)
+#         logging.info(f"PROCEDURES: {type(procedures)}")
+#         ProcedureUpgrader = ProcedureUpgrade(procedures, allow_validation_errors=True)
 
-        test = ProcedureUpgrader.upgrade_procedure()
+#         test = ProcedureUpgrader.upgrade_procedure()
 
-        test.write_standard_file(
-            output_directory=Path("tests/resources/procedures/updated_class_models"), prefix=Path(subject)
-        )
+#         test.write_standard_file(
+#             output_directory=Path("tests/resources/procedures/updated_class_models"), prefix=Path(subject)
+#         )
