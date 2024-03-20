@@ -290,8 +290,8 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         with self.assertRaises(Exception) as e:
             upgrader.upgrade()
 
-        expected_error_message = "KeyError('Not a real funder')"
-        self.assertEqual(expected_error_message, repr(e.exception))
+        expected_error_message = "1 validation error for Funding"
+        self.assertIn(expected_error_message, repr(e.exception))
 
         # Should work by setting funding_source explicitly
         new_data_description = upgrader.upgrade(funding_source=[Funding(funder=Organization.AI)])

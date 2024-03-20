@@ -70,6 +70,9 @@ class FundingUpgrade:
         "Allen Institute for Brain Science": Organization.AI,
         "Allen Institute for Neural Dynamics": Organization.AI,
         "AIND": Organization.AI,
+        "AIBS": Organization.AI,
+        "AI": Organization.AI,
+        "Allen Institute": Organization.AI,
         Organization.AIND: Organization.AI,
         Organization.AIBS: Organization.AI,
     }
@@ -80,28 +83,18 @@ class FundingUpgrade:
         if type(old_funding) is Funding:
             return old_funding
         elif type(old_funding) is dict and old_funding.get("funder") is not None and type(old_funding["funder"]) is str:
-            old_funder = old_funding.get("funder")
-            if Organization().name_map.get(old_funder) is not None:
-                new_funder = Organization.from_name(old_funder)
-            else:
-                new_funder = Organization.from_abbreviation(old_funder)
+            old_funder_name = old_funding.get("funder")
             new_funding = deepcopy(old_funding)
-            if type(new_funder) in Organization._ALL and new_funder.name in cls.funders_map.keys():
-                new_funder = cls.funders_map[new_funder.name]
-            new_funding["funder"] = new_funder
+            if old_funder_name in cls.funders_map.keys():
+                new_funding["funder"] = cls.funders_map[old_funder_name]
             return Funding.model_validate(new_funding)
         elif (
             type(old_funding) is dict and old_funding.get("funder") is not None and type(old_funding["funder"]) is dict
         ):
-            old_funder = old_funding.get("funder")
-            if Organization().name_map.get(old_funder["name"]) is not None:
-                new_funder = Organization.from_name(old_funder["name"])
-            else:
-                new_funder = Organization.from_abbreviation(old_funder["name"])
+            old_funder_name = old_funding.get("funder")["name"]
             new_funding = deepcopy(old_funding)
-            if type(new_funder) in Organization._ALL and new_funder.name in cls.funders_map.keys():
-                new_funder = cls.funders_map[new_funder.name]
-            new_funding["funder"] = new_funder
+            if old_funder_name in cls.funders_map.keys():
+                new_funding["funder"] = cls.funders_map[old_funder_name]
             return Funding.model_validate(new_funding)
         else:
             return Funding(funder=Organization.AI)
