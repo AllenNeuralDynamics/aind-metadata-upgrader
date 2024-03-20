@@ -67,6 +67,8 @@ class InjectionMaterialsUpgrade:
 
         new_materials = []
         for injection_material in old_injection_materials:
+            if not injection_material:
+                continue
             if injection_material.get("titer") is not None:
                 new_materials.append(self.upgrade_viral_material(injection_material))
 
