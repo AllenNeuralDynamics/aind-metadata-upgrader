@@ -5,7 +5,7 @@ from decimal import Decimal
 from typing import Optional, Union
 
 import semver
-from aind_data_schema.core.procedures import (
+from aind_data_schema.core.procedures import (  # SpecimenProcedure,; TarsVirusIdentifiers,
     Craniotomy,
     CraniotomyType,
     FiberImplant,
@@ -16,15 +16,15 @@ from aind_data_schema.core.procedures import (
     Perfusion,
     Procedures,
     RetroOrbitalInjection,
-    # SpecimenProcedure,
     Surgery,
-    # TarsVirusIdentifiers,
     ViralMaterial,
 )
-# from aind_data_schema.models.devices import FiberProbe
 
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
-from aind_metadata_upgrader.utils import get_or_default, construct_new_model
+from aind_metadata_upgrader.utils import construct_new_model, get_or_default
+
+# from aind_data_schema.models.devices import FiberProbe
+
 
 
 class InjectionMaterialsUpgrade:

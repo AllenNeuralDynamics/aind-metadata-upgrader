@@ -5,8 +5,6 @@ import unittest
 from pathlib import Path
 
 from aind_data_schema.base import AindModel
-
-
 from pydantic import __version__ as pyd_version
 
 from aind_metadata_upgrader.utils import get_or_default
@@ -25,6 +23,7 @@ class TestUtils(unittest.TestCase):
 
         class TestModel(AindModel):
             """Model for testing utilities"""
+
             test: str
             test2: str = "default"
 

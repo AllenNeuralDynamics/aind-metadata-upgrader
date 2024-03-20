@@ -1,21 +1,18 @@
 """ tests for Procedures upgrades """
 
-from datetime import datetime
 import json
+import logging
 import os
 import re
 import unittest
-import logging
-from glob import glob
+from datetime import datetime
 from pathlib import Path
 from typing import List
 
+from aind_data_schema.core.procedures import Procedures
+from pydantic import __version__ as pyd_version
 
 from aind_metadata_upgrader.procedures_upgrade import ProcedureUpgrade
-from aind_data_schema.core.procedures import Procedures
-
-
-from pydantic import __version__ as pyd_version
 
 PYD_VERSION = re.match(r"(\d+.\d+).\d+", pyd_version).group(1)
 
@@ -68,19 +65,21 @@ class TestProceduresUpgrade(unittest.TestCase):
             test = ProcedureUpgrader.upgrade_procedure()
 
             test.write_standard_file(
-                output_directory=Path("tests/resources/procedures/updated_class_models"), prefix=Path(file.split(".")[0])
+                output_directory=Path("tests/resources/procedures/updated_class_models"),
+                prefix=Path(file.split(".")[0]),
             )
-    
+
     def test_craniotomy_upgrade(self):
         """Test the upgrade_craniotomy method."""
-        
+
         test_file = self.procedures["676909.json"]
 
-        
         upgrader = ProcedureUpgrade(test_file, allow_validation_errors=False)
 
         with self.assertRaises(Exception) as e:
-            test = upgrader.upgrade_procedure()
+            upgrader.upgrade_procedure()
+
+        logging.error(f"ERROR: {e.exception}")
 
 
 # for file in procedures_files:
