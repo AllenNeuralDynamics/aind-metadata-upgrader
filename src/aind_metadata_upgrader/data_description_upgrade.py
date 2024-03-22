@@ -4,6 +4,7 @@ from copy import deepcopy
 from datetime import datetime
 from typing import Any, Optional, Union, List
 
+import semver
 from aind_data_schema.base import AindModel
 from aind_data_schema.core.data_description import (
     DataDescription,
@@ -62,6 +63,34 @@ class ModalityUpgrade:
             return old_modality
         else:
             return None
+
+
+class PlatformUpgrade:
+    """Handle upgrades for Platform models."""
+
+    legacy_name_mapping = {
+        "smartspim": Platform.SMARTSPIM,
+        "single-plane-ophys": Platform.SINGLE_PLANE_OPHYS,
+        "HSFP": Platform.HSFP,
+        "exaSPIM": Platform.EXASPIM,
+        "ophys": Platform.SINGLE_PLANE_OPHYS,
+        "multiplane-ophys": Platform.MULTIPLANE_OPHYS,
+        "merfish": Platform.MERFISH,
+        "mesoSPIM": Platform.MESOSPIM,
+        "SPIM": Platform.SMARTSPIM,
+        "test-FIP-opto": Platform.FIP,
+        "FIP": Platform.FIP,
+        "ecephys": Platform.ECEPHYS,
+        "behavior-videos": Platform.MULTIPLANE_OPHYS,
+        "SmartSPIM": Platform.SMARTSPIM,
+        "ephys": Platform.ECEPHYS,
+    }
+
+    @classmethod
+    def from_modality(cls, modality: Modality) -> Optional[Platform]:
+        """Get platform from modality"""
+        if modality is not None:
+            return cls.legacy_name_mapping.get(modality.abbreviation)
 
 
 class FundingUpgrade:
@@ -185,6 +214,9 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
     def upgrade(self, **kwargs) -> AindModel:
         """Upgrades the old model into the current version"""
+
+        version = semver.Version.parse(self._get_or_default(self.old_model, "schema_version", kwargs))
+
         institution = InstitutionUpgrade.upgrade_institution(
             self._get_or_default(self.old_model, "institution", kwargs)
         )
@@ -211,6 +243,9 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
         if platform is None:
             platform = self._get_or_default(self.old_model, "platform", kwargs)
+            if platform is None and version <= "0.8.0":
+                if type(modality) is list:
+                    platform = PlatformUpgrade.from_modality(modality[0])
 
         investigators = self._get_or_default(self.old_model, "investigators", kwargs)
         investigators = InvestigatorsUpgrade.upgrade_investigators(investigators)
