@@ -13,6 +13,7 @@ from aind_data_schema.core.processing import (
     PipelineProcess,
     Processing,
 )
+from aind_data_schema.base import AindGeneric
 from pydantic import __version__ as pyd_version
 
 from aind_metadata_upgrader.processing_upgrade import (
@@ -281,7 +282,7 @@ class TestDataProcessUpgrade(unittest.TestCase):
         self.assertEqual(new_data_process.end_date_time, datetime_now)
         self.assertEqual(new_data_process.input_location, "my-input-location")
         self.assertEqual(new_data_process.output_location, "my-output-location")
-        # self.assertEqual(new_data_process.parameters, {"param1": "value1"})
+        self.assertEqual(new_data_process.parameters, AindGeneric(param1="value1"))
 
 
 if __name__ == "__main__":

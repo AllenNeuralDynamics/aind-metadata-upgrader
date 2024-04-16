@@ -18,6 +18,7 @@ from aind_data_schema.core.data_description import (
 from aind_data_schema.models.modalities import Modality
 from aind_data_schema.models.organizations import Organization
 from aind_data_schema.models.platforms import Platform
+from aind_data_schema.models.pid_names import PIDName
 from pydantic import ValidationError
 from pydantic import __version__ as pyd_version
 
@@ -26,6 +27,7 @@ from aind_metadata_upgrader.data_description_upgrade import (
     FundingUpgrade,
     InstitutionUpgrade,
     ModalityUpgrade,
+    InvestigatorsUpgrade,
 )
 
 DATA_DESCRIPTION_FILES_PATH = Path(__file__).parent / "resources" / "ephys_data_description"
@@ -50,21 +52,8 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         """Tests data_description_0.3.0.json is mapped correctly."""
         data_description_0_3_0 = self.data_descriptions["data_description_0.3.0.json"]
         upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_3_0)
-        # Should complain about platform being None
-        with self.assertRaises(Exception) as e:
-            upgrader.upgrade()
 
-        expected_error_message = (
-            "1 validation error for DataDescription\n"
-            "platform\n"
-            "  Input should be a valid dictionary or object to extract fields"
-            " from [type=model_attributes_type, input_value=None, input_type=NoneType]\n"
-            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/model_attributes_type"
-        )
-        self.assertEqual(expected_error_message, repr(e.exception))
-
-        # Should work by setting platform explicitly
-        new_data_description = upgrader.upgrade(platform=Platform.ECEPHYS)
+        new_data_description = upgrader.upgrade()
         self.assertEqual(
             datetime.datetime(2022, 6, 28, 10, 31, 30),
             new_data_description.creation_time,
@@ -77,7 +66,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertIsNone(new_data_description.group)
-        self.assertEqual(["John Doe"], new_data_description.investigators)
+        self.assertEqual([PIDName(name="John Doe")], new_data_description.investigators)
         self.assertIsNone(new_data_description.project_name)
         self.assertIsNone(new_data_description.restrictions)
         self.assertEqual([Modality.ECEPHYS], new_data_description.modality)
@@ -89,21 +78,8 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         """Tests data_description_0.3.0_wrong_field.json is mapped correctly."""
         data_description_0_3_0 = self.data_descriptions["data_description_0.3.0_wrong_field.json"]
         upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_3_0)
-        # Should complain about platform being None and missing data level
-        with self.assertRaises(Exception) as e:
-            upgrader.upgrade()
 
-        expected_error_message = (
-            "1 validation error for DataDescription\n"
-            "platform\n"
-            "  Input should be a valid dictionary or object to extract fields"
-            " from [type=model_attributes_type, input_value=None, input_type=NoneType]\n"
-            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/model_attributes_type"
-        )
-        self.assertEqual(expected_error_message, repr(e.exception))
-
-        # Should work by setting platform explicitly and DataLevel
-        new_data_description = upgrader.upgrade(platform=Platform.ECEPHYS, data_level=DataLevel.RAW)
+        new_data_description = upgrader.upgrade()
         self.assertEqual(
             datetime.datetime(2022, 7, 26, 10, 52, 15),
             new_data_description.creation_time,
@@ -116,7 +92,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertIsNone(new_data_description.group)
-        self.assertEqual(["John Doe"], new_data_description.investigators)
+        self.assertEqual([PIDName(name="John Doe")], new_data_description.investigators)
         self.assertIsNone(new_data_description.project_name)
         self.assertIsNone(new_data_description.restrictions)
         self.assertEqual([Modality.ECEPHYS], new_data_description.modality)
@@ -189,7 +165,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertIsNone(new_data_description.group)
-        self.assertEqual(["John Doe"], new_data_description.investigators)
+        self.assertEqual([PIDName(name="John Doe")], new_data_description.investigators)
         self.assertIsNone(new_data_description.project_name)
         self.assertIsNone(new_data_description.restrictions)
         self.assertEqual([Modality.ECEPHYS], new_data_description.modality)
@@ -216,7 +192,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertIsNone(new_data_description.group)
-        self.assertEqual(["John Doe"], new_data_description.investigators)
+        self.assertEqual([PIDName(name="John Doe")], new_data_description.investigators)
         self.assertIsNone(new_data_description.project_name)
         self.assertIsNone(new_data_description.restrictions)
         self.assertEqual([Modality.ECEPHYS], new_data_description.modality)
@@ -243,7 +219,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertEqual(Group.EPHYS, new_data_description.group)
-        self.assertEqual(["John Doe", "Mary Smith"], new_data_description.investigators)
+        self.assertEqual([PIDName(name="John Doe"), PIDName(name="Mary Smith")], new_data_description.investigators)
         self.assertEqual("mri-guided-electrophysiology", new_data_description.project_name)
         self.assertIsNone(new_data_description.restrictions)
         self.assertEqual([Modality.ECEPHYS], new_data_description.modality)
@@ -290,8 +266,8 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         with self.assertRaises(Exception) as e:
             upgrader.upgrade()
 
-        expected_error_message = "KeyError('Not a real funder')"
-        self.assertEqual(expected_error_message, repr(e.exception))
+        expected_error_message = "1 validation error for Funding"
+        self.assertIn(expected_error_message, repr(e.exception))
 
         # Should work by setting funding_source explicitly
         new_data_description = upgrader.upgrade(funding_source=[Funding(funder=Organization.AI)])
@@ -307,7 +283,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertEqual(Group.EPHYS, new_data_description.group)
-        self.assertEqual(["John Doe", "Mary Smith"], new_data_description.investigators)
+        self.assertEqual([PIDName(name="John Doe"), PIDName(name="Mary Smith")], new_data_description.investigators)
         self.assertEqual("mri-guided-electrophysiology", new_data_description.project_name)
         self.assertIsNone(new_data_description.restrictions)
         self.assertEqual([Modality.ECEPHYS], new_data_description.modality)
@@ -351,11 +327,39 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         )
         self.assertEqual(DataLevel.RAW, new_data_description.data_level)
         self.assertIsNone(new_data_description.group)
-        self.assertEqual(["John Doe"], new_data_description.investigators)
+        self.assertEqual([PIDName(name="John Doe")], new_data_description.investigators)
         self.assertIsNone(new_data_description.project_name)
         self.assertIsNone(new_data_description.restrictions)
         self.assertEqual([Modality.ECEPHYS], new_data_description.modality)
         self.assertEqual("691897", new_data_description.subject_id)
+        self.assertEqual([], new_data_description.related_data)
+        self.assertEqual(Platform.ECEPHYS, new_data_description.platform)
+        self.assertIsNone(new_data_description.data_summary)
+
+    def test_upgrades_0_11_0_wrong_funding(self):
+        """Tests data_description_0.11.0.json is mapped correctly."""
+        data_description_0_11_0 = self.data_descriptions["data_description_0.11.0_wrong_funder.json"]
+        upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_11_0)
+
+        new_data_description = upgrader.upgrade()
+        # AIND should be set to AI by upgrader
+        self.assertEqual(
+            [Funding(funder=Organization.AI)],
+            new_data_description.funding_source,
+        )
+        self.assertEqual(
+            datetime.datetime(2023, 3, 6, 15, 8, 24),
+            new_data_description.creation_time,
+        )
+        self.assertEqual("ecephys_649038_2023-03-06_15-08-24", new_data_description.name)
+        self.assertEqual(Organization.AIND, new_data_description.institution)
+        self.assertEqual(DataLevel.RAW, new_data_description.data_level)
+        self.assertIsNone(new_data_description.group)
+        self.assertEqual([PIDName(name="John Doe")], new_data_description.investigators)
+        self.assertIsNone(new_data_description.project_name)
+        self.assertIsNone(new_data_description.restrictions)
+        self.assertEqual([Modality.ECEPHYS], new_data_description.modality)
+        self.assertEqual("649038", new_data_description.subject_id)
         self.assertEqual([], new_data_description.related_data)
         self.assertEqual(Platform.ECEPHYS, new_data_description.platform)
         self.assertIsNone(new_data_description.data_summary)
@@ -372,7 +376,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             creation_time=datetime.datetime(2020, 10, 10, 10, 10, 10),
             institution=Organization.AIND,
             funding_source=[Funding(funder=Organization.NINDS, grant_number="grant001")],
-            investigators=["Jane Smith"],
+            investigators=[PIDName(name="Jane Smith")],
         )
         d2 = DataDescription(
             label="test_data",
@@ -383,7 +387,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             creation_time=datetime.datetime(2020, 10, 10, 10, 10, 10),
             institution=Organization.AIND,
             funding_source=[Funding(funder=Organization.NINDS, grant_number="grant001")],
-            investigators=["Jane Smith"],
+            investigators=[PIDName(name="Jane Smith")],
         )
         with self.assertRaises(ValidationError) as e:
             DataDescription(
@@ -395,7 +399,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
                 creation_time=datetime.datetime(2020, 10, 10, 10, 10, 10),
                 institution=Organization.AIND,
                 funding_source=[Funding(funder=Organization.NINDS, grant_number="grant001")],
-                investigators=["Jane Smith"],
+                investigators=[PIDName(name="Jane Smith")],
             )
         self.assertEqual(
             "1 validation error for DataDescription\n"
@@ -430,6 +434,7 @@ class TestModalityUpgrade(unittest.TestCase):
 
     def test_modality_lookup(self):
         """Tests old modality lookup case"""
+
         dd_dict = {
             "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema"
             "/main/src/aind_data_schema/data_description.py",
@@ -448,6 +453,66 @@ class TestModalityUpgrade(unittest.TestCase):
             "restrictions": None,
             "modality": "SmartSPIM",
             "platform": Platform.SMARTSPIM,
+            "subject_id": "623711",
+            "input_data_name": "SmartSPIM_623711_2022-10-27_16-48-54",
+        }
+        dd = DataDescription.model_construct(**dd_dict)
+        upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
+        upgrader.upgrade()
+
+
+class TestPlatformUpgrade(unittest.TestCase):
+    """Tests PlatformUpgrade methods"""
+
+    def test_platform_upgrade(self):
+        """Tests edge case"""
+
+        dd_dict = {
+            "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema"
+            "/main/src/aind_data_schema/data_description.py",
+            "schema_version": "0.3.0",
+            "license": "CC-BY-4.0",
+            "creation_time": "16:01:12.123456",
+            "creation_date": "2022-11-01",
+            "name": "SmartSPIM_623711_2022-10-27_16-48-54_stitched_2022-11-01_16-01-12",
+            "institution": "AIND",
+            "investigators": ["John Doe"],
+            "funding_source": [{"funder": "AI", "grant_number": None, "fundee": None}],
+            "data_level": "derived data",
+            "group": None,
+            "project_name": None,
+            "project_id": None,
+            "restrictions": None,
+            "modality": "SmartSPIM",
+            "platform": None,
+            "subject_id": "623711",
+            "input_data_name": "SmartSPIM_623711_2022-10-27_16-48-54",
+        }
+
+        dd = DataDescription.model_construct(**dd_dict)
+        upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
+        upgrader.upgrade()
+
+    def test_platform_lookup(self):
+        """Tests old platform lookup case"""
+        dd_dict = {
+            "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema"
+            "/main/src/aind_data_schema/data_description.py",
+            "schema_version": "0.3.0",
+            "license": "CC-BY-4.0",
+            "creation_time": "16:01:12.123456",
+            "creation_date": "2022-11-01",
+            "name": "SmartSPIM_623711_2022-10-27_16-48-54_stitched_2022-11-01_16-01-12",
+            "institution": "AIND",
+            "investigators": ["John Doe"],
+            "funding_source": [{"funder": "AI", "grant_number": None, "fundee": None}],
+            "data_level": "derived data",
+            "group": None,
+            "project_name": None,
+            "project_id": None,
+            "restrictions": None,
+            "modality": "ecephys",
+            "platform": None,
             "subject_id": "623711",
             "input_data_name": "SmartSPIM_623711_2022-10-27_16-48-54",
         }
@@ -552,6 +617,21 @@ class TestInstitutionUpgrade(unittest.TestCase):
     def test_institution_upgrade(self):
         """Tests edge case"""
         self.assertIsNone(InstitutionUpgrade.upgrade_institution(None))
+
+
+class TestInvestigatorsUpgrade(unittest.TestCase):
+    """Tests InvestigatorsUpgrade methods"""
+
+    def test_investigators_upgrade(self):
+        """Tests edge case"""
+        self.assertEqual(InvestigatorsUpgrade.upgrade_investigators(["John Doe"]), [PIDName(name="John Doe")])
+        self.assertEqual(
+            InvestigatorsUpgrade.upgrade_investigators([PIDName(name="John Doe")]), [PIDName(name="John Doe")]
+        )
+        self.assertEqual(InvestigatorsUpgrade.upgrade_investigators("John Doe"), [PIDName(name="John Doe")])
+        self.assertEqual(
+            InvestigatorsUpgrade.upgrade_investigators([dict(name="John Doe")]), [PIDName(name="John Doe")]
+        )
 
 
 if __name__ == "__main__":

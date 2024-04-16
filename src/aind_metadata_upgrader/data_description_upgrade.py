@@ -2,8 +2,9 @@
 
 from copy import deepcopy
 from datetime import datetime
-from typing import Any, Optional, Union
+from typing import Any, Optional, Union, List
 
+import semver
 from aind_data_schema.base import AindModel
 from aind_data_schema.core.data_description import (
     DataDescription,
@@ -13,6 +14,7 @@ from aind_data_schema.core.data_description import (
 from aind_data_schema.models.modalities import Modality
 from aind_data_schema.models.organizations import Organization
 from aind_data_schema.models.platforms import Platform
+from aind_data_schema.models.pid_names import PIDName
 
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 
@@ -63,6 +65,34 @@ class ModalityUpgrade:
             return None
 
 
+class PlatformUpgrade:
+    """Handle upgrades for Platform models."""
+
+    legacy_name_mapping = {
+        "smartspim": Platform.SMARTSPIM,
+        "single-plane-ophys": Platform.SINGLE_PLANE_OPHYS,
+        "HSFP": Platform.HSFP,
+        "exaSPIM": Platform.EXASPIM,
+        "ophys": Platform.SINGLE_PLANE_OPHYS,
+        "multiplane-ophys": Platform.MULTIPLANE_OPHYS,
+        "merfish": Platform.MERFISH,
+        "mesoSPIM": Platform.MESOSPIM,
+        "SPIM": Platform.SMARTSPIM,
+        "test-FIP-opto": Platform.FIP,
+        "FIP": Platform.FIP,
+        "ecephys": Platform.ECEPHYS,
+        "behavior-videos": Platform.MULTIPLANE_OPHYS,
+        "SmartSPIM": Platform.SMARTSPIM,
+        "ephys": Platform.ECEPHYS,
+    }
+
+    @classmethod
+    def from_modality(cls, modality: Modality) -> Optional[Platform]:
+        """Get platform from modality"""
+        if modality is not None:
+            return cls.legacy_name_mapping.get(modality.abbreviation)
+
+
 class FundingUpgrade:
     """Handle upgrades for Funding models."""
 
@@ -70,6 +100,9 @@ class FundingUpgrade:
         "Allen Institute for Brain Science": Organization.AI,
         "Allen Institute for Neural Dynamics": Organization.AI,
         "AIND": Organization.AI,
+        "AIBS": Organization.AI,
+        "AI": Organization.AI,
+        "Allen Institute": Organization.AI,
         Organization.AIND: Organization.AI,
         Organization.AIBS: Organization.AI,
     }
@@ -80,20 +113,19 @@ class FundingUpgrade:
         if type(old_funding) is Funding:
             return old_funding
         elif type(old_funding) is dict and old_funding.get("funder") is not None and type(old_funding["funder"]) is str:
-            old_funder = old_funding.get("funder")
-            if Organization().name_map.get(old_funder) is not None:
-                new_funder = Organization.from_name(old_funder)
-            else:
-                new_funder = Organization.from_abbreviation(old_funder)
+            old_funder_name = old_funding.get("funder")
             new_funding = deepcopy(old_funding)
-            if type(new_funder) in Organization._ALL and new_funder.name in cls.funders_map.keys():
-                new_funder = cls.funders_map[new_funder.name]
-            new_funding["funder"] = new_funder
+            if old_funder_name in cls.funders_map.keys():
+                new_funding["funder"] = cls.funders_map[old_funder_name]
             return Funding.model_validate(new_funding)
         elif (
             type(old_funding) is dict and old_funding.get("funder") is not None and type(old_funding["funder"]) is dict
         ):
-            return Funding.model_validate(old_funding)
+            old_funder_name = old_funding.get("funder")["name"]
+            new_funding = deepcopy(old_funding)
+            if old_funder_name in cls.funders_map.keys():
+                new_funding["funder"] = cls.funders_map[old_funder_name]
+            return Funding.model_validate(new_funding)
         else:
             return Funding(funder=Organization.AI)
 
@@ -121,6 +153,22 @@ class InstitutionUpgrade:
             return Organization.from_abbreviation(old_institution.get("abbreviation"))
         else:
             return None
+
+
+class InvestigatorsUpgrade:
+    """Handle upgrades for Investigators field"""
+
+    @staticmethod
+    def upgrade_investigators(old_investigators: Any) -> List[PIDName]:
+        """Map legacy investigators model to current version"""
+        if type(old_investigators) is str:
+            return [PIDName(name=old_investigators)]
+        elif type(old_investigators) is list and isinstance(old_investigators[0], str):
+            return [PIDName(name=inv) for inv in old_investigators]
+        elif type(old_investigators) is list and isinstance(old_investigators[0], dict):
+            return [PIDName(**inv) for inv in old_investigators]
+        else:
+            return old_investigators
 
 
 class DataDescriptionUpgrade(BaseModelUpgrade):
@@ -166,6 +214,9 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
     def upgrade(self, **kwargs) -> AindModel:
         """Upgrades the old model into the current version"""
+
+        version = semver.Version.parse(self._get_or_default(self.old_model, "schema_version", kwargs))
+
         institution = InstitutionUpgrade.upgrade_institution(
             self._get_or_default(self.old_model, "institution", kwargs)
         )
@@ -192,6 +243,12 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
         if platform is None:
             platform = self._get_or_default(self.old_model, "platform", kwargs)
+            if platform is None and version <= "0.8.0":
+                if type(modality) is list:
+                    platform = PlatformUpgrade.from_modality(modality[0])
+
+        investigators = self._get_or_default(self.old_model, "investigators", kwargs)
+        investigators = InvestigatorsUpgrade.upgrade_investigators(investigators)
 
         creation_time = self.get_creation_time(**kwargs)
 
@@ -202,7 +259,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
             funding_source=funding_source,
             data_level=data_level,
             group=self._get_or_default(self.old_model, "group", kwargs),
-            investigators=self._get_or_default(self.old_model, "investigators", kwargs),
+            investigators=investigators,
             project_name=self._get_or_default(self.old_model, "project_name", kwargs),
             restrictions=self._get_or_default(self.old_model, "restrictions", kwargs),
             modality=modality,
