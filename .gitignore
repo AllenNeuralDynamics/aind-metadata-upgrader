@@ -137,3 +137,8 @@ dmypy.json
 
 # MacOs
 **/.DS_Store
+
+
+tests/resources/procedures/updated_class_models/*
+
+tests/resources/procedures/U19_examples/*
