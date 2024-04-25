@@ -14,10 +14,14 @@ def construct_new_model(model_inputs: dict, model_type: AindModel, allow_validat
         return model_type.model_validate(model_inputs)
     except ValidationError as e:
         logging.error(f"Validation error in {type(model_type)}: {e}")
+        logging.error(f"allow validation errors: {allow_validation_errors}")
         if allow_validation_errors:
-            return model_type.model_construct(**model_inputs)
+            logging.error(f"Attempting to construct model {model_inputs}")
+            m = model_type.model_construct(**model_inputs)
+            logging.error(f"Model constructed: {m}")
+            return m
         else:
-            return None
+            raise e
 
 
 def get_or_default(model: dict, model_type: AindModel, field_name: str):
