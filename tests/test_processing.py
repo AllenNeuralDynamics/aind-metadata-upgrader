@@ -8,12 +8,12 @@ import unittest
 from pathlib import Path
 from typing import List
 
+from aind_data_schema.base import AindGeneric
 from aind_data_schema.core.processing import (
     DataProcess,
     PipelineProcess,
     Processing,
 )
-from aind_data_schema.base import AindGeneric
 from pydantic import __version__ as pyd_version
 
 from aind_metadata_upgrader.processing_upgrade import (
