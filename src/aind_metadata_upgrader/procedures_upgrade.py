@@ -9,6 +9,7 @@ from aind_data_schema.core.procedures import (  # SpecimenProcedure,; TarsVirusI
     Craniotomy,
     CraniotomyType,
     FiberImplant,
+    FiberProbe,
     Headframe,
     NanojectInjection,
     NonViralMaterial,
@@ -37,6 +38,9 @@ class InjectionMaterialsUpgrade:
 
     def upgrade_viral_material(self, material: dict) -> ViralMaterial:
         """Map legacy NonViralMaterial model to current version"""
+
+        if type(material) is not dict:
+            material = dict(material)
 
         viral_dict = {
             "name": material.get("name", "unknown"),
@@ -69,7 +73,7 @@ class InjectionMaterialsUpgrade:
         for injection_material in old_injection_materials:
             if not injection_material:
                 continue
-            if injection_material.get("titer") is not None:
+            if dict(injection_material).get("titer") is not None:
                 new_materials.append(self.upgrade_viral_material(injection_material))
 
             elif injection_material.get("concentration") is not None:
@@ -88,6 +92,7 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
         """Handle upgrades for SubjectProcedure models"""
 
         self.allow_validation_errors = allow_validation_errors
+        logging.info(f"ALLOW VALIDATION ERRORS (SUBJ PROCEDURES): {self.allow_validation_errors}")
         self.injection_upgrader = InjectionMaterialsUpgrade(allow_validation_errors)
 
     def upgrade_craniotomy(self, old_subj_procedure: dict):
@@ -108,6 +113,9 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
 
         craniotomy_size = (old_subj_procedure.get("craniotomy_size", None),)
 
+        if craniotomy_dict["craniotomy_type"] in ["3mm", "5mm"]:
+            craniotomy_dict["craniotomy_type"] = craniotomy_dict["craniotomy_type"].replace("mm", " mm")
+
         if not craniotomy_dict["craniotomy_type"] and craniotomy_size:
             if 3 in craniotomy_size:
                 craniotomy_dict["craniotomy_type"] = "3 mm"
@@ -119,32 +127,19 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
     def construct_ophys_probe(self, probe: dict):
         """Map legacy OphysProbe model to current version"""
 
-        # if probe.get("ophys_probe") is not None:
-        #     fiber_probe_item = probe.get("ophys_probe")
-        #     fiber_probe_dict = {
-        #         "device_type": probe.get("device_type", None),
-        #         "name": probe.get("name", None),
-        #         "serial_number": probe.get("serial_number", None),
-        #         "manufacturer": probe.get("manufacturer", None),
-        #         "model": probe.get("model", None),
-        #         "path_to_cad": probe.get("path_to_cad", None),
-        #         "port_index": probe.get("port_index", None),
-        #         "additional_set": get_or_default(probe, OphysProbe, "additional_set"),
-        #         "core_diameter": fiber_probe_item.get("core_diameter", None),
-        #         "core_diameter_unit": fiber_probe_item.get("core_diameter_unit", None),
-        #         "numerical_aperture": fiber_probe_item.get("numerical_aperture", None),
-        #         "ferrule_material": fiber_probe_item.get("ferrule_material", None),
-        #         "active_length": fiber_probe_item.get("active_length", None),
-        #         "total_length": fiber_probe_item.get("total_length", None),
-        #         "length_unit": get_or_default(fiber_probe_item, FiberProbe, "length_unit"),
-        #     }
-        #     fiber_probe = construct_new_model(fiber_probe_dict, FiberProbe, self.allow_validation_errors)
-        # else:
-        # fiber_probe = FiberProbe.model_construct()
-        fiber_probe = None
+        fiber_probe_dict = {
+            "name": probe.get("name", "unknown"),
+            "core_diameter": probe.get("core_diameter", None),
+            "core_diameter_unit": get_or_default(probe, FiberProbe, "core_diameter_unit").replace("μm", "um"),
+            "numerical_aperture": probe.get("numerical_aperture", None),
+            "ferrule_material": get_or_default(probe, FiberProbe, "ferrule_material"),
+            "active_length": get_or_default(probe, FiberProbe, None),
+            "total_length": probe.get("total_length", None),
+            "length_unit": get_or_default(probe, FiberProbe, "length_unit"),
+        }
 
         ophys_probe_dict = {
-            "ophys_probe": fiber_probe,
+            "ophys_probe": construct_new_model(fiber_probe_dict, FiberProbe, self.allow_validation_errors),
             "targeted_structure": probe.get("targeted_structure", "unknown"),
             "stereotactic_coordinate_ap": Decimal(probe.get("stereotactic_coordinate_ap", None)),
             "stereotactic_coordinate_ml": Decimal(probe.get("stereotactic_coordinate_ml", None)),
@@ -185,11 +180,15 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
     def add_probe(self, old_subj_procedure: dict, fiber_implant_model: FiberImplant):
         """adds a probe to an existing fiber implant model"""
 
+        logging.info(f"Adding probe(s): {old_subj_procedure["probes"]}\nto fiber implant model {fiber_implant_model}")
+
         if type(old_subj_procedure["probes"]) is list:
             for probe in old_subj_procedure["probes"]:
-                fiber_implant_model.probes.append(self.construct_ophys_probe(probe))
+                
+                fiber_implant_model = fiber_implant_model.probes.append(self.construct_ophys_probe(probe))
+                logging.info(f"Added probe {probe} \nto fiber implant model {fiber_implant_model}")
         else:
-            fiber_implant_model.probes.append(self.construct_ophys_probe(old_subj_procedure["probes"]))
+            fiber_implant_model = fiber_implant_model.probes.append(self.construct_ophys_probe(old_subj_procedure["probes"]))
 
     def upgrade_headframe(self, old_subj_procedure: dict):
         """Map legacy Headframe model to current version"""
@@ -293,6 +292,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
         super().__init__(old_procedures_model, model_class=Procedures, allow_validation_errors=allow_validation_errors)
 
         self.subj_procedure_upgrader = SubjectProcedureModelsUpgrade(allow_validation_errors)
+        logging.info(f"ALLOW VALIDATION ERRORS: {self.subj_procedure_upgrader.allow_validation_errors}")
 
         self.upgrade_funcs = {
             "Craniotomy": self.subj_procedure_upgrader.upgrade_craniotomy,
@@ -362,6 +362,10 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
                 if date not in loaded_subject_procedures.keys():
                     logging.info(f"Creating new surgery for subject {subj_id} on date {date}")
+
+                    subj_procedures = [self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)]
+                    subj_procedures = [x for x in subj_procedures if x is not None]
+
                     new_surgery_dict = {
                         "start_date": date,
                         "experimenter_full_name": str(subj_procedure.get("experimenter_full_name")),
@@ -372,7 +376,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
                         "anaesthesia": subj_procedure.get("anaesthesia"),
                         "workstation_id": subj_procedure.get("workstation_id"),
                         "notes": subj_procedure.get("notes"),
-                        "procedures": [self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)],
+                        "procedures": subj_procedures,
                     }
                     logging.info(f"new surgery: {new_surgery_dict}")
                     loaded_subject_procedures[date] = new_surgery_dict
@@ -385,15 +389,17 @@ class ProcedureUpgrade(BaseModelUpgrade):
                         isinstance(x, FiberImplant) for x in loaded_subject_procedures[date]["procedures"]
                     ):
                         logging.info(f"Adding probe to existing fiber implant for subject {subj_id} on date {date}")
-                        existing_retro = [
-                            x for x in loaded_subject_procedures[date]["procedures"] if isinstance(x, FiberImplant)
-                        ]
-                        SubjectProcedureModelsUpgrade().add_probe(subj_procedure, existing_retro[0])
+                        for x in loaded_subject_procedures[date]["procedures"]:
+                            if isinstance(x, FiberImplant):
+                                logging.info("added")
+                                SubjectProcedureModelsUpgrade(allow_validation_errors=self.allow_validation_errors).add_probe(subj_procedure, x)
+
                     else:
                         logging.info(
                             f"Adding procedure to existing surgery for subject {subj_id}"
                             f"on date {date}: {subj_procedure}"
                         )
+                        logging.info(f"existing surgery: {loaded_subject_procedures[date]}")
                         loaded_subject_procedures[date]["procedures"].append(
                             self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)
                         )
@@ -405,6 +411,9 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
             for surgery in constructed_subject_procedures.values():
                 logging.info(f"Setting craniotomy type for subject {subj_id}, surgery: {surgery}")
+                if not surgery:
+                    logging.error(f"Skipping surgery {surgery} in {constructed_subject_procedures}")
+                    continue
                 if any(isinstance(x, Craniotomy) for x in surgery.procedures):
                     set_craniotomy_type(surgery)
 
@@ -426,10 +435,11 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
             logging.info(f"Creating new procedure for subject {subj_id}")
             logging.info(f"Subject procedures: {loaded_subject_procedures}")
+            logging.info(f"constructed Subject procedures: {constructed_subject_procedures.values()}")
             logging.info(f"Specimen procedures: {loaded_spec_procedures}")
             new_procedure = Procedures(
                 subject_id=subj_id,
-                subject_procedures=list(constructed_subject_procedures.values()),
+                subject_procedures=constructed_subject_procedures.values(),
                 specimen_procedures=loaded_spec_procedures,
                 notes=self.old_model.notes,
             )
