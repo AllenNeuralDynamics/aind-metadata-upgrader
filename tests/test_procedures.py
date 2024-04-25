@@ -8,8 +8,10 @@ import unittest
 from datetime import datetime
 from pathlib import Path
 from typing import List
+from decimal import Decimal
 
-from aind_data_schema.core.procedures import Procedures
+
+from aind_data_schema.core.procedures import CraniotomyType, Procedures
 from pydantic import __version__ as pyd_version
 
 from aind_metadata_upgrader.procedures_upgrade import ProcedureUpgrade
@@ -40,8 +42,6 @@ class TestProceduresUpgrade(unittest.TestCase):
     def setUpClass(cls):
         """Load json files before running tests."""
 
-        print("hi")
-
         logging.info("BEGIN ERROR TESTING")
 
         procedure_files: List[str] = os.listdir(PROCESSING_FILES_PATH)
@@ -50,7 +50,7 @@ class TestProceduresUpgrade(unittest.TestCase):
         for file in procedure_files:
             with open(PROCESSING_FILES_PATH / file, "r") as f:
                 contents = json.load(f)
-            procedures.append((file, Procedures.model_construct(**contents)))
+            procedures.append((file, contents))
         cls.procedures = dict(procedures)
 
         logging.info(f"test procedures: {cls.procedures}")
@@ -58,8 +58,10 @@ class TestProceduresUpgrade(unittest.TestCase):
     def test_upgrade_procedure(self):
         """Test the upgrade_procedure method."""
 
+        logging.info("Begin upgrading all procedures")
+
         for file, procedure in self.procedures.items():
-            logging.info(f"PROCEDURE: {procedure}")
+            logging.info(f"LOADING PROCEDURE: {procedure}")
             ProcedureUpgrader = ProcedureUpgrade(procedure, allow_validation_errors=True)
 
             test = ProcedureUpgrader.upgrade_procedure()
@@ -69,41 +71,119 @@ class TestProceduresUpgrade(unittest.TestCase):
                 prefix=Path(file.split(".")[0]),
             )
 
+            logging.info(f"Procedure Saved")
+
     def test_craniotomy_upgrade(self):
         """Test the upgrade_craniotomy method."""
 
-        test_file = self.procedures["676909.json"]
+        logging.info("Begin testing craniotomy upgrades")
+
+        test_file1 = self.procedures["676909.json"]
+
+        upgrader = ProcedureUpgrade(test_file1, allow_validation_errors=False)
+
+        p1 = upgrader.upgrade_procedure()
+
+        self.assertEqual(
+            p1.subject_procedures[1].procedures[0].craniotomy_type, 
+            CraniotomyType.WHC
+        )
+
+        test_file2 = self.procedures["667825.json"]
+
+        upgrader = ProcedureUpgrade(test_file2, allow_validation_errors=False)
+
+        p2 = upgrader.upgrade_procedure()
+
+        self.assertEqual(
+            p2.subject_procedures[0].procedures[0].craniotomy_type, 
+            CraniotomyType.VISCTX
+        )
+
+    def test_bad_type(self):
+        """Test the upgrade_procedure method with a bad type."""
+
+        logging.info("Begin testing bad type")
+
+        test_file = self.procedures["609281_invalid_type.json"]
 
         upgrader = ProcedureUpgrade(test_file, allow_validation_errors=False)
 
-        with self.assertRaises(Exception) as e:
+        with self.assertRaises(ValueError):
             upgrader.upgrade_procedure()
 
-        logging.error(f"ERROR: {e.exception}")
+
+    def test_probe_upgrade(self):
+        """Test the probe upgrading logic of ProceduresUpgrader"""
+
+        logging.info("Begin testing probe upgrades")
+
+        test_file = self.procedures["664644.json"]
+
+        upgrader = ProcedureUpgrade(test_file, allow_validation_errors=True)
+
+        p = upgrader.upgrade_procedure()
+
+        self.assertEqual(
+            p.subject_procedures[1].procedures[2].probes[0].ophys_probe.core_diameter_unit,
+            "um"
+        )
+        self.assertEqual(
+            p.subject_procedures[1].procedures[2].probes[1].ophys_probe.name,
+            "Probe B"
+        )
+        self.assertEqual(
+            p.subject_procedures[1].procedures[2].probes[1].stereotactic_coordinate_ap,
+            Decimal(-6.20000000000000017763568394002504646778106689453125)
+        )
 
 
-# for file in procedures_files:
+    def test_headframe_upgrade(self):
+        """Test the headframe upgrading logic of ProceduresUpgrader"""
 
-#     with open(file, "r") as f:
-#         contents = json.loads(f.read())
+        logging.info("Begin testing headframe upgrades")
 
-#     # for procedure in contents["subject_procedures"]:
-#     #     logging.info(procedure)
-#     #     if "probes" in procedure.keys():
-#     #         if "um" in procedure["probes"]["core_diameter_unit"].replace("μm", "um"):
-#     #             logging.info("UPDATING CORE DIAMETER UNIT")
-#     #             procedure["probes"].pop("core_diameter_unit")
-#     #             procedure["probes"]["core_diameter_unit"] = "um"
-#     #             logging.info(procedure["probes"])
+        test_file = self.procedures["652742.json"]
 
-#     with open(file) as f:
-#         subject = Path(file).stem
-#         procedures = json.load(f)
-#         logging.info(f"PROCEDURES: {type(procedures)}")
-#         ProcedureUpgrader = ProcedureUpgrade(procedures, allow_validation_errors=True)
+        upgrader = ProcedureUpgrade(test_file, allow_validation_errors=True)
 
-#         test = ProcedureUpgrader.upgrade_procedure()
+        p = upgrader.upgrade_procedure()
 
-#         test.write_standard_file(
-#             output_directory=Path("tests/resources/procedures/updated_class_models"), prefix=Path(subject)
-#         )
+        self.assertEqual(
+            p.subject_procedures[1].procedures[0].headframe_type,
+            "AI Straight bar"
+        )
+
+    
+    def test_nanoject_upgrade(self):
+        """Test the nanoject injection upgrading logic of ProceduresUpgrader"""
+
+        logging.info("Begin testing nanoject upgrades")
+
+        test_file = self.procedures["652504_U19.json"]
+
+        upgrader = ProcedureUpgrade(test_file, allow_validation_errors=True)
+
+        p = upgrader.upgrade_procedure()
+
+        self.assertEqual(
+            p.subject_procedures[1].procedures[0].injection_materials[1].name,
+            "AAV1-CAG-H2B-mTurquoise2-WPRE"
+        )
+
+    
+    def test_perfusion_upgrade(self):
+        """Test the perfusion upgrading logic of ProceduresUpgrader"""
+
+        logging.info("Begin testing perfusion upgrades")
+
+        test_file = self.procedures["653980.json"]
+
+        upgrader = ProcedureUpgrade(test_file, allow_validation_errors=True)
+
+        p = upgrader.upgrade_procedure()
+
+        self.assertEqual(
+            p.subject_procedures[2].procedures[0].output_specimen_ids,
+            "653980"
+        )
