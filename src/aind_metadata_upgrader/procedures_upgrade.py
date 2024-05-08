@@ -244,6 +244,8 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
             "output_specimen_ids": [str(item) for item in old_subj_procedure.get("output_specimen_ids", [])],
         }
 
+        print(perfusion_dict)
+
         return construct_new_model(perfusion_dict, Perfusion, self.allow_validation_errors)
 
     def upgrade_retro_orbital_injection(self, old_subj_procedure: dict):
@@ -326,19 +328,6 @@ class ProcedureUpgrade(BaseModelUpgrade):
             logging.error(f"Procedure type {procedure_type} not found in list of procedure types")
             return None
 
-    # @staticmethod
-    # def upgrade_specimen_procedure(self, old_specimen_procedure: Any) -> Optional[SpecimenProcedure]:
-    #     """Map legacy SpecimenProcedure model to current version"""
-
-    # NOTE: current upgrade round lacks any SpecimenProcedures, so this is commented out.
-    # Can be returned in the future.
-    # if type(old_specimen_procedure) is SpecimenProcedure:
-    #     return old_specimen_procedure
-    # elif type(old_specimen_procedure) is dict and old_specimen_procedure.procedure_type is not None:
-    #     return SpecimenProcedure.model_validate(old_specimen_procedure)
-    # else:
-    #     logging.error(f"Specimen procedure {old_specimen_procedure} passed in as invalid type")
-    #     return None
 
     def upgrade_procedure(self) -> Optional[Procedures]:
         """Map legacy Procedure model to current version"""
@@ -411,9 +400,9 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
             for surgery in constructed_subject_procedures.values():
                 logging.info(f"Setting craniotomy type for subject {subj_id}, surgery: {surgery}")
-                if not surgery:
-                    logging.error(f"Skipping surgery {surgery} in {constructed_subject_procedures}")
-                    continue
+                # if not surgery:
+                #     logging.error(f"Skipping surgery {surgery} in {constructed_subject_procedures}")
+                #     continue
                 if any(isinstance(x, Craniotomy) for x in surgery.procedures):
                     set_craniotomy_type(surgery)
 
