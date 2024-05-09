@@ -65,6 +65,8 @@ class TestProceduresUpgrade(unittest.TestCase):
 
             test = ProcedureUpgrader.upgrade_procedure()
 
+            self.assertIsNotNone(test)
+
             # Uncomment if you would like to save and examine file outputs
             # test.write_standard_file(
             #     output_directory=Path("tests/resources/procedures/updated_class_models"),
