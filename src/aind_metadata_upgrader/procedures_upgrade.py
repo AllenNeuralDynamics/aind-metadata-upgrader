@@ -179,13 +179,15 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
     def add_probe(self, old_subj_procedure: dict, fiber_implant_model: FiberImplant):
         """adds a probe to an existing fiber implant model"""
 
-        logging.info(f"Adding probe(s): {old_subj_procedure["probes"]}\nto fiber implant model {fiber_implant_model}")
+        logging.info(f"Adding probe(s): {old_subj_procedure["probes"]}")
+        logging.info(f"to fiber implant model {fiber_implant_model}")
 
         if type(old_subj_procedure["probes"]) is list:
             for probe in old_subj_procedure["probes"]:
 
                 fiber_implant_model = fiber_implant_model.probes.append(self.construct_ophys_probe(probe))
-                logging.info(f"Added probe {probe} \nto fiber implant model {fiber_implant_model}")
+                logging.info(f"Added probe {probe}")
+                logging.info(f"to fiber implant model {fiber_implant_model}")
         else:
             fiber_implant_model = fiber_implant_model.probes.append(
                 self.construct_ophys_probe(old_subj_procedure["probes"])
@@ -251,7 +253,7 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
             model.output_specimen_ids = list(model.output_specimen_ids)
 
         return model
-    
+
     def upgrade_retro_orbital_injection(self, old_subj_procedure: dict):
         """Map legacy RetroOrbitalInjection model to current version"""
 
@@ -356,7 +358,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
                     logging.info(f"Creating new surgery for subject {subj_id} on date {date}")
 
                     subj_procedures = [self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)]
-                    
+
                     if None in subj_procedures:
                         subj_procedures.remove(None)
                     # subj_procedures = [x for x in subj_procedures if x is not None]
