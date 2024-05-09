@@ -179,7 +179,7 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
     def add_probe(self, old_subj_procedure: dict, fiber_implant_model: FiberImplant):
         """adds a probe to an existing fiber implant model"""
 
-        logging.info(f"Adding probe(s): {old_subj_procedure["probes"]}")
+        logging.info(f"Adding probe(s): {old_subj_procedure['probes']}")
         logging.info(f"to fiber implant model {fiber_implant_model}")
 
         if type(old_subj_procedure["probes"]) is list:
