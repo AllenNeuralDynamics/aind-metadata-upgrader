@@ -245,8 +245,6 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
             "output_specimen_ids": [str(item) for item in old_subj_procedure.get("output_specimen_ids", [])],
         }
 
-        print("perfusion dict", perfusion_dict)
-
         model = construct_new_model(perfusion_dict, Perfusion, self.allow_validation_errors)
 
         if isinstance(model.output_specimen_ids, set):
@@ -359,11 +357,10 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
                     subj_procedures = [self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)]
                     
-                    print("hmm: ", subj_procedures)
                     if None in subj_procedures:
                         subj_procedures.remove(None)
                     # subj_procedures = [x for x in subj_procedures if x is not None]
-                    print("after: ", subj_procedure)
+
                     new_surgery_dict = {
                         "start_date": date,
                         "experimenter_full_name": str(subj_procedure.get("experimenter_full_name")),

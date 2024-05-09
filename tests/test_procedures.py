@@ -162,7 +162,4 @@ class TestProceduresUpgrade(unittest.TestCase):
 
         p = upgrader.upgrade_procedure()
 
-        print("hi")
-        print(p.subject_procedures[1].procedures[0])
-
         self.assertEqual(p.subject_procedures[1].procedures[0].output_specimen_ids, ["653980"])
