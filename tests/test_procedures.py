@@ -6,12 +6,11 @@ import os
 import re
 import unittest
 from datetime import datetime
+from decimal import Decimal
 from pathlib import Path
 from typing import List
-from decimal import Decimal
 
-
-from aind_data_schema.core.procedures import CraniotomyType, Procedures
+from aind_data_schema.core.procedures import CraniotomyType
 from pydantic import __version__ as pyd_version
 
 from aind_metadata_upgrader.procedures_upgrade import ProcedureUpgrade
@@ -71,7 +70,7 @@ class TestProceduresUpgrade(unittest.TestCase):
                 prefix=Path(file.split(".")[0]),
             )
 
-            logging.info(f"Procedure Saved")
+            logging.info("Procedure Saved")
 
     def test_craniotomy_upgrade(self):
         """Test the upgrade_craniotomy method."""
@@ -84,10 +83,7 @@ class TestProceduresUpgrade(unittest.TestCase):
 
         p1 = upgrader.upgrade_procedure()
 
-        self.assertEqual(
-            p1.subject_procedures[1].procedures[0].craniotomy_type, 
-            CraniotomyType.WHC
-        )
+        self.assertEqual(p1.subject_procedures[1].procedures[0].craniotomy_type, CraniotomyType.WHC)
 
         test_file2 = self.procedures["667825.json"]
 
@@ -95,10 +91,7 @@ class TestProceduresUpgrade(unittest.TestCase):
 
         p2 = upgrader.upgrade_procedure()
 
-        self.assertEqual(
-            p2.subject_procedures[0].procedures[0].craniotomy_type, 
-            CraniotomyType.VISCTX
-        )
+        self.assertEqual(p2.subject_procedures[0].procedures[0].craniotomy_type, CraniotomyType.VISCTX)
 
     def test_bad_type(self):
         """Test the upgrade_procedure method with a bad type."""
@@ -112,7 +105,6 @@ class TestProceduresUpgrade(unittest.TestCase):
         with self.assertRaises(ValueError):
             upgrader.upgrade_procedure()
 
-
     def test_probe_upgrade(self):
         """Test the probe upgrading logic of ProceduresUpgrader"""
 
@@ -124,19 +116,12 @@ class TestProceduresUpgrade(unittest.TestCase):
 
         p = upgrader.upgrade_procedure()
 
-        self.assertEqual(
-            p.subject_procedures[1].procedures[2].probes[0].ophys_probe.core_diameter_unit,
-            "um"
-        )
-        self.assertEqual(
-            p.subject_procedures[1].procedures[2].probes[1].ophys_probe.name,
-            "Probe B"
-        )
+        self.assertEqual(p.subject_procedures[1].procedures[2].probes[0].ophys_probe.core_diameter_unit, "um")
+        self.assertEqual(p.subject_procedures[1].procedures[2].probes[1].ophys_probe.name, "Probe B")
         self.assertEqual(
             p.subject_procedures[1].procedures[2].probes[1].stereotactic_coordinate_ap,
-            Decimal(-6.20000000000000017763568394002504646778106689453125)
+            Decimal(-6.20000000000000017763568394002504646778106689453125),
         )
-
 
     def test_headframe_upgrade(self):
         """Test the headframe upgrading logic of ProceduresUpgrader"""
@@ -149,12 +134,8 @@ class TestProceduresUpgrade(unittest.TestCase):
 
         p = upgrader.upgrade_procedure()
 
-        self.assertEqual(
-            p.subject_procedures[1].procedures[0].headframe_type,
-            "AI Straight bar"
-        )
+        self.assertEqual(p.subject_procedures[1].procedures[0].headframe_type, "AI Straight bar")
 
-    
     def test_nanoject_upgrade(self):
         """Test the nanoject injection upgrading logic of ProceduresUpgrader"""
 
@@ -167,11 +148,9 @@ class TestProceduresUpgrade(unittest.TestCase):
         p = upgrader.upgrade_procedure()
 
         self.assertEqual(
-            p.subject_procedures[1].procedures[0].injection_materials[1].name,
-            "AAV1-CAG-H2B-mTurquoise2-WPRE"
+            p.subject_procedures[1].procedures[0].injection_materials[1].name, "AAV1-CAG-H2B-mTurquoise2-WPRE"
         )
 
-    
     def test_perfusion_upgrade(self):
         """Test the perfusion upgrading logic of ProceduresUpgrader"""
 
@@ -183,9 +162,7 @@ class TestProceduresUpgrade(unittest.TestCase):
 
         p = upgrader.upgrade_procedure()
 
+        print("hi")
         print(p.subject_procedures[1].procedures[0])
 
-        # self.assertEqual(
-        #     p.subject_procedures[1].procedures[0].output_specimen_ids,
-        #     ["653980"]
-        # )
+        self.assertEqual(p.subject_procedures[1].procedures[0].output_specimen_ids, ["653980"])

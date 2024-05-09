@@ -27,7 +27,6 @@ from aind_metadata_upgrader.utils import construct_new_model, get_or_default
 # from aind_data_schema.models.devices import FiberProbe
 
 
-
 class InjectionMaterialsUpgrade:
     """Handle upgrades for InjectionMaterials models."""
 
@@ -184,11 +183,13 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
 
         if type(old_subj_procedure["probes"]) is list:
             for probe in old_subj_procedure["probes"]:
-                
+
                 fiber_implant_model = fiber_implant_model.probes.append(self.construct_ophys_probe(probe))
                 logging.info(f"Added probe {probe} \nto fiber implant model {fiber_implant_model}")
         else:
-            fiber_implant_model = fiber_implant_model.probes.append(self.construct_ophys_probe(old_subj_procedure["probes"]))
+            fiber_implant_model = fiber_implant_model.probes.append(
+                self.construct_ophys_probe(old_subj_procedure["probes"])
+            )
 
     def upgrade_headframe(self, old_subj_procedure: dict):
         """Map legacy Headframe model to current version"""
@@ -244,10 +245,15 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
             "output_specimen_ids": [str(item) for item in old_subj_procedure.get("output_specimen_ids", [])],
         }
 
-        print(perfusion_dict)
+        print("perfusion dict", perfusion_dict)
 
-        return construct_new_model(perfusion_dict, Perfusion, self.allow_validation_errors)
+        model = construct_new_model(perfusion_dict, Perfusion, self.allow_validation_errors)
 
+        if isinstance(model.output_specimen_ids, set):
+            model.output_specimen_ids = list(model.output_specimen_ids)
+
+        return model
+    
     def upgrade_retro_orbital_injection(self, old_subj_procedure: dict):
         """Map legacy RetroOrbitalInjection model to current version"""
 
@@ -328,7 +334,6 @@ class ProcedureUpgrade(BaseModelUpgrade):
             logging.error(f"Procedure type {procedure_type} not found in list of procedure types")
             return None
 
-
     def upgrade_procedure(self) -> Optional[Procedures]:
         """Map legacy Procedure model to current version"""
 
@@ -353,8 +358,12 @@ class ProcedureUpgrade(BaseModelUpgrade):
                     logging.info(f"Creating new surgery for subject {subj_id} on date {date}")
 
                     subj_procedures = [self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)]
-                    subj_procedures = [x for x in subj_procedures if x is not None]
-
+                    
+                    print("hmm: ", subj_procedures)
+                    if None in subj_procedures:
+                        subj_procedures.remove(None)
+                    # subj_procedures = [x for x in subj_procedures if x is not None]
+                    print("after: ", subj_procedure)
                     new_surgery_dict = {
                         "start_date": date,
                         "experimenter_full_name": str(subj_procedure.get("experimenter_full_name")),
@@ -381,7 +390,9 @@ class ProcedureUpgrade(BaseModelUpgrade):
                         for x in loaded_subject_procedures[date]["procedures"]:
                             if isinstance(x, FiberImplant):
                                 logging.info("added")
-                                SubjectProcedureModelsUpgrade(allow_validation_errors=self.allow_validation_errors).add_probe(subj_procedure, x)
+                                SubjectProcedureModelsUpgrade(
+                                    allow_validation_errors=self.allow_validation_errors
+                                ).add_probe(subj_procedure, x)
 
                     else:
                         logging.info(
