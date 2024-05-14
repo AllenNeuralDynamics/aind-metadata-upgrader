@@ -25,9 +25,6 @@ from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 from aind_metadata_upgrader.utils import construct_new_model, get_or_default
 
 
-DEFAULT_PERFUSION_PROTOCOL = "dx.doi.org/10.17504/protocols.io.bg5vjy66"
-
-
 class InjectionMaterialsUpgrade:
     """Handle upgrades for InjectionMaterials models."""
 
@@ -87,6 +84,8 @@ class InjectionMaterialsUpgrade:
 
 class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
     """Handle upgrades for SubjectProcedure models."""
+
+    DEFAULT_PERFUSION_PROTOCOL = "dx.doi.org/10.17504/protocols.io.bg5vjy66"
 
     def __init__(self, allow_validation_errors=False):
         """Handle upgrades for SubjectProcedure models"""
