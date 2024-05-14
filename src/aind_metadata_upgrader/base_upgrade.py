@@ -58,8 +58,3 @@ class BaseModelUpgrade(ABC):
                 return attr_default
             except AttributeError:
                 return None
-
-    # @abstractmethod
-    # def upgrade(self, **kwargs) -> AindModel:
-    #     """Upgrades the old model into the current version"""
-    #     raise NotImplementedError  # "pragma: no cover"

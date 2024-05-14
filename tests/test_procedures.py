@@ -67,12 +67,6 @@ class TestProceduresUpgrade(unittest.TestCase):
 
             self.assertIsNotNone(test)
 
-            # Uncomment if you would like to save and examine file outputs
-            # test.write_standard_file(
-            #     output_directory=Path("tests/resources/procedures/updated_class_models"),
-            #     prefix=Path(file.split(".")[0]),
-            # )
-
             logging.info("Procedure Saved")
 
     def test_craniotomy_upgrade(self):

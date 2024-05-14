@@ -24,8 +24,8 @@ from aind_data_schema.core.procedures import (  # SpecimenProcedure,; TarsVirusI
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 from aind_metadata_upgrader.utils import construct_new_model, get_or_default
 
-# from aind_data_schema.models.devices import FiberProbe
 
+DEFAULT_PERFUSION_PROTOCOL = "dx.doi.org/10.17504/protocols.io.bg5vjy66"
 
 class InjectionMaterialsUpgrade:
     """Handle upgrades for InjectionMaterials models."""
@@ -243,7 +243,7 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
         """Map legacy Perfusion model to current version"""
 
         perfusion_dict = {
-            "protocol_id": old_subj_procedure.get("protocol_id", "dx.doi.org/10.17504/protocols.io.bg5vjy66"),
+            "protocol_id": old_subj_procedure.get("protocol_id", DEFAULT_PERFUSION_PROTOCOL),
             "output_specimen_ids": [str(item) for item in old_subj_procedure.get("output_specimen_ids", [])],
         }
 
@@ -410,9 +410,6 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
             for surgery in constructed_subject_procedures.values():
                 logging.info(f"Setting craniotomy type for subject {subj_id}, surgery: {surgery}")
-                # if not surgery:
-                #     logging.error(f"Skipping surgery {surgery} in {constructed_subject_procedures}")
-                #     continue
                 if any(isinstance(x, Craniotomy) for x in surgery.procedures):
                     set_craniotomy_type(surgery)
 
