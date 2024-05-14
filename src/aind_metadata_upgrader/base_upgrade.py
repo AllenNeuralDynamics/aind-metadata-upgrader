@@ -1,6 +1,6 @@
 """Module to contain base code to upgrade old models"""
 
-from abc import ABC, abstractmethod
+from abc import ABC
 from typing import Any, Type, Union
 
 from aind_data_schema.base import AindModel
@@ -58,8 +58,3 @@ class BaseModelUpgrade(ABC):
                 return attr_default
             except AttributeError:
                 return None
-
-    @abstractmethod
-    def upgrade(self, **kwargs) -> AindModel:
-        """Upgrades the old model into the current version"""
-        raise NotImplementedError  # "pragma: no cover"

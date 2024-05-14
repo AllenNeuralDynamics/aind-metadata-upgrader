@@ -2,7 +2,7 @@
 
 from copy import deepcopy
 from datetime import datetime
-from typing import Any, Optional, Union, List
+from typing import Any, List, Optional, Union
 
 import semver
 from aind_data_schema.base import AindModel
@@ -13,8 +13,8 @@ from aind_data_schema.core.data_description import (
 )
 from aind_data_schema.models.modalities import Modality
 from aind_data_schema.models.organizations import Organization
-from aind_data_schema.models.platforms import Platform
 from aind_data_schema.models.pid_names import PIDName
+from aind_data_schema.models.platforms import Platform
 
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 
