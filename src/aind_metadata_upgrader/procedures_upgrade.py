@@ -27,6 +27,7 @@ from aind_metadata_upgrader.utils import construct_new_model, get_or_default
 
 DEFAULT_PERFUSION_PROTOCOL = "dx.doi.org/10.17504/protocols.io.bg5vjy66"
 
+
 class InjectionMaterialsUpgrade:
     """Handle upgrades for InjectionMaterials models."""
 
