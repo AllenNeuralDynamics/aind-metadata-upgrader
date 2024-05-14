@@ -243,7 +243,7 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
         """Map legacy Perfusion model to current version"""
 
         perfusion_dict = {
-            "protocol_id": old_subj_procedure.get("protocol_id", DEFAULT_PERFUSION_PROTOCOL),
+            "protocol_id": old_subj_procedure.get("protocol_id", self.DEFAULT_PERFUSION_PROTOCOL),
             "output_specimen_ids": [str(item) for item in old_subj_procedure.get("output_specimen_ids", [])],
         }
 
