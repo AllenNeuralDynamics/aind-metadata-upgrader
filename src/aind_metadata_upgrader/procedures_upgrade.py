@@ -374,6 +374,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
                         "workstation_id": subj_procedure.get("workstation_id"),
                         "notes": subj_procedure.get("notes"),
                         "procedures": subj_procedures,
+                        "protocol_id": subj_procedure.get("protocol_id", "unknown"),
                     }
                     logging.info(f"new surgery: {new_surgery_dict}")
                     loaded_subject_procedures[date] = new_surgery_dict

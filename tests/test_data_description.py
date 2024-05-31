@@ -15,12 +15,13 @@ from aind_data_schema.core.data_description import (
     Group,
     RelatedData,
 )
-from aind_data_schema.models.modalities import Modality
-from aind_data_schema.models.organizations import Organization
-from aind_data_schema.models.pid_names import PIDName
-from aind_data_schema.models.platforms import Platform
+from aind_data_schema_models.modalities import Modality
+from aind_data_schema_models.organizations import Organization
+from aind_data_schema_models.pid_names import PIDName
+from aind_data_schema_models.platforms import Platform
 from pydantic import ValidationError
 from pydantic import __version__ as pyd_version
+from tzlocal import get_localzone
 
 from aind_metadata_upgrader.data_description_upgrade import (
     DataDescriptionUpgrade,
@@ -32,6 +33,7 @@ from aind_metadata_upgrader.data_description_upgrade import (
 
 DATA_DESCRIPTION_FILES_PATH = Path(__file__).parent / "resources" / "ephys_data_description"
 PYD_VERSION = re.match(r"(\d+.\d+).\d+", pyd_version).group(1)
+TZLOCAL = get_localzone()
 
 
 class TestDataDescriptionUpgrade(unittest.TestCase):
@@ -55,7 +57,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
 
         new_data_description = upgrader.upgrade()
         self.assertEqual(
-            datetime.datetime(2022, 6, 28, 10, 31, 30),
+            datetime.datetime(2022, 6, 28, 10, 31, 30, tzinfo=TZLOCAL),
             new_data_description.creation_time,
         )
         self.assertEqual("ecephys_623705_2022-06-28_10-31-30", new_data_description.name)
@@ -81,7 +83,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
 
         new_data_description = upgrader.upgrade()
         self.assertEqual(
-            datetime.datetime(2022, 7, 26, 10, 52, 15),
+            datetime.datetime(2022, 7, 26, 10, 52, 15, tzinfo=TZLOCAL),
             new_data_description.creation_time,
         )
         self.assertEqual("ecephys_624643_2022-07-26_10-52-15", new_data_description.name)
@@ -111,7 +113,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         expected_error_message1 = (
             "1 validation error for DataDescription\n"
             "data_level\n"
-            "  Input should be 'derived' or 'raw' [type=enum, input_value='asfnewnjfq', input_type=str]"
+            "  Input should be 'derived', 'raw' or 'simulated' [type=enum, input_value='asfnewnjfq', input_type=str]"
         )
 
         self.assertEqual(expected_error_message1, repr(e1.exception))
@@ -144,7 +146,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
 
         new_data_description = upgrader.upgrade(platform=Platform.ECEPHYS, data_level=DataLevel.RAW)
 
-        self.assertEqual(new_data_description.creation_time, datetime.datetime(2022, 6, 28, 10, 31, 30))
+        self.assertEqual(new_data_description.creation_time, datetime.datetime(2022, 6, 28, 10, 31, 30, tzinfo=TZLOCAL))
 
     def test_upgrades_0_4_0(self):
         """Tests data_description_0.4.0.json is mapped correctly."""
@@ -154,7 +156,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         # Should work by setting platform explicitly
         new_data_description = upgrader.upgrade()
         self.assertEqual(
-            datetime.datetime(2023, 4, 13, 14, 35, 51),
+            datetime.datetime(2023, 4, 13, 14, 35, 51, tzinfo=TZLOCAL),
             new_data_description.creation_time,
         )
         self.assertEqual("ecephys_664438_2023-04-13_14-35-51", new_data_description.name)
@@ -181,7 +183,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         # Should work by setting experiment type explicitly
         new_data_description = upgrader.upgrade()
         self.assertEqual(
-            datetime.datetime(2023, 4, 10, 17, 9, 26),
+            datetime.datetime(2023, 4, 10, 17, 9, 26, tzinfo=TZLOCAL),
             new_data_description.creation_time,
         )
         self.assertEqual("ecephys_661278_2023-04-10_17-09-26", new_data_description.name)
@@ -208,7 +210,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         # Should work by setting experiment type explicitly
         new_data_description = upgrader.upgrade()
         self.assertEqual(
-            datetime.datetime(2023, 3, 23, 22, 31, 18),
+            datetime.datetime(2023, 3, 23, 22, 31, 18, tzinfo=TZLOCAL),
             new_data_description.creation_time,
         )
         self.assertEqual("661279_2023-03-23_15-31-18", new_data_description.name)
@@ -271,8 +273,9 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
 
         # Should work by setting funding_source explicitly
         new_data_description = upgrader.upgrade(funding_source=[Funding(funder=Organization.AI)])
+
         self.assertEqual(
-            datetime.datetime(2023, 3, 23, 22, 31, 18),
+            datetime.datetime(2023, 3, 23, 22, 31, 18, tzinfo=TZLOCAL),
             new_data_description.creation_time,
         )
         self.assertEqual("661279_2023-03-23_15-31-18", new_data_description.name)
@@ -316,7 +319,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         # Should work by setting experiment type explicitly
         new_data_description = upgrader.upgrade()
         self.assertEqual(
-            datetime.datetime(2023, 10, 18, 16, 00, 6),
+            datetime.datetime(2023, 10, 18, 16, 00, 6, tzinfo=TZLOCAL),
             new_data_description.creation_time,
         )
         self.assertEqual("ecephys_691897_2023-10-18_16-00-06", new_data_description.name)
@@ -348,7 +351,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             new_data_description.funding_source,
         )
         self.assertEqual(
-            datetime.datetime(2023, 3, 6, 15, 8, 24),
+            datetime.datetime(2023, 3, 6, 15, 8, 24, tzinfo=TZLOCAL),
             new_data_description.creation_time,
         )
         self.assertEqual("ecephys_649038_2023-03-06_15-08-24", new_data_description.name)
