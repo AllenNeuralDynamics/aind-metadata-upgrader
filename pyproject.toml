@@ -19,7 +19,6 @@ dynamic = ["version"]
 dependencies = [
     'aind-data-schema==0.38.0',
     'pydantic<2.7',
-    'tzlocal'
 ]
 
 [project.optional-dependencies]
@@ -30,6 +29,7 @@ dev = [
     'interrogate',
     'isort',
     'Sphinx',
+    'tzlocal',
     'furo'
 ]
 
