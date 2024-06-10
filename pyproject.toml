@@ -17,8 +17,8 @@ readme = "README.md"
 dynamic = ["version"]
 
 dependencies = [
-    'aind-data-schema==0.31.8',
-    'pydantic<2.7'
+    'aind-data-schema==0.38.0',
+    'pydantic<2.7',
 ]
 
 [project.optional-dependencies]
@@ -29,6 +29,7 @@ dev = [
     'interrogate',
     'isort',
     'Sphinx',
+    'tzlocal',
     'furo'
 ]
 

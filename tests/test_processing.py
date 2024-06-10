@@ -259,7 +259,7 @@ class TestDataProcessUpgrade(unittest.TestCase):
 
     def test_upgrade_from_current_model(self):
         """Tests data process from current model is upgraded correctly."""
-        datetime_now = datetime.datetime.now()
+        datetime_now = datetime.datetime.now(datetime.timezone.utc)
         data_process_dict = dict(
             name="Ephys preprocessing",
             software_version="0.1.5",
