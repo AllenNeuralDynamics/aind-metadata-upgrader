@@ -183,7 +183,9 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         ----------
         old_data_description_model : DataDescription
         """
-        super().__init__(old_data_description_model, model_class=DataDescription, allow_validation_errors=allow_validation_errors)
+        super().__init__(
+            old_data_description_model, model_class=DataDescription, allow_validation_errors=allow_validation_errors
+        )
 
     def get_modality(self, **kwargs):
         """Get modality from old model"""
