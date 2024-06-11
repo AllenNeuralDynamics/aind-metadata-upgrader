@@ -317,11 +317,11 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         data_description_0_6_2_missing_investigators = self.data_descriptions[
             "data_description_0.6.2_empty_investigators.json"
         ]
-        upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_6_2_missing_investigators)
+        upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_6_2_missing_investigators, allow_validation_errors=True)
 
         new_data_description = upgrader.upgrade()
 
-        self.assertEqual(new_data_description.investigators, [PIDName(name="Unknown")])
+        self.assertEqual(new_data_description.investigators, [])
 
     def test_upgrades_0_10_0(self):
         """Tests data_description_0.10.0.json is mapped correctly."""

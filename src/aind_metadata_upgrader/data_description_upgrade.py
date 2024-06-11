@@ -17,6 +17,7 @@ from aind_data_schema_models.pid_names import PIDName
 from aind_data_schema_models.platforms import Platform
 
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
+from aind_metadata_upgrader.utils import construct_new_model
 
 
 class ModalityUpgrade:
@@ -168,22 +169,21 @@ class InvestigatorsUpgrade:
                 return [PIDName(name=inv) for inv in old_investigators]
             elif type(old_investigators) is list and isinstance(old_investigators[0], dict):
                 return [PIDName(**inv) for inv in old_investigators]
-        else:
-            return [PIDName(name="Unknown")]
+
         return old_investigators
 
 
 class DataDescriptionUpgrade(BaseModelUpgrade):
     """Handle upgrades for DataDescription class"""
 
-    def __init__(self, old_data_description_model: DataDescription):
+    def __init__(self, old_data_description_model: DataDescription, allow_validation_errors=False):
         """
         Handle mapping of old DataDescription models into current models
         Parameters
         ----------
         old_data_description_model : DataDescription
         """
-        super().__init__(old_data_description_model, model_class=DataDescription)
+        super().__init__(old_data_description_model, model_class=DataDescription, allow_validation_errors=allow_validation_errors)
 
     def get_modality(self, **kwargs):
         """Get modality from old model"""
@@ -254,19 +254,21 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
         creation_time = self.get_creation_time(**kwargs)
 
-        return DataDescription(
-            creation_time=creation_time,
-            name=self._get_or_default(self.old_model, "name", kwargs),
-            institution=institution,
-            funding_source=funding_source,
-            data_level=data_level,
-            group=self._get_or_default(self.old_model, "group", kwargs),
-            investigators=investigators,
-            project_name=self._get_or_default(self.old_model, "project_name", kwargs),
-            restrictions=self._get_or_default(self.old_model, "restrictions", kwargs),
-            modality=modality,
-            platform=platform,
-            subject_id=self._get_or_default(self.old_model, "subject_id", kwargs),
-            related_data=self._get_or_default(self.old_model, "related_data", kwargs),
-            data_summary=self._get_or_default(self.old_model, "data_summary", kwargs),
-        )
+        data_desc_dict = {
+            "creation_time": creation_time,
+            "name": self._get_or_default(self.old_model, "name", kwargs),
+            "institution": institution,
+            "funding_source": funding_source,
+            "data_level": data_level,
+            "group": self._get_or_default(self.old_model, "group", kwargs),
+            "investigators": investigators,
+            "project_name": self._get_or_default(self.old_model, "project_name", kwargs),
+            "restrictions": self._get_or_default(self.old_model, "restrictions", kwargs),
+            "modality": modality,
+            "platform": platform,
+            "subject_id": self._get_or_default(self.old_model, "subject_id", kwargs),
+            "related_data": self._get_or_default(self.old_model, "related_data", kwargs),
+            "data_summary": self._get_or_default(self.old_model, "data_summary", kwargs),
+        }
+
+        return construct_new_model(data_desc_dict, DataDescription, self.allow_validation_errors)
