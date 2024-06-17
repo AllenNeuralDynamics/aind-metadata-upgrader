@@ -190,7 +190,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         if kwargs.get("modality") is not None:
             modality = kwargs["modality"]
         elif type(old_modality) is str or type(old_modality) is dict:
-            modality = [ModalityUpgrade.upgrade_modality(old_modality)]
+            modality = [ModalityUpgrade.upgrade_modality(str.lower(old_modality))]
         elif type(old_modality) is list:
             modality = [ModalityUpgrade.upgrade_modality(m) for m in old_modality]
         else:
