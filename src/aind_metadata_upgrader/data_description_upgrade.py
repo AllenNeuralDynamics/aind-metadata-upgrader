@@ -57,7 +57,7 @@ class ModalityUpgrade:
         if type(old_modality) is str and cls.legacy_name_mapping.get(old_modality.lower()) is not None:
             return cls.legacy_name_mapping[old_modality.lower()]
         elif type(old_modality) is str:
-            return Modality.from_abbreviation(old_modality.lower())
+            return Modality.from_abbreviation(old_modality)
         elif type(old_modality) is dict and old_modality.get("abbreviation") is not None:
             return Modality.from_abbreviation(old_modality["abbreviation"])
         elif type(old_modality) in Modality._ALL:
