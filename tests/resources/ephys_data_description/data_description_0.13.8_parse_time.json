@@ -1,0 +1,67 @@
+{
+  "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+  "schema_version": "0.13.8",
+  "license": "CC-BY-4.0",
+  "platform": {
+    "name": "Electrophysiology platform",
+    "abbreviation": "ecephys"
+  },
+  "subject_id": "708020",
+  "creation_time": "2024-06-11T18:37:31.983373Z",
+  "label": null,
+  "name": "ecephys_708020_2024-05-17_10-01-28_sorted_2024-06-11_18-37-31",
+  "institution": {
+    "name": "Allen Institute for Neural Dynamics",
+    "abbreviation": "AIND",
+    "registry": {
+      "name": "Research Organization Registry",
+      "abbreviation": "ROR"
+    },
+    "registry_identifier": "04szwah67"
+  },
+  "funding_source": [
+    {
+      "funder": {
+        "name": "Allen Institute",
+        "abbreviation": "AI",
+        "registry": {
+          "name": "Research Organization Registry",
+          "abbreviation": "ROR"
+        },
+        "registry_identifier": "03cpe7c52"
+      },
+      "grant_number": null,
+      "fundee": "Shawn Olsen"
+    }
+  ],
+  "data_level": "derived",
+  "group": null,
+  "investigators": [
+    {
+      "name": "Shawn Olsen",
+      "abbreviation": null,
+      "registry": null,
+      "registry_identifier": null
+    }
+  ],
+  "project_name": null,
+  "restrictions": null,
+  "modality": [
+    {
+      "name": "Extracellular electrophysiology",
+      "abbreviation": "ecephys"
+    },
+    {
+      "name": "Behavior",
+      "abbreviation": "behavior"
+    },
+    {
+      "name": "Behavior videos",
+      "abbreviation": "behavior-videos"
+    }
+  ],
+  "related_data": [],
+  "data_summary": null,
+  "input_data_name": "ecephys_708020_2024-05-17_10-01-28",
+  "process_name": "sorted"
+}

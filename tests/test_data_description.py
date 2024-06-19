@@ -381,6 +381,19 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         self.assertEqual(Platform.ECEPHYS, new_data_description.platform)
         self.assertIsNone(new_data_description.data_summary)
 
+    def test_upgrades_creation_time(self):
+        """Tests that strings which include a Z timezone are upgraded correctly"""
+
+        data_description_0_13_8 = self.data_descriptions["data_description_0.13.8_parse_time.json"]
+        upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_13_8)
+
+        new_data_description = upgrader.upgrade()
+
+        self.assertEqual(
+            datetime.datetime(2024, 6, 11, 18, 37, 31, microsecond=983373, tzinfo=datetime.timezone.utc),
+            new_data_description.creation_time,
+        )
+
     def test_data_level_upgrade(self):
         """Tests data level can be set from legacy versions"""
 
