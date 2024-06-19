@@ -72,26 +72,26 @@ class PlatformUpgrade:
     legacy_name_mapping = {
         "smartspim": Platform.SMARTSPIM,
         "single-plane-ophys": Platform.SINGLE_PLANE_OPHYS,
-        "HSFP": Platform.HSFP,
-        "exaSPIM": Platform.EXASPIM,
+        "hsfp": Platform.HSFP,
+        "exaspim": Platform.EXASPIM,
         "ophys": Platform.SINGLE_PLANE_OPHYS,
         "multiplane-ophys": Platform.MULTIPLANE_OPHYS,
         "merfish": Platform.MERFISH,
-        "mesoSPIM": Platform.MESOSPIM,
-        "SPIM": Platform.SMARTSPIM,
-        "test-FIP-opto": Platform.FIP,
-        "FIP": Platform.FIP,
+        "mesospim": Platform.MESOSPIM,
+        "spim": Platform.SMARTSPIM,
+        "test-fip-opto": Platform.FIP,
+        "fip": Platform.FIP,
         "ecephys": Platform.ECEPHYS,
         "behavior-videos": Platform.MULTIPLANE_OPHYS,
-        "SmartSPIM": Platform.SMARTSPIM,
         "ephys": Platform.ECEPHYS,
+        "trained-behavior": Platform.BEHAVIOR
     }
 
     @classmethod
     def from_modality(cls, modality: Modality) -> Optional[Platform]:
         """Get platform from modality"""
         if modality is not None:
-            return cls.legacy_name_mapping.get(modality.abbreviation)
+            return cls.legacy_name_mapping.get(str.lower(modality.abbreviation))
 
 
 class FundingUpgrade:
@@ -212,7 +212,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
             if creation_date:
                 creation_time = datetime.fromisoformat(f"{creation_date}T{creation_time}")
             else:
-                creation_time = datetime.fromisoformat(f"{creation_time}")
+                creation_time = datetime.fromisoformat(creation_time)
         elif old_name is not None:
             creation_time = DataDescription.parse_name(old_name).get("creation_time")
         return creation_time
