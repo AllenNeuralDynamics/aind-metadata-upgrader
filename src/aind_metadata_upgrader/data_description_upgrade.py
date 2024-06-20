@@ -15,8 +15,10 @@ from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
 from aind_data_schema_models.pid_names import PIDName
 from aind_data_schema_models.platforms import Platform
+from backports.datetime_fromisoformat import MonkeyPatch
 
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
+from aind_metadata_upgrader.utils import construct_new_model
 
 
 class ModalityUpgrade:
@@ -71,26 +73,26 @@ class PlatformUpgrade:
     legacy_name_mapping = {
         "smartspim": Platform.SMARTSPIM,
         "single-plane-ophys": Platform.SINGLE_PLANE_OPHYS,
-        "HSFP": Platform.HSFP,
-        "exaSPIM": Platform.EXASPIM,
+        "hsfp": Platform.HSFP,
+        "exaspim": Platform.EXASPIM,
         "ophys": Platform.SINGLE_PLANE_OPHYS,
         "multiplane-ophys": Platform.MULTIPLANE_OPHYS,
         "merfish": Platform.MERFISH,
-        "mesoSPIM": Platform.MESOSPIM,
-        "SPIM": Platform.SMARTSPIM,
-        "test-FIP-opto": Platform.FIP,
-        "FIP": Platform.FIP,
+        "mesospim": Platform.MESOSPIM,
+        "spim": Platform.SMARTSPIM,
+        "test-fip-opto": Platform.FIP,
+        "fip": Platform.FIP,
         "ecephys": Platform.ECEPHYS,
         "behavior-videos": Platform.MULTIPLANE_OPHYS,
-        "SmartSPIM": Platform.SMARTSPIM,
         "ephys": Platform.ECEPHYS,
+        "trained-behavior": Platform.BEHAVIOR,
     }
 
     @classmethod
     def from_modality(cls, modality: Modality) -> Optional[Platform]:
         """Get platform from modality"""
         if modality is not None:
-            return cls.legacy_name_mapping.get(modality.abbreviation)
+            return cls.legacy_name_mapping.get(str.lower(modality.abbreviation))
 
 
 class FundingUpgrade:
@@ -161,27 +163,33 @@ class InvestigatorsUpgrade:
     @staticmethod
     def upgrade_investigators(old_investigators: Any) -> List[PIDName]:
         """Map legacy investigators model to current version"""
-        if type(old_investigators) is str:
-            return [PIDName(name=old_investigators)]
-        elif type(old_investigators) is list and isinstance(old_investigators[0], str):
-            return [PIDName(name=inv) for inv in old_investigators]
-        elif type(old_investigators) is list and isinstance(old_investigators[0], dict):
-            return [PIDName(**inv) for inv in old_investigators]
-        else:
-            return old_investigators
+        if old_investigators:
+            if type(old_investigators) is str:
+                return [PIDName(name=old_investigators)]
+            elif type(old_investigators) is list and isinstance(old_investigators[0], str):
+                return [PIDName(name=inv) for inv in old_investigators]
+            elif type(old_investigators) is list and isinstance(old_investigators[0], dict):
+                return [PIDName(**inv) for inv in old_investigators]
+
+        return old_investigators
 
 
 class DataDescriptionUpgrade(BaseModelUpgrade):
     """Handle upgrades for DataDescription class"""
 
-    def __init__(self, old_data_description_model: DataDescription):
+    def __init__(self, old_data_description_model: DataDescription, allow_validation_errors=False):
         """
         Handle mapping of old DataDescription models into current models
         Parameters
         ----------
         old_data_description_model : DataDescription
         """
-        super().__init__(old_data_description_model, model_class=DataDescription)
+
+        MonkeyPatch.patch_fromisoformat()
+
+        super().__init__(
+            old_data_description_model, model_class=DataDescription, allow_validation_errors=allow_validation_errors
+        )
 
     def get_modality(self, **kwargs):
         """Get modality from old model"""
@@ -204,10 +212,11 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         creation_date = self._get_or_default(self.old_model, "creation_date", kwargs)
         creation_time = self._get_or_default(self.old_model, "creation_time", kwargs)
         old_name = self._get_or_default(self.old_model, "name", kwargs)
-        if creation_date is not None and creation_time is not None:
-            creation_time = datetime.fromisoformat(f"{creation_date}T{creation_time}")
-        elif creation_time is not None:
-            creation_time = datetime.fromisoformat(f"{creation_time}")
+        if creation_time:
+            if creation_date:
+                creation_time = datetime.fromisoformat(f"{creation_date}T{creation_time}")
+            else:
+                creation_time = datetime.fromisoformat(creation_time)
         elif old_name is not None:
             creation_time = DataDescription.parse_name(old_name).get("creation_time")
         return creation_time
@@ -252,19 +261,21 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
         creation_time = self.get_creation_time(**kwargs)
 
-        return DataDescription(
-            creation_time=creation_time,
-            name=self._get_or_default(self.old_model, "name", kwargs),
-            institution=institution,
-            funding_source=funding_source,
-            data_level=data_level,
-            group=self._get_or_default(self.old_model, "group", kwargs),
-            investigators=investigators,
-            project_name=self._get_or_default(self.old_model, "project_name", kwargs),
-            restrictions=self._get_or_default(self.old_model, "restrictions", kwargs),
-            modality=modality,
-            platform=platform,
-            subject_id=self._get_or_default(self.old_model, "subject_id", kwargs),
-            related_data=self._get_or_default(self.old_model, "related_data", kwargs),
-            data_summary=self._get_or_default(self.old_model, "data_summary", kwargs),
-        )
+        data_desc_dict = {
+            "creation_time": creation_time,
+            "name": self._get_or_default(self.old_model, "name", kwargs),
+            "institution": institution,
+            "funding_source": funding_source,
+            "data_level": data_level,
+            "group": self._get_or_default(self.old_model, "group", kwargs),
+            "investigators": investigators,
+            "project_name": self._get_or_default(self.old_model, "project_name", kwargs),
+            "restrictions": self._get_or_default(self.old_model, "restrictions", kwargs),
+            "modality": modality,
+            "platform": platform,
+            "subject_id": self._get_or_default(self.old_model, "subject_id", kwargs),
+            "related_data": self._get_or_default(self.old_model, "related_data", kwargs),
+            "data_summary": self._get_or_default(self.old_model, "data_summary", kwargs),
+        }
+
+        return construct_new_model(data_desc_dict, DataDescription, self.allow_validation_errors)
