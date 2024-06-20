@@ -19,6 +19,10 @@ from aind_data_schema_models.platforms import Platform
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 from aind_metadata_upgrader.utils import construct_new_model
 
+from backports.datetime_fromisoformat import MonkeyPatch
+
+MonkeyPatch.patch_fromisoformat()
+
 
 class ModalityUpgrade:
     """Handle upgrades for Modality models."""
