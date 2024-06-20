@@ -8,8 +8,6 @@ import unittest
 from pathlib import Path
 from typing import List
 
-
-
 from aind_data_schema.core.data_description import (
     DataDescription,
     DataLevel,

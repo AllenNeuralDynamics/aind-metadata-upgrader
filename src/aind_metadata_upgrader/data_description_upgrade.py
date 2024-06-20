@@ -15,13 +15,10 @@ from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
 from aind_data_schema_models.pid_names import PIDName
 from aind_data_schema_models.platforms import Platform
+from backports.datetime_fromisoformat import MonkeyPatch
 
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 from aind_metadata_upgrader.utils import construct_new_model
-
-from backports.datetime_fromisoformat import MonkeyPatch
-
-MonkeyPatch.patch_fromisoformat()
 
 
 class ModalityUpgrade:
@@ -88,7 +85,7 @@ class PlatformUpgrade:
         "ecephys": Platform.ECEPHYS,
         "behavior-videos": Platform.MULTIPLANE_OPHYS,
         "ephys": Platform.ECEPHYS,
-        "trained-behavior": Platform.BEHAVIOR
+        "trained-behavior": Platform.BEHAVIOR,
     }
 
     @classmethod
@@ -187,6 +184,9 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         ----------
         old_data_description_model : DataDescription
         """
+
+        MonkeyPatch.patch_fromisoformat()
+
         super().__init__(
             old_data_description_model, model_class=DataDescription, allow_validation_errors=allow_validation_errors
         )
