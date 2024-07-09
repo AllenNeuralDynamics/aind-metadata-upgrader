@@ -1,15 +1,10 @@
 {
-  "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
-  "schema_version": "0.13.8",
+  "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/data_description.py",
+  "schema_version": "0.7.2",
   "license": "CC-BY-4.0",
-  "platform": {
-    "name": "Electrophysiology platform",
-    "abbreviation": "ecephys"
-  },
-  "subject_id": "708020",
-  "creation_time": "18:37:31.983373",
-  "label": null,
-  "name": "ecephys_708020_2024-05-17_10-01-28_sorted_2024-06-11_18-37-31",
+  "creation_time": "22:42:06.952901",
+  "creation_date": "2023-09-07",
+  "name": "ecephys_683517_2023-09-07_11-53-31_Spike Sorting_2023-09-07_22-42-06",
   "institution": {
     "name": "Allen Institute for Neural Dynamics",
     "abbreviation": "AIND",
@@ -22,46 +17,33 @@
   "funding_source": [
     {
       "funder": {
-        "name": "Allen Institute",
-        "abbreviation": "AI",
+        "name": "Allen Institute for Neural Dynamics",
+        "abbreviation": "AIND",
         "registry": {
           "name": "Research Organization Registry",
           "abbreviation": "ROR"
         },
-        "registry_identifier": "03cpe7c52"
+        "registry_identifier": "04szwah67"
       },
       "grant_number": null,
-      "fundee": "Shawn Olsen"
+      "fundee": null
     }
   ],
-  "data_level": "derived",
+  "data_level": "derived data",
   "group": null,
-  "investigators": [
-    {
-      "name": "Shawn Olsen",
-      "abbreviation": null,
-      "registry": null,
-      "registry_identifier": null
-    }
-  ],
+  "investigators": ["unknown"],
   "project_name": null,
+  "project_id": null,
   "restrictions": null,
   "modality": [
     {
       "name": "Extracellular electrophysiology",
       "abbreviation": "ecephys"
-    },
-    {
-      "name": "Behavior",
-      "abbreviation": "behavior"
-    },
-    {
-      "name": "Behavior videos",
-      "abbreviation": "behavior-videos"
     }
   ],
+  "experiment_type": "ecephys",
+  "subject_id": "683517",
   "related_data": [],
   "data_summary": null,
-  "input_data_name": "ecephys_708020_2024-05-17_10-01-28",
-  "process_name": "sorted"
+  "input_data_name": "ecephys_683517_2023-09-07_11-53-31"
 }

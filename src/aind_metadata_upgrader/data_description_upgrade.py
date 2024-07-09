@@ -216,10 +216,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
             if creation_date:
                 creation_time = datetime.fromisoformat(f"{creation_date}T{creation_time}")
             else:
-                try:
-                    creation_time = datetime.fromisoformat(creation_time)
-                except ValueError:
-                    creation_time = datetime.strptime(creation_time, "%H:%M:%S.%f")
+                creation_time = datetime.fromisoformat(creation_time)
         elif old_name is not None:
             creation_time = DataDescription.parse_name(old_name).get("creation_time")
         return creation_time

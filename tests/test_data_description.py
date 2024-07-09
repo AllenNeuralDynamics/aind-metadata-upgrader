@@ -398,9 +398,10 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_13_8)
 
         new_data_description = upgrader.upgrade()
+        expected_creation_time = datetime.datetime(year=2023, month=9, day=7, hour=22, minute=42, second=6, microsecond=952901, tzinfo=get_localzone())
 
         self.assertEqual(
-            datetime.datetime(hour=18, minute=37, second=31, microsecond=983373, tzinfo=datetime.timezone.utc),
+            expected_creation_time,
             new_data_description.creation_time,
         )
 
