@@ -107,6 +107,7 @@ class FundingUpgrade:
         "Allen Institute": Organization.AI,
         Organization.AIND: Organization.AI,
         Organization.AIBS: Organization.AI,
+        "NINMH": Organization.NIMH,
     }
 
     @classmethod
