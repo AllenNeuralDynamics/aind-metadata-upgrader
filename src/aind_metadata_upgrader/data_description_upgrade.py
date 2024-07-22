@@ -108,6 +108,7 @@ class FundingUpgrade:
         Organization.AIND: Organization.AI,
         Organization.AIBS: Organization.AI,
         "NINMH": Organization.NIMH,
+        "NIMH": Organization.NIMH,
     }
 
     @classmethod
