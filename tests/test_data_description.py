@@ -394,6 +394,17 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             new_data_description.creation_time,
         )
 
+        data_description_0_13_8 = self.data_descriptions["data_description_0.13.8_parse_invalid_isoformat_time.json"]
+        upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_13_8)
+
+        new_data_description = upgrader.upgrade()
+        expected_creation_time = datetime.datetime(year=2023, month=9, day=7, hour=22, minute=42, second=6, microsecond=952901, tzinfo=get_localzone())
+
+        self.assertEqual(
+            expected_creation_time,
+            new_data_description.creation_time,
+        )
+
     def test_data_level_upgrade(self):
         """Tests data level can be set from legacy versions"""
 
