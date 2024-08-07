@@ -366,10 +366,6 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
                     subj_procedures = [self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)]
 
-                    if None in subj_procedures:
-                        subj_procedures.remove(None)
-                    # subj_procedures = [x for x in subj_procedures if x is not None]
-
                     new_surgery_dict = {
                         "start_date": date,
                         "experimenter_full_name": str(subj_procedure.get("experimenter_full_name")),
@@ -440,6 +436,8 @@ class ProcedureUpgrade(BaseModelUpgrade):
             logging.info(f"Creating new procedure for subject {subj_id}")
             logging.info(f"Subject procedures: {loaded_subject_procedures}")
             logging.info(f"constructed Subject procedures: {constructed_subject_procedures.values()}")
+            if None in constructed_subject_procedures:
+                logging.error(f"None value in constructed_subject_procedures")
             logging.info(f"Specimen procedures: {loaded_spec_procedures}")
             new_procedure = Procedures(
                 subject_id=subj_id,
