@@ -301,6 +301,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
         self.subj_procedure_upgrader = SubjectProcedureModelsUpgrade(allow_validation_errors)
         logging.info(f"ALLOW VALIDATION ERRORS: {self.subj_procedure_upgrader.allow_validation_errors}")
+        logging.info(f"upgrading procedure: {old_procedures_model._id}")
 
         self.upgrade_funcs = {
             "Craniotomy": self.subj_procedure_upgrader.upgrade_craniotomy,
@@ -332,7 +333,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
             return self.caller(self.upgrade_funcs[procedure_type], old_subj_procedure)
         else:
             logging.error(f"Procedure type {procedure_type} not found in list of procedure types")
-            return None
+            return old_subj_procedure
 
     def upgrade_procedure(self) -> Optional[Procedures]:
         """Map legacy Procedure model to current version"""
