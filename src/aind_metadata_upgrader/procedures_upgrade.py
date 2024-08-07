@@ -2,7 +2,7 @@
 
 import logging
 from decimal import Decimal
-from typing import Optional, Union
+from typing import Optional, Union, Dict, Any
 
 import semver
 from aind_data_schema.core.procedures import (  # SpecimenProcedure,; TarsVirusIdentifiers,
@@ -24,6 +24,13 @@ from aind_data_schema.core.procedures import (  # SpecimenProcedure,; TarsVirusI
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 from aind_metadata_upgrader.utils import construct_new_model, get_or_default
 
+
+from pydantic import RootModel
+
+class DynamicModel(RootModel):
+    root: Dict[str, Any]
+
+dynamic_instance = DynamicModel(root=data)
 
 class InjectionMaterialsUpgrade:
     """Handle upgrades for InjectionMaterials models."""
@@ -91,7 +98,6 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
         """Handle upgrades for SubjectProcedure models"""
 
         self.allow_validation_errors = allow_validation_errors
-        logging.info(f"ALLOW VALIDATION ERRORS (SUBJ PROCEDURES): {self.allow_validation_errors}")
         self.injection_upgrader = InjectionMaterialsUpgrade(allow_validation_errors)
 
     def upgrade_craniotomy(self, old_subj_procedure: dict):
@@ -187,7 +193,7 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
 
                 fiber_implant_model = fiber_implant_model.probes.append(self.construct_ophys_probe(probe))
                 logging.info(f"Added probe {probe}")
-                logging.info(f"to fiber implant model {fiber_implant_model}")
+                logging.info(f"updated fiber implant model {fiber_implant_model}")
         else:
             fiber_implant_model = fiber_implant_model.probes.append(
                 self.construct_ophys_probe(old_subj_procedure["probes"])
@@ -333,7 +339,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
             return self.caller(self.upgrade_funcs[procedure_type], old_subj_procedure)
         else:
             logging.error(f"Procedure type {procedure_type} not found in list of procedure types")
-            return old_subj_procedure
+            return construct_new_model(old_subj_procedure, DynamicModel, self.allow_validation_errors)
 
     def upgrade_procedure(self) -> Optional[Procedures]:
         """Map legacy Procedure model to current version"""
