@@ -1,0 +1,421 @@
+{
+    "_id": "e0c9e0a3-7bca-4e7a-8627-cbd05c0dd6f5",
+    "acquisition": null,
+    "created": "2023-07-19T21:37:27Z",
+    "data_description": {
+      "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/data_description.py",
+      "schema_version": "0.7.2",
+      "license": "CC-BY-4.0",
+      "creation_time": "21:33:12.380819",
+      "creation_date": "2023-07-19",
+      "name": "ecephys_614608_2022-06-30_14-36-24_Spike Sorting_2023-07-19_21-33-12",
+      "institution": {
+        "name": "Allen Institute for Neural Dynamics",
+        "abbreviation": "AIND",
+        "registry": {
+          "name": "Research Organization Registry",
+          "abbreviation": "ROR"
+        },
+        "registry_identifier": "04szwah67"
+      },
+      "funding_source": [
+        {
+          "funder": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+              "name": "Research Organization Registry",
+              "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+          },
+          "grant_number": null,
+          "fundee": null
+        }
+      ],
+      "data_level": "derived data",
+      "group": null,
+      "investigators": [],
+      "project_name": null,
+      "project_id": null,
+      "restrictions": null,
+      "modality": [
+        {
+          "name": "Extracellular electrophysiology",
+          "abbreviation": "ecephys"
+        }
+      ],
+      "experiment_type": "ecephys",
+      "subject_id": "614608",
+      "related_data": [],
+      "data_summary": null,
+      "input_data_name": "ecephys_614608_2022-06-30_14-36-24"
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": [
+      {
+        "Code Ocean": "689f26aa-1191-49ed-888c-115c9522e9f4"
+      }
+    ],
+    "instrument": null,
+    "last_modified": "2024-06-21T03:09:59.895640",
+    "location": "s3://codeocean-s3datasetsbucket-1u41qdg42ur9/689f26aa-1191-49ed-888c-115c9522e9f4",
+    "metadata_status": "Unknown",
+    "name": "ecephys_614608_2022-06-30_14-36-24_sorted-ks2.5_2023-07-19_21-37-27",
+    "procedures": {
+      "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/procedures.py",
+      "schema_version": "0.8.1",
+      "subject_id": "614608",
+      "subject_procedures": [
+        {
+          "start_date": "2022-07-01",
+          "end_date": "2022-07-01",
+          "experimenter_full_name": 30206,
+          "iacuc_protocol": "2102",
+          "animal_weight_prior": null,
+          "animal_weight_post": null,
+          "weight_unit": "gram",
+          "anaesthesia": null,
+          "notes": null,
+          "procedure_type": "Perfusion",
+          "output_specimen_ids": [
+            614608
+          ]
+        },
+        {
+          "start_date": "2022-02-15",
+          "end_date": "2022-02-15",
+          "experimenter_full_name": "NSB-187",
+          "iacuc_protocol": "2102",
+          "animal_weight_prior": 24.4,
+          "animal_weight_post": 27.7,
+          "weight_unit": "gram",
+          "anaesthesia": null,
+          "notes": null
+        }
+      ],
+      "specimen_procedures": [],
+      "notes": null
+    },
+    "processing": {
+      "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/processing.py",
+      "schema_version": "0.2.1",
+      "pipeline_version": null,
+      "pipeline_url": null,
+      "data_processes": [
+        {
+          "name": "Ephys preprocessing",
+          "version": "0.21.4",
+          "start_date_time": "2023-07-18T14:07:56.157730+00:00",
+          "end_date_time": "2023-07-18T17:12:38.050674+00:00",
+          "input_location": "\\\\allen\\programs\\mindscope\\workgroups\\np-exp\\codeocean\\1188138256_614608_20220630\\ephys",
+          "output_location": "s3://aind-ephys-data/ecephys_614608_2022-06-30_14-36-24",
+          "code_url": "https://github.com/AllenNeuralDynamics/aind-data-transfer",
+          "code_version": null,
+          "parameters": {
+            "modality": {
+              "name": "Extracellular electrophysiology",
+              "abbreviation": "ecephys"
+            },
+            "source": "\\\\allen\\programs\\mindscope\\workgroups\\np-exp\\codeocean\\1188138256_614608_20220630\\ephys",
+            "compress_raw_data": true,
+            "extra_configs": null
+          },
+          "outputs": null,
+          "notes": null
+        },
+        [
+          {
+            "name": "Ephys preprocessing",
+            "version": "v1.6",
+            "start_date_time": "2023-07-18T18:34:38.782340",
+            "end_date_time": "2023-07-18T22:15:14.782340",
+            "input_location": "../data",
+            "output_location": "../results",
+            "code_url": "https://github.com/AllenNeuralDynamics/aind-capsule-ephys-spikesort-kilosort25-full.git",
+            "code_version": null,
+            "parameters": {
+              "preprocessing_strategy": "cmr",
+              "highpass_filter": {
+                "freq_min": 300,
+                "margin_ms": 5
+              },
+              "phase_shift": {
+                "margin_ms": 100
+              },
+              "detect_bad_channels": {
+                "method": "coherence+psd",
+                "dead_channel_threshold": -0.5,
+                "noisy_channel_threshold": 1,
+                "outside_channel_threshold": -0.3,
+                "n_neighbors": 11,
+                "seed": 0
+              },
+              "remove_out_channels": true,
+              "remove_bad_channels": true,
+              "max_bad_channel_fraction_to_remove": 0.5,
+              "common_reference": {
+                "reference": "global",
+                "operator": "median"
+              },
+              "highpass_spatial_filter": {
+                "n_channel_pad": 60,
+                "n_channel_taper": null,
+                "direction": "y",
+                "apply_agc": true,
+                "agc_window_length_s": 0.01,
+                "highpass_butter_order": 3,
+                "highpass_butter_wn": 0.01
+              }
+            },
+            "outputs": null,
+            "notes": "experiment1_Record Node 101#Neuropix-PXI-100.ProbeA-AP_recording1:\n- Removed 9 outside of the brain.\n- Removed 1 bad channels after preprocessing.\nexperiment1_Record Node 101#Neuropix-PXI-100.ProbeB-AP_recording1:\n- Removed 3 outside of the brain.\n- Removed 1 bad channels after preprocessing.\nexperiment1_Record Node 101#Neuropix-PXI-100.ProbeC-AP_recording1:\n- Removed 8 outside of the brain.\n- Removed 1 bad channels after preprocessing.\n\n- Found 218 bad channels. Skipping further processing\nexperiment1_Record Node 103#Neuropix-PXI-100.ProbeE-AP_recording1:\n- Removed 4 outside of the brain.\n- Removed 1 bad channels after preprocessing.\nexperiment1_Record Node 103#Neuropix-PXI-100.ProbeF-AP_recording1:\n- Removed 24 outside of the brain.\n- Removed 1 bad channels after preprocessing.\n"
+          },
+          {
+            "name": "Spike sorting",
+            "version": "v1.6",
+            "start_date_time": "2023-07-18T22:15:15.774116",
+            "end_date_time": "2023-07-19T09:22:28.774116",
+            "input_location": "../data",
+            "output_location": "../results",
+            "code_url": "https://github.com/AllenNeuralDynamics/aind-capsule-ephys-spikesort-kilosort25-full.git",
+            "code_version": null,
+            "parameters": {},
+            "outputs": null,
+            "notes": "experiment1_Record Node 101#Neuropix-PXI-100.ProbeA-AP_recording1:\n- KS2.5 found 556 units, 556 after removing empty templates.\nexperiment1_Record Node 101#Neuropix-PXI-100.ProbeB-AP_recording1:\n- KS2.5 found 754 units, 754 after removing empty templates.\nexperiment1_Record Node 101#Neuropix-PXI-100.ProbeC-AP_recording1:\n- KS2.5 found 567 units, 567 after removing empty templates.\nexperiment1_Record Node 103#Neuropix-PXI-100.ProbeD-AP_recording1:\n- Skipped spike sorting.\nexperiment1_Record Node 103#Neuropix-PXI-100.ProbeE-AP_recording1:\n- KS2.5 found 681 units, 681 after removing empty templates.\nexperiment1_Record Node 103#Neuropix-PXI-100.ProbeF-AP_recording1:\n- KS2.5 found 518 units, 518 after removing empty templates.\n"
+          },
+          {
+            "name": "Ephys postprocessing",
+            "version": "v1.6",
+            "start_date_time": "2023-07-19T09:22:29.645968",
+            "end_date_time": "2023-07-19T21:00:12.645968",
+            "input_location": "../data",
+            "output_location": "../results",
+            "code_url": "https://github.com/AllenNeuralDynamics/aind-capsule-ephys-spikesort-kilosort25-full.git",
+            "code_version": null,
+            "parameters": {
+              "sparsity": {
+                "method": "radius",
+                "radius_um": 100
+              },
+              "waveforms_deduplicate": {
+                "ms_before": 0.5,
+                "ms_after": 1.5,
+                "max_spikes_per_unit": 100,
+                "return_scaled": false,
+                "dtype": null,
+                "precompute_template": [
+                  "average"
+                ],
+                "use_relative_path": true
+              },
+              "waveforms": {
+                "ms_before": 3,
+                "ms_after": 4,
+                "max_spikes_per_unit": 500,
+                "return_scaled": true,
+                "dtype": null,
+                "precompute_template": [
+                  "average",
+                  "std"
+                ],
+                "use_relative_path": true
+              },
+              "spike_amplitudes": {
+                "peak_sign": "neg",
+                "return_scaled": true,
+                "outputs": "concatenated"
+              },
+              "similarity": {
+                "method": "cosine_similarity"
+              },
+              "correlograms": {
+                "window_ms": 100,
+                "bin_ms": 2
+              },
+              "isis": {
+                "window_ms": 100,
+                "bin_ms": 5
+              },
+              "locations": {
+                "method": "monopolar_triangulation"
+              },
+              "template_metrics": {
+                "upsampling_factor": 10,
+                "sparsity": null
+              },
+              "principal_components": {
+                "n_components": 5,
+                "mode": "by_channel_local",
+                "whiten": true
+              },
+              "quality_metrics": {
+                "qm_params": {
+                  "presence_ratio": {
+                    "bin_duration_s": 60
+                  },
+                  "snr": {
+                    "peak_sign": "neg",
+                    "peak_mode": "extremum",
+                    "random_chunk_kwargs_dict": null
+                  },
+                  "isi_violation": {
+                    "isi_threshold_ms": 1.5,
+                    "min_isi_ms": 0
+                  },
+                  "rp_violation": {
+                    "refractory_period_ms": 1,
+                    "censored_period_ms": 0
+                  },
+                  "sliding_rp_violation": {
+                    "bin_size_ms": 0.25,
+                    "window_size_s": 1,
+                    "exclude_ref_period_below_ms": 0.5,
+                    "max_ref_period_ms": 10,
+                    "contamination_values": null
+                  },
+                  "amplitude_cutoff": {
+                    "peak_sign": "neg",
+                    "num_histogram_bins": 100,
+                    "histogram_smoothing_value": 3,
+                    "amplitudes_bins_min_ratio": 5
+                  },
+                  "amplitude_median": {
+                    "peak_sign": "neg"
+                  },
+                  "nearest_neighbor": {
+                    "max_spikes": 10000,
+                    "min_spikes": 10,
+                    "n_neighbors": 4
+                  },
+                  "nn_isolation": {
+                    "max_spikes": 10000,
+                    "min_spikes": 10,
+                    "n_neighbors": 4,
+                    "n_components": 10,
+                    "radius_um": 100
+                  },
+                  "nn_noise_overlap": {
+                    "max_spikes": 10000,
+                    "min_spikes": 10,
+                    "n_neighbors": 4,
+                    "n_components": 10,
+                    "radius_um": 100
+                  }
+                },
+                "metric_names": [
+                  "num_spikes",
+                  "firing_rate",
+                  "presence_ratio",
+                  "snr",
+                  "isi_violation",
+                  "rp_violation",
+                  "sliding_rp_violation",
+                  "amplitude_cutoff",
+                  "drift",
+                  "isolation_distance",
+                  "l_ratio",
+                  "d_prime"
+                ],
+                "n_jobs": 1
+              }
+            },
+            "outputs": null,
+            "notes": "experiment1_Record Node 101#Neuropix-PXI-100.ProbeA-AP_recording1:\n- Removed 11 duplicated units.\nexperiment1_Record Node 101#Neuropix-PXI-100.ProbeB-AP_recording1:\n- Removed 11 duplicated units.\nexperiment1_Record Node 101#Neuropix-PXI-100.ProbeC-AP_recording1:\n- Removed 8 duplicated units.\nexperiment1_Record Node 103#Neuropix-PXI-100.ProbeD-AP_recording1:\n- Skipped post-processsing.\nexperiment1_Record Node 103#Neuropix-PXI-100.ProbeE-AP_recording1:\n- Removed 7 duplicated units.\nexperiment1_Record Node 103#Neuropix-PXI-100.ProbeF-AP_recording1:\n- Removed 22 duplicated units.\n"
+          },
+          {
+            "name": "Ephys curation",
+            "version": "v1.6",
+            "start_date_time": "2023-07-19T21:00:12.851925",
+            "end_date_time": "2023-07-19T21:01:04.851925",
+            "input_location": "../data",
+            "output_location": "../results",
+            "code_url": "https://github.com/AllenNeuralDynamics/aind-capsule-ephys-spikesort-kilosort25-full.git",
+            "code_version": null,
+            "parameters": {
+              "duplicate_threshold": 0.9,
+              "isi_violations_ratio_threshold": 0.5,
+              "presence_ratio_threshold": 0.8,
+              "amplitude_cutoff_threshold": 0.1
+            },
+            "outputs": null,
+            "notes": "Curation query: isi_violations_ratio < 0.5 and presence_ratio > 0.8 and amplitude_cutoff < 0.1\nexperiment1_Record Node 101#Neuropix-PXI-100.ProbeA-AP_recording1:\n- 258/545 passing default QC.\nexperiment1_Record Node 101#Neuropix-PXI-100.ProbeB-AP_recording1:\n- 370/743 passing default QC.\nexperiment1_Record Node 101#Neuropix-PXI-100.ProbeC-AP_recording1:\n- 310/559 passing default QC.\nexperiment1_Record Node 103#Neuropix-PXI-100.ProbeD-AP_recording1:\n- Skipped curation.\nexperiment1_Record Node 103#Neuropix-PXI-100.ProbeE-AP_recording1:\n- 336/674 passing default QC.\nexperiment1_Record Node 103#Neuropix-PXI-100.ProbeF-AP_recording1:\n- 240/496 passing default QC.\n"
+          },
+          {
+            "name": "Ephys visualization",
+            "version": "v1.6",
+            "start_date_time": "2023-07-19T21:01:05.773057",
+            "end_date_time": "2023-07-19T21:33:11.773057",
+            "input_location": "../data",
+            "output_location": "../results",
+            "code_url": "https://github.com/AllenNeuralDynamics/aind-capsule-ephys-spikesort-kilosort25-full.git",
+            "code_version": null,
+            "parameters": {
+              "timeseries": {
+                "n_snippets_per_segment": 2,
+                "snippet_duration_s": 0.5,
+                "skip": false
+              },
+              "drift": {
+                "detection": {
+                  "method": "locally_exclusive",
+                  "peak_sign": "neg",
+                  "detect_threshold": 5,
+                  "exclude_sweep_ms": 0.1
+                },
+                "localization": {
+                  "ms_before": 0.1,
+                  "ms_after": 0.3,
+                  "local_radius_um": 100
+                },
+                "n_skip": 30,
+                "alpha": 0.15,
+                "vmin": -200,
+                "vmax": 0,
+                "cmap": "Greys_r",
+                "figsize": [
+                  10,
+                  10
+                ]
+              }
+            },
+            "outputs": null,
+            "notes": "{\n    \"experiment1_Record Node 101%23Neuropix-PXI-100.ProbeA-AP_recording1\": {\n        \"sorting_summary\": \"https://figurl.org/f?v=gs://figurl/spikesortingview-10&d=sha1://ec59a78986ec65155fc8acabb2d1ecae182d1150&s={%22sortingCuration%22:%22gh://AllenNeuralDynamics/ephys-sorting-manual-curation/main/ecephys_614608_2022-06-30_14-36-24/experiment1_Record Node 101%23Neuropix-PXI-100.ProbeA-AP_recording1/kilosort2_5/curation.json%22}&label=ecephys_614608_2022-06-30_14-36-24%20-%20experiment1_Record%20Node%20101%23Neuropix-PXI-100.ProbeA-AP_recording1%20-%20kilosort2_5%20-%20Sorting%20Summary&zone=aind\"\n    },\n    \"experiment1_Record Node 101%23Neuropix-PXI-100.ProbeB-AP_recording1\": {\n        \"timeseries\": \"https://figurl.org/f?v=gs://figurl/spikesortingview-10&d=sha1://022a1c4b3a8702a204732a2b081bf6e0544d0382&label=ecephys_614608_2022-06-30_14-36-24%20-%20experiment1_Record%20Node%20101%23Neuropix-PXI-100.ProbeB-AP_recording1&zone=aind\",\n        \"sorting_summary\": \"https://figurl.org/f?v=gs://figurl/spikesortingview-10&d=sha1://4c13190942c0d1b35415b1f2871139831f0d2cc9&s={%22sortingCuration%22:%22gh://AllenNeuralDynamics/ephys-sorting-manual-curation/main/ecephys_614608_2022-06-30_14-36-24/experiment1_Record Node 101%23Neuropix-PXI-100.ProbeB-AP_recording1/kilosort2_5/curation.json%22}&label=ecephys_614608_2022-06-30_14-36-24%20-%20experiment1_Record%20Node%20101%23Neuropix-PXI-100.ProbeB-AP_recording1%20-%20kilosort2_5%20-%20Sorting%20Summary&zone=aind\"\n    },\n    \"experiment1_Record Node 101%23Neuropix-PXI-100.ProbeC-AP_recording1\": {\n        \"sorting_summary\": \"https://figurl.org/f?v=gs://figurl/spikesortingview-10&d=sha1://2c088063d1639cf48b309bc6f06364c75469c209&s={%22sortingCuration%22:%22gh://AllenNeuralDynamics/ephys-sorting-manual-curation/main/ecephys_614608_2022-06-30_14-36-24/experiment1_Record Node 101%23Neuropix-PXI-100.ProbeC-AP_recording1/kilosort2_5/curation.json%22}&label=ecephys_614608_2022-06-30_14-36-24%20-%20experiment1_Record%20Node%20101%23Neuropix-PXI-100.ProbeC-AP_recording1%20-%20kilosort2_5%20-%20Sorting%20Summary&zone=aind\"\n    },\n    \"experiment1_Record Node 103%23Neuropix-PXI-100.ProbeE-AP_recording1\": {\n        \"timeseries\": \"https://figurl.org/f?v=gs://figurl/spikesortingview-10&d=sha1://52656ce1696eb9c435464eeede370da9e0543d00&label=ecephys_614608_2022-06-30_14-36-24%20-%20experiment1_Record%20Node%20103%23Neuropix-PXI-100.ProbeE-AP_recording1&zone=aind\",\n        \"sorting_summary\": \"https://figurl.org/f?v=gs://figurl/spikesortingview-10&d=sha1://64d320cc425ef63573c1af3175c72b14b865a87e&s={%22sortingCuration%22:%22gh://AllenNeuralDynamics/ephys-sorting-manual-curation/main/ecephys_614608_2022-06-30_14-36-24/experiment1_Record Node 103%23Neuropix-PXI-100.ProbeE-AP_recording1/kilosort2_5/curation.json%22}&label=ecephys_614608_2022-06-30_14-36-24%20-%20experiment1_Record%20Node%20103%23Neuropix-PXI-100.ProbeE-AP_recording1%20-%20kilosort2_5%20-%20Sorting%20Summary&zone=aind\"\n    },\n    \"experiment1_Record Node 103%23Neuropix-PXI-100.ProbeF-AP_recording1\": {\n        \"timeseries\": \"https://figurl.org/f?v=gs://figurl/spikesortingview-10&d=sha1://57929304ad692ed8e9288e9689feef21da58c690&label=ecephys_614608_2022-06-30_14-36-24%20-%20experiment1_Record%20Node%20103%23Neuropix-PXI-100.ProbeF-AP_recording1&zone=aind\",\n        \"sorting_summary\": \"https://figurl.org/f?v=gs://figurl/spikesortingview-10&d=sha1://29a379b60f7522725ca3561eabc1e032b37b84ba&s={%22sortingCuration%22:%22gh://AllenNeuralDynamics/ephys-sorting-manual-curation/main/ecephys_614608_2022-06-30_14-36-24/experiment1_Record Node 103%23Neuropix-PXI-100.ProbeF-AP_recording1/kilosort2_5/curation.json%22}&label=ecephys_614608_2022-06-30_14-36-24%20-%20experiment1_Record%20Node%20103%23Neuropix-PXI-100.ProbeF-AP_recording1%20-%20kilosort2_5%20-%20Sorting%20Summary&zone=aind\"\n    }\n}"
+          }
+        ]
+      ]
+    },
+    "rig": null,
+    "schema_version": "0.2.7",
+    "session": null,
+    "subject": {
+      "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/subject.py",
+      "schema_version": "0.4.1",
+      "species": {
+        "name": "Mus musculus",
+        "abbreviation": null,
+        "registry": {
+          "name": "National Center for Biotechnology Information",
+          "abbreviation": "NCBI"
+        },
+        "registry_identifier": "10090"
+      },
+      "subject_id": "614608",
+      "sex": "Male",
+      "date_of_birth": "2021-12-19",
+      "genotype": "Sst-IRES-Cre/wt;Ai32(RCL-ChR2(H134R)_EYFP)/wt",
+      "mgi_allele_ids": null,
+      "background_strain": null,
+      "source": null,
+      "rrid": null,
+      "restrictions": null,
+      "breeding_group": "Sst-IRES-Cre;Ai32",
+      "maternal_id": "602232",
+      "maternal_genotype": null,
+      "paternal_id": "599333",
+      "paternal_genotype": "Sst-IRES-Cre/wt",
+      "wellness_reports": null,
+      "housing": null,
+      "notes": null
+    }
+  }
