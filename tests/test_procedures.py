@@ -17,7 +17,7 @@ from aind_metadata_upgrader.procedures_upgrade import ProcedureUpgrade
 
 PYD_VERSION = re.match(r"(\d+.\d+).\d+", pyd_version).group(1)
 
-PROCESSING_FILES_PATH = Path(__file__).parent / "resources" / "procedures" / "class_model_examples"
+PROCEDURES_FILES_PATH = Path(__file__).parent / "resources" / "procedures" / "class_model_examples"
 PYD_VERSION = re.match(r"(\d+.\d+).\d+", pyd_version).group(1)
 
 log_file_name = "./tests/resources/procedures/log_files/log_" + datetime.now().strftime("%Y%m%d_%H%M%S") + ".log"
@@ -43,11 +43,11 @@ class TestProceduresUpgrade(unittest.TestCase):
 
         logging.info("BEGIN ERROR TESTING")
 
-        procedure_files: List[str] = os.listdir(PROCESSING_FILES_PATH)
+        procedure_files: List[str] = os.listdir(PROCEDURES_FILES_PATH)
         procedures = []
 
         for file in procedure_files:
-            with open(PROCESSING_FILES_PATH / file, "r") as f:
+            with open(PROCEDURES_FILES_PATH / file, "r") as f:
                 contents = json.load(f)
             procedures.append((file, contents))
         cls.procedures = dict(procedures)
