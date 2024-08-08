@@ -2,7 +2,7 @@
 
 import logging
 from decimal import Decimal
-from typing import Optional, Union, Dict, Any
+from typing import Any, Dict, Optional, Union
 
 import semver
 from aind_data_schema.core.procedures import (  # SpecimenProcedure,; TarsVirusIdentifiers,
@@ -20,15 +20,17 @@ from aind_data_schema.core.procedures import (  # SpecimenProcedure,; TarsVirusI
     Surgery,
     ViralMaterial,
 )
+from pydantic import RootModel
 
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 from aind_metadata_upgrader.utils import construct_new_model, get_or_default
 
 
-from pydantic import RootModel
-
 class DynamicModel(RootModel):
+    """Class to handle models that have been input with invalid schema"""
+
     root: Dict[str, Any]
+
 
 class InjectionMaterialsUpgrade:
     """Handle upgrades for InjectionMaterials models."""
@@ -433,8 +435,6 @@ class ProcedureUpgrade(BaseModelUpgrade):
             logging.info(f"Creating new procedure for subject {subj_id}")
             logging.info(f"Subject procedures: {loaded_subject_procedures}")
             logging.info(f"constructed Subject procedures: {constructed_subject_procedures.values()}")
-            if None in constructed_subject_procedures:
-                logging.error(f"None value in constructed_subject_procedures")
             logging.info(f"Specimen procedures: {loaded_spec_procedures}")
             new_procedure = Procedures(
                 subject_id=subj_id,

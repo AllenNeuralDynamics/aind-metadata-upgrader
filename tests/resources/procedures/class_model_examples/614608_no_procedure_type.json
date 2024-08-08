@@ -2,6 +2,7 @@
     "_id": "e0c9e0a3-7bca-4e7a-8627-cbd05c0dd6f5",
     "acquisition": null,
     "created": "2023-07-19T21:37:27Z",
+    "subject_id": "614608",
     "data_description": {
       "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/data_description.py",
       "schema_version": "0.7.2",
