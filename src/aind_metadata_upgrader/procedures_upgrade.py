@@ -294,10 +294,10 @@ def set_craniotomy_type(surgery: Surgery):  # find a better organizational place
 class ProcedureUpgrade(BaseModelUpgrade):
     """Handle upgrades for Procedure models."""
 
-    def __init__(self, old_procedures_model: Union[Procedures, dict], allow_validation_errors=False):
+    def __init__(self, old_procedures_dict: Union[dict, Procedures], allow_validation_errors=False):
         """Handle upgrades for Procedure models"""
 
-        super().__init__(old_procedures_model, model_class=Procedures, allow_validation_errors=allow_validation_errors)
+        super().__init__(old_procedures_dict, model_class=Procedures, allow_validation_errors=allow_validation_errors)
 
         self.subj_procedure_upgrader = SubjectProcedureModelsUpgrade(allow_validation_errors)
         logging.info(f"ALLOW VALIDATION ERRORS: {self.subj_procedure_upgrader.allow_validation_errors}")
@@ -337,15 +337,15 @@ class ProcedureUpgrade(BaseModelUpgrade):
     def upgrade_procedure(self) -> Optional[Procedures]:
         """Map legacy Procedure model to current version"""
 
-        if semver.Version.parse(self._get_or_default(self.old_model, "schema_version", {})) <= semver.Version.parse(
+        if semver.Version.parse(self._get_or_default(self.old_model_dict, "schema_version", {})) <= semver.Version.parse(
             "0.11.0"
         ):
-            subj_id = self.old_model.subject_id
+            subj_id = self.old_model_dict.get("subject_id")
 
             loaded_subject_procedures = {}
-            logging.info(f"Upgrading procedures {type(self.old_model.subject_procedures)}")
+            logging.info(f"Upgrading procedures {type(self.old_model_dict.get("subject_procedures"))}")
 
-            for subj_procedure in self.old_model.subject_procedures:  # type: dict
+            for subj_procedure in self.old_model_dict.get("subject_procedures"):  # type: dict
 
                 date = subj_procedure.get("start_date")
 
@@ -416,7 +416,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
             loaded_spec_procedures = []
             # NOTE: Current set lacks specimen procedures. Can be returned in the future.
-            # for spec_procedure in self.old_model.specimen_procedures:
+            # for spec_procedure in self.old_model_dict.specimen_procedures:
             #     date = spec_procedure.start_date
 
             #     logging.info(
@@ -438,10 +438,10 @@ class ProcedureUpgrade(BaseModelUpgrade):
                 subject_id=subj_id,
                 subject_procedures=constructed_subject_procedures.values(),
                 specimen_procedures=loaded_spec_procedures,
-                notes=self.old_model.notes,
+                notes=self.old_model_dict.get("notes"),
             )
 
             return new_procedure
 
         else:
-            return construct_new_model(self.old_model, Procedures, self.allow_validation_errors)
+            return construct_new_model(self.old_model_dict, Procedures, self.allow_validation_errors)
