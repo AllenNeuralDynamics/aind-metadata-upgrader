@@ -130,9 +130,6 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/enum"
         )
 
-        print("error: ", repr(e2.exception))
-        print("expec: ", expected_error_message2)
-
         self.assertEqual(expected_error_message2, repr(e2.exception))
 
         # Should work if data_level is missing in original json doc and
@@ -444,8 +441,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             expected_error_message,
             repr(e.exception),
         )
-        print("error2: ", repr(e.exception))
-        print("expec2: ", expected_error_message)
+
         # this no longer throws the expected exception
         self.assertEqual(DataLevel.RAW, d1.data_level)
         self.assertEqual(DataLevel.RAW, d2.data_level)
