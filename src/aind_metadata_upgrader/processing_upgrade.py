@@ -70,7 +70,7 @@ class ProcessingUpgrade(BaseModelUpgrade):
             if data_processes is not None:
                 # upgrade data processes
                 data_processes_new = [
-                    DataProcessUpgrade(DataProcess.model_construct(**data_process)).upgrade()
+                    DataProcessUpgrade(data_process).upgrade()
                     for data_process in data_processes
                 ]
                 processor_full_name = kwargs.get("processor_full_name")
@@ -84,12 +84,8 @@ class ProcessingUpgrade(BaseModelUpgrade):
             processing_pipeline = self._get_or_default(self.old_model_dict, "processing_pipeline", kwargs)
             # upgrade data processes
             data_processes_new = []
-            if isinstance(processing_pipeline, PipelineProcess):
-                data_processes_old = processing_pipeline.data_processes
-                processing_pipeline_dict = processing_pipeline.model_dump()
-            else:
-                data_processes_old = processing_pipeline["data_processes"]
-                processing_pipeline_dict = processing_pipeline
+            data_processes_old = processing_pipeline["data_processes"]
+            processing_pipeline_dict = processing_pipeline
             for data_process in data_processes_old:
                 data_processes_new.append(DataProcessUpgrade(data_process).upgrade())
             processing_pipeline_dict.pop("data_processes")
