@@ -7,6 +7,8 @@ import re
 import unittest
 from pathlib import Path
 from typing import List
+import traceback
+import sys
 
 from aind_data_schema.base import AindGeneric
 from aind_data_schema.core.processing import (
@@ -38,7 +40,7 @@ class TestProcessingUpgrade(unittest.TestCase):
         for file_path in processing_files:
             with open(PROCESSING_FILES_PATH / file_path) as f:
                 contents = json.load(f)
-            processings.append((file_path, Processing.model_construct(**contents)))
+            processings.append((file_path, contents))
         cls.processings = dict(processings)
 
     def test_upgrades_0_0_1(self):
@@ -135,6 +137,7 @@ class TestProcessingUpgrade(unittest.TestCase):
         with self.assertRaises(Exception) as e:
             upgrader.upgrade()
 
+
         expected_error_message = (
             "1 validation error for PipelineProcess\n"
             "processor_full_name\n"
@@ -224,9 +227,7 @@ class TestDataProcessUpgrade(unittest.TestCase):
             output_location="my-output-location",
             parameters={"param1": "value1"},
         )
-        old_data_process = DataProcess.model_construct(**old_data_process_dict)
-
-        upgrader = DataProcessUpgrade(old_data_process_model=old_data_process)
+        upgrader = DataProcessUpgrade(old_data_process_dict=old_data_process_dict)
         new_data_process = upgrader.upgrade()
 
         # the upgrader updates version to software_version
@@ -243,9 +244,9 @@ class TestDataProcessUpgrade(unittest.TestCase):
         processing_path = PROCESSING_FILES_PATH / "processing_other_no_notes.json"
         with open(processing_path, "r") as f:
             processing_dict = json.load(f)
-        data_process_no_notes = DataProcess.model_construct(**processing_dict["data_processes"][1])
+        data_process_no_notes_dict = processing_dict["data_processes"][1]
 
-        upgrader = DataProcessUpgrade(data_process_no_notes)
+        upgrader = DataProcessUpgrade(data_process_no_notes_dict)
         new_data_process = upgrader.upgrade()
 
         # the upgrader updates version to software_version
@@ -270,9 +271,8 @@ class TestDataProcessUpgrade(unittest.TestCase):
             output_location="my-output-location",
             parameters={"param1": "value1"},
         )
-        data_process = DataProcess(**data_process_dict)
 
-        upgrader = DataProcessUpgrade(old_data_process_model=data_process)
+        upgrader = DataProcessUpgrade(old_data_process_dict=data_process_dict)
         new_data_process = upgrader.upgrade()
 
         # the upgrader updates version to software_version

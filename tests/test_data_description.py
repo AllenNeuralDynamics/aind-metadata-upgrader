@@ -7,6 +7,7 @@ import re
 import unittest
 from pathlib import Path
 from typing import List
+import copy
 
 from aind_data_schema.core.data_description import (
     DataDescription,
@@ -47,13 +48,13 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         for file_path in data_description_files:
             with open(DATA_DESCRIPTION_FILES_PATH / file_path) as f:
                 contents = json.load(f)
-            data_descriptions.append((file_path, DataDescription.model_construct(**contents)))
+            data_descriptions.append((file_path,contents))
         cls.data_descriptions = dict(data_descriptions)
 
     def test_upgrades_0_3_0(self):
         """Tests data_description_0.3.0.json is mapped correctly."""
         data_description_0_3_0 = self.data_descriptions["data_description_0.3.0.json"]
-        upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_3_0)
+        upgrader = DataDescriptionUpgrade(old_data_description_dict=data_description_0_3_0)
 
         new_data_description = upgrader.upgrade()
         self.assertEqual(
@@ -79,7 +80,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
     def test_upgrades_0_3_0_wrong_field(self):
         """Tests data_description_0.3.0_wrong_field.json is mapped correctly."""
         data_description_0_3_0 = self.data_descriptions["data_description_0.3.0_wrong_field.json"]
-        upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_3_0)
+        upgrader = DataDescriptionUpgrade(old_data_description_dict=data_description_0_3_0)
 
         new_data_description = upgrader.upgrade()
         self.assertEqual(
@@ -113,7 +114,8 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         expected_error_message1 = (
             "1 validation error for DataDescription\n"
             "data_level\n"
-            "  Input should be 'derived', 'raw' or 'simulated' [type=enum, input_value='asfnewnjfq', input_type=str]"
+            "  Input should be 'derived', 'raw' or 'simulated' [type=enum, input_value='asfnewnjfq', input_type=str]\n"
+            "    For further information visit https://errors.pydantic.dev/2.8/v/enum"
         )
 
         self.assertEqual(expected_error_message1, repr(e1.exception))
@@ -124,17 +126,20 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         expected_error_message2 = (
             "1 validation error for DataDescription\n"
             "data_level\n"
-            "  Input should be a valid string [type=string_type, input_value=['raw'], input_type=list]\n"
-            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/string_type"
+            "  Input should be 'derived', 'raw' or 'simulated' [type=enum, input_value=['raw'], input_type=list]\n"
+            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/enum"
         )
+
+        print("error: ", repr(e2.exception))
+        print("expec: ", expected_error_message2)
 
         self.assertEqual(expected_error_message2, repr(e2.exception))
 
         # Should work if data_level is missing in original json doc and
         # user sets it explicitly
-        data_description_copy = data_description_0_3_0.model_copy(deep=True)
-        del data_description_copy.data_level
-        upgrader3 = DataDescriptionUpgrade(old_data_description_model=data_description_copy)
+        data_description_copy = copy.deepcopy(data_description_0_3_0)
+        del data_description_copy["data_level"]
+        upgrader3 = DataDescriptionUpgrade(old_data_description_dict=data_description_copy)
         new_data_description3 = upgrader3.upgrade(platform=Platform.ECEPHYS, data_level=DataLevel.DERIVED)
         self.assertEqual(DataLevel.DERIVED, new_data_description3.data_level)
 
@@ -142,7 +147,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         """Tests upgrade with missing creation time"""
 
         data_description_0_3_0_missing_creation_time = self.data_descriptions["data_description_0.3.0_no_creation.json"]
-        upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_3_0_missing_creation_time)
+        upgrader = DataDescriptionUpgrade(old_data_description_dict=data_description_0_3_0_missing_creation_time)
 
         new_data_description = upgrader.upgrade(platform=Platform.ECEPHYS, data_level=DataLevel.RAW)
 
@@ -151,7 +156,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
     def test_upgrades_0_4_0(self):
         """Tests data_description_0.4.0.json is mapped correctly."""
         data_description_0_4_0 = self.data_descriptions["data_description_0.4.0.json"]
-        upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_4_0)
+        upgrader = DataDescriptionUpgrade(old_data_description_dict=data_description_0_4_0)
 
         # Should work by setting platform explicitly
         new_data_description = upgrader.upgrade()
@@ -178,7 +183,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
     def test_upgrades_0_6_0(self):
         """Tests data_description_0.6.0.json is mapped correctly."""
         data_description_0_6_0 = self.data_descriptions["data_description_0.6.0.json"]
-        upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_6_0)
+        upgrader = DataDescriptionUpgrade(old_data_description_dict=data_description_0_6_0)
 
         # Should work by setting experiment type explicitly
         new_data_description = upgrader.upgrade()
@@ -205,7 +210,8 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
     def test_upgrades_0_6_2(self):
         """Tests data_description_0.6.2.json is mapped correctly."""
         data_description_0_6_2 = self.data_descriptions["data_description_0.6.2.json"]
-        upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_6_2)
+        data_description_0_6_2_copy = copy.deepcopy(data_description_0_6_2)
+        upgrader = DataDescriptionUpgrade(old_data_description_dict=data_description_0_6_2)
 
         # Should work by setting experiment type explicitly
         new_data_description = upgrader.upgrade()
@@ -250,9 +256,8 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         new_dd_0_6_2 = upgrader.upgrade(modality=[Modality.ECEPHYS])
         self.assertEqual([Modality.ECEPHYS], new_dd_0_6_2.modality)
         # Blank Modality
-        data_description_0_6_2_copy = data_description_0_6_2.model_copy(deep=True)
-        data_description_0_6_2_copy.modality = None
-        upgrader2 = DataDescriptionUpgrade(old_data_description_model=data_description_0_6_2_copy)
+        data_description_0_6_2_copy["modality"] = None
+        upgrader2 = DataDescriptionUpgrade(old_data_description_dict=data_description_0_6_2_copy)
         with self.assertRaises(Exception) as e:
             upgrader2.upgrade()
 
@@ -262,7 +267,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
     def test_upgrades_0_6_2_wrong_field(self):
         """Tests data_description_0.6.2_wrong_field.json is mapped correctly."""
         data_description_0_6_2_wrong_field = self.data_descriptions["data_description_0.6.2_wrong_field.json"]
-        upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_6_2_wrong_field)
+        upgrader = DataDescriptionUpgrade(old_data_description_dict=data_description_0_6_2_wrong_field)
 
         # Should complain about funder not being correct
         with self.assertRaises(Exception) as e:
@@ -318,7 +323,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             "data_description_0.6.2_empty_investigators.json"
         ]
         upgrader = DataDescriptionUpgrade(
-            old_data_description_model=data_description_0_6_2_missing_investigators, allow_validation_errors=True
+            old_data_description_dict=data_description_0_6_2_missing_investigators, allow_validation_errors=True
         )
 
         new_data_description = upgrader.upgrade()
@@ -328,7 +333,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
     def test_upgrades_0_10_0(self):
         """Tests data_description_0.10.0.json is mapped correctly."""
         data_description_0_10_0 = self.data_descriptions["data_description_0.10.0.json"]
-        upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_10_0)
+        upgrader = DataDescriptionUpgrade(old_data_description_dict=data_description_0_10_0)
 
         # Should work by setting experiment type explicitly
         new_data_description = upgrader.upgrade()
@@ -356,7 +361,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
     def test_upgrades_0_11_0_wrong_funding(self):
         """Tests data_description_0.11.0.json is mapped correctly."""
         data_description_0_11_0 = self.data_descriptions["data_description_0.11.0_wrong_funder.json"]
-        upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_11_0)
+        upgrader = DataDescriptionUpgrade(old_data_description_dict=data_description_0_11_0)
 
         new_data_description = upgrader.upgrade()
         # AIND should be set to AI by upgrader
@@ -385,7 +390,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         """Tests that strings which include a Z timezone are upgraded correctly"""
 
         data_description_0_13_8 = self.data_descriptions["data_description_0.13.8_parse_time.json"]
-        upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_13_8)
+        upgrader = DataDescriptionUpgrade(old_data_description_dict=data_description_0_13_8)
 
         new_data_description = upgrader.upgrade()
 
@@ -431,13 +436,16 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
                 funding_source=[Funding(funder=Organization.NINDS, grant_number="grant001")],
                 investigators=[PIDName(name="Jane Smith")],
             )
-        self.assertEqual(
-            "1 validation error for DataDescription\n"
+        expected_error_message = ("1 validation error for DataDescription\n"
             "data_level\n"
-            "  Input should be a valid string [type=string_type, input_value=[2, 3], input_type=list]\n"
-            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/string_type",
+            "  Input should be 'derived', 'raw' or 'simulated' [type=enum, input_value=[2, 3], input_type=list]\n"
+            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/enum")
+        self.assertEqual(
+            expected_error_message,
             repr(e.exception),
         )
+        print("error2: ", repr(e.exception))
+        print("expec2: ", expected_error_message)
         # this no longer throws the expected exception
         self.assertEqual(DataLevel.RAW, d1.data_level)
         self.assertEqual(DataLevel.RAW, d2.data_level)
@@ -445,7 +453,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
     # def test_edge_cases(self):
     #     """Tests a few edge cases"""
     #     data_description_0_6_2 = deepcopy(self.data_descriptions["data_description_0.6.2.json"])
-    #     upgrader = DataDescriptionUpgrade(old_data_description_model=data_description_0_6_2)
+    #     upgrader = DataDescriptionUpgrade(old_data_description_dict=data_description_0_6_2)
     #     new_dd_0_6_2 = upgrader.upgrade(modality=[Modality.ECEPHYS])
     #     self.assertEqual([Modality.ECEPHYS], new_dd_0_6_2.modality)
 
@@ -486,8 +494,7 @@ class TestModalityUpgrade(unittest.TestCase):
             "subject_id": "623711",
             "input_data_name": "SmartSPIM_623711_2022-10-27_16-48-54",
         }
-        dd = DataDescription.model_construct(**dd_dict)
-        upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
+        upgrader = DataDescriptionUpgrade(old_data_description_dict=dd_dict)
         upgrader.upgrade()
 
 
@@ -519,8 +526,7 @@ class TestPlatformUpgrade(unittest.TestCase):
             "input_data_name": "SmartSPIM_623711_2022-10-27_16-48-54",
         }
 
-        dd = DataDescription.model_construct(**dd_dict)
-        upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
+        upgrader = DataDescriptionUpgrade(old_data_description_dict=dd_dict)
         upgrader.upgrade()
 
     def test_platform_lookup(self):
@@ -546,8 +552,7 @@ class TestPlatformUpgrade(unittest.TestCase):
             "subject_id": "623711",
             "input_data_name": "SmartSPIM_623711_2022-10-27_16-48-54",
         }
-        dd = DataDescription.model_construct(**dd_dict)
-        upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
+        upgrader = DataDescriptionUpgrade(old_data_description_dict=dd_dict)
         upgrader.upgrade()
 
 
@@ -622,20 +627,19 @@ class TestFundingUpgrade(unittest.TestCase):
             "subject_id": "623711",
             "input_data_name": "SmartSPIM_623711_2022-10-27_16-48-54",
         }
-        dd = DataDescription.model_construct(**dd_dict)
-        upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
+        upgrader = DataDescriptionUpgrade(old_data_description_dict=dd_dict)
         upgrader.upgrade()
 
-        self.assertEqual(dd.funding_source, [Funding(funder=Organization.AI).model_dump()])
+        self.assertEqual(dd_dict["funding_source"], [Funding(funder=Organization.AI).model_dump()])
 
-        dd.funding_source = [{"funder": Organization.AIND, "grant_number": None, "fundee": None}]
-        upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
+        dd_dict["funding_source"] = [{"funder": Organization.AIND, "grant_number": None, "fundee": None}]
+        upgrader = DataDescriptionUpgrade(old_data_description_dict=dd_dict)
         dd2 = upgrader.upgrade()
 
         self.assertEqual(dd2.funding_source, [Funding(funder=Organization.AI)])
 
-        dd.funding_source = ["Allen Institute for Neural Dynamics"]
-        upgrader = DataDescriptionUpgrade(old_data_description_model=dd)
+        dd_dict["funding_source"] = ["Allen Institute for Neural Dynamics"]
+        upgrader = DataDescriptionUpgrade(old_data_description_dict=dd_dict)
         dd3 = upgrader.upgrade()
 
         self.assertEqual(dd3.funding_source, [Funding(funder=Organization.AI)])
