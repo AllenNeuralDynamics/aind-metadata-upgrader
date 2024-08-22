@@ -10,7 +10,7 @@ from pydantic.fields import PydanticUndefined
 class BaseModelUpgrade(ABC):
     """Base class for handling upgrades for models"""
 
-    def __init__(self, old_model: Union[AindModel, dict], model_class: Type[AindModel], allow_validation_errors=False):
+    def __init__(self, old_model: Union[dict, AindModel], model_class: Type[AindModel], allow_validation_errors=False):
         """
         Handle mapping of old AindModel model versions into current models
 
@@ -21,13 +21,14 @@ class BaseModelUpgrade(ABC):
         model_class : Type[AindModel]
             The class of the model
         """
-        if isinstance(old_model, dict):
-            old_model = model_class.model_construct(**old_model)
-        self.old_model = old_model
+        if type(old_model) == model_class:
+            self.old_model_dict = old_model.model_dump()
+        else:
+            self.old_model_dict = old_model
         self.model_class = model_class
         self.allow_validation_errors = allow_validation_errors
 
-    def _get_or_default(self, model: AindModel, field_name: str, kwargs: dict) -> Any:
+    def _get_or_default(self, model: dict, field_name: str, kwargs: dict) -> Any:
         """
         If field is not explicitly set, will attempt to extract from a model.
         If field is not found in old model, will attempt to set using the default.
@@ -48,8 +49,9 @@ class BaseModelUpgrade(ABC):
         """
         if kwargs.get(field_name) is not None:
             return kwargs.get(field_name)
-        elif hasattr(model, field_name) and getattr(model, field_name) is not None:
-            return getattr(model, field_name)
+        
+        elif type(model) == dict and field_name in model.keys() and model.get(field_name) is not None:
+            return model.get(field_name)
         else:
             try:
                 attr_default = getattr(self.model_class.model_fields.get(field_name), "default")
