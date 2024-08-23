@@ -1,15 +1,17 @@
 """Module to contain code to upgrade old processing models"""
 
+from typing import Union
+
 from aind_data_schema.base import AindModel
 from aind_data_schema.core.processing import (
     DataProcess,
     PipelineProcess,
     Processing,
 )
-from typing import Union
-from aind_metadata_upgrader.utils import construct_new_model
 
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
+from aind_metadata_upgrader.utils import construct_new_model
+
 
 class DataProcessUpgrade(BaseModelUpgrade):
     """Handle upgrades for DataProcess class"""
@@ -69,10 +71,7 @@ class ProcessingUpgrade(BaseModelUpgrade):
 
             if data_processes is not None:
                 # upgrade data processes
-                data_processes_new = [
-                    DataProcessUpgrade(data_process).upgrade()
-                    for data_process in data_processes
-                ]
+                data_processes_new = [DataProcessUpgrade(data_process).upgrade() for data_process in data_processes]
                 processor_full_name = kwargs.get("processor_full_name")
                 processing_pipeline = PipelineProcess(
                     pipeline_version=pipeline_version,

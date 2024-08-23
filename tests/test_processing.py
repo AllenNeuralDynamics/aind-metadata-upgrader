@@ -4,13 +4,13 @@ import datetime
 import json
 import os
 import re
+import sys
+import traceback
 import unittest
 from pathlib import Path
 from typing import List
-import traceback
-import sys
 
-from aind_data_schema.base import AindGeneric
+from aind_data_schema.base import AindGeneric, AwareDatetimeWithDefault
 from aind_data_schema.core.processing import (
     DataProcess,
     PipelineProcess,
@@ -22,8 +22,6 @@ from aind_metadata_upgrader.processing_upgrade import (
     DataProcessUpgrade,
     ProcessingUpgrade,
 )
-
-from aind_data_schema.base import AwareDatetimeWithDefault
 
 PYD_VERSION = re.match(r"(\d+.\d+).\d+", pyd_version).group(1)
 
@@ -140,7 +138,6 @@ class TestProcessingUpgrade(unittest.TestCase):
         with self.assertRaises(Exception) as e:
             upgrader.upgrade()
 
-
         expected_error_message = (
             "1 validation error for PipelineProcess\n"
             "processor_full_name\n"
@@ -221,7 +218,7 @@ class TestDataProcessUpgrade(unittest.TestCase):
         """Tests data process from old model is upgraded correctly."""
         start_date_time = datetime.datetime.fromisoformat("2023-02-22T18:16:35.919299+00:00")
         end_date_time = datetime.datetime.fromisoformat("2023-02-22T18:41:06.929027+00:00")
-    
+
         old_data_process_dict = dict(
             name="Ephys preprocessing",
             version="0.1.5",

@@ -1,5 +1,6 @@
 """Tests methods for upgrading DataDescriptions"""
 
+import copy
 import datetime
 import json
 import os
@@ -7,7 +8,6 @@ import re
 import unittest
 from pathlib import Path
 from typing import List
-import copy
 
 from aind_data_schema.core.data_description import (
     DataDescription,
@@ -48,7 +48,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         for file_path in data_description_files:
             with open(DATA_DESCRIPTION_FILES_PATH / file_path) as f:
                 contents = json.load(f)
-            data_descriptions.append((file_path,contents))
+            data_descriptions.append((file_path, contents))
         cls.data_descriptions = dict(data_descriptions)
 
     def test_upgrades_0_3_0(self):
@@ -433,10 +433,12 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
                 funding_source=[Funding(funder=Organization.NINDS, grant_number="grant001")],
                 investigators=[PIDName(name="Jane Smith")],
             )
-        expected_error_message = ("1 validation error for DataDescription\n"
+        expected_error_message = (
+            "1 validation error for DataDescription\n"
             "data_level\n"
             "  Input should be 'derived', 'raw' or 'simulated' [type=enum, input_value=[2, 3], input_type=list]\n"
-            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/enum")
+            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/enum"
+        )
         self.assertEqual(
             expected_error_message,
             repr(e.exception),
