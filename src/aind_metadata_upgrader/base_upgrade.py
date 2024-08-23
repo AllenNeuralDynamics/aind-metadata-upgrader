@@ -21,7 +21,7 @@ class BaseModelUpgrade(ABC):
         model_class : Type[AindModel]
             The class of the model
         """
-        if type(old_model) == model_class:
+        if isinstance(old_model, model_class):
             self.old_model_dict = old_model.model_dump()
         else:
             self.old_model_dict = old_model
@@ -49,8 +49,8 @@ class BaseModelUpgrade(ABC):
         """
         if kwargs.get(field_name) is not None:
             return kwargs.get(field_name)
-        
-        elif type(model) == dict and field_name in model.keys() and model.get(field_name) is not None:
+
+        elif isinstance(model, dict) and field_name in model.keys() and model.get(field_name) is not None:
             return model.get(field_name)
         else:
             try:

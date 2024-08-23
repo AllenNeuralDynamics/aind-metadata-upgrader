@@ -337,13 +337,12 @@ class ProcedureUpgrade(BaseModelUpgrade):
     def upgrade_procedure(self) -> Optional[Procedures]:
         """Map legacy Procedure model to current version"""
 
-        if semver.Version.parse(self._get_or_default(self.old_model_dict, "schema_version", {})) <= semver.Version.parse(
-            "0.11.0"
-        ):
+        if semver.Version.parse(
+            self._get_or_default(self.old_model_dict, "schema_version", {})
+        ) <= semver.Version.parse("0.11.0"):
             subj_id = self.old_model_dict.get("subject_id")
 
             loaded_subject_procedures = {}
-            logging.info(f"Upgrading procedures {type(self.old_model_dict.get("subject_procedures"))}")
 
             for subj_procedure in self.old_model_dict.get("subject_procedures"):  # type: dict
 

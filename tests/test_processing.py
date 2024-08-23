@@ -4,13 +4,11 @@ import datetime
 import json
 import os
 import re
-import sys
-import traceback
 import unittest
 from pathlib import Path
 from typing import List
 
-from aind_data_schema.base import AindGeneric, AwareDatetimeWithDefault
+from aind_data_schema.base import AindGeneric
 from aind_data_schema.core.processing import (
     DataProcess,
     PipelineProcess,
