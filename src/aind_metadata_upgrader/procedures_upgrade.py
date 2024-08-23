@@ -2,7 +2,7 @@
 
 import logging
 from decimal import Decimal
-from typing import Optional, Union
+from typing import Any, Dict, Optional, Union
 
 import semver
 from aind_data_schema.core.procedures import (  # SpecimenProcedure,; TarsVirusIdentifiers,
@@ -20,9 +20,16 @@ from aind_data_schema.core.procedures import (  # SpecimenProcedure,; TarsVirusI
     Surgery,
     ViralMaterial,
 )
+from pydantic import RootModel
 
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 from aind_metadata_upgrader.utils import construct_new_model, get_or_default
+
+
+class DynamicModel(RootModel):
+    """Class to handle models that have been input with invalid schema"""
+
+    root: Dict[str, Any]
 
 
 class InjectionMaterialsUpgrade:
@@ -91,7 +98,6 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
         """Handle upgrades for SubjectProcedure models"""
 
         self.allow_validation_errors = allow_validation_errors
-        logging.info(f"ALLOW VALIDATION ERRORS (SUBJ PROCEDURES): {self.allow_validation_errors}")
         self.injection_upgrader = InjectionMaterialsUpgrade(allow_validation_errors)
 
     def upgrade_craniotomy(self, old_subj_procedure: dict):
@@ -187,7 +193,7 @@ class SubjectProcedureModelsUpgrade(BaseModelUpgrade):
 
                 fiber_implant_model = fiber_implant_model.probes.append(self.construct_ophys_probe(probe))
                 logging.info(f"Added probe {probe}")
-                logging.info(f"to fiber implant model {fiber_implant_model}")
+                logging.info(f"updated fiber implant model {fiber_implant_model}")
         else:
             fiber_implant_model = fiber_implant_model.probes.append(
                 self.construct_ophys_probe(old_subj_procedure["probes"])
@@ -332,7 +338,7 @@ class ProcedureUpgrade(BaseModelUpgrade):
             return self.caller(self.upgrade_funcs[procedure_type], old_subj_procedure)
         else:
             logging.error(f"Procedure type {procedure_type} not found in list of procedure types")
-            return None
+            return DynamicModel(root=old_subj_procedure)
 
     def upgrade_procedure(self) -> Optional[Procedures]:
         """Map legacy Procedure model to current version"""
@@ -358,10 +364,6 @@ class ProcedureUpgrade(BaseModelUpgrade):
                     logging.info(f"Creating new surgery for subject {subj_id} on date {date}")
 
                     subj_procedures = [self.upgrade_subject_procedure(old_subj_procedure=subj_procedure)]
-
-                    if None in subj_procedures:
-                        subj_procedures.remove(None)
-                    # subj_procedures = [x for x in subj_procedures if x is not None]
 
                     new_surgery_dict = {
                         "start_date": date,
