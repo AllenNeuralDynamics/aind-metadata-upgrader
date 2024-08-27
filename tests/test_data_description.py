@@ -115,7 +115,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             "1 validation error for DataDescription\n"
             "data_level\n"
             "  Input should be 'derived', 'raw' or 'simulated' [type=enum, input_value='asfnewnjfq', input_type=str]\n"
-            "    For further information visit https://errors.pydantic.dev/2.8/v/enum"
+            f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/enum"
         )
 
         self.assertEqual(expected_error_message1, repr(e1.exception))
