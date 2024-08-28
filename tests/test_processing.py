@@ -38,7 +38,7 @@ class TestProcessingUpgrade(unittest.TestCase):
         for file_path in processing_files:
             with open(PROCESSING_FILES_PATH / file_path) as f:
                 contents = json.load(f)
-            processings.append((file_path, Processing.model_construct(**contents)))
+            processings.append((file_path, contents))
         cls.processings = dict(processings)
 
     def test_upgrades_0_0_1(self):
@@ -55,6 +55,7 @@ class TestProcessingUpgrade(unittest.TestCase):
             "  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]\n"
             f"    For further information visit https://errors.pydantic.dev/{PYD_VERSION}/v/string_type"
         )
+
         self.assertEqual(expected_error_message, repr(e.exception))
 
         # Should work by setting platform explicitly
@@ -213,39 +214,39 @@ class TestDataProcessUpgrade(unittest.TestCase):
 
     def test_upgrade_from_old_model(self):
         """Tests data process from old model is upgraded correctly."""
-        datetime_now = datetime.datetime.now()
+        start_date_time = datetime.datetime.fromisoformat("2023-02-22T18:16:35.919299+00:00")
+        end_date_time = datetime.datetime.fromisoformat("2023-02-22T18:41:06.929027+00:00")
+
         old_data_process_dict = dict(
             name="Ephys preprocessing",
             version="0.1.5",
             code_url="my-code-repo",
-            start_date_time=datetime_now,
-            end_date_time=datetime_now,
+            start_date_time=start_date_time,
+            end_date_time=end_date_time,
             input_location="my-input-location",
             output_location="my-output-location",
             parameters={"param1": "value1"},
         )
-        old_data_process = DataProcess.model_construct(**old_data_process_dict)
-
-        upgrader = DataProcessUpgrade(old_data_process_model=old_data_process)
+        upgrader = DataProcessUpgrade(old_data_process_dict=old_data_process_dict)
         new_data_process = upgrader.upgrade()
 
         # the upgrader updates version to software_version
         self.assertEqual(new_data_process.software_version, "0.1.5")
         self.assertEqual(new_data_process.code_url, "my-code-repo")
-        self.assertEqual(new_data_process.start_date_time, datetime_now)
-        self.assertEqual(new_data_process.end_date_time, datetime_now)
+        self.assertEqual(new_data_process.start_date_time, start_date_time)
+        self.assertEqual(new_data_process.end_date_time, end_date_time)
         self.assertEqual(new_data_process.input_location, "my-input-location")
         self.assertEqual(new_data_process.output_location, "my-output-location")
-        self.assertEqual(new_data_process.parameters, {"param1": "value1"})
+        self.assertEqual(new_data_process.parameters, AindGeneric.model_validate({"param1": "value1"}))
 
     def test_upgrade_from_other_with_no_notes(self):
         """Tests "Other" data process with not "notes" is upgraded correctly."""
         processing_path = PROCESSING_FILES_PATH / "processing_other_no_notes.json"
         with open(processing_path, "r") as f:
             processing_dict = json.load(f)
-        data_process_no_notes = DataProcess.model_construct(**processing_dict["data_processes"][1])
+        data_process_no_notes_dict = processing_dict["data_processes"][1]
 
-        upgrader = DataProcessUpgrade(data_process_no_notes)
+        upgrader = DataProcessUpgrade(data_process_no_notes_dict)
         new_data_process = upgrader.upgrade()
 
         # the upgrader updates version to software_version
@@ -270,9 +271,8 @@ class TestDataProcessUpgrade(unittest.TestCase):
             output_location="my-output-location",
             parameters={"param1": "value1"},
         )
-        data_process = DataProcess(**data_process_dict)
 
-        upgrader = DataProcessUpgrade(old_data_process_model=data_process)
+        upgrader = DataProcessUpgrade(old_data_process_dict=data_process_dict)
         new_data_process = upgrader.upgrade()
 
         # the upgrader updates version to software_version

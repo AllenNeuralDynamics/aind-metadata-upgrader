@@ -61,7 +61,7 @@ class ModalityUpgrade:
             return Modality.from_abbreviation(old_modality)
         elif type(old_modality) is dict and old_modality.get("abbreviation") is not None:
             return Modality.from_abbreviation(old_modality["abbreviation"])
-        elif type(old_modality) in Modality._ALL:
+        elif type(old_modality) in Modality.ALL:
             return old_modality
         else:
             return None
@@ -109,7 +109,7 @@ class FundingUpgrade:
         Organization.AIBS: Organization.AI,
         "NINMH": Organization.NIMH,
         "NIMH": Organization.NIMH,
-        "PGA": Organization.AI
+        "PGA": Organization.AI,
     }
 
     @classmethod
@@ -180,24 +180,24 @@ class InvestigatorsUpgrade:
 class DataDescriptionUpgrade(BaseModelUpgrade):
     """Handle upgrades for DataDescription class"""
 
-    def __init__(self, old_data_description_model: DataDescription, allow_validation_errors=False):
+    def __init__(self, old_data_description_dict: Union[dict, AindModel], allow_validation_errors=False):
         """
         Handle mapping of old DataDescription models into current models
         Parameters
         ----------
-        old_data_description_model : DataDescription
+        old_data_description_dict : DataDescription
         """
 
         MonkeyPatch.patch_fromisoformat()
 
         super().__init__(
-            old_data_description_model, model_class=DataDescription, allow_validation_errors=allow_validation_errors
+            old_data_description_dict, model_class=DataDescription, allow_validation_errors=allow_validation_errors
         )
 
     def get_modality(self, **kwargs):
         """Get modality from old model"""
 
-        old_modality: Any = self.old_model.modality
+        old_modality: Any = self.old_model_dict.get("modality")
         if kwargs.get("modality") is not None:
             modality = kwargs["modality"]
         elif type(old_modality) is str or type(old_modality) is dict:
@@ -212,9 +212,9 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
     def get_creation_time(self, **kwargs):
         """Get creation time from old model"""
 
-        creation_date = self._get_or_default(self.old_model, "creation_date", kwargs)
-        creation_time = self._get_or_default(self.old_model, "creation_time", kwargs)
-        old_name = self._get_or_default(self.old_model, "name", kwargs)
+        creation_date = self._get_or_default(self.old_model_dict, "creation_date", kwargs)
+        creation_time = self._get_or_default(self.old_model_dict, "creation_time", kwargs)
+        old_name = self._get_or_default(self.old_model_dict, "name", kwargs)
         if creation_time:
             if creation_date:
                 creation_time = datetime.fromisoformat(f"{creation_date}T{creation_time}")
@@ -227,58 +227,58 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
     def upgrade(self, **kwargs) -> AindModel:
         """Upgrades the old model into the current version"""
 
-        version = semver.Version.parse(self._get_or_default(self.old_model, "schema_version", kwargs))
+        version = semver.Version.parse(self._get_or_default(self.old_model_dict, "schema_version", kwargs))
 
         institution = InstitutionUpgrade.upgrade_institution(
-            self._get_or_default(self.old_model, "institution", kwargs)
+            self._get_or_default(self.old_model_dict, "institution", kwargs)
         )
 
-        funding_source = self._get_or_default(self.old_model, "funding_source", kwargs)
+        funding_source = self._get_or_default(self.old_model_dict, "funding_source", kwargs)
 
         funding_source = FundingUpgrade.upgrade_funding_source(funding_source=funding_source)
 
         modality = self.get_modality(**kwargs)
 
-        data_level = self._get_or_default(self.old_model, "data_level", kwargs)
+        data_level = self._get_or_default(self.old_model_dict, "data_level", kwargs)
         if data_level in ["raw level", "raw data"]:
             data_level = DataLevel.RAW
         if data_level in ["derived level", "derived data"]:
             data_level = DataLevel.DERIVED
 
-        experiment_type = self._get_or_default(self.old_model, "experiment_type", kwargs)
+        experiment_type = self._get_or_default(self.old_model_dict, "experiment_type", kwargs)
         platform = None
         if experiment_type is not None:
-            for p in Platform._ALL:
+            for p in Platform.ALL:
                 if p().abbreviation == experiment_type:
                     platform = p()
                     break
 
         if platform is None:
-            platform = self._get_or_default(self.old_model, "platform", kwargs)
+            platform = self._get_or_default(self.old_model_dict, "platform", kwargs)
             if platform is None and version <= "0.8.0":
                 if type(modality) is list:
                     platform = PlatformUpgrade.from_modality(modality[0])
 
-        investigators = self._get_or_default(self.old_model, "investigators", kwargs)
+        investigators = self._get_or_default(self.old_model_dict, "investigators", kwargs)
         investigators = InvestigatorsUpgrade.upgrade_investigators(investigators)
 
         creation_time = self.get_creation_time(**kwargs)
 
         data_desc_dict = {
             "creation_time": creation_time,
-            "name": self._get_or_default(self.old_model, "name", kwargs),
+            "name": self._get_or_default(self.old_model_dict, "name", kwargs),
             "institution": institution,
             "funding_source": funding_source,
             "data_level": data_level,
-            "group": self._get_or_default(self.old_model, "group", kwargs),
+            "group": self._get_or_default(self.old_model_dict, "group", kwargs),
             "investigators": investigators,
-            "project_name": self._get_or_default(self.old_model, "project_name", kwargs),
-            "restrictions": self._get_or_default(self.old_model, "restrictions", kwargs),
+            "project_name": self._get_or_default(self.old_model_dict, "project_name", kwargs),
+            "restrictions": self._get_or_default(self.old_model_dict, "restrictions", kwargs),
             "modality": modality,
             "platform": platform,
-            "subject_id": self._get_or_default(self.old_model, "subject_id", kwargs),
-            "related_data": self._get_or_default(self.old_model, "related_data", kwargs),
-            "data_summary": self._get_or_default(self.old_model, "data_summary", kwargs),
+            "subject_id": self._get_or_default(self.old_model_dict, "subject_id", kwargs),
+            "related_data": self._get_or_default(self.old_model_dict, "related_data", kwargs),
+            "data_summary": self._get_or_default(self.old_model_dict, "data_summary", kwargs),
         }
 
         return construct_new_model(data_desc_dict, DataDescription, self.allow_validation_errors)
