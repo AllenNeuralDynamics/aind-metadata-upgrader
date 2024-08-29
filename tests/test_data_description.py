@@ -205,6 +205,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         self.assertIsNone(new_data_description.data_summary)
 
     def test_upgrades_0_6_0_outdated_modality(self):
+        """Tests data_description_0.6.0_outdated_modality.json is mapped correctly."""
         data_description_0_6_0 = self.data_descriptions["data_description_0_6_0_outdated_modality.json"]
         upgrader = DataDescriptionUpgrade(old_data_description_dict=data_description_0_6_0)
         new_data_description = upgrader.upgrade()
