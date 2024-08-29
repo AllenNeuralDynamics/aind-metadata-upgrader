@@ -42,6 +42,11 @@ class ModalityUpgrade:
     }
 
     @classmethod
+    def map_modality(cls, old_modality_string) -> Optional[Modality]:
+        """Map old modality string to new modality model"""
+        return cls.legacy_name_mapping.get(old_modality_string.lower())
+
+    @classmethod
     def upgrade_modality(cls, old_modality: Union[str, dict, Modality, None]) -> Optional[Modality]:
         """
         Converts old modality models into the current model.
@@ -57,11 +62,14 @@ class ModalityUpgrade:
 
         """
         if type(old_modality) is str and cls.legacy_name_mapping.get(old_modality.lower()) is not None:
-            return cls.legacy_name_mapping[old_modality.lower()]
+            return cls.map_modality(old_modality)
         elif type(old_modality) is str:
             return Modality.from_abbreviation(old_modality)
         elif type(old_modality) is dict and old_modality.get("abbreviation") is not None:
-            return Modality.from_abbreviation(old_modality["abbreviation"])
+            if old_modality["abbreviation"].lower() in cls.legacy_name_mapping.keys():
+                return cls.map_modality(old_modality["abbreviation"])
+            else:
+                return Modality.from_abbreviation(old_modality["abbreviation"])
         elif type(old_modality) in Modality.ALL:
             return old_modality
         else:
