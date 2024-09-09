@@ -1,0 +1,900 @@
+{
+    "_id": "e9bbcbb3-e531-48b7-a9e9-32073b36721e",
+    "acquisition": null,
+    "created": "2024-06-01T00:05:45.073274",
+    "data_description": {
+      "creation_time": "2023-03-02T10:07:49",
+      "data_level": "raw",
+      "data_summary": null,
+      "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+      "funding_source": [
+        {
+          "fundee": null,
+          "funder": {
+            "abbreviation": "AI",
+            "name": "Allen Institute",
+            "registry": {
+              "abbreviation": "ROR",
+              "name": "Research Organization Registry"
+            },
+            "registry_identifier": "03cpe7c52"
+          },
+          "grant_number": null
+        }
+      ],
+      "group": null,
+      "institution": {
+        "abbreviation": "AIND",
+        "name": "Allen Institute for Neural Dynamics",
+        "registry": {
+          "abbreviation": "ROR",
+          "name": "Research Organization Registry"
+        },
+        "registry_identifier": "04szwah67"
+      },
+      "investigators": [],
+      "label": null,
+      "license": "CC-BY-4.0",
+      "modality": [
+        {
+          "abbreviation": "fib",
+          "name": "Fiber photometry"
+        },
+        {
+          "abbreviation": "behavior-videos",
+          "name": "Behavior videos"
+        }
+      ],
+      "name": "FIP_651474_2023-03-02_10-07-49",
+      "platform": {
+        "abbreviation": "FIP",
+        "name": "Frame-projected independent-fiber photometry platform"
+      },
+      "project_name": null,
+      "related_data": [],
+      "restrictions": null,
+      "schema_version": "0.13.0",
+      "subject_id": "651474"
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": [],
+    "instrument": null,
+    "last_modified": "2024-06-01T00:05:45.073277",
+    "location": "s3://aind-private-data-prod-o5171v/FIP_651474_2023-03-02_10-07-49",
+    "metadata_status": "Unknown",
+    "name": "FIP_651474_2023-03-02_10-07-49",
+    "procedures": {
+      "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+      "notes": null,
+      "schema_version": "0.11.5",
+      "specimen_procedures": [],
+      "subject_id": "651474",
+      "subject_procedures": [
+        {
+          "anaesthesia": null,
+          "animal_weight_post": null,
+          "animal_weight_prior": null,
+          "experimenter_full_name": "30361",
+          "iacuc_protocol": "2115",
+          "notes": null,
+          "procedure_type": "Surgery",
+          "procedures": [
+            {
+              "output_specimen_ids": [
+                "651474"
+              ],
+              "procedure_type": "Perfusion"
+            }
+          ],
+          "start_date": "2023-03-17",
+          "weight_unit": "gram",
+          "workstation_id": null
+        },
+        {
+          "anaesthesia": {
+            "duration_unit": "minute",
+            "level": "1.5",
+            "type": "isoflurane"
+          },
+          "animal_weight_post": "27.4",
+          "animal_weight_prior": "25.6",
+          "experimenter_full_name": "NSB-5313",
+          "iacuc_protocol": "2115",
+          "notes": null,
+          "procedure_type": "Surgery",
+          "procedures": [
+            {
+              "headframe_material": null,
+              "headframe_part_number": null,
+              "headframe_type": "AI Straight Headbar",
+              "procedure_type": "Headframe",
+              "well_part_number": null,
+              "well_type": null
+            },
+            {
+              "probes": [
+                {
+                  "angle": "0",
+                  "angle_unit": "degrees",
+                  "bregma_to_lambda_distance": "4.163",
+                  "bregma_to_lambda_unit": "millimeter",
+                  "notes": null,
+                  "stereotactic_coordinate_ap": "-1.8",
+                  "stereotactic_coordinate_dv": "1.2",
+                  "stereotactic_coordinate_ml": "-1.6",
+                  "stereotactic_coordinate_reference": null,
+                  "stereotactic_coordinate_unit": "millimeter",
+                  "targeted_structure": null
+                },
+                {
+                  "angle": "0",
+                  "angle_unit": "degrees",
+                  "bregma_to_lambda_distance": "4.163",
+                  "bregma_to_lambda_unit": "millimeter",
+                  "notes": null,
+                  "stereotactic_coordinate_ap": "-1.8",
+                  "stereotactic_coordinate_dv": "1.2",
+                  "stereotactic_coordinate_ml": "1.6",
+                  "stereotactic_coordinate_reference": null,
+                  "stereotactic_coordinate_unit": "millimeter",
+                  "targeted_structure": null
+                }
+              ],
+              "procedure_type": "Fiber implant"
+            }
+          ],
+          "start_date": "2022-11-28",
+          "weight_unit": "gram",
+          "workstation_id": "SWS 4"
+        },
+        {
+          "anaesthesia": {
+            "duration": "120",
+            "duration_unit": "minute",
+            "level": "1.5",
+            "type": "isoflurane"
+          },
+          "animal_weight_post": "27.4",
+          "animal_weight_prior": "25.6",
+          "experimenter_full_name": "NSB-5313",
+          "iacuc_protocol": "2115",
+          "notes": null,
+          "procedure_type": "Surgery",
+          "procedures": [
+            {
+              "bregma_to_lambda_distance": "4.163",
+              "bregma_to_lambda_unit": "millimeter",
+              "injection_angle": null,
+              "injection_angle_unit": "degrees",
+              "injection_coordinate_ap": "-1.8",
+              "injection_coordinate_depth": [
+                "1.4"
+              ],
+              "injection_coordinate_ml": "-1.6",
+              "injection_coordinate_reference": null,
+              "injection_coordinate_unit": "millimeter",
+              "injection_duration": "7",
+              "injection_duration_unit": "minute",
+              "injection_hemisphere": "Left",
+              "injection_materials": [],
+              "injection_volume": [],
+              "injection_volume_unit": "nanoliter",
+              "instrument_id": "NJ#4",
+              "procedure_type": "Nanoject injection",
+              "recovery_time": "15",
+              "recovery_time_unit": "minute",
+              "targeted_structure": null
+            }
+          ],
+          "start_date": "2022-11-28",
+          "weight_unit": "gram",
+          "workstation_id": "SWS 4"
+        },
+        {
+          "anaesthesia": {
+            "duration": null,
+            "duration_unit": "minute",
+            "level": "1.5",
+            "type": "isoflurane"
+          },
+          "animal_weight_post": null,
+          "animal_weight_prior": null,
+          "experimenter_full_name": "NSB-5313",
+          "iacuc_protocol": "2115",
+          "notes": null,
+          "procedure_type": "Surgery",
+          "procedures": [
+            {
+              "bregma_to_lambda_distance": "4.163",
+              "bregma_to_lambda_unit": "millimeter",
+              "injection_angle": null,
+              "injection_angle_unit": "degrees",
+              "injection_coordinate_ap": "-1.8",
+              "injection_coordinate_depth": [
+                "1.4"
+              ],
+              "injection_coordinate_ml": "1.6",
+              "injection_coordinate_reference": null,
+              "injection_coordinate_unit": "millimeter",
+              "injection_duration": "7",
+              "injection_duration_unit": "minute",
+              "injection_hemisphere": "Right",
+              "injection_materials": [],
+              "injection_volume": [],
+              "injection_volume_unit": "nanoliter",
+              "instrument_id": null,
+              "procedure_type": "Nanoject injection",
+              "recovery_time": null,
+              "recovery_time_unit": "minute",
+              "targeted_structure": null
+            }
+          ],
+          "start_date": null,
+          "weight_unit": "gram",
+          "workstation_id": null
+        }
+      ]
+    },
+    "processing": {
+      "analyses": [],
+      "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+      "notes": null,
+      "processing_pipeline": {
+        "data_processes": [],
+        "note": null,
+        "pipeline_url": null,
+        "pipeline_version": null,
+        "processor_full_name": "service"
+      },
+      "schema_version": "0.4.3"
+    },
+    "rig": {
+      "additional_devices": null,
+      "cameras": [
+        {
+          "camera": {
+            "chroma": "Color",
+            "computer_name": "W10DTMJ0HMF1Q",
+            "data_interface": "USB",
+            "driver": null,
+            "driver_version": null,
+            "format_unit": null,
+            "frame_rate_unit": "Hertz",
+            "manufacturer": {
+              "abbreviation": null,
+              "name": "Ailipu Technology Co",
+              "registry": null,
+              "registry_identifier": null
+            },
+            "max_frame_rate": 120,
+            "model": "ELP-USBFHD05MT-KL170IR",
+            "name": "ELP Camera USB 1080P Infrared Webcam 1",
+            "notes": "The light intensity sensor was removed; IR illumination is constantly on",
+            "pixel_height": 480,
+            "pixel_width": 640,
+            "recording_software": {
+              "name": "Bonsai",
+              "parameters": null,
+              "version": "2.5"
+            },
+            "sensor_format": null,
+            "serial_number": "TBD",
+            "size_unit": "pixel"
+          },
+          "camera_assembly_name": "BehaviorVideography_FaceSide",
+          "camera_target": "Face side",
+          "filter": null,
+          "lens": {
+            "focal_length": null,
+            "focal_length_unit": "millimeter",
+            "lens_size_unit": "inch",
+            "manufacturer": {
+              "abbreviation": null,
+              "name": "Other",
+              "registry": null,
+              "registry_identifier": null
+            },
+            "max_aperture": "f/1.4",
+            "model": "XC0922LENS",
+            "name": "Xenocam 1",
+            "notes": "Focal Length 9-22mm 1/3\" IR F1.4",
+            "optimized_wavelength_range": null,
+            "serial_number": "unknown",
+            "size": null,
+            "wavelength_unit": "nanometer"
+          },
+          "position": null
+        },
+        {
+          "camera": {
+            "chroma": "Color",
+            "computer_name": "W10DTMJ0HMF1Q",
+            "data_interface": "USB",
+            "driver": null,
+            "driver_version": null,
+            "format_unit": null,
+            "frame_rate_unit": "Hertz",
+            "manufacturer": {
+              "abbreviation": null,
+              "name": "Ailipu Technology Co",
+              "registry": null,
+              "registry_identifier": null
+            },
+            "max_frame_rate": 120,
+            "model": "ELP-USBFHD05MT-KL170IR",
+            "name": "ELP Camera USB 1080P Infrared Webcam 2",
+            "notes": "The light intensity sensor was removed; IR illumination is constantly on",
+            "pixel_height": 480,
+            "pixel_width": 640,
+            "recording_software": {
+              "name": "Bonsai",
+              "parameters": null,
+              "version": "2.5"
+            },
+            "sensor_format": null,
+            "serial_number": "TBD",
+            "size_unit": "pixel"
+          },
+          "camera_assembly_name": "BehaviorVideography_FaceBottom",
+          "camera_target": "Face bottom",
+          "filter": null,
+          "lens": {
+            "focal_length": null,
+            "focal_length_unit": "millimeter",
+            "lens_size_unit": "inch",
+            "manufacturer": {
+              "abbreviation": null,
+              "name": "Other",
+              "registry": null,
+              "registry_identifier": null
+            },
+            "max_aperture": "f/1.4",
+            "model": "XC0922LENS",
+            "name": "Xenocam 2",
+            "notes": "Focal Length 9-22mm 1/3\" IR F1.4",
+            "optimized_wavelength_range": null,
+            "serial_number": "unknown",
+            "size": null,
+            "wavelength_unit": "nanometer"
+          },
+          "position": null
+        }
+      ],
+      "daqs": [
+        {
+          "channels": [
+            {
+              "channel_index": 0,
+              "channel_name": "AI0",
+              "channel_type": "Analog Input",
+              "device_name": "Bpod DO",
+              "event_based_sampling": false,
+              "port": 0,
+              "sample_rate": 1000,
+              "sample_rate_unit": "Hertz"
+            },
+            {
+              "channel_index": 1,
+              "channel_name": "AI1",
+              "channel_type": "Analog Input",
+              "device_name": "Janelia lick-o-meter circuit board, Left",
+              "event_based_sampling": false,
+              "port": 1,
+              "sample_rate": 1000,
+              "sample_rate_unit": "Hertz"
+            },
+            {
+              "channel_index": 2,
+              "channel_name": "AI2",
+              "channel_type": "Analog Input",
+              "device_name": "Janelia lick-o-meter circuit board, Right",
+              "event_based_sampling": false,
+              "port": 2,
+              "sample_rate": 1000,
+              "sample_rate_unit": "Hertz"
+            }
+          ],
+          "computer_name": "W10DTMJ0HMF1Q",
+          "data_interface": "USB",
+          "manufacturer": {
+            "abbreviation": null,
+            "name": "National Instruments",
+            "registry": {
+              "abbreviation": "ROR",
+              "name": "Research Organization Registry"
+            },
+            "registry_identifier": "026exqw73"
+          },
+          "model": "USB-6001",
+          "name": "USB DAQ",
+          "notes": "To record behavior events and licks via AnalogInput node in Bonsai",
+          "serial_number": null
+        }
+      ],
+      "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/ophys/ophys_rig.py",
+      "detectors": [
+        {
+          "bin_height": 2,
+          "bin_mode": "none",
+          "bin_unit": "pixel",
+          "bin_width": 2,
+          "bit_depth": 16,
+          "chroma": "Monochrome",
+          "cooling": "air",
+          "crop_height": 400,
+          "crop_unit": "pixel",
+          "crop_width": 600,
+          "data_interface": "USB",
+          "detector_type": "Camera",
+          "gain": 20,
+          "immersion": "air",
+          "manufacturer": {
+            "abbreviation": "FLIR",
+            "name": "Teledyne FLIR",
+            "registry": {
+              "abbreviation": "ROR",
+              "name": "Research Organization Registry"
+            },
+            "registry_identifier": "01j1gwp17"
+          },
+          "model": "BFLY-U3-23S6M",
+          "name": "FLIR CMOS for Green Channel",
+          "notes": null,
+          "serial_number": "17590161"
+        },
+        {
+          "bin_height": 2,
+          "bin_mode": "none",
+          "bin_unit": "pixel",
+          "bin_width": 2,
+          "bit_depth": 16,
+          "chroma": "Monochrome",
+          "cooling": "air",
+          "crop_height": 400,
+          "crop_unit": "pixel",
+          "crop_width": 600,
+          "data_interface": "USB",
+          "detector_type": "Camera",
+          "gain": 5,
+          "immersion": "air",
+          "manufacturer": {
+            "abbreviation": "FLIR",
+            "name": "Teledyne FLIR",
+            "registry": {
+              "abbreviation": "ROR",
+              "name": "Research Organization Registry"
+            },
+            "registry_identifier": "01j1gwp17"
+          },
+          "model": "BFLY-U3-23S6M",
+          "name": "FLIR CMOS for Red Channel",
+          "notes": null,
+          "serial_number": "18304442"
+        }
+      ],
+      "filters": [
+        {
+          "center_wavelength": 520,
+          "cut_off_wavelength": null,
+          "cut_on_wavelength": null,
+          "description": null,
+          "diameter": 25,
+          "filter_type": "Band pass",
+          "filter_wheel_index": null,
+          "height": null,
+          "manufacturer": {
+            "abbreviation": null,
+            "name": "Semrock",
+            "registry": null,
+            "registry_identifier": null
+          },
+          "model": "FF01-520/35-25",
+          "name": "Green emission bandpass filter",
+          "notes": null,
+          "serial_number": null,
+          "size_unit": "millimeter",
+          "thickness": null,
+          "thickness_unit": "millimeter",
+          "wavelength_unit": "nanometer",
+          "width": null
+        },
+        {
+          "center_wavelength": 600,
+          "cut_off_wavelength": null,
+          "cut_on_wavelength": null,
+          "description": null,
+          "diameter": 25,
+          "filter_type": "Band pass",
+          "filter_wheel_index": null,
+          "height": null,
+          "manufacturer": {
+            "abbreviation": null,
+            "name": "Semrock",
+            "registry": null,
+            "registry_identifier": null
+          },
+          "model": "FF01-630/69-25",
+          "name": "Red emission bandpass filter",
+          "notes": null,
+          "serial_number": null,
+          "size_unit": "millimeter",
+          "thickness": null,
+          "thickness_unit": "millimeter",
+          "wavelength_unit": "nanometer",
+          "width": null
+        },
+        {
+          "center_wavelength": null,
+          "cut_off_wavelength": 562,
+          "cut_on_wavelength": null,
+          "description": null,
+          "diameter": null,
+          "filter_type": "Dichroic",
+          "filter_wheel_index": null,
+          "height": 25,
+          "manufacturer": {
+            "abbreviation": null,
+            "name": "Semrock",
+            "registry": null,
+            "registry_identifier": null
+          },
+          "model": "FF562-Di03-25x36",
+          "name": "Emission Dichroic",
+          "notes": null,
+          "serial_number": null,
+          "size_unit": "millimeter",
+          "thickness": null,
+          "thickness_unit": "millimeter",
+          "wavelength_unit": "nanometer",
+          "width": 36
+        },
+        {
+          "center_wavelength": null,
+          "cut_off_wavelength": null,
+          "cut_on_wavelength": null,
+          "description": null,
+          "diameter": null,
+          "filter_type": "Multiband",
+          "filter_wheel_index": null,
+          "height": 24,
+          "manufacturer": {
+            "abbreviation": null,
+            "name": "Semrock",
+            "registry": null,
+            "registry_identifier": null
+          },
+          "model": "FF493/574-Di01-25x36",
+          "name": "dual-edge standard epi-fluorescence dichroic beamsplitter",
+          "notes": "493/574 nm BrightLine dual-edge standard epi-fluorescence dichroic beamsplitter",
+          "serial_number": null,
+          "size_unit": "millimeter",
+          "thickness": null,
+          "thickness_unit": "millimeter",
+          "wavelength_unit": "nanometer",
+          "width": 36
+        },
+        {
+          "center_wavelength": 410,
+          "cut_off_wavelength": null,
+          "cut_on_wavelength": null,
+          "description": null,
+          "diameter": 25,
+          "filter_type": "Band pass",
+          "filter_wheel_index": null,
+          "height": null,
+          "manufacturer": {
+            "abbreviation": null,
+            "name": "Thorlabs",
+            "registry": {
+              "abbreviation": "ROR",
+              "name": "Research Organization Registry"
+            },
+            "registry_identifier": "04gsnvb07"
+          },
+          "model": "FB410-10",
+          "name": "Excitation filter 410nm",
+          "notes": null,
+          "serial_number": null,
+          "size_unit": "millimeter",
+          "thickness": null,
+          "thickness_unit": "millimeter",
+          "wavelength_unit": "nanometer",
+          "width": null
+        },
+        {
+          "center_wavelength": 470,
+          "cut_off_wavelength": null,
+          "cut_on_wavelength": null,
+          "description": null,
+          "diameter": 25,
+          "filter_type": "Band pass",
+          "filter_wheel_index": null,
+          "height": null,
+          "manufacturer": {
+            "abbreviation": null,
+            "name": "Thorlabs",
+            "registry": {
+              "abbreviation": "ROR",
+              "name": "Research Organization Registry"
+            },
+            "registry_identifier": "04gsnvb07"
+          },
+          "model": "FB470-10",
+          "name": "Excitation filter 470nm",
+          "notes": null,
+          "serial_number": null,
+          "size_unit": "millimeter",
+          "thickness": null,
+          "thickness_unit": "millimeter",
+          "wavelength_unit": "nanometer",
+          "width": null
+        },
+        {
+          "center_wavelength": 560,
+          "cut_off_wavelength": null,
+          "cut_on_wavelength": null,
+          "description": null,
+          "diameter": 25,
+          "filter_type": "Band pass",
+          "filter_wheel_index": null,
+          "height": null,
+          "manufacturer": {
+            "abbreviation": null,
+            "name": "Thorlabs",
+            "registry": {
+              "abbreviation": "ROR",
+              "name": "Research Organization Registry"
+            },
+            "registry_identifier": "04gsnvb07"
+          },
+          "model": "FB560-10",
+          "name": "Excitation filter 560nm",
+          "notes": null,
+          "serial_number": null,
+          "size_unit": "millimeter",
+          "thickness": null,
+          "thickness_unit": "millimeter",
+          "wavelength_unit": "nanometer",
+          "width": null
+        },
+        {
+          "center_wavelength": null,
+          "cut_off_wavelength": 450,
+          "cut_on_wavelength": null,
+          "description": null,
+          "diameter": null,
+          "filter_type": "Dichroic",
+          "filter_wheel_index": null,
+          "height": 25.2,
+          "manufacturer": {
+            "abbreviation": null,
+            "name": "Edmund Optics",
+            "registry": {
+              "abbreviation": "ROR",
+              "name": "Research Organization Registry"
+            },
+            "registry_identifier": "01j1gwp17"
+          },
+          "model": "#69-898",
+          "name": "450nm, 25.2 x 35.6mm, Dichroic Longpass Filter",
+          "notes": null,
+          "serial_number": null,
+          "size_unit": "millimeter",
+          "thickness": null,
+          "thickness_unit": "millimeter",
+          "wavelength_unit": "nanometer",
+          "width": 35.6
+        },
+        {
+          "center_wavelength": null,
+          "cut_off_wavelength": null,
+          "cut_on_wavelength": null,
+          "description": null,
+          "diameter": null,
+          "filter_type": "Dichroic",
+          "filter_wheel_index": null,
+          "height": 23.2,
+          "manufacturer": {
+            "abbreviation": null,
+            "name": "Edmund Optics",
+            "registry": {
+              "abbreviation": "ROR",
+              "name": "Research Organization Registry"
+            },
+            "registry_identifier": "01j1gwp17"
+          },
+          "model": "#69-899",
+          "name": "500nm, 25.2 x 35.6mm, Dichroic Longpass Filter",
+          "notes": null,
+          "serial_number": null,
+          "size_unit": "millimeter",
+          "thickness": null,
+          "thickness_unit": "millimeter",
+          "wavelength_unit": "nanometer",
+          "width": 35.6
+        }
+      ],
+      "humidity_control": null,
+      "lenses": [
+        {
+          "focal_length": 80,
+          "focal_length_unit": "millimeter",
+          "lens_size_unit": "inch",
+          "manufacturer": {
+            "abbreviation": null,
+            "name": "Thorlabs",
+            "registry": {
+              "abbreviation": "ROR",
+              "name": "Research Organization Registry"
+            },
+            "registry_identifier": "04gsnvb07"
+          },
+          "max_aperture": null,
+          "model": "AC254-080-A-ML",
+          "name": "Image focusing lens",
+          "notes": null,
+          "optimized_wavelength_range": null,
+          "serial_number": null,
+          "size": 1,
+          "wavelength_unit": "nanometer"
+        }
+      ],
+      "light_path_diagram": null,
+      "light_sources": [
+        {
+          "lightsource_type": "LED",
+          "manufacturer": {
+            "abbreviation": null,
+            "name": "Thorlabs",
+            "registry": {
+              "abbreviation": "ROR",
+              "name": "Research Organization Registry"
+            },
+            "registry_identifier": "04gsnvb07"
+          },
+          "model": "M470F3",
+          "name": "470nm LED",
+          "notes": null,
+          "serial_number": null,
+          "wavelength": 470,
+          "wavelength_unit": "nanometer"
+        },
+        {
+          "lightsource_type": "LED",
+          "manufacturer": {
+            "abbreviation": null,
+            "name": "Thorlabs",
+            "registry": {
+              "abbreviation": "ROR",
+              "name": "Research Organization Registry"
+            },
+            "registry_identifier": "04gsnvb07"
+          },
+          "model": "M415F3",
+          "name": "415nm LED",
+          "notes": null,
+          "serial_number": null,
+          "wavelength": 415,
+          "wavelength_unit": "nanometer"
+        },
+        {
+          "lightsource_type": "LED",
+          "manufacturer": {
+            "abbreviation": null,
+            "name": "Thorlabs",
+            "registry": {
+              "abbreviation": "ROR",
+              "name": "Research Organization Registry"
+            },
+            "registry_identifier": "04gsnvb07"
+          },
+          "model": "M565F3",
+          "name": "565nm LED",
+          "notes": null,
+          "serial_number": null,
+          "wavelength": 565,
+          "wavelength_unit": "nanometer"
+        }
+      ],
+      "mouse_platform": {
+        "date_surface_replaced": null,
+        "diameter": 5,
+        "diameter_unit": "centimeter",
+        "manufacturer": null,
+        "model": null,
+        "name": null,
+        "notes": null,
+        "platform_type": "Tube",
+        "serial_number": null,
+        "surface_material": null
+      },
+      "notes": null,
+      "objectives": [
+        {
+          "immersion": "air",
+          "magnification": 10,
+          "manufacturer": {
+            "abbreviation": null,
+            "name": "Nikon",
+            "registry": {
+              "abbreviation": "ROR",
+              "name": "Research Organization Registry"
+            },
+            "registry_identifier": "0280y9h11"
+          },
+          "model": "CFI Plan Apochromat Lambda D 10x",
+          "name": "Nikon 10x Objective",
+          "notes": null,
+          "numerical_aperture": 0.45,
+          "serial_number": "128022336"
+        }
+      ],
+      "patch_cords": [
+        {
+          "core_diameter": 200,
+          "manufacturer": {
+            "abbreviation": null,
+            "name": "Doric",
+            "registry": {
+              "abbreviation": "ROR",
+              "name": "Research Organization Registry"
+            },
+            "registry_identifier": "059n53q30"
+          },
+          "model": "BBP(4)_200/220/900-0.37_Custom_FCM-4xMF1.25",
+          "name": "Bundle Branching Fiber-optic Patch Cord",
+          "notes": null,
+          "numerical_aperture": 0.37,
+          "photobleaching_date": null,
+          "serial_number": null
+        }
+      ],
+      "rig_id": "347_FIP3_1",
+      "schema_version": "0.6.2",
+      "temperature_control": null,
+      "vibration_control": null,
+      "visual_monitors": null
+    },
+    "schema_version": "0.2.7",
+    "session": null,
+    "subject": {
+      "alleles": [],
+      "background_strain": null,
+      "breeding_info": {
+        "breeding_group": "Gad2-IRES-Cre-Homo(ND)",
+        "maternal_genotype": "Gad2-IRES-Cre/Gad2-IRES-Cre",
+        "maternal_id": "639874",
+        "paternal_genotype": "Gad2-IRES-Cre/Gad2-IRES-Cre",
+        "paternal_id": "639871"
+      },
+      "date_of_birth": "2022-09-23",
+      "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+      "genotype": "Gad2-IRES-Cre/Gad2-IRES-Cre",
+      "housing": null,
+      "notes": null,
+      "restrictions": null,
+      "rrid": null,
+      "schema_version": "0.5.5",
+      "sex": "Male",
+      "source": {
+        "abbreviation": "AI",
+        "name": "Allen Institute",
+        "registry": {
+          "abbreviation": "ROR",
+          "name": "Research Organization Registry"
+        },
+        "registry_identifier": "03cpe7c52"
+      },
+      "species": {
+        "abbreviation": null,
+        "name": "Mus musculus",
+        "registry": {
+          "abbreviation": "NCBI",
+          "name": "National Center for Biotechnology Information"
+        },
+        "registry_identifier": "10090"
+      },
+      "subject_id": "651474",
+      "wellness_reports": []
+    }
+  }
