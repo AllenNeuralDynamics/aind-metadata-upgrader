@@ -1,13 +1,11 @@
 """ tests for Processing upgrades """
 
-import re
 import unittest
-from pathlib import Path
 
 from aind_data_schema.base import AindModel
-from pydantic import __version__ as pyd_version
 
 from aind_metadata_upgrader.utils import get_or_default
+
 
 class TestUtils(unittest.TestCase):
     """Class for testing utilities."""
