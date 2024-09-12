@@ -108,7 +108,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         self.assertEqual(DataLevel.RAW, new_data_description2.data_level)
 
         # Should fail if inputting unknown string
-        with self.assertRaises(Exception) as e1:
+        with self.assertRaises(ValidationError) as e1:
             upgrader.upgrade(platform=Platform.ECEPHYS, data_level="asfnewnjfq")
 
         expected_error_message1 = (
@@ -121,7 +121,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         self.assertEqual(expected_error_message1, repr(e1.exception))
 
         # Should also fail if inputting wrong type
-        with self.assertRaises(Exception) as e2:
+        with self.assertRaises(ValidationError) as e2:
             upgrader.upgrade(platform=Platform.ECEPHYS, data_level=["raw"])
         expected_error_message2 = (
             "1 validation error for DataDescription\n"
