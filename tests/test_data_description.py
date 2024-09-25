@@ -212,6 +212,14 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
 
         self.assertEqual(new_data_description.modality, [Modality.FIB])
 
+    def test_upgrades_0_6_0_string_modality(self):
+        """Tests data_description_0.6.0_outdated_modality.json is mapped correctly."""
+        data_description_0_6_0 = self.data_descriptions["data_description_0_6_0_string_modality.json"]
+        upgrader = DataDescriptionUpgrade(old_data_description_dict=data_description_0_6_0)
+        new_data_description = upgrader.upgrade()
+
+        self.assertEqual(new_data_description.platform, [Platform.FIP])
+
     def test_upgrades_0_6_2(self):
         """Tests data_description_0.6.2.json is mapped correctly."""
         data_description_0_6_2 = self.data_descriptions["data_description_0.6.2.json"]
