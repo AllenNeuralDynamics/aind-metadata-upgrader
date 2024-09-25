@@ -8,6 +8,7 @@ import semver
 from aind_data_schema.base import AindModel
 from aind_data_schema.core.data_description import (
     DataDescription,
+    DerivedDataDescription,
     DataLevel,
     Funding,
 )
@@ -195,8 +196,15 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
         MonkeyPatch.patch_fromisoformat()
 
+        model_class = DataDescription
+        if isinstance(old_data_description_dict, dict):
+            if 'derived' in old_data_description_dict.get("data_level"):
+                model_class = DerivedDataDescription
+        elif isinstance(old_data_description_dict, DerivedDataDescription):
+            model_class = DerivedDataDescription
+
         super().__init__(
-            old_data_description_dict, model_class=DataDescription, allow_validation_errors=allow_validation_errors
+            old_data_description_dict, model_class=model_class, allow_validation_errors=allow_validation_errors
         )
 
     def get_modality(self, **kwargs):
@@ -284,6 +292,6 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
             "subject_id": self._get_or_default(self.old_model_dict, "subject_id", kwargs),
             "related_data": self._get_or_default(self.old_model_dict, "related_data", kwargs),
             "data_summary": self._get_or_default(self.old_model_dict, "data_summary", kwargs),
-        }
+        }            
 
-        return construct_new_model(data_desc_dict, DataDescription, self.allow_validation_errors)
+        return construct_new_model(data_desc_dict, self.model_class, self.allow_validation_errors)
