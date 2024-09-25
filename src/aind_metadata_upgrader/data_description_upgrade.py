@@ -94,7 +94,9 @@ class PlatformUpgrade:
     @classmethod
     def from_modality(cls, modality: Modality) -> Optional[Platform]:
         """Get platform from modality"""
-        if modality is not None:
+        if type(modality) is str and cls.legacy_name_mapping.get(modality.lower()) is not None:
+            return cls.legacy_name_mapping[modality.lower()]
+        elif modality is not None:
             return cls.legacy_name_mapping.get(str.lower(modality.abbreviation))
 
 
