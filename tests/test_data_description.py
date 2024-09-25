@@ -218,7 +218,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         upgrader = DataDescriptionUpgrade(old_data_description_dict=data_description_0_6_0)
         new_data_description = upgrader.upgrade()
 
-        self.assertEqual(new_data_description.platform, [Platform.FIP])
+        self.assertEqual(new_data_description.platform, Platform.FIP)
 
     def test_upgrades_0_6_2(self):
         """Tests data_description_0.6.2.json is mapped correctly."""
