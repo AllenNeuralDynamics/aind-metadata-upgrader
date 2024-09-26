@@ -156,6 +156,18 @@ class TestProcessingUpgrade(unittest.TestCase):
             "https://github.com/AllenNeuralDynamics/aind-data-transfer",
         )
 
+    def test_upgrades_0_2_5_no_data_processes(self):
+        """Tests processing_0.1.0.json is mapped correctly."""
+        processing_0_2_5 = self.processings["processing_0.2.5.json"]
+        processing_0_2_5.pop("data_processes")
+        upgrader = ProcessingUpgrade(old_processing_model=processing_0_2_5)
+
+        # Should work by setting platform explicitly
+        new_processing = upgrader.upgrade(processor_full_name="Unit Test")
+        processing_pipeline = new_processing.processing_pipeline
+        self.assertEqual(processing_pipeline.processor_full_name, "Unit Test")
+        self.assertEqual(processing_pipeline.data_processes, [])
+
     def test_upgrades_0_3_1(self):
         """Tests processing_0.3.1.json is mapped correctly."""
         processing_0_3_1 = self.processings["processing_0.3.1.json"]
