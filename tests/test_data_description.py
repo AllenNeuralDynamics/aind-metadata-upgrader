@@ -32,7 +32,7 @@ from aind_metadata_upgrader.data_description_upgrade import (
     ModalityUpgrade,
 )
 
-DATA_DESCRIPTION_FILES_PATH = Path(__file__).parent / "resources" / "ephys_data_description"
+DATA_DESCRIPTION_FILES_PATH = Path(__file__).parent / "resources" / "data_description_examples"
 PYD_VERSION = re.match(r"(\d+.\d+).\d+", pyd_version).group(1)
 TZLOCAL = get_localzone()
 
@@ -464,12 +464,11 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         self.assertEqual(DataLevel.RAW, d1.data_level)
         self.assertEqual(DataLevel.RAW, d2.data_level)
 
-    # def test_edge_cases(self):
-    #     """Tests a few edge cases"""
-    #     data_description_0_6_2 = deepcopy(self.data_descriptions["data_description_0.6.2.json"])
-    #     upgrader = DataDescriptionUpgrade(old_data_description_dict=data_description_0_6_2)
-    #     new_dd_0_6_2 = upgrader.upgrade(modality=[Modality.ECEPHYS])
-    #     self.assertEqual([Modality.ECEPHYS], new_dd_0_6_2.modality)
+    def test_derived_description_upgrade(self):
+        derived_dd_0_10_1 = self.data_descriptions["derived_data_description_0.10.1.json"]
+        derived_dd_0_12_2 = self.data_descriptions["derived_data_description_0.12.2.json"]
+        derived_dd_0_13_2 = self.data_descriptions["derived_data_description_0.13.2.json"]
+
 
 
 class TestModalityUpgrade(unittest.TestCase):
