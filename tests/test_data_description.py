@@ -469,6 +469,10 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         derived_dd_0_12_2 = self.data_descriptions["derived_data_description_0.12.2.json"]
         derived_dd_0_13_2 = self.data_descriptions["derived_data_description_0.13.2.json"]
 
+        upgrader_0_10_1 = DataDescriptionUpgrade(old_data_description_dict=derived_dd_0_10_1)
+        upgrader_0_12_2 = DataDescriptionUpgrade(old_data_description_dict=derived_dd_0_12_2)
+        upgrader_0_13_2 = DataDescriptionUpgrade(old_data_description_dict=derived_dd_0_13_2)
+
 
 
 class TestModalityUpgrade(unittest.TestCase):
