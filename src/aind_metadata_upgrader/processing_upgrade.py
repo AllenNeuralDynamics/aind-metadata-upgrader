@@ -79,6 +79,13 @@ class ProcessingUpgrade(BaseModelUpgrade):
                     data_processes=data_processes_new,
                     processor_full_name=processor_full_name,
                 )
+            else:
+                processing_pipeline = PipelineProcess(
+                    pipeline_version=pipeline_version,
+                    pipeline_url=pipeline_url,
+                    data_processes=[],
+                    processor_full_name=kwargs.get("processor_full_name"),
+                )
         else:
             processing_pipeline = self._get_or_default(self.old_model_dict, "processing_pipeline", kwargs)
             # upgrade data processes
