@@ -3,11 +3,8 @@
 from typing import Union
 
 from aind_data_schema.base import AindModel
-from aind_data_schema.core.processing import (
-    DataProcess,
-    PipelineProcess,
-    Processing,
-)
+from aind_data_schema.core.processing import (DataProcess, PipelineProcess,
+                                              Processing)
 
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 from aind_metadata_upgrader.utils import construct_new_model

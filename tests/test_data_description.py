@@ -9,13 +9,9 @@ import unittest
 from pathlib import Path
 from typing import List
 
-from aind_data_schema.core.data_description import (
-    DataDescription,
-    DataLevel,
-    Funding,
-    Group,
-    RelatedData,
-)
+from aind_data_schema.core.data_description import (DataDescription, DataLevel,
+                                                    Funding, Group,
+                                                    RelatedData)
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
 from aind_data_schema_models.pid_names import PIDName
@@ -25,12 +21,8 @@ from pydantic import __version__ as pyd_version
 from tzlocal import get_localzone
 
 from aind_metadata_upgrader.data_description_upgrade import (
-    DataDescriptionUpgrade,
-    FundingUpgrade,
-    InstitutionUpgrade,
-    InvestigatorsUpgrade,
-    ModalityUpgrade,
-)
+    DataDescriptionUpgrade, FundingUpgrade, InstitutionUpgrade,
+    InvestigatorsUpgrade, ModalityUpgrade)
 
 DATA_DESCRIPTION_FILES_PATH = Path(__file__).parent / "resources" / "data_description_examples"
 PYD_VERSION = re.match(r"(\d+.\d+).\d+", pyd_version).group(1)

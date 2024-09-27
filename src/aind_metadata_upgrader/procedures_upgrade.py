@@ -6,20 +6,9 @@ from typing import Optional, Union
 
 import semver
 from aind_data_schema.core.procedures import (  # SpecimenProcedure,; TarsVirusIdentifiers,
-    Craniotomy,
-    CraniotomyType,
-    FiberImplant,
-    FiberProbe,
-    Headframe,
-    NanojectInjection,
-    NonViralMaterial,
-    OphysProbe,
-    Perfusion,
-    Procedures,
-    RetroOrbitalInjection,
-    Surgery,
-    ViralMaterial,
-)
+    Craniotomy, CraniotomyType, FiberImplant, FiberProbe, Headframe,
+    NanojectInjection, NonViralMaterial, OphysProbe, Perfusion, Procedures,
+    RetroOrbitalInjection, Surgery, ViralMaterial)
 
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 from aind_metadata_upgrader.utils import construct_new_model, get_or_default

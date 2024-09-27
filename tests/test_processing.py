@@ -9,17 +9,12 @@ from pathlib import Path
 from typing import List
 
 from aind_data_schema.base import AindGeneric
-from aind_data_schema.core.processing import (
-    DataProcess,
-    PipelineProcess,
-    Processing,
-)
+from aind_data_schema.core.processing import (DataProcess, PipelineProcess,
+                                              Processing)
 from pydantic import __version__ as pyd_version
 
-from aind_metadata_upgrader.processing_upgrade import (
-    DataProcessUpgrade,
-    ProcessingUpgrade,
-)
+from aind_metadata_upgrader.processing_upgrade import (DataProcessUpgrade,
+                                                       ProcessingUpgrade)
 
 PYD_VERSION = re.match(r"(\d+.\d+).\d+", pyd_version).group(1)
 

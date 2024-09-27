@@ -6,12 +6,9 @@ from typing import Any, List, Optional, Union
 
 import semver
 from aind_data_schema.base import AindModel
-from aind_data_schema.core.data_description import (
-    DataDescription,
-    DerivedDataDescription,
-    DataLevel,
-    Funding,
-)
+from aind_data_schema.core.data_description import (DataDescription, DataLevel,
+                                                    DerivedDataDescription,
+                                                    Funding)
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
 from aind_data_schema_models.pid_names import PIDName
