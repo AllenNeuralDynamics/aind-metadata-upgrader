@@ -62,7 +62,7 @@ class ModalityUpgrade:
         elif type(old_modality) is str:
             return Modality.from_abbreviation(old_modality)
         elif type(old_modality) is dict and old_modality.get("abbreviation") is not None:
-            legacy_mapping = cls.legacy_name_mapping.get(old_modality['abbreviation'].lower(), None)
+            legacy_mapping = cls.legacy_name_mapping.get(old_modality["abbreviation"].lower(), None)
             return legacy_mapping or Modality.from_abbreviation(old_modality["abbreviation"])
         elif type(old_modality) in Modality.ALL:
             return old_modality
@@ -94,7 +94,9 @@ class PlatformUpgrade:
     @classmethod
     def from_modality(cls, modality: Modality) -> Optional[Platform]:
         """Get platform from modality"""
-        if modality is not None:
+        if type(modality) is str and cls.legacy_name_mapping.get(modality.lower()) is not None:
+            return cls.legacy_name_mapping[modality.lower()]
+        elif modality is not None:
             return cls.legacy_name_mapping.get(str.lower(modality.abbreviation))
 
 
