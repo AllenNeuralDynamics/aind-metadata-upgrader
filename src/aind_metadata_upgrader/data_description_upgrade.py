@@ -302,6 +302,5 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
                 and key != "schema_version"
             ]
             for key in keys_to_add:
-                print(f"adding key: {key}")
                 data_desc_dict[key] = self._get_or_default(self.old_model_dict, key, kwargs)
         return construct_new_model(data_desc_dict, self.model_class, self.allow_validation_errors)
