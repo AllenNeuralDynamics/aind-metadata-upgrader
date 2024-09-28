@@ -297,7 +297,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         if self.model_class is DerivedDataDescription:
             keys_to_add = [
                 key for key in self.old_model_dict.keys() 
-                if key not in data_desc_dict.keys() 
+                if key not in data_desc_dict.keys()
                 and key in DerivedDataDescription.model_fields
                 and key != "schema_version"
             ]
