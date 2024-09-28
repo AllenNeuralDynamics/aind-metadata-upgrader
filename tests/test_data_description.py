@@ -465,6 +465,17 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         upgrader_0_12_2 = DataDescriptionUpgrade(old_data_description_dict=derived_dd_0_12_2)
         upgrader_0_13_2 = DataDescriptionUpgrade(old_data_description_dict=derived_dd_0_13_2)
 
+        for upgrader, name in [
+            (upgrader_0_10_1, "ecephys_686740_2023-10-26_12-29-08"),
+            (upgrader_0_12_2, "SmartSPIM_707232_2024-04-29_11-56-09"),
+            (upgrader_0_13_2, "ecephys_713508_2024-02-28_19-27-55")
+        ]:
+            new_data_description = upgrader.upgrade()
+            self.assertEqual(
+                datetime.datetime(2023, 10, 18, 16, 00, 6, tzinfo=TZLOCAL),
+                new_data_description.creation_time,
+            )
+            self.assertEqual(new_data_description.input_data_name, name)
 
 
 class TestModalityUpgrade(unittest.TestCase):
