@@ -236,8 +236,8 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         elif old_name is not None:
             creation_time = DataDescription.parse_name(old_name).get("creation_time")
         return creation_time
-    
-    def get_data_level(self):
+
+    def get_data_level(self, kwargs):
         data_level = self._get_or_default(self.old_model_dict, "data_level", kwargs)
         if data_level in ["raw level", "raw data"]:
             return DataLevel.RAW
@@ -246,7 +246,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         else:
             raise ValueError(f"Unable to upgrade data level: {data_level}")
 
-    def upgrade(self, **kwargs) -> AindModel: # noqa: C901
+    def upgrade(self, **kwargs) -> AindModel:  # noqa: C901
         """Upgrades the old model into the current version"""
 
         version = semver.Version.parse(self._get_or_default(self.old_model_dict, "schema_version", kwargs))
@@ -261,7 +261,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
         modality = self.get_modality(**kwargs)
 
-        data_level = self.get_data_level()
+        data_level = self.get_data_level(**kwargs)
 
         experiment_type = self._get_or_default(self.old_model_dict, "experiment_type", kwargs)
         platform = None
@@ -301,7 +301,8 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
         if self.model_class is DerivedDataDescription:
             keys_to_add = [
-                key for key in self.old_model_dict.keys() 
+                key
+                for key in self.old_model_dict.keys()
                 if key not in data_desc_dict.keys()
                 and key in DerivedDataDescription.model_fields
                 and key != "schema_version"

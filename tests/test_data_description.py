@@ -11,8 +11,8 @@ from typing import List
 
 from aind_data_schema.core.data_description import (
     DataDescription,
-    DerivedDataDescription,
     DataLevel,
+    DerivedDataDescription,
     Funding,
     Group,
     RelatedData,
@@ -137,7 +137,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         # user sets it explicitly
         data_description_copy = copy.deepcopy(data_description_0_3_0)
         del data_description_copy["data_level"]
-        data_description_copy['data_level'] = 'raw'
+        data_description_copy["data_level"] = "raw"
         upgrader3 = DataDescriptionUpgrade(old_data_description_dict=data_description_copy)
         new_data_description3 = upgrader3.upgrade(platform=Platform.ECEPHYS, data_level=DataLevel.DERIVED)
         self.assertEqual(DataLevel.DERIVED, new_data_description3.data_level)
