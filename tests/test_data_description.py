@@ -11,6 +11,7 @@ from typing import List
 
 from aind_data_schema.core.data_description import (
     DataDescription,
+    DerivedDataDescription,
     DataLevel,
     Funding,
     Group,
@@ -467,6 +468,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
 
     def test_derived_description_upgrade(self):
         derived_dd_0_10_1 = self.data_descriptions["derived_data_description_0.10.1.json"]
+        derived_dd_0_10_1_copy = copy.deepcopy(derived_dd_0_10_1)
         derived_dd_0_12_2 = self.data_descriptions["derived_data_description_0.12.2.json"]
         derived_dd_0_13_2 = self.data_descriptions["derived_data_description_0.13.2.json"]
 
@@ -482,6 +484,11 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             new_data_description = upgrader.upgrade()
 
             self.assertEqual(new_data_description.input_data_name, name)
+
+        derived_dd_0_10_1_model = DerivedDataDescription.model_construct(**derived_dd_0_10_1_copy)
+        upgrader_0_10_1_model = DataDescriptionUpgrade(old_data_description_dict=derived_dd_0_10_1_model)
+        new_data_description_model = upgrader_0_10_1_model.upgrade()
+        self.assertEqual(new_data_description_model.input_data_name, "ecephys_686740_2023-10-26_12-29-08")
 
 
 class TestModalityUpgrade(unittest.TestCase):
