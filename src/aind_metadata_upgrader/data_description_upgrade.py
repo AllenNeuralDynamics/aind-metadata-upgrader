@@ -294,4 +294,14 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
             "data_summary": self._get_or_default(self.old_model_dict, "data_summary", kwargs),
         }
 
+        if self.model_class is DerivedDataDescription:
+            keys_to_add = [
+                key for key in self.old_model_dict.keys() 
+                if key not in data_desc_dict.keys() 
+                and key in DerivedDataDescription.model_fields
+                and key != "schema_version"
+            ]
+            for key in keys_to_add:
+                print(f"adding key: {key}")
+                data_desc_dict[key] = self._get_or_default(self.old_model_dict, key, kwargs)
         return construct_new_model(data_desc_dict, self.model_class, self.allow_validation_errors)
