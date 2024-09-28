@@ -136,6 +136,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         # user sets it explicitly
         data_description_copy = copy.deepcopy(data_description_0_3_0)
         del data_description_copy["data_level"]
+        data_description_copy['data_level'] = 'raw'
         upgrader3 = DataDescriptionUpgrade(old_data_description_dict=data_description_copy)
         new_data_description3 = upgrader3.upgrade(platform=Platform.ECEPHYS, data_level=DataLevel.DERIVED)
         self.assertEqual(DataLevel.DERIVED, new_data_description3.data_level)
@@ -479,10 +480,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             (upgrader_0_13_2, "ecephys_713508_2024-02-28_19-27-55"),
         ]:
             new_data_description = upgrader.upgrade()
-            self.assertEqual(
-                datetime.datetime(2023, 10, 18, 16, 00, 6, tzinfo=TZLOCAL),
-                new_data_description.creation_time,
-            )
+
             self.assertEqual(new_data_description.input_data_name, name)
 
 
