@@ -238,6 +238,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         return creation_time
 
     def get_data_level(self, kwargs):
+        """Get data level from old model"""
         data_level = self._get_or_default(self.old_model_dict, "data_level", kwargs)
         if data_level in ["raw level", "raw data"]:
             return DataLevel.RAW
