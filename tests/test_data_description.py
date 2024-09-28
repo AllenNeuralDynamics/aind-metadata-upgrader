@@ -467,6 +467,8 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         self.assertEqual(DataLevel.RAW, d2.data_level)
 
     def test_derived_description_upgrade(self):
+        """Tests derived data description upgrade"""
+        
         derived_dd_0_10_1 = self.data_descriptions["derived_data_description_0.10.1.json"]
         derived_dd_0_10_1_copy = copy.deepcopy(derived_dd_0_10_1)
         derived_dd_0_12_2 = self.data_descriptions["derived_data_description_0.12.2.json"]
