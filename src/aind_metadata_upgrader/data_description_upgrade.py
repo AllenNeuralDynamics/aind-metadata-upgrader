@@ -237,9 +237,9 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
             creation_time = DataDescription.parse_name(old_name).get("creation_time")
         return creation_time
 
-    def get_data_level(self):
+    def get_data_level(self, kwargs):
         """Get data level from old model"""
-        data_level = self._get_or_default(self.old_model_dict, "data_level")
+        data_level = self._get_or_default(self.old_model_dict, "data_level", kwargs)
         if data_level in ["raw level", "raw data"]:
             return DataLevel.RAW
         if data_level in ["derived level", "derived data"]:
@@ -262,7 +262,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
         modality = self.get_modality(**kwargs)
 
-        data_level = self.get_data_level()
+        data_level = self.get_data_level(**kwargs)
 
         experiment_type = self._get_or_default(self.old_model_dict, "experiment_type", kwargs)
         platform = None
