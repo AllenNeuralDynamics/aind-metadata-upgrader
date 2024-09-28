@@ -6,9 +6,12 @@ from typing import Any, List, Optional, Union
 
 import semver
 from aind_data_schema.base import AindModel
-from aind_data_schema.core.data_description import (DataDescription, DataLevel,
-                                                    DerivedDataDescription,
-                                                    Funding)
+from aind_data_schema.core.data_description import (
+    DataDescription,
+    DataLevel,
+    DerivedDataDescription,
+    Funding,
+)
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
 from aind_data_schema_models.pid_names import PIDName
@@ -195,7 +198,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
         model_class = DataDescription
         if isinstance(old_data_description_dict, dict):
-            if 'derived' in old_data_description_dict.get("data_level"):
+            if "derived" in old_data_description_dict.get("data_level"):
                 model_class = DerivedDataDescription
         elif isinstance(old_data_description_dict, DerivedDataDescription):
             model_class = DerivedDataDescription
