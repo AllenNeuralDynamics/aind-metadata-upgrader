@@ -244,8 +244,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
             return DataLevel.RAW
         if data_level in ["derived level", "derived data"]:
             return DataLevel.DERIVED
-        else:
-            raise ValueError(f"Unable to upgrade data level: {data_level}")
+        return data_level
 
     def upgrade(self, **kwargs) -> AindModel:  # noqa: C901
         """Upgrades the old model into the current version"""
@@ -262,7 +261,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
         modality = self.get_modality(**kwargs)
 
-        data_level = self.get_data_level(**kwargs)
+        data_level = self.get_data_level(kwargs)
 
         experiment_type = self._get_or_default(self.old_model_dict, "experiment_type", kwargs)
         platform = None
