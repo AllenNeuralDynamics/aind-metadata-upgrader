@@ -236,6 +236,15 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         elif old_name is not None:
             creation_time = DataDescription.parse_name(old_name).get("creation_time")
         return creation_time
+    
+    def get_data_level(self):
+        data_level = self._get_or_default(self.old_model_dict, "data_level", kwargs)
+        if data_level in ["raw level", "raw data"]:
+            return DataLevel.RAW
+        if data_level in ["derived level", "derived data"]:
+            return DataLevel.DERIVED
+        else:
+            raise ValueError(f"Unable to upgrade data level: {data_level}")
 
     def upgrade(self, **kwargs) -> AindModel:
         """Upgrades the old model into the current version"""
@@ -252,11 +261,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
         modality = self.get_modality(**kwargs)
 
-        data_level = self._get_or_default(self.old_model_dict, "data_level", kwargs)
-        if data_level in ["raw level", "raw data"]:
-            data_level = DataLevel.RAW
-        if data_level in ["derived level", "derived data"]:
-            data_level = DataLevel.DERIVED
+        data_level = self.get_data_level()
 
         experiment_type = self._get_or_default(self.old_model_dict, "experiment_type", kwargs)
         platform = None
