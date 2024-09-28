@@ -246,7 +246,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         else:
             raise ValueError(f"Unable to upgrade data level: {data_level}")
 
-    def upgrade(self, **kwargs) -> AindModel:
+    def upgrade(self, **kwargs) -> AindModel: # noqa: C901
         """Upgrades the old model into the current version"""
 
         version = semver.Version.parse(self._get_or_default(self.old_model_dict, "schema_version", kwargs))
