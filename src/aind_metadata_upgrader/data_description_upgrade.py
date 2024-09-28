@@ -289,6 +289,6 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
             "subject_id": self._get_or_default(self.old_model_dict, "subject_id", kwargs),
             "related_data": self._get_or_default(self.old_model_dict, "related_data", kwargs),
             "data_summary": self._get_or_default(self.old_model_dict, "data_summary", kwargs),
-        }            
+        }
 
         return construct_new_model(data_desc_dict, self.model_class, self.allow_validation_errors)
