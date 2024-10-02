@@ -486,6 +486,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
             new_data_description = upgrader.upgrade()
 
             self.assertEqual(new_data_description.input_data_name, name)
+            self.assertIsInstance(new_data_description, DerivedDataDescription)
 
         derived_dd_0_10_1_model = DerivedDataDescription.model_construct(**derived_dd_0_10_1_copy)
         upgrader_0_10_1_model = DataDescriptionUpgrade(old_data_description_dict=derived_dd_0_10_1_model)
