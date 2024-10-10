@@ -38,7 +38,7 @@ class ModalityUpgrade:
         "mesospim": Modality.SPIM,
         "single-plane-ophys": Modality.POPHYS,
         "multiplane-ophys": Modality.POPHYS,
-        "trained-behaviors": Modality.BEHAVIOR,
+        "trained-behavior": Modality.BEHAVIOR,
     }
 
     @classmethod
