@@ -40,7 +40,7 @@ class ModalityUpgrade:
         "single-plane-ophys": Modality.POPHYS,
         "multiplane-ophys": Modality.POPHYS,
         "ophys": Modality.POPHYS,
-        "trained-behaviors": Modality.BEHAVIOR,
+        "trained-behavior": Modality.BEHAVIOR,
     }
 
     @classmethod
@@ -86,6 +86,7 @@ class PlatformUpgrade:
         "spim": Platform.SMARTSPIM,
         "test-fip-opto": Platform.FIP,
         "fip": Platform.FIP,
+        "fib": Platform.FIP,
         "ecephys": Platform.ECEPHYS,
         "behavior-videos": Platform.MULTIPLANE_OPHYS,
         "ephys": Platform.ECEPHYS,
