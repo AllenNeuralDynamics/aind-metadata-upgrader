@@ -12,6 +12,7 @@ from typing import List
 from aind_data_schema.core.data_description import (
     DataDescription,
     DataLevel,
+    DerivedDataDescription,
     Funding,
     Group,
     RelatedData,
@@ -32,7 +33,7 @@ from aind_metadata_upgrader.data_description_upgrade import (
     ModalityUpgrade,
 )
 
-DATA_DESCRIPTION_FILES_PATH = Path(__file__).parent / "resources" / "ephys_data_description"
+DATA_DESCRIPTION_FILES_PATH = Path(__file__).parent / "resources" / "data_description_examples"
 PYD_VERSION = re.match(r"(\d+.\d+).\d+", pyd_version).group(1)
 TZLOCAL = get_localzone()
 
@@ -136,6 +137,7 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         # user sets it explicitly
         data_description_copy = copy.deepcopy(data_description_0_3_0)
         del data_description_copy["data_level"]
+        data_description_copy["data_level"] = "raw"
         upgrader3 = DataDescriptionUpgrade(old_data_description_dict=data_description_copy)
         new_data_description3 = upgrader3.upgrade(platform=Platform.ECEPHYS, data_level=DataLevel.DERIVED)
         self.assertEqual(DataLevel.DERIVED, new_data_description3.data_level)
@@ -464,12 +466,32 @@ class TestDataDescriptionUpgrade(unittest.TestCase):
         self.assertEqual(DataLevel.RAW, d1.data_level)
         self.assertEqual(DataLevel.RAW, d2.data_level)
 
-    # def test_edge_cases(self):
-    #     """Tests a few edge cases"""
-    #     data_description_0_6_2 = deepcopy(self.data_descriptions["data_description_0.6.2.json"])
-    #     upgrader = DataDescriptionUpgrade(old_data_description_dict=data_description_0_6_2)
-    #     new_dd_0_6_2 = upgrader.upgrade(modality=[Modality.ECEPHYS])
-    #     self.assertEqual([Modality.ECEPHYS], new_dd_0_6_2.modality)
+    def test_derived_description_upgrade(self):
+        """Tests derived data description upgrade"""
+
+        derived_dd_0_10_1 = self.data_descriptions["derived_data_description_0.10.1.json"]
+        derived_dd_0_10_1_copy = copy.deepcopy(derived_dd_0_10_1)
+        derived_dd_0_12_2 = self.data_descriptions["derived_data_description_0.12.2.json"]
+        derived_dd_0_13_2 = self.data_descriptions["derived_data_description_0.13.2.json"]
+
+        upgrader_0_10_1 = DataDescriptionUpgrade(old_data_description_dict=derived_dd_0_10_1)
+        upgrader_0_12_2 = DataDescriptionUpgrade(old_data_description_dict=derived_dd_0_12_2)
+        upgrader_0_13_2 = DataDescriptionUpgrade(old_data_description_dict=derived_dd_0_13_2)
+
+        for upgrader, name in [
+            (upgrader_0_10_1, "ecephys_686740_2023-10-26_12-29-08"),
+            (upgrader_0_12_2, "SmartSPIM_707232_2024-04-29_11-56-09"),
+            (upgrader_0_13_2, "ecephys_713508_2024-02-28_19-27-55"),
+        ]:
+            new_data_description = upgrader.upgrade()
+
+            self.assertEqual(new_data_description.input_data_name, name)
+            self.assertIsInstance(new_data_description, DerivedDataDescription)
+
+        derived_dd_0_10_1_model = DerivedDataDescription.model_construct(**derived_dd_0_10_1_copy)
+        upgrader_0_10_1_model = DataDescriptionUpgrade(old_data_description_dict=derived_dd_0_10_1_model)
+        new_data_description_model = upgrader_0_10_1_model.upgrade()
+        self.assertEqual(new_data_description_model.input_data_name, "ecephys_686740_2023-10-26_12-29-08")
 
 
 class TestModalityUpgrade(unittest.TestCase):

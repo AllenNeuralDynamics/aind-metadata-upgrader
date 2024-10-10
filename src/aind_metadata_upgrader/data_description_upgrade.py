@@ -9,6 +9,7 @@ from aind_data_schema.base import AindModel
 from aind_data_schema.core.data_description import (
     DataDescription,
     DataLevel,
+    DerivedDataDescription,
     Funding,
 )
 from aind_data_schema_models.modalities import Modality
@@ -38,7 +39,8 @@ class ModalityUpgrade:
         "mesospim": Modality.SPIM,
         "single-plane-ophys": Modality.POPHYS,
         "multiplane-ophys": Modality.POPHYS,
-        "trained-behavior": Modality.BEHAVIOR,
+        "ophys": Modality.POPHYS,
+        "trained-behaviors": Modality.BEHAVIOR,
     }
 
     @classmethod
@@ -194,8 +196,15 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
         MonkeyPatch.patch_fromisoformat()
 
+        model_class = DataDescription
+        if isinstance(old_data_description_dict, dict):
+            if "derived" in old_data_description_dict.get("data_level"):
+                model_class = DerivedDataDescription
+        elif isinstance(old_data_description_dict, DerivedDataDescription):
+            model_class = DerivedDataDescription
+
         super().__init__(
-            old_data_description_dict, model_class=DataDescription, allow_validation_errors=allow_validation_errors
+            old_data_description_dict, model_class=model_class, allow_validation_errors=allow_validation_errors
         )
 
     def get_modality(self, **kwargs):
@@ -228,7 +237,16 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
             creation_time = DataDescription.parse_name(old_name).get("creation_time")
         return creation_time
 
-    def upgrade(self, **kwargs) -> AindModel:
+    def get_data_level(self, kwargs):
+        """Get data level from old model"""
+        data_level = self._get_or_default(self.old_model_dict, "data_level", kwargs)
+        if data_level in ["raw level", "raw data"]:
+            return DataLevel.RAW
+        if data_level in ["derived level", "derived data"]:
+            return DataLevel.DERIVED
+        return data_level
+
+    def upgrade(self, **kwargs) -> AindModel:  # noqa: C901
         """Upgrades the old model into the current version"""
 
         version = semver.Version.parse(self._get_or_default(self.old_model_dict, "schema_version", kwargs))
@@ -243,11 +261,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
 
         modality = self.get_modality(**kwargs)
 
-        data_level = self._get_or_default(self.old_model_dict, "data_level", kwargs)
-        if data_level in ["raw level", "raw data"]:
-            data_level = DataLevel.RAW
-        if data_level in ["derived level", "derived data"]:
-            data_level = DataLevel.DERIVED
+        data_level = self.get_data_level(kwargs)
 
         experiment_type = self._get_or_default(self.old_model_dict, "experiment_type", kwargs)
         platform = None
@@ -285,4 +299,14 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
             "data_summary": self._get_or_default(self.old_model_dict, "data_summary", kwargs),
         }
 
-        return construct_new_model(data_desc_dict, DataDescription, self.allow_validation_errors)
+        if self.model_class is DerivedDataDescription:
+            keys_to_add = [
+                key
+                for key in self.old_model_dict.keys()
+                if key not in data_desc_dict.keys()
+                and key in DerivedDataDescription.model_fields
+                and key != "schema_version"
+            ]
+            for key in keys_to_add:
+                data_desc_dict[key] = self._get_or_default(self.old_model_dict, key, kwargs)
+        return construct_new_model(data_desc_dict, self.model_class, self.allow_validation_errors)
