@@ -360,7 +360,6 @@ class ProcedureUpgrade(BaseModelUpgrade):
 
                     if None in subj_procedures:
                         subj_procedures.remove(None)
-                    # subj_procedures = [x for x in subj_procedures if x is not None]
 
                     new_surgery_dict = {
                         "start_date": date,
