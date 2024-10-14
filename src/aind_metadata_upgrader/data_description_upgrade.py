@@ -247,7 +247,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
             return DataLevel.DERIVED
         return data_level
 
-    def upgrade(self, **kwargs) -> AindModel:  # noqa: C901
+    def upgrade(self, **kwargs) -> AindModel:
         """Upgrades the old model into the current version"""
 
         version = semver.Version.parse(self._get_or_default(self.old_model_dict, "schema_version", kwargs))
