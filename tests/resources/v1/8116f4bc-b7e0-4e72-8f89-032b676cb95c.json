@@ -1,0 +1,1637 @@
+{
+    "_id": "8116f4bc-b7e0-4e72-8f89-032b676cb95c",
+    "acquisition": null,
+    "created": "2024-06-03T18:20:38.682697",
+    "data_description": {
+      "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+      "schema_version": "1.0.0",
+      "license": "CC-BY-4.0",
+      "platform": {
+        "name": "Single-plane optical physiology platform",
+        "abbreviation": "single-plane-ophys"
+      },
+      "subject_id": "608552",
+      "creation_time": "2022-05-18T15:21:24-07:00",
+      "label": null,
+      "name": "single-plane-ophys_608552_2022-05-18_15-21-24",
+      "institution": {
+        "name": "Allen Institute for Neural Dynamics",
+        "abbreviation": "AIND",
+        "registry": {
+          "name": "Research Organization Registry",
+          "abbreviation": "ROR"
+        },
+        "registry_identifier": "04szwah67"
+      },
+      "funding_source": [
+        {
+          "funder": {
+            "name": "Allen Institute",
+            "abbreviation": "AI",
+            "registry": {
+              "name": "Research Organization Registry",
+              "abbreviation": "ROR"
+            },
+            "registry_identifier": "03cpe7c52"
+          },
+          "grant_number": null,
+          "fundee": "Kayvon Daie, Marton Rozsa"
+        }
+      ],
+      "data_level": "raw",
+      "group": null,
+      "investigators": [
+        {
+          "name": "Kayvon Daie",
+          "abbreviation": null,
+          "registry": null,
+          "registry_identifier": null
+        },
+        {
+          "name": "Marton Rozsa",
+          "abbreviation": null,
+          "registry": null,
+          "registry_identifier": null
+        }
+      ],
+      "project_name": "Brain Computer Interface",
+      "restrictions": null,
+      "modality": [
+        {
+          "name": "Planar optical physiology",
+          "abbreviation": "pophys"
+        },
+        {
+          "name": "Behavior",
+          "abbreviation": "behavior"
+        },
+        {
+          "name": "Behavior videos",
+          "abbreviation": "behavior-videos"
+        }
+      ],
+      "related_data": [],
+      "data_summary": null
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": {
+      "Code Ocean": [
+        "90bfcc9e-6d58-4285-9b65-9434ff6e120f"
+      ]
+    },
+    "instrument": null,
+    "last_modified": "2024-11-26T19:38:13.887761Z",
+    "location": "s3://aind-private-data-prod-o5171v/single-plane-ophys_608552_2022-05-18_15-21-24",
+    "metadata_status": "Invalid",
+    "name": "single-plane-ophys_608552_2022-05-18_15-21-24",
+    "procedures": {
+      "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+      "schema_version": "0.11.1",
+      "subject_id": "608552",
+      "subject_procedures": [
+        {
+          "procedure_type": "Surgery",
+          "start_date": "2022-04-13",
+          "experimenter_full_name": "Márton Rózsa",
+          "iacuc_protocol": "2109",
+          "animal_weight_prior": "22.0",
+          "animal_weight_post": null,
+          "weight_unit": "gram",
+          "anaesthesia": null,
+          "workstation_id": null,
+          "procedures": [
+            {
+              "procedure_type": "Craniotomy",
+              "protocol_id": "None",
+              "craniotomy_type": "3 mm",
+              "craniotomy_hemisphere": "Left",
+              "craniotomy_coordinates_ml": "2",
+              "craniotomy_coordinates_ap": "1",
+              "craniotomy_coordinates_unit": "millimeter",
+              "craniotomy_coordinates_reference": "Bregma",
+              "bregma_to_lambda_distance": null,
+              "bregma_to_lambda_unit": "millimeter",
+              "craniotomy_size": "2.5",
+              "craniotomy_size_unit": "millimeter",
+              "implant_part_number": null,
+              "dura_removed": null,
+              "protective_material": null,
+              "recovery_time": null,
+              "recovery_time_unit": "minute"
+            },
+            {
+              "procedure_type": "Headframe",
+              "protocol_id": "None",
+              "headframe_type": "Custom Svoboda lab ALM headbar",
+              "headframe_part_number": "N/A",
+              "headframe_material": null,
+              "well_part_number": null,
+              "well_type": null
+            },
+            {
+              "injection_materials": [
+                {
+                  "material_type": "Virus",
+                  "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                  "tars_identifiers": null,
+                  "addgene_id": null,
+                  "titer": {
+                    "$numberLong": "1800000000000"
+                  },
+                  "titer_unit": "gc/mL"
+                }
+              ],
+              "recovery_time": null,
+              "recovery_time_unit": "minute",
+              "injection_duration": null,
+              "injection_duration_unit": "minute",
+              "instrument_id": null,
+              "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+              "injection_coordinate_ml": "2.0",
+              "injection_coordinate_ap": "1.4",
+              "injection_coordinate_depth": [
+                "0.4"
+              ],
+              "injection_coordinate_unit": "millimeter",
+              "injection_coordinate_reference": "Bregma",
+              "bregma_to_lambda_distance": null,
+              "bregma_to_lambda_unit": "millimeter",
+              "injection_angle": "0.0",
+              "injection_angle_unit": "degrees",
+              "targeted_structure": "MOp",
+              "injection_hemisphere": "Left",
+              "procedure_type": "Nanoject injection",
+              "injection_volume": [
+                "40.0"
+              ],
+              "injection_volume_unit": "nanoliter"
+            },
+            {
+              "injection_materials": [
+                {
+                  "material_type": "Virus",
+                  "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                  "tars_identifiers": null,
+                  "addgene_id": null,
+                  "titer": {
+                    "$numberLong": "1800000000000"
+                  },
+                  "titer_unit": "gc/mL"
+                }
+              ],
+              "recovery_time": null,
+              "recovery_time_unit": "minute",
+              "injection_duration": null,
+              "injection_duration_unit": "minute",
+              "instrument_id": null,
+              "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+              "injection_coordinate_ml": "2.0",
+              "injection_coordinate_ap": "0.8",
+              "injection_coordinate_depth": [
+                "0.4"
+              ],
+              "injection_coordinate_unit": "millimeter",
+              "injection_coordinate_reference": "Bregma",
+              "bregma_to_lambda_distance": null,
+              "bregma_to_lambda_unit": "millimeter",
+              "injection_angle": "0.0",
+              "injection_angle_unit": "degrees",
+              "targeted_structure": "MOp",
+              "injection_hemisphere": "Left",
+              "procedure_type": "Nanoject injection",
+              "injection_volume": [
+                "40.0"
+              ],
+              "injection_volume_unit": "nanoliter"
+            },
+            {
+              "injection_materials": [
+                {
+                  "material_type": "Virus",
+                  "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                  "tars_identifiers": null,
+                  "addgene_id": null,
+                  "titer": {
+                    "$numberLong": "1800000000000"
+                  },
+                  "titer_unit": "gc/mL"
+                }
+              ],
+              "recovery_time": null,
+              "recovery_time_unit": "minute",
+              "injection_duration": null,
+              "injection_duration_unit": "minute",
+              "instrument_id": null,
+              "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+              "injection_coordinate_ml": "2.0",
+              "injection_coordinate_ap": "0.2",
+              "injection_coordinate_depth": [
+                "0.4"
+              ],
+              "injection_coordinate_unit": "millimeter",
+              "injection_coordinate_reference": "Bregma",
+              "bregma_to_lambda_distance": null,
+              "bregma_to_lambda_unit": "millimeter",
+              "injection_angle": "0.0",
+              "injection_angle_unit": "degrees",
+              "targeted_structure": "MOp",
+              "injection_hemisphere": "Left",
+              "procedure_type": "Nanoject injection",
+              "injection_volume": [
+                "40.0"
+              ],
+              "injection_volume_unit": "nanoliter"
+            },
+            {
+              "injection_materials": [
+                {
+                  "material_type": "Virus",
+                  "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                  "tars_identifiers": null,
+                  "addgene_id": null,
+                  "titer": {
+                    "$numberLong": "1800000000000"
+                  },
+                  "titer_unit": "gc/mL"
+                }
+              ],
+              "recovery_time": null,
+              "recovery_time_unit": "minute",
+              "injection_duration": null,
+              "injection_duration_unit": "minute",
+              "instrument_id": null,
+              "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+              "injection_coordinate_ml": "2.6",
+              "injection_coordinate_ap": "0.4",
+              "injection_coordinate_depth": [
+                "0.4"
+              ],
+              "injection_coordinate_unit": "millimeter",
+              "injection_coordinate_reference": "Bregma",
+              "bregma_to_lambda_distance": null,
+              "bregma_to_lambda_unit": "millimeter",
+              "injection_angle": "0.0",
+              "injection_angle_unit": "degrees",
+              "targeted_structure": "MOp",
+              "injection_hemisphere": "Left",
+              "procedure_type": "Nanoject injection",
+              "injection_volume": [
+                "40.0"
+              ],
+              "injection_volume_unit": "nanoliter"
+            },
+            {
+              "injection_materials": [
+                {
+                  "material_type": "Virus",
+                  "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                  "tars_identifiers": null,
+                  "addgene_id": null,
+                  "titer": {
+                    "$numberLong": "1800000000000"
+                  },
+                  "titer_unit": "gc/mL"
+                }
+              ],
+              "recovery_time": null,
+              "recovery_time_unit": "minute",
+              "injection_duration": null,
+              "injection_duration_unit": "minute",
+              "instrument_id": null,
+              "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+              "injection_coordinate_ml": "2.6",
+              "injection_coordinate_ap": "1.0",
+              "injection_coordinate_depth": [
+                "0.4"
+              ],
+              "injection_coordinate_unit": "millimeter",
+              "injection_coordinate_reference": "Bregma",
+              "bregma_to_lambda_distance": null,
+              "bregma_to_lambda_unit": "millimeter",
+              "injection_angle": "0.0",
+              "injection_angle_unit": "degrees",
+              "targeted_structure": "MOp",
+              "injection_hemisphere": "Left",
+              "procedure_type": "Nanoject injection",
+              "injection_volume": [
+                "40.0"
+              ],
+              "injection_volume_unit": "nanoliter"
+            },
+            {
+              "injection_materials": [
+                {
+                  "material_type": "Virus",
+                  "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                  "tars_identifiers": null,
+                  "addgene_id": null,
+                  "titer": {
+                    "$numberLong": "1800000000000"
+                  },
+                  "titer_unit": "gc/mL"
+                }
+              ],
+              "recovery_time": null,
+              "recovery_time_unit": "minute",
+              "injection_duration": null,
+              "injection_duration_unit": "minute",
+              "instrument_id": null,
+              "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+              "injection_coordinate_ml": "2.6",
+              "injection_coordinate_ap": "1.6",
+              "injection_coordinate_depth": [
+                "0.4"
+              ],
+              "injection_coordinate_unit": "millimeter",
+              "injection_coordinate_reference": "Bregma",
+              "bregma_to_lambda_distance": null,
+              "bregma_to_lambda_unit": "millimeter",
+              "injection_angle": "0.0",
+              "injection_angle_unit": "degrees",
+              "targeted_structure": "MOp",
+              "injection_hemisphere": "Left",
+              "procedure_type": "Nanoject injection",
+              "injection_volume": [
+                "40.0"
+              ],
+              "injection_volume_unit": "nanoliter"
+            },
+            {
+              "injection_materials": [
+                {
+                  "material_type": "Virus",
+                  "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                  "tars_identifiers": null,
+                  "addgene_id": null,
+                  "titer": {
+                    "$numberLong": "1800000000000"
+                  },
+                  "titer_unit": "gc/mL"
+                }
+              ],
+              "recovery_time": null,
+              "recovery_time_unit": "minute",
+              "injection_duration": null,
+              "injection_duration_unit": "minute",
+              "instrument_id": null,
+              "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+              "injection_coordinate_ml": "1.4",
+              "injection_coordinate_ap": "1.4",
+              "injection_coordinate_depth": [
+                "0.4"
+              ],
+              "injection_coordinate_unit": "millimeter",
+              "injection_coordinate_reference": "Bregma",
+              "bregma_to_lambda_distance": null,
+              "bregma_to_lambda_unit": "millimeter",
+              "injection_angle": "0.0",
+              "injection_angle_unit": "degrees",
+              "targeted_structure": "MOp",
+              "injection_hemisphere": "Left",
+              "procedure_type": "Nanoject injection",
+              "injection_volume": [
+                "40.0"
+              ],
+              "injection_volume_unit": "nanoliter"
+            },
+            {
+              "injection_materials": [
+                {
+                  "material_type": "Virus",
+                  "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                  "tars_identifiers": null,
+                  "addgene_id": null,
+                  "titer": {
+                    "$numberLong": "1800000000000"
+                  },
+                  "titer_unit": "gc/mL"
+                }
+              ],
+              "recovery_time": null,
+              "recovery_time_unit": "minute",
+              "injection_duration": null,
+              "injection_duration_unit": "minute",
+              "instrument_id": null,
+              "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+              "injection_coordinate_ml": "1.4",
+              "injection_coordinate_ap": "0.8",
+              "injection_coordinate_depth": [
+                "0.4"
+              ],
+              "injection_coordinate_unit": "millimeter",
+              "injection_coordinate_reference": "Bregma",
+              "bregma_to_lambda_distance": null,
+              "bregma_to_lambda_unit": "millimeter",
+              "injection_angle": "0.0",
+              "injection_angle_unit": "degrees",
+              "targeted_structure": "MOp",
+              "injection_hemisphere": "Left",
+              "procedure_type": "Nanoject injection",
+              "injection_volume": [
+                "40.0"
+              ],
+              "injection_volume_unit": "nanoliter"
+            },
+            {
+              "injection_materials": [
+                {
+                  "material_type": "Virus",
+                  "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                  "tars_identifiers": null,
+                  "addgene_id": null,
+                  "titer": {
+                    "$numberLong": "1800000000000"
+                  },
+                  "titer_unit": "gc/mL"
+                }
+              ],
+              "recovery_time": null,
+              "recovery_time_unit": "minute",
+              "injection_duration": null,
+              "injection_duration_unit": "minute",
+              "instrument_id": null,
+              "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+              "injection_coordinate_ml": "1.4",
+              "injection_coordinate_ap": "0.2",
+              "injection_coordinate_depth": [
+                "0.4"
+              ],
+              "injection_coordinate_unit": "millimeter",
+              "injection_coordinate_reference": "Bregma",
+              "bregma_to_lambda_distance": null,
+              "bregma_to_lambda_unit": "millimeter",
+              "injection_angle": "0.0",
+              "injection_angle_unit": "degrees",
+              "targeted_structure": "MOp",
+              "injection_hemisphere": "Left",
+              "procedure_type": "Nanoject injection",
+              "injection_volume": [
+                "40.0"
+              ],
+              "injection_volume_unit": "nanoliter"
+            }
+          ],
+          "notes": null
+        }
+      ],
+      "specimen_procedures": [],
+      "notes": null
+    },
+    "processing": {
+      "analyses": [],
+      "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+      "notes": null,
+      "processing_pipeline": {
+        "data_processes": [],
+        "note": null,
+        "pipeline_url": null,
+        "pipeline_version": null,
+        "processor_full_name": "AIND Scientific Computing"
+      },
+      "schema_version": "0.4.8"
+    },
+    "rig": {
+      "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/rig.py",
+      "schema_version": "0.3.8",
+      "rig_id": "442 Bergamo 2p photostim",
+      "modification_date": "2022-01-01",
+      "mouse_platform": {
+        "device_type": "Tube",
+        "name": "Standard Mouse Tube",
+        "serial_number": null,
+        "manufacturer": null,
+        "model": null,
+        "path_to_cad": null,
+        "port_index": null,
+        "additional_settings": {},
+        "notes": "Mouse sits in a plastic tube",
+        "surface_material": null,
+        "date_surface_replaced": null,
+        "diameter": "3.0",
+        "diameter_unit": "centimeter"
+      },
+      "stimulus_devices": [
+        {
+          "device_type": "Speaker",
+          "name": "speaker",
+          "serial_number": null,
+          "manufacturer": {
+            "name": "Other",
+            "abbreviation": null,
+            "registry": null,
+            "registry_identifier": null
+          },
+          "model": null,
+          "path_to_cad": null,
+          "port_index": null,
+          "additional_settings": {},
+          "notes": null,
+          "position": null
+        },
+        {
+          "device_type": "Reward delivery",
+          "stage_type": null,
+          "reward_spouts": [
+            {
+              "device_type": "Reward spout",
+              "name": "Lickport",
+              "serial_number": null,
+              "manufacturer": null,
+              "model": null,
+              "path_to_cad": null,
+              "port_index": null,
+              "additional_settings": {},
+              "notes": null,
+              "side": "Center",
+              "spout_diameter": "1.3",
+              "spout_diameter_unit": "millimeter",
+              "spout_position": null,
+              "solenoid_valve": {
+                "device_type": "Solenoid",
+                "name": "Solenoid",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null
+              },
+              "lick_sensor": null,
+              "lick_sensor_type": null
+            }
+          ]
+        }
+      ],
+      "cameras": [
+        {
+          "name": "Side Face Camera Assembly",
+          "camera_target": "Side",
+          "camera": {
+            "device_type": "Detector",
+            "name": "Side Face Camera",
+            "serial_number": "19414825",
+            "manufacturer": {
+              "name": "Teledyne FLIR",
+              "abbreviation": "FLIR",
+              "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+              },
+              "registry_identifier": "01j1gwp17"
+            },
+            "model": "Blackfly S BFS-U3-16S2M",
+            "path_to_cad": null,
+            "port_index": null,
+            "additional_settings": {},
+            "notes": "",
+            "detector_type": "Camera",
+            "data_interface": "USB",
+            "cooling": "Air",
+            "computer_name": "",
+            "max_frame_rate": "226",
+            "frame_rate_unit": "hertz",
+            "immersion": null,
+            "chroma": "Monochrome",
+            "sensor_width": 1440,
+            "sensor_height": 1080,
+            "size_unit": "pixel",
+            "sensor_format": null,
+            "sensor_format_unit": null,
+            "bit_depth": null,
+            "bin_mode": "Additive",
+            "bin_width": null,
+            "bin_height": null,
+            "bin_unit": "pixel",
+            "gain": null,
+            "crop_width": 900,
+            "crop_height": 500,
+            "crop_unit": "pixel",
+            "recording_software": {
+              "name": "pyBpod",
+              "version": "26140c2",
+              "url": "https://github.com/rozmar/pySpinCapture",
+              "parameters": {}
+            },
+            "driver": null,
+            "driver_version": null
+          },
+          "lens": {
+            "device_type": "Lens",
+            "name": "Side Camera Lens",
+            "serial_number": "unknown",
+            "manufacturer": {
+              "name": "Other",
+              "abbreviation": null,
+              "registry": null,
+              "registry_identifier": null
+            },
+            "model": "Tamron 12VM412ASIR",
+            "path_to_cad": null,
+            "port_index": null,
+            "additional_settings": {},
+            "notes": "Focal Length 4-12mm 1/2\" IR F/1.2",
+            "focal_length": null,
+            "focal_length_unit": "millimeter",
+            "size": null,
+            "lens_size_unit": "inch",
+            "optimized_wavelength_range": null,
+            "wavelength_unit": "nanometer",
+            "max_aperture": "f/1.2"
+          },
+          "filter": {
+            "device_type": "Filter",
+            "name": "LP filter",
+            "serial_number": null,
+            "manufacturer": {
+              "name": "Thorlabs",
+              "abbreviation": null,
+              "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+              },
+              "registry_identifier": "04gsnvb07"
+            },
+            "model": null,
+            "path_to_cad": null,
+            "port_index": null,
+            "additional_settings": {},
+            "notes": null,
+            "filter_type": "Short pass",
+            "diameter": null,
+            "width": null,
+            "height": null,
+            "size_unit": "millimeter",
+            "thickness": null,
+            "thickness_unit": "millimeter",
+            "filter_wheel_index": null,
+            "cut_off_wavelength": null,
+            "cut_on_wavelength": null,
+            "center_wavelength": null,
+            "wavelength_unit": "nanometer",
+            "description": "850 nm shortpass filter"
+          },
+          "position": null
+        },
+        {
+          "name": "Bottom Face Camera Assembly",
+          "camera_target": "Bottom",
+          "camera": {
+            "device_type": "Detector",
+            "name": "Bottom Face Camera",
+            "serial_number": "1944074",
+            "manufacturer": {
+              "name": "Teledyne FLIR",
+              "abbreviation": "FLIR",
+              "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+              },
+              "registry_identifier": "01j1gwp17"
+            },
+            "model": "Blackfly S BFS-U3-16S2M",
+            "path_to_cad": null,
+            "port_index": null,
+            "additional_settings": {},
+            "notes": "",
+            "detector_type": "Camera",
+            "data_interface": "USB",
+            "cooling": "Air",
+            "computer_name": "",
+            "max_frame_rate": "226",
+            "frame_rate_unit": "hertz",
+            "immersion": null,
+            "chroma": "Monochrome",
+            "sensor_width": 1440,
+            "sensor_height": 1080,
+            "size_unit": "pixel",
+            "sensor_format": null,
+            "sensor_format_unit": null,
+            "bit_depth": null,
+            "bin_mode": "Additive",
+            "bin_width": null,
+            "bin_height": null,
+            "bin_unit": "pixel",
+            "gain": null,
+            "crop_width": 900,
+            "crop_height": 500,
+            "crop_unit": "pixel",
+            "recording_software": {
+              "name": "pyBpod",
+              "version": "26140c2",
+              "url": "https://github.com/rozmar/pySpinCapture",
+              "parameters": {}
+            },
+            "driver": null,
+            "driver_version": null
+          },
+          "lens": {
+            "device_type": "Lens",
+            "name": "Bottom Camera Lens",
+            "serial_number": "unknown",
+            "manufacturer": {
+              "name": "Other",
+              "abbreviation": null,
+              "registry": null,
+              "registry_identifier": null
+            },
+            "model": "Tamron 12VM412ASIR",
+            "path_to_cad": null,
+            "port_index": null,
+            "additional_settings": {},
+            "notes": "FocFF562-Di03-25x36al Length 4-12mm 1/2\" IR F/1.2",
+            "focal_length": null,
+            "focal_length_unit": "millimeter",
+            "size": null,
+            "lens_size_unit": "inch",
+            "optimized_wavelength_range": null,
+            "wavelength_unit": "nanometer",
+            "max_aperture": "f/1.2"
+          },
+          "filter": null,
+          "position": null
+        }
+      ],
+      "enclosure": null,
+      "ephys_assemblies": [],
+      "fiber_assemblies": [],
+      "stick_microscopes": [],
+      "laser_assemblies": [],
+      "patch_cords": [],
+      "light_sources": [
+        {
+          "device_type": "Laser",
+          "name": "Monaco Laser",
+          "serial_number": "0918012925",
+          "manufacturer": {
+            "name": "Coherent Scientific",
+            "abbreviation": null,
+            "registry": {
+              "name": "Research Organization Registry",
+              "abbreviation": "ROR"
+            },
+            "registry_identifier": "031tysd23"
+          },
+          "model": "Monaco",
+          "path_to_cad": null,
+          "port_index": null,
+          "additional_settings": {},
+          "notes": null,
+          "wavelength": 1035,
+          "wavelength_unit": "nanometer",
+          "maximum_power": "40000",
+          "power_unit": "milliwatt",
+          "coupling": "Free-space",
+          "coupling_efficiency": null,
+          "coupling_efficiency_unit": "percent",
+          "item_number": null
+        },
+        {
+          "device_type": "Laser",
+          "name": "Chameleon Laser",
+          "serial_number": "GDP.1185374.8460",
+          "manufacturer": {
+            "name": "Coherent Scientific",
+            "abbreviation": null,
+            "registry": {
+              "name": "Research Organization Registry",
+              "abbreviation": "ROR"
+            },
+            "registry_identifier": "031tysd23"
+          },
+          "model": "Chameleon",
+          "path_to_cad": null,
+          "port_index": null,
+          "additional_settings": {},
+          "notes": null,
+          "wavelength": 920,
+          "wavelength_unit": "nanometer",
+          "maximum_power": "1500",
+          "power_unit": "milliwatt",
+          "coupling": "Free-space",
+          "coupling_efficiency": null,
+          "coupling_efficiency_unit": "percent",
+          "item_number": null
+        }
+      ],
+      "detectors": [
+        {
+          "device_type": "Detector",
+          "name": "Red PMT",
+          "serial_number": "AF7695",
+          "manufacturer": {
+            "name": "Thorlabs",
+            "abbreviation": null,
+            "registry": {
+              "name": "Research Organization Registry",
+              "abbreviation": "ROR"
+            },
+            "registry_identifier": "04gsnvb07"
+          },
+          "model": "PMT2101",
+          "path_to_cad": null,
+          "port_index": null,
+          "additional_settings": {},
+          "notes": null,
+          "detector_type": "Photomultiplier Tube",
+          "data_interface": "PXI",
+          "cooling": "Air",
+          "computer_name": null,
+          "max_frame_rate": null,
+          "frame_rate_unit": "hertz",
+          "immersion": null,
+          "chroma": null,
+          "sensor_width": null,
+          "sensor_height": null,
+          "size_unit": "pixel",
+          "sensor_format": null,
+          "sensor_format_unit": null,
+          "bit_depth": null,
+          "bin_mode": "None",
+          "bin_width": null,
+          "bin_height": null,
+          "bin_unit": "pixel",
+          "gain": null,
+          "crop_width": null,
+          "crop_height": null,
+          "crop_unit": "pixel",
+          "recording_software": null,
+          "driver": null,
+          "driver_version": null
+        },
+        {
+          "device_type": "Detector",
+          "name": "Green PMT",
+          "serial_number": "AF7690",
+          "manufacturer": {
+            "name": "Thorlabs",
+            "abbreviation": null,
+            "registry": {
+              "name": "Research Organization Registry",
+              "abbreviation": "ROR"
+            },
+            "registry_identifier": "04gsnvb07"
+          },
+          "model": "PMT2101",
+          "path_to_cad": null,
+          "port_index": null,
+          "additional_settings": {},
+          "notes": null,
+          "detector_type": "Photomultiplier Tube",
+          "data_interface": "PXI",
+          "cooling": "Air",
+          "computer_name": null,
+          "max_frame_rate": null,
+          "frame_rate_unit": "hertz",
+          "immersion": null,
+          "chroma": null,
+          "sensor_width": null,
+          "sensor_height": null,
+          "size_unit": "pixel",
+          "sensor_format": null,
+          "sensor_format_unit": null,
+          "bit_depth": null,
+          "bin_mode": "None",
+          "bin_width": null,
+          "bin_height": null,
+          "bin_unit": "pixel",
+          "gain": null,
+          "crop_width": null,
+          "crop_height": null,
+          "crop_unit": "pixel",
+          "recording_software": null,
+          "driver": null,
+          "driver_version": null
+        }
+      ],
+      "objectives": [
+        {
+          "device_type": "Objective",
+          "name": "16x Objective",
+          "serial_number": "none",
+          "manufacturer": {
+            "name": "Nikon",
+            "abbreviation": null,
+            "registry": {
+              "name": "Research Organization Registry",
+              "abbreviation": "ROR"
+            },
+            "registry_identifier": "0280y9h11"
+          },
+          "model": "N16XLWD-PF - 16X Nikon CFI LWD Plan Fluorite Objective",
+          "path_to_cad": null,
+          "port_index": null,
+          "additional_settings": {},
+          "notes": "3.0 mm WD",
+          "numerical_aperture": "0.8",
+          "magnification": "16",
+          "immersion": "water",
+          "objective_type": null
+        }
+      ],
+      "filters": [
+        {
+          "device_type": "Filter",
+          "name": "Green emission filter",
+          "serial_number": null,
+          "manufacturer": {
+            "name": "Semrock",
+            "abbreviation": null,
+            "registry": null,
+            "registry_identifier": null
+          },
+          "model": "FF03-525/50-25",
+          "path_to_cad": null,
+          "port_index": null,
+          "additional_settings": {},
+          "notes": null,
+          "filter_type": "Band pass",
+          "diameter": "25",
+          "width": null,
+          "height": null,
+          "size_unit": "millimeter",
+          "thickness": null,
+          "thickness_unit": "millimeter",
+          "filter_wheel_index": null,
+          "cut_off_wavelength": null,
+          "cut_on_wavelength": null,
+          "center_wavelength": 525,
+          "wavelength_unit": "nanometer",
+          "description": null
+        },
+        {
+          "device_type": "Filter",
+          "name": "Red emission filter",
+          "serial_number": null,
+          "manufacturer": {
+            "name": "Chroma",
+            "abbreviation": null,
+            "registry": null,
+            "registry_identifier": null
+          },
+          "model": "ET620/60m",
+          "path_to_cad": null,
+          "port_index": null,
+          "additional_settings": {},
+          "notes": null,
+          "filter_type": "Band pass",
+          "diameter": "25",
+          "width": null,
+          "height": null,
+          "size_unit": "millimeter",
+          "thickness": null,
+          "thickness_unit": "millimeter",
+          "filter_wheel_index": null,
+          "cut_off_wavelength": null,
+          "cut_on_wavelength": null,
+          "center_wavelength": 620,
+          "wavelength_unit": "nanometer",
+          "description": null
+        },
+        {
+          "device_type": "Filter",
+          "name": "Emission dichroic",
+          "serial_number": null,
+          "manufacturer": {
+            "name": "Semrock",
+            "abbreviation": null,
+            "registry": null,
+            "registry_identifier": null
+          },
+          "model": "FF562-Di03-25x36",
+          "path_to_cad": null,
+          "port_index": null,
+          "additional_settings": {},
+          "notes": null,
+          "filter_type": "Dichroic",
+          "diameter": null,
+          "width": "36",
+          "height": "25",
+          "size_unit": "millimeter",
+          "thickness": null,
+          "thickness_unit": "millimeter",
+          "filter_wheel_index": null,
+          "cut_off_wavelength": 562,
+          "cut_on_wavelength": null,
+          "center_wavelength": null,
+          "wavelength_unit": "nanometer",
+          "description": null
+        }
+      ],
+      "lenses": [],
+      "digital_micromirror_devices": [],
+      "polygonal_scanners": [],
+      "pockels_cells": [],
+      "additional_devices": [],
+      "daqs": [
+        {
+          "device_type": "DAQ Device",
+          "name": "PXI",
+          "serial_number": null,
+          "manufacturer": {
+            "name": "National Instruments",
+            "abbreviation": null,
+            "registry": {
+              "name": "Research Organization Registry",
+              "abbreviation": "ROR"
+            },
+            "registry_identifier": "026exqw73"
+          },
+          "model": null,
+          "path_to_cad": null,
+          "port_index": null,
+          "additional_settings": {},
+          "notes": null,
+          "data_interface": "PXI",
+          "computer_name": "2p_PC",
+          "channels": [],
+          "firmware_version": null,
+          "hardware_version": null
+        }
+      ],
+      "calibrations": [
+        {
+          "calibration_date": "2022-01-04T00:00:00Z",
+          "device_name": "Monaco Laser",
+          "description": "Laser Power Calibration",
+          "input": {
+            "power_setting": []
+          },
+          "output": {
+            "power_output": []
+          },
+          "notes": "Calibration of the laser power output at different settings"
+        },
+        {
+          "calibration_date": "2022-01-04T00:00:00Z",
+          "device_name": "Chameleon Laser",
+          "description": "Laser Power Calibration",
+          "input": {
+            "power_setting": [
+              0,
+              5,
+              10,
+              15,
+              20,
+              40,
+              60,
+              80,
+              100
+            ]
+          },
+          "output": {
+            "power_output": [
+              1,
+              13,
+              30,
+              50,
+              67,
+              140,
+              213,
+              280,
+              340
+            ]
+          },
+          "notes": "Calibration of the laser power output at different settings"
+        }
+      ],
+      "ccf_coordinate_transform": null,
+      "origin": null,
+      "rig_axes": null,
+      "modalities": [
+        {
+          "name": "Planar optical physiology",
+          "abbreviation": "ophys"
+        },
+        {
+          "name": "Behavior videos",
+          "abbreviation": "behavior-videos"
+        },
+        {
+          "name": "Behavior",
+          "abbreviation": "behavior"
+        }
+      ],
+      "notes": null
+    },
+    "schema_version": "0.2.19",
+    "session": {
+      "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/session.py",
+      "schema_version": "0.2.6",
+      "protocol_id": [],
+      "experimenter_full_name": [
+        "Kayvon Daie",
+        "Marton Rozsa"
+      ],
+      "session_start_time": "2022-05-18T14:45:11.946999-07:00",
+      "session_end_time": "2022-05-18T15:21:38.589218-07:00",
+      "session_type": "BCI",
+      "iacuc_protocol": "2109",
+      "rig_id": "442_Bergamo_2p_photostim",
+      "calibrations": [],
+      "maintenance": [],
+      "subject_id": "608552",
+      "animal_weight_prior": null,
+      "animal_weight_post": null,
+      "weight_unit": "gram",
+      "anaesthesia": null,
+      "data_streams": [
+        {
+          "stream_start_time": "2022-05-18T14:45:11.946999-07:00",
+          "stream_end_time": "2022-05-18T14:47:24.887099-07:00",
+          "daq_names": [
+            "PXI"
+          ],
+          "camera_names": [],
+          "light_sources": [
+            {
+              "device_type": "Laser",
+              "name": "Chameleon Laser",
+              "wavelength": 920,
+              "wavelength_unit": "nanometer",
+              "excitation_power": "7.0",
+              "excitation_power_unit": "percent"
+            }
+          ],
+          "ephys_modules": [],
+          "stick_microscopes": [],
+          "manipulator_modules": [],
+          "detectors": [
+            {
+              "name": "Green PMT",
+              "exposure_time": null,
+              "exposure_time_unit": "millisecond",
+              "trigger_type": "Internal"
+            }
+          ],
+          "fiber_connections": [],
+          "fiber_modules": [],
+          "ophys_fovs": [
+            {
+              "index": 0,
+              "imaging_depth": 200,
+              "imaging_depth_unit": "micrometer",
+              "targeted_structure": "Primary Motor Cortex",
+              "fov_coordinate_ml": "1.5",
+              "fov_coordinate_ap": "1.5",
+              "fov_coordinate_unit": "micrometer",
+              "fov_reference": "there is no reference",
+              "fov_width": 800,
+              "fov_height": 800,
+              "fov_size_unit": "pixel",
+              "magnification": "1.4",
+              "fov_scale_factor": "0.8928571428571429",
+              "fov_scale_factor_unit": "um/pixel",
+              "frame_rate": "19.4151",
+              "frame_rate_unit": "hertz",
+              "coupled_fov_index": null,
+              "power": null,
+              "power_unit": "percent",
+              "power_ratio": null,
+              "scanfield_z": null,
+              "scanfield_z_unit": "micrometer",
+              "scanimage_roi_index": null,
+              "notes": null
+            }
+          ],
+          "slap_fovs": null,
+          "stack_parameters": null,
+          "mri_scans": [],
+          "stream_modalities": [
+            {
+              "name": "Planar optical physiology",
+              "abbreviation": "ophys"
+            }
+          ],
+          "software": [],
+          "notes": "tiff_stem:spont"
+        },
+        {
+          "stream_start_time": "2022-05-18T14:47:48.851999-07:00",
+          "stream_end_time": "2022-05-18T15:21:38.589218-07:00",
+          "daq_names": [
+            "PXI"
+          ],
+          "camera_names": [],
+          "light_sources": [
+            {
+              "device_type": "Laser",
+              "name": "Chameleon Laser",
+              "wavelength": 920,
+              "wavelength_unit": "nanometer",
+              "excitation_power": "7.0",
+              "excitation_power_unit": "percent"
+            }
+          ],
+          "ephys_modules": [],
+          "stick_microscopes": [],
+          "manipulator_modules": [],
+          "detectors": [
+            {
+              "name": "Green PMT",
+              "exposure_time": null,
+              "exposure_time_unit": "millisecond",
+              "trigger_type": "Internal"
+            }
+          ],
+          "fiber_connections": [],
+          "fiber_modules": [],
+          "ophys_fovs": [
+            {
+              "index": 0,
+              "imaging_depth": 200,
+              "imaging_depth_unit": "micrometer",
+              "targeted_structure": "Primary Motor Cortex",
+              "fov_coordinate_ml": "1.5",
+              "fov_coordinate_ap": "1.5",
+              "fov_coordinate_unit": "micrometer",
+              "fov_reference": "there is no reference",
+              "fov_width": 800,
+              "fov_height": 800,
+              "fov_size_unit": "pixel",
+              "magnification": "1.4",
+              "fov_scale_factor": "0.8928571428571429",
+              "fov_scale_factor_unit": "um/pixel",
+              "frame_rate": "19.4099",
+              "frame_rate_unit": "hertz",
+              "coupled_fov_index": null,
+              "power": null,
+              "power_unit": "percent",
+              "power_ratio": null,
+              "scanfield_z": null,
+              "scanfield_z_unit": "micrometer",
+              "scanimage_roi_index": null,
+              "notes": null
+            }
+          ],
+          "slap_fovs": null,
+          "stack_parameters": null,
+          "mri_scans": [],
+          "stream_modalities": [
+            {
+              "name": "Planar optical physiology",
+              "abbreviation": "ophys"
+            },
+            {
+              "name": "Behavior",
+              "abbreviation": "behavior"
+            }
+          ],
+          "software": [],
+          "notes": "tiff_stem:neuron3"
+        }
+      ],
+      "stimulus_epochs": [
+        {
+          "stimulus_start_time": "2022-05-18T14:45:11.946999-07:00",
+          "stimulus_end_time": "2022-05-18T14:47:24.887099-07:00",
+          "stimulus_name": "spontaneous activity",
+          "session_number": null,
+          "software": [],
+          "script": null,
+          "stimulus_modalities": [
+            "None"
+          ],
+          "stimulus_parameters": null,
+          "stimulus_device_names": [],
+          "speaker_config": null,
+          "light_source_config": null,
+          "output_parameters": {
+            "tiff_files": [
+              "spont_00001.tif",
+              "spont_00002.tif",
+              "spont_00003.tif",
+              "spont_00004.tif",
+              "spont_00005.tif",
+              "spont_00006.tif",
+              "spont_00007.tif",
+              "spont_00008.tif",
+              "spont_00009.tif",
+              "spont_00010.tif",
+              "spont_00011.tif",
+              "spont_00012.tif",
+              "spont_00013.tif",
+              "spont_00014.tif",
+              "spont_00015.tif",
+              "spont_00016.tif",
+              "spont_00017.tif",
+              "spont_00018.tif",
+              "spont_00019.tif",
+              "spont_00020.tif"
+            ],
+            "tiff_stem": "spont"
+          },
+          "reward_consumed_during_epoch": null,
+          "reward_consumed_unit": "microliter",
+          "trials_total": null,
+          "trials_finished": null,
+          "trials_rewarded": null,
+          "notes": "absence of any kind of stimulus"
+        },
+        {
+          "stimulus_start_time": "2022-05-18T14:47:48.851999-07:00",
+          "stimulus_end_time": "2022-05-18T15:21:38.589218-07:00",
+          "stimulus_name": "single neuron BCI conditioning",
+          "session_number": null,
+          "software": [
+            {
+              "name": "pyBpod",
+              "version": "1.8.2",
+              "url": "https://github.com/pybpod/pybpod",
+              "parameters": {}
+            }
+          ],
+          "script": {
+            "name": "pybpod_basic.py",
+            "version": "2d77d15",
+            "url": "https://github.com/rozmar/BCI-motor-control/blob/main/BCI-pybpod-protocols/bci_basic.py",
+            "parameters": {}
+          },
+          "stimulus_modalities": [
+            "Auditory"
+          ],
+          "stimulus_parameters": [],
+          "stimulus_device_names": [
+            "speaker",
+            "lickport"
+          ],
+          "speaker_config": null,
+          "light_source_config": null,
+          "output_parameters": {
+            "tiff_files": [
+              "neuron3_00001.tif",
+              "neuron3_00002.tif",
+              "neuron3_00003.tif",
+              "neuron3_00004.tif",
+              "neuron3_00005.tif",
+              "neuron3_00006.tif",
+              "neuron3_00007.tif",
+              "neuron3_00008.tif",
+              "neuron3_00009.tif",
+              "neuron3_00010.tif",
+              "neuron3_00011.tif",
+              "neuron3_00012.tif",
+              "neuron3_00013.tif",
+              "neuron3_00014.tif",
+              "neuron3_00015.tif",
+              "neuron3_00016.tif",
+              "neuron3_00017.tif",
+              "neuron3_00018.tif",
+              "neuron3_00019.tif",
+              "neuron3_00020.tif",
+              "neuron3_00021.tif",
+              "neuron3_00022.tif",
+              "neuron3_00023.tif",
+              "neuron3_00024.tif",
+              "neuron3_00025.tif",
+              "neuron3_00026.tif",
+              "neuron3_00027.tif",
+              "neuron3_00028.tif",
+              "neuron3_00029.tif",
+              "neuron3_00030.tif",
+              "neuron3_00031.tif",
+              "neuron3_00032.tif",
+              "neuron3_00033.tif",
+              "neuron3_00034.tif",
+              "neuron3_00035.tif",
+              "neuron3_00036.tif",
+              "neuron3_00037.tif",
+              "neuron3_00038.tif",
+              "neuron3_00039.tif",
+              "neuron3_00040.tif",
+              "neuron3_00041.tif",
+              "neuron3_00042.tif",
+              "neuron3_00043.tif",
+              "neuron3_00044.tif",
+              "neuron3_00045.tif",
+              "neuron3_00046.tif",
+              "neuron3_00047.tif",
+              "neuron3_00048.tif",
+              "neuron3_00049.tif",
+              "neuron3_00050.tif",
+              "neuron3_00051.tif",
+              "neuron3_00052.tif",
+              "neuron3_00053.tif",
+              "neuron3_00054.tif",
+              "neuron3_00055.tif",
+              "neuron3_00056.tif",
+              "neuron3_00057.tif",
+              "neuron3_00058.tif",
+              "neuron3_00059.tif",
+              "neuron3_00060.tif",
+              "neuron3_00061.tif",
+              "neuron3_00062.tif",
+              "neuron3_00063.tif",
+              "neuron3_00064.tif",
+              "neuron3_00065.tif",
+              "neuron3_00066.tif",
+              "neuron3_00067.tif",
+              "neuron3_00068.tif",
+              "neuron3_00069.tif",
+              "neuron3_00070.tif",
+              "neuron3_00071.tif",
+              "neuron3_00072.tif",
+              "neuron3_00073.tif",
+              "neuron3_00074.tif",
+              "neuron3_00075.tif",
+              "neuron3_00076.tif",
+              "neuron3_00077.tif",
+              "neuron3_00078.tif",
+              "neuron3_00079.tif",
+              "neuron3_00080.tif",
+              "neuron3_00081.tif",
+              "neuron3_00082.tif",
+              "neuron3_00083.tif",
+              "neuron3_00084.tif",
+              "neuron3_00085.tif",
+              "neuron3_00086.tif",
+              "neuron3_00087.tif",
+              "neuron3_00088.tif",
+              "neuron3_00089.tif",
+              "neuron3_00090.tif",
+              "neuron3_00091.tif",
+              "neuron3_00092.tif",
+              "neuron3_00093.tif",
+              "neuron3_00094.tif",
+              "neuron3_00095.tif",
+              "neuron3_00096.tif",
+              "neuron3_00097.tif",
+              "neuron3_00098.tif",
+              "neuron3_00099.tif",
+              "neuron3_00100.tif",
+              "neuron3_00101.tif",
+              "neuron3_00102.tif",
+              "neuron3_00103.tif",
+              "neuron3_00104.tif",
+              "neuron3_00105.tif",
+              "neuron3_00106.tif",
+              "neuron3_00107.tif",
+              "neuron3_00108.tif",
+              "neuron3_00109.tif",
+              "neuron3_00110.tif",
+              "neuron3_00111.tif",
+              "neuron3_00112.tif",
+              "neuron3_00113.tif",
+              "neuron3_00114.tif",
+              "neuron3_00115.tif",
+              "neuron3_00116.tif",
+              "neuron3_00117.tif",
+              "neuron3_00118.tif",
+              "neuron3_00119.tif",
+              "neuron3_00120.tif",
+              "neuron3_00121.tif",
+              "neuron3_00122.tif",
+              "neuron3_00123.tif",
+              "neuron3_00124.tif",
+              "neuron3_00125.tif",
+              "neuron3_00126.tif",
+              "neuron3_00127.tif",
+              "neuron3_00128.tif",
+              "neuron3_00129.tif",
+              "neuron3_00130.tif",
+              "neuron3_00131.tif",
+              "neuron3_00132.tif",
+              "neuron3_00133.tif",
+              "neuron3_00134.tif",
+              "neuron3_00135.tif",
+              "neuron3_00136.tif",
+              "neuron3_00137.tif",
+              "neuron3_00138.tif",
+              "neuron3_00139.tif",
+              "neuron3_00140.tif",
+              "neuron3_00141.tif",
+              "neuron3_00142.tif",
+              "neuron3_00143.tif",
+              "neuron3_00144.tif",
+              "neuron3_00145.tif",
+              "neuron3_00146.tif",
+              "neuron3_00147.tif",
+              "neuron3_00148.tif",
+              "neuron3_00149.tif",
+              "neuron3_00150.tif",
+              "neuron3_00151.tif",
+              "neuron3_00152.tif",
+              "neuron3_00153.tif",
+              "neuron3_00154.tif",
+              "neuron3_00155.tif",
+              "neuron3_00156.tif",
+              "neuron3_00157.tif",
+              "neuron3_00158.tif",
+              "neuron3_00159.tif",
+              "neuron3_00160.tif",
+              "neuron3_00161.tif",
+              "neuron3_00162.tif"
+            ],
+            "tiff_stem": "neuron3",
+            "hit_rate_trials_0_10": 1,
+            "hit_rate_trials_20_40": 0.75,
+            "total_hits": 88,
+            "average_hit_rate": 0.5432098765432098
+          },
+          "reward_consumed_during_epoch": null,
+          "reward_consumed_unit": "microliter",
+          "trials_total": 162,
+          "trials_finished": null,
+          "trials_rewarded": null,
+          "notes": null
+        }
+      ],
+      "mouse_platform_name": "Standard Mouse Tube",
+      "active_mouse_platform": false,
+      "reward_delivery": {
+        "reward_solution": "Water",
+        "reward_spouts": [
+          {
+            "side": "Center",
+            "starting_position": {
+              "device_position_transformations": [
+                {
+                  "type": "translation",
+                  "translation": [
+                    "0.0",
+                    "-6.0",
+                    "0.0"
+                  ]
+                },
+                {
+                  "type": "rotation",
+                  "rotation": [
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0"
+                  ]
+                }
+              ],
+              "device_origin": "tip of the lickspout",
+              "device_axes": [
+                {
+                  "name": "X",
+                  "direction": "lateral motion"
+                },
+                {
+                  "name": "Y",
+                  "direction": "rostro-caudal motion positive is towards mouse, negative is away"
+                },
+                {
+                  "name": "Z",
+                  "direction": "up/down"
+                }
+              ],
+              "notes": null
+            },
+            "variable_position": true
+          }
+        ],
+        "notes": null
+      },
+      "reward_consumed_total": null,
+      "reward_consumed_unit": "microliter",
+      "notes": "This metadata was generated from old data post-hoc on 2024-06-26 22:52:48.621399 - version 6"
+    },
+    "subject": {
+      "alleles": [],
+      "background_strain": null,
+      "breeding_info": {
+        "breeding_group": "TetO-GCaMP6s;Camk2a-tTA",
+        "maternal_genotype": "Camk2a-tTA/wt",
+        "maternal_id": "584262",
+        "paternal_genotype": null,
+        "paternal_id": "574377"
+      },
+      "date_of_birth": "2021-11-04",
+      "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+      "genotype": "Camk2a-tTA/wt;tetO-GCaMP6s/wt",
+      "housing": null,
+      "notes": null,
+      "restrictions": null,
+      "rrid": null,
+      "schema_version": "0.5.5",
+      "sex": "Female",
+      "source": {
+        "abbreviation": "AI",
+        "name": "Allen Institute",
+        "registry": {
+          "abbreviation": "ROR",
+          "name": "Research Organization Registry"
+        },
+        "registry_identifier": "03cpe7c52"
+      },
+      "species": {
+        "abbreviation": null,
+        "name": "Mus musculus",
+        "registry": {
+          "abbreviation": "NCBI",
+          "name": "National Center for Biotechnology Information"
+        },
+        "registry_identifier": "10090"
+      },
+      "subject_id": "608552",
+      "wellness_reports": []
+    }
+  }
