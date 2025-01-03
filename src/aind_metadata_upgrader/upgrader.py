@@ -20,7 +20,7 @@ class Upgrader():
         if major_version < 2:
             self.merge_instrument_rig()
 
-        return Metadata()
+        return Metadata.model_validate(self.data)
 
     def merge_instrument_rig(self):
         """Merge the instrument and rig metadata
