@@ -1,9 +1,12 @@
 {
-   "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/data_description.py",
-   "schema_version": "0.10.0",
+   "object_type": "Data description",
+   "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+   "schema_version": "2.0.9",
    "license": "CC-BY-4.0",
-   "creation_time": "2023-10-18T16:00:06",
-   "name": "ecephys_691897_2023-10-18_16-00-06",
+   "subject_id": "12345",
+   "creation_time": "2022-02-21T16:30:01Z",
+   "tags": null,
+   "name": "12345_2022-02-21_16-30-01",
    "institution": {
       "name": "Allen Institute for Neural Dynamics",
       "abbreviation": "AIND",
@@ -15,6 +18,7 @@
    },
    "funding_source": [
       {
+         "object_type": "Funding",
          "funder": {
             "name": "Allen Institute",
             "abbreviation": "AI",
@@ -30,20 +34,28 @@
    ],
    "data_level": "raw",
    "group": null,
-   "investigators": ["John Doe"],
-   "platform": {
-      "name": "Electrophysiology platform",
-      "abbreviation": "ecephys"
-   },
-   "project_name": null,
+   "investigators": [
+      {
+         "object_type": "Person",
+         "name": "Jane Smith",
+         "registry": {
+            "name": "Open Researcher and Contributor ID",
+            "abbreviation": "ORCID"
+         },
+         "registry_identifier": null
+      }
+   ],
+   "project_name": "Example project",
    "restrictions": null,
-   "modality": [
+   "modalities": [
       {
          "name": "Extracellular electrophysiology",
          "abbreviation": "ecephys"
+      },
+      {
+         "name": "Behavior videos",
+         "abbreviation": "behavior-videos"
       }
    ],
-   "subject_id": "691897",
-   "related_data": [],
    "data_summary": null
 }
