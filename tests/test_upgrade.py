@@ -1,4 +1,5 @@
 """Main entrypoint to the metadata-upgrader"""
+
 import unittest
 import os
 import json
@@ -11,31 +12,27 @@ class TestUpgrade(unittest.TestCase):
 
     def test_upgrade(self):
         """Test the upgrade process"""
-        base_dir = os.path.join(os.path.dirname(__file__), 'records')
+        base_dir = os.path.join(os.path.dirname(__file__), "records")
 
         # Get all the directories in tests/records/
-        dirs = [
-            name for name in os.listdir(base_dir)
-            if os.path.isdir(os.path.join(base_dir, name))
-        ]
+        dirs = [name for name in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, name))]
 
         # Load all the json files in the folder records/core_filename/*
         for dir in dirs:
             dir_path = os.path.join(base_dir, dir)
-            json_files = [
-                f for f in os.listdir(dir_path) if f.endswith('.json')
-            ]
+            json_files = [f for f in os.listdir(dir_path) if f.endswith(".json")]
 
             for json_file in json_files:
                 file_path = os.path.join(dir_path, json_file)
-                with open(file_path, 'r') as file:
+                with open(file_path, "r") as file:
                     print(f"Testing upgrade for {file_path}")
                     data = file.read()
                     # Here you would call the upgrade function
                     # For example: upgraded_data = upgrade(data)
                     # Then you can assert the expected outcome
 
-                    Upgrade(json.loads(data))
+                    upgraded = Upgrade(json.loads(data))
+                    self.assertIsNotNone(upgraded)
 
 
 if __name__ == "__main__":

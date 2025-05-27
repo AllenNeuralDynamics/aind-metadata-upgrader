@@ -20,7 +20,7 @@ class DataDescriptionV1V2(CoreUpgrader):
         # related_data
 
         # remaining fields:
-        schema_version = schema_version
+        schema_version = "2.0.0"
         license = data.get("license", License.CC_BY_40)
         subject_id = data.get("subject_id", None)
         creation_time = data.get("creation_time", None)
@@ -44,7 +44,7 @@ class DataDescriptionV1V2(CoreUpgrader):
         # Originally a List[PIDName], now List[Person]
         investigators = data.get("investigators", [])
         for i, investigator in enumerate(investigators):
-            # Convert from PIDName to Person 
+            # Convert from PIDName to Person
             if not isinstance(investigator, Person):
                 investigators[i] = Person(
                     name=investigator["name"],

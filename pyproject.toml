@@ -17,7 +17,8 @@ readme = "README.md"
 dynamic = ["version"]
 
 dependencies = [
-    'aind-data-schema',
+    'aind-data-schema @ git+https://github.com/AllenNeuralDynamics/aind-data-schema.git@release-v2.0.0',
+    'packaging',
 ]
 
 [project.optional-dependencies]
