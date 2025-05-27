@@ -62,6 +62,8 @@ class SubjectUpgraderV1V2(CoreUpgrader):
         if species and species["name"] == "Mus musculus":
             # Replace with the new Species model
             species = Species.MUS_MUSCULUS.model_dump()
+        if not species:
+            raise ValueError("Species must be specified")
 
         alleles = data.get("alleles", [])
 
