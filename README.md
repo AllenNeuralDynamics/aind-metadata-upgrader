@@ -7,4 +7,16 @@
 ![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen?logo=codecov)
 ![Python](https://img.shields.io/badge/python->=3.7-blue?logo=python)
 
-## 
+## I want to run the upgrader
+
+```
+from aind_metadata_upgrader.upgrade import Upgrade
+
+# Load your data: dict
+
+Upgrade(data)
+```
+
+## I want to develop new upgraders
+
+Add a new `CoreUpgrader` class, then include it in the `MAPPINGS` object.
