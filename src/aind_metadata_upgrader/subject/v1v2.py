@@ -1,13 +1,121 @@
 """<=v1.4 to v2.0 data description upgrade functions"""
 
+from typing import Optional
+
 from aind_metadata_upgrader.base import CoreUpgrader
+
+from aind_data_schema.components.subjects import MouseSubject, BreedingInfo
+
+from aind_data_schema_models.species import Strain, Species
+from aind_data_schema_models.organizations import Organization
 
 
 class SubjectUpgraderV1V2(CoreUpgrader):
     """Upgrade subject core file from v1.x to v2.0"""
+
+    def _get_background_strain(self, data: dict) -> dict:
+        """Handle background strain upgrade logic"""
+        background_strain = data.get("background_strain", None)
+        if isinstance(background_strain, str):
+            if background_strain == "BALB/C":
+                background_strain = Strain.BALB_C
+            elif background_strain == "C57BL/6J":
+                background_strain = Strain.C57BL_6J
+            else:
+                raise ValueError(f"Unsupported background strain: {background_strain}")
+        if not background_strain:
+            background_strain = Strain.C57BL_6J  # Default to C57BL/6J if not specified [TODO: FIX THIS]
+
+        return background_strain.model_dump()
+
+    def _get_breeding_info(self, data: dict) -> Optional[dict]:
+        """Handle breeding info upgrade logic"""
+        breeding_info = data.get("breeding_info", None)
+        if breeding_info:
+            # Ensure object_type is set
+            breeding_info["object_type"] = "Breeding info"
+            # Ensure maternal and paternal genotypes are strings
+            if not breeding_info.get("maternal_genotype"):
+                breeding_info["maternal_genotype"] = "unknown"
+            if not breeding_info.get("paternal_genotype"):
+                breeding_info["paternal_genotype"] = "unknown"
+
+        return breeding_info
 
     def upgrade(self, data: dict, schema_version: str) -> dict:
         """Upgrade the subject core file data to v2.0"""
 
         if not isinstance(data, dict):
             raise ValueError("Data must be a dictionary")
+
+        # root level fields
+        subject_id = data.get("subject_id")
+        notes = data.get("notes", "")
+
+        # subject details
+        sex = data.get("sex", "unknown")
+        date_of_birth = data.get("date_of_birth", "")
+        genotype = data.get("genotype", "unknown")
+
+        # Species model seems to have changed for some records, make sure it matches the new model
+        species = data.get("species", None)
+        if species and species["name"] == "Mus musculus":
+            # Replace with the new Species model
+            species = Species.MUS_MUSCULUS.model_dump()
+
+        alleles = data.get("alleles", [])
+
+        # Handle upgrade to new Strain
+        background_strain = self._get_background_strain(data)
+
+        # Add object_type
+        breeding_info = self._get_breeding_info(data)
+
+        # If missing, assign to "Other" and update notes
+        source = data.get("source", None)
+        if not source:
+            source = Organization.OTHER
+            if not notes:
+                notes = ""
+            notes += " (SubjectUpgraderV1V2): Source not specified, defaulting to 'Other'."
+
+        rrid = data.get("rrid", None)
+        restrictions = data.get("restrictions", None)
+
+        # Upgrade to a list if missing
+        wellness_reports = data.get("wellness_reports", [])
+        if not wellness_reports:
+            wellness_reports = []
+
+        # Add object type
+        housing = data.get("housing", None)
+        if housing:
+            housing["object_type"] = "Housing"
+
+        # Package MouseSubject
+        if species["name"] == "Mus musculus":
+            mouse_subject = MouseSubject(
+                sex=sex,
+                date_of_birth=date_of_birth,
+                strain=background_strain,
+                species=species,
+                alleles=alleles,
+                genotype=genotype,
+                breeding_info=BreedingInfo(**breeding_info) if breeding_info else None,
+                wellness_reports=wellness_reports,
+                housing=housing,
+                source=source,
+                restrictions=restrictions,
+                rrid=rrid,
+            )
+            mouse_subject = mouse_subject.model_dump()
+        else:
+            raise ValueError(f"Species {species['name']} is not supported for V1->V2 upgrade")
+
+        return {
+            "object_type": "Subject",
+            "subject_id": subject_id,
+            "notes": notes,
+            "subject_details": mouse_subject,
+            "schema_version": schema_version,
+        }

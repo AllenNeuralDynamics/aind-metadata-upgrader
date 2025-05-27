@@ -4,6 +4,7 @@ from packaging.version import Version
 
 from aind_data_schema.core.data_description import DataDescription
 from aind_data_schema.core.subject import Subject
+from aind_data_schema.core.metadata import CORE_FILES
 from aind_metadata_upgrader.upgrade_mapping import MAPPING
 
 
@@ -20,7 +21,10 @@ class Upgrade:
         """Initialize the upgrader"""
 
         self.data = record
-        self.upgrade_core_file("data_description")
+
+        for core_file in CORE_FILES:
+            if core_file in record:
+                self.upgrade_core_file(core_file)
 
     def _try_validate(self, core_file: str, data: dict):
         """Try to validate the core file data against its schema"""
@@ -39,6 +43,10 @@ class Upgrade:
 
         if core_file not in self.data:
             raise ValueError(f"Core file '{core_file}' not found in record")
+
+        if core_file not in UPGRADE_VERSIONS:
+            print(f"Skipping upgrade for {core_file} (not in UPGRADE_VERSIONS)")
+            return {}  # [TODO: Remove when all core files are upgradeable]
 
         core_data = self.data[core_file]
 
