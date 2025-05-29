@@ -14,7 +14,7 @@ from aind_metadata_upgrader.upgrade import Upgrade
 
 # Load your data: dict
 
-Upgrade(data)
+upgraded = Upgrade(data)
 ```
 
 ## I want to develop new upgraders

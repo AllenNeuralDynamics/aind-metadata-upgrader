@@ -3,14 +3,16 @@
 from packaging.version import Version
 
 from aind_data_schema.core.data_description import DataDescription
+from aind_data_schema.core.quality_control import QualityControl
 from aind_data_schema.core.subject import Subject
-from aind_data_schema.core.metadata import CORE_FILES
+from aind_data_schema.core.metadata import CORE_FILES, Metadata
 from aind_metadata_upgrader.upgrade_mapping import MAPPING
 
 
 UPGRADE_VERSIONS = {
     "data_description": DataDescription.model_fields["schema_version"].default,
     "subject": Subject.model_fields["schema_version"].default,
+    "quality_control": QualityControl.model_fields["schema_version"].default,
 }
 
 
@@ -22,9 +24,15 @@ class Upgrade:
 
         self.data = record
 
+        core_files = {}
         for core_file in CORE_FILES:
             if core_file in record:
-                self.upgrade_core_file(core_file)
+                core_files[core_file] = self.upgrade_core_file(core_file)
+
+        # try:
+        #     self.metadata = Metadata(**core_files)
+        # except Exception as e:
+        #     raise ValueError(f"Failed to validated Metadata: {e}")
 
     def _try_validate(self, core_file: str, data: dict):
         """Try to validate the core file data against its schema"""
@@ -33,6 +41,8 @@ class Upgrade:
                 return DataDescription(**data)
             elif core_file == "subject":
                 return Subject(**data)
+            elif core_file == "quality_control":
+                return QualityControl(**data)
             else:
                 raise ValueError(f"Unknown core file type: {core_file}")
         except Exception as e:
