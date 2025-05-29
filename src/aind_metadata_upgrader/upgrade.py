@@ -3,6 +3,7 @@
 from packaging.version import Version
 
 from aind_data_schema.core.data_description import DataDescription
+from aind_data_schema.core.instrument import Instrument
 from aind_data_schema.core.quality_control import QualityControl
 from aind_data_schema.core.subject import Subject
 from aind_data_schema.core.metadata import CORE_FILES, Metadata
@@ -11,6 +12,7 @@ from aind_metadata_upgrader.upgrade_mapping import MAPPING
 
 UPGRADE_VERSIONS = {
     "data_description": DataDescription.model_fields["schema_version"].default,
+    "instrument": Instrument.model_fields["schema_version"].default,
     "subject": Subject.model_fields["schema_version"].default,
     "quality_control": QualityControl.model_fields["schema_version"].default,
 }
@@ -43,6 +45,8 @@ class Upgrade:
                 return Subject(**data)
             elif core_file == "quality_control":
                 return QualityControl(**data)
+            elif core_file == "instrument":
+                return Instrument(**data)
             else:
                 raise ValueError(f"Unknown core file type: {core_file}")
         except Exception as e:
@@ -59,6 +63,10 @@ class Upgrade:
             return {}  # [TODO: Remove when all core files are upgradeable]
 
         core_data = self.data[core_file]
+
+        if not core_data:
+            print(f"No data found for {core_file}, skipping upgrade")
+            return None
 
         print(f"Upgrading {core_file}:{core_data['schema_version']} -> {UPGRADE_VERSIONS[core_file]}")
 

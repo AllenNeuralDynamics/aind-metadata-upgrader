@@ -3,6 +3,7 @@
 from packaging.specifiers import SpecifierSet
 
 from aind_metadata_upgrader.data_description.v1v2 import DataDescriptionV1V2
+from aind_metadata_upgrader.instrument.v1v2 import InstrumentUpgraderV1V2
 from aind_metadata_upgrader.quality_control.v1v2 import QCUpgraderV1V2
 from aind_metadata_upgrader.subject.v1v2 import SubjectUpgraderV1V2
 
@@ -15,7 +16,7 @@ DATA_DESCRIPTION = [
 ]
 
 INSTRUMENT = [
-    (SpecifierSet("<=2.0.0"), None),
+    (SpecifierSet("<=2.0.0"), InstrumentUpgraderV1V2),
 ]
 
 METADATA = [
