@@ -84,8 +84,56 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         return CoordinateSystemLibrary.BREGMA_ARI.model_dump()
 
-    def _get_components(self, data: dict) -> Optional[list]:
+    def _upgrade_devices(self, devices: list, object_type: str) -> list:
+        """Upgrade a device to it's new device model"""
+
+        if not devices:
+            return []
+
+        for i, device in enumerate(devices):
+            device["object_type"] = object_type
+
+            if "name" not in device or not device["name"]:
+                device["name"] = f"{object_type} {i+1}"
+
+            devices[i] = device
+
+        return devices
+
+    def _get_components_connections(self, data: dict) -> Optional[list]:
         """Pull components from data"""
+
+        # Note we are ignoring optical_tables, which are gone
+        enclosure = data.get("enclosure", None)
+        if enclosure:
+            enclosure["object_type"] = "Enclosure"
+
+        objectives = data.get("objectives", [])
+        objectives = self._upgrade_devices(objectives, "Objective")
+        detectors = data.get("detectors", [])
+        detectors = self._upgrade_devices(detectors, "Detector")
+        light_sources = data.get("light_sources", [])
+        light_sources = self._upgrade_devices(light_sources, "Light source")
+        lenses = data.get("lenses", [])
+        lenses = self._upgrade_devices(lenses, "Lens")
+        fluorescence_filters = data.get("fluorescence_filters", [])
+        fluorescence_filters = self._upgrade_devices(fluorescence_filters, "Fluorescence filter")
+        motorized_stages = data.get("motorized_stages", [])
+        motorized_stages = self._upgrade_devices(motorized_stages, "Motorized stage")
+        scanning_stages = data.get("scanning_stages", [])
+        scanning_stages = self._upgrade_devices(scanning_stages, "Scanning stage")
+        additional_devices = data.get("additional_devices", [])
+        additional_devices = self._upgrade_devices(additional_devices, "Device")
+
+        print(f"All devices: {objectives + detectors + light_sources + lenses + fluorescence_filters + motorized_stages + scanning_stages + additional_devices}")
+
+        com_ports = data.get("com_ports", [])
+        daqs = data.get("daqs", [])
+
+        # Compile all components, make sure to add object_type fields
+
+        # Handle connections and upgrade DAQDevice to new version
+
         return []
 
     def upgrade(self, data: dict, schema_version: str) -> dict:
@@ -100,7 +148,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         temperature_control = data.get("temperature_control", None)
         calibrations = self._get_calibration(data)
         coordinate_system = self._get_coordinate_system(data)
-        components = self._get_components(data)
+        components = self._get_components_connections(data)
 
         # Fields we are removing
         # optical_tables
