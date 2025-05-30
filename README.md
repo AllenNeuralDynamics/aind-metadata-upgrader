@@ -9,12 +9,13 @@
 
 ## I want to run the upgrader
 
-```
+```python
 from aind_metadata_upgrader.upgrade import Upgrade
 
-# Load your data: dict
+# <Your code here: load your data as a dictionary, e.g. json.load(f)>
 
-upgraded = Upgrade(data)
+upgraded_record = Upgrade(data)
+upgraded_record.save()
 ```
 
 ## I want to develop new upgraders

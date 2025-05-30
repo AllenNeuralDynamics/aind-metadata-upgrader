@@ -36,6 +36,10 @@ class Upgrade:
         # except Exception as e:
         #     raise ValueError(f"Failed to validated Metadata: {e}")
 
+    def save(self):
+        """Save the upgraded metadata to a standard file"""
+        self.metadata.write_standard_file()
+
     def _try_validate(self, core_file: str, data: dict):
         """Try to validate the core file data against its schema"""
         try:
