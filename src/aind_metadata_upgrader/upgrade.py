@@ -68,10 +68,13 @@ class Upgrade:
             print(f"No data found for {core_file}, skipping upgrade")
             return None
 
-        print(f"Upgrading {core_file}:{core_data['schema_version']} -> {UPGRADE_VERSIONS[core_file]}")
-
-        original_schema_version = Version(core_data["schema_version"])
+        if "schema_version" in core_data:
+            original_schema_version = Version(core_data["schema_version"])
+        else:
+            original_schema_version = Version("0.0.0")  # Default to 0.0.0 if not present
         upgraded_schema_version = Version(UPGRADE_VERSIONS[core_file])
+
+        print(f"Upgrading {core_file}:{original_schema_version} -> {upgraded_schema_version}")
 
         upgraded_data = core_data
 

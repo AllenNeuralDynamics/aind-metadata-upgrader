@@ -1,19 +1,72 @@
 """<=v1.4 to v2.0 data description upgrade functions"""
 
 from aind_metadata_upgrader.base import CoreUpgrader
-from aind_data_schema_models.licenses import License
+
+
 from aind_data_schema.components.identifiers import Person
+from aind_data_schema.core.data_description import Funding
 
 from aind_data_schema_models.organizations import Organization
 from aind_data_schema_models.modalities import Modality
+from aind_data_schema_models.licenses import License
+
+from aind_metadata_upgrader.settings import FAKE_MISSING_DATA
 
 DATA_LEVEL_MAP = {
     "raw data": "raw",
 }
 
+MODALITY_MAP = {
+    "SmartSPIM": Modality.SPIM,
+}
+
 
 class DataDescriptionV1V2(CoreUpgrader):
     """Upgrade data description from v1.4 to v2.0"""
+
+    def _get_funding_source(self, data: dict) -> list:
+        """Get and upgrade funding source information from the data dictionary."""
+
+        funding_source = data.get("funding_source", [])
+
+        # Add object_type to funding_source (List[FundingSource])
+        for i, funding in enumerate(funding_source):
+            funding_source[i]["object_type"] = "Funding source"
+
+        # Upgrade "fundee" field to Person objects
+        for i, funding in enumerate(funding_source):
+            if isinstance(funding["fundee"], str):
+                if "," in funding["fundee"]:
+                    # Handle records where multiple fundees were put into one single string
+                    fundees = funding["fundee"].split(",")
+                    funding["fundee"] = [Person(name=fundee.strip()) for fundee in fundees]
+                else:
+                    funding["fundee"] = Person(
+                        name=funding["fundee"],
+                    )
+            funding_source[i] = funding
+
+        # Update "funder" field to Organization objects
+        for i, funding in enumerate(funding_source):
+            if isinstance(funding["funder"], str):
+                if "," in funding["funder"]:
+                    # Handle records where multiple funders were put into one single string
+                    funders = funding["funder"].split(",")
+                    # We can only keep one funder
+                    funding["funder"] = Organization.from_name(funders[0].strip())
+                else:
+                    funding["funder"] = Organization.from_name(funding["funder"])
+            funding_source[i] = funding
+
+        if len(funding_source) == 0 and FAKE_MISSING_DATA:
+            funding_source.append(
+                Funding(
+                    funder=Organization.AI,
+                    fundee=[Person(name="unknown")],
+                ).model_dump()
+            )
+
+        return funding_source
 
     def upgrade(self, data: dict, schema_version: str) -> dict:
         """Upgrade the data description to v2.0"""
@@ -47,15 +100,7 @@ class DataDescriptionV1V2(CoreUpgrader):
             except ValueError:
                 raise ValueError(f"Unsupported institution abbreviation: {institution}")
 
-        funding_source = data.get("funding_source", [])
-        # Add object_type to funding_source (List[FundingSource])
-        for i, funding in enumerate(funding_source):
-            funding["object_type"] = "Funding source"
-            if isinstance(funding["fundee"], str):
-                funding["fundee"] = Person(
-                    name=funding["fundee"],
-                )
-            funding_source[i] = funding
+        funding_source = self._get_funding_source(data)
 
         # Handle old data_level types
         data_level = data.get("data_level", None)
@@ -89,8 +134,16 @@ class DataDescriptionV1V2(CoreUpgrader):
         if not isinstance(modalities, list):
             if isinstance(modalities, str):
                 # Coerce single modality to it's object
-
-            modalities = [modalities]
+                if modalities in MODALITY_MAP:
+                    modalities = [MODALITY_MAP[modalities].model_dump()]
+                else:
+                    # Convert try to get a Modality object from abbreviation
+                    try:
+                        modalities = [Modality.from_abbreviation(modalities).model_dump()]
+                    except Exception as e:
+                        raise ValueError(f"Unsupported modality abbreviation: {modalities}") from e
+            else:
+                modalities = [modalities]
 
         # New fields
         data_summary = data.get("data_summary", None)

@@ -40,7 +40,10 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         modalities = []
         instrument_type = data.get("instrument_type", None)
         if not instrument_type:
-            raise ValueError("Instrument type is required")
+            # Try to get it from the "type" field
+            instrument_type = data.get("type", None)
+            if not instrument_type:
+                raise ValueError("Instrument type is required")
         else:
             if instrument_type == "confocal":
                 modalities.append(Modality.CONFOCAL.model_dump())
