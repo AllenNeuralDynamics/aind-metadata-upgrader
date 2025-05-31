@@ -1,9 +1,12 @@
 """Upgraders for specific devices from v1 to v2."""
 
-from aind_data_schema.components.devices import Enclosure
+from aind_data_schema.components.devices import (
+    Enclosure,
+    Objective,
+)
 
 
-def _upgrade_enclosure(data: dict) -> dict:
+def upgrade_enclosure(data: dict) -> dict:
     """Upgrade enclosure data to the new model."""
 
     enclosure = Enclosure(
@@ -11,3 +14,13 @@ def _upgrade_enclosure(data: dict) -> dict:
     )
 
     return enclosure.model_dump()
+
+
+def upgrade_objective(data: dict) -> dict:
+    """Upgrade objective data to the new model."""
+
+    objective = Objective(
+        **data,
+    )
+
+    return objective.model_dump()

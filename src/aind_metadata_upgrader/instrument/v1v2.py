@@ -5,6 +5,10 @@ import re
 from datetime import date
 
 from aind_metadata_upgrader.base import CoreUpgrader
+from aind_metadata_upgrader.instrument.v1v2_devices import (
+    upgrade_enclosure,
+    upgrade_objective,
+)
 
 from aind_data_schema.components.measurements import Calibration
 from aind_data_schema.components.coordinates import CoordinateSystemLibrary
@@ -84,19 +88,11 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         return CoordinateSystemLibrary.BREGMA_ARI.model_dump()
 
-    def _upgrade_devices(self, devices: list, object_type: str) -> list:
+    def _none_to_list(self, devices: Optional[list]) -> list:
         """Upgrade a device to it's new device model"""
 
         if not devices:
             return []
-
-        for i, device in enumerate(devices):
-            device["object_type"] = object_type
-
-            if "name" not in device or not device["name"]:
-                device["name"] = f"{object_type} {i+1}"
-
-            devices[i] = device
 
         return devices
 
@@ -105,25 +101,25 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         # Note we are ignoring optical_tables, which are gone
         enclosure = data.get("enclosure", None)
-        if enclosure:
-            enclosure["object_type"] = "Enclosure"
+        enclosure = upgrade_enclosure(enclosure) if enclosure else None
 
         objectives = data.get("objectives", [])
-        objectives = self._upgrade_devices(objectives, "Objective")
+        objectives = self._none_to_list(objectives)
+        objectives = [upgrade_objective(objective) for objective in objectives]
         detectors = data.get("detectors", [])
-        detectors = self._upgrade_devices(detectors, "Detector")
+        detectors = self._none_to_list(detectors)
         light_sources = data.get("light_sources", [])
-        light_sources = self._upgrade_devices(light_sources, "Light source")
+        light_sources = self._none_to_list(light_sources)
         lenses = data.get("lenses", [])
-        lenses = self._upgrade_devices(lenses, "Lens")
+        lenses = self._none_to_list(lenses)
         fluorescence_filters = data.get("fluorescence_filters", [])
-        fluorescence_filters = self._upgrade_devices(fluorescence_filters, "Fluorescence filter")
+        fluorescence_filters = self._none_to_list(fluorescence_filters)
         motorized_stages = data.get("motorized_stages", [])
-        motorized_stages = self._upgrade_devices(motorized_stages, "Motorized stage")
+        motorized_stages = self._none_to_list(motorized_stages)
         scanning_stages = data.get("scanning_stages", [])
-        scanning_stages = self._upgrade_devices(scanning_stages, "Scanning stage")
+        scanning_stages = self._none_to_list(scanning_stages)
         additional_devices = data.get("additional_devices", [])
-        additional_devices = self._upgrade_devices(additional_devices, "Device")
+        additional_devices = self._none_to_list(additional_devices)
 
         print(f"All devices: {objectives + detectors + light_sources + lenses + fluorescence_filters + motorized_stages + scanning_stages + additional_devices}")
 
