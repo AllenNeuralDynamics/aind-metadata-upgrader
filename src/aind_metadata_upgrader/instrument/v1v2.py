@@ -96,7 +96,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         return devices
 
-    def _get_components_connections(self, data: dict) -> Optional[list]:
+    def _get_components_connections(self, data: dict) -> tuple[Optional[list], list]:
         """Pull components from data"""
 
         # Note we are ignoring optical_tables, which are gone
@@ -106,29 +106,45 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         objectives = data.get("objectives", [])
         objectives = self._none_to_list(objectives)
         objectives = [upgrade_objective(objective) for objective in objectives]
+
         detectors = data.get("detectors", [])
         detectors = self._none_to_list(detectors)
+
         light_sources = data.get("light_sources", [])
         light_sources = self._none_to_list(light_sources)
+
         lenses = data.get("lenses", [])
         lenses = self._none_to_list(lenses)
+
         fluorescence_filters = data.get("fluorescence_filters", [])
         fluorescence_filters = self._none_to_list(fluorescence_filters)
+
         motorized_stages = data.get("motorized_stages", [])
         motorized_stages = self._none_to_list(motorized_stages)
+
         scanning_stages = data.get("scanning_stages", [])
         scanning_stages = self._none_to_list(scanning_stages)
+
         additional_devices = data.get("additional_devices", [])
         additional_devices = self._none_to_list(additional_devices)
 
+
         com_ports = data.get("com_ports", [])
+
         daqs = data.get("daqs", [])
 
-        # Compile all components, make sure to add object_type fields
+        # Compile components list
+        components = [
+            *objectives,
+        ]
+        if enclosure:
+            components.append(enclosure)
 
         # Handle connections and upgrade DAQDevice to new version
 
-        return []
+        connections = []
+
+        return (components, connections)
 
     def upgrade(self, data: dict, schema_version: str) -> dict:
         """Upgrade the subject core file data to v2.0"""
@@ -142,7 +158,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         temperature_control = data.get("temperature_control", None)
         calibrations = self._get_calibration(data)
         coordinate_system = self._get_coordinate_system(data)
-        components = self._get_components_connections(data)
+        components, connections = self._get_components_connections(data)
 
         # Fields we are removing
         # optical_tables
