@@ -27,7 +27,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         location = data.get("location", None)  # Default location to None
 
         if not location:
-            id_regex = re.compile("^[a-zA-Z0-9]+_[a-zA-Z0-9]+_\d{4}-\d{2}-\d{2}$")
+            id_regex = re.compile(r"^[a-zA-Z0-9]+_[a-zA-Z0-9]+_\d{4}-\d{2}-\d{2}$")
             match = re.search(id_regex, instrument_id)
             if match:
                 parts = instrument_id.split("_")
@@ -120,8 +120,6 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         scanning_stages = self._none_to_list(scanning_stages)
         additional_devices = data.get("additional_devices", [])
         additional_devices = self._none_to_list(additional_devices)
-
-        print(f"All devices: {objectives + detectors + light_sources + lenses + fluorescence_filters + motorized_stages + scanning_stages + additional_devices}")
 
         com_ports = data.get("com_ports", [])
         daqs = data.get("daqs", [])
