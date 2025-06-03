@@ -14,8 +14,6 @@ from aind_data_schema.components.devices import (
     ScanningStage,
     AdditionalImagingDevice,
     DAQDevice,
-    DAQChannel,
-    DaqChannelType,
 )
 
 from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
