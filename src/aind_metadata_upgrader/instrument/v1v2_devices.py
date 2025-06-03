@@ -16,6 +16,7 @@ from aind_data_schema.components.devices import (
 )
 
 from aind_data_schema_models.organizations import Organization
+from aind_data_schema_models.devices import ImagingDeviceType
 
 counts = {}
 saved_connections = []
@@ -60,6 +61,12 @@ def repair_manufacturer(data: dict) -> dict:
     if "manufacturer" in data and isinstance(data["manufacturer"], str):
         # Convert string to Organization object
         data["manufacturer"] = Organization.from_name(data["manufacturer"]).model_dump()
+
+    if data["manufacturer"]["name"] == "Other" and not data["notes"]:
+        data["notes"] = (
+            " (v1v2 upgrade): 'manufacturer' was set to 'Other'"
+            " and notes were empty, manufacturer is unknown."
+        )
 
     return data
 
@@ -161,8 +168,9 @@ def upgrade_light_source(data: dict) -> dict:
     remove(data, "device_type")
     remove(data, "max_power")
     remove(data, "maximum_power")
+    remove(data, "power_unit")
     remove(data, "item_number")
-    
+
     if "coupling" in data:
         # Convert coupling to a more readable format
         data["coupling"] = COUPLING_MAPPING.get(data["coupling"], data["coupling"])
@@ -218,6 +226,14 @@ def upgrade_fluorescence_filters(data: dict) -> dict:
     remove(data, "cut_on_frequency")
     remove(data, "cut_on_frequency_unit")
     remove(data, "description")
+    remove(data, "height")
+    remove(data, "width")
+    remove(data, "size_unit")
+
+    # Ensure filter_type is set
+    if "type" in data:
+        data["filter_type"] = data["type"]
+        remove(data, "type")
 
     filter_device = Filter(**data)
     return filter_device.model_dump()
@@ -255,6 +271,10 @@ def upgrade_additional_devices(data: dict) -> dict:
     # Remove old Device fields
     remove(data, "device_type")
     remove(data, "type")
+
+    if "imaging_device_type" not in data:
+        data["imaging_device_type"] = ImagingDeviceType.OTHER
+        data["notes"] = data["notes"] if data["notes"] else "" + " (v1v2 upgrade): 'imaging_device_type' field was missing, defaulting to 'Other'."
 
     device = AdditionalImagingDevice(**data)
     return device.model_dump()
