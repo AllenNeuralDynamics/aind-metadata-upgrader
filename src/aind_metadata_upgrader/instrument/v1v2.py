@@ -248,6 +248,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         return {
             "object_type": "Instrument",
+            "schema_version": schema_version,
             "instrument_id": instrument_id,
             "location": location,
             "modification_date": modification_date,

@@ -11,13 +11,10 @@ from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.licenses import License
 
 from aind_metadata_upgrader.settings import FAKE_MISSING_DATA
+from aind_metadata_upgrader.utils.utils import upgrade_v1_modalities
 
 DATA_LEVEL_MAP = {
     "raw data": "raw",
-}
-
-MODALITY_MAP = {
-    "SmartSPIM": Modality.SPIM,
 }
 
 
@@ -130,20 +127,7 @@ class DataDescriptionV1V2(CoreUpgrader):
         restrictions = data.get("restrictions", None)
 
         # Modalities may need to be converted to a list
-        modalities = data.get("modality", [])
-        if not isinstance(modalities, list):
-            if isinstance(modalities, str):
-                # Coerce single modality to it's object
-                if modalities in MODALITY_MAP:
-                    modalities = [MODALITY_MAP[modalities].model_dump()]
-                else:
-                    # Convert try to get a Modality object from abbreviation
-                    try:
-                        modalities = [Modality.from_abbreviation(modalities).model_dump()]
-                    except Exception as e:
-                        raise ValueError(f"Unsupported modality abbreviation: {modalities}") from e
-            else:
-                modalities = [modalities]
+        modalities = upgrade_v1_modalities(data)
 
         # New fields
         data_summary = data.get("data_summary", None)

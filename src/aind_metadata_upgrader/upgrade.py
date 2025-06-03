@@ -6,15 +6,33 @@ from aind_data_schema.core.data_description import DataDescription
 from aind_data_schema.core.instrument import Instrument
 from aind_data_schema.core.quality_control import QualityControl
 from aind_data_schema.core.subject import Subject
-from aind_data_schema.core.metadata import CORE_FILES, Metadata
+from aind_data_schema.core.metadata import Metadata
 from aind_metadata_upgrader.upgrade_mapping import MAPPING
 
+CORE_FILES = [
+    "subject",
+    "data_description",
+    "procedures",
+    "instrument",
+    "processing",
+    "acquisition",
+    "quality_control",
+    "model",
+    "rig",
+    "session",
+]
 
 UPGRADE_VERSIONS = {
     "data_description": DataDescription.model_fields["schema_version"].default,
     "instrument": Instrument.model_fields["schema_version"].default,
     "subject": Subject.model_fields["schema_version"].default,
     "quality_control": QualityControl.model_fields["schema_version"].default,
+    "rig": Instrument.model_fields["schema_version"].default,
+}
+
+CORE_MAPPING = {
+    "rig": "instrument",
+    "session": "acquisition",
 }
 
 
@@ -29,7 +47,9 @@ class Upgrade:
         core_files = {}
         for core_file in CORE_FILES:
             if core_file in record:
-                core_files[core_file] = self.upgrade_core_file(core_file)
+                core_files[CORE_MAPPING[core_file] if core_file in CORE_MAPPING.keys() else core_file] = (
+                    self.upgrade_core_file(core_file)
+                )
 
         # try:
         #     self.metadata = Metadata(**core_files)
@@ -50,6 +70,8 @@ class Upgrade:
             elif core_file == "quality_control":
                 return QualityControl(**data)
             elif core_file == "instrument":
+                return Instrument(**data)
+            elif core_file == "rig":
                 return Instrument(**data)
             else:
                 raise ValueError(f"Unknown core file type: {core_file}")

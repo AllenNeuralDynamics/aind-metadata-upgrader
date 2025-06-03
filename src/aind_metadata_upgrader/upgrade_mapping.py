@@ -6,6 +6,7 @@ from aind_metadata_upgrader.data_description.v1v2 import DataDescriptionV1V2
 from aind_metadata_upgrader.instrument.v1v2 import InstrumentUpgraderV1V2
 from aind_metadata_upgrader.quality_control.v1v2 import QCUpgraderV1V2
 from aind_metadata_upgrader.subject.v1v2 import SubjectUpgraderV1V2
+from aind_metadata_upgrader.rig.v1v2 import RigUpgraderV1V2
 
 ACQUISITION = [
     (SpecifierSet("<=2.0.0"), None),
@@ -36,7 +37,7 @@ QUALITY_CONTROL = [
 ]
 
 RIG = [
-    (SpecifierSet("<=2.0.0"), None),
+    (SpecifierSet("<=2.0.0"), RigUpgraderV1V2),
 ]
 
 SESSION = [
