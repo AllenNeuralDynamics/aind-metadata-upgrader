@@ -7,6 +7,8 @@ from datetime import date
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.rig.v1v2_devices import (
     upgrade_mouse_platform,
+    upgrade_stimulus_device,
+    upgrade_daq_devices,
     saved_connections,
 )
 
@@ -153,65 +155,19 @@ class RigUpgraderV1V2(CoreUpgrader):
         mouse_platform = data.get("mouse_platform", None)
         mouse_platform = upgrade_mouse_platform(mouse_platform) if mouse_platform else None
 
-        # Note we are ignoring optical_tables, which are gone
-        # enclosure = data.get("enclosure", None)
-        # enclosure = upgrade_enclosure(enclosure) if enclosure else None
+        stimulus_devices = data.get("stimulus_devices", [])
+        stimulus_devices = self._none_to_list(stimulus_devices)
+        stimulus_devices = [upgrade_stimulus_device(device) for device in stimulus_devices]
 
-        # objectives = data.get("objectives", [])
-        # objectives = self._none_to_list(objectives)
-        # objectives = [upgrade_objective(objective) for objective in objectives]
-
-        # detectors = data.get("detectors", [])
-        # detectors = self._none_to_list(detectors)
-        # detectors = [upgrade_detector(detector) for detector in detectors]
-
-        # light_sources = data.get("light_sources", [])
-        # light_sources = self._none_to_list(light_sources)
-        # light_sources = [upgrade_light_source(light_source) for light_source in light_sources]
-
-        # lenses = data.get("lenses", [])
-        # lenses = self._none_to_list(lenses)
-        # lenses = [upgrade_lenses(lens) for lens in lenses]
-
-        # fluorescence_filters = data.get("fluorescence_filters", [])
-        # fluorescence_filters = self._none_to_list(fluorescence_filters)
-        # fluorescence_filters = [upgrade_fluorescence_filters(filter_device) for filter_device in fluorescence_filters]
-
-        # motorized_stages = data.get("motorized_stages", [])
-        # motorized_stages = self._none_to_list(motorized_stages)
-        # motorized_stages = [upgrade_motorized_stages(stage) for stage in motorized_stages]
-
-        # scanning_stages = data.get("scanning_stages", [])
-        # scanning_stages = self._none_to_list(scanning_stages)
-        # scanning_stages = [upgrade_scanning_stages(stage) for stage in scanning_stages]
-
-        # additional_devices = data.get("additional_devices", [])
-        # additional_devices = self._none_to_list(additional_devices)
-        # additional_devices = [upgrade_additional_devices(device) for device in additional_devices]
-
-        # # Create the new Microscope device
-        # microscope = Microscope(
-        #     name=data.get("instrument_id", "Microscope"),
-        # )
-        # scope_name = microscope.name
-
-        # com_ports = data.get("com_ports", [])
-        # for port in com_ports:
-        #     saved_connections.append(
-        #         {
-        #             "receive": port["hardware_name"],
-        #             "send": scope_name,
-        #         }
-        #     )
-        # del data["com_ports"]
-
-        # daqs = self._none_to_list(data.get("daqs", []))
-        # daqs = [upgrade_daq_devices(daq) for daq in daqs]
-        # del data["daqs"]
+        daqs = self._none_to_list(data.get("daqs", []))
+        daqs = [upgrade_daq_devices(daq) for daq in daqs]
+        del data["daqs"]
 
         # Compile components list
         components = [
             mouse_platform,
+            stimulus_devices,
+            daqs,
         ]
         # if enclosure:
         #     components.append(enclosure)

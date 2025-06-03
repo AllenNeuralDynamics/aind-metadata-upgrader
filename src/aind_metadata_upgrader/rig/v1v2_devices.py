@@ -1,8 +1,17 @@
 """Device upgraders for rig metadata from v1 to v2."""
 
-from aind_metadata_upgrader.utils.v1v2_utils import remove, basic_device_checks, upgrade_software
+from aind_metadata_upgrader.utils.v1v2_utils import remove, basic_device_checks, upgrade_software, build_connection_from_channel
 
-from aind_data_schema.components.devices import Wheel, Disc, Treadmill, Tube, Arena, Device
+from aind_data_schema.components.devices import (
+    Wheel, Disc, Treadmill, Tube, Arena, Device,
+    DAQDevice,
+    Monitor,
+    Olfactometer,
+    LickSpout,
+    LickSpoutAssembly,
+    Speaker,
+    MotorizedStage,
+)
 from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
 
 saved_connections = []
@@ -192,3 +201,154 @@ def upgrade_mouse_platform(data: dict) -> dict:
         return upgrade_arena(data)
     else:
         raise ValueError(f"Unsupported mouse platform type: {data['device_type']}")
+
+
+def upgrade_daq_devices(device: dict) -> dict:
+    """Upgrade DAQ devices to the new model."""
+
+    # Perform basic device upgrades
+    device_data = basic_device_checks(device, "DAQ Device")
+
+    # Remove old Device fields specific to DAQ
+    remove(device_data, "device_type")
+
+    # Handle computer_name connection if present
+    if "computer_name" in device_data:
+        if device_data["computer_name"]:
+            saved_connections.append(
+                {
+                    "send": device_data["name"],
+                    "receive": device_data["computer_name"],
+                }
+            )
+        remove(device_data, "computer_name")
+
+    # Process channels and save connections
+    if "channels" in device_data:
+        upgraded_channels = []
+        for channel in device_data["channels"]:
+            # Upgrade channel to new format
+            upgraded_channel = {
+                "channel_name": channel["channel_name"],
+                "channel_type": channel["channel_type"],
+            }
+
+            # Keep optional fields if present
+            if "port" in channel and channel["port"] is not None:
+                upgraded_channel["port"] = channel["port"]
+            if "channel_index" in channel and channel["channel_index"] is not None:
+                upgraded_channel["channel_index"] = channel["channel_index"]
+            if "sample_rate" in channel and channel["sample_rate"] is not None:
+                upgraded_channel["sample_rate"] = channel["sample_rate"]
+            if "sample_rate_unit" in channel and channel["sample_rate_unit"] is not None:
+                upgraded_channel["sample_rate_unit"] = channel["sample_rate_unit"]
+            if "event_based_sampling" in channel and channel["event_based_sampling"] is not None:
+                upgraded_channel["event_based_sampling"] = channel["event_based_sampling"]
+
+            upgraded_channels.append(upgraded_channel)
+
+            # Save connection information based on channel type
+            connection = build_connection_from_channel(channel, device_data["name"])
+            saved_connections.append(connection.model_dump())
+
+        device_data["channels"] = upgraded_channels
+
+    # Create the DAQ device
+    daq_device = DAQDevice(**device_data)
+
+    return daq_device.model_dump()
+
+
+def upgrade_monitor(data: dict) -> dict:
+    """Upgrade Monitor device data from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "Monitor")
+
+    monitor = Monitor(
+        **data,
+    )
+
+    return monitor.model_dump()
+
+
+def upgrade_olfactometer(data: dict) -> dict:
+    """Upgrade Olfactometer device data from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "Olfactometer")
+
+    olfactometer = Olfactometer(
+        **data,
+    )
+
+    return olfactometer.model_dump()
+
+
+def upgrade_lick_spout(data: dict) -> dict:
+    """Upgrade LickSpout device data from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "LickSpout")
+
+    lick_spout = LickSpout(
+        **data,
+    )
+
+    return lick_spout.model_dump()
+
+
+def upgrade_motorized_stage(data: dict) -> dict:
+    """Upgrade MotorizedStage device data from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "MotorizedStage")
+
+    motorized_stage = MotorizedStage(
+        **data,
+    )
+
+    return motorized_stage.model_dump()
+
+
+def upgrade_lick_spout_assembly(data: dict) -> dict:
+    """Upgrade LickSpoutAssembly device data from v1.x to v2.0."""
+
+    # Upgrade individual lick spouts if present
+    if "reward_spouts" in data and data["reward_spouts"]:
+        upgraded_spouts = []
+        for spout in data["reward_spouts"]:
+            upgraded_spouts.append(upgrade_lick_spout(spout))
+        data["reward_spouts"] = upgraded_spouts
+
+    lick_spout_assembly = LickSpoutAssembly(
+        **data,
+    )
+
+    return lick_spout_assembly.model_dump()
+
+
+def upgrade_speaker(data: dict) -> dict:
+    """Upgrade Speaker device data from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "Speaker")
+
+    speaker = Speaker(
+        **data,
+    )
+
+    return speaker.model_dump()
+
+
+def upgrade_stimulus_device(data: dict) -> dict:
+    """Upgrade stimulus device data from v1.x to v2.0."""
+
+    # Figure out which stimulus device type this is and use the appropriate upgrader
+    device_type = data.get("device_type")
+
+    if device_type == "Monitor":
+        return upgrade_monitor(data)
+    elif device_type == "Olfactometer":
+        return upgrade_olfactometer(data)
+    elif device_type == "Reward delivery":
+        return upgrade_lick_spout_assembly(data)
+    elif device_type == "Speaker":
+        return upgrade_speaker(data)
+    else:
+        raise ValueError(f"Unsupported stimulus device type: {device_type}")

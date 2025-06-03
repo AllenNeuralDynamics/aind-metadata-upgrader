@@ -16,11 +16,14 @@ from aind_data_schema.components.devices import (
     DAQDevice,
 )
 
-from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
-
 from aind_data_schema_models.devices import ImagingDeviceType
 
-from aind_metadata_upgrader.utils.v1v2_utils import capitalize, remove, basic_device_checks
+from aind_metadata_upgrader.utils.v1v2_utils import (
+    capitalize,
+    remove,
+    basic_device_checks,
+    build_connection_from_channel
+)
 
 saved_connections = []
 
@@ -208,48 +211,6 @@ def upgrade_additional_devices(data: dict) -> dict:
 
     device = AdditionalImagingDevice(**data)
     return device.model_dump()
-
-
-def build_connection_from_channel(channel: dict, device_name: str) -> Connection:
-    """Build a connection object from a DAQ channel."""
-    if "device_name" in channel and channel["device_name"]:
-        channel_type = channel.get("channel_type", "")
-
-        if "Output" in channel_type:
-            # For output channels, DAQ sends to the device
-            connection = Connection(
-                device_names=[device_name, channel["device_name"]],
-                connection_data={
-                    device_name: ConnectionData(direction=ConnectionDirection.SEND, port=channel["channel_name"]),
-                    channel["device_name"]: ConnectionData(
-                        direction=ConnectionDirection.RECEIVE, port=channel["channel_name"]
-                    ),
-                },
-            )
-        elif "Input" in channel_type:
-            # For input channels, device sends to DAQ
-            connection = Connection(
-                device_names=[channel["device_name"], device_name],
-                connection_data={
-                    channel["device_name"]: ConnectionData(
-                        direction=ConnectionDirection.SEND, port=channel["channel_name"]
-                    ),
-                    device_name: ConnectionData(direction=ConnectionDirection.RECEIVE, port=channel["channel_name"]),
-                },
-            )
-        else:
-            # Default case - assume output
-            connection = Connection(
-                device_names=[device_name, channel["device_name"]],
-                connection_data={
-                    device_name: ConnectionData(direction=ConnectionDirection.SEND, port=channel["channel_name"]),
-                    channel["device_name"]: ConnectionData(
-                        direction=ConnectionDirection.RECEIVE, port=channel["channel_name"]
-                    ),
-                },
-            )
-
-        return connection
 
 
 def upgrade_daq_devices(device: dict) -> dict:

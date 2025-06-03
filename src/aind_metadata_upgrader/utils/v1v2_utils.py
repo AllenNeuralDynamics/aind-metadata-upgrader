@@ -5,6 +5,8 @@ from aind_data_schema.components.identifiers import Software
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
 
+from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
+
 MODALITY_MAP = {
     "SmartSPIM": Modality.SPIM,
 }
@@ -119,10 +121,59 @@ def remove(data: dict, field: str):
         del data[field]
 
 
-def upgrade_software(data: dict) -> dict:
+def upgrade_software(data: dict | str) -> dict:
     """Upgrade software class from v1.x to v2.0"""
+
+    if isinstance(data, str):
+        return Software(
+            name=data,
+        ).model_dump()
 
     remove(data, "url")
     remove(data, "parameters")
 
     return data
+
+
+def build_connection_from_channel(channel: dict, device_name: str) -> Connection:
+    """Build a connection object from a DAQ channel."""
+    if "device_name" in channel and channel["device_name"]:
+        channel_type = channel.get("channel_type", "")
+
+        if "Output" in channel_type:
+            # For output channels, DAQ sends to the device
+            connection = Connection(
+                device_names=[device_name, channel["device_name"]],
+                connection_data={
+                    device_name: ConnectionData(direction=ConnectionDirection.SEND, port=channel["channel_name"]),
+                    channel["device_name"]: ConnectionData(
+                        direction=ConnectionDirection.RECEIVE, port=channel["channel_name"]
+                    ),
+                },
+            )
+        elif "Input" in channel_type:
+            # For input channels, device sends to DAQ
+            connection = Connection(
+                device_names=[channel["device_name"], device_name],
+                connection_data={
+                    channel["device_name"]: ConnectionData(
+                        direction=ConnectionDirection.SEND, port=channel["channel_name"]
+                    ),
+                    device_name: ConnectionData(direction=ConnectionDirection.RECEIVE, port=channel["channel_name"]),
+                },
+            )
+        else:
+            # Default case - assume output
+            connection = Connection(
+                device_names=[device_name, channel["device_name"]],
+                connection_data={
+                    device_name: ConnectionData(direction=ConnectionDirection.SEND, port=channel["channel_name"]),
+                    channel["device_name"]: ConnectionData(
+                        direction=ConnectionDirection.RECEIVE, port=channel["channel_name"]
+                    ),
+                },
+            )
+
+        return connection
+
+    raise ValueError("Channel must have a 'device_name' field to build a connection.")
