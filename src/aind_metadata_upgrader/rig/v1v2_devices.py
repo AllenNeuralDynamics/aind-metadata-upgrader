@@ -11,6 +11,10 @@ from aind_data_schema.components.devices import (
     LickSpoutAssembly,
     Speaker,
     MotorizedStage,
+    CameraAssembly,
+    Camera,
+    Lens,
+    Filter,
 )
 from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
 
@@ -370,3 +374,10 @@ def upgrade_stimulus_device(data: dict) -> dict:
         return upgrade_speaker(data)
     else:
         raise ValueError(f"Unsupported stimulus device type: {device_type}")
+
+
+def upgrade_camera_assembly(data: dict) -> dict:
+    """Upgrade CameraAssembly device data from v1.x to v2.0."""
+
+    # Perform basic device checks
+    data = basic_device_checks(data, "CameraAssembly")

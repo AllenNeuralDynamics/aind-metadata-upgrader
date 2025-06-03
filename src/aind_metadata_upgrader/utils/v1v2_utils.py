@@ -6,6 +6,7 @@ from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
 
 from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
+from aind_data_schema.components.devices import Filter
 
 MODALITY_MAP = {
     "SmartSPIM": Modality.SPIM,
@@ -180,3 +181,33 @@ def build_connection_from_channel(channel: dict, device_name: str) -> Connection
         return connection
 
     raise ValueError("Channel must have a 'device_name' field to build a connection.")
+
+
+def upgrade_filter(data: dict) -> dict:
+    """Upgrade filter data to the new model."""
+
+    data = basic_device_checks(data, "Filter")
+
+    # Remove old Device fields
+    remove(data, "device_type")
+    remove(data, "filter_wheel_index")
+    remove(data, "diameter")
+    remove(data, "diameter_unit")
+    remove(data, "thickness")
+    remove(data, "thickness_unit")
+    remove(data, "cut_off_frequency")
+    remove(data, "cut_off_frequency_unit")
+    remove(data, "cut_on_frequency")
+    remove(data, "cut_on_frequency_unit")
+    remove(data, "description")
+    remove(data, "height")
+    remove(data, "width")
+    remove(data, "size_unit")
+
+    # Ensure filter_type is set
+    if "type" in data:
+        data["filter_type"] = data["type"]
+        remove(data, "type")
+
+    filter_device = Filter(**data)
+    return filter_device.model_dump()

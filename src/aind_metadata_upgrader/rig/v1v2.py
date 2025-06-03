@@ -9,6 +9,7 @@ from aind_metadata_upgrader.rig.v1v2_devices import (
     upgrade_mouse_platform,
     upgrade_stimulus_device,
     upgrade_daq_devices,
+    upgrade_camera_assembly,
     saved_connections,
 )
 
@@ -159,6 +160,10 @@ class RigUpgraderV1V2(CoreUpgrader):
         stimulus_devices = self._none_to_list(stimulus_devices)
         stimulus_devices = [upgrade_stimulus_device(device) for device in stimulus_devices]
 
+        camera_assemblies = data.get("cameras", [])
+        camera_assemblies = self._none_to_list(camera_assemblies)
+        camera_assemblies = [upgrade_camera_assembly(device) for device in camera_assemblies]
+
         daqs = self._none_to_list(data.get("daqs", []))
         daqs = [upgrade_daq_devices(daq) for daq in daqs]
         del data["daqs"]
@@ -167,6 +172,7 @@ class RigUpgraderV1V2(CoreUpgrader):
         components = [
             mouse_platform,
             stimulus_devices,
+            camera_assemblies,
             daqs,
         ]
         # if enclosure:

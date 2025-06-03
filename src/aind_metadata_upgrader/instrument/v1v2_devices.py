@@ -8,7 +8,6 @@ from aind_data_schema.components.devices import (
     Laser,
     LightEmittingDiode,
     Lamp,
-    Filter,
     Lens,
     MotorizedStage,
     ScanningStage,
@@ -22,7 +21,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     capitalize,
     remove,
     basic_device_checks,
-    build_connection_from_channel
+    build_connection_from_channel,
 )
 
 saved_connections = []
@@ -136,36 +135,6 @@ def upgrade_lenses(data: dict) -> dict:
 
     lens = Lens(**data)
     return lens.model_dump()
-
-
-def upgrade_fluorescence_filters(data: dict) -> dict:
-    """Upgrade fluorescence filter data to the new model."""
-
-    data = basic_device_checks(data, "Filter")
-
-    # Remove old Device fields
-    remove(data, "device_type")
-    remove(data, "filter_wheel_index")
-    remove(data, "diameter")
-    remove(data, "diameter_unit")
-    remove(data, "thickness")
-    remove(data, "thickness_unit")
-    remove(data, "cut_off_frequency")
-    remove(data, "cut_off_frequency_unit")
-    remove(data, "cut_on_frequency")
-    remove(data, "cut_on_frequency_unit")
-    remove(data, "description")
-    remove(data, "height")
-    remove(data, "width")
-    remove(data, "size_unit")
-
-    # Ensure filter_type is set
-    if "type" in data:
-        data["filter_type"] = data["type"]
-        remove(data, "type")
-
-    filter_device = Filter(**data)
-    return filter_device.model_dump()
 
 
 def upgrade_motorized_stages(data: dict) -> dict:

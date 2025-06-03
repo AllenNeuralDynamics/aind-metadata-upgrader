@@ -11,13 +11,13 @@ from aind_metadata_upgrader.instrument.v1v2_devices import (
     upgrade_detector,
     upgrade_light_source,
     upgrade_lenses,
-    upgrade_fluorescence_filters,
     upgrade_motorized_stages,
     upgrade_scanning_stages,
     upgrade_additional_devices,
     upgrade_daq_devices,
     saved_connections,
 )
+from aind_metadata_upgrader.utils.v1v2_utils import upgrade_filter
 
 from aind_data_schema.components.measurements import Calibration
 from aind_data_schema.components.coordinates import CoordinateSystemLibrary
@@ -139,7 +139,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         fluorescence_filters = data.get("fluorescence_filters", [])
         fluorescence_filters = self._none_to_list(fluorescence_filters)
-        fluorescence_filters = [upgrade_fluorescence_filters(filter_device) for filter_device in fluorescence_filters]
+        fluorescence_filters = [upgrade_filter(filter_device) for filter_device in fluorescence_filters]
 
         motorized_stages = data.get("motorized_stages", [])
         motorized_stages = self._none_to_list(motorized_stages)
