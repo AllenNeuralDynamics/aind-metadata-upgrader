@@ -1,384 +1,194 @@
-"""Upgraders for specific devices from v1 to v2."""
+"""Device upgraders for rig metadata from v1 to v2."""
 
-from aind_data_schema.components.devices import (
-    Enclosure,
-    Objective,
-    Detector,
-    Camera,
-    Laser,
-    LightEmittingDiode,
-    Lamp,
-    Filter,
-    Lens,
-    MotorizedStage,
-    ScanningStage,
-    AdditionalImagingDevice,
-    DAQDevice,
-)
+from aind_metadata_upgrader.utils.v1v2_utils import remove, basic_device_checks, upgrade_software
 
+from aind_data_schema.components.devices import Wheel, Disc, Treadmill, Tube, Arena, Device
 from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
 
-from aind_data_schema_models.organizations import Organization
-from aind_data_schema_models.devices import ImagingDeviceType
-
-counts = {}
 saved_connections = []
 
 
-def capitalize(data: dict, field: str) -> dict:
-    """Capitalize the first letter of a field in the data dictionary."""
+def upgrade_generic_device(data: dict) -> dict:
+    """Upgrade Encodder object from v1.x to v2.0."""
 
-    if field in data and isinstance(data[field], str):
-        data[field] = data[field].capitalize()
+    data = basic_device_checks(data, "Encoder")
 
-    return data
-
-
-def remove(data: dict, field: str):
-    """Remove a field from the data dictionary if it exists."""
-
-    if field in data:
-        del data[field]
-
-
-def add_name(data: dict, type: str) -> dict:
-    """Add a name field if it's missing, keep track of counts in a global
-    variable."""
-
-    if "name" not in data or not data["name"]:
-        global counts
-        if type not in counts:
-            counts[type] = 0
-        counts[type] += 1
-        name = f"{type} {counts[type]}"
-        data["name"] = name
-
-    return data
-
-
-def repair_manufacturer(data: dict) -> dict:
-    """Repair the manufacturer field to ensure it's an Organization object."""
-
-    if "manufacturer" in data and isinstance(data["manufacturer"], str):
-        # Convert string to Organization object
-        data["manufacturer"] = Organization.from_name(data["manufacturer"]).model_dump()
-
-    if data["manufacturer"]["name"] == "Other" and not data["notes"]:
-        data["notes"] = (
-            " (v1v2 upgrade): 'manufacturer' was set to 'Other'" " and notes were empty, manufacturer is unknown."
-        )
-
-    return data
-
-
-def upgrade_device(data: dict) -> dict:
-    """Remove old Device fields"""
-
-    if "device_type" in data:
-        del data["device_type"]
-    if "path_to_cad" in data:
-        del data["path_to_cad"]
-    if "port_index" in data:
-        del data["port_index"]
-    if "daq_channel" in data:
-        if data["daq_channel"]:
-            raise ValueError("DAQ Channel has a value -- cannot upgrade record.")
-        del data["daq_channel"]
-
-    return data
-
-
-def basic_checks(data: dict, type: str) -> dict:
-    """Perform basic checks:
-
-    - Check that name is set correctly or set to a default
-    - Check that organization is not a string, but an Organization object
-    """
-    data = upgrade_device(data)
-    data = add_name(data, type)
-    data = repair_manufacturer(data)
-
-    return data
-
-
-def upgrade_enclosure(data: dict) -> dict:
-    """Upgrade enclosure data to the new model."""
-
-    data = basic_checks(data, "Enclosure")
-
-    enclosure = Enclosure(
+    encoder = Device(
         **data,
     )
 
-    return enclosure.model_dump()
+    return encoder.model_dump()
 
 
-def upgrade_objective(data: dict) -> dict:
-    """Upgrade objective data to the new model."""
+def upgrade_wheel(data: dict) -> dict:
+    """Upgrade a Wheel object from v1.x to v2.0."""
 
-    data = basic_checks(data, "Objective")
+    data = basic_device_checks(data, "Wheel")
 
-    objective = Objective(
-        **data,
-    )
+    remove(data, "date_surface_replaced")
+    remove(data, "surface_material")
 
-    return objective.model_dump()
+    data["encoder"] = upgrade_generic_device(data.get("encoder", {}))
+    data["magnetic_brake"] = upgrade_generic_device(data.get("magnetic_brake", {}))
+    data["torque_sensor"] = upgrade_generic_device(data.get("torque_sensor", {}))
 
-
-def upgrade_detector(data: dict) -> dict:
-    """Upgrade detector data to the new model."""
-
-    data = basic_checks(data, "Detector")
-
-    data = capitalize(data, "cooling")
-    data = capitalize(data, "bin_mode")
-
-    # Save computer_name connection
-    if "computer_name" in data:
-        if data["computer_name"]:
-            saved_connections.append(
-                {
-                    "send": data["name"],
-                    "receive": data["computer_name"],
-                }
-            )
-        del data["computer_name"]
-
-    if "type" in data and data["type"] == "Camera":
-        del data["type"]
-        detector = Camera(**data)
-    else:
-        detector = Detector(**data)
-
-    return detector.model_dump()
-
-
-COUPLING_MAPPING = {
-    "SMF": "Single-mode fiber",
-}
-
-
-def upgrade_light_source(data: dict) -> dict:
-    """Upgrade light source data to the new model."""
-
-    data = basic_checks(data, "Light Source")
-
-    # Handle the device_type field to determine which specific light source type
-    device_type = data.get("device_type", "").lower()
-
-    # Remove device_type as it's not needed in v2
-    remove(data, "device_type")
-    remove(data, "max_power")
-    remove(data, "maximum_power")
-    remove(data, "power_unit")
-    remove(data, "item_number")
-
-    if "coupling" in data:
-        # Convert coupling to a more readable format
-        data["coupling"] = COUPLING_MAPPING.get(data["coupling"], data["coupling"])
-
-    # Old light sources have a 'type' field, which we will remove
-    if "type" in data and not device_type:
-        device_type = data["type"].capitalize()
-        del data["type"]
-
-    # Based on device_type, create the appropriate light source
-    if "laser" in device_type:
-        light_source = Laser(**data)
-    elif "led" in device_type or "light emitting diode" in device_type:
-        light_source = LightEmittingDiode(**data)
-    elif "lamp" in device_type:
-        light_source = Lamp(**data)
-    else:
-        # Default to Laser if type is unclear
-        light_source = Laser(**data)
-
-    return light_source.model_dump()
-
-
-def upgrade_lenses(data: dict) -> dict:
-    """Upgrade lens data to the new model."""
-
-    data = basic_checks(data, "Lens")
-
-    # Remove old Device fields and deprecated fields
-    remove(data, "device_type")
-    remove(data, "size")  # maps to more specific fields
-    remove(data, "optimized_wavelength_range")
-    remove(data, "wavelength_unit")
-
-    lens = Lens(**data)
-    return lens.model_dump()
-
-
-def upgrade_fluorescence_filters(data: dict) -> dict:
-    """Upgrade fluorescence filter data to the new model."""
-
-    data = basic_checks(data, "Filter")
-
-    # Remove old Device fields
-    remove(data, "device_type")
-    remove(data, "filter_wheel_index")
-    remove(data, "diameter")
-    remove(data, "diameter_unit")
-    remove(data, "thickness")
-    remove(data, "thickness_unit")
-    remove(data, "cut_off_frequency")
-    remove(data, "cut_off_frequency_unit")
-    remove(data, "cut_on_frequency")
-    remove(data, "cut_on_frequency_unit")
-    remove(data, "description")
-    remove(data, "height")
-    remove(data, "width")
-    remove(data, "size_unit")
-
-    # Ensure filter_type is set
-    if "type" in data:
-        data["filter_type"] = data["type"]
-        remove(data, "type")
-
-    filter_device = Filter(**data)
-    return filter_device.model_dump()
-
-
-def upgrade_motorized_stages(data: dict) -> dict:
-    """Upgrade motorized stage data to the new model."""
-
-    data = basic_checks(data, "Motorized stage")
-
-    # Remove old Device fields
-    remove(data, "device_type")
-
-    stage = MotorizedStage(**data)
-    return stage.model_dump()
-
-
-def upgrade_scanning_stages(data: dict) -> dict:
-    """Upgrade scanning stage data to the new model."""
-
-    data = basic_checks(data, "Scanning stage")
-
-    # Remove old Device fields
-    remove(data, "device_type")
-
-    stage = ScanningStage(**data)
-    return stage.model_dump()
-
-
-def upgrade_additional_devices(data: dict) -> dict:
-    """Upgrade additional imaging device data to the new model."""
-
-    data = basic_checks(data, "Additional device")
-
-    # Remove old Device fields
-    remove(data, "device_type")
-    remove(data, "type")
-
-    if "imaging_device_type" not in data:
-        data["imaging_device_type"] = ImagingDeviceType.OTHER
-        data["notes"] = (
-            data["notes"]
-            if data["notes"]
-            else "" + " (v1v2 upgrade): 'imaging_device_type' field was missing, defaulting to 'Other'."
-        )
-
-    device = AdditionalImagingDevice(**data)
-    return device.model_dump()
-
-
-def build_connection_from_channel(channel: dict, device_name: str) -> Connection:
-    """Build a connection object from a DAQ channel."""
-    if "device_name" in channel and channel["device_name"]:
-        channel_type = channel.get("channel_type", "")
-
-        if "Output" in channel_type:
-            # For output channels, DAQ sends to the device
+    # Convert encoder_output, brake_output, and torque_output to Connection objects
+    if "encoder_output" in data and data["encoder_output"]:
+        encoder_output = data["encoder_output"]
+        if "device_name" in encoder_output and encoder_output["device_name"]:
             connection = Connection(
-                device_names=[device_name, channel["device_name"]],
+                device_names=[encoder_output["device_name"], data["name"]],
                 connection_data={
-                    device_name: ConnectionData(direction=ConnectionDirection.SEND, port=channel["channel_name"]),
-                    channel["device_name"]: ConnectionData(
-                        direction=ConnectionDirection.RECEIVE, port=channel["channel_name"]
+                    encoder_output["device_name"]: ConnectionData(
+                        direction=ConnectionDirection.SEND,
+                        port=encoder_output["channel_name"]
+                    ),
+                    data["name"]: ConnectionData(
+                        direction=ConnectionDirection.RECEIVE,
+                        port=encoder_output["channel_name"]
                     ),
                 },
             )
-        elif "Input" in channel_type:
-            # For input channels, device sends to DAQ
-            connection = Connection(
-                device_names=[channel["device_name"], device_name],
-                connection_data={
-                    channel["device_name"]: ConnectionData(
-                        direction=ConnectionDirection.SEND, port=channel["channel_name"]
-                    ),
-                    device_name: ConnectionData(direction=ConnectionDirection.RECEIVE, port=channel["channel_name"]),
-                },
-            )
-        else:
-            # Default case - assume output
-            connection = Connection(
-                device_names=[device_name, channel["device_name"]],
-                connection_data={
-                    device_name: ConnectionData(direction=ConnectionDirection.SEND, port=channel["channel_name"]),
-                    channel["device_name"]: ConnectionData(
-                        direction=ConnectionDirection.RECEIVE, port=channel["channel_name"]
-                    ),
-                },
-            )
-
-        return connection
-
-
-def upgrade_daq_devices(device: dict) -> dict:
-    """Upgrade DAQ devices to the new model."""
-
-    # Perform basic device upgrades
-    device_data = basic_checks(device, "DAQ Device")
-
-    # Remove old Device fields specific to DAQ
-    remove(device_data, "device_type")
-
-    # Handle computer_name connection if present
-    if "computer_name" in device_data:
-        if device_data["computer_name"]:
-            saved_connections.append(
-                {
-                    "send": device_data["name"],
-                    "receive": device_data["computer_name"],
-                }
-            )
-        remove(device_data, "computer_name")
-
-    # Process channels and save connections
-    if "channels" in device_data:
-        upgraded_channels = []
-        for channel in device_data["channels"]:
-            # Upgrade channel to new format
-            upgraded_channel = {
-                "channel_name": channel["channel_name"],
-                "channel_type": channel["channel_type"],
-            }
-
-            # Keep optional fields if present
-            if "port" in channel and channel["port"] is not None:
-                upgraded_channel["port"] = channel["port"]
-            if "channel_index" in channel and channel["channel_index"] is not None:
-                upgraded_channel["channel_index"] = channel["channel_index"]
-            if "sample_rate" in channel and channel["sample_rate"] is not None:
-                upgraded_channel["sample_rate"] = channel["sample_rate"]
-            if "sample_rate_unit" in channel and channel["sample_rate_unit"] is not None:
-                upgraded_channel["sample_rate_unit"] = channel["sample_rate_unit"]
-            if "event_based_sampling" in channel and channel["event_based_sampling"] is not None:
-                upgraded_channel["event_based_sampling"] = channel["event_based_sampling"]
-
-            upgraded_channels.append(upgraded_channel)
-
-            # Save connection information based on channel type
-            connection = build_connection_from_channel(channel, device_data["name"])
             saved_connections.append(connection.model_dump())
+        del data["encoder_output"]
 
-        device_data["channels"] = upgraded_channels
+    if "brake_output" in data and data["brake_output"]:
+        brake_output = data["brake_output"]
+        if "device_name" in brake_output and brake_output["device_name"]:
+            connection = Connection(
+                device_names=[brake_output["device_name"], data["name"]],
+                connection_data={
+                    brake_output["device_name"]: ConnectionData(
+                        direction=ConnectionDirection.SEND,
+                        port=brake_output["channel_name"]
+                    ),
+                    data["name"]: ConnectionData(
+                        direction=ConnectionDirection.RECEIVE,
+                        port=brake_output["channel_name"]
+                    ),
+                },
+            )
+            saved_connections.append(connection.model_dump())
+        del data["brake_output"]
 
-    # Create the DAQ device
-    daq_device = DAQDevice(**device_data)
+    if "torque_output" in data and data["torque_output"]:
+        torque_output = data["torque_output"]
+        if "device_name" in torque_output and torque_output["device_name"]:
+            connection = Connection(
+                device_names=[torque_output["device_name"], data["name"]],
+                connection_data={
+                    torque_output["device_name"]: ConnectionData(
+                        direction=ConnectionDirection.SEND,
+                        port=torque_output["channel_name"]
+                    ),
+                    data["name"]: ConnectionData(
+                        direction=ConnectionDirection.RECEIVE,
+                        port=torque_output["channel_name"]
+                    ),
+                },
+            )
+            saved_connections.append(connection.model_dump())
+        del data["torque_output"]
 
-    return daq_device.model_dump()
+    wheel = Wheel(
+        **data,
+    )
+
+    return wheel.model_dump()
+
+
+def upgrade_disc(data: dict) -> dict:
+    """Upgrade a Disc object from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "Disc")
+
+    remove(data, "date_surface_replaced")
+
+    if "encoder_firmware" in data and data["encoder_firmware"]:
+        data["encoder_firmware"] = upgrade_software(data["encoder_firmware"])
+
+    disc = Disc(
+        **data,
+    )
+
+    return disc.model_dump()
+
+
+def upgrade_treadmill(data: dict) -> dict:
+    """Upgrade a Treadmill object from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "Treadmill")
+
+    remove(data, "date_surface_replaced")
+    remove(data, "surface_material")
+
+    if "encoder" in data and data["encoder"]:
+        data["encoder"] = upgrade_generic_device(data["encoder"])
+
+    treadmill = Treadmill(
+        **data,
+    )
+
+    return treadmill.model_dump()
+
+
+def upgrade_tube(data: dict) -> dict:
+    """Upgrade a Tube object from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "Tube")
+
+    remove(data, "date_surface_replaced")
+    remove(data, "surface_material")
+
+    tube = Tube(
+        **data,
+    )
+
+    return tube.model_dump()
+
+
+def upgrade_arena(data: dict) -> dict:
+    """Upgrade an Arena object from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "Arena")
+
+    remove(data, "date_surface_replaced")
+    remove(data, "surface_material")
+
+    arena = Arena(
+        **data,
+    )
+
+    return arena.model_dump()
+
+
+def upgrade_mouse_platform(data: dict) -> dict:
+    """Upgrade mouse platform data from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "Mouse platform")
+
+    # Determine device type if not specified
+    if "device_type" not in data:
+        if "encoder_output" in data:
+            data["device_type"] = "Wheel"
+        elif "diameter" in data:
+            data["device_type"] = "Tube"
+        elif "encoder_firmware" in data:
+            data["device_type"] = "Disc"
+        else:
+            print(data)
+            raise ValueError("Cannot determine device type for mouse platform")
+
+    # Delegate to appropriate upgrade function
+    if data["device_type"] == "Wheel":
+        return upgrade_wheel(data)
+    elif data["device_type"] == "Disc":
+        return upgrade_disc(data)
+    elif data["device_type"] == "Treadmill":
+        return upgrade_treadmill(data)
+    elif data["device_type"] == "Tube":
+        return upgrade_tube(data)
+    elif data["device_type"] == "Arena":
+        return upgrade_arena(data)
+    else:
+        raise ValueError(f"Unsupported mouse platform type: {data['device_type']}")

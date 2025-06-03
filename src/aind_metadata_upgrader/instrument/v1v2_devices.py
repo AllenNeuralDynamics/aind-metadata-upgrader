@@ -18,93 +18,17 @@ from aind_data_schema.components.devices import (
 
 from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
 
-from aind_data_schema_models.organizations import Organization
 from aind_data_schema_models.devices import ImagingDeviceType
 
-counts = {}
+from aind_metadata_upgrader.utils.v1v2_utils import capitalize, remove, basic_device_checks
+
 saved_connections = []
-
-
-def capitalize(data: dict, field: str) -> dict:
-    """Capitalize the first letter of a field in the data dictionary."""
-
-    if field in data and isinstance(data[field], str):
-        data[field] = data[field].capitalize()
-
-    return data
-
-
-def remove(data: dict, field: str):
-    """Remove a field from the data dictionary if it exists."""
-
-    if field in data:
-        del data[field]
-
-
-def add_name(data: dict, type: str) -> dict:
-    """Add a name field if it's missing, keep track of counts in a global
-    variable."""
-
-    if "name" not in data or not data["name"]:
-        global counts
-        if type not in counts:
-            counts[type] = 0
-        counts[type] += 1
-        name = f"{type} {counts[type]}"
-        data["name"] = name
-
-    return data
-
-
-def repair_manufacturer(data: dict) -> dict:
-    """Repair the manufacturer field to ensure it's an Organization object."""
-
-    if "manufacturer" in data and isinstance(data["manufacturer"], str):
-        # Convert string to Organization object
-        data["manufacturer"] = Organization.from_name(data["manufacturer"]).model_dump()
-
-    if data["manufacturer"]["name"] == "Other" and not data["notes"]:
-        data["notes"] = (
-            " (v1v2 upgrade): 'manufacturer' was set to 'Other'" " and notes were empty, manufacturer is unknown."
-        )
-
-    return data
-
-
-def upgrade_device(data: dict) -> dict:
-    """Remove old Device fields"""
-
-    if "device_type" in data:
-        del data["device_type"]
-    if "path_to_cad" in data:
-        del data["path_to_cad"]
-    if "port_index" in data:
-        del data["port_index"]
-    if "daq_channel" in data:
-        if data["daq_channel"]:
-            raise ValueError("DAQ Channel has a value -- cannot upgrade record.")
-        del data["daq_channel"]
-
-    return data
-
-
-def basic_checks(data: dict, type: str) -> dict:
-    """Perform basic checks:
-
-    - Check that name is set correctly or set to a default
-    - Check that organization is not a string, but an Organization object
-    """
-    data = upgrade_device(data)
-    data = add_name(data, type)
-    data = repair_manufacturer(data)
-
-    return data
 
 
 def upgrade_enclosure(data: dict) -> dict:
     """Upgrade enclosure data to the new model."""
 
-    data = basic_checks(data, "Enclosure")
+    data = basic_device_checks(data, "Enclosure")
 
     enclosure = Enclosure(
         **data,
@@ -116,7 +40,7 @@ def upgrade_enclosure(data: dict) -> dict:
 def upgrade_objective(data: dict) -> dict:
     """Upgrade objective data to the new model."""
 
-    data = basic_checks(data, "Objective")
+    data = basic_device_checks(data, "Objective")
 
     objective = Objective(
         **data,
@@ -128,7 +52,7 @@ def upgrade_objective(data: dict) -> dict:
 def upgrade_detector(data: dict) -> dict:
     """Upgrade detector data to the new model."""
 
-    data = basic_checks(data, "Detector")
+    data = basic_device_checks(data, "Detector")
 
     data = capitalize(data, "cooling")
     data = capitalize(data, "bin_mode")
@@ -161,7 +85,7 @@ COUPLING_MAPPING = {
 def upgrade_light_source(data: dict) -> dict:
     """Upgrade light source data to the new model."""
 
-    data = basic_checks(data, "Light Source")
+    data = basic_device_checks(data, "Light Source")
 
     # Handle the device_type field to determine which specific light source type
     device_type = data.get("device_type", "").lower()
@@ -199,7 +123,7 @@ def upgrade_light_source(data: dict) -> dict:
 def upgrade_lenses(data: dict) -> dict:
     """Upgrade lens data to the new model."""
 
-    data = basic_checks(data, "Lens")
+    data = basic_device_checks(data, "Lens")
 
     # Remove old Device fields and deprecated fields
     remove(data, "device_type")
@@ -214,7 +138,7 @@ def upgrade_lenses(data: dict) -> dict:
 def upgrade_fluorescence_filters(data: dict) -> dict:
     """Upgrade fluorescence filter data to the new model."""
 
-    data = basic_checks(data, "Filter")
+    data = basic_device_checks(data, "Filter")
 
     # Remove old Device fields
     remove(data, "device_type")
@@ -244,7 +168,7 @@ def upgrade_fluorescence_filters(data: dict) -> dict:
 def upgrade_motorized_stages(data: dict) -> dict:
     """Upgrade motorized stage data to the new model."""
 
-    data = basic_checks(data, "Motorized stage")
+    data = basic_device_checks(data, "Motorized stage")
 
     # Remove old Device fields
     remove(data, "device_type")
@@ -256,7 +180,7 @@ def upgrade_motorized_stages(data: dict) -> dict:
 def upgrade_scanning_stages(data: dict) -> dict:
     """Upgrade scanning stage data to the new model."""
 
-    data = basic_checks(data, "Scanning stage")
+    data = basic_device_checks(data, "Scanning stage")
 
     # Remove old Device fields
     remove(data, "device_type")
@@ -268,7 +192,7 @@ def upgrade_scanning_stages(data: dict) -> dict:
 def upgrade_additional_devices(data: dict) -> dict:
     """Upgrade additional imaging device data to the new model."""
 
-    data = basic_checks(data, "Additional device")
+    data = basic_device_checks(data, "Additional device")
 
     # Remove old Device fields
     remove(data, "device_type")
@@ -332,7 +256,7 @@ def upgrade_daq_devices(device: dict) -> dict:
     """Upgrade DAQ devices to the new model."""
 
     # Perform basic device upgrades
-    device_data = basic_checks(device, "DAQ Device")
+    device_data = basic_device_checks(device, "DAQ Device")
 
     # Remove old Device fields specific to DAQ
     remove(device_data, "device_type")

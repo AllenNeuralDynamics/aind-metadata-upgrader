@@ -6,12 +6,28 @@ from datetime import date
 
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.rig.v1v2_devices import (
+    upgrade_mouse_platform,
     saved_connections,
 )
 
-from aind_data_schema.components.coordinates import CoordinateSystemLibrary
+from aind_data_schema.components.coordinates import CoordinateSystemLibrary, CoordinateSystem, Origin, Axis, AxisName, Direction
+from aind_data_schema.components.measurements import LiquidCalibration, LaserCalibration
 
-from aind_metadata_upgrader.utils.utils import upgrade_v1_modalities
+from aind_data_schema_models.units import VolumeUnit, TimeUnit, PowerUnit, SizeUnit
+
+from aind_metadata_upgrader.utils.v1v2_utils import upgrade_v1_modalities
+
+
+BREGMA_ALS = CoordinateSystem(
+    name="BREGMA_ALS",
+    origin=Origin.BREGMA,
+    axis_unit=SizeUnit.UM,
+    axes=[
+        Axis(name=AxisName.X, direction=Direction.PA),  # X towards nose (posterior to anterior)
+        Axis(name=AxisName.Y, direction=Direction.RL),  # Y by right-hand rule (right to left)
+        Axis(name=AxisName.Z, direction=Direction.DU),  # Z up (down to up)
+    ],
+)
 
 
 class RigUpgraderV1V2(CoreUpgrader):
@@ -37,33 +53,91 @@ class RigUpgraderV1V2(CoreUpgrader):
         # If the rig_id didn't match the regex, we just keep it as-is
         return instrument_id, location
 
-    def _get_calibration(self, data: dict) -> Optional[list]:
-        """Pull calibration information
-
-        Note that calibrations for instruments had to point to files, so the best we can do is put the data
-        into an empty calibration object with a note pointing to the file."""
-
-        if data.get("calibration_data", None):
-            # We have a calibration, wrap it in the new Calibration object
-            return [
-                Calibration(
-                    calibration_date=data.get("calibration_date"),
-                    device_name=data.get("instrument_id"),
-                    input=[],
-                    output=[],
-                    input_unit=SizeUnit.UM,
-                    output_unit=SizeUnit.UM,
-                    description="Calibration data from v1.x instrument, see notes for file path.",
-                    notes=data.get("calibration_data"),
-                ).model_dump()
-            ]
-
-        return None
-
     def _get_coordinate_system(self, data: dict) -> Optional[dict]:
         """Pull coordinate system information"""
 
-        return CoordinateSystemLibrary.BREGMA_ARI.model_dump()
+        origin = data.get("origin", None)
+        rig_axes = data.get("rig_axes", None)
+
+        if not origin and not rig_axes:
+            return CoordinateSystemLibrary.BREGMA_ARI.model_dump()
+        else:
+            # We need to interpret the user's coordinate system (good luck to us)
+
+            if (rig_axes and
+                'lays on the Mouse Sagittal Plane, Positive direction is towards the nose of the mouse' in rig_axes[0]["direction"] and
+                'positive pointing UP opposite the direction from the force of gravity' in rig_axes[1]["direction"] and
+                'defined by the right hand rule and the other two axis' in rig_axes[2]["direction"]):
+                return BREGMA_ALS.model_dump()
+            raise NotImplementedError("todo")
+
+    def _get_calibration(self, data: dict) -> Optional[dict]:
+        """Pull calibration information"""
+
+        if "Water calibration" in data.get("description", ""):
+            # Water calibration, we can handle this
+
+            # drop empty calibratoins
+            if not data["input"]["valve open time (s):"] and not data["output"]["water volume (ul):"]:
+                return None
+
+            calibration = LiquidCalibration(
+                calibration_date=data["calibration_date"],
+                device_name=data["device_name"],
+                input=data["input"]["valve open time (s):"],
+                input_unit=TimeUnit.S,
+                output=data["output"]["water volume (ul):"],
+                output_unit=VolumeUnit.UL,
+                notes=data["notes"] if data["notes"] else "" + " (v1v2 upgrade): Liquid calibration upgraded from v1.x format.",
+            )
+        elif "laser power calibration" in data.get("description", "").lower() and "power_setting" in data.get("input", {}):
+            # Laser calibration, may or may not have data
+
+            # Drop empty calibrations
+            if not data["input"]["power_setting"] and not data["output"]["power_output"]:
+                return None
+
+            calibration = LaserCalibration(
+                calibration_date=data["calibration_date"],
+                device_name=data["device_name"],
+                input=data["input"]["power_setting"],
+                input_unit=PowerUnit.PERCENT,
+                output=data["output"]["power_output"],
+                output_unit=PowerUnit.MW,
+            )
+        elif "laser power calibration" in data.get("description", "").lower() and "power percent" in data.get("input", {}):
+            # Laser calibration, may or may not have data
+
+            # Drop empty calibrations
+            if not data["input"]["power percent"] and not data["output"]["power mW"]:
+                return None
+
+            calibration = LaserCalibration(
+                calibration_date=data["calibration_date"],
+                device_name=data["device_name"],
+                input=data["input"]["power percent"],
+                input_unit=PowerUnit.PERCENT,
+                output=data["output"]["power mW"],
+                output_unit=PowerUnit.MW,
+            )
+        elif "led calibration" in data.get("description", "").lower():
+            # LED calibration, may or may not have data
+
+            if not data["input"]["Power setting"] and not data["output"]["Power mW"]:
+                return None
+
+            calibration = LaserCalibration(
+                calibration_date=data["calibration_date"],
+                device_name=data["device_name"],
+                input=data["input"]["Power setting"],
+                input_unit=PowerUnit.PERCENT,
+                output=data["output"]["Power mW"],
+                output_unit=PowerUnit.MW,
+            )
+        else:
+            raise ValueError(f"Unsupported calibration: {data}")
+
+        return calibration.model_dump() if calibration else None
 
     def _none_to_list(self, devices: Optional[list]) -> list:
         """Upgrade a device to it's new device model"""
@@ -75,6 +149,9 @@ class RigUpgraderV1V2(CoreUpgrader):
 
     def _get_components_connections(self, data: dict) -> tuple[Optional[list], list]:
         """Pull components from data"""
+
+        mouse_platform = data.get("mouse_platform", None)
+        mouse_platform = upgrade_mouse_platform(mouse_platform) if mouse_platform else None
 
         # Note we are ignoring optical_tables, which are gone
         # enclosure = data.get("enclosure", None)
@@ -133,25 +210,16 @@ class RigUpgraderV1V2(CoreUpgrader):
         # del data["daqs"]
 
         # Compile components list
-        # components = [
-        #     *objectives,
-        #     *detectors,
-        #     *light_sources,
-        #     *lenses,
-        #     *fluorescence_filters,
-        #     *motorized_stages,
-        #     *scanning_stages,
-        #     *additional_devices,
-        #     *daqs,
-        #     microscope.model_dump(),
-        # ]
+        components = [
+            mouse_platform,
+        ]
         # if enclosure:
         #     components.append(enclosure)
 
         # # Handle connections and upgrade DAQDevice to new version
 
         # print(f"{len(saved_connections)} saved connections pending")
-        # connections = []
+        connections = []
 
         # for connection in saved_connections:
         #     # Check if this is just a model_dump of a Connection object
@@ -186,7 +254,7 @@ class RigUpgraderV1V2(CoreUpgrader):
         #         )
         #         components.append(device.model_dump())
 
-        # return (components, connections)
+        return (components, connections)
 
     def upgrade(self, data: dict, schema_version: str) -> dict:
         """Upgrade the rig core file data to a v2.0 instrument"""
@@ -198,11 +266,36 @@ class RigUpgraderV1V2(CoreUpgrader):
         modification_date = data.get("modification_date", date.today())
         modalities = upgrade_v1_modalities(data)
         temperature_control = data.get("temperature_control", None)
-        calibrations = self._get_calibration(data)
         coordinate_system = self._get_coordinate_system(data)
-        # components, connections = self._get_components_connections(data)
-        components = []
-        connections = []
+        notes = data.get("notes", "")
+
+        calibrations = [self._get_calibration(cal) for cal in data.get("calibrations", [])]
+        # remove None values from calibrations list
+        calibrations = [cal for cal in calibrations if cal is not None]
+
+
+        # Component handlers
+        # mouse_platform
+        # stimulus_devices
+        # cameras
+        # enclosure
+        # ephys_assemblies
+        # fiber_assemblies
+        # stick_microscopes
+        # laser_assemblies
+        # patch_cords
+        # light_sources
+        # detectors
+        # objectives
+        # filters
+        # lenses
+        # dmds
+        # polygonal_scanners
+        # pockels_cells
+        # additional_devices [Devices]
+        # daqs
+
+        components, connections = self._get_components_connections(data)
 
         return {
             "object_type": "Instrument",
@@ -216,4 +309,5 @@ class RigUpgraderV1V2(CoreUpgrader):
             "coordinate_system": coordinate_system,
             "components": components,
             "connections": connections,
+            "notes": notes,
         }

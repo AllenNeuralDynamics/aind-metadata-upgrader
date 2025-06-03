@@ -242,6 +242,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         calibrations = self._get_calibration(data)
         coordinate_system = self._get_coordinate_system(data)
         components, connections = self._get_components_connections(data)
+        notes = data.get("notes", "")
 
         # Fields we are removing
         # optical_tables
@@ -258,4 +259,5 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
             "coordinate_system": coordinate_system,
             "components": components,
             "connections": connections,
+            "notes": notes,
         }
