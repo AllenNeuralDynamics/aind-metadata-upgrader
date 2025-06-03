@@ -10,6 +10,11 @@ from aind_metadata_upgrader.instrument.v1v2_devices import (
     upgrade_objective,
     upgrade_detector,
     upgrade_light_source,
+    upgrade_lenses,
+    upgrade_fluorescence_filters,
+    upgrade_motorized_stages,
+    upgrade_scanning_stages,
+    upgrade_additional_devices,
     saved_connections
 )
 
@@ -121,19 +126,23 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         lenses = data.get("lenses", [])
         lenses = self._none_to_list(lenses)
+        lenses = [upgrade_lenses(lens) for lens in lenses]
 
         fluorescence_filters = data.get("fluorescence_filters", [])
         fluorescence_filters = self._none_to_list(fluorescence_filters)
+        fluorescence_filters = [upgrade_fluorescence_filters(filter_device) for filter_device in fluorescence_filters]
 
         motorized_stages = data.get("motorized_stages", [])
         motorized_stages = self._none_to_list(motorized_stages)
+        motorized_stages = [upgrade_motorized_stages(stage) for stage in motorized_stages]
 
         scanning_stages = data.get("scanning_stages", [])
         scanning_stages = self._none_to_list(scanning_stages)
+        scanning_stages = [upgrade_scanning_stages(stage) for stage in scanning_stages]
 
         additional_devices = data.get("additional_devices", [])
         additional_devices = self._none_to_list(additional_devices)
-
+        additional_devices = [upgrade_additional_devices(device) for device in additional_devices]
 
         com_ports = data.get("com_ports", [])
 
@@ -143,6 +152,12 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         components = [
             *objectives,
             *detectors,
+            *light_sources,
+            *lenses,
+            *fluorescence_filters,
+            *motorized_stages,
+            *scanning_stages,
+            *additional_devices,
         ]
         if enclosure:
             components.append(enclosure)

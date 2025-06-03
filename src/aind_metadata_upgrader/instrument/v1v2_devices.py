@@ -8,6 +8,11 @@ from aind_data_schema.components.devices import (
     Laser,
     LightEmittingDiode,
     Lamp,
+    Filter,
+    Lens,
+    MotorizedStage,
+    ScanningStage,
+    AdditionalImagingDevice,
 )
 
 from aind_data_schema_models.organizations import Organization
@@ -179,3 +184,77 @@ def upgrade_light_source(data: dict) -> dict:
         light_source = Laser(**data)
 
     return light_source.model_dump()
+
+
+def upgrade_lenses(data: dict) -> dict:
+    """Upgrade lens data to the new model."""
+
+    data = basic_checks(data, "Lens")
+
+    # Remove old Device fields and deprecated fields
+    remove(data, "device_type")
+    remove(data, "size")  # maps to more specific fields
+    remove(data, "optimized_wavelength_range")
+    remove(data, "wavelength_unit")
+
+    lens = Lens(**data)
+    return lens.model_dump()
+
+
+def upgrade_fluorescence_filters(data: dict) -> dict:
+    """Upgrade fluorescence filter data to the new model."""
+
+    data = basic_checks(data, "Filter")
+
+    # Remove old Device fields
+    remove(data, "device_type")
+    remove(data, "filter_wheel_index")
+    remove(data, "diameter")
+    remove(data, "diameter_unit")
+    remove(data, "thickness")
+    remove(data, "thickness_unit")
+    remove(data, "cut_off_frequency")
+    remove(data, "cut_off_frequency_unit")
+    remove(data, "cut_on_frequency")
+    remove(data, "cut_on_frequency_unit")
+    remove(data, "description")
+
+    filter_device = Filter(**data)
+    return filter_device.model_dump()
+
+
+def upgrade_motorized_stages(data: dict) -> dict:
+    """Upgrade motorized stage data to the new model."""
+
+    data = basic_checks(data, "Motorized stage")
+
+    # Remove old Device fields
+    remove(data, "device_type")
+
+    stage = MotorizedStage(**data)
+    return stage.model_dump()
+
+
+def upgrade_scanning_stages(data: dict) -> dict:
+    """Upgrade scanning stage data to the new model."""
+
+    data = basic_checks(data, "Scanning stage")
+
+    # Remove old Device fields
+    remove(data, "device_type")
+
+    stage = ScanningStage(**data)
+    return stage.model_dump()
+
+
+def upgrade_additional_devices(data: dict) -> dict:
+    """Upgrade additional imaging device data to the new model."""
+
+    data = basic_checks(data, "Additional device")
+
+    # Remove old Device fields
+    remove(data, "device_type")
+    remove(data, "type")
+
+    device = AdditionalImagingDevice(**data)
+    return device.model_dump()
