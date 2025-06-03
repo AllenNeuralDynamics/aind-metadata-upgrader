@@ -128,11 +128,14 @@ def upgrade_software(data: dict | str) -> dict:
         return Software(
             name=data,
         ).model_dump()
+    elif isinstance(data, dict):
+        remove(data, "url")
+        remove(data, "parameters")
 
-    remove(data, "url")
-    remove(data, "parameters")
-
-    return data
+        return data
+    else:
+        print(data)
+        raise ValueError("Software data must be a string or a dictionary.")
 
 
 def build_connection_from_channel(channel: dict, device_name: str) -> Connection:

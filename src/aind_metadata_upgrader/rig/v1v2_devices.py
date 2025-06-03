@@ -1,6 +1,6 @@
 """Device upgraders for rig metadata from v1 to v2."""
 
-from aind_metadata_upgrader.utils.v1v2_utils import remove, basic_device_checks, upgrade_software, build_connection_from_channel
+from aind_metadata_upgrader.utils.v1v2_utils import add_name, remove, basic_device_checks, upgrade_software, build_connection_from_channel
 
 from aind_data_schema.components.devices import (
     Wheel, Disc, Treadmill, Tube, Arena, Device,
@@ -288,6 +288,14 @@ def upgrade_lick_spout(data: dict) -> dict:
 
     data = basic_device_checks(data, "LickSpout")
 
+    data["solenoid_valve"] = upgrade_generic_device(data.get("solenoid_valve", {}))
+    data["lick_sensor"] = upgrade_generic_device(data.get("lick_sensor", {}))
+
+    # Position data now goes in the configuration
+    # [TODO: Check that we don't need this data in the acquisition?]
+    remove(data, "side")
+    remove(data, "spout_position")
+
     lick_spout = LickSpout(
         **data,
     )
@@ -299,6 +307,9 @@ def upgrade_motorized_stage(data: dict) -> dict:
     """Upgrade MotorizedStage device data from v1.x to v2.0."""
 
     data = basic_device_checks(data, "MotorizedStage")
+
+    if "firmware" in data and data["firmware"]:
+        data["firmware"] = upgrade_software(data.get("firmware", {}))
 
     motorized_stage = MotorizedStage(
         **data,
@@ -315,7 +326,14 @@ def upgrade_lick_spout_assembly(data: dict) -> dict:
         upgraded_spouts = []
         for spout in data["reward_spouts"]:
             upgraded_spouts.append(upgrade_lick_spout(spout))
-        data["reward_spouts"] = upgraded_spouts
+        data["lick_spouts"] = upgraded_spouts
+        remove(data, "reward_spouts")
+
+    add_name(data, "LickSpoutAssembly")
+    remove(data, "device_type")
+
+    data["motorized_stage"] = upgrade_motorized_stage(data.get("stage_type", {}))
+    remove(data, "stage_type")
 
     lick_spout_assembly = LickSpoutAssembly(
         **data,
