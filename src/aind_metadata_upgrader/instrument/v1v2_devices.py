@@ -5,6 +5,9 @@ from aind_data_schema.components.devices import (
     Objective,
     Detector,
     Camera,
+    Laser,
+    LightEmittingDiode,
+    Lamp,
 )
 
 from aind_data_schema_models.organizations import Organization
@@ -101,7 +104,7 @@ def upgrade_objective(data: dict) -> dict:
     return objective.model_dump()
 
 
-def upgrade_detectors(data: dict) -> dict:
+def upgrade_detector(data: dict) -> dict:
     """Upgrade detector data to the new model."""
 
     data = basic_checks(data, "Detector")
@@ -125,3 +128,34 @@ def upgrade_detectors(data: dict) -> dict:
         detector = Detector(**data)
 
     return detector.model_dump()
+
+
+def upgrade_light_source(data: dict) -> dict:
+    """Upgrade light source data to the new model."""
+
+    data = basic_checks(data, "Light Source")
+
+    # Handle the device_type field to determine which specific light source type
+    device_type = data.get("device_type", "").lower()
+
+    # Remove device_type as it's not needed in v2
+    if "device_type" in data:
+        del data["device_type"]
+
+    # Old light sources have a 'type' field, which we will remove
+    if "type" in data and not device_type:
+        device_type = data["type"].capitalize()
+        del data["type"]
+
+    # Based on device_type, create the appropriate light source
+    if "laser" in device_type:
+        light_source = Laser(**data)
+    elif "led" in device_type or "light emitting diode" in device_type:
+        light_source = LightEmittingDiode(**data)
+    elif "lamp" in device_type:
+        light_source = Lamp(**data)
+    else:
+        # Default to Laser if type is unclear
+        light_source = Laser(**data)
+
+    return light_source.model_dump()

@@ -8,7 +8,8 @@ from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.instrument.v1v2_devices import (
     upgrade_enclosure,
     upgrade_objective,
-    upgrade_detectors,
+    upgrade_detector,
+    upgrade_light_source,
     saved_connections
 )
 
@@ -112,10 +113,11 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         detectors = data.get("detectors", [])
         detectors = self._none_to_list(detectors)
-        detectors = [upgrade_detectors(detector) for detector in detectors]
+        detectors = [upgrade_detector(detector) for detector in detectors]
 
         light_sources = data.get("light_sources", [])
         light_sources = self._none_to_list(light_sources)
+        light_sources = [upgrade_light_source(light_source) for light_source in light_sources]
 
         lenses = data.get("lenses", [])
         lenses = self._none_to_list(lenses)
