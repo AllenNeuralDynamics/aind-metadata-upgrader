@@ -8,10 +8,13 @@ from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.instrument.v1v2_devices import (
     upgrade_enclosure,
     upgrade_objective,
+    upgrade_detectors,
+    saved_connections
 )
 
 from aind_data_schema.components.measurements import Calibration
 from aind_data_schema.components.coordinates import CoordinateSystemLibrary
+from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
 
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.units import SizeUnit
@@ -109,6 +112,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         detectors = data.get("detectors", [])
         detectors = self._none_to_list(detectors)
+        detectors = [upgrade_detectors(detector) for detector in detectors]
 
         light_sources = data.get("light_sources", [])
         light_sources = self._none_to_list(light_sources)
@@ -136,13 +140,28 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         # Compile components list
         components = [
             *objectives,
+            *detectors,
         ]
         if enclosure:
             components.append(enclosure)
 
         # Handle connections and upgrade DAQDevice to new version
 
+        print(f"{len(saved_connections)} saved connections pending")
         connections = []
+
+        for connection in saved_connections:
+            connections.append(Connection(
+                device_names=[connection["send"], connection["receive"]],
+                connection_data={
+                    connection["send"]: ConnectionData(
+                        direction=ConnectionDirection.SEND,
+                    ),
+                    connection["receive"]: ConnectionData(
+                        direction=ConnectionDirection.RECEIVE,
+                    )
+                }
+            ))
 
         return (components, connections)
 

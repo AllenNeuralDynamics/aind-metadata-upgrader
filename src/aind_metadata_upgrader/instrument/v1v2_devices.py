@@ -3,11 +3,23 @@
 from aind_data_schema.components.devices import (
     Enclosure,
     Objective,
+    Detector,
+    Camera,
 )
 
 from aind_data_schema_models.organizations import Organization
 
 counts = {}
+saved_connections = []
+
+
+def capitalize(data: dict, field: str) -> dict:
+    """Capitalize the first letter of a field in the data dictionary."""
+
+    if field in data and isinstance(data[field], str):
+        data[field] = data[field].capitalize()
+
+    return data
 
 
 def add_name(data: dict, type: str) -> dict:
@@ -87,3 +99,29 @@ def upgrade_objective(data: dict) -> dict:
     )
 
     return objective.model_dump()
+
+
+def upgrade_detectors(data: dict) -> dict:
+    """Upgrade detector data to the new model."""
+
+    data = basic_checks(data, "Detector")
+
+    data = capitalize(data, "cooling")
+    data = capitalize(data, "bin_mode")
+
+    # Save computer_name connection
+    if "computer_name" in data:
+        if data["computer_name"]:
+            saved_connections.append({
+                "send": data["name"],
+                "receive": data["computer_name"],
+            })
+        del data["computer_name"]
+
+    if "type" in data and data["type"] == "Camera":
+        del data["type"]
+        detector = Camera(**data)
+    else:
+        detector = Detector(**data)
+
+    return detector.model_dump()
