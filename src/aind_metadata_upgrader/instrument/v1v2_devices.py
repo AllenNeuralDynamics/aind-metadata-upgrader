@@ -25,6 +25,15 @@ def capitalize(data: dict, field: str) -> dict:
     return data
 
 
+def remove(data: dict, field: str) -> dict:
+    """Remove a field from the data dictionary if it exists."""
+
+    if field in data:
+        del data[field]
+
+    return data
+
+
 def add_name(data: dict, type: str) -> dict:
     """Add a name field if it's missing, keep track of counts in a global
     variable."""
@@ -130,6 +139,11 @@ def upgrade_detector(data: dict) -> dict:
     return detector.model_dump()
 
 
+COUPLING_MAPPING = {
+    "SMF": "Single-mode fiber",
+}
+
+
 def upgrade_light_source(data: dict) -> dict:
     """Upgrade light source data to the new model."""
 
@@ -139,8 +153,14 @@ def upgrade_light_source(data: dict) -> dict:
     device_type = data.get("device_type", "").lower()
 
     # Remove device_type as it's not needed in v2
-    if "device_type" in data:
-        del data["device_type"]
+    remove(data, "device_type")
+    remove(data, "max_power")
+    remove(data, "maximum_power")
+    remove(data, "item_number")
+    
+    if "coupling" in data:
+        # Convert coupling to a more readable format
+        data["coupling"] = COUPLING_MAPPING.get(data["coupling"], data["coupling"])
 
     # Old light sources have a 'type' field, which we will remove
     if "type" in data and not device_type:
