@@ -34,11 +34,11 @@ class SubjectUpgraderV1V2(CoreUpgrader):
         if breeding_info:
             # Ensure object_type is set
             breeding_info["object_type"] = "Breeding info"
-            # Ensure maternal and paternal genotypes are strings
-            if not breeding_info.get("maternal_genotype"):
-                breeding_info["maternal_genotype"] = "unknown"
-            if not breeding_info.get("paternal_genotype"):
-                breeding_info["paternal_genotype"] = "unknown"
+            # Ensure all fields are strings, fill with unknown if missing
+            fields = ["breeding_group", "maternal_genotype", "paternal_genotype", "maternal_id", "paternal_id"]
+            for field in fields:
+                if not breeding_info.get(field):
+                    breeding_info[field] = "unknown"
 
         return breeding_info
 

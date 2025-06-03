@@ -15,11 +15,13 @@ from aind_metadata_upgrader.instrument.v1v2_devices import (
     upgrade_motorized_stages,
     upgrade_scanning_stages,
     upgrade_additional_devices,
-    saved_connections
+    upgrade_daq_devices,
+    saved_connections,
 )
 
 from aind_data_schema.components.measurements import Calibration
 from aind_data_schema.components.coordinates import CoordinateSystemLibrary
+from aind_data_schema.components.devices import Microscope, Device
 from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
 
 from aind_data_schema_models.modalities import Modality
@@ -60,7 +62,12 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         else:
             if instrument_type == "confocal":
                 modalities.append(Modality.CONFOCAL.model_dump())
-            if instrument_type == "diSPIM" or instrument_type == "exaSPIM" or instrument_type == "mesoSPIM" or instrument_type == "smartSPIM":
+            if (
+                instrument_type == "diSPIM"
+                or instrument_type == "exaSPIM"
+                or instrument_type == "mesoSPIM"
+                or instrument_type == "smartSPIM"
+            ):
                 modalities.append(Modality.SPIM.model_dump())
             if instrument_type == "Two photon":
                 modalities.append(Modality.POPHYS.model_dump())
@@ -79,16 +86,18 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         if data.get("calibration_data", None):
             # We have a calibration, wrap it in the new Calibration object
-            return [Calibration(
-                calibration_date=data.get("calibration_date"),
-                device_name=data.get("instrument_id"),
-                input=[],
-                output=[],
-                input_unit=SizeUnit.UM,
-                output_unit=SizeUnit.UM,
-                description="Calibration data from v1.x instrument, see notes for file path.",
-                notes=data.get("calibration_data"),
-            ).model_dump()]
+            return [
+                Calibration(
+                    calibration_date=data.get("calibration_date"),
+                    device_name=data.get("instrument_id"),
+                    input=[],
+                    output=[],
+                    input_unit=SizeUnit.UM,
+                    output_unit=SizeUnit.UM,
+                    description="Calibration data from v1.x instrument, see notes for file path.",
+                    notes=data.get("calibration_data"),
+                ).model_dump()
+            ]
 
         return None
 
@@ -144,9 +153,25 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         additional_devices = self._none_to_list(additional_devices)
         additional_devices = [upgrade_additional_devices(device) for device in additional_devices]
 
-        com_ports = data.get("com_ports", [])
+        # Create the new Microscope device
+        microscope = Microscope(
+            name=data.get("instrument_id", "Microscope"),
+        )
+        scope_name = microscope.name
 
-        daqs = data.get("daqs", [])
+        com_ports = data.get("com_ports", [])
+        for port in com_ports:
+            saved_connections.append(
+                {
+                    "receive": port["hardware_name"],
+                    "send": scope_name,
+                }
+            )
+        del data["com_ports"]
+
+        daqs = self._none_to_list(data.get("daqs", []))
+        daqs = [upgrade_daq_devices(daq) for daq in daqs]
+        del data["daqs"]
 
         # Compile components list
         components = [
@@ -158,6 +183,8 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
             *motorized_stages,
             *scanning_stages,
             *additional_devices,
+            *daqs,
+            microscope.model_dump(),
         ]
         if enclosure:
             components.append(enclosure)
@@ -168,17 +195,37 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         connections = []
 
         for connection in saved_connections:
-            connections.append(Connection(
-                device_names=[connection["send"], connection["receive"]],
-                connection_data={
-                    connection["send"]: ConnectionData(
-                        direction=ConnectionDirection.SEND,
-                    ),
-                    connection["receive"]: ConnectionData(
-                        direction=ConnectionDirection.RECEIVE,
-                    )
-                }
-            ))
+            # Check if this is just a model_dump of a Connection object
+            if "device_names" in connection:
+                connections.append(connection)
+            else:
+                connections.append(
+                    Connection(
+                        device_names=[connection["send"], connection["receive"]],
+                        connection_data={
+                            connection["send"]: ConnectionData(
+                                direction=ConnectionDirection.SEND,
+                            ),
+                            connection["receive"]: ConnectionData(
+                                direction=ConnectionDirection.RECEIVE,
+                            ),
+                        },
+                    ).model_dump()
+                )
+
+        # Check that we're going to pass the connection validation
+        # Flatten the list of device names from all connections
+        connection_names = [name for conn in connections for name in conn["device_names"]]
+        component_names = [comp["name"] for comp in components]
+
+        for name in connection_names:
+            if name not in component_names:
+                # Create an empty Device with the name
+                device = Device(
+                    name=name,
+                    notes="(v1v2 upgrade) This device was not found in the components list, but is referenced in connections.",
+                )
+                components.append(device.model_dump())
 
         return (components, connections)
 
@@ -209,4 +256,5 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
             "calibrations": calibrations,
             "coordinate_system": coordinate_system,
             "components": components,
+            "connections": connections,
         }

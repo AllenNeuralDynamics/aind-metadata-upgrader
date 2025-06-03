@@ -13,7 +13,12 @@ from aind_data_schema.components.devices import (
     MotorizedStage,
     ScanningStage,
     AdditionalImagingDevice,
+    DAQDevice,
+    DAQChannel,
+    DaqChannelType,
 )
+
+from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
 
 from aind_data_schema_models.organizations import Organization
 from aind_data_schema_models.devices import ImagingDeviceType
@@ -31,13 +36,11 @@ def capitalize(data: dict, field: str) -> dict:
     return data
 
 
-def remove(data: dict, field: str) -> dict:
+def remove(data: dict, field: str):
     """Remove a field from the data dictionary if it exists."""
 
     if field in data:
         del data[field]
-
-    return data
 
 
 def add_name(data: dict, type: str) -> dict:
@@ -64,8 +67,7 @@ def repair_manufacturer(data: dict) -> dict:
 
     if data["manufacturer"]["name"] == "Other" and not data["notes"]:
         data["notes"] = (
-            " (v1v2 upgrade): 'manufacturer' was set to 'Other'"
-            " and notes were empty, manufacturer is unknown."
+            " (v1v2 upgrade): 'manufacturer' was set to 'Other'" " and notes were empty, manufacturer is unknown."
         )
 
     return data
@@ -136,10 +138,12 @@ def upgrade_detector(data: dict) -> dict:
     # Save computer_name connection
     if "computer_name" in data:
         if data["computer_name"]:
-            saved_connections.append({
-                "send": data["name"],
-                "receive": data["computer_name"],
-            })
+            saved_connections.append(
+                {
+                    "send": data["name"],
+                    "receive": data["computer_name"],
+                }
+            )
         del data["computer_name"]
 
     if "type" in data and data["type"] == "Camera":
@@ -274,7 +278,121 @@ def upgrade_additional_devices(data: dict) -> dict:
 
     if "imaging_device_type" not in data:
         data["imaging_device_type"] = ImagingDeviceType.OTHER
-        data["notes"] = data["notes"] if data["notes"] else "" + " (v1v2 upgrade): 'imaging_device_type' field was missing, defaulting to 'Other'."
+        data["notes"] = (
+            data["notes"]
+            if data["notes"]
+            else "" + " (v1v2 upgrade): 'imaging_device_type' field was missing, defaulting to 'Other'."
+        )
 
     device = AdditionalImagingDevice(**data)
     return device.model_dump()
+
+
+def build_connection_from_channel(channel: dict, device_name: str) -> Connection:
+    """Build a connection object from a DAQ channel."""
+    if "device_name" in channel and channel["device_name"]:
+        channel_type = channel.get("channel_type", "")
+
+        if "Output" in channel_type:
+            # For output channels, DAQ sends to the device
+            connection = Connection(
+                device_names=[device_name, channel["device_name"]],
+                connection_data={
+                    device_name: ConnectionData(
+                        direction=ConnectionDirection.SEND,
+                        port=channel["channel_name"]
+                    ),
+                    channel["device_name"]: ConnectionData(
+                        direction=ConnectionDirection.RECEIVE,
+                        port=channel["channel_name"]
+                    ),
+                },
+            )
+        elif "Input" in channel_type:
+            # For input channels, device sends to DAQ
+            connection = Connection(
+                device_names=[channel["device_name"], device_name],
+                connection_data={
+                    channel["device_name"]: ConnectionData(
+                        direction=ConnectionDirection.SEND,
+                        port=channel["channel_name"]
+                    ),
+                    device_name: ConnectionData(
+                        direction=ConnectionDirection.RECEIVE,
+                        port=channel["channel_name"]
+                    ),
+                },
+            )
+        else:
+            # Default case - assume output
+            connection = Connection(
+                device_names=[device_name, channel["device_name"]],
+                connection_data={
+                    device_name: ConnectionData(
+                        direction=ConnectionDirection.SEND,
+                        port=channel["channel_name"]
+                    ),
+                    channel["device_name"]: ConnectionData(
+                        direction=ConnectionDirection.RECEIVE,
+                        port=channel["channel_name"]
+                    ),
+                },
+            )
+
+        return connection
+
+
+def upgrade_daq_devices(device: dict) -> dict:
+    """Upgrade DAQ devices to the new model."""
+
+    # Perform basic device upgrades
+    device_data = basic_checks(device, "DAQ Device")
+
+    # Remove old Device fields specific to DAQ
+    remove(device_data, "device_type")
+
+    # Handle computer_name connection if present
+    if "computer_name" in device_data:
+        if device_data["computer_name"]:
+            saved_connections.append(
+                {
+                    "send": device_data["name"],
+                    "receive": device_data["computer_name"],
+                }
+            )
+        remove(device_data, "computer_name")
+
+    # Process channels and save connections
+    if "channels" in device_data:
+        upgraded_channels = []
+        for channel in device_data["channels"]:
+            # Upgrade channel to new format
+            upgraded_channel = {
+                "channel_name": channel["channel_name"],
+                "channel_type": channel["channel_type"],
+            }
+
+            # Keep optional fields if present
+            if "port" in channel and channel["port"] is not None:
+                upgraded_channel["port"] = channel["port"]
+            if "channel_index" in channel and channel["channel_index"] is not None:
+                upgraded_channel["channel_index"] = channel["channel_index"]
+            if "sample_rate" in channel and channel["sample_rate"] is not None:
+                upgraded_channel["sample_rate"] = channel["sample_rate"]
+            if "sample_rate_unit" in channel and channel["sample_rate_unit"] is not None:
+                upgraded_channel["sample_rate_unit"] = channel["sample_rate_unit"]
+            if "event_based_sampling" in channel and channel["event_based_sampling"] is not None:
+                upgraded_channel["event_based_sampling"] = channel["event_based_sampling"]
+
+            upgraded_channels.append(upgraded_channel)
+
+            # Save connection information based on channel type
+            connection = build_connection_from_channel(channel, device_data["name"])
+            saved_connections.append(connection.model_dump())
+
+        device_data["channels"] = upgraded_channels
+
+    # Create the DAQ device
+    daq_device = DAQDevice(**device_data)
+
+    return daq_device.model_dump()
