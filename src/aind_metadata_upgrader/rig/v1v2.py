@@ -13,7 +13,14 @@ from aind_metadata_upgrader.rig.v1v2_devices import (
     saved_connections,
 )
 
-from aind_data_schema.components.coordinates import CoordinateSystemLibrary, CoordinateSystem, Origin, Axis, AxisName, Direction
+from aind_data_schema.components.coordinates import (
+    CoordinateSystemLibrary,
+    CoordinateSystem,
+    Origin,
+    Axis,
+    AxisName,
+    Direction,
+)
 from aind_data_schema.components.measurements import LiquidCalibration, LaserCalibration
 
 from aind_data_schema_models.units import VolumeUnit, TimeUnit, PowerUnit, SizeUnit
@@ -67,10 +74,13 @@ class RigUpgraderV1V2(CoreUpgrader):
         else:
             # We need to interpret the user's coordinate system (good luck to us)
 
-            if (rig_axes and
-                'lays on the Mouse Sagittal Plane, Positive direction is towards the nose of the mouse' in rig_axes[0]["direction"] and
-                'positive pointing UP opposite the direction from the force of gravity' in rig_axes[1]["direction"] and
-                'defined by the right hand rule and the other two axis' in rig_axes[2]["direction"]):
+            if (
+                rig_axes
+                and "lays on the Mouse Sagittal Plane, Positive direction is towards the nose of the mouse"
+                in rig_axes[0]["direction"]
+                and "positive pointing UP opposite the direction from the force of gravity" in rig_axes[1]["direction"]
+                and "defined by the right hand rule and the other two axis" in rig_axes[2]["direction"]
+            ):
                 return BREGMA_ALS.model_dump()
             raise NotImplementedError("todo")
 
@@ -91,9 +101,15 @@ class RigUpgraderV1V2(CoreUpgrader):
                 input_unit=TimeUnit.S,
                 output=data["output"]["water volume (ul):"],
                 output_unit=VolumeUnit.UL,
-                notes=data["notes"] if data["notes"] else "" + " (v1v2 upgrade): Liquid calibration upgraded from v1.x format.",
+                notes=(
+                    data["notes"]
+                    if data["notes"]
+                    else "" + " (v1v2 upgrade): Liquid calibration upgraded from v1.x format."
+                ),
             )
-        elif "laser power calibration" in data.get("description", "").lower() and "power_setting" in data.get("input", {}):
+        elif "laser power calibration" in data.get("description", "").lower() and "power_setting" in data.get(
+            "input", {}
+        ):
             # Laser calibration, may or may not have data
 
             # Drop empty calibrations
@@ -108,7 +124,9 @@ class RigUpgraderV1V2(CoreUpgrader):
                 output=data["output"]["power_output"],
                 output_unit=PowerUnit.MW,
             )
-        elif "laser power calibration" in data.get("description", "").lower() and "power percent" in data.get("input", {}):
+        elif "laser power calibration" in data.get("description", "").lower() and "power percent" in data.get(
+            "input", {}
+        ):
             # Laser calibration, may or may not have data
 
             # Drop empty calibrations
@@ -234,7 +252,6 @@ class RigUpgraderV1V2(CoreUpgrader):
         calibrations = [self._get_calibration(cal) for cal in data.get("calibrations", [])]
         # remove None values from calibrations list
         calibrations = [cal for cal in calibrations if cal is not None]
-
 
         # Component handlers
         # mouse_platform

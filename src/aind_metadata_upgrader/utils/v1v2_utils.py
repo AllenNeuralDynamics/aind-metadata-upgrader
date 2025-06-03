@@ -62,15 +62,18 @@ def repair_manufacturer(data: dict) -> dict:
     if "manufacturer" in data and isinstance(data["manufacturer"], dict):
         if data["manufacturer"]["name"] == "Other" and not data["notes"]:
             data["notes"] = (
-                data["notes"] if data["notes"] else "" +
-                " (v1v2 upgrade): 'manufacturer' was set to 'Other'" " and notes were empty, manufacturer is unknown."
+                data["notes"]
+                if data["notes"]
+                else "" + " (v1v2 upgrade): 'manufacturer' was set to 'Other'"
+                " and notes were empty, manufacturer is unknown."
             )
 
     if "manufacturer" not in data or not data["manufacturer"]:
         data["manufacturer"] = Organization.OTHER.model_dump()
         data["notes"] = (
-                data["notes"] if data["notes"] else "" +
-                " (v1v2 upgrade): 'manufacturer' field was missing, defaulting to 'Other'."
+            data["notes"]
+            if data["notes"]
+            else "" + " (v1v2 upgrade): 'manufacturer' field was missing, defaulting to 'Other'."
         )
 
     return data

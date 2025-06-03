@@ -1,9 +1,21 @@
 """Device upgraders for rig metadata from v1 to v2."""
 
-from aind_metadata_upgrader.utils.v1v2_utils import add_name, remove, basic_device_checks, upgrade_software, build_connection_from_channel
+from aind_metadata_upgrader.utils.v1v2_utils import (
+    add_name,
+    remove,
+    basic_device_checks,
+    upgrade_software,
+    build_connection_from_channel,
+    upgrade_filter,
+)
 
 from aind_data_schema.components.devices import (
-    Wheel, Disc, Treadmill, Tube, Arena, Device,
+    Wheel,
+    Disc,
+    Treadmill,
+    Tube,
+    Arena,
+    Device,
     DAQDevice,
     Monitor,
     Olfactometer,
@@ -14,7 +26,6 @@ from aind_data_schema.components.devices import (
     CameraAssembly,
     Camera,
     Lens,
-    Filter,
 )
 from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
 
@@ -53,12 +64,10 @@ def upgrade_wheel(data: dict) -> dict:
                 device_names=[encoder_output["device_name"], data["name"]],
                 connection_data={
                     encoder_output["device_name"]: ConnectionData(
-                        direction=ConnectionDirection.SEND,
-                        port=encoder_output["channel_name"]
+                        direction=ConnectionDirection.SEND, port=encoder_output["channel_name"]
                     ),
                     data["name"]: ConnectionData(
-                        direction=ConnectionDirection.RECEIVE,
-                        port=encoder_output["channel_name"]
+                        direction=ConnectionDirection.RECEIVE, port=encoder_output["channel_name"]
                     ),
                 },
             )
@@ -72,12 +81,10 @@ def upgrade_wheel(data: dict) -> dict:
                 device_names=[brake_output["device_name"], data["name"]],
                 connection_data={
                     brake_output["device_name"]: ConnectionData(
-                        direction=ConnectionDirection.SEND,
-                        port=brake_output["channel_name"]
+                        direction=ConnectionDirection.SEND, port=brake_output["channel_name"]
                     ),
                     data["name"]: ConnectionData(
-                        direction=ConnectionDirection.RECEIVE,
-                        port=brake_output["channel_name"]
+                        direction=ConnectionDirection.RECEIVE, port=brake_output["channel_name"]
                     ),
                 },
             )
@@ -91,12 +98,10 @@ def upgrade_wheel(data: dict) -> dict:
                 device_names=[torque_output["device_name"], data["name"]],
                 connection_data={
                     torque_output["device_name"]: ConnectionData(
-                        direction=ConnectionDirection.SEND,
-                        port=torque_output["channel_name"]
+                        direction=ConnectionDirection.SEND, port=torque_output["channel_name"]
                     ),
                     data["name"]: ConnectionData(
-                        direction=ConnectionDirection.RECEIVE,
-                        port=torque_output["channel_name"]
+                        direction=ConnectionDirection.RECEIVE, port=torque_output["channel_name"]
                     ),
                 },
             )
@@ -381,3 +386,11 @@ def upgrade_camera_assembly(data: dict) -> dict:
 
     # Perform basic device checks
     data = basic_device_checks(data, "CameraAssembly")
+
+    data["filter"] = upgrade_filter(data.get("filter", {}))
+
+    camera_assembly = CameraAssembly(
+        **data,
+    )
+
+    return camera_assembly.model_dump()
