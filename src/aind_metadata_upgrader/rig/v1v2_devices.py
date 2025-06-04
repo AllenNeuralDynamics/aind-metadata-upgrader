@@ -19,6 +19,7 @@ from aind_data_schema.components.devices import (
     Device,
     DAQDevice,
     HarpDevice,
+    NeuropixelsBasestation,
     Monitor,
     Olfactometer,
     LickSpout,
@@ -269,6 +270,8 @@ def upgrade_daq_devices(device: dict) -> dict:
     # Create the DAQ device, or HarpDevice
     if "is_clock_generator" in device_data:
         daq_device = HarpDevice(**device_data)
+    elif "bsc_firmware_version" in device_data:
+        daq_device = NeuropixelsBasestation(**device_data)
     else:
         daq_device = DAQDevice(**device_data)
 

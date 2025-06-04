@@ -22,6 +22,10 @@ from aind_data_schema.components.coordinates import (
     Direction,
 )
 from aind_data_schema.components.measurements import LiquidCalibration, LaserCalibration
+from aind_data_schema.components.devices import (
+    Device,
+)
+from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
 
 from aind_data_schema_models.units import VolumeUnit, TimeUnit, PowerUnit, SizeUnit
 
@@ -182,6 +186,22 @@ class RigUpgraderV1V2(CoreUpgrader):
         camera_assemblies = self._none_to_list(camera_assemblies)
         camera_assemblies = [upgrade_camera_assembly(device) for device in camera_assemblies]
 
+        # enclosure
+        # ephys_assemblies
+        # fiber_assemblies
+        # stick_microscopes
+        # laser_assemblies
+        # patch_cords
+        # light_sources
+        # detectors
+        # objectives
+        # filters
+        # lenses
+        # dmds
+        # polygonal_scanners
+        # pockels_cells
+        # additional_devices list[Device]
+
         daqs = self._none_to_list(data.get("daqs", []))
         daqs = [upgrade_daq_devices(daq) for daq in daqs]
         del data["daqs"]
@@ -201,38 +221,38 @@ class RigUpgraderV1V2(CoreUpgrader):
         # print(f"{len(saved_connections)} saved connections pending")
         connections = []
 
-        # for connection in saved_connections:
-        #     # Check if this is just a model_dump of a Connection object
-        #     if "device_names" in connection:
-        #         connections.append(connection)
-        #     else:
-        #         connections.append(
-        #             Connection(
-        #                 device_names=[connection["send"], connection["receive"]],
-        #                 connection_data={
-        #                     connection["send"]: ConnectionData(
-        #                         direction=ConnectionDirection.SEND,
-        #                     ),
-        #                     connection["receive"]: ConnectionData(
-        #                         direction=ConnectionDirection.RECEIVE,
-        #                     ),
-        #                 },
-        #             ).model_dump()
-        #         )
+        for connection in saved_connections:
+            # Check if this is just a model_dump of a Connection object
+            if "device_names" in connection:
+                connections.append(connection)
+            else:
+                connections.append(
+                    Connection(
+                        device_names=[connection["send"], connection["receive"]],
+                        connection_data={
+                            connection["send"]: ConnectionData(
+                                direction=ConnectionDirection.SEND,
+                            ),
+                            connection["receive"]: ConnectionData(
+                                direction=ConnectionDirection.RECEIVE,
+                            ),
+                        },
+                    ).model_dump()
+                )
 
         # # Check that we're going to pass the connection validation
         # # Flatten the list of device names from all connections
-        # connection_names = [name for conn in connections for name in conn["device_names"]]
-        # component_names = [comp["name"] for comp in components]
+        connection_names = [name for conn in connections for name in conn["device_names"]]
+        component_names = [comp["name"] for comp in components]
 
-        # for name in connection_names:
-        #     if name not in component_names:
-        #         # Create an empty Device with the name
-        #         device = Device(
-        #             name=name,
-        #             notes="(v1v2 upgrade) This device was not found in the components list, but is referenced in connections.",
-        #         )
-        #         components.append(device.model_dump())
+        for name in connection_names:
+            if name not in component_names:
+                # Create an empty Device with the name
+                device = Device(
+                    name=name,
+                    notes="(v1v2 upgrade) This device was not found in the components list, but is referenced in connections.",
+                )
+                components.append(device.model_dump())
 
         return (components, connections)
 
@@ -252,27 +272,6 @@ class RigUpgraderV1V2(CoreUpgrader):
         calibrations = [self._get_calibration(cal) for cal in data.get("calibrations", [])]
         # remove None values from calibrations list
         calibrations = [cal for cal in calibrations if cal is not None]
-
-        # Component handlers
-        # mouse_platform
-        # stimulus_devices
-        # cameras
-        # enclosure
-        # ephys_assemblies
-        # fiber_assemblies
-        # stick_microscopes
-        # laser_assemblies
-        # patch_cords
-        # light_sources
-        # detectors
-        # objectives
-        # filters
-        # lenses
-        # dmds
-        # polygonal_scanners
-        # pockels_cells
-        # additional_devices [Devices]
-        # daqs
 
         components, connections = self._get_components_connections(data)
 
