@@ -7,6 +7,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_software,
     build_connection_from_channel,
     upgrade_filter,
+    upgrade_positioned_device,
 )
 
 from aind_data_schema.components.devices import (
@@ -17,6 +18,7 @@ from aind_data_schema.components.devices import (
     Arena,
     Device,
     DAQDevice,
+    HarpDevice,
     Monitor,
     Olfactometer,
     LickSpout,
@@ -28,6 +30,8 @@ from aind_data_schema.components.devices import (
     Lens,
 )
 from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
+from aind_data_schema.components.devices import CameraTarget
+from aind_data_schema_models.coordinates import AnatomicalRelative
 
 saved_connections = []
 
@@ -262,8 +266,11 @@ def upgrade_daq_devices(device: dict) -> dict:
 
         device_data["channels"] = upgraded_channels
 
-    # Create the DAQ device
-    daq_device = DAQDevice(**device_data)
+    # Create the DAQ device, or HarpDevice
+    if "is_clock_generator" in device_data:
+        daq_device = HarpDevice(**device_data)
+    else:
+        daq_device = DAQDevice(**device_data)
 
     return daq_device.model_dump()
 
@@ -272,6 +279,8 @@ def upgrade_monitor(data: dict) -> dict:
     """Upgrade Monitor device data from v1.x to v2.0."""
 
     data = basic_device_checks(data, "Monitor")
+
+    data = upgrade_positioned_device(data)
 
     monitor = Monitor(
         **data,
@@ -285,6 +294,17 @@ def upgrade_olfactometer(data: dict) -> dict:
 
     data = basic_device_checks(data, "Olfactometer")
 
+    # Pull computer_name and create a connection if present
+    if "computer_name" in data and data["computer_name"]:
+        if data["computer_name"]:
+            saved_connections.append(
+                {
+                    "receive": data["name"],
+                    "send": data["computer_name"],
+                }
+            )
+        remove(data, "computer_name")
+
     olfactometer = Olfactometer(
         **data,
     )
@@ -297,8 +317,16 @@ def upgrade_lick_spout(data: dict) -> dict:
 
     data = basic_device_checks(data, "LickSpout")
 
-    data["solenoid_valve"] = upgrade_generic_device(data.get("solenoid_valve", {}))
-    data["lick_sensor"] = upgrade_generic_device(data.get("lick_sensor", {}))
+    if "solenoid_valve" in data and data["solenoid_valve"]:
+        data["solenoid_valve"] = upgrade_generic_device(data.get("solenoid_valve", {}))
+
+    if "lick_sensor" in data and data["lick_sensor"]:
+        data["lick_sensor"] = upgrade_generic_device(data.get("lick_sensor", {}))
+    else:
+        # The lick sensor is missing... we will add a default one and clearly mark it as unknown
+        data["lick_sensor"] = Device(
+            name="Unknown Lick Sensor",
+        )
 
     # Position data now goes in the configuration
     # [TODO: Check that we don't need this data in the acquisition?]
@@ -341,7 +369,11 @@ def upgrade_lick_spout_assembly(data: dict) -> dict:
     add_name(data, "LickSpoutAssembly")
     remove(data, "device_type")
 
-    data["motorized_stage"] = upgrade_motorized_stage(data.get("stage_type", {}))
+    if "stage_type" in data:
+        if data["stage_type"]:
+            data["motorized_stage"] = upgrade_motorized_stage(data.get("stage_type", {}))
+        else:
+            data["motorized_stage"] = None
     remove(data, "stage_type")
 
     lick_spout_assembly = LickSpoutAssembly(
@@ -355,6 +387,8 @@ def upgrade_speaker(data: dict) -> dict:
     """Upgrade Speaker device data from v1.x to v2.0."""
 
     data = basic_device_checks(data, "Speaker")
+
+    speaker = upgrade_positioned_device(data)
 
     speaker = Speaker(
         **data,
@@ -381,13 +415,116 @@ def upgrade_stimulus_device(data: dict) -> dict:
         raise ValueError(f"Unsupported stimulus device type: {device_type}")
 
 
+def upgrade_camera(data: dict) -> dict:
+    """Upgrade Camera device data from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "Camera")
+
+    if "computer_name" in data:
+        if data["computer_name"]:
+            saved_connections.append(
+                {
+                    "send": data["name"],
+                    "receive": data["computer_name"],
+                }
+            )
+        remove(data, "computer_name")
+
+    remove(data, "max_frame_rate")  # no idea when that was in v1.x
+
+    if "recording_software" in data and data["recording_software"]:
+        data["recording_software"] = upgrade_software(data.get("recording_software", {}))
+
+    camera = Camera(
+        **data,
+    )
+
+    return camera.model_dump()
+
+
+def upgrade_lens(data: dict) -> dict:
+    """Upgrade Lens device data from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "Lens")
+
+    # Remove v1 fields that are not supported in v2
+    remove(data, "focal_length")
+    remove(data, "focal_length_unit")
+    remove(data, "lens_size_unit")
+    remove(data, "max_aperture")
+    remove(data, "optimized_wavelength_range")
+    remove(data, "size")
+    remove(data, "wavelength_unit")
+
+    data = upgrade_generic_device(data)
+
+    lens = Lens(
+        **data,
+    )
+
+    return lens.model_dump()
+
+
+CAMERA_TARGETS = {
+    "body": CameraTarget.BODY,
+    "side": CameraTarget.BODY,
+    "bottom": CameraTarget.BODY,
+    "brain": CameraTarget.BRAIN,
+    "eye": CameraTarget.EYE,
+    "face": CameraTarget.FACE,
+    "tongue": CameraTarget.TONGUE,
+    "other": CameraTarget.OTHER,
+}
+
+RELATIVE = {
+    "right": AnatomicalRelative.RIGHT,
+    "left": AnatomicalRelative.LEFT,
+    "bottom": AnatomicalRelative.INFERIOR,
+}
+
+
+def parse_camera_target(target: str):
+    """Separate out the strings in the target list
+
+    Attempt to identify if any are targets and if any are anatomical relative positions
+    """
+
+    target = target.lower()
+
+    camera_target = None
+
+    for target_type in CAMERA_TARGETS.keys():
+        if target_type in target:
+            camera_target = CAMERA_TARGETS[target_type]
+            break
+
+    if not camera_target:
+        raise ValueError(f"Invalid camera target: {target}. Must be one of {list(CAMERA_TARGETS.keys())}.")
+
+    relative_positions = []
+
+    for relative in RELATIVE.keys():
+        if relative in target:
+            relative_positions.append(RELATIVE[relative])
+
+    return camera_target, relative_positions
+
+
 def upgrade_camera_assembly(data: dict) -> dict:
     """Upgrade CameraAssembly device data from v1.x to v2.0."""
 
     # Perform basic device checks
-    data = basic_device_checks(data, "CameraAssembly")
+    data = add_name(data, "CameraAssembly")
 
-    data["filter"] = upgrade_filter(data.get("filter", {}))
+    if "filter" in data and data["filter"]:
+        data["filter"] = upgrade_filter(data.get("filter", {}))
+    data["camera"] = upgrade_camera(data.get("camera", {}))
+    data["lens"] = upgrade_lens(data.get("lens", {}))
+
+    data["target"], relative_positions = parse_camera_target(data.get("camera_target", ""))
+    remove(data, "camera_target")
+
+    data = upgrade_positioned_device(data, relative_positions)
 
     camera_assembly = CameraAssembly(
         **data,

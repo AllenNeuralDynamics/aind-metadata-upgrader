@@ -7,6 +7,8 @@ from aind_data_schema_models.organizations import Organization
 
 from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
 from aind_data_schema.components.devices import Filter
+from aind_data_schema.components.coordinates import CoordinateSystemLibrary, Affine, Translation
+from aind_data_schema_models.coordinates import AnatomicalRelative
 
 MODALITY_MAP = {
     "SmartSPIM": Modality.SPIM,
@@ -70,11 +72,12 @@ def repair_manufacturer(data: dict) -> dict:
 
     if "manufacturer" not in data or not data["manufacturer"]:
         data["manufacturer"] = Organization.OTHER.model_dump()
-        data["notes"] = (
-            data["notes"]
-            if data["notes"]
-            else "" + " (v1v2 upgrade): 'manufacturer' field was missing, defaulting to 'Other'."
-        )
+        if "notes" in data:
+            data["notes"] = (
+                data["notes"]
+                if data["notes"]
+                else "" + " (v1v2 upgrade): 'manufacturer' field was missing, defaulting to 'Other'."
+            )
 
     return data
 
@@ -214,3 +217,61 @@ def upgrade_filter(data: dict) -> dict:
 
     filter_device = Filter(**data)
     return filter_device.model_dump()
+
+
+def upgrade_positioned_device(data: dict, relative_position_list: list = []) -> dict:
+    """Take v1 RelativePosition object
+
+    and convert to the new relative_position/coordinate_system/transform pattern
+    """
+
+    relative_position = data.get("position", {})
+    remove(data, "position")
+
+    if not relative_position:
+        # No information about relative position, set defaults
+        data["relative_position"] = relative_position_list
+        data["coordinate_system"] = None
+        data["transform"] = None
+    else:
+        transforms = relative_position.get("device_position_transforms", [])
+
+        data["transform"] = []
+        
+        translation = None
+
+        for transform in transforms:
+            if transform["type"] == "rotation":
+                # rotation data is originally stored as a flat list 3 x 3, we convert to list of lists
+                data["transform"].append(
+                    Affine(
+                        affine_transform=[
+                            transform["rotation"][0:3],
+                            transform["rotation"][3:6],
+                            transform["rotation"][6:9]
+                        ]
+                    ).model_dump()
+                )
+            elif transform["type"] == "translation":
+                translation = Translation(
+                    translation=transform["translation"]
+                )
+                data["transform"].append(translation.model_dump())
+            else:
+                raise ValueError(f"Unsupported transform type: {transform['type']}")
+
+        origin = relative_position.get("device_origin", {})
+        # axes = relative_position.get("device_axes", [])
+
+        # We can't easily recover the relative position, leave this for a data migration later
+        data["relative_position"] = []
+
+        # Rather than parse the origin/axes, we'll use a library coordinate system
+        if origin == "Center of Screen on Face":
+            data["coordinate_system"] = CoordinateSystemLibrary.SIPE_MONITOR_RTF
+        elif origin == "Located on face of the lens mounting surface in its center":
+            data["coordinate_system"] = CoordinateSystemLibrary.SIPE_CAMERA_RBF
+        else:
+            print(relative_position)
+            raise ValueError(f"Unsupported origin: {origin}")
+    return data

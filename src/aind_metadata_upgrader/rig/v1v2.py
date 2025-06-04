@@ -189,9 +189,9 @@ class RigUpgraderV1V2(CoreUpgrader):
         # Compile components list
         components = [
             mouse_platform,
-            stimulus_devices,
-            camera_assemblies,
-            daqs,
+            *stimulus_devices,
+            *camera_assemblies,
+            *daqs,
         ]
         # if enclosure:
         #     components.append(enclosure)
