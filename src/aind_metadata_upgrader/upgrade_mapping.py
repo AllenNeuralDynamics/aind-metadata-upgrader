@@ -8,6 +8,7 @@ from aind_metadata_upgrader.quality_control.v1v2 import QCUpgraderV1V2
 from aind_metadata_upgrader.rig.v1v2 import RigUpgraderV1V2
 from aind_metadata_upgrader.subject.v1v2 import SubjectUpgraderV1V2
 from aind_metadata_upgrader.processing.v1v2 import ProcessingV1V2
+from aind_metadata_upgrader.procedures.v1v2 import ProceduresUpgraderV1V2
 
 ACQUISITION = [
     (SpecifierSet("<=2.0.0"), None),
@@ -26,7 +27,7 @@ METADATA = [
 ]
 
 PROCEDURES = [
-    (SpecifierSet("<=2.0.0"), None),
+    (SpecifierSet("<=2.0.0"), ProceduresUpgraderV1V2),
 ]
 
 PROCESSING = [
