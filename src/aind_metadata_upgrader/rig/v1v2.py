@@ -47,6 +47,9 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_light_source,
     upgrade_objective,
     upgrade_v1_modalities,
+    upgrade_lens,
+    upgrade_filter,
+    upgrade_device,
 )
 
 BREGMA_ALS = CoordinateSystem(
@@ -238,12 +241,23 @@ class RigUpgraderV1V2(CoreUpgrader):
         objectives = self._none_to_list(objectives)
         objectives = [upgrade_objective(obj) for obj in objectives]
 
-        # filters
-        # lenses
-        # dmds
-        # polygonal_scanners
-        # pockels_cells
-        # additional_devices list[Device]
+        filters = data.get("filters", [])
+        filters = self._none_to_list(filters)
+        filters = [upgrade_filter(filt) for filt in filters]
+
+        lenses = data.get("lenses", [])
+        lenses = self._none_to_list(lenses)
+        lenses = [upgrade_lens(lens) for lens in lenses]
+
+        dmds = data.get("dmds", [])
+
+        polygonal_scanners = data.get("polygonal_scanners", [])
+
+        pockels_cells = data.get("pockels_cells", [])
+
+        additional_devices = data.get("additional_devices", [])
+        additional_devices = self._none_to_list(additional_devices)
+        additional_devices = [upgrade_device(device) for device in additional_devices]
 
         daqs = self._none_to_list(data.get("daqs", []))
         daqs = [upgrade_daq_devices(daq) for daq in daqs]
@@ -255,6 +269,20 @@ class RigUpgraderV1V2(CoreUpgrader):
             *stimulus_devices,
             *camera_assemblies,
             *daqs,
+            *ephys_assemblies,
+            *fiber_assemblies,
+            *stick_microscopes,
+            *laser_assemblies,
+            *patch_cords,
+            *light_sources,
+            *detectors,
+            *objectives,
+            *filters,
+            *lenses,
+            *dmds,
+            *polygonal_scanners,
+            *pockels_cells,
+            *additional_devices,
         ]
         if enclosure:
             components.append(enclosure)

@@ -28,6 +28,9 @@ from aind_data_schema.components.devices import (
     Treadmill,
     Tube,
     Wheel,
+    DigitalMicromirrorDevice,
+    PolygonalScanner,
+    PockelsCell,
 )
 from aind_data_schema.core.instrument import (
     Connection,
@@ -739,3 +742,36 @@ def upgrade_laser_assembly(data: dict) -> dict:
     laser_assembly = LaserAssembly(**data)
 
     return laser_assembly.model_dump()
+
+
+def upgrade_dmd(data: dict) -> dict:
+    """Upgrade DMD device data from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "DMD")
+
+    print(data)
+    dmd = DigitalMicromirrorDevice(**data)
+
+    return dmd.model_dump()
+
+
+def upgrade_polygonal_scanner(data: dict) -> dict:
+    """Upgrade PolygonalScanner device data from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "PolygonalScanner")
+
+    print(data)
+    polygonal_scanner = PolygonalScanner(**data)
+
+    return polygonal_scanner.model_dump()
+
+
+def upgrade_pockels_cell(data: dict) -> dict:
+    """Upgrade PockelsCell device data from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "PockelsCell")
+
+    print(data)
+    pockels_cell = PockelsCell(**data)
+
+    return pockels_cell.model_dump()

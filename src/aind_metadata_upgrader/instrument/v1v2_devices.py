@@ -57,21 +57,6 @@ def upgrade_detector(data: dict) -> dict:
     return detector.model_dump()
 
 
-def upgrade_lenses(data: dict) -> dict:
-    """Upgrade lens data to the new model."""
-
-    data = basic_device_checks(data, "Lens")
-
-    # Remove old Device fields and deprecated fields
-    remove(data, "device_type")
-    remove(data, "size")  # maps to more specific fields
-    remove(data, "optimized_wavelength_range")
-    remove(data, "wavelength_unit")
-
-    lens = Lens(**data)
-    return lens.model_dump()
-
-
 def upgrade_motorized_stages(data: dict) -> dict:
     """Upgrade motorized stage data to the new model."""
 

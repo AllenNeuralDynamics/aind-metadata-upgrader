@@ -21,7 +21,6 @@ from aind_metadata_upgrader.instrument.v1v2_devices import (
     upgrade_additional_devices,
     upgrade_daq_devices,
     upgrade_detector,
-    upgrade_lenses,
     upgrade_motorized_stages,
     upgrade_scanning_stages,
 )
@@ -30,6 +29,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_filter,
     upgrade_light_source,
     upgrade_objective,
+    upgrade_lens,
 )
 
 
@@ -140,7 +140,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         lenses = data.get("lenses", [])
         lenses = self._none_to_list(lenses)
-        lenses = [upgrade_lenses(lens) for lens in lenses]
+        lenses = [upgrade_lens(lens) for lens in lenses]
 
         fluorescence_filters = data.get("fluorescence_filters", [])
         fluorescence_filters = self._none_to_list(fluorescence_filters)

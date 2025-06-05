@@ -13,6 +13,7 @@ from aind_data_schema.components.devices import (
     Laser,
     LightEmittingDiode,
     Objective,
+    Lens,
 )
 from aind_data_schema.components.identifiers import Software
 from aind_data_schema.core.instrument import (
@@ -313,6 +314,24 @@ def upgrade_enclosure(data: dict) -> dict:
     )
 
     return enclosure.model_dump()
+
+
+def upgrade_lens(data: dict) -> dict:
+    """Upgrade lens data to the new model."""
+
+    data = basic_device_checks(data, "Lens")
+
+    # Remove old Device fields and deprecated fields
+    remove(data, "size")  # maps to more specific fields
+    remove(data, "optimized_wavelength_range")
+    remove(data, "wavelength_unit")
+    remove(data, "focal_length")
+    remove(data, "focal_length_unit")
+    remove(data, "lens_size_unit")
+    remove(data, "max_aperture")
+
+    lens = Lens(**data)
+    return lens.model_dump()
 
 
 COUPLING_MAPPING = {
