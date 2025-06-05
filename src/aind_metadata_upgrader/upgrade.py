@@ -3,6 +3,7 @@
 from aind_data_schema.core.data_description import DataDescription
 from aind_data_schema.core.instrument import Instrument
 from aind_data_schema.core.metadata import Metadata
+from aind_data_schema.core.processing import Processing
 from aind_data_schema.core.quality_control import QualityControl
 from aind_data_schema.core.subject import Subject
 from packaging.version import Version
@@ -28,6 +29,7 @@ UPGRADE_VERSIONS = {
     "subject": Subject.model_fields["schema_version"].default,
     "quality_control": QualityControl.model_fields["schema_version"].default,
     "rig": Instrument.model_fields["schema_version"].default,
+    "processing": Processing.model_fields["schema_version"].default,
 }
 
 CORE_MAPPING = {
@@ -73,6 +75,8 @@ class Upgrade:
                 return Instrument(**data)
             elif core_file == "rig":
                 return Instrument(**data)
+            elif core_file == "processing":
+                return Processing(**data)
             else:
                 raise ValueError(f"Unknown core file type: {core_file}")
         except Exception as e:

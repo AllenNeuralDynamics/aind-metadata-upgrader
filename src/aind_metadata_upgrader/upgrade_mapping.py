@@ -7,6 +7,7 @@ from aind_metadata_upgrader.instrument.v1v2 import InstrumentUpgraderV1V2
 from aind_metadata_upgrader.quality_control.v1v2 import QCUpgraderV1V2
 from aind_metadata_upgrader.rig.v1v2 import RigUpgraderV1V2
 from aind_metadata_upgrader.subject.v1v2 import SubjectUpgraderV1V2
+from aind_metadata_upgrader.processing.v1v2 import ProcessingV1V2
 
 ACQUISITION = [
     (SpecifierSet("<=2.0.0"), None),
@@ -29,7 +30,7 @@ PROCEDURES = [
 ]
 
 PROCESSING = [
-    (SpecifierSet("<=2.0.0"), None),
+    (SpecifierSet("<=2.0.0"), ProcessingV1V2),
 ]
 
 QUALITY_CONTROL = [
