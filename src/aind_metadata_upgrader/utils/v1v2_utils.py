@@ -6,9 +6,13 @@ from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
 
 from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
-from aind_data_schema.components.devices import Filter
-from aind_data_schema.components.coordinates import CoordinateSystemLibrary, Affine, Translation
-from aind_data_schema_models.coordinates import AnatomicalRelative
+from aind_data_schema.components.devices import (
+    Laser,
+    LightEmittingDiode,
+    Lamp,
+)
+from aind_data_schema.components.devices import Filter, Enclosure
+from aind_data_schema.components.coordinates import CoordinateSystemLibrary, Affine, Translation, Scale
 
 MODALITY_MAP = {
     "SmartSPIM": Modality.SPIM,
@@ -237,7 +241,7 @@ def upgrade_positioned_device(data: dict, relative_position_list: list = []) -> 
         transforms = relative_position.get("device_position_transforms", [])
 
         data["transform"] = []
-        
+
         translation = None
 
         for transform in transforms:
@@ -248,14 +252,12 @@ def upgrade_positioned_device(data: dict, relative_position_list: list = []) -> 
                         affine_transform=[
                             transform["rotation"][0:3],
                             transform["rotation"][3:6],
-                            transform["rotation"][6:9]
+                            transform["rotation"][6:9],
                         ]
                     ).model_dump()
                 )
             elif transform["type"] == "translation":
-                translation = Translation(
-                    translation=transform["translation"]
-                )
+                translation = Translation(translation=transform["translation"])
                 data["transform"].append(translation.model_dump())
             else:
                 raise ValueError(f"Unsupported transform type: {transform['type']}")
@@ -275,3 +277,72 @@ def upgrade_positioned_device(data: dict, relative_position_list: list = []) -> 
             print(relative_position)
             raise ValueError(f"Unsupported origin: {origin}")
     return data
+
+
+def upgrade_enclosure(data: dict) -> dict:
+    """Upgrade enclosure data to the new model."""
+
+    data = basic_device_checks(data, "Enclosure")
+
+    if "height" in data["size"]:
+        width = data["size"].get("width", 0)
+        length = data["size"].get("length", 0)
+        height = data["size"].get("height", 0)
+        data["size_unit"] = data["size"].get("unit", "mm")
+        data["size"] = Scale(
+            scale=[
+                width,
+                length,
+                height,
+            ],
+        )
+        data["notes"] = data["notes"] if data["notes"] else "" + " (v1v2 upgrade): Scale is width/length/height"
+
+    enclosure = Enclosure(
+        **data,
+    )
+
+    return enclosure.model_dump()
+
+
+COUPLING_MAPPING = {
+    "SMF": "Single-mode fiber",
+}
+
+
+def upgrade_light_source(data: dict) -> dict:
+    """Upgrade light source data to the new model."""
+
+    data = basic_device_checks(data, "Light Source")
+
+    # Handle the device_type field to determine which specific light source type
+    device_type = data.get("device_type", "").lower()
+
+    # Remove device_type as it's not needed in v2
+    remove(data, "device_type")
+    remove(data, "max_power")
+    remove(data, "maximum_power")
+    remove(data, "power_unit")
+    remove(data, "item_number")
+
+    if "coupling" in data:
+        # Convert coupling to a more readable format
+        data["coupling"] = COUPLING_MAPPING.get(data["coupling"], data["coupling"])
+
+    # Old light sources have a 'type' field, which we will remove
+    if "type" in data and not device_type:
+        device_type = data["type"].capitalize()
+        del data["type"]
+
+    # Based on device_type, create the appropriate light source
+    if "laser" in device_type:
+        light_source = Laser(**data)
+    elif "led" in device_type or "light emitting diode" in device_type:
+        light_source = LightEmittingDiode(**data)
+    elif "lamp" in device_type:
+        light_source = Lamp(**data)
+    else:
+        # Default to Laser if type is unclear
+        light_source = Laser(**data)
+
+    return light_source.model_dump()

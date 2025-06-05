@@ -10,6 +10,9 @@ from aind_metadata_upgrader.rig.v1v2_devices import (
     upgrade_stimulus_device,
     upgrade_daq_devices,
     upgrade_camera_assembly,
+    upgrade_ephys_assembly,
+    upgrade_fiber_assembly,
+    upgrade_laser_assembly,
     saved_connections,
 )
 
@@ -29,7 +32,7 @@ from aind_data_schema.core.instrument import Connection, ConnectionData, Connect
 
 from aind_data_schema_models.units import VolumeUnit, TimeUnit, PowerUnit, SizeUnit
 
-from aind_metadata_upgrader.utils.v1v2_utils import upgrade_v1_modalities
+from aind_metadata_upgrader.utils.v1v2_utils import upgrade_v1_modalities, upgrade_enclosure
 
 
 BREGMA_ALS = CoordinateSystem(
@@ -186,11 +189,25 @@ class RigUpgraderV1V2(CoreUpgrader):
         camera_assemblies = self._none_to_list(camera_assemblies)
         camera_assemblies = [upgrade_camera_assembly(device) for device in camera_assemblies]
 
-        # enclosure
-        # ephys_assemblies
-        # fiber_assemblies
-        # stick_microscopes
-        # laser_assemblies
+        enclosure = data.get("enclosure", None)
+        enclosure = upgrade_enclosure(enclosure) if enclosure else None
+
+        ephys_assemblies = data.get("ephys_assemblies", [])
+        ephys_assemblies = self._none_to_list(ephys_assemblies)
+        ephys_assemblies = [upgrade_ephys_assembly(assembly) for assembly in ephys_assemblies]
+
+        fiber_assemblies = data.get("fiber_assemblies", [])
+        fiber_assemblies = self._none_to_list(fiber_assemblies)
+        fiber_assemblies = [upgrade_fiber_assembly(assembly) for assembly in fiber_assemblies]
+
+        stick_microscopes = data.get("stick_microscopes", [])
+        stick_microscopes = self._none_to_list(stick_microscopes)
+        stick_microscopes = [upgrade_camera_assembly(scope) for scope in stick_microscopes]
+
+        laser_assemblies = data.get("laser_assemblies", [])
+        laser_assemblies = self._none_to_list(laser_assemblies)
+        laser_assemblies = [upgrade_laser_assembly(assembly) for assembly in laser_assemblies]
+
         # patch_cords
         # light_sources
         # detectors
@@ -213,8 +230,8 @@ class RigUpgraderV1V2(CoreUpgrader):
             *camera_assemblies,
             *daqs,
         ]
-        # if enclosure:
-        #     components.append(enclosure)
+        if enclosure:
+            components.append(enclosure)
 
         # # Handle connections and upgrade DAQDevice to new version
 

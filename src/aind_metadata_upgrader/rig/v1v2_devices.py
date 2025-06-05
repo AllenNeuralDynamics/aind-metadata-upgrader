@@ -8,6 +8,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     build_connection_from_channel,
     upgrade_filter,
     upgrade_positioned_device,
+    upgrade_light_source,
 )
 
 from aind_data_schema.components.devices import (
@@ -29,6 +30,12 @@ from aind_data_schema.components.devices import (
     CameraAssembly,
     Camera,
     Lens,
+    EphysAssembly,
+    Manipulator,
+    EphysProbe,
+    LaserAssembly,
+    FiberPatchCord,
+    Laser,
 )
 from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
 from aind_data_schema.components.devices import CameraTarget
@@ -534,3 +541,122 @@ def upgrade_camera_assembly(data: dict) -> dict:
     )
 
     return camera_assembly.model_dump()
+
+
+def upgrade_manipulator(data: dict) -> dict:
+    """Upgrade Manipulator device data from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "Manipulator")
+
+    manipulator = Manipulator(**data)
+
+    return manipulator.model_dump()
+
+
+def upgrade_ephys_probe(data: dict) -> dict:
+    """Upgrade EphysProbe device data from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "EphysProbe")
+
+    if "lasers" in data and data["lasers"]:
+        # Store lasers as a connection
+        print(data)
+        raise NotImplementedError("Laser needs to be saved as connection")
+        # saved_connections.append(
+
+        # )
+    remove(data, "lasers")
+
+    # Handle headstage if present
+    if "headstage" in data and data["headstage"]:
+        data["headstage"] = upgrade_generic_device(data["headstage"])
+
+    ephys_probe = EphysProbe(**data)
+
+    return ephys_probe.model_dump()
+
+
+def upgrade_ephys_assembly(data: dict) -> dict:
+    """Upgrade EphysAssembly device data from v1.x to v2.0."""
+
+    # Perform basic device checks
+    data = add_name(data, "EphysAssembly")
+
+    # Upgrade the manipulator
+    if "manipulator" in data:
+        data["manipulator"] = upgrade_manipulator(data["manipulator"])
+
+    # Upgrade the probes array
+    if "probes" in data:
+        upgraded_probes = []
+        for probe in data["probes"]:
+            upgraded_probes.append(upgrade_ephys_probe(probe))
+        data["probes"] = upgraded_probes
+
+    # Create EphysAssembly object
+    ephys_assembly = EphysAssembly(**data)
+
+    return ephys_assembly.model_dump()
+
+
+def upgrade_fiber_assembly(data: dict) -> dict:
+    """Upgrade FiberAssembly device data from v1.x to v2.0."""
+
+    # Perform basic device checks
+    data = add_name(data, "FiberAssembly")
+
+    print(data)
+
+    raise NotImplementedError("FiberAssembly upgrade is not implemented yet")
+    # todo
+
+    return fiber_assembly.model_dump()
+
+
+def upgrade_fiber_patch_cord(data: dict) -> dict:
+    """Upgrade FiberPatchCord device data from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "FiberPatchCord")
+
+    # Convert core_diameter from string to Decimal if needed
+    if "core_diameter" in data and isinstance(data["core_diameter"], str):
+        data["core_diameter"] = float(data["core_diameter"])
+
+    # Convert numerical_aperture from string to Decimal if needed
+    if "numerical_aperture" in data and isinstance(data["numerical_aperture"], str):
+        data["numerical_aperture"] = float(data["numerical_aperture"])
+
+    fiber_patch_cord = FiberPatchCord(**data)
+
+    return fiber_patch_cord.model_dump()
+
+
+def upgrade_laser_assembly(data: dict) -> dict:
+    """Upgrade LaserAssembly device data from v1.x to v2.0."""
+
+    # Perform basic device checks
+    data = add_name(data, "LaserAssembly")
+
+    # Upgrade the manipulator
+    if "manipulator" in data and data["manipulator"]:
+        data["manipulator"] = upgrade_manipulator(data["manipulator"])
+
+    # Upgrade the lasers array
+    if "lasers" in data and data["lasers"]:
+        upgraded_lasers = []
+        for laser in data["lasers"]:
+            upgraded_lasers.append(upgrade_light_source(laser))
+        data["lasers"] = upgraded_lasers
+
+    # Upgrade the collimator (it's just a generic Device in v2)
+    if "collimator" in data and data["collimator"]:
+        data["collimator"] = upgrade_generic_device(data["collimator"])
+
+    # Upgrade the fiber (mapped from "fiber" to "fiber" but using FiberPatchCord type)
+    if "fiber" in data and data["fiber"]:
+        data["fiber"] = upgrade_fiber_patch_cord(data["fiber"])
+
+    # Create LaserAssembly object
+    laser_assembly = LaserAssembly(**data)
+
+    return laser_assembly.model_dump()

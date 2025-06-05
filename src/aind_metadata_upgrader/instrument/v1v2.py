@@ -6,10 +6,8 @@ from datetime import date
 
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.instrument.v1v2_devices import (
-    upgrade_enclosure,
     upgrade_objective,
     upgrade_detector,
-    upgrade_light_source,
     upgrade_lenses,
     upgrade_motorized_stages,
     upgrade_scanning_stages,
@@ -17,7 +15,7 @@ from aind_metadata_upgrader.instrument.v1v2_devices import (
     upgrade_daq_devices,
     saved_connections,
 )
-from aind_metadata_upgrader.utils.v1v2_utils import upgrade_filter
+from aind_metadata_upgrader.utils.v1v2_utils import upgrade_filter, upgrade_enclosure, upgrade_light_source
 
 from aind_data_schema.components.measurements import Calibration
 from aind_data_schema.components.coordinates import CoordinateSystemLibrary
