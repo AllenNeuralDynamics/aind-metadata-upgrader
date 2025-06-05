@@ -553,7 +553,17 @@ def upgrade_camera_assembly(data: dict) -> dict:
     data["camera"] = upgrade_camera(data.get("camera", {}))
     data["lens"] = upgrade_lens(data.get("lens", {}))
 
-    data["target"], relative_positions = parse_camera_target(data.get("camera_target", ""))
+    if "camera_target" not in data or not data["camera_target"]:
+        if "probe" in data["camera"]["name"].lower():
+            data["target"] = CameraTarget.BRAIN
+            relative_positions = [AnatomicalRelative.SUPERIOR]
+    else:
+        data["target"], relative_positions = parse_camera_target(data.get("camera_target", ""))
+
+    if data["target"] == CameraTarget.OTHER:
+        print(data)
+        raise NotImplementedError()
+
     remove(data, "camera_target")
 
     data = upgrade_positioned_device(data, relative_positions)
@@ -657,8 +667,6 @@ def upgrade_fiber_probe(data: dict) -> dict:
 
     data = basic_device_checks(data, "FiberProbe")
 
-    print(data)
-
     if "core_diameter_unit" in data and data["core_diameter_unit"]:
         data["core_diameter_unit"] = repair_unit(data["core_diameter_unit"])
 
@@ -749,7 +757,6 @@ def upgrade_dmd(data: dict) -> dict:
 
     data = basic_device_checks(data, "DMD")
 
-    print(data)
     dmd = DigitalMicromirrorDevice(**data)
 
     return dmd.model_dump()
@@ -760,7 +767,6 @@ def upgrade_polygonal_scanner(data: dict) -> dict:
 
     data = basic_device_checks(data, "PolygonalScanner")
 
-    print(data)
     polygonal_scanner = PolygonalScanner(**data)
 
     return polygonal_scanner.model_dump()
@@ -771,7 +777,6 @@ def upgrade_pockels_cell(data: dict) -> dict:
 
     data = basic_device_checks(data, "PockelsCell")
 
-    print(data)
     pockels_cell = PockelsCell(**data)
 
     return pockels_cell.model_dump()

@@ -41,6 +41,9 @@ from aind_metadata_upgrader.rig.v1v2_devices import (
     upgrade_laser_assembly,
     upgrade_mouse_platform,
     upgrade_stimulus_device,
+    upgrade_dmd,
+    upgrade_polygonal_scanner,
+    upgrade_pockels_cell,
 )
 from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_enclosure,
@@ -49,7 +52,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_v1_modalities,
     upgrade_lens,
     upgrade_filter,
-    upgrade_device,
+    basic_device_checks,
 )
 
 BREGMA_ALS = CoordinateSystem(
@@ -250,14 +253,20 @@ class RigUpgraderV1V2(CoreUpgrader):
         lenses = [upgrade_lens(lens) for lens in lenses]
 
         dmds = data.get("dmds", [])
+        dmds = self._none_to_list(dmds)
+        dmds = [upgrade_dmd(dmd) for dmd in dmds]
 
         polygonal_scanners = data.get("polygonal_scanners", [])
+        polygonal_scanners = self._none_to_list(polygonal_scanners)
+        polygonal_scanners = [upgrade_polygonal_scanner(scanner) for scanner in polygonal_scanners]
 
         pockels_cells = data.get("pockels_cells", [])
+        pockels_cells = self._none_to_list(pockels_cells)
+        pockels_cells = [upgrade_pockels_cell(cell) for cell in pockels_cells]
 
         additional_devices = data.get("additional_devices", [])
         additional_devices = self._none_to_list(additional_devices)
-        additional_devices = [upgrade_device(device) for device in additional_devices]
+        additional_devices = [basic_device_checks(device, "Device") for device in additional_devices]
 
         daqs = self._none_to_list(data.get("daqs", []))
         daqs = [upgrade_daq_devices(daq) for daq in daqs]

@@ -14,6 +14,7 @@ from aind_data_schema.components.devices import (
     LightEmittingDiode,
     Objective,
     Lens,
+    Computer,
 )
 from aind_data_schema.components.identifiers import Software
 from aind_data_schema.core.instrument import (
@@ -100,12 +101,15 @@ def repair_manufacturer(data: dict) -> dict:
 def upgrade_device(data: dict) -> dict:
     """Remove old Device fields"""
 
+    remove(data, "path_to_cad")
+    remove(data, "port_index")
+
     if "device_type" in data:
+        device_type = data["device_type"].lower()
         del data["device_type"]
-    if "path_to_cad" in data:
-        del data["path_to_cad"]
-    if "port_index" in data:
-        del data["port_index"]
+        if device_type == "computer":
+            data = Computer(**data).model_dump()
+
     if "daq_channel" in data:
         if data["daq_channel"]:
             raise ValueError("DAQ Channel has a value -- cannot upgrade record.")
@@ -342,13 +346,11 @@ COUPLING_MAPPING = {
 def upgrade_light_source(data: dict) -> dict:
     """Upgrade light source data to the new model."""
 
-    data = basic_device_checks(data, "Light Source")
-
     # Handle the device_type field to determine which specific light source type
     device_type = data.get("device_type", "").lower()
 
-    # Remove device_type as it's not needed in v2
-    remove(data, "device_type")
+    data = basic_device_checks(data, "Light Source")
+
     remove(data, "max_power")
     remove(data, "maximum_power")
     remove(data, "power_unit")
