@@ -355,7 +355,10 @@ def upgrade_light_source(data: dict) -> dict:
         light_source = LightEmittingDiode(**data)
     elif "lamp" in device_type:
         light_source = Lamp(**data)
+    elif "Axon 920-2 TPC" in data.get("name", ""):
+        light_source = Laser(**data)
     else:
+        print(data)
         raise ValueError(f"Unsupported light source type: {device_type}")
 
     return light_source.model_dump()

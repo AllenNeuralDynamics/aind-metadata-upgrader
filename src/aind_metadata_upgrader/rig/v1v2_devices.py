@@ -672,6 +672,9 @@ def upgrade_detector(data: dict) -> dict:
     data = capitalize(data, "cooling")
     data = capitalize(data, "bin_mode")
 
+    if "cooling" in data and not data["cooling"] or data["cooling"] == "None":
+        data["cooling"] = "No cooling"
+
     if "bin_mode" in data and data["bin_mode"] == "None":
         data["bin_mode"] = "No binning"
 
