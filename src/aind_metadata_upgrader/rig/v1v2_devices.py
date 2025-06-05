@@ -13,6 +13,7 @@ from aind_data_schema.components.devices import (
     EphysProbe,
     FiberAssembly,
     FiberPatchCord,
+    FiberProbe,
     HarpDevice,
     LaserAssembly,
     Lens,
@@ -45,6 +46,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_light_source,
     upgrade_positioned_device,
     upgrade_software,
+    repair_unit,
 )
 
 saved_connections = []
@@ -445,6 +447,10 @@ def upgrade_camera(data: dict) -> dict:
                 }
             )
         remove(data, "computer_name")
+        
+    if "cooling" in data and data["cooling"]:
+        print(data)
+        raise NotImplementedError("Cooling needs to be saved as connection")
 
     remove(data, "max_frame_rate")  # no idea when that was in v1.x
 
@@ -640,24 +646,11 @@ def upgrade_fiber_probe(data: dict) -> dict:
     """Upgrade FiberProbe device data from v1.x to v2.0."""
 
     data = basic_device_checks(data, "FiberProbe")
-
-    # Convert string values to Decimal if needed
-    if "core_diameter" in data and isinstance(data["core_diameter"], str):
-        data["core_diameter"] = float(data["core_diameter"])
-
-    if "numerical_aperture" in data and isinstance(data["numerical_aperture"], str):
-        data["numerical_aperture"] = float(data["numerical_aperture"])
-
-    if "active_length" in data and isinstance(data["active_length"], str):
-        data["active_length"] = float(data["active_length"])
-
-    if "total_length" in data and isinstance(data["total_length"], str):
-        data["total_length"] = float(data["total_length"])
-
-    # Remove v1-specific fields that don't exist in v2
-    remove(data, "device_type")
-    remove(data, "path_to_cad")
-    remove(data, "port_index")
+    
+    print(data)
+    
+    if "core_diameter_unit" in data and data["core_diameter_unit"]:
+        data["core_diameter_unit"] = repair_unit(data["core_diameter_unit"])
 
     fiber_probe = FiberProbe(**data)
 
@@ -698,14 +691,6 @@ def upgrade_fiber_patch_cord(data: dict) -> dict:
     """Upgrade FiberPatchCord device data from v1.x to v2.0."""
 
     data = basic_device_checks(data, "FiberPatchCord")
-
-    # Convert core_diameter from string to Decimal if needed
-    if "core_diameter" in data and isinstance(data["core_diameter"], str):
-        data["core_diameter"] = float(data["core_diameter"])
-
-    # Convert numerical_aperture from string to Decimal if needed
-    if "numerical_aperture" in data and isinstance(data["numerical_aperture"], str):
-        data["numerical_aperture"] = float(data["numerical_aperture"])
 
     fiber_patch_cord = FiberPatchCord(**data)
 

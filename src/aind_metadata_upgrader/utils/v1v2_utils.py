@@ -22,6 +22,7 @@ from aind_data_schema.core.instrument import (
 )
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
+from aind_data_schema_models.units import SizeUnit
 
 MODALITY_MAP = {
     "SmartSPIM": Modality.SPIM,
@@ -370,3 +371,19 @@ def upgrade_objective(data: dict) -> dict:
     )
 
     return objective.model_dump()
+
+
+def repair_unit(broken_unit: str) -> str:
+    """Check for broken unit strings and repair them"""
+    if broken_unit == "nm":
+        return SizeUnit.NM.value
+    elif broken_unit == "um":
+        return SizeUnit.UM.value
+    elif broken_unit == "mm":
+        return SizeUnit.MM.value
+    elif broken_unit == "cm":
+        return SizeUnit.CM.value
+    elif broken_unit == "m":
+        return SizeUnit.M.value
+    else:
+        return broken_unit
