@@ -340,19 +340,22 @@ def upgrade_light_source(data: dict) -> dict:
 
     # Old light sources have a 'type' field, which we will remove
     if "type" in data and not device_type:
-        device_type = data["type"].capitalize()
+        device_type = data["type"].lower()
         del data["type"]
 
     # Based on device_type, create the appropriate light source
-    if "laser" in device_type:
+    if (
+        "laser" in device_type
+        or ("notes" in data and data["notes"] and "laser" in data["notes"].lower())
+        or ("name" in data and data["name"] and "laser" in data["name"].lower())
+    ):
         light_source = Laser(**data)
-    elif "led" in device_type or "light emitting diode" in device_type:
+    elif "led" in device_type or "light emitting diode" in device_type or "led" in data["name"].lower():
         light_source = LightEmittingDiode(**data)
     elif "lamp" in device_type:
         light_source = Lamp(**data)
     else:
-        # Default to Laser if type is unclear
-        light_source = Laser(**data)
+        raise ValueError(f"Unsupported light source type: {device_type}")
 
     return light_source.model_dump()
 
