@@ -29,7 +29,11 @@ class QCUpgraderV1V2(CoreUpgrader):
         for ei, evaluation in enumerate(data.get("evaluations", [])):
 
             for mi, metric in enumerate(evaluation.get("metrics", [])):
-                if "type" in metric["value"] and metric["value"]["type"] == "curation":
+                if (
+                    isinstance(metric["value"], dict)
+                    and "type" in metric["value"]
+                    and metric["value"]["type"] == "curation"
+                ):
                     # Bump the CurationMetric object up to the metric level
                     curations = metric["value"]["curations"]
 

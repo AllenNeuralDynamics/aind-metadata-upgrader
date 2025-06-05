@@ -34,6 +34,9 @@ def upgrade_detector(data: dict) -> dict:
     data = capitalize(data, "cooling")
     data = capitalize(data, "bin_mode")
 
+    if "bin_mode" in data and data["bin_mode"] == "None":
+        data["bin_mode"] = "No binning"
+
     # Save computer_name connection
     if "computer_name" in data:
         if data["computer_name"]:

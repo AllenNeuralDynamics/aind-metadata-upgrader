@@ -447,10 +447,13 @@ def upgrade_camera(data: dict) -> dict:
                 }
             )
         remove(data, "computer_name")
-        
-    if "cooling" in data and data["cooling"]:
-        print(data)
-        raise NotImplementedError("Cooling needs to be saved as connection")
+
+    if "cooling" in data and not data["cooling"] or data["cooling"] == "None":
+        # If someone put None it's ambiguous, but we can assume they meant no cooling
+        data["cooling"] = "No cooling"
+
+    if "bin_mode" in data and data["bin_mode"] == "None":
+        data["bin_mode"] = "No binning"
 
     remove(data, "max_frame_rate")  # no idea when that was in v1.x
 
@@ -496,6 +499,7 @@ CAMERA_TARGETS = {
     "face": CameraTarget.FACE,
     "tongue": CameraTarget.TONGUE,
     "other": CameraTarget.OTHER,
+    "": CameraTarget.OTHER,
 }
 
 RELATIVE = {
@@ -536,6 +540,9 @@ def upgrade_camera_assembly(data: dict) -> dict:
     """Upgrade CameraAssembly device data from v1.x to v2.0."""
 
     # Perform basic device checks
+    if "scope_assembly_name" in data and not data.get("name"):
+        data["name"] = data["scope_assembly_name"]
+        remove(data, "scope_assembly_name")
     data = add_name(data, "CameraAssembly")
 
     if "filter" in data and data["filter"]:
@@ -646,9 +653,9 @@ def upgrade_fiber_probe(data: dict) -> dict:
     """Upgrade FiberProbe device data from v1.x to v2.0."""
 
     data = basic_device_checks(data, "FiberProbe")
-    
+
     print(data)
-    
+
     if "core_diameter_unit" in data and data["core_diameter_unit"]:
         data["core_diameter_unit"] = repair_unit(data["core_diameter_unit"])
 
@@ -664,6 +671,9 @@ def upgrade_detector(data: dict) -> dict:
 
     data = capitalize(data, "cooling")
     data = capitalize(data, "bin_mode")
+
+    if "bin_mode" in data and data["bin_mode"] == "None":
+        data["bin_mode"] = "No binning"
 
     remove(data, "max_frame_rate")  # no idea when that was in v1.x
 
