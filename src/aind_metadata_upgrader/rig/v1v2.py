@@ -14,8 +14,8 @@ from aind_data_schema.components.coordinates import (
 )
 from aind_data_schema.components.devices import Device
 from aind_data_schema.components.measurements import (
-    LaserCalibration,
-    LiquidCalibration,
+    PowerCalibration,
+    VolumeCalibration,
 )
 from aind_data_schema.core.instrument import (
     Connection,
@@ -115,7 +115,7 @@ class RigUpgraderV1V2(CoreUpgrader):
             if not data["input"]["valve open time (s):"] and not data["output"]["water volume (ul):"]:
                 return None
 
-            calibration = LiquidCalibration(
+            calibration = VolumeCalibration(
                 calibration_date=data["calibration_date"],
                 device_name=data["device_name"],
                 input=data["input"]["valve open time (s):"],
@@ -137,7 +137,7 @@ class RigUpgraderV1V2(CoreUpgrader):
             if not data["input"]["power_setting"] and not data["output"]["power_output"]:
                 return None
 
-            calibration = LaserCalibration(
+            calibration = PowerCalibration(
                 calibration_date=data["calibration_date"],
                 device_name=data["device_name"],
                 input=data["input"]["power_setting"],
@@ -154,7 +154,7 @@ class RigUpgraderV1V2(CoreUpgrader):
             if not data["input"]["power percent"] and not data["output"]["power mW"]:
                 return None
 
-            calibration = LaserCalibration(
+            calibration = PowerCalibration(
                 calibration_date=data["calibration_date"],
                 device_name=data["device_name"],
                 input=data["input"]["power percent"],
@@ -168,7 +168,7 @@ class RigUpgraderV1V2(CoreUpgrader):
             if not data["input"]["Power setting"] and not data["output"]["Power mW"]:
                 return None
 
-            calibration = LaserCalibration(
+            calibration = PowerCalibration(
                 calibration_date=data["calibration_date"],
                 device_name=data["device_name"],
                 input=data["input"]["Power setting"],
