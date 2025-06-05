@@ -15,6 +15,7 @@ from aind_data_schema.components.devices import (
     Objective,
     Lens,
     Computer,
+    Device,
 )
 from aind_data_schema.components.identifiers import Software
 from aind_data_schema.core.instrument import (
@@ -105,10 +106,7 @@ def upgrade_device(data: dict) -> dict:
     remove(data, "port_index")
 
     if "device_type" in data:
-        device_type = data["device_type"].lower()
         del data["device_type"]
-        if device_type == "computer":
-            data = Computer(**data).model_dump()
 
     if "daq_channel" in data:
         if data["daq_channel"]:
@@ -129,6 +127,20 @@ def basic_device_checks(data: dict, type: str) -> dict:
     data = repair_manufacturer(data)
 
     return data
+
+
+def upgrade_generic_Device(data: dict) -> dict:
+    """Upgrade a generic Device object"""
+
+    # Some Devices have a device_type field, which now specifies a real object type
+    device_type = data.get("device_type", "").lower()
+
+    data = basic_device_checks(data, "Device")
+
+    if device_type == "computer":
+        return Computer(**data).model_dump()
+
+    return Device(**data).model_dump()
 
 
 def capitalize(data: dict, field: str) -> dict:

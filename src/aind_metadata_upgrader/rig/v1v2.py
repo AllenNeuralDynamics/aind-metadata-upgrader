@@ -52,7 +52,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_v1_modalities,
     upgrade_lens,
     upgrade_filter,
-    basic_device_checks,
+    upgrade_generic_Device,
 )
 
 BREGMA_ALS = CoordinateSystem(
@@ -266,7 +266,7 @@ class RigUpgraderV1V2(CoreUpgrader):
 
         additional_devices = data.get("additional_devices", [])
         additional_devices = self._none_to_list(additional_devices)
-        additional_devices = [basic_device_checks(device, "Device") for device in additional_devices]
+        additional_devices = [upgrade_generic_Device(device) for device in additional_devices]
 
         daqs = self._none_to_list(data.get("daqs", []))
         daqs = [upgrade_daq_devices(daq) for daq in daqs]
