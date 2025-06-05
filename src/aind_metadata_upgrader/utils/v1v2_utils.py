@@ -1,18 +1,27 @@
 """Shared utility functions for the AIND Metadata Upgrader."""
 
-from aind_data_schema.components.identifiers import Software
-
-from aind_data_schema_models.modalities import Modality
-from aind_data_schema_models.organizations import Organization
-
-from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
+from aind_data_schema.components.coordinates import (
+    Affine,
+    CoordinateSystemLibrary,
+    Scale,
+    Translation,
+)
 from aind_data_schema.components.devices import (
+    Enclosure,
+    Filter,
+    Lamp,
     Laser,
     LightEmittingDiode,
-    Lamp,
+    Objective,
 )
-from aind_data_schema.components.devices import Filter, Enclosure
-from aind_data_schema.components.coordinates import CoordinateSystemLibrary, Affine, Translation, Scale
+from aind_data_schema.components.identifiers import Software
+from aind_data_schema.core.instrument import (
+    Connection,
+    ConnectionData,
+    ConnectionDirection,
+)
+from aind_data_schema_models.modalities import Modality
+from aind_data_schema_models.organizations import Organization
 
 MODALITY_MAP = {
     "SmartSPIM": Modality.SPIM,
@@ -346,3 +355,15 @@ def upgrade_light_source(data: dict) -> dict:
         light_source = Laser(**data)
 
     return light_source.model_dump()
+
+
+def upgrade_objective(data: dict) -> dict:
+    """Upgrade objective data to the new model."""
+
+    data = basic_device_checks(data, "Objective")
+
+    objective = Objective(
+        **data,
+    )
+
+    return objective.model_dump()

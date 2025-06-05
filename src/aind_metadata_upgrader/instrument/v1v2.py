@@ -1,29 +1,36 @@
 """<=v1.4 to v2.0 instrument upgrade functions"""
 
-from typing import Optional
 import re
 from datetime import date
+from typing import Optional
+
+from aind_data_schema.components.coordinates import CoordinateSystemLibrary
+from aind_data_schema.components.devices import Device, Microscope
+from aind_data_schema.components.measurements import Calibration
+from aind_data_schema.core.instrument import (
+    Connection,
+    ConnectionData,
+    ConnectionDirection,
+)
+from aind_data_schema_models.modalities import Modality
+from aind_data_schema_models.units import SizeUnit
 
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.instrument.v1v2_devices import (
-    upgrade_objective,
+    saved_connections,
+    upgrade_additional_devices,
+    upgrade_daq_devices,
     upgrade_detector,
     upgrade_lenses,
     upgrade_motorized_stages,
     upgrade_scanning_stages,
-    upgrade_additional_devices,
-    upgrade_daq_devices,
-    saved_connections,
 )
-from aind_metadata_upgrader.utils.v1v2_utils import upgrade_filter, upgrade_enclosure, upgrade_light_source
-
-from aind_data_schema.components.measurements import Calibration
-from aind_data_schema.components.coordinates import CoordinateSystemLibrary
-from aind_data_schema.components.devices import Microscope, Device
-from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
-
-from aind_data_schema_models.modalities import Modality
-from aind_data_schema_models.units import SizeUnit
+from aind_metadata_upgrader.utils.v1v2_utils import (
+    upgrade_enclosure,
+    upgrade_filter,
+    upgrade_light_source,
+    upgrade_objective,
+)
 
 
 class InstrumentUpgraderV1V2(CoreUpgrader):

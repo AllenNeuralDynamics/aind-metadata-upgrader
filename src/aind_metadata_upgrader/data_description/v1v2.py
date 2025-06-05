@@ -1,15 +1,12 @@
 """<=v1.4 to v2.0 data description upgrade functions"""
 
-from aind_metadata_upgrader.base import CoreUpgrader
-
-
 from aind_data_schema.components.identifiers import Person
 from aind_data_schema.core.data_description import Funding
-
-from aind_data_schema_models.organizations import Organization
-from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.licenses import License
+from aind_data_schema_models.modalities import Modality
+from aind_data_schema_models.organizations import Organization
 
+from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.settings import FAKE_MISSING_DATA
 from aind_metadata_upgrader.utils.v1v2_utils import upgrade_v1_modalities
 

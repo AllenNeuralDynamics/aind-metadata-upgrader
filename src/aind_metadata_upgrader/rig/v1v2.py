@@ -1,39 +1,53 @@
 """<=v1.4 to v2.0 rig upgrade functions"""
 
-from typing import Optional
 import re
 from datetime import date
+from typing import Optional
+
+from aind_data_schema.components.coordinates import (
+    Axis,
+    AxisName,
+    CoordinateSystem,
+    CoordinateSystemLibrary,
+    Direction,
+    Origin,
+)
+from aind_data_schema.components.devices import Device
+from aind_data_schema.components.measurements import (
+    LaserCalibration,
+    LiquidCalibration,
+)
+from aind_data_schema.core.instrument import (
+    Connection,
+    ConnectionData,
+    ConnectionDirection,
+)
+from aind_data_schema_models.units import (
+    PowerUnit,
+    SizeUnit,
+    TimeUnit,
+    VolumeUnit,
+)
 
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.rig.v1v2_devices import (
-    upgrade_mouse_platform,
-    upgrade_stimulus_device,
-    upgrade_daq_devices,
+    saved_connections,
     upgrade_camera_assembly,
+    upgrade_daq_devices,
+    upgrade_detector,
     upgrade_ephys_assembly,
     upgrade_fiber_assembly,
+    upgrade_fiber_patch_cord,
     upgrade_laser_assembly,
-    saved_connections,
+    upgrade_mouse_platform,
+    upgrade_stimulus_device,
 )
-
-from aind_data_schema.components.coordinates import (
-    CoordinateSystemLibrary,
-    CoordinateSystem,
-    Origin,
-    Axis,
-    AxisName,
-    Direction,
+from aind_metadata_upgrader.utils.v1v2_utils import (
+    upgrade_enclosure,
+    upgrade_light_source,
+    upgrade_objective,
+    upgrade_v1_modalities,
 )
-from aind_data_schema.components.measurements import LiquidCalibration, LaserCalibration
-from aind_data_schema.components.devices import (
-    Device,
-)
-from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
-
-from aind_data_schema_models.units import VolumeUnit, TimeUnit, PowerUnit, SizeUnit
-
-from aind_metadata_upgrader.utils.v1v2_utils import upgrade_v1_modalities, upgrade_enclosure
-
 
 BREGMA_ALS = CoordinateSystem(
     name="BREGMA_ALS",
@@ -208,10 +222,22 @@ class RigUpgraderV1V2(CoreUpgrader):
         laser_assemblies = self._none_to_list(laser_assemblies)
         laser_assemblies = [upgrade_laser_assembly(assembly) for assembly in laser_assemblies]
 
-        # patch_cords
-        # light_sources
-        # detectors
-        # objectives
+        patch_cords = data.get("patch_cords", [])
+        patch_cords = self._none_to_list(patch_cords)
+        patch_cords = [upgrade_fiber_patch_cord(cord) for cord in patch_cords]
+
+        light_sources = data.get("light_sources", [])
+        light_sources = self._none_to_list(light_sources)
+        light_sources = [upgrade_light_source(source) for source in light_sources]
+
+        detectors = data.get("detectors", [])
+        detectors = self._none_to_list(detectors)
+        detectors = [upgrade_detector(detector) for detector in detectors]
+
+        objectives = data.get("objectives", [])
+        objectives = self._none_to_list(objectives)
+        objectives = [upgrade_objective(obj) for obj in objectives]
+
         # filters
         # lenses
         # dmds

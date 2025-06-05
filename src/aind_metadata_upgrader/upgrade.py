@@ -1,12 +1,12 @@
 """Main entrypoint for upgrader"""
 
-from packaging.version import Version
-
 from aind_data_schema.core.data_description import DataDescription
 from aind_data_schema.core.instrument import Instrument
+from aind_data_schema.core.metadata import Metadata
 from aind_data_schema.core.quality_control import QualityControl
 from aind_data_schema.core.subject import Subject
-from aind_data_schema.core.metadata import Metadata
+from packaging.version import Version
+
 from aind_metadata_upgrader.upgrade_mapping import MAPPING
 
 CORE_FILES = [

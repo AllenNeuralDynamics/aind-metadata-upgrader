@@ -1,42 +1,29 @@
 """Upgraders for specific devices from v1 to v2."""
 
 from aind_data_schema.components.devices import (
-    Enclosure,
-    Objective,
-    Detector,
-    Camera,
-    Laser,
-    LightEmittingDiode,
-    Lamp,
-    Lens,
-    MotorizedStage,
-    ScanningStage,
     AdditionalImagingDevice,
+    Camera,
     DAQDevice,
+    Detector,
+    Enclosure,
+    Lamp,
+    Laser,
+    Lens,
+    LightEmittingDiode,
+    MotorizedStage,
+    Objective,
+    ScanningStage,
 )
-
 from aind_data_schema_models.devices import ImagingDeviceType
 
 from aind_metadata_upgrader.utils.v1v2_utils import (
-    capitalize,
-    remove,
     basic_device_checks,
     build_connection_from_channel,
+    capitalize,
+    remove,
 )
 
 saved_connections = []
-
-
-def upgrade_objective(data: dict) -> dict:
-    """Upgrade objective data to the new model."""
-
-    data = basic_device_checks(data, "Objective")
-
-    objective = Objective(
-        **data,
-    )
-
-    return objective.model_dump()
 
 
 def upgrade_detector(data: dict) -> dict:

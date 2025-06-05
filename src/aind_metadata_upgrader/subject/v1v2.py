@@ -2,12 +2,11 @@
 
 from typing import Optional
 
-from aind_metadata_upgrader.base import CoreUpgrader
-
-from aind_data_schema.components.subjects import MouseSubject, BreedingInfo
-
-from aind_data_schema_models.species import Strain, Species
+from aind_data_schema.components.subjects import BreedingInfo, MouseSubject
 from aind_data_schema_models.organizations import Organization
+from aind_data_schema_models.species import Species, Strain
+
+from aind_metadata_upgrader.base import CoreUpgrader
 
 
 class SubjectUpgraderV1V2(CoreUpgrader):

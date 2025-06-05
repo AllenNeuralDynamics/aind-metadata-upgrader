@@ -1,45 +1,50 @@
 """Device upgraders for rig metadata from v1 to v2."""
 
-from aind_metadata_upgrader.utils.v1v2_utils import (
-    add_name,
-    remove,
-    basic_device_checks,
-    upgrade_software,
-    build_connection_from_channel,
-    upgrade_filter,
-    upgrade_positioned_device,
-    upgrade_light_source,
-)
-
 from aind_data_schema.components.devices import (
-    Wheel,
-    Disc,
-    Treadmill,
-    Tube,
     Arena,
-    Device,
+    Camera,
+    CameraAssembly,
+    CameraTarget,
     DAQDevice,
+    Device,
+    Disc,
+    EphysAssembly,
+    EphysProbe,
+    FiberAssembly,
+    FiberPatchCord,
     HarpDevice,
-    NeuropixelsBasestation,
-    Monitor,
-    Olfactometer,
+    LaserAssembly,
+    Lens,
     LickSpout,
     LickSpoutAssembly,
-    Speaker,
-    MotorizedStage,
-    CameraAssembly,
-    Camera,
-    Lens,
-    EphysAssembly,
     Manipulator,
-    EphysProbe,
-    LaserAssembly,
-    FiberPatchCord,
-    Laser,
+    Monitor,
+    MotorizedStage,
+    NeuropixelsBasestation,
+    Olfactometer,
+    Speaker,
+    Treadmill,
+    Tube,
+    Wheel,
 )
-from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
-from aind_data_schema.components.devices import CameraTarget
+from aind_data_schema.core.instrument import (
+    Connection,
+    ConnectionData,
+    ConnectionDirection,
+)
 from aind_data_schema_models.coordinates import AnatomicalRelative
+
+from aind_metadata_upgrader.utils.v1v2_utils import (
+    add_name,
+    basic_device_checks,
+    build_connection_from_channel,
+    capitalize,
+    remove,
+    upgrade_filter,
+    upgrade_light_source,
+    upgrade_positioned_device,
+    upgrade_software,
+)
 
 saved_connections = []
 
@@ -611,6 +616,34 @@ def upgrade_fiber_assembly(data: dict) -> dict:
     # todo
 
     return fiber_assembly.model_dump()
+
+
+def upgrade_detector(data: dict) -> dict:
+    """Upgrade detector data to the new model."""
+
+    data = basic_device_checks(data, "Detector")
+
+    data = capitalize(data, "cooling")
+    data = capitalize(data, "bin_mode")
+
+    # Save computer_name connection
+    if "computer_name" in data:
+        if data["computer_name"]:
+            saved_connections.append(
+                {
+                    "send": data["name"],
+                    "receive": data["computer_name"],
+                }
+            )
+        del data["computer_name"]
+
+    if "type" in data and data["type"] == "Camera":
+        del data["type"]
+        detector = Camera(**data)
+    else:
+        detector = Detector(**data)
+
+    return detector.model_dump()
 
 
 def upgrade_fiber_patch_cord(data: dict) -> dict:
