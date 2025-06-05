@@ -8,6 +8,7 @@ from aind_data_schema.components.devices import (
     DAQDevice,
     Device,
     Disc,
+    Detector,
     EphysAssembly,
     EphysProbe,
     FiberAssembly,
@@ -585,6 +586,9 @@ def upgrade_ephys_assembly(data: dict) -> dict:
     """Upgrade EphysAssembly device data from v1.x to v2.0."""
 
     # Perform basic device checks
+    if "ephys_assembly_name" in data:
+        data["name"] = data["ephys_assembly_name"]
+        remove(data, "ephys_assembly_name")
     data = add_name(data, "EphysAssembly")
 
     # Upgrade the manipulator
@@ -607,15 +611,57 @@ def upgrade_ephys_assembly(data: dict) -> dict:
 def upgrade_fiber_assembly(data: dict) -> dict:
     """Upgrade FiberAssembly device data from v1.x to v2.0."""
 
+    # Handle fiber_assembly_name
+    if "fiber_assembly_name" in data:
+        data["name"] = data["fiber_assembly_name"]
+        remove(data, "fiber_assembly_name")
+
     # Perform basic device checks
     data = add_name(data, "FiberAssembly")
 
-    print(data)
+    # Upgrade the manipulator
+    if "manipulator" in data and data["manipulator"]:
+        data["manipulator"] = upgrade_manipulator(data["manipulator"])
 
-    raise NotImplementedError("FiberAssembly upgrade is not implemented yet")
-    # todo
+    # Upgrade the fibers array to use FiberProbe
+    if "fibers" in data and data["fibers"]:
+        upgraded_fibers = []
+        for fiber in data["fibers"]:
+            upgraded_fibers.append(upgrade_fiber_probe(fiber))
+        data["fibers"] = upgraded_fibers
+
+    # Create FiberAssembly object
+    fiber_assembly = FiberAssembly(**data)
 
     return fiber_assembly.model_dump()
+
+
+def upgrade_fiber_probe(data: dict) -> dict:
+    """Upgrade FiberProbe device data from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "FiberProbe")
+
+    # Convert string values to Decimal if needed
+    if "core_diameter" in data and isinstance(data["core_diameter"], str):
+        data["core_diameter"] = float(data["core_diameter"])
+
+    if "numerical_aperture" in data and isinstance(data["numerical_aperture"], str):
+        data["numerical_aperture"] = float(data["numerical_aperture"])
+
+    if "active_length" in data and isinstance(data["active_length"], str):
+        data["active_length"] = float(data["active_length"])
+
+    if "total_length" in data and isinstance(data["total_length"], str):
+        data["total_length"] = float(data["total_length"])
+
+    # Remove v1-specific fields that don't exist in v2
+    remove(data, "device_type")
+    remove(data, "path_to_cad")
+    remove(data, "port_index")
+
+    fiber_probe = FiberProbe(**data)
+
+    return fiber_probe.model_dump()
 
 
 def upgrade_detector(data: dict) -> dict:
@@ -625,6 +671,8 @@ def upgrade_detector(data: dict) -> dict:
 
     data = capitalize(data, "cooling")
     data = capitalize(data, "bin_mode")
+
+    remove(data, "max_frame_rate")  # no idea when that was in v1.x
 
     # Save computer_name connection
     if "computer_name" in data:
