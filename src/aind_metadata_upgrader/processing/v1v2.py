@@ -1,8 +1,11 @@
 """<=v1.4 to v2.0 processing upgrade functions"""
 
+from typing import Optional
 from aind_data_schema.components.identifiers import Code, Person
 
 from aind_metadata_upgrader.base import CoreUpgrader
+
+from aind_data_schema.core.processing import DataProcess
 
 
 names = {}
@@ -11,12 +14,13 @@ names = {}
 class ProcessingV1V2(CoreUpgrader):
     """Upgrade processing from v1.4 to v2.0"""
 
-    def _create_code_object(self, process_data: dict) -> Code:
+    def _create_code_object(self, process_data: dict, parameters=None) -> Code:
         """Create a Code object from V1 process data"""
         return Code(
             name=process_data.get("name", "Unknown"),
             version=process_data.get("code_version", "unknown"),
             url=process_data.get("code_url", ""),
+            parameters=process_data.get("parameters", None),
         )
 
     def _create_person_from_name(self, name: str) -> Person:
@@ -50,35 +54,25 @@ class ProcessingV1V2(CoreUpgrader):
             # Default experimenter if none specified
             experimenters.append(Person(name="Unknown"))
 
-        # Convert parameters and outputs to proper format
-        parameters = process_data.get("parameters", {})
-        outputs = process_data.get("outputs", {})
+        # Move parameters into Code
+        output_parameters = process_data.get("outputs", None)
 
-        # Handle output_parameters as GenericModel
-        output_parameters = {}
-        if outputs:
-            output_parameters.update(outputs)
-        if parameters:
-            # In V2, parameters might be part of output_parameters or handled differently
-            # For now, we'll put them in output_parameters
-            output_parameters.update(parameters)
+        v2_process = DataProcess(
+            process_type=process_data.get("name", "Unknown"),
+            name=self._get_process_name(process_data.get("name", "Unknown")),
+            stage=stage,
+            code=self._create_code_object(process_data),
+            experimenters=experimenters,
+            pipeline_name=None,  # Will be set if there's a pipeline
+            start_date_time=process_data.get("start_date_time"),
+            end_date_time=process_data.get("end_date_time"),
+            output_path=process_data.get("output_location"),  # Map output_location to output_path
+            output_parameters=output_parameters,
+            notes=process_data.get("notes"),
+            resources=process_data.get("resources"),  # ResourceUsage structure is compatible
+        )
 
-        v2_process = {
-            "process_type": process_data.get("name", "Unknown"),
-            "name": self._get_process_name(process_data.get("name", "Unknown")),
-            "stage": stage,
-            "code": self._create_code_object(process_data),
-            "experimenters": experimenters,
-            "pipeline_name": None,  # Will be set if there's a pipeline
-            "start_date_time": process_data.get("start_date_time"),
-            "end_date_time": process_data.get("end_date_time"),
-            "output_path": process_data.get("output_location"),  # Map output_location to output_path
-            "output_parameters": output_parameters,
-            "notes": process_data.get("notes"),
-            "resources": process_data.get("resources"),  # ResourceUsage structure is compatible
-        }
-
-        return v2_process
+        return v2_process.model_dump()
 
     def upgrade(self, data: dict, schema_version: str) -> dict:
         """Upgrade the processing to v2.0"""
@@ -87,7 +81,13 @@ class ProcessingV1V2(CoreUpgrader):
             raise ValueError("Data must be a dictionary")
 
         # Initialize the V2 structure
-        v2_data = {"data_processes": [], "pipelines": None, "notes": data.get("notes"), "dependency_graph": {}}
+        v2_data = {
+            "schema_version": schema_version,
+            "data_processes": [],
+            "pipelines": None,
+            "notes": data.get("notes"),
+            "dependency_graph": {},
+        }
 
         # Process the processing_pipeline section
         processing_pipeline = data.get("processing_pipeline", {})
