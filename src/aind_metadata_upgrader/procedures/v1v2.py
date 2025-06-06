@@ -6,10 +6,25 @@ from aind_metadata_upgrader.base import CoreUpgrader
 
 from aind_data_schema.core.procedures import (
     Surgery,
-    TrainingProtocol,
-    WaterRestriction,
-    GenericSubjectProcedure,
-    SpecimenProcedure,
+)
+
+from aind_metadata_upgrader.utils.v1v2_utils import remove
+from aind_metadata_upgrader.procedures.v1v2_procedures import (
+    upgrade_craniotomy,
+    upgrade_headframe,
+    upgrade_protective_material_replacement,
+    upgrade_nanoject_injection,
+    upgrade_iontophoresis_injection,
+    upgrade_icv_injection,
+    upgrade_icm_injection,
+    upgrade_retro_orbital_injection,
+    upgrade_intraperitoneal_injection,
+    upgrade_sample_collection,
+    upgrade_perfusion,
+    upgrade_fiber_implant,
+    upgrade_myomatrix_insertion,
+    upgrade_catheter_implant,
+    upgrade_other_subject_procedure,
 )
 
 
@@ -51,11 +66,58 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                     v2_procedures["specimen_procedures"].append(upgraded_proc)
 
         return v2_procedures
+    
+    def _replace_experimenter_full_name(self, data: dict):
+        """Replace experimenter_full_name with experimenters list"""
+        if "experimenter_full_name" in data:
+            experimenter = Person(name=data["experimenter_full_name"])
+            data["experimenters"] = [experimenter]
+            del data["experimenter_full_name"]
+        return data
+    
+    def _upgrade_procedure(self, data: dict) -> dict:
+        """Use the procedure_type field and upgrade the procedure accordingly"""
+
+        procedure_type = data.get("procedure_type")
+
+        # Map V1 procedure types to their upgrade functions
+        upgrade_map = {
+            "Craniotomy": upgrade_craniotomy,
+            "Headframe": upgrade_headframe,
+            "Ground wire": upgrade_protective_material_replacement,
+            "Nanoject injection": upgrade_nanoject_injection,
+            "Iontophoresis injection": upgrade_iontophoresis_injection,
+            "ICV injection": upgrade_icv_injection,
+            "ICM injection": upgrade_icm_injection,
+            "Retro-orbital injection": upgrade_retro_orbital_injection,
+            "Intraperitoneal injection": upgrade_intraperitoneal_injection,
+            "Sample collection": upgrade_sample_collection,
+            "Perfusion": upgrade_perfusion,
+            "Fiber implant": upgrade_fiber_implant,
+            "Myomatrix_Insertion": upgrade_myomatrix_insertion,
+            "Catheter implant": upgrade_catheter_implant,
+            "Other Subject Procedure": upgrade_other_subject_procedure,
+        }
+
+        if procedure_type in upgrade_map:
+            return upgrade_map[procedure_type](data)
+        else:
+            raise ValueError(f"Unsupported procedure type: {procedure_type}")
 
     def _upgrade_subject_procedure(self, data: dict):
         """Upgrade a single subject procedure from V1 to V2"""
         # V1 has Surgery as subject procedure type, V2 uses Surgery directly
         if data.get("procedure_type") == "Surgery":
+            remove(data, "procedure_type")  # Remove procedure_type as it's not needed in V2
+
+            data = self._replace_experimenter_full_name(data)
+
+            data["ethics_review_id"] = data.get("iacuc_protocol", None)
+            remove(data, "iacuc_protocol")
+
+            procedures = data.get("procedures", [])
+            data["procedures"] = [self._upgrade_procedure(proc) for proc in procedures]
+
             surgery = Surgery(
                 **data,
             )
