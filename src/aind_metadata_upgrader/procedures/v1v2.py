@@ -6,6 +6,7 @@ from aind_metadata_upgrader.base import CoreUpgrader
 
 from aind_data_schema.core.procedures import (
     Surgery,
+    SpecimenProcedure,
 )
 
 from aind_metadata_upgrader.utils.v1v2_utils import remove
@@ -25,6 +26,7 @@ from aind_metadata_upgrader.procedures.v1v2_procedures import (
     upgrade_myomatrix_insertion,
     upgrade_catheter_implant,
     upgrade_other_subject_procedure,
+    upgrade_reagent,
     coordinate_system_required,
     implanted_devices,
 )
@@ -133,40 +135,46 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         print(data)
         raise ValueError("Unsupported subject procedure type: {}".format(data.get("procedure_type")))
 
-    def _upgrade_specimen_procedure(self, spec_proc: dict) -> dict:
+    def _upgrade_specimen_procedure(self, data: dict) -> dict:
         """Upgrade a single specimen procedure from V1 to V2"""
-        procedure_type = spec_proc.get("procedure_type")
+        procedure_type = data.get("procedure_type")
 
         # Convert experimenter_full_name to experimenters list
         experimenters = []
-        if spec_proc.get("experimenter_full_name"):
-            experimenter = Person(name=spec_proc["experimenter_full_name"])
+        if data.get("experimenter_full_name"):
+            experimenter = Person(name=data["experimenter_full_name"])
             experimenters.append(experimenter)
 
         # Convert protocol_id from list to string (V1 has it as list, V2 as string)
-        protocol_id = spec_proc.get("protocol_id", ["unknown"])
-        if isinstance(protocol_id, list):
-            protocol_id = protocol_id[0] if protocol_id else "unknown"
+        protocol_id = data.get("protocol_id", None)
+        if isinstance(protocol_id, str) and protocol_id.lower() == "none":
+            protocol_id = None
 
         # Create procedure_details from reagents, antibodies, hcr_series, sectioning
-        procedure_details = {}
-        if spec_proc.get("reagents"):
-            procedure_details["reagents"] = spec_proc["reagents"]
-        if spec_proc.get("antibodies"):
-            procedure_details["antibodies"] = spec_proc["antibodies"]
-        if spec_proc.get("hcr_series"):
-            procedure_details["hcr_series"] = spec_proc["hcr_series"]
-        if spec_proc.get("sectioning"):
-            procedure_details["sectioning"] = spec_proc["sectioning"]
+        procedure_details = []
 
-        return {
-            "procedure_type": procedure_type,
-            "specimen_id": spec_proc.get("specimen_id"),
-            "start_date": spec_proc.get("start_date"),
-            "end_date": spec_proc.get("end_date"),
-            "experimenters": experimenters,
-            "protocol_id": protocol_id,
-            "procedure_name": spec_proc.get("procedure_name"),
-            "procedure_details": procedure_details if procedure_details else None,
-            "notes": spec_proc.get("notes"),
-        }
+        reagents = data.get("reagents", [])
+        reagents = [upgrade_reagent(r) for r in reagents]
+
+        procedure_details.extend(reagents)
+
+        if data.get("antibodies"):
+            procedure_details.append(data["antibodies"])
+        if data.get("hcr_series"):
+            procedure_details.append(data["hcr_series"])
+        if data.get("sectioning"):
+            procedure_details.append(data["sectioning"])
+
+        specimen_procedure = SpecimenProcedure(
+            procedure_type=procedure_type,
+            specimen_id=data.get("specimen_id"),
+            start_date=data.get("start_date"),
+            end_date=data.get("end_date"),
+            experimenters=experimenters,
+            protocol_id=protocol_id,
+            procedure_name=data.get("procedure_name"),
+            procedure_details=procedure_details,
+            notes=data.get("notes"),
+        )
+
+        return specimen_procedure.model_dump()

@@ -17,6 +17,7 @@ from aind_data_schema.core.procedures import (
     ViralMaterial,
     NonViralMaterial,
 )
+from aind_data_schema.components.reagent import Reagent
 from aind_data_schema.components.coordinates import (
     Translation,
     Rotation,
@@ -24,6 +25,7 @@ from aind_data_schema.components.coordinates import (
 )
 from aind_data_schema_models.coordinates import AnatomicalRelative
 from aind_data_schema_models.brain_atlas import CCFStructure
+from aind_data_schema_models.units import AngleUnit
 
 from aind_metadata_upgrader.utils.v1v2_utils import remove
 
@@ -218,6 +220,20 @@ def upgrade_nanoject_injection(data: dict) -> dict:
             # Wrap translation in a list (this is to allow for chained translations or rotations, etc)
             coordinate = [translation.model_dump()]
 
+            if "injection_angle" in data and data["injection_angle"] is not None:
+                if not data["injection_angle_unit"] == "degrees":
+                    raise ValueError(
+                        f"Unsupported injection_angle_unit value: {data['injection_angle_unit']}. "
+                        "Expected 'degrees'."
+                    )
+
+                rotation = Rotation(
+                    angles=[data["injection_angle"], 0, 0],
+                    angles_unit=AngleUnit.DEG,
+                )
+
+                coordinate.append(rotation.model_dump())
+
             data["coordinates"].append(coordinate)
 
 
@@ -341,3 +357,10 @@ def upgrade_other_subject_procedure(data: dict) -> dict:
     upgraded_data.pop("procedure_type", None)
 
     return GenericSurgeryProcedure(**upgraded_data).model_dump()
+
+def upgrade_reagent(data: dict) -> dict:
+    """Upgrade reagents from V1 to V2"""
+    upgraded_data = data.copy()
+    upgraded_data.pop("procedure_type", None)
+
+    return NonViralMaterial(**upgraded_data).model_dump()
