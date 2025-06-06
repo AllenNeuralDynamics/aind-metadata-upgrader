@@ -12,9 +12,24 @@ from aind_data_schema.core.procedures import (
     MyomatrixInsertion,
     CatheterImplant,
     GenericSurgeryProcedure,
+    InjectionDynamics,
+    InjectionProfile,
+    ViralMaterial,
+    NonViralMaterial,
 )
+from aind_data_schema.components.coordinates import (
+    Translation,
+    Rotation,
+    CoordinateSystemLibrary,
+)
+from aind_data_schema_models.coordinates import AnatomicalRelative
+from aind_data_schema_models.brain_atlas import CCFStructure
+
+from aind_metadata_upgrader.utils.v1v2_utils import remove
 
 coordinate_system_required = False
+implanted_devices = []
+measured_coordinates = []
 
 
 def upgrade_craniotomy(data: dict) -> dict:
@@ -48,12 +63,196 @@ def upgrade_protective_material_replacement(data: dict) -> dict:
     return GroundWireImplant(**upgraded_data).model_dump()
 
 
+def upgrade_viral_material(data: dict) -> dict:
+    """Upgrade viral material"""
+
+    if "titer" in data and data["titer"]:
+        if isinstance(data["titer"], dict):
+            data["titer"] = data["titer"]["$numberLong"]
+
+    return ViralMaterial(**data).model_dump()
+
+
+def upgrade_injection_materials(data: list) -> list:
+    """Upgrade injection materials from V1 to V2"""
+    # V1 uses a list of strings, V2 uses a list of BrainInjectionMaterial objects
+    materials = []
+    for material in data:
+        if material["material_type"] == "Virus":
+            materials.append(
+                upgrade_viral_material(material)
+            )
+        elif material["material_type"] == "Reagent":
+            materials.append(
+                NonViralMaterial(**material).model_dump()
+            )
+        else:
+            raise ValueError(
+                f"Unsupported injection material type: {material['material_type']}. "
+                "Expected 'Virus' or 'Reagent'."
+            )
+    return materials
+
+
+def build_volume_injection_dynamics(data: dict) -> dict:
+    """Build dynamics for injection procedures"""
+
+    dynamics = []
+
+    duration = data.get("injection_duration", None)
+    duration_unit = data.get("injection_duration_unit", None)
+
+    for volume in data.get("injection_volume", []):
+        # All injections have duration/duration_unit
+        dynamic = {
+            "profile": InjectionProfile.BOLUS,  # We're going to assume all injections are bolus
+        }
+
+        dynamic["volume"] = volume
+        dynamic["volume_unit"] = data.get("injection_volume_unit", None)
+
+        dynamics.append(dynamic)
+
+    # We don't know if duration was the entire duration or the per-injection duration,
+    # so only keep it if we're sure there's only one dynamic
+    if len(dynamics) == 1:
+        dynamics[0]["duration"] = duration
+        dynamics[0]["duration_unit"] = duration_unit
+
+    return [InjectionDynamics(**dynamic).model_dump() for dynamic in dynamics]
+
+
+def build_current_injection_dynamics(data: dict) -> dict:
+    """Build dynamics for current injection procedures"""
+
+    # All current injections have duration/duration_unit
+    dynamics = {
+        "profile": InjectionProfile.BOLUS,  # We're going to assume all current injections are constant
+    }
+
+    dynamics["injection_current"] = data.get("injection_current", None)
+    dynamics["injection_current_unit"] = data.get("injection_current_unit", None)
+    dynamics["alternating_current"] = data.get("alternating_current", None)
+
+    return [InjectionDynamics(**dynamics).model_dump()]
+
+
+CCF_MAPPING = {
+    "ALM": CCFStructure.MO,
+}
+
+
+def upgrade_targeted_structure(data: dict | str) -> dict:
+    """Upgrade targeted structure, especially convert strings to structure objects"""
+
+    if isinstance(data, str):
+        if hasattr(CCFStructure, data.upper()):
+            return getattr(CCFStructure, data.upper()).model_dump()
+        if data in CCF_MAPPING.keys():
+            return CCF_MAPPING[data].model_dump()
+        else:
+            raise ValueError(
+                f"Unsupported targeted structure: {data}. "
+                "Expected one of the CCF structures."
+            )
+
+    return data
+
+
 def upgrade_nanoject_injection(data: dict) -> dict:
     """Upgrade NanojectInjection procedure from V1 to V2"""
+    coordinate_system_required = True
+
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
 
-    return BrainInjection(**upgraded_data).model_dump()
+    # full list of fields to handle
+    dynamics = build_volume_injection_dynamics(data)
+
+    remove(data, "recovery_time")
+    remove(data, "recovery_time_unit")
+    remove(data, "instrument_id")
+
+    # recovery_time gone
+    # recovery_time_unit gone
+    # injection_duration move into dynamics
+    # injection_duration_unit move into dynamics
+    # instrument_id ? what?
+    # protocol_id
+
+    # injection_coordinate_reference check against coordinate system
+
+    ml = data.get("injection_coordinate_ml", None)
+    ap = data.get("injection_coordinate_ap", None)
+    depths = data.get("injection_coordinate_depth", [])
+
+    if ml is not None:
+
+        data["coordinates"] = []
+
+        for depth in depths:
+            unit = data.get("injection_coordinate_unit", None)
+
+            # Scale millimeters to micrometers if needed
+            if unit:
+                if unit == "millimeter":
+                    ml = float(ml) * 1000
+                    ap = float(ap) * 1000
+                    depth = float(depth) * 1000
+                elif not unit == "micrometer":
+                    raise ValueError(f"Need more conditions to handle other kinds of units: {unit}")
+
+            reference = data.get("injection_coordinate_reference", None)
+            # Check to make sure someone doesn't give us lambda or something, that would be a big problem
+            if reference is not None and not reference == "Bregma":
+                raise ValueError(
+                    f"Unsupported injection_coordinate_reference value: {reference}. "
+                    "Expected 'Bregma'."
+                )
+
+            # Create the translation object in BREGMA_ARID space
+            translation = Translation(
+                translation=[ap, ml, 0, depth]
+            )
+
+            # Wrap translation in a list (this is to allow for chained translations or rotations, etc)
+            coordinate = [translation.model_dump()]
+
+            data["coordinates"].append(coordinate)
+
+
+    # bregma_to_lambda distance: construct using measurements
+    # bregma_to_lambda_unit: check against coordinate system
+
+    # injection angle: move to coordinates
+    # injection angle unit: move to Rotation class
+
+    relative_position = []
+    if "injection_hemisphere" in data and data["injection_hemisphere"] is not None:
+        if data["injection_hemisphere"] == "Left":
+            relative_position.append(AnatomicalRelative.LEFT)
+        elif data["injection_hemisphere"] == "Right":
+            relative_position.append(AnatomicalRelative.RIGHT)
+        elif data["injection_hemisphere"] == "Midline":
+            relative_position.append(AnatomicalRelative.ORIGIN)
+        else:
+            raise ValueError(
+                f"Unsupported injection_hemisphere value: {data['injection_hemisphere']}"
+            )
+
+    injection_materials = upgrade_injection_materials(data.get("injection_materials", []))
+
+    injection = BrainInjection(
+        injection_materials=injection_materials,
+        targeted_structure=upgrade_targeted_structure(data.get("targeted_structure")),
+        relative_position=relative_position,
+        dynamics=dynamics,
+        protocol_id=data.get("protocol_id", None),
+        coordinate_system_name=CoordinateSystemLibrary.BREGMA_ARID.name,
+        coordinates=data.get("coordinates", []),
+    )
+
+    return injection.model_dump()
 
 
 def upgrade_iontophoresis_injection(data: dict) -> dict:

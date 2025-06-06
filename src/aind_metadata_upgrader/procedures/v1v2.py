@@ -25,7 +25,11 @@ from aind_metadata_upgrader.procedures.v1v2_procedures import (
     upgrade_myomatrix_insertion,
     upgrade_catheter_implant,
     upgrade_other_subject_procedure,
+    coordinate_system_required,
+    implanted_devices,
 )
+
+from aind_data_schema.components.coordinates import CoordinateSystemLibrary
 
 
 class ProceduresUpgraderV1V2(CoreUpgrader):
@@ -47,7 +51,6 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             "specimen_procedures": [],
             "implanted_devices": [],
             "configurations": [],
-            "coordinate_system": None,
             "notes": procedures_data.get("notes"),
         }
 
@@ -64,6 +67,10 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                 upgraded_proc = self._upgrade_specimen_procedure(spec_proc)
                 if upgraded_proc:
                     v2_procedures["specimen_procedures"].append(upgraded_proc)
+
+        # Add coordinate system if required
+        if coordinate_system_required:
+            v2_procedures["coordinate_system"] = CoordinateSystemLibrary.BREGMA_ARID.model_dump()
 
         return v2_procedures
     
