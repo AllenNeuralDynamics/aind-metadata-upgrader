@@ -1,6 +1,5 @@
 """<=v1.4 to v2.0 processing upgrade functions"""
 
-from typing import Optional
 from aind_data_schema.components.identifiers import Code, Person
 
 from aind_metadata_upgrader.base import CoreUpgrader
@@ -74,6 +73,17 @@ class ProcessingV1V2(CoreUpgrader):
 
         return v2_process.model_dump()
 
+    def _convert_pipeline_processes(self, pipeline_processes: list, processor_name: str, v2_data: dict) -> None:
+        """Convert processing pipeline processes to V2 format"""
+        for process_data in pipeline_processes:
+            v2_process = self._convert_v1_process_to_v2(process_data, "Processing")
+            # Set experimenter to processor from pipeline
+            v2_process["experimenters"] = [self._create_person_from_name(processor_name)]
+            # Set pipeline name if pipeline exists
+            if v2_data["pipelines"]:
+                v2_process["pipeline_name"] = "Processing Pipeline"
+            v2_data["data_processes"].append(v2_process)
+
     def upgrade(self, data: dict, schema_version: str) -> dict:
         """Upgrade the processing to v2.0"""
 
@@ -104,14 +114,7 @@ class ProcessingV1V2(CoreUpgrader):
             v2_data["pipelines"] = [pipeline_code]
 
         # Convert processing pipeline processes
-        for process_data in pipeline_processes:
-            v2_process = self._convert_v1_process_to_v2(process_data, "Processing")
-            # Set experimenter to processor from pipeline
-            v2_process["experimenters"] = [self._create_person_from_name(processor_name)]
-            # Set pipeline name if pipeline exists
-            if v2_data["pipelines"]:
-                v2_process["pipeline_name"] = "Processing Pipeline"
-            v2_data["data_processes"].append(v2_process)
+        self._convert_pipeline_processes(pipeline_processes, processor_name, v2_data)
 
         # Convert analyses
         analyses = data.get("analyses", [])

@@ -3,7 +3,6 @@
 from aind_data_schema.components.identifiers import Person
 from aind_data_schema.core.data_description import Funding
 from aind_data_schema_models.licenses import License
-from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
 
 from aind_metadata_upgrader.base import CoreUpgrader
@@ -62,6 +61,17 @@ class DataDescriptionV1V2(CoreUpgrader):
 
         return funding_source
 
+    def _get_investigators(self, data: dict) -> list:
+        """Build investigators list"""
+        investigators = data.get("investigators", [])
+        for i, investigator in enumerate(investigators):
+            # Convert from PIDName to Person
+            if not isinstance(investigator, Person):
+                investigators[i] = Person(
+                    name=investigator["name"],
+                )
+        return investigators
+
     def upgrade(self, data: dict, schema_version: str) -> dict:
         """Upgrade the data description to v2.0"""
 
@@ -104,13 +114,7 @@ class DataDescriptionV1V2(CoreUpgrader):
         group = data.get("group", None)
 
         # Originally a List[PIDName], now List[Person]
-        investigators = data.get("investigators", [])
-        for i, investigator in enumerate(investigators):
-            # Convert from PIDName to Person
-            if not isinstance(investigator, Person):
-                investigators[i] = Person(
-                    name=investigator["name"],
-                )
+        investigators = self._get_investigators(data)
 
         if len(investigators) == 0:
             # Create a fake investigator

@@ -235,29 +235,11 @@ def upgrade_mouse_platform(data: dict) -> dict:
         raise ValueError(f"Unsupported mouse platform type: {data['device_type']}")
 
 
-def upgrade_daq_devices(device: dict) -> dict:
-    """Upgrade DAQ devices to the new model."""
+def upgrade_daq_channels(device_data: dict) -> list:
+    """Upgrade DAQ device channels and save connection information."""
+    upgraded_channels = []
 
-    # Perform basic device upgrades
-    device_data = basic_device_checks(device, "DAQ Device")
-
-    # Remove old Device fields specific to DAQ
-    remove(device_data, "device_type")
-
-    # Handle computer_name connection if present
-    if "computer_name" in device_data:
-        if device_data["computer_name"]:
-            saved_connections.append(
-                {
-                    "send": device_data["name"],
-                    "receive": device_data["computer_name"],
-                }
-            )
-        remove(device_data, "computer_name")
-
-    # Process channels and save connections
     if "channels" in device_data:
-        upgraded_channels = []
         for channel in device_data["channels"]:
             # Upgrade channel to new format
             upgraded_channel = {
@@ -283,7 +265,31 @@ def upgrade_daq_devices(device: dict) -> dict:
             connection = build_connection_from_channel(channel, device_data["name"])
             saved_connections.append(connection.model_dump())
 
-        device_data["channels"] = upgraded_channels
+    return upgraded_channels
+
+
+def upgrade_daq_devices(device: dict) -> dict:
+    """Upgrade DAQ devices to the new model."""
+
+    # Perform basic device upgrades
+    device_data = basic_device_checks(device, "DAQ Device")
+
+    # Remove old Device fields specific to DAQ
+    remove(device_data, "device_type")
+
+    # Handle computer_name connection if present
+    if "computer_name" in device_data:
+        if device_data["computer_name"]:
+            saved_connections.append(
+                {
+                    "send": device_data["name"],
+                    "receive": device_data["computer_name"],
+                }
+            )
+        remove(device_data, "computer_name")
+
+    # Process channels and save connections
+    device_data["channels"] = upgrade_daq_channels(device_data)
 
     # Create the DAQ device, or HarpDevice
     if "is_clock_generator" in device_data:

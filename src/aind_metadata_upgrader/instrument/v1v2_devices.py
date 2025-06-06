@@ -5,13 +5,7 @@ from aind_data_schema.components.devices import (
     Camera,
     DAQDevice,
     Detector,
-    Enclosure,
-    Lamp,
-    Laser,
-    Lens,
-    LightEmittingDiode,
     MotorizedStage,
-    Objective,
     ScanningStage,
 )
 from aind_data_schema_models.devices import ImagingDeviceType

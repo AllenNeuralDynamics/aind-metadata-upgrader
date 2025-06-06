@@ -4,6 +4,14 @@ from aind_data_schema.components.identifiers import Person
 
 from aind_metadata_upgrader.base import CoreUpgrader
 
+from aind_data_schema.core.procedures import (
+    Surgery,
+    TrainingProtocol,
+    WaterRestriction,
+    GenericSubjectProcedure,
+    SpecimenProcedure,
+)
+
 
 class ProceduresUpgraderV1V2(CoreUpgrader):
     """Upgrade procedures from v1.4 to v2.0"""
@@ -15,7 +23,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             procedures_data = data["procedures"]
         else:
             procedures_data = data
-            
+
         # Create the V2 structure
         v2_procedures = {
             "schema_version": schema_version,
@@ -25,45 +33,37 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             "implanted_devices": [],
             "configurations": [],
             "coordinate_system": None,
-            "notes": procedures_data.get("notes")
+            "notes": procedures_data.get("notes"),
         }
-        
+
         # Upgrade subject procedures
         if "subject_procedures" in procedures_data:
             for subj_proc in procedures_data["subject_procedures"]:
                 upgraded_proc = self._upgrade_subject_procedure(subj_proc)
                 if upgraded_proc:
                     v2_procedures["subject_procedures"].append(upgraded_proc)
-        
+
         # Upgrade specimen procedures
         if "specimen_procedures" in procedures_data:
             for spec_proc in procedures_data["specimen_procedures"]:
                 upgraded_proc = self._upgrade_specimen_procedure(spec_proc)
                 if upgraded_proc:
                     v2_procedures["specimen_procedures"].append(upgraded_proc)
-        
+
         return v2_procedures
 
-    def _upgrade_subject_procedure(self, subj_proc: dict):
+    def _upgrade_subject_procedure(self, data: dict):
         """Upgrade a single subject procedure from V1 to V2"""
         # V1 has Surgery as subject procedure type, V2 uses Surgery directly
-        if subj_proc.get("procedure_type") == "Surgery":
-            return {
-                "start_date": subj_proc.get("start_date"),
-                "end_date": subj_proc.get("end_date"),
-                "experimenter_full_name": subj_proc.get("experimenter_full_name"),
-                "iacuc_protocol": subj_proc.get("iacuc_protocol"),
-                "animal_weight_prior": subj_proc.get("animal_weight_prior"),
-                "animal_weight_post": subj_proc.get("animal_weight_post"),
-                "weight_unit": subj_proc.get("weight_unit", "gram"),
-                "anaesthesia": subj_proc.get("anaesthesia"),
-                "workstation_id": subj_proc.get("workstation_id"),
-                "procedures": subj_proc.get("procedures", []),
-                "protocol_id": subj_proc.get("protocol_id", "unknown"),
-                "notes": subj_proc.get("notes")
-            }
-        return {}
-    
+        if data.get("procedure_type") == "Surgery":
+            surgery = Surgery(
+                **data,
+            )
+            return surgery.model_dump()
+
+        print(data)
+        raise ValueError("Unsupported subject procedure type: {}".format(data.get("procedure_type")))
+
     def _upgrade_specimen_procedure(self, spec_proc: dict) -> dict:
         """Upgrade a single specimen procedure from V1 to V2"""
         procedure_type = spec_proc.get("procedure_type")
@@ -99,6 +99,5 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             "protocol_id": protocol_id,
             "procedure_name": spec_proc.get("procedure_name"),
             "procedure_details": procedure_details if procedure_details else None,
-            "notes": spec_proc.get("notes")
+            "notes": spec_proc.get("notes"),
         }
-

@@ -228,7 +228,10 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
                 # Create an empty Device with the name
                 device = Device(
                     name=name,
-                    notes="(v1v2 upgrade) This device was not found in the components list, but is referenced in connections.",
+                    notes=(
+                        "(v1v2 upgrade) This device was not found in the components list, "
+                        "but is referenced in connections."
+                    ),
                 )
                 components.append(device.model_dump())
 
