@@ -16,6 +16,7 @@ from aind_data_schema.core.procedures import (
     InjectionProfile,
     ViralMaterial,
     NonViralMaterial,
+    Anaesthetic,
 )
 from aind_data_schema.components.reagent import Reagent
 from aind_data_schema.components.coordinates import (
@@ -26,8 +27,9 @@ from aind_data_schema.components.coordinates import (
 from aind_data_schema_models.coordinates import AnatomicalRelative
 from aind_data_schema_models.brain_atlas import CCFStructure
 from aind_data_schema_models.units import AngleUnit
+from aind_data_schema_models.organizations import Organization
 
-from aind_metadata_upgrader.utils.v1v2_utils import remove
+from aind_metadata_upgrader.utils.v1v2_utils import remove, repair_organization
 
 coordinate_system_required = False
 implanted_devices = []
@@ -163,8 +165,6 @@ def upgrade_targeted_structure(data: dict | str) -> dict:
 
 def upgrade_nanoject_injection(data: dict) -> dict:
     """Upgrade NanojectInjection procedure from V1 to V2"""
-    coordinate_system_required = True
-
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
 
@@ -257,6 +257,13 @@ def upgrade_nanoject_injection(data: dict) -> dict:
             )
 
     injection_materials = upgrade_injection_materials(data.get("injection_materials", []))
+
+    if len(injection_materials) == 0:
+        injection_materials.append(
+            ViralMaterial(
+                name="(v1v2 upgrade) No injection material provided",
+            )
+        )
 
     injection = BrainInjection(
         injection_materials=injection_materials,
@@ -358,9 +365,23 @@ def upgrade_other_subject_procedure(data: dict) -> dict:
 
     return GenericSurgeryProcedure(**upgraded_data).model_dump()
 
+
 def upgrade_reagent(data: dict) -> dict:
     """Upgrade reagents from V1 to V2"""
     upgraded_data = data.copy()
-    upgraded_data.pop("procedure_type", None)
 
-    return NonViralMaterial(**upgraded_data).model_dump()
+    if "source" in upgraded_data and upgraded_data["source"] and isinstance(upgraded_data["source"], str):
+        # Convert source to organization
+        upgraded_data["source"] = repair_organization(upgraded_data["source"])
+
+    return Reagent(**upgraded_data).model_dump()
+
+
+def upgrade_anaesthetic(data: dict) -> dict:
+    """Upgrade anesthetic from V1 to V2"""
+    upgraded_data = data.copy()
+
+    upgraded_data["anaesthetic_type"] = upgraded_data.get("type", "Unknown")
+    remove(upgraded_data, "type")
+
+    return Anaesthetic(**upgraded_data).model_dump()

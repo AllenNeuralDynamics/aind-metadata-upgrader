@@ -27,8 +27,7 @@ from aind_metadata_upgrader.procedures.v1v2_procedures import (
     upgrade_catheter_implant,
     upgrade_other_subject_procedure,
     upgrade_reagent,
-    coordinate_system_required,
-    implanted_devices,
+    upgrade_anaesthetic,
 )
 
 from aind_data_schema.components.coordinates import CoordinateSystemLibrary
@@ -71,11 +70,10 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                     v2_procedures["specimen_procedures"].append(upgraded_proc)
 
         # Add coordinate system if required
-        if coordinate_system_required:
-            v2_procedures["coordinate_system"] = CoordinateSystemLibrary.BREGMA_ARID.model_dump()
+        v2_procedures["coordinate_system"] = CoordinateSystemLibrary.BREGMA_ARID.model_dump()
 
         return v2_procedures
-    
+
     def _replace_experimenter_full_name(self, data: dict):
         """Replace experimenter_full_name with experimenters list"""
         if "experimenter_full_name" in data:
@@ -117,6 +115,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         """Upgrade a single subject procedure from V1 to V2"""
         # V1 has Surgery as subject procedure type, V2 uses Surgery directly
         if data.get("procedure_type") == "Surgery":
+            print(data)
             remove(data, "procedure_type")  # Remove procedure_type as it's not needed in V2
 
             data = self._replace_experimenter_full_name(data)
@@ -126,6 +125,13 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
             procedures = data.get("procedures", [])
             data["procedures"] = [self._upgrade_procedure(proc) for proc in procedures]
+
+            if len(procedures) == 0:
+                print(data)
+                raise ValueError("Surgery must have at least one procedure")
+
+            if "anaesthesia" in data and data["anaesthesia"]:
+                data["anaesthesia"] = upgrade_anaesthetic(data.get("anaesthesia", {}))
 
             surgery = Surgery(
                 **data,

@@ -71,12 +71,29 @@ def add_name(data: dict, type: str) -> dict:
     return data
 
 
+ORG_MAP = {
+    "LiveCanvas Technologies": Organization.LIFECANVAS,
+}
+
+
+def repair_organization(data: str) -> dict:
+    """Convert organizations passed as strings to Organization objects."""
+    organization = Organization.from_name(data)
+    if organization:
+        return organization.model_dump()
+    else:
+        if data in ORG_MAP.keys():
+            return ORG_MAP[data].model_dump()
+        else:
+            raise ValueError(f"Unsupported organization name: {data}.")
+
+
 def repair_manufacturer(data: dict) -> dict:
     """Repair the manufacturer field to ensure it's an Organization object."""
 
     if "manufacturer" in data and isinstance(data["manufacturer"], str):
         # Convert string to Organization object
-        data["manufacturer"] = Organization.from_name(data["manufacturer"]).model_dump()
+        data["manufacturer"] = repair_organization(data["manufacturer"])
 
     if "manufacturer" in data and isinstance(data["manufacturer"], dict):
         if data["manufacturer"]["name"] == "Other" and not data["notes"]:
