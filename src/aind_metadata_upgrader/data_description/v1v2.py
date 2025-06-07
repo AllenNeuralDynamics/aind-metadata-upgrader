@@ -9,10 +9,6 @@ from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.settings import FAKE_MISSING_DATA
 from aind_metadata_upgrader.utils.v1v2_utils import upgrade_v1_modalities
 
-DATA_LEVEL_MAP = {
-    "raw data": "raw",
-}
-
 
 class DataDescriptionV1V2(CoreUpgrader):
     """Upgrade data description from v1.4 to v2.0"""
@@ -108,8 +104,11 @@ class DataDescriptionV1V2(CoreUpgrader):
 
         # Handle old data_level types
         data_level = data.get("data_level", None)
-        if data_level and data_level in DATA_LEVEL_MAP.keys():
-            data_level = DATA_LEVEL_MAP[data_level]
+        if data_level:
+            if "raw" in data_level.lower():
+                data_level = "raw"
+            elif "derived" in data_level.lower():
+                data_level = "derived"
 
         group = data.get("group", None)
 
