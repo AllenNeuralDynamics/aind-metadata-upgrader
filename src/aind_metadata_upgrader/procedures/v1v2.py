@@ -1,5 +1,7 @@
 """<=v1.4 to v2.0 procedures upgrade functions"""
 
+from datetime import date
+
 from aind_data_schema.components.identifiers import Person
 
 from aind_metadata_upgrader.base import CoreUpgrader
@@ -7,6 +9,7 @@ from aind_metadata_upgrader.base import CoreUpgrader
 from aind_data_schema.core.procedures import (
     Surgery,
     SpecimenProcedure,
+    GenericSurgeryProcedure,
 )
 
 from aind_metadata_upgrader.utils.v1v2_utils import remove
@@ -29,6 +32,24 @@ from aind_metadata_upgrader.procedures.v1v2_procedures import (
     upgrade_reagent,
     upgrade_anaesthetic,
 )
+
+PROC_UPGRADE_MAP = {
+    "Craniotomy": upgrade_craniotomy,
+    "Headframe": upgrade_headframe,
+    "Ground wire": upgrade_protective_material_replacement,
+    "Nanoject injection": upgrade_nanoject_injection,
+    "Iontophoresis injection": upgrade_iontophoresis_injection,
+    "ICV injection": upgrade_icv_injection,
+    "ICM injection": upgrade_icm_injection,
+    "Retro-orbital injection": upgrade_retro_orbital_injection,
+    "Intraperitoneal injection": upgrade_intraperitoneal_injection,
+    "Sample collection": upgrade_sample_collection,
+    "Perfusion": upgrade_perfusion,
+    "Fiber implant": upgrade_fiber_implant,
+    "Myomatrix_Insertion": upgrade_myomatrix_insertion,
+    "Catheter implant": upgrade_catheter_implant,
+    "Other Subject Procedure": upgrade_other_subject_procedure,
+}
 
 from aind_data_schema.components.coordinates import CoordinateSystemLibrary
 
@@ -72,6 +93,8 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         # Add coordinate system if required
         v2_procedures["coordinate_system"] = CoordinateSystemLibrary.BREGMA_ARID.model_dump()
 
+        print(v2_procedures)
+
         return v2_procedures
 
     def _replace_experimenter_full_name(self, data: dict):
@@ -86,28 +109,16 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         """Use the procedure_type field and upgrade the procedure accordingly"""
 
         procedure_type = data.get("procedure_type")
+        
+        if "iacuc_protocol" in data:
+            # Replace iacuc_protocol with ethics_review_id
+            data["ethics_review_id"] = data.get("iacuc_protocol", None)
+            remove(data, "iacuc_protocol")
 
         # Map V1 procedure types to their upgrade functions
-        upgrade_map = {
-            "Craniotomy": upgrade_craniotomy,
-            "Headframe": upgrade_headframe,
-            "Ground wire": upgrade_protective_material_replacement,
-            "Nanoject injection": upgrade_nanoject_injection,
-            "Iontophoresis injection": upgrade_iontophoresis_injection,
-            "ICV injection": upgrade_icv_injection,
-            "ICM injection": upgrade_icm_injection,
-            "Retro-orbital injection": upgrade_retro_orbital_injection,
-            "Intraperitoneal injection": upgrade_intraperitoneal_injection,
-            "Sample collection": upgrade_sample_collection,
-            "Perfusion": upgrade_perfusion,
-            "Fiber implant": upgrade_fiber_implant,
-            "Myomatrix_Insertion": upgrade_myomatrix_insertion,
-            "Catheter implant": upgrade_catheter_implant,
-            "Other Subject Procedure": upgrade_other_subject_procedure,
-        }
 
-        if procedure_type in upgrade_map:
-            return upgrade_map[procedure_type](data)
+        if procedure_type in PROC_UPGRADE_MAP:
+            return PROC_UPGRADE_MAP[procedure_type](data)
         else:
             raise ValueError(f"Unsupported procedure type: {procedure_type}")
 
@@ -127,8 +138,11 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             data["procedures"] = [self._upgrade_procedure(proc) for proc in procedures]
 
             if len(procedures) == 0:
-                print(data)
-                raise ValueError("Surgery must have at least one procedure")
+                data["procedures"].append(
+                    GenericSurgeryProcedure(
+                        description="(v1v2 upgrader) No procedures provided for surgery",
+                    ).model_dump()
+                )
 
             if "anaesthesia" in data and data["anaesthesia"]:
                 data["anaesthesia"] = upgrade_anaesthetic(data.get("anaesthesia", {}))
@@ -170,7 +184,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             procedure_details.append(data["hcr_series"])
         if data.get("sectioning"):
             procedure_details.append(data["sectioning"])
-
+            
         specimen_procedure = SpecimenProcedure(
             procedure_type=procedure_type,
             specimen_id=data.get("specimen_id"),
