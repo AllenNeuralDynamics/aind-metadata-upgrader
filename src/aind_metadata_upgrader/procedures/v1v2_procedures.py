@@ -167,7 +167,7 @@ def upgrade_nanoject_injection(data: dict) -> dict:
     """Upgrade NanojectInjection procedure from V1 to V2"""
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
-
+    
     # full list of fields to handle
     dynamics = build_volume_injection_dynamics(data)
 
@@ -187,22 +187,22 @@ def upgrade_nanoject_injection(data: dict) -> dict:
     ml = data.get("injection_coordinate_ml", None)
     ap = data.get("injection_coordinate_ap", None)
     depths = data.get("injection_coordinate_depth", [])
+    unit = data.get("injection_coordinate_unit", None)
+
+    # Scale millimeters to micrometers if needed
+    if unit:
+        if unit == "millimeter":
+            ml = float(ml) * 1000
+            ap = float(ap) * 1000
+            depths = [float(depth) * 1000 for depth in depths]
+        elif not unit == "micrometer":
+            raise ValueError(f"Need more conditions to handle other kinds of units: {unit}")
 
     if ml is not None:
 
         data["coordinates"] = []
 
         for depth in depths:
-            unit = data.get("injection_coordinate_unit", None)
-
-            # Scale millimeters to micrometers if needed
-            if unit:
-                if unit == "millimeter":
-                    ml = float(ml) * 1000
-                    ap = float(ap) * 1000
-                    depth = float(depth) * 1000
-                elif not unit == "micrometer":
-                    raise ValueError(f"Need more conditions to handle other kinds of units: {unit}")
 
             reference = data.get("injection_coordinate_reference", None)
             # Check to make sure someone doesn't give us lambda or something, that would be a big problem
