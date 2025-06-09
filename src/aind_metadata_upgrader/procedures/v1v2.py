@@ -17,12 +17,6 @@ from aind_metadata_upgrader.procedures.v1v2_procedures import (
     upgrade_craniotomy,
     upgrade_headframe,
     upgrade_protective_material_replacement,
-    upgrade_nanoject_injection,
-    upgrade_iontophoresis_injection,
-    upgrade_icv_injection,
-    upgrade_icm_injection,
-    upgrade_retro_orbital_injection,
-    upgrade_intraperitoneal_injection,
     upgrade_sample_collection,
     upgrade_perfusion,
     upgrade_fiber_implant,
@@ -32,6 +26,14 @@ from aind_metadata_upgrader.procedures.v1v2_procedures import (
     upgrade_reagent,
     upgrade_anaesthetic,
     repair_generic_surgery_procedure,
+)
+from aind_metadata_upgrader.procedures.v1v2_injections import (
+    upgrade_nanoject_injection,
+    upgrade_iontophoresis_injection,
+    upgrade_icv_injection,
+    upgrade_icm_injection,
+    upgrade_retro_orbital_injection,
+    upgrade_intraperitoneal_injection,
 )
 
 PROC_UPGRADE_MAP = {
@@ -65,7 +67,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             procedures_data = data["procedures"]
         else:
             procedures_data = data
-        
+
         self.subject_id = procedures_data.get("subject_id")
 
         # Create the V2 structure
@@ -185,12 +187,12 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             procedure_details.append(data["hcr_series"])
         if data.get("sectioning"):
             procedure_details.append(data["sectioning"])
-            
+
         specimen_id = data.get("specimen_id", None)
-        
+
         if "subject_id" not in specimen_id:
             specimen_id = f"{self.subject_id}_{specimen_id}"
-                        
+
         specimen_procedure = SpecimenProcedure(
             procedure_type=procedure_type,
             specimen_id=specimen_id,

@@ -4,31 +4,22 @@ from aind_data_schema.core.procedures import (
     Craniotomy,
     Headframe,
     GroundWireImplant,
-    BrainInjection,
-    Injection,
     SampleCollection,
     Perfusion,
     ProbeImplant,
     MyomatrixInsertion,
     CatheterImplant,
     GenericSurgeryProcedure,
-    InjectionDynamics,
-    InjectionProfile,
-    ViralMaterial,
-    NonViralMaterial,
     Anaesthetic,
     CraniotomyType,
 )
 from aind_data_schema.components.reagent import Reagent
 from aind_data_schema.components.coordinates import (
     Translation,
-    Rotation,
     CoordinateSystemLibrary,
 )
 from aind_data_schema_models.coordinates import AnatomicalRelative, Origin
-from aind_data_schema_models.brain_atlas import CCFStructure
-from aind_data_schema_models.units import AngleUnit, SizeUnit
-from aind_data_schema_models.organizations import Organization
+from aind_data_schema_models.units import SizeUnit
 
 from aind_metadata_upgrader.utils.v1v2_utils import remove, repair_organization
 
@@ -50,11 +41,13 @@ def retrieve_bl_distance(data: dict) -> dict:
         # Convert bregma/lambda distance into measured_coordinates
         # Not we're in ARID so A dimension
         if Origin.BREGMA not in measured_coordinates:
-            measured_coordinates.append({
-                Origin.BREGMA: Translation(
-                    translation=[0, 0, 0],
-                ),
-            })
+            measured_coordinates.append(
+                {
+                    Origin.BREGMA: Translation(
+                        translation=[0, 0, 0],
+                    ),
+                }
+            )
         distance = float(data["bregma_to_lambda_distance"])
         if distance < 0:
             distance = -distance  # Ensure distance is positive
@@ -68,11 +61,13 @@ def retrieve_bl_distance(data: dict) -> dict:
         if Origin.LAMBDA in measured_coordinates:
             distance2 = -measured_coordinates[Origin.LAMBDA].translation[0]
             distance = (distance + distance2) / 2  # Average the distance if already exists
-        measured_coordinates.append({
-            Origin.LAMBDA: Translation(
-                translation=[-distance, 0, 0, 0],
-            ),
-        })
+        measured_coordinates.append(
+            {
+                Origin.LAMBDA: Translation(
+                    translation=[-distance, 0, 0, 0],
+                ),
+            }
+        )
         remove(data, "bregma_to_lambda_distance")
         remove(data, "bregma_to_lambda_unit")
 
@@ -83,11 +78,11 @@ def upgrade_craniotomy(data: dict) -> dict:
     """Upgrade Craniotomy procedure from V1 to V2"""
     # V1 uses craniotomy_coordinates_*, V2 uses coordinate system
     upgraded_data = data.copy()
-    
+
     remove(upgraded_data, "procedure_type")
     remove(upgraded_data, "recovery_time")
     remove(upgraded_data, "recovery_time_unit")
-    
+
     if upgraded_data["craniotomy_type"] not in CraniotomyType.__members__:
         # Need to conver craniotomy type
         if upgraded_data["craniotomy_type"] in CRANIO_TYPES.keys():
@@ -149,253 +144,6 @@ def upgrade_protective_material_replacement(data: dict) -> dict:
     upgraded_data.pop("procedure_type", None)
 
     return GroundWireImplant(**upgraded_data).model_dump()
-
-
-def upgrade_viral_material(data: dict) -> dict:
-    """Upgrade viral material"""
-
-    if "titer" in data and data["titer"]:
-        if isinstance(data["titer"], dict):
-            data["titer"] = data["titer"]["$numberLong"]
-
-    return ViralMaterial(**data).model_dump()
-
-
-def upgrade_injection_materials(data: list) -> list:
-    """Upgrade injection materials from V1 to V2"""
-    # V1 uses a list of strings, V2 uses a list of BrainInjectionMaterial objects
-    materials = []
-    for material in data:
-        if material["material_type"] == "Virus":
-            materials.append(
-                upgrade_viral_material(material)
-            )
-        elif material["material_type"] == "Reagent":
-            materials.append(
-                NonViralMaterial(**material).model_dump()
-            )
-        else:
-            raise ValueError(
-                f"Unsupported injection material type: {material['material_type']}. "
-                "Expected 'Virus' or 'Reagent'."
-            )
-    return materials
-
-
-def build_volume_injection_dynamics(data: dict) -> dict:
-    """Build dynamics for injection procedures"""
-
-    dynamics = []
-
-    duration = data.get("injection_duration", None)
-    duration_unit = data.get("injection_duration_unit", None)
-
-    for volume in data.get("injection_volume", []):
-        # All injections have duration/duration_unit
-        dynamic = {
-            "profile": InjectionProfile.BOLUS,  # We're going to assume all injections are bolus
-        }
-
-        dynamic["volume"] = volume
-        dynamic["volume_unit"] = data.get("injection_volume_unit", None)
-
-        dynamics.append(dynamic)
-
-    # We don't know if duration was the entire duration or the per-injection duration,
-    # so only keep it if we're sure there's only one dynamic
-    if len(dynamics) == 1:
-        dynamics[0]["duration"] = duration
-        dynamics[0]["duration_unit"] = duration_unit
-
-    return [InjectionDynamics(**dynamic).model_dump() for dynamic in dynamics]
-
-
-def build_current_injection_dynamics(data: dict) -> dict:
-    """Build dynamics for current injection procedures"""
-
-    # All current injections have duration/duration_unit
-    dynamics = {
-        "profile": InjectionProfile.BOLUS,  # We're going to assume all current injections are constant
-    }
-
-    dynamics["injection_current"] = data.get("injection_current", None)
-    dynamics["injection_current_unit"] = data.get("injection_current_unit", None)
-    dynamics["alternating_current"] = data.get("alternating_current", None)
-
-    return [InjectionDynamics(**dynamics).model_dump()]
-
-
-CCF_MAPPING = {
-    "ALM": CCFStructure.MO,
-}
-
-
-def upgrade_targeted_structure(data: dict | str) -> dict:
-    """Upgrade targeted structure, especially convert strings to structure objects"""
-
-    if isinstance(data, str):
-        if hasattr(CCFStructure, data.upper()):
-            return getattr(CCFStructure, data.upper()).model_dump()
-        if data in CCF_MAPPING.keys():
-            return CCF_MAPPING[data].model_dump()
-        else:
-            raise ValueError(
-                f"Unsupported targeted structure: {data}. "
-                "Expected one of the CCF structures."
-            )
-
-    return data
-
-
-def upgrade_nanoject_injection(data: dict) -> dict:
-    """Upgrade NanojectInjection procedure from V1 to V2"""
-    upgraded_data = data.copy()
-    upgraded_data.pop("procedure_type", None)
-    
-    # full list of fields to handle
-    dynamics = build_volume_injection_dynamics(data)
-
-    remove(data, "recovery_time")
-    remove(data, "recovery_time_unit")
-    remove(data, "instrument_id")
-
-    # recovery_time gone
-    # recovery_time_unit gone
-    # injection_duration move into dynamics
-    # injection_duration_unit move into dynamics
-    # instrument_id ? what?
-    # protocol_id
-
-    # injection_coordinate_reference check against coordinate system
-
-    ml = data.get("injection_coordinate_ml", None)
-    ap = data.get("injection_coordinate_ap", None)
-    depths = data.get("injection_coordinate_depth", [])
-    unit = data.get("injection_coordinate_unit", None)
-
-    # Scale millimeters to micrometers if needed
-    if unit:
-        if unit == "millimeter":
-            ml = float(ml) * 1000
-            ap = float(ap) * 1000
-            depths = [float(depth) * 1000 for depth in depths]
-        elif not unit == "micrometer":
-            raise ValueError(f"Need more conditions to handle other kinds of units: {unit}")
-
-    # Check reference
-    reference = data.get("injection_coordinate_reference", None)
-    # Check to make sure someone doesn't give us lambda or something, that would be a big problem
-    if reference is not None and not reference == "Bregma":
-        raise ValueError(
-            f"Unsupported injection_coordinate_reference value: {reference}. "
-            "Expected 'Bregma'."
-        )
-
-    if ml is not None:
-
-        data["coordinates"] = []
-
-        for depth in depths:
-
-            # Create the translation object in BREGMA_ARID space
-            translation = Translation(
-                translation=[ap, ml, 0, depth]
-            )
-
-            # Wrap translation in a list (this is to allow for chained translations or rotations, etc)
-            coordinate = [translation.model_dump()]
-
-            if "injection_angle" in data and data["injection_angle"] is not None:
-                if not data["injection_angle_unit"] == "degrees":
-                    raise ValueError(
-                        f"Unsupported injection_angle_unit value: {data['injection_angle_unit']}. "
-                        "Expected 'degrees'."
-                    )
-
-                rotation = Rotation(
-                    angles=[data["injection_angle"], 0, 0],
-                    angles_unit=AngleUnit.DEG,
-                )
-
-                coordinate.append(rotation.model_dump())
-
-            data["coordinates"].append(coordinate)
-
-    data = retrieve_bl_distance(data)
-
-    relative_position = []
-    if "injection_hemisphere" in data and data["injection_hemisphere"] is not None:
-        if data["injection_hemisphere"] == "Left":
-            relative_position.append(AnatomicalRelative.LEFT)
-        elif data["injection_hemisphere"] == "Right":
-            relative_position.append(AnatomicalRelative.RIGHT)
-        elif data["injection_hemisphere"] == "Midline":
-            relative_position.append(AnatomicalRelative.ORIGIN)
-        else:
-            raise ValueError(
-                f"Unsupported injection_hemisphere value: {data['injection_hemisphere']}"
-            )
-
-    injection_materials = upgrade_injection_materials(data.get("injection_materials", []))
-
-    if len(injection_materials) == 0:
-        injection_materials.append(
-            ViralMaterial(
-                name="(v1v2 upgrade) No injection material provided",
-            )
-        )
-
-    injection = BrainInjection(
-        injection_materials=injection_materials,
-        targeted_structure=upgrade_targeted_structure(data.get("targeted_structure")),
-        relative_position=relative_position,
-        dynamics=dynamics,
-        protocol_id=data.get("protocol_id", None),
-        coordinate_system_name=CoordinateSystemLibrary.BREGMA_ARID.name,
-        coordinates=data.get("coordinates", []),
-    )
-
-    return injection.model_dump()
-
-
-def upgrade_iontophoresis_injection(data: dict) -> dict:
-    """Upgrade IontophoresisInjection procedure from V1 to V2"""
-    upgraded_data = data.copy()
-    upgraded_data.pop("procedure_type", None)
-
-    return BrainInjection(**upgraded_data).model_dump()
-
-
-def upgrade_icv_injection(data: dict) -> dict:
-    """Upgrade IntraCerebellarVentricleInjection procedure from V1 to V2"""
-    upgraded_data = data.copy()
-    upgraded_data.pop("procedure_type", None)
-
-    return BrainInjection(**upgraded_data).model_dump()
-
-
-def upgrade_icm_injection(data: dict) -> dict:
-    """Upgrade IntraCisternalMagnaInjection procedure from V1 to V2"""
-    upgraded_data = data.copy()
-    upgraded_data.pop("procedure_type", None)
-
-    return BrainInjection(**upgraded_data).model_dump()
-
-
-def upgrade_retro_orbital_injection(data: dict) -> dict:
-    """Upgrade RetroOrbitalInjection procedure from V1 to V2"""
-    upgraded_data = data.copy()
-    upgraded_data.pop("procedure_type", None)
-
-    return Injection(**upgraded_data).model_dump()
-
-
-def upgrade_intraperitoneal_injection(data: dict) -> dict:
-    """Upgrade IntraperitonealInjection procedure from V1 to V2"""
-    upgraded_data = data.copy()
-    upgraded_data.pop("procedure_type", None)
-
-    return Injection(**upgraded_data).model_dump()
 
 
 def upgrade_sample_collection(data: dict) -> dict:

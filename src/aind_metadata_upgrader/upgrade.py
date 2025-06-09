@@ -2,6 +2,7 @@
 
 from aind_data_schema.core.data_description import DataDescription
 from aind_data_schema.core.instrument import Instrument
+
 # from aind_data_schema.core.metadata import Metadata
 from aind_data_schema.core.processing import Processing
 from aind_data_schema.core.quality_control import QualityControl
