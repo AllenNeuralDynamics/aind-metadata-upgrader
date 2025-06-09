@@ -74,10 +74,71 @@ def retrieve_bl_distance(data: dict) -> dict:
     return data
 
 
+def upgrade_hemisphere_craniotomy(data: dict) -> dict:
+    """Upgrade the new-style craniotomy"""
+    if "craniotomy_hemisphere" in data and data["craniotomy_hemisphere"]:
+        data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
+        if data["craniotomy_hemisphere"].lower() == "left":
+            data["position"] = [AnatomicalRelative.LEFT]
+        elif data["craniotomy_hemisphere"].lower() == "right":
+            data["position"] = [AnatomicalRelative.RIGHT]
+        else:
+            raise ValueError(
+                f"Unsupported craniotomy_hemisphere: {data['craniotomy_hemisphere']}. "
+                "Expected 'Left' or 'Right'."
+            )
+    elif data["craniotomy_type"] == CraniotomyType.CIRCLE:
+        # If craniotomy type is circle, we don't know where it is unfortunately, so we put it at the origin
+        data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
+        data["position"] = [AnatomicalRelative.ORIGIN]
+    remove(data, "craniotomy_hemisphere")
+
+
+def upgrade_coordinate_craniotomy(data: dict) -> dict:
+    """Upgrade old-style craniotomy"""
+    data["position"] = []
+
+    # Move ml/ap position into Translation object, check units
+    ml = data["craniotomy_coordinates_ml"]
+    ap = data["crainotomy_coordinates_ap"]
+    unit = data["craniotomy_coordinates_unit"]
+    reference = data["craniotomy_coordinates_reference"]
+    size = data["craniotomy_size"]
+    size_unit = data["craniotomy_size_unit"]
+    remove(data, "craniotomy_coordinates_ml")
+    remove(data, "crainotomy_coordinates_ap")
+    remove(data, "craniotomy_coordinates_unit")
+    remove(data, "craniotomy_coordinates_reference")
+    remove(data, "craniotomy_size")
+    remove(data, "craniotomy_size_unit")
+
+    data["size"] = size
+    data["size_unit"] = size_unit
+
+    if reference != "Bregma":
+        raise ValueError("Can only handle bregma-reference craniotomies")
+    
+    if unit == "millimeter":
+        ml *= 1000
+        ap *= 1000
+    elif unit != "micrometer":
+        raise ValueError(f"Need to convert from an unsupported unit: {unit}")
+    
+    # Build translation in BREGMA_ARID
+    # Unfortunately there's no guarantee that they used anterior+, right+, but we have to hope for the best
+    translation = Translation(
+        translation=[ap, ml, 0, 0],
+    )
+    data["position"].append(translation)
+
+    return data
+
 def upgrade_craniotomy(data: dict) -> dict:
     """Upgrade Craniotomy procedure from V1 to V2"""
     # V1 uses craniotomy_coordinates_*, V2 uses coordinate system
     upgraded_data = data.copy()
+
+    print(data)
 
     remove(upgraded_data, "procedure_type")
     remove(upgraded_data, "recovery_time")
@@ -100,22 +161,13 @@ def upgrade_craniotomy(data: dict) -> dict:
 
     upgraded_data = retrieve_bl_distance(upgraded_data)
 
-    if "craniotomy_hemisphere" in upgraded_data and upgraded_data["craniotomy_hemisphere"]:
-        upgraded_data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
-        if upgraded_data["craniotomy_hemisphere"].lower() == "left":
-            upgraded_data["position"] = [AnatomicalRelative.LEFT]
-        elif upgraded_data["craniotomy_hemisphere"].lower() == "right":
-            upgraded_data["position"] = [AnatomicalRelative.RIGHT]
-        else:
-            raise ValueError(
-                f"Unsupported craniotomy_hemisphere: {upgraded_data['craniotomy_hemisphere']}. "
-                "Expected 'Left' or 'Right'."
-            )
-    elif upgraded_data["craniotomy_type"] == CraniotomyType.CIRCLE:
-        # If craniotomy type is circle, we don't know where it is unfortunately, so we put it at the origin
-        upgraded_data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
-        upgraded_data["position"] = [AnatomicalRelative.ORIGIN]
-    remove(upgraded_data, "craniotomy_hemisphere")
+    if "craniotomy_hemisphere" in upgraded_data:
+        upgraded_data = upgrade_hemisphere_craniotomy(upgraded_data)
+    elif "craniotomy_coordinates_ml" in upgraded_data:
+        upgraded_data = upgrade_coordinate_craniotomy(upgraded_data)
+    else:
+        print(data)
+        raise ValueError("Unknown craniotomy type, unclear how to upgrade coordinate/hemisphere data")
 
     if "protocol_id" in upgraded_data and upgraded_data["protocol_id"].lower() == "none":
         upgraded_data["protocol_id"] = None
