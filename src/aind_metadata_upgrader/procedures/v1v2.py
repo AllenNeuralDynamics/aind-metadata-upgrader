@@ -151,6 +151,10 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             if "anaesthesia" in data and data["anaesthesia"]:
                 data["anaesthesia"] = upgrade_anaesthetic(data.get("anaesthesia", {}))
 
+            if "start_date" not in data or not data["start_date"]:
+                # If start_date is not provided, set it to today's date
+                data["start_date"] = date(1970, 1, 1)
+
             surgery = Surgery(
                 **data,
             )

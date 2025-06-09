@@ -117,7 +117,7 @@ def upgrade_craniotomy(data: dict) -> dict:
         upgraded_data["position"] = [AnatomicalRelative.ORIGIN]
     remove(upgraded_data, "craniotomy_hemisphere")
 
-    if "protocol_id" in upgraded_data and protocol_id.lower() == "none":
+    if "protocol_id" in upgraded_data and upgraded_data["protocol_id"].lower() == "none":
         upgraded_data["protocol_id"] = None
 
     return Craniotomy(**upgraded_data).model_dump()
