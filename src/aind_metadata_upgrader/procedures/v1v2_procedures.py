@@ -42,6 +42,42 @@ CRANIO_TYPES = {
 }
 
 
+def retrieve_bl_distance(data: dict) -> dict:
+    """Pull out the Bregma/Lambda distance data"""
+
+    if "bregma_to_lambda_distance" in data and data["bregma_to_lambda_distance"]:
+        # Convert bregma/lambda distance into measured_coordinates
+        # Not we're in ARID so A dimension
+        if Origin.BREGMA not in measured_coordinates:
+            measured_coordinates.append({
+                Origin.BREGMA: Translation(
+                    translation=[0, 0, 0],
+                ),
+            })
+        distance = float(data["bregma_to_lambda_distance"])
+        if distance < 0:
+            distance = -distance  # Ensure distance is positive
+        if data["bregma_to_lambda_unit"] == SizeUnit.MM:
+            distance *= 1000  # Convert to micrometers
+        elif data["bregma_to_lambda_unit"] != SizeUnit.MICROMETER:
+            raise ValueError(
+                f"Unsupported bregma_to_lambda_unit: {data['bregma_to_lambda_unit']}. "
+                "Expected 'millimeter' or 'micrometer'."
+            )
+        if Origin.LAMBDA in measured_coordinates:
+            distance2 = -measured_coordinates[Origin.LAMBDA].translation[0]
+            distance = (distance + distance2) / 2  # Average the distance if already exists
+        measured_coordinates.append({
+            Origin.LAMBDA: Translation(
+                translation=[-distance, 0, 0, 0],
+            ),
+        })
+        remove(data, "bregma_to_lambda_distance")
+        remove(data, "bregma_to_lambda_unit")
+
+    return data
+
+
 def upgrade_craniotomy(data: dict) -> dict:
     """Upgrade Craniotomy procedure from V1 to V2"""
     # V1 uses craniotomy_coordinates_*, V2 uses coordinate system
@@ -62,32 +98,8 @@ def upgrade_craniotomy(data: dict) -> dict:
                 f"Unsupported craniotomy_type: {upgraded_data['craniotomy_type']}. "
                 "Expected one of the CraniotomyType members."
             )
-    
-    if "bregma_to_lambda_distance" in upgraded_data and upgraded_data["bregma_to_lambda_distance"]:
-        # Convert bregma/lambda distance into measured_coordinates
-        # Not we're in ARID so A dimension
-        measured_coordinates.append({
-            Origin.BREGMA: Translation(
-                translation=[0, 0, 0],
-            ),
-        })
-        distance = float(upgraded_data["bregma_to_lambda_distance"])
-        if distance < 0:
-            distance = -distance  # Ensure distance is positive
-        if upgraded_data["bregma_to_lambda_unit"] == SizeUnit.MM:
-            distance *= 1000  # Convert to micrometers
-        elif upgraded_data["bregma_to_lambda_unit"] != SizeUnit.MICROMETER:
-            raise ValueError(
-                f"Unsupported bregma_to_lambda_unit: {upgraded_data['bregma_to_lambda_unit']}. "
-                "Expected 'millimeter' or 'micrometer'."
-            )
-        measured_coordinates.append({
-            Origin.LAMBDA: Translation(
-                translation=[-distance, 0, 0, 0],
-            ),
-        })
-        remove(upgraded_data, "bregma_to_lambda_distance")
-        remove(upgraded_data, "bregma_to_lambda_unit")
+
+    upgraded_data = retrieve_bl_distance(upgraded_data)
 
     if "craniotomy_hemisphere" in upgraded_data and upgraded_data["craniotomy_hemisphere"]:
         upgraded_data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
@@ -305,12 +317,7 @@ def upgrade_nanoject_injection(data: dict) -> dict:
 
             data["coordinates"].append(coordinate)
 
-
-    # bregma_to_lambda distance: construct using measurements
-    # bregma_to_lambda_unit: check against coordinate system
-
-    # injection angle: move to coordinates
-    # injection angle unit: move to Rotation class
+    data = retrieve_bl_distance(data)
 
     relative_position = []
     if "injection_hemisphere" in data and data["injection_hemisphere"] is not None:
