@@ -68,8 +68,9 @@ def retrieve_bl_distance(data: dict) -> dict:
                 ),
             }
         )
-        remove(data, "bregma_to_lambda_distance")
-        remove(data, "bregma_to_lambda_unit")
+
+    remove(data, "bregma_to_lambda_distance")
+    remove(data, "bregma_to_lambda_unit")
 
     return data
 
@@ -98,11 +99,10 @@ def upgrade_hemisphere_craniotomy(data: dict) -> dict:
 
 def upgrade_coordinate_craniotomy(data: dict) -> dict:
     """Upgrade old-style craniotomy"""
-    data["position"] = []
 
     # Move ml/ap position into Translation object, check units
-    ml = data["craniotomy_coordinates_ml"]
-    ap = data["craniotomy_coordinates_ap"]
+    ml = float(data["craniotomy_coordinates_ml"])
+    ap = float(data["craniotomy_coordinates_ap"])
     unit = data["craniotomy_coordinates_unit"]
     reference = data["craniotomy_coordinates_reference"]
     size = data["craniotomy_size"]
@@ -141,7 +141,7 @@ def upgrade_coordinate_craniotomy(data: dict) -> dict:
     translation = Translation(
         translation=[ap, ml, 0, 0],
     )
-    data["position"].append(translation)
+    data["position"] = translation.model_dump()
 
     return data
 
@@ -173,10 +173,8 @@ def upgrade_craniotomy(data: dict) -> dict:
     upgraded_data = retrieve_bl_distance(upgraded_data)
 
     if "craniotomy_coordinates_ml" in upgraded_data:
-        print("craniotomy_coordinates_ml")
         upgraded_data = upgrade_coordinate_craniotomy(upgraded_data)
     elif "craniotomy_hemisphere" in upgraded_data:
-        print("craniotomy_hemisphere")
         upgraded_data = upgrade_hemisphere_craniotomy(upgraded_data)
 
     else:
