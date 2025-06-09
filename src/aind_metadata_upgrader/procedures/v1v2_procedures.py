@@ -17,6 +17,7 @@ from aind_data_schema.core.procedures import (
     ViralMaterial,
     NonViralMaterial,
     Anaesthetic,
+    CraniotomyType,
 )
 from aind_data_schema.components.reagent import Reagent
 from aind_data_schema.components.coordinates import (
@@ -24,9 +25,9 @@ from aind_data_schema.components.coordinates import (
     Rotation,
     CoordinateSystemLibrary,
 )
-from aind_data_schema_models.coordinates import AnatomicalRelative
+from aind_data_schema_models.coordinates import AnatomicalRelative, Origin
 from aind_data_schema_models.brain_atlas import CCFStructure
-from aind_data_schema_models.units import AngleUnit
+from aind_data_schema_models.units import AngleUnit, SizeUnit
 from aind_data_schema_models.organizations import Organization
 
 from aind_metadata_upgrader.utils.v1v2_utils import remove, repair_organization
@@ -34,6 +35,11 @@ from aind_metadata_upgrader.utils.v1v2_utils import remove, repair_organization
 coordinate_system_required = False
 implanted_devices = []
 measured_coordinates = []
+
+
+CRANIO_TYPES = {
+    "5 mm": CraniotomyType.CIRCLE,
+}
 
 
 def upgrade_craniotomy(data: dict) -> dict:
@@ -45,35 +51,63 @@ def upgrade_craniotomy(data: dict) -> dict:
     remove(upgraded_data, "recovery_time")
     remove(upgraded_data, "recovery_time_unit")
     
-    # V1 craniotomy example:
-    # {'bregma_to_lambda_distance': '4.386', 'bregma_to_lambda_unit': 'millimeter', 'craniotomy_hemisphere': None, 'craniotomy_type': '5 mm', 'dura_removed': None, 'implant_part_number': '5mm stacked coverslip', 'procedure_type': 'Craniotomy', 'protective_material': None, 'recovery_time': '10.0', 'recovery_time_unit': 'minute'}
+    if upgraded_data["craniotomy_type"] not in CraniotomyType.__members__:
+        # Need to conver craniotomy type
+        if upgraded_data["craniotomy_type"] in CRANIO_TYPES.keys():
+            upgraded_data["craniotomy_type"] = CRANIO_TYPES[upgraded_data["craniotomy_type"]]
+            upgraded_data["size"] = 5
+            upgraded_data["size_unit"] = SizeUnit.MM
+        else:
+            raise ValueError(
+                f"Unsupported craniotomy_type: {upgraded_data['craniotomy_type']}. "
+                "Expected one of the CraniotomyType members."
+            )
+    
+    if "bregma_to_lambda_distance" in upgraded_data and upgraded_data["bregma_to_lambda_distance"]:
+        # Convert bregma/lambda distance into measured_coordinates
+        # Not we're in ARID so A dimension
+        measured_coordinates.append({
+            Origin.BREGMA: Translation(
+                translation=[0, 0, 0],
+            ),
+        })
+        distance = float(upgraded_data["bregma_to_lambda_distance"])
+        if distance < 0:
+            distance = -distance  # Ensure distance is positive
+        if upgraded_data["bregma_to_lambda_unit"] == SizeUnit.MM:
+            distance *= 1000  # Convert to micrometers
+        elif upgraded_data["bregma_to_lambda_unit"] != SizeUnit.MICROMETER:
+            raise ValueError(
+                f"Unsupported bregma_to_lambda_unit: {upgraded_data['bregma_to_lambda_unit']}. "
+                "Expected 'millimeter' or 'micrometer'."
+            )
+        measured_coordinates.append({
+            Origin.LAMBDA: Translation(
+                translation=[-distance, 0, 0, 0],
+            ),
+        })
+        remove(upgraded_data, "bregma_to_lambda_distance")
+        remove(upgraded_data, "bregma_to_lambda_unit")
 
-    # V1 spec:
-    # craniotomy_hemisphere: Optional[Side] = Field(default=None, title="Craniotomy hemisphere")
-    # bregma_to_lambda_distance: Optional[Decimal] = Field(
-    #     default=None, title="Bregma to lambda (mm)", description="Distance between bregman and lambda"
-    # )
-    # bregma_to_lambda_unit: SizeUnit = Field(default=SizeUnit.MM, title="Bregma to lambda unit")
-    # implant_part_number: Optional[str] = Field(default=None, title="Implant part number")
-    # dura_removed: Optional[bool] = Field(default=None, title="Dura removed")
-    # protective_material: Optional[ProtectiveMaterial] = Field(default=None, title="Protective material")
-
-    # V2 spec:
-
-    # coordinate_system_name: Optional[str] = Field(default=None, title="Coordinate system name")
-    # position: Optional[Union[Translation, List[AnatomicalRelative]]] = Field(default=None, title="Craniotomy position")
-
-    # size: Optional[float] = Field(default=None, title="Craniotomy size", description="Diameter or side length")
-    # size_unit: Optional[SizeUnit] = Field(default=None, title="Craniotomy size unit")
-
-    # protective_material: Optional[ProtectiveMaterial] = Field(default=None, title="Protective material")
-    # implant_part_number: Optional[str] = Field(default=None, title="Implant part number")
-    # dura_removed: Optional[bool] = Field(default=None, title="Dura removed")
+    if "craniotomy_hemisphere" in upgraded_data and upgraded_data["craniotomy_hemisphere"]:
+        upgraded_data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
+        if upgraded_data["craniotomy_hemisphere"].lower() == "left":
+            upgraded_data["position"] = [AnatomicalRelative.LEFT]
+        elif upgraded_data["craniotomy_hemisphere"].lower() == "right":
+            upgraded_data["position"] = [AnatomicalRelative.RIGHT]
+        else:
+            raise ValueError(
+                f"Unsupported craniotomy_hemisphere: {upgraded_data['craniotomy_hemisphere']}. "
+                "Expected 'Left' or 'Right'."
+            )
+    elif upgraded_data["craniotomy_type"] == CraniotomyType.CIRCLE:
+        # If craniotomy type is circle, we don't know where it is unfortunately, so we put it at the origin
+        upgraded_data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
+        upgraded_data["position"] = [AnatomicalRelative.ORIGIN]
+    remove(upgraded_data, "craniotomy_hemisphere")
 
     if "protocol_id" in upgraded_data and protocol_id.lower() == "none":
         upgraded_data["protocol_id"] = None
-    
-    remove(upgraded_data, ")
 
     return Craniotomy(**upgraded_data).model_dump()
 
