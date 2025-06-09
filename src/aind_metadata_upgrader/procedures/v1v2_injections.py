@@ -16,6 +16,7 @@ from aind_data_schema.components.coordinates import (
 from aind_data_schema_models.coordinates import AnatomicalRelative
 from aind_data_schema_models.brain_atlas import CCFStructure
 from aind_data_schema_models.units import AngleUnit
+from aind_data_schema_models.mouse_anatomy import InjectionTargets
 
 from aind_metadata_upgrader.utils.v1v2_utils import remove
 
@@ -31,6 +32,9 @@ def upgrade_viral_material(data: dict) -> dict:
     if "titer" in data and data["titer"]:
         if isinstance(data["titer"], dict):
             data["titer"] = data["titer"]["$numberLong"]
+
+    if "name" not in data or not data["name"]:
+        data["name"] = "unknown"
 
     return ViralMaterial(**data).model_dump()
 
@@ -166,6 +170,8 @@ def upgrade_generic_injection(data: dict) -> dict:
     remove(data, "recovery_time_unit")
     remove(data, "instrument_id")
 
+    return data
+
 
 def upgrade_nanoject_injection(data: dict) -> dict:
     """Upgrade NanojectInjection procedure from V1 to V2"""
@@ -251,6 +257,29 @@ def upgrade_retro_orbital_injection(data: dict) -> dict:
     """Upgrade RetroOrbitalInjection procedure from V1 to V2"""
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
+
+    upgraded_data = upgrade_generic_injection(upgraded_data)
+    injection_materials = upgrade_injection_materials(data.get("injection_materials", []))
+
+    if len(injection_materials) == 0:
+        injection_materials.append(
+            ViralMaterial(
+                name="(v1v2 upgrade) No injection material provided",
+            ).model_dump()
+        )
+
+    upgraded_data["injection_materials"] = injection_materials
+
+    upgraded_data["targeted_structure"] = InjectionTargets.RETRO_ORBITAL.model_dump()
+
+    if "injection_eye" in data and data["injection_eye"]:
+        if data["injection_eye"].lower() == "left":
+            upgraded_data["relative_position"] = [AnatomicalRelative.LEFT]
+        elif data["injection_eye"].lower() == "right":
+            upgraded_data["relative_position"] = [AnatomicalRelative.RIGHT]
+        else:
+            raise ValueError(f"Unsupported injection_eye value: {data['injection_eye']}. Expected 'Left' or 'Right'.")
+    remove(upgraded_data, "injection_eye")
 
     print(upgraded_data)
 
