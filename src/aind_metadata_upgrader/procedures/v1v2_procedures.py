@@ -39,6 +39,7 @@ measured_coordinates = []
 
 CRANIO_TYPES = {
     "5 mm": CraniotomyType.CIRCLE,
+    "3 mm": CraniotomyType.CIRCLE,
 }
 
 
@@ -90,8 +91,11 @@ def upgrade_craniotomy(data: dict) -> dict:
     if upgraded_data["craniotomy_type"] not in CraniotomyType.__members__:
         # Need to conver craniotomy type
         if upgraded_data["craniotomy_type"] in CRANIO_TYPES.keys():
+            if "5" in upgraded_data["craniotomy_type"]:
+                upgraded_data["size"] = 5
+            elif "3" in upgraded_data["craniotomy_type"]:
+                upgraded_data["size"] = 3
             upgraded_data["craniotomy_type"] = CRANIO_TYPES[upgraded_data["craniotomy_type"]]
-            upgraded_data["size"] = 5
             upgraded_data["size_unit"] = SizeUnit.MM
         else:
             raise ValueError(
