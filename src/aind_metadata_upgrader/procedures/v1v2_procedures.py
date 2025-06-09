@@ -18,13 +18,16 @@ from aind_data_schema.components.coordinates import (
     Translation,
     CoordinateSystemLibrary,
 )
+from aind_data_schema.components.configs import ProbeConfig
 from aind_data_schema_models.coordinates import AnatomicalRelative, Origin
 from aind_data_schema_models.units import SizeUnit
 
-from aind_metadata_upgrader.utils.v1v2_utils import remove, repair_organization
+from aind_metadata_upgrader.rig.v1v2_devices import upgrade_fiber_probe
+from aind_metadata_upgrader.utils.v1v2_utils import remove, repair_organization, basic_device_checks
 
 coordinate_system_required = False
 implanted_devices = []
+device_configurations = []
 measured_coordinates = []
 
 
@@ -231,10 +234,48 @@ def upgrade_perfusion(data: dict) -> dict:
     return Perfusion(**upgraded_data).model_dump()
 
 
+def retrive_probe_config(data: dict) -> tuple:
+    """Get the Probe object and the ProbeConfig object from a ProbeImplant dict"""
+
+    # {'procedure_type': 'Fiber implant', 'protocol_id': 'TO ENTER', 'probes': [{'ophys_probe': {'device_type': 'Fiber optic probe', 'name': 'Probe A', 'serial_number': None, 'manufacturer': None, 'model': None, 'path_to_cad': None, 'port_index': None, 'additional_settings': {}, 'notes': None, 'core_diameter': '200', 'core_diameter_unit': 'micrometer', 'numerical_aperture': '0.37', 'ferrule_material': 'Ceramic', 'active_length': None, 'total_length': '0.5', 'length_unit': 'millimeter'}, 'targeted_structure': {'atlas': 'CCFv3', 'name': 'Ventral tegmental area', 'acronym': 'VTA', 'id': '749'}, 'stereotactic_coordinate_ap': '-3.05', 'stereotactic_coordinate_ml': '-0.6', 'stereotactic_coordinate_dv': '-4', 'stereotactic_coordinate_unit': 'millimeter', 'stereotactic_coordinate_reference': 'Bregma', 'bregma_to_lambda_distance': None, 'bregma_to_lambda_unit': 'millimeter', 'angle': '0', 'angle_unit': 'degrees', 'notes': None}]}
+
+    # Pull probes and move these to implanted_devices
+    probe_implants = data.pop("probes", [])
+
+    probes = []
+    configs = []
+
+    for implant in probe_implants:
+        # Upgrade the probe device
+        probe = implant["ophys_probe"]
+        probe = upgrade_fiber_probe(probe)
+
+        probes.append(probe)
+
+        # Upgrade the ProbeConfig
+        targeted_structure = implant.get("targeted_structure", {})
+        stereotactic_coordinate_ap = implant.get("stereotactic_coordinate_ap", None)
+        stereotactic_coordinate_ml = implant.get("stereotactic_coordinate_ml", None)
+        stereotactic_coordinate_dv = implant.get("stereotactic_coordinate_dv", None)
+        stereotactic_coordinate_unit = implant.get("stereotactic_coordinate_unit", "unknown")
+        stereotactic_coordinate_reference = implant.get("stereotactic_coordinate_reference", "Bregma")
+        angle = implant.get("angle", None)
+        angle_unit = implant.get("angle_unit", "degrees")
+
+        implant = retrieve_bl_distance(implant)
+
+
 def upgrade_fiber_implant(data: dict) -> dict:
     """Upgrade FiberImplant procedure from V1 to V2"""
+    global implanted_devices, device_configurations
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
+
+    probes, configs = retrive_probe_config(upgraded_data)
+
+    implanted_devices.extend(probes)
+    device_configurations.extend(configs)
+    upgraded_data["implanted_device_names"] = [device["name"] for device in probes]
 
     return ProbeImplant(**upgraded_data).model_dump()
 
