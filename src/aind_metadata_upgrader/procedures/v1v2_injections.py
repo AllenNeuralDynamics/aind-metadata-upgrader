@@ -108,25 +108,16 @@ def upgrade_targeted_structure(data: dict | str) -> dict:
     return data
 
 
-def upgrade_nanoject_injection(data: dict) -> dict:
-    """Upgrade NanojectInjection procedure from V1 to V2"""
-    # Import retrieve_bl_distance from the procedures module to avoid circular imports
-    from aind_metadata_upgrader.procedures.v1v2_procedures import retrieve_bl_distance
-
-    upgraded_data = data.copy()
-    upgraded_data.pop("procedure_type", None)
-
-    # full list of fields to handle
-    dynamics = build_volume_injection_dynamics(data)
-
-    remove(data, "recovery_time")
-    remove(data, "recovery_time_unit")
-    remove(data, "instrument_id")
-
+def upgrade_injection_coordinates(data: dict) -> dict:
+    """Pull the ml/ap/depths coordinates"""
     ml = data.get("injection_coordinate_ml", None)
     ap = data.get("injection_coordinate_ap", None)
     depths = data.get("injection_coordinate_depth", [])
     unit = data.get("injection_coordinate_unit", None)
+    remove(data, "injection_coordinate_ml")
+    remove(data, "injection_coordinate_ap")
+    remove(data, "injection_coordinate_depth")
+    remove(data, "injection_coordinate_unit")
 
     # Scale millimeters to micrometers if needed
     if unit:
@@ -136,12 +127,6 @@ def upgrade_nanoject_injection(data: dict) -> dict:
             depths = [float(depth) * 1000 for depth in depths]
         elif not unit == "micrometer":
             raise ValueError(f"Need more conditions to handle other kinds of units: {unit}")
-
-    # Check reference
-    reference = data.get("injection_coordinate_reference", None)
-    # Check to make sure someone doesn't give us lambda or something, that would be a big problem
-    if reference is not None and not reference == "Bregma":
-        raise ValueError(f"Unsupported injection_coordinate_reference value: {reference}. " "Expected 'Bregma'.")
 
     if ml is not None:
 
@@ -170,6 +155,38 @@ def upgrade_nanoject_injection(data: dict) -> dict:
                 coordinate.append(rotation.model_dump())
 
             data["coordinates"].append(coordinate)
+
+    return data
+
+
+def upgrade_generic_injection(data: dict) -> dict:
+    """Generic upgrade code for Injection procedures, removes fields that are not needed in V2"""
+
+    remove(data, "recovery_time")
+    remove(data, "recovery_time_unit")
+    remove(data, "instrument_id")
+
+
+def upgrade_nanoject_injection(data: dict) -> dict:
+    """Upgrade NanojectInjection procedure from V1 to V2"""
+    # Import retrieve_bl_distance from the procedures module to avoid circular imports
+    from aind_metadata_upgrader.procedures.v1v2_procedures import retrieve_bl_distance
+
+    upgraded_data = data.copy()
+    upgraded_data.pop("procedure_type", None)
+
+    upgraded_data = upgrade_generic_injection(upgraded_data)
+
+    # full list of fields to handle
+    dynamics = build_volume_injection_dynamics(data)
+
+    # Check reference
+    reference = data.get("injection_coordinate_reference", None)
+    # Check to make sure someone doesn't give us lambda or something, that would be a big problem
+    if reference is not None and not reference == "Bregma":
+        raise ValueError(f"Unsupported injection_coordinate_reference value: {reference}. " "Expected 'Bregma'.")
+
+    data = upgrade_injection_coordinates(data)
 
     data = retrieve_bl_distance(data)
 
