@@ -126,6 +126,16 @@ def upgrade_coordinate_craniotomy(data: dict) -> dict:
     elif unit != "micrometer":
         raise ValueError(f"Need to convert from an unsupported unit: {unit}")
 
+    if "craniotomy_hemisphere" in data:
+        # If hemisphere is available, make sure ML matches the hemisphere
+        if data["craniotomy_hemisphere"].lower() == "left":
+            if ml > 0:
+                ml = -ml
+        elif data["craniotomy_hemisphere"].lower() == "right":
+            if ml < 0:
+                ml = -ml
+        remove(data, "craniotomy_hemisphere")
+
     # Build translation in BREGMA_ARID
     # Unfortunately there's no guarantee that they used anterior+, right+, but we have to hope for the best
     translation = Translation(
@@ -135,12 +145,11 @@ def upgrade_coordinate_craniotomy(data: dict) -> dict:
 
     return data
 
+
 def upgrade_craniotomy(data: dict) -> dict:
     """Upgrade Craniotomy procedure from V1 to V2"""
     # V1 uses craniotomy_coordinates_*, V2 uses coordinate system
     upgraded_data = data.copy()
-
-    print(data)
 
     remove(upgraded_data, "procedure_type")
     remove(upgraded_data, "recovery_time")
@@ -163,18 +172,25 @@ def upgrade_craniotomy(data: dict) -> dict:
 
     upgraded_data = retrieve_bl_distance(upgraded_data)
 
-    if "craniotomy_hemisphere" in upgraded_data:
-        upgraded_data = upgrade_hemisphere_craniotomy(upgraded_data)
-    elif "craniotomy_coordinates_ml" in upgraded_data:
+    print(upgraded_data)
+    if "craniotomy_coordinates_ml" in upgraded_data:
+        print("craniotomy_coordinates_ml")
         upgraded_data = upgrade_coordinate_craniotomy(upgraded_data)
+    elif "craniotomy_hemisphere" in upgraded_data:
+        print("craniotomy_hemisphere")
+        upgraded_data = upgrade_hemisphere_craniotomy(upgraded_data)
+
     else:
-        print(data)
         raise ValueError("Unknown craniotomy type, unclear how to upgrade coordinate/hemisphere data")
 
     if "protocol_id" in upgraded_data and upgraded_data["protocol_id"].lower() == "none":
         upgraded_data["protocol_id"] = None
 
-    return Craniotomy(**upgraded_data).model_dump()
+    try:
+        return Craniotomy(**upgraded_data).model_dump()
+    except Exception as e:
+        print(data)
+        raise e
 
 
 def upgrade_headframe(data: dict) -> dict:
