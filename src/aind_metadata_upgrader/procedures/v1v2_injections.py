@@ -63,6 +63,10 @@ def build_volume_injection_dynamics(data: dict) -> dict:
     duration = data.get("injection_duration", None)
     duration_unit = data.get("injection_duration_unit", None)
 
+    if "injection_volume" in data and isinstance(data["injection_volume"], str):
+        # If injection_volume is a string, convert it to a list with one element
+        data["injection_volume"] = [data["injection_volume"]]
+
     for volume in data.get("injection_volume", []):
         # All injections have duration/duration_unit
         dynamic = {
@@ -281,7 +285,12 @@ def upgrade_retro_orbital_injection(data: dict) -> dict:
             raise ValueError(f"Unsupported injection_eye value: {data['injection_eye']}. Expected 'Left' or 'Right'.")
     remove(upgraded_data, "injection_eye")
 
-    print(upgraded_data)
+    dynamics = build_volume_injection_dynamics(data)
+    upgraded_data["dynamics"] = dynamics
+    remove(upgraded_data, "injection_volume")
+    remove(upgraded_data, "injection_volume_unit")
+    remove(upgraded_data, "injection_duration")
+    remove(upgraded_data, "injection_duration_unit")
 
     return Injection(**upgraded_data).model_dump()
 
