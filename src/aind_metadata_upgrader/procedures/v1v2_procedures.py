@@ -102,13 +102,13 @@ def upgrade_coordinate_craniotomy(data: dict) -> dict:
 
     # Move ml/ap position into Translation object, check units
     ml = data["craniotomy_coordinates_ml"]
-    ap = data["crainotomy_coordinates_ap"]
+    ap = data["craniotomy_coordinates_ap"]
     unit = data["craniotomy_coordinates_unit"]
     reference = data["craniotomy_coordinates_reference"]
     size = data["craniotomy_size"]
     size_unit = data["craniotomy_size_unit"]
     remove(data, "craniotomy_coordinates_ml")
-    remove(data, "crainotomy_coordinates_ap")
+    remove(data, "craniotomy_coordinates_ap")
     remove(data, "craniotomy_coordinates_unit")
     remove(data, "craniotomy_coordinates_reference")
     remove(data, "craniotomy_size")
@@ -172,7 +172,6 @@ def upgrade_craniotomy(data: dict) -> dict:
 
     upgraded_data = retrieve_bl_distance(upgraded_data)
 
-    print(upgraded_data)
     if "craniotomy_coordinates_ml" in upgraded_data:
         print("craniotomy_coordinates_ml")
         upgraded_data = upgrade_coordinate_craniotomy(upgraded_data)
