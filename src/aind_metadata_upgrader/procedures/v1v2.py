@@ -31,6 +31,7 @@ from aind_metadata_upgrader.procedures.v1v2_procedures import (
     upgrade_other_subject_procedure,
     upgrade_reagent,
     upgrade_anaesthetic,
+    repair_generic_surgery_procedure,
 )
 
 PROC_UPGRADE_MAP = {
@@ -64,6 +65,8 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             procedures_data = data["procedures"]
         else:
             procedures_data = data
+        
+        self.subject_id = procedures_data.get("subject_id")
 
         # Create the V2 structure
         v2_procedures = {
@@ -93,8 +96,6 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         # Add coordinate system if required
         v2_procedures["coordinate_system"] = CoordinateSystemLibrary.BREGMA_ARID.model_dump()
 
-        print(v2_procedures)
-
         return v2_procedures
 
     def _replace_experimenter_full_name(self, data: dict):
@@ -104,12 +105,14 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             data["experimenters"] = [experimenter]
             del data["experimenter_full_name"]
         return data
-    
+
     def _upgrade_procedure(self, data: dict) -> dict:
         """Use the procedure_type field and upgrade the procedure accordingly"""
 
+        data = repair_generic_surgery_procedure(data, self.subject_id)
+
         procedure_type = data.get("procedure_type")
-        
+
         if "iacuc_protocol" in data:
             # Replace iacuc_protocol with ethics_review_id
             data["ethics_review_id"] = data.get("iacuc_protocol", None)
@@ -126,7 +129,6 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         """Upgrade a single subject procedure from V1 to V2"""
         # V1 has Surgery as subject procedure type, V2 uses Surgery directly
         if data.get("procedure_type") == "Surgery":
-            print(data)
             remove(data, "procedure_type")  # Remove procedure_type as it's not needed in V2
 
             data = self._replace_experimenter_full_name(data)
@@ -152,7 +154,6 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             )
             return surgery.model_dump()
 
-        print(data)
         raise ValueError("Unsupported subject procedure type: {}".format(data.get("procedure_type")))
 
     def _upgrade_specimen_procedure(self, data: dict) -> dict:
@@ -185,9 +186,14 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         if data.get("sectioning"):
             procedure_details.append(data["sectioning"])
             
+        specimen_id = data.get("specimen_id", None)
+        
+        if "subject_id" not in specimen_id:
+            specimen_id = f"{self.subject_id}_{specimen_id}"
+                        
         specimen_procedure = SpecimenProcedure(
             procedure_type=procedure_type,
-            specimen_id=data.get("specimen_id"),
+            specimen_id=specimen_id,
             start_date=data.get("start_date"),
             end_date=data.get("end_date"),
             experimenters=experimenters,

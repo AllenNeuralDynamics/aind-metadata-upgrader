@@ -40,12 +40,40 @@ def upgrade_craniotomy(data: dict) -> dict:
     """Upgrade Craniotomy procedure from V1 to V2"""
     # V1 uses craniotomy_coordinates_*, V2 uses coordinate system
     upgraded_data = data.copy()
+    
+    remove(upgraded_data, "procedure_type")
+    remove(upgraded_data, "recovery_time")
+    remove(upgraded_data, "recovery_time_unit")
+    
+    # V1 craniotomy example:
+    # {'bregma_to_lambda_distance': '4.386', 'bregma_to_lambda_unit': 'millimeter', 'craniotomy_hemisphere': None, 'craniotomy_type': '5 mm', 'dura_removed': None, 'implant_part_number': '5mm stacked coverslip', 'procedure_type': 'Craniotomy', 'protective_material': None, 'recovery_time': '10.0', 'recovery_time_unit': 'minute'}
 
-    # Remove V1-specific fields that don't exist in V2
-    v1_only_fields = ["craniotomy_coordinates_ml", "craniotomy_coordinates_ap",
-                      "craniotomy_coordinates_unit", "craniotomy_coordinates_reference"]
-    for field in v1_only_fields:
-        upgraded_data.pop(field, None)
+    # V1 spec:
+    # craniotomy_hemisphere: Optional[Side] = Field(default=None, title="Craniotomy hemisphere")
+    # bregma_to_lambda_distance: Optional[Decimal] = Field(
+    #     default=None, title="Bregma to lambda (mm)", description="Distance between bregman and lambda"
+    # )
+    # bregma_to_lambda_unit: SizeUnit = Field(default=SizeUnit.MM, title="Bregma to lambda unit")
+    # implant_part_number: Optional[str] = Field(default=None, title="Implant part number")
+    # dura_removed: Optional[bool] = Field(default=None, title="Dura removed")
+    # protective_material: Optional[ProtectiveMaterial] = Field(default=None, title="Protective material")
+
+    # V2 spec:
+
+    # coordinate_system_name: Optional[str] = Field(default=None, title="Coordinate system name")
+    # position: Optional[Union[Translation, List[AnatomicalRelative]]] = Field(default=None, title="Craniotomy position")
+
+    # size: Optional[float] = Field(default=None, title="Craniotomy size", description="Diameter or side length")
+    # size_unit: Optional[SizeUnit] = Field(default=None, title="Craniotomy size unit")
+
+    # protective_material: Optional[ProtectiveMaterial] = Field(default=None, title="Protective material")
+    # implant_part_number: Optional[str] = Field(default=None, title="Implant part number")
+    # dura_removed: Optional[bool] = Field(default=None, title="Dura removed")
+
+    if "protocol_id" in upgraded_data and protocol_id.lower() == "none":
+        upgraded_data["protocol_id"] = None
+    
+    remove(upgraded_data, ")
 
     return Craniotomy(**upgraded_data).model_dump()
 
@@ -198,19 +226,20 @@ def upgrade_nanoject_injection(data: dict) -> dict:
         elif not unit == "micrometer":
             raise ValueError(f"Need more conditions to handle other kinds of units: {unit}")
 
+    # Check reference
+    reference = data.get("injection_coordinate_reference", None)
+    # Check to make sure someone doesn't give us lambda or something, that would be a big problem
+    if reference is not None and not reference == "Bregma":
+        raise ValueError(
+            f"Unsupported injection_coordinate_reference value: {reference}. "
+            "Expected 'Bregma'."
+        )
+
     if ml is not None:
 
         data["coordinates"] = []
 
         for depth in depths:
-
-            reference = data.get("injection_coordinate_reference", None)
-            # Check to make sure someone doesn't give us lambda or something, that would be a big problem
-            if reference is not None and not reference == "Bregma":
-                raise ValueError(
-                    f"Unsupported injection_coordinate_reference value: {reference}. "
-                    "Expected 'Bregma'."
-                )
 
             # Create the translation object in BREGMA_ARID space
             translation = Translation(
@@ -385,3 +414,14 @@ def upgrade_anaesthetic(data: dict) -> dict:
     remove(upgraded_data, "type")
 
     return Anaesthetic(**upgraded_data).model_dump()
+
+
+def repair_generic_surgery_procedure(data: dict, subject_id: str) -> dict:
+    """Upgrade GenericSurgeryProcedure from V1 to V2"""
+    upgraded_data = data.copy()
+
+    if "specimen_id" in upgraded_data and subject_id not in upgraded_data["specimen_id"]:
+        # Ensure specimen_id is prefixed with subject_id
+        upgraded_data["specimen_id"] = f"{subject_id}_{upgraded_data['specimen_id']}"
+
+    return upgraded_data
