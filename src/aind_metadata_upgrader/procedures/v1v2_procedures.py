@@ -116,6 +116,12 @@ def upgrade_headframe(data: dict) -> dict:
     """Upgrade Headframe procedure from V1 to V2"""
     upgraded_data = data.copy()
 
+    remove(upgraded_data, "procedure_type")
+
+    if "headframe_part_number" in upgraded_data and not upgraded_data["headframe_part_number"]:
+        # If headframe part number is empty, we set it to None
+        upgraded_data["headframe_part_number"] = "unknown"
+
     return Headframe(**upgraded_data).model_dump()
 
 
