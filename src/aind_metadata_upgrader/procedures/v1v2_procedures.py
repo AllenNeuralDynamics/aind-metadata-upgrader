@@ -99,6 +99,7 @@ def upgrade_hemisphere_craniotomy(data: dict) -> dict:
 
 def upgrade_coordinate_craniotomy(data: dict) -> dict:
     """Upgrade old-style craniotomy"""
+    coordinate_system_required = True
 
     # Move ml/ap position into Translation object, check units
     ml = float(data["craniotomy_coordinates_ml"])
@@ -142,6 +143,7 @@ def upgrade_coordinate_craniotomy(data: dict) -> dict:
         translation=[ap, ml, 0, 0],
     )
     data["position"] = translation.model_dump()
+    data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
 
     return data
 

@@ -66,7 +66,7 @@ class ProcessingV1V2(CoreUpgrader):
             start_date_time=process_data.get("start_date_time"),
             end_date_time=process_data.get("end_date_time"),
             output_path=process_data.get("output_location"),  # Map output_location to output_path
-            output_parameters=output_parameters,
+            output_parameters=output_parameters if output_parameters else {},
             notes=process_data.get("notes"),
             resources=process_data.get("resources"),  # ResourceUsage structure is compatible
         )

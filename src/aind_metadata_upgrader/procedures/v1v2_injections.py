@@ -67,6 +67,10 @@ def build_volume_injection_dynamics(data: dict) -> dict:
         # If injection_volume is a string, convert it to a list with one element
         data["injection_volume"] = [data["injection_volume"]]
 
+    if "injection_volume" in data and not data["injection_volume"]:
+        # If injection_volume is empty, replace with empty list
+        data["injection_volume"] = []
+
     for volume in data.get("injection_volume", []):
         # All injections have duration/duration_unit
         dynamic = {
