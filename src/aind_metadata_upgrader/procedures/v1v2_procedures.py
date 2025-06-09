@@ -93,6 +93,8 @@ def upgrade_hemisphere_craniotomy(data: dict) -> dict:
         data["position"] = [AnatomicalRelative.ORIGIN]
     remove(data, "craniotomy_hemisphere")
 
+    return data
+
 
 def upgrade_coordinate_craniotomy(data: dict) -> dict:
     """Upgrade old-style craniotomy"""
@@ -117,13 +119,13 @@ def upgrade_coordinate_craniotomy(data: dict) -> dict:
 
     if reference != "Bregma":
         raise ValueError("Can only handle bregma-reference craniotomies")
-    
+
     if unit == "millimeter":
         ml *= 1000
         ap *= 1000
     elif unit != "micrometer":
         raise ValueError(f"Need to convert from an unsupported unit: {unit}")
-    
+
     # Build translation in BREGMA_ARID
     # Unfortunately there's no guarantee that they used anterior+, right+, but we have to hope for the best
     translation = Translation(
