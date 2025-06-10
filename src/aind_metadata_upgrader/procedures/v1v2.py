@@ -163,10 +163,16 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             )
             return surgery.model_dump()
         elif data.get("procedure_type") == "Water restriction":
+            remove(data, "procedure_type")
+            data["ethics_review_id"] = data.get("iacuc_protocol", "unknown")
+            remove(data, "iacuc_protocol")
             return WaterRestriction(
                 **data,
             ).model_dump()
         elif data.get("procedure_type") == "Training protocol":
+            remove(data, "procedure_type")
+            data["ethics_review_id"] = data.get("iacuc_protocol", "unknown")
+            remove(data, "iacuc_protocol")
             return TrainingProtocol(
                 **data,
             ).model_dump()
@@ -182,7 +188,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             generic_subject_procedure = GenericSubjectProcedure(
                 start_date=data.get("start_date"),
                 experimenters=data.get("experimenters", []),
-                ethics_review_id=data.get("iacuc_protocol", ""),
+                ethics_review_id=data.get("iacuc_protocol", "unknown"),
                 protocol_id=protocol_id,
                 description=data.get("description", ""),
                 notes=data.get("notes"),
