@@ -17,10 +17,13 @@ from aind_data_schema.components.reagent import Reagent
 from aind_data_schema.components.coordinates import (
     Translation,
     CoordinateSystemLibrary,
+    AtlasLibrary,
+    AtlasCoordinate,
 )
 from aind_data_schema.components.configs import ProbeConfig
 from aind_data_schema_models.coordinates import AnatomicalRelative, Origin
 from aind_data_schema_models.units import SizeUnit
+from aind_data_schema_models.brain_atlas import CCFStructure
 
 from aind_metadata_upgrader.rig.v1v2_devices import upgrade_fiber_probe
 from aind_metadata_upgrader.utils.v1v2_utils import remove, repair_organization, basic_device_checks
@@ -54,9 +57,9 @@ def retrieve_bl_distance(data: dict) -> dict:
         distance = float(data["bregma_to_lambda_distance"])
         if distance < 0:
             distance = -distance  # Ensure distance is positive
-        if data["bregma_to_lambda_unit"] == SizeUnit.MM:
-            distance *= 1000  # Convert to micrometers
-        elif data["bregma_to_lambda_unit"] != SizeUnit.MICROMETER:
+        if data["bregma_to_lambda_unit"] == SizeUnit.UM:
+            distance /= 1000  # Convert to micrometers
+        elif data["bregma_to_lambda_unit"] != SizeUnit.MM:
             raise ValueError(
                 f"Unsupported bregma_to_lambda_unit: {data['bregma_to_lambda_unit']}. "
                 "Expected 'millimeter' or 'micrometer'."
@@ -124,10 +127,10 @@ def upgrade_coordinate_craniotomy(data: dict) -> dict:
     if reference != "Bregma":
         raise ValueError("Can only handle bregma-reference craniotomies")
 
-    if unit == "millimeter":
-        ml *= 1000
-        ap *= 1000
-    elif unit != "micrometer":
+    if unit == "micrometer":
+        ml /= 1000
+        ap /= 1000
+    elif unit != "millimeter":
         raise ValueError(f"Need to convert from an unsupported unit: {unit}")
 
     if "craniotomy_hemisphere" in data:
@@ -254,13 +257,46 @@ def retrive_probe_config(data: dict) -> tuple:
 
         # Upgrade the ProbeConfig
         targeted_structure = implant.get("targeted_structure", {})
-        stereotactic_coordinate_ap = implant.get("stereotactic_coordinate_ap", None)
-        stereotactic_coordinate_ml = implant.get("stereotactic_coordinate_ml", None)
-        stereotactic_coordinate_dv = implant.get("stereotactic_coordinate_dv", None)
+        if not targeted_structure:
+            targeted_structure = CCFStructure.ROOT.model_dump()  # Default to ROOT if no structure provided
+
+        ap = implant.get("stereotactic_coordinate_ap", None)
+        ml = implant.get("stereotactic_coordinate_ml", None)
+        dv = implant.get("stereotactic_coordinate_dv", None)
         stereotactic_coordinate_unit = implant.get("stereotactic_coordinate_unit", "unknown")
+        
+        if stereotactic_coordinate_unit == "micrometer":
+            ap = float(ap) / 1000 if ap else None
+            ml = float(ml) / 1000 if ml else None
+            dv = float(dv) / 1000 if dv else None
+        elif stereotactic_coordinate_unit != "millimeter":
+            raise ValueError(
+                f"Unsupported stereotactic_coordinate_unit: {stereotactic_coordinate_unit}. "
+                "Expected 'millimeter' or 'micrometer'."
+            )
+
         stereotactic_coordinate_reference = implant.get("stereotactic_coordinate_reference", "Bregma")
+
+        if stereotactic_coordinate_reference != "Bregma":
+            raise ValueError(
+                f"Unsupported stereotactic_coordinate_reference: {stereotactic_coordinate_reference}. "
+                "Expected 'Bregma'."
+            )
+
         angle = implant.get("angle", None)
         angle_unit = implant.get("angle_unit", "degrees")
+        
+        config = ProbeConfig(
+            device_name=probe["name"],
+            primary_targeted_structure = targeted_structure,
+            coordinate_system=CoordinateSystemLibrary.MPM_MANIP_RFB,
+            transform=[
+                Translation(
+                    translation=[]
+                )
+            ]
+        )
+        configs.append(config.model_dump())
 
         implant = retrieve_bl_distance(implant)
 

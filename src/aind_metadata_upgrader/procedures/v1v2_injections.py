@@ -133,11 +133,11 @@ def upgrade_injection_coordinates(data: dict) -> dict:
 
     # Scale millimeters to micrometers if needed
     if unit:
-        if unit == "millimeter":
-            ml = float(ml) * 1000
-            ap = float(ap) * 1000
-            depths = [float(depth) * 1000 for depth in depths]
-        elif not unit == "micrometer":
+        if unit == "micrometer":
+            ml = float(ml) / 1000
+            ap = float(ap) / 1000
+            depths = [float(depth) / 1000 for depth in depths]
+        elif not unit == "millimeter":
             raise ValueError(f"Need more conditions to handle other kinds of units: {unit}")
 
     if ml is not None:
