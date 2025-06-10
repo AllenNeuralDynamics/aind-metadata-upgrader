@@ -32,6 +32,8 @@ from aind_metadata_upgrader.procedures.v1v2_procedures import (
     upgrade_antibody,
     upgrade_hcr_series,
     upgrade_planar_sectioning,
+    implanted_devices,
+    device_configurations,
 )
 from aind_metadata_upgrader.procedures.v1v2_injections import (
     upgrade_nanoject_injection,
@@ -68,6 +70,8 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
     def upgrade(self, data: dict, schema_version: str) -> dict:
         """Upgrade the procedures to v2.0"""
+        global implanted_devices, device_configurations
+
         # Extract the nested procedures dict if it exists
         if "procedures" in data:
             procedures_data = data["procedures"]
@@ -100,6 +104,9 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                 upgraded_proc = self._upgrade_specimen_procedure(spec_proc)
                 if upgraded_proc:
                     v2_procedures["specimen_procedures"].append(upgraded_proc)
+
+        v2_procedures["implanted_devices"] = implanted_devices
+        v2_procedures["configurations"] = device_configurations
 
         # Add coordinate system if required
         v2_procedures["coordinate_system"] = CoordinateSystemLibrary.BREGMA_ARID.model_dump()
