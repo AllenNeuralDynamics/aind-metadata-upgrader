@@ -16,6 +16,7 @@ from aind_data_schema.core.procedures import (
 from aind_data_schema.components.reagent import Reagent
 from aind_data_schema.components.coordinates import (
     Translation,
+    Rotation,
     CoordinateSystemLibrary,
     AtlasLibrary,
     AtlasCoordinate,
@@ -91,8 +92,7 @@ def upgrade_hemisphere_craniotomy(data: dict) -> dict:
             data["position"] = [AnatomicalRelative.RIGHT]
         else:
             raise ValueError(
-                f"Unsupported craniotomy_hemisphere: {data['craniotomy_hemisphere']}. "
-                "Expected 'Left' or 'Right'."
+                f"Unsupported craniotomy_hemisphere: {data['craniotomy_hemisphere']}. " "Expected 'Left' or 'Right'."
             )
     elif data["craniotomy_type"] == CraniotomyType.CIRCLE:
         # If craniotomy type is circle, we don't know where it is unfortunately, so we put it at the origin
@@ -263,8 +263,11 @@ def retrive_probe_config(data: dict) -> tuple:
         ap = implant.get("stereotactic_coordinate_ap", None)
         ml = implant.get("stereotactic_coordinate_ml", None)
         dv = implant.get("stereotactic_coordinate_dv", None)
-        stereotactic_coordinate_unit = implant.get("stereotactic_coordinate_unit", "unknown")
         
+        # We don't really know which direction ap/ml/dv go... 
+        
+        stereotactic_coordinate_unit = implant.get("stereotactic_coordinate_unit", "unknown")
+
         if stereotactic_coordinate_unit == "micrometer":
             ap = float(ap) / 1000 if ap else None
             ml = float(ml) / 1000 if ml else None
@@ -286,19 +289,31 @@ def retrive_probe_config(data: dict) -> tuple:
         angle = implant.get("angle", None)
         angle_unit = implant.get("angle_unit", "degrees")
         
+        transforms = [Translation(translation=[ap, ml, 0, dv])]
+        
+        if angle:
+            if angle_unit != "degrees":
+                raise ValueError(
+                    f"Unsupported angle_unit: {angle_unit}. "
+                    "Expected 'degrees'."
+                )
+            rotation = Rotation(
+                angles=[float(angle), 0, 0, 0],
+            )
+            transforms.append(rotation)
+
         config = ProbeConfig(
             device_name=probe["name"],
-            primary_targeted_structure = targeted_structure,
+            primary_targeted_structure=targeted_structure,
             coordinate_system=CoordinateSystemLibrary.MPM_MANIP_RFB,
-            transform=[
-                Translation(
-                    translation=[]
-                )
-            ]
+            transform=transforms,
         )
+
         configs.append(config.model_dump())
 
         implant = retrieve_bl_distance(implant)
+
+    return probes, configs
 
 
 def upgrade_fiber_implant(data: dict) -> dict:
