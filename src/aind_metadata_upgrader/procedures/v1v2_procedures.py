@@ -265,9 +265,9 @@ def retrive_probe_config(data: dict) -> tuple:
         ap = implant.get("stereotactic_coordinate_ap", None)
         ml = implant.get("stereotactic_coordinate_ml", None)
         dv = implant.get("stereotactic_coordinate_dv", None)
-        
-        # We don't really know which direction ap/ml/dv go... 
-        
+
+        # We don't really know which direction ap/ml/dv go...
+
         stereotactic_coordinate_unit = implant.get("stereotactic_coordinate_unit", "unknown")
 
         if stereotactic_coordinate_unit == "micrometer":
@@ -290,15 +290,12 @@ def retrive_probe_config(data: dict) -> tuple:
 
         angle = implant.get("angle", None)
         angle_unit = implant.get("angle_unit", "degrees")
-        
+
         transforms = [Translation(translation=[ap, ml, 0, dv])]
-        
+
         if angle:
             if angle_unit != "degrees":
-                raise ValueError(
-                    f"Unsupported angle_unit: {angle_unit}. "
-                    "Expected 'degrees'."
-                )
+                raise ValueError(f"Unsupported angle_unit: {angle_unit}. " "Expected 'degrees'.")
             rotation = Rotation(
                 angles=[float(angle), 0, 0, 0],
             )
@@ -406,10 +403,10 @@ def upgrade_hcr_series(data: dict) -> dict:
 def upgrade_planar_sectioning(data: dict) -> dict:
     """Upgrade Sectioning from V1 to V2 PlanarSectioning"""
     upgraded_data = {}
-    
+
     # Remove procedure_type
     remove(data, "procedure_type")
-    
+
     # Extract basic info
     number_of_slices = data["number_of_slices"]
     output_specimen_ids = data["output_specimen_ids"]
@@ -420,40 +417,42 @@ def upgrade_planar_sectioning(data: dict) -> dict:
     section_distance_unit = data["section_distance_unit"]
     section_strategy = data.get("section_strategy", "Whole brain")
     targeted_structure = data.get("targeted_structure")
-    
+
     # Validate that output_specimen_ids matches number_of_slices
     if len(output_specimen_ids) != number_of_slices:
-        raise ValueError(f"Number of output_specimen_ids ({len(output_specimen_ids)}) must match number_of_slices ({number_of_slices})")
-    
+        raise ValueError(
+            f"Number of output_specimen_ids ({len(output_specimen_ids)}) must match number_of_slices ({number_of_slices})"
+        )
+
     # Convert units to mm if needed
     if section_thickness_unit == SizeUnit.UM:
         section_thickness /= 1000
         section_thickness_unit = SizeUnit.MM
     elif section_thickness_unit != SizeUnit.MM:
         raise ValueError(f"Unsupported section_thickness_unit: {section_thickness_unit}")
-        
+
     if section_distance_unit == SizeUnit.UM:
         section_distance_from_reference /= 1000
     elif section_distance_unit != SizeUnit.MM:
         raise ValueError(f"Unsupported section_distance_unit: {section_distance_unit}")
-    
+
     # Set up coordinate system - always BREGMA_ARID
     coordinate_system_name = CoordinateSystemLibrary.BREGMA_ARID.name
-    
+
     # Calculate section coordinates based on orientation
     sections = []
-    
+
     for i, specimen_id in enumerate(output_specimen_ids):
         # Calculate the position of this slice
         slice_position = section_distance_from_reference + (i * section_thickness)
-        
+
         # Create start and end coordinates based on orientation
         if section_orientation == SectionOrientation.CORONAL:
             # Coronal sections: varying anterior-posterior (A) coordinate
             start_coord = Translation(translation=[slice_position, 0, 0])
             end_coord = Translation(translation=[slice_position + section_thickness, 0, 0])
         elif section_orientation == SectionOrientation.SAGITTAL:
-            # Sagittal sections: varying medial-lateral (R) coordinate  
+            # Sagittal sections: varying medial-lateral (R) coordinate
             start_coord = Translation(translation=[0, slice_position, 0])
             end_coord = Translation(translation=[0, slice_position + section_thickness, 0])
         elif section_orientation == SectionOrientation.TRANSVERSE:
@@ -462,13 +461,13 @@ def upgrade_planar_sectioning(data: dict) -> dict:
             end_coord = Translation(translation=[0, 0, slice_position + section_thickness])
         else:
             raise ValueError(f"Unsupported section_orientation: {section_orientation}")
-        
+
         # Handle partial slice based on section strategy
         partial_slice = None
         if section_strategy == "Hemi brain":
             partial_slice = [AnatomicalRelative.OTHER]
         # For "Whole brain" or other strategies, leave partial_slice as None (empty list)
-        
+
         section = Section(
             output_specimen_id=specimen_id,
             targeted_structure=targeted_structure,
@@ -477,15 +476,15 @@ def upgrade_planar_sectioning(data: dict) -> dict:
             end_coordinate=end_coord,
             thickness=section_thickness,
             thickness_unit=section_thickness_unit,
-            partial_slice=partial_slice
+            partial_slice=partial_slice,
         )
-        
+
         sections.append(section)
-    
+
     # Build the PlanarSectioning object
     upgraded_data = {
         "sections": [section.model_dump() for section in sections],
-        "section_orientation": section_orientation
+        "section_orientation": section_orientation,
     }
-    
+
     return PlanarSectioning(**upgraded_data).model_dump()

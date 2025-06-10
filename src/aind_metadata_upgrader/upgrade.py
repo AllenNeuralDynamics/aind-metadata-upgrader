@@ -5,6 +5,7 @@ from aind_data_schema.core.instrument import Instrument
 
 # from aind_data_schema.core.metadata import Metadata
 from aind_data_schema.core.processing import Processing
+from aind_data_schema.core.acquisition import Acquisition
 from aind_data_schema.core.quality_control import QualityControl
 from aind_data_schema.core.procedures import Procedures
 from aind_data_schema.core.subject import Subject
@@ -33,6 +34,7 @@ UPGRADE_VERSIONS = {
     "rig": Instrument.model_fields["schema_version"].default,
     "processing": Processing.model_fields["schema_version"].default,
     "procedures": Procedures.model_fields["schema_version"].default,
+    "acquisition": Acquisition.model_fields["schema_version"].default,
 }
 
 CORE_MAPPING = {
@@ -82,6 +84,8 @@ class Upgrade:
                 return Processing(**data)
             elif core_file == "procedures":
                 return Procedures(**data)
+            elif core_file == "acquisition":
+                return Acquisition(**data)
             else:
                 raise ValueError(f"Unknown core file type: {core_file}")
         except Exception as e:
