@@ -29,6 +29,9 @@ from aind_metadata_upgrader.procedures.v1v2_procedures import (
     upgrade_reagent,
     upgrade_anaesthetic,
     repair_generic_surgery_procedure,
+    upgrade_antibody,
+    upgrade_hcr_series,
+    upgrade_planar_sectioning,
 )
 from aind_metadata_upgrader.procedures.v1v2_injections import (
     upgrade_nanoject_injection,
@@ -221,12 +224,13 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         procedure_details.extend(reagents)
 
-        if data.get("antibodies"):
-            procedure_details.append(data["antibodies"])
-        if data.get("hcr_series"):
-            procedure_details.append(data["hcr_series"])
-        if data.get("sectioning"):
-            procedure_details.append(data["sectioning"])
+        if data.get("antibodies") and isinstance(data["antibodies"], list):
+            antibodies = [upgrade_antibody(ab) for ab in data["antibodies"]]
+            procedure_details.extend(antibodies)
+        if data.get("hcr_series") and data["hcr_series"]:
+            procedure_details.append(upgrade_hcr_series(data["hcr_series"]))
+        if data.get("sectioning") and data["sectioning"]:
+            procedure_details.append(upgrade_planar_sectioning(data["sectioning"]))
 
         specimen_id = data.get("specimen_id", None)
 

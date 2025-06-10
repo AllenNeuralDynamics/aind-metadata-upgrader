@@ -12,14 +12,14 @@ from aind_data_schema.core.procedures import (
     GenericSurgeryProcedure,
     Anaesthetic,
     CraniotomyType,
+    HCRSeries,
+    PlanarSectioning,
 )
-from aind_data_schema.components.reagent import Reagent
+from aind_data_schema.components.reagent import Reagent, Antibody
 from aind_data_schema.components.coordinates import (
     Translation,
     Rotation,
     CoordinateSystemLibrary,
-    AtlasLibrary,
-    AtlasCoordinate,
 )
 from aind_data_schema.components.configs import ProbeConfig
 from aind_data_schema_models.coordinates import AnatomicalRelative, Origin
@@ -27,7 +27,7 @@ from aind_data_schema_models.units import SizeUnit
 from aind_data_schema_models.brain_atlas import CCFStructure
 
 from aind_metadata_upgrader.rig.v1v2_devices import upgrade_fiber_probe
-from aind_metadata_upgrader.utils.v1v2_utils import remove, repair_organization, basic_device_checks
+from aind_metadata_upgrader.utils.v1v2_utils import remove, repair_organization
 
 coordinate_system_required = False
 implanted_devices = []
@@ -385,3 +385,24 @@ def repair_generic_surgery_procedure(data: dict, subject_id: str) -> dict:
         upgraded_data["specimen_id"] = f"{subject_id}_{upgraded_data['specimen_id']}"
 
     return upgraded_data
+
+
+def upgrade_antibody(data: dict) -> dict:
+    """Upgrade antibodies from V1 to V2"""
+    upgraded_data = data.copy()
+
+    return Antibody(**upgraded_data).model_dump()
+
+
+def upgrade_hcr_series(data: dict) -> dict:
+    """Upgrade HCRSeries from V1 to V2"""
+    upgraded_data = data.copy()
+
+    return HCRSeries(**upgraded_data).model_dump()
+
+
+def upgrade_planar_sectioning(data: dict) -> dict:
+    """Upgrade PlanarSectioning from V1 to V2"""
+    upgraded_data = data.copy()
+
+    return PlanarSectioning(**upgraded_data).model_dump()
