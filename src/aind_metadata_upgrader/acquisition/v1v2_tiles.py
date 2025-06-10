@@ -2,6 +2,69 @@
 
 from typing import Dict, List
 from aind_data_schema_models.modalities import Modality
+from aind_data_schema.components.configs import Channel, LaserConfig, DetectorConfig, TriggerType
+from aind_data_schema.core.acquisition import DataStream
+from aind_data_schema_models.units import PowerUnit, SizeUnit, TimeUnit
+
+
+def extract_channels_from_tiles(tiles: List[Dict]) -> List[Channel]:
+    """Extract and accumulate unique channels from tile data"""
+    channels_dict = {}  # Use dict to avoid duplicates by channel name
+
+    for tile in tiles:
+        channel_data = tile.get("channel", {})
+        if not channel_data:
+            continue
+
+        channel_name = channel_data.get("channel_name")
+        if not channel_name:
+            continue
+
+        # If we've already seen this channel name, skip it
+        # (assuming identical channel names have identical configurations)
+        if channel_name in channels_dict:
+            continue
+
+        # Create detector config - using defaults since we don't have detector info in tiles
+        detector_config = DetectorConfig(
+            device_name="unknown_detector",  # Will need to be filled in later
+            exposure_time=1.0,  # Default value
+            exposure_time_unit=TimeUnit.MS,
+            trigger_type=TriggerType.INTERNAL,  # Default value
+        )
+
+        # Create laser config from channel data
+        light_sources = []
+        if "laser_wavelength" in channel_data:
+            laser_config_params = {
+                "device_name": f"laser_{channel_data['laser_wavelength']}nm",
+                "wavelength": channel_data["laser_wavelength"],
+                "wavelength_unit": SizeUnit.NM,
+            }
+
+            # Add power if available
+            if "laser_power" in channel_data:
+                laser_config_params["power"] = channel_data["laser_power"]
+
+                # Map power unit from tile to schema
+                power_unit = channel_data.get("laser_power_unit", "milliwatt")
+                if power_unit == "milliwatt":
+                    laser_config_params["power_unit"] = PowerUnit.MW
+                else:
+                    # For unknown units, default to milliwatts
+                    laser_config_params["power_unit"] = PowerUnit.MW
+
+            laser_config = LaserConfig(**laser_config_params)
+            light_sources.append(laser_config)
+
+        # Create the channel
+        channel = Channel(
+            channel_name=channel_name, detector=detector_config, light_sources=light_sources, variable_power=False
+        )
+
+        channels_dict[channel_name] = channel
+
+    return list(channels_dict.values())
 
 
 def extract_modality_from_tiles(tiles: List[Dict]) -> Dict:
@@ -11,11 +74,16 @@ def extract_modality_from_tiles(tiles: List[Dict]) -> Dict:
     return Modality.SPIM.model_dump()
 
 
-def create_basic_imaging_config() -> Dict:
+def create_basic_imaging_config(channels: List[Channel]) -> Dict:
     """Create a basic imaging configuration placeholder"""
     # Since ImagingConfig has many required fields we don't have from tiles,
     # create a minimal configuration placeholder
-    return {"object_type": "Imaging configuration", "device_name": "Imaging Device", "channels": [], "images": []}
+    return {
+        "object_type": "Imaging config",
+        "device_name": "unknown",
+        "channels": [channel.model_dump() for channel in channels],
+        "images": [],
+    }
 
 
 def determine_active_devices_from_tiles(tiles: List[Dict]) -> List[str]:
@@ -74,11 +142,28 @@ def extract_stream_times_from_tiles(tiles: List[Dict], session_start: str, sessi
     return stream_start, stream_end
 
 
+def build_sample_immersion() -> Dict:
+    """Build a sample immersion configuration placeholder"""
+    # Since we don't have immersion data in tiles, return a minimal placeholder
+    return {
+        "object_type": "Sample chamber config",
+        "device_name": "unknown",
+        "chamber_immersion": {
+            "medium": "other",  # No immersion type available
+            "refractive_index": 0,  # No index available
+        },
+        "sample_immersion": None,  # No index available
+    }
+
+
 def upgrade_tiles_to_data_streams(tiles: List[Dict], session_start: str, session_end: str) -> List[Dict]:
     """Convert V1 tiles to V2 data streams"""
 
     if not tiles:
         return []
+
+    # Add code to build up list of channels from tiles
+    channels = extract_channels_from_tiles(tiles)
 
     # Extract stream timing
     stream_start, stream_end = extract_stream_times_from_tiles(tiles, session_start, session_end)
@@ -88,7 +173,10 @@ def upgrade_tiles_to_data_streams(tiles: List[Dict], session_start: str, session
     active_devices = determine_active_devices_from_tiles(tiles)
 
     # Create basic imaging configuration
-    configurations = [create_basic_imaging_config()]
+    configurations = [
+        create_basic_imaging_config(channels),
+        build_sample_immersion(),
+    ]
 
     # Combine notes from tiles
     tile_notes = [tile.get("notes", "") for tile in tiles if tile.get("notes")]
@@ -106,4 +194,4 @@ def upgrade_tiles_to_data_streams(tiles: List[Dict], session_start: str, session
         "connections": [],
     }
 
-    return [data_stream]
+    return DataStream(**data_stream).model_dump()
