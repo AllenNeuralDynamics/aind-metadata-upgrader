@@ -8,6 +8,9 @@ from aind_metadata_upgrader.base import CoreUpgrader
 
 from aind_data_schema.core.procedures import (
     Surgery,
+    WaterRestriction,
+    TrainingProtocol,
+    GenericSubjectProcedure,
     SpecimenProcedure,
     GenericSurgeryProcedure,
 )
@@ -159,6 +162,33 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                 **data,
             )
             return surgery.model_dump()
+        elif data.get("procedure_type") == "Water restriction":
+            return WaterRestriction(
+                **data,
+            ).model_dump()
+        elif data.get("procedure_type") == "Training protocol":
+            return TrainingProtocol(
+                **data,
+            ).model_dump()
+        elif data.get("procedure_type") == "Generic Subject Procedure":
+            # Convert experimenter_full_name to experimenters list
+            data = self._replace_experimenter_full_name(data)
+
+            # Convert protocol_id from list to string (V1 has it as list, V2 as string)
+            protocol_id = data.get("protocol_id", None)
+            if isinstance(protocol_id, str) and protocol_id.lower() == "none":
+                protocol_id = None
+
+            generic_subject_procedure = GenericSubjectProcedure(
+                start_date=data.get("start_date"),
+                experimenters=data.get("experimenters", []),
+                ethics_review_id=data.get("iacuc_protocol", ""),
+                protocol_id=protocol_id,
+                description=data.get("description", ""),
+                notes=data.get("notes"),
+            )
+
+            return generic_subject_procedure.model_dump()
 
         raise ValueError("Unsupported subject procedure type: {}".format(data.get("procedure_type")))
 
