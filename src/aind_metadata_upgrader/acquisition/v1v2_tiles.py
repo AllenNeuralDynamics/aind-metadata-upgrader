@@ -194,4 +194,4 @@ def upgrade_tiles_to_data_streams(tiles: List[Dict], session_start: str, session
         "connections": [],
     }
 
-    return DataStream(**data_stream).model_dump()
+    return [DataStream(**data_stream).model_dump()]
