@@ -471,15 +471,31 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
                 else "" + " (v1v2 upgrade): Liquid calibration upgraded from v1.x format."
             ),
         )
-    elif "laser power calibration" in data.get("description", "").lower() and "power_setting" in data.get(
-        "input", {}
-    ):
+    elif "laser power calibration" in data.get("description", "").lower() and "power_setting" in data.get("input", {}) and "power_output" in data.get("output", {}):
         # Laser calibration, may or may not have data
 
         power_setting = data["input"].get("power_setting", None)
         power_output = data["output"].get("power_output", None)
-        if not power_output:
-            power_output = data["output"].get("power_measurement", None)
+
+        # Drop empty calibrations
+        if not power_setting and not power_output:
+            return None
+
+        calibration = PowerCalibration(
+            calibration_date=data["calibration_date"],
+            device_name=data["device_name"],
+            input=power_setting,
+            input_unit=PowerUnit.PERCENT,
+            output=power_output,
+            output_unit=PowerUnit.MW,
+        )
+    elif "laser power calibration" in data.get("description", "").lower() and "power_setting" in data.get("input", {}) and "power_measurement" in data.get("output", {}):
+        # Laser calibration, may or may not have data
+
+        power_setting = data["input"].get("power_setting", {}).get("value", None)
+        input_unit = data["input"].get("power_setting", {}).get("unit", PowerUnit.PERCENT.value)
+        power_output = data["output"].get("power_measurement", {}).get("value", None)
+        output_unit = data["output"].get("power_measurement", {}).get("unit", PowerUnit.MW.value)
 
         # Drop empty calibrations
         if not power_setting and not power_output:
@@ -490,10 +506,10 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
         calibration = PowerCalibration(
             calibration_date=data["calibration_date"],
             device_name=data["device_name"],
-            input=power_setting,
-            input_unit=PowerUnit.PERCENT,
-            output=power_output,
-            output_unit=PowerUnit.MW,
+            input=[power_setting],
+            input_unit=input_unit,
+            output=[power_output],
+            output_unit=output_unit,
         )
     elif "laser power calibration" in data.get("description", "").lower() and "power percent" in data.get(
         "input", {}
