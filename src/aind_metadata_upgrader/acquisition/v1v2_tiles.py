@@ -1,8 +1,15 @@
 """Tile upgrade functions for v1.4 to v2.0 acquisition upgrade"""
 
-from typing import Dict, List
+from typing import Dict, List, Optional
 from aind_data_schema_models.modalities import Modality
-from aind_data_schema.components.configs import Channel, LaserConfig, DetectorConfig, TriggerType
+from aind_data_schema.components.configs import (
+    Channel,
+    LaserConfig,
+    DetectorConfig,
+    TriggerType,
+    SampleChamberConfig,
+    Immersion,
+)
 from aind_data_schema.core.acquisition import DataStream
 from aind_data_schema_models.units import PowerUnit, SizeUnit, TimeUnit
 
@@ -142,21 +149,14 @@ def extract_stream_times_from_tiles(tiles: List[Dict], session_start: str, sessi
     return stream_start, stream_end
 
 
-def build_sample_immersion() -> Dict:
-    """Build a sample immersion configuration placeholder"""
-    # Since we don't have immersion data in tiles, return a minimal placeholder
-    return {
-        "object_type": "Sample chamber config",
-        "device_name": "unknown",
-        "chamber_immersion": {
-            "medium": "other",  # No immersion type available
-            "refractive_index": 0,  # No index available
-        },
-        "sample_immersion": None,  # No index available
-    }
-
-
-def upgrade_tiles_to_data_streams(tiles: List[Dict], session_start: str, session_end: str) -> List[Dict]:
+def upgrade_tiles_to_data_streams(
+    tiles: List[Dict],
+    session_start: str,
+    session_end: str,
+    chamber_immersion: dict,
+    sample_immersion: Optional[dict],
+    device_name: str,
+) -> List[Dict]:
     """Convert V1 tiles to V2 data streams"""
 
     if not tiles:
@@ -172,10 +172,16 @@ def upgrade_tiles_to_data_streams(tiles: List[Dict], session_start: str, session
     modalities = [extract_modality_from_tiles(tiles)]
     active_devices = determine_active_devices_from_tiles(tiles)
 
+    chamber_config = SampleChamberConfig(
+        device_name=device_name,
+        chamber_immersion=Immersion(**chamber_immersion),
+        sample_immersion=Immersion(**sample_immersion) if sample_immersion else None,
+    ).model_dump()
+
     # Create basic imaging configuration
     configurations = [
         create_basic_imaging_config(channels),
-        build_sample_immersion(),
+        chamber_config,
     ]
 
     # Combine notes from tiles

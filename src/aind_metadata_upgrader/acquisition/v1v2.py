@@ -83,18 +83,27 @@ class AcquisitionV1V2(CoreUpgrader):
         notes = data.get("notes")
 
         # Fields that are removed in V2 (just for documentation):
-        # - chamber_immersion, sample_immersion (moved to instrument/configs)
-        # - active_objectives (moved to instrument)
-        # - local_storage_directory, external_storage_directory (removed)
-        # - processing_steps (moved to processing schema)
-        # - software (moved to instrument)
+        # - chamber_immersion, sample_immersion
+        # - active_objectives
+        # - local_storage_directory, external_storage_directory
+        # - processing_steps
+        # - software
+        chamber_immersion = data.get("chamber_immersion")
+        sample_immersion = data.get("sample_immersion")
 
         # Upgrade experimenter names to Person objects
         experimenters = self._upgrade_experimenter_names_to_persons(experimenter_full_name)
 
         # Upgrade tiles to data streams
         if session_start_time and session_end_time:
-            data_streams = upgrade_tiles_to_data_streams(tiles, session_start_time, session_end_time)
+            data_streams = upgrade_tiles_to_data_streams(
+                tiles,
+                session_start_time,
+                session_end_time,
+                chamber_immersion=chamber_immersion,
+                sample_immersion=sample_immersion,
+                device_name=instrument_id,
+            )
         else:
             # If no session times, create empty data streams
             data_streams = []
@@ -108,6 +117,8 @@ class AcquisitionV1V2(CoreUpgrader):
 
         # Determine acquisition type
         acquisition_type = self._determine_acquisition_type(data)
+
+        subject_details = AcquisitionSubjectDetails()
 
         # Build V2 acquisition object
         output = {
