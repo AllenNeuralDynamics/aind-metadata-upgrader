@@ -12,6 +12,7 @@ from aind_data_schema.components.configs import (
 )
 from aind_data_schema.core.acquisition import DataStream
 from aind_data_schema_models.units import PowerUnit, SizeUnit, TimeUnit
+from aind_data_schema_models.devices import ImmersionMedium
 
 
 def extract_channels_from_tiles(tiles: List[Dict]) -> List[Channel]:
@@ -115,9 +116,10 @@ def determine_active_devices_from_tiles(tiles: List[Dict]) -> List[str]:
 
         # Add any additional device names
         additional_devices = channel.get("additional_device_names", [])
-        for device in additional_devices:
-            if device:
-                active_devices.add(device)
+        if additional_devices:
+            for device in additional_devices:
+                if device:
+                    active_devices.add(device)
 
     return list(active_devices)
 
@@ -149,13 +151,35 @@ def extract_stream_times_from_tiles(tiles: List[Dict], session_start: str, sessi
     return stream_start, stream_end
 
 
-def upgrade_tiles_to_data_streams(
+MEDIUM_MAP = {
+    "Cargille 1.52": ImmersionMedium.OIL,
+    "Cargille oil 1.5200": ImmersionMedium.OIL,
+    "EasyIndex": ImmersionMedium.EASYINDEX,
+    "0.05x SSC": ImmersionMedium.WATER,
+}
+
+
+def upgrade_immersion(data: dict) -> dict:
+    """Upgrade an immersion dictionary to the new Immersion schema"""
+
+    if "medium" in data and any(key in data["medium"] for key in MEDIUM_MAP.keys()):
+        # Find the matching medium key and update it
+        for old_key, new_medium in MEDIUM_MAP.items():
+            if old_key in data["medium"]:
+                data["medium"] = new_medium
+                break
+
+    return Immersion(**data).model_dump()
+
+
+def upgrade_tiles_to_data_stream(
     tiles: List[Dict],
     session_start: str,
     session_end: str,
     chamber_immersion: dict,
     sample_immersion: Optional[dict],
     device_name: str,
+    software: list,
 ) -> List[Dict]:
     """Convert V1 tiles to V2 data streams"""
 
@@ -174,8 +198,8 @@ def upgrade_tiles_to_data_streams(
 
     chamber_config = SampleChamberConfig(
         device_name=device_name,
-        chamber_immersion=Immersion(**chamber_immersion),
-        sample_immersion=Immersion(**sample_immersion) if sample_immersion else None,
+        chamber_immersion=upgrade_immersion(chamber_immersion),
+        sample_immersion=upgrade_immersion(sample_immersion) if sample_immersion else None,
     ).model_dump()
 
     # Create basic imaging configuration
@@ -187,6 +211,11 @@ def upgrade_tiles_to_data_streams(
     # Combine notes from tiles
     tile_notes = [tile.get("notes", "") for tile in tiles if tile.get("notes")]
     combined_notes = "; ".join(filter(None, tile_notes)) if tile_notes else None
+    
+    # Handle software
+    if software:
+        print(software)
+        raise NotImplementedError("Software handling is not implemented yet.")
 
     # Create single data stream from all tiles
     data_stream = {

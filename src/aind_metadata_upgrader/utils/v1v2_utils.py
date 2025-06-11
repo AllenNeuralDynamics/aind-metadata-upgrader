@@ -1,5 +1,11 @@
 """Shared utility functions for the AIND Metadata Upgrader."""
 
+from typing import Optional
+from aind_data_schema.components.measurements import (
+    PowerCalibration,
+    VolumeCalibration,
+)
+
 from aind_data_schema.components.coordinates import (
     Affine,
     CoordinateSystemLibrary,
@@ -25,7 +31,7 @@ from aind_data_schema.core.instrument import (
 )
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
-from aind_data_schema_models.units import SizeUnit
+from aind_data_schema_models.units import SizeUnit, TimeUnit, VolumeUnit, PowerUnit
 
 MODALITY_MAP = {
     "SmartSPIM": Modality.SPIM,
@@ -440,3 +446,80 @@ def repair_unit(broken_unit: str) -> str:
         return SizeUnit.M.value
     else:
         return broken_unit
+
+
+def upgrade_calibration(data: dict) -> Optional[dict]:
+    """Pull calibration information"""
+
+    if "Water calibration" in data.get("description", ""):
+        # Water calibration, we can handle this
+
+        # drop empty calibratoins
+        if not data["input"]["valve open time (s):"] and not data["output"]["water volume (ul):"]:
+            return None
+
+        calibration = VolumeCalibration(
+            calibration_date=data["calibration_date"],
+            device_name=data["device_name"],
+            input=data["input"]["valve open time (s):"],
+            input_unit=TimeUnit.S,
+            output=data["output"]["water volume (ul):"],
+            output_unit=VolumeUnit.UL,
+            notes=(
+                data["notes"]
+                if data["notes"]
+                else "" + " (v1v2 upgrade): Liquid calibration upgraded from v1.x format."
+            ),
+        )
+    elif "laser power calibration" in data.get("description", "").lower() and "power_setting" in data.get(
+        "input", {}
+    ):
+        # Laser calibration, may or may not have data
+
+        # Drop empty calibrations
+        if not data["input"]["power_setting"] and not data["output"]["power_output"]:
+            return None
+
+        calibration = PowerCalibration(
+            calibration_date=data["calibration_date"],
+            device_name=data["device_name"],
+            input=data["input"]["power_setting"],
+            input_unit=PowerUnit.PERCENT,
+            output=data["output"]["power_output"],
+            output_unit=PowerUnit.MW,
+        )
+    elif "laser power calibration" in data.get("description", "").lower() and "power percent" in data.get(
+        "input", {}
+    ):
+        # Laser calibration, may or may not have data
+
+        # Drop empty calibrations
+        if not data["input"]["power percent"] and not data["output"]["power mW"]:
+            return None
+
+        calibration = PowerCalibration(
+            calibration_date=data["calibration_date"],
+            device_name=data["device_name"],
+            input=data["input"]["power percent"],
+            input_unit=PowerUnit.PERCENT,
+            output=data["output"]["power mW"],
+            output_unit=PowerUnit.MW,
+        )
+    elif "led calibration" in data.get("description", "").lower():
+        # LED calibration, may or may not have data
+
+        if not data["input"]["Power setting"] and not data["output"]["Power mW"]:
+            return None
+
+        calibration = PowerCalibration(
+            calibration_date=data["calibration_date"],
+            device_name=data["device_name"],
+            input=data["input"]["Power setting"],
+            input_unit=PowerUnit.PERCENT,
+            output=data["output"]["Power mW"],
+            output_unit=PowerUnit.MW,
+        )
+    else:
+        raise ValueError(f"Unsupported calibration: {data}")
+
+    return calibration.model_dump() if calibration else None

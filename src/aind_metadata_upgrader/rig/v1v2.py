@@ -13,20 +13,13 @@ from aind_data_schema.components.coordinates import (
     Origin,
 )
 from aind_data_schema.components.devices import Device
-from aind_data_schema.components.measurements import (
-    PowerCalibration,
-    VolumeCalibration,
-)
 from aind_data_schema.core.instrument import (
     Connection,
     ConnectionData,
     ConnectionDirection,
 )
 from aind_data_schema_models.units import (
-    PowerUnit,
     SizeUnit,
-    TimeUnit,
-    VolumeUnit,
 )
 
 from aind_metadata_upgrader.base import CoreUpgrader
@@ -53,6 +46,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_lens,
     upgrade_filter,
     upgrade_generic_Device,
+    upgrade_calibration,
 )
 
 BREGMA_ALS = CoordinateSystem(
@@ -110,82 +104,6 @@ class RigUpgraderV1V2(CoreUpgrader):
             ):
                 return BREGMA_ALS.model_dump()
             raise NotImplementedError("todo")
-
-    def _get_calibration(self, data: dict) -> Optional[dict]:
-        """Pull calibration information"""
-
-        if "Water calibration" in data.get("description", ""):
-            # Water calibration, we can handle this
-
-            # drop empty calibratoins
-            if not data["input"]["valve open time (s):"] and not data["output"]["water volume (ul):"]:
-                return None
-
-            calibration = VolumeCalibration(
-                calibration_date=data["calibration_date"],
-                device_name=data["device_name"],
-                input=data["input"]["valve open time (s):"],
-                input_unit=TimeUnit.S,
-                output=data["output"]["water volume (ul):"],
-                output_unit=VolumeUnit.UL,
-                notes=(
-                    data["notes"]
-                    if data["notes"]
-                    else "" + " (v1v2 upgrade): Liquid calibration upgraded from v1.x format."
-                ),
-            )
-        elif "laser power calibration" in data.get("description", "").lower() and "power_setting" in data.get(
-            "input", {}
-        ):
-            # Laser calibration, may or may not have data
-
-            # Drop empty calibrations
-            if not data["input"]["power_setting"] and not data["output"]["power_output"]:
-                return None
-
-            calibration = PowerCalibration(
-                calibration_date=data["calibration_date"],
-                device_name=data["device_name"],
-                input=data["input"]["power_setting"],
-                input_unit=PowerUnit.PERCENT,
-                output=data["output"]["power_output"],
-                output_unit=PowerUnit.MW,
-            )
-        elif "laser power calibration" in data.get("description", "").lower() and "power percent" in data.get(
-            "input", {}
-        ):
-            # Laser calibration, may or may not have data
-
-            # Drop empty calibrations
-            if not data["input"]["power percent"] and not data["output"]["power mW"]:
-                return None
-
-            calibration = PowerCalibration(
-                calibration_date=data["calibration_date"],
-                device_name=data["device_name"],
-                input=data["input"]["power percent"],
-                input_unit=PowerUnit.PERCENT,
-                output=data["output"]["power mW"],
-                output_unit=PowerUnit.MW,
-            )
-        elif "led calibration" in data.get("description", "").lower():
-            # LED calibration, may or may not have data
-
-            if not data["input"]["Power setting"] and not data["output"]["Power mW"]:
-                return None
-
-            calibration = PowerCalibration(
-                calibration_date=data["calibration_date"],
-                device_name=data["device_name"],
-                input=data["input"]["Power setting"],
-                input_unit=PowerUnit.PERCENT,
-                output=data["output"]["Power mW"],
-                output_unit=PowerUnit.MW,
-            )
-        else:
-            raise ValueError(f"Unsupported calibration: {data}")
-
-        return calibration.model_dump() if calibration else None
 
     def _none_to_list(self, devices: Optional[list]) -> list:
         """Upgrade a device to it's new device model"""
@@ -352,7 +270,7 @@ class RigUpgraderV1V2(CoreUpgrader):
         coordinate_system = self._get_coordinate_system(data)
         notes = data.get("notes", "")
 
-        calibrations = [self._get_calibration(cal) for cal in data.get("calibrations", [])]
+        calibrations = [upgrade_calibration(cal) for cal in data.get("calibrations", [])]
         # remove None values from calibrations list
         calibrations = [cal for cal in calibrations if cal is not None]
 
