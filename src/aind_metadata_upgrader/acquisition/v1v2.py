@@ -9,6 +9,7 @@ from aind_metadata_upgrader.acquisition.v1v2_tiles import upgrade_tiles_to_data_
 
 from aind_metadata_upgrader.utils.v1v2_utils import upgrade_calibration
 
+
 class AcquisitionV1V2(CoreUpgrader):
     """Upgrade acquisition from v1.4 to v2.0"""
 
@@ -69,6 +70,8 @@ class AcquisitionV1V2(CoreUpgrader):
         subject_id = data.get("subject_id")
         instrument_id = data.get("instrument_id")
         calibrations = data.get("calibrations", [])
+        if not calibrations:
+            calibrations = []
         maintenance = data.get("maintenance", [])
         session_start_time = data.get("session_start_time")
         session_end_time = data.get("session_end_time")

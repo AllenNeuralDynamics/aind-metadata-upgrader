@@ -476,16 +476,23 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
     ):
         # Laser calibration, may or may not have data
 
+        power_setting = data["input"].get("power_setting", None)
+        power_output = data["output"].get("power_output", None)
+        if not power_output:
+            power_output = data["output"].get("power_measurement", None)
+
         # Drop empty calibrations
-        if not data["input"]["power_setting"] and not data["output"]["power_output"]:
+        if not power_setting and not power_output:
             return None
+
+        print(data)
 
         calibration = PowerCalibration(
             calibration_date=data["calibration_date"],
             device_name=data["device_name"],
-            input=data["input"]["power_setting"],
+            input=power_setting,
             input_unit=PowerUnit.PERCENT,
-            output=data["output"]["power_output"],
+            output=power_output,
             output_unit=PowerUnit.MW,
         )
     elif "laser power calibration" in data.get("description", "").lower() and "power percent" in data.get(
