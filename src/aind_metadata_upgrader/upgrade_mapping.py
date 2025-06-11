@@ -13,43 +13,43 @@ from aind_metadata_upgrader.procedures.v1v2 import ProceduresUpgraderV1V2
 from aind_metadata_upgrader.session.v1v2 import SessionV1V2
 
 ACQUISITION = [
-    (SpecifierSet("<=2.0.0"), AcquisitionV1V2),
+    (SpecifierSet("<2.0.0"), AcquisitionV1V2),
 ]
 
 DATA_DESCRIPTION = [
-    (SpecifierSet("<=2.0.0"), DataDescriptionV1V2),
+    (SpecifierSet("<2.0.0"), DataDescriptionV1V2),
 ]
 
 INSTRUMENT = [
-    (SpecifierSet("<=2.0.0"), InstrumentUpgraderV1V2),
+    (SpecifierSet("<2.0.0"), InstrumentUpgraderV1V2),
 ]
 
 METADATA = [
-    (SpecifierSet("<=2.0.0"), None),
+    (SpecifierSet("<2.0.0"), None),
 ]
 
 PROCEDURES = [
-    (SpecifierSet("<=2.0.0"), ProceduresUpgraderV1V2),
+    (SpecifierSet("<2.0.0"), ProceduresUpgraderV1V2),
 ]
 
 PROCESSING = [
-    (SpecifierSet("<=2.0.0"), ProcessingV1V2),
+    (SpecifierSet("<2.0.0"), ProcessingV1V2),
 ]
 
 QUALITY_CONTROL = [
-    (SpecifierSet("<=2.0.0"), QCUpgraderV1V2),
+    (SpecifierSet("<2.0.0"), QCUpgraderV1V2),
 ]
 
 RIG = [
-    (SpecifierSet("<=2.0.0"), RigUpgraderV1V2),
+    (SpecifierSet("<2.0.0"), RigUpgraderV1V2),
 ]
 
 SESSION = [
-    (SpecifierSet("<=2.0.0"), SessionV1V2),
+    (SpecifierSet("<2.0.0"), SessionV1V2),
 ]
 
 SUBJECT = [
-    (SpecifierSet("<=2.0.0"), SubjectUpgraderV1V2),
+    (SpecifierSet("<2.0.0"), SubjectUpgraderV1V2),
 ]
 
 MAPPING = {
