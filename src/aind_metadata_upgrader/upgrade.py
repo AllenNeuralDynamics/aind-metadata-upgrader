@@ -35,6 +35,7 @@ UPGRADE_VERSIONS = {
     "processing": Processing.model_fields["schema_version"].default,
     "procedures": Procedures.model_fields["schema_version"].default,
     "acquisition": Acquisition.model_fields["schema_version"].default,
+    "session": Acquisition.model_fields["schema_version"].default,
 }
 
 CORE_MAPPING = {
@@ -85,6 +86,8 @@ class Upgrade:
             elif core_file == "procedures":
                 return Procedures(**data)
             elif core_file == "acquisition":
+                return Acquisition(**data)
+            elif core_file == "session":
                 return Acquisition(**data)
             else:
                 raise ValueError(f"Unknown core file type: {core_file}")
