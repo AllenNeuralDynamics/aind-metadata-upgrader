@@ -551,6 +551,7 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
 
 CCF_MAPPING = {
     "ALM": CCFv3.MO,
+    "Primary Motor Cortex": CCFv3.MO
 }
 
 

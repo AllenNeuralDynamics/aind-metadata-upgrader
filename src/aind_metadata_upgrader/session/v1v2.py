@@ -100,9 +100,10 @@ class SessionV1V2(CoreUpgrader):
 
     def _upgrade_detector_config(self, detector: Dict) -> Dict:
         """Upgrade detector config from v1 to v2"""
+        exposure_time = detector.get("exposure_time", -1)
         return DetectorConfig(
             device_name=detector.get("name", "Unknown Detector"),
-            exposure_time=float(detector.get("exposure_time", 1.0)),
+            exposure_time=float(exposure_time) if exposure_time else -1,
             exposure_time_unit=TimeUnit.MS,
             trigger_type=TriggerType.INTERNAL if detector.get("trigger_type") == "Internal" else TriggerType.EXTERNAL
         ).model_dump()
@@ -451,24 +452,7 @@ class SessionV1V2(CoreUpgrader):
     def _upgrade_stimulus_epoch(self, epoch: Dict) -> Dict:
         """Upgrade stimulus epoch from v1 to v2"""
         # Convert stimulus modalities
-        stimulus_modalities = []
-        for modality in epoch.get("stimulus_modalities", []):
-            if modality == "Visual":
-                stimulus_modalities.append(StimulusModality.VISUAL)
-            elif modality == "Auditory":
-                stimulus_modalities.append(StimulusModality.AUDITORY)
-            elif modality == "Olfactory":
-                stimulus_modalities.append(StimulusModality.OLFACTORY)
-            elif modality == "Optogenetics":
-                stimulus_modalities.append(StimulusModality.OPTOGENETICS)
-            elif modality == "Free moving":
-                stimulus_modalities.append(StimulusModality.FREE_MOVING)
-            elif modality == "Virtual reality":
-                stimulus_modalities.append(StimulusModality.VIRTUAL_REALITY)
-            elif modality == "Wheel friction":
-                stimulus_modalities.append(StimulusModality.WHEEL_FRICTION)
-            else:
-                stimulus_modalities.append(StimulusModality.NONE)
+        stimulus_modalities = epoch.get("stimulus_modalities", [])
 
         # Create performance metrics
         performance_metrics = None
@@ -501,10 +485,11 @@ class SessionV1V2(CoreUpgrader):
             configurations.append(speaker_config)
 
         # Light source configs for stimulation
-        for light_source in epoch.get("light_source_config", []):
-            config = self._upgrade_light_source_config(light_source)
-            if config:
-                configurations.append(config)
+        if epoch.get("light_source_config"):
+            for light_source in epoch.get("light_source_config", []):
+                config = self._upgrade_light_source_config(light_source)
+                if config:
+                    configurations.append(config)
 
         # Create code object if script is present
         code = None
