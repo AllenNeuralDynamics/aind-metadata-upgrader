@@ -42,7 +42,11 @@ from aind_data_schema_models.units import (
 )
 from aind_data_schema.base import GenericModel
 from aind_metadata_upgrader.base import CoreUpgrader
-from aind_metadata_upgrader.utils.v1v2_utils import upgrade_calibration, upgrade_targeted_structure
+from aind_metadata_upgrader.utils.v1v2_utils import (
+    upgrade_calibration,
+    upgrade_targeted_structure,
+    upgrade_light_source,
+)
 
 
 class SessionV1V2(CoreUpgrader):
@@ -72,20 +76,22 @@ class SessionV1V2(CoreUpgrader):
             return session_type
         return "Session"
 
-    def _upgrade_light_source_config(self, light_source: Dict) -> Union[Dict, None]:
+    def _upgrade_light_source_config(self, data: Dict) -> Union[Dict, None]:
         """Upgrade light source config from v1 to v2"""
-        if not light_source:
+        if not data:
             return None
 
-        device_type = light_source.get("device_type")
-        device_name = light_source.get("name", "Unknown Device")
-        excitation_power = light_source.get("excitation_power")
-        power_unit = light_source.get("excitation_power_unit")
+        print(data)
+
+        device_type = data.get("device_type")
+        device_name = data.get("name", "Unknown Device")
+        excitation_power = data.get("excitation_power")
+        power_unit = data.get("excitation_power_unit")
 
         if device_type == "Laser":
             return LaserConfig(
                 device_name=device_name,
-                wavelength=light_source.get("wavelength", 0),
+                wavelength=data.get("wavelength", 0),
                 wavelength_unit=SizeUnit.NM,
                 power=float(excitation_power) if excitation_power else None,
                 power_unit=PowerUnit.MW if power_unit == "milliwatt" else PowerUnit.PERCENT
@@ -263,10 +269,7 @@ class SessionV1V2(CoreUpgrader):
                         "exposure_time_unit": "millisecond",
                         "trigger_type": "Internal"
                     },
-                    light_sources=[
-                        self._upgrade_light_source_config(ls) for ls in light_sources
-                        if self._upgrade_light_source_config(ls)
-                    ],
+                    light_sources=[self._upgrade_light_source_config(ls) for ls in light_sources],
                 ).model_dump()
                 channels.append(channel)
 
@@ -453,6 +456,9 @@ class SessionV1V2(CoreUpgrader):
         """Upgrade stimulus epoch from v1 to v2"""
         # Convert stimulus modalities
         stimulus_modalities = epoch.get("stimulus_modalities", [])
+        if not stimulus_modalities or stimulus_modalities == ["None"]:
+            if "spontaneous" in epoch.get("stimulus_name", "").lower():
+                stimulus_modalities = [StimulusModality.NO_STIMULUS]
 
         # Create performance metrics
         performance_metrics = None
