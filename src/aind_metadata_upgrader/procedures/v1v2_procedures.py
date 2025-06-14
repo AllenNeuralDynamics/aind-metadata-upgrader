@@ -36,8 +36,6 @@ from aind_metadata_upgrader.rig.v1v2_devices import upgrade_fiber_probe
 from aind_metadata_upgrader.utils.v1v2_utils import remove, repair_organization
 
 coordinate_system_required = False
-implanted_devices = []
-device_configurations = []
 measured_coordinates = []
 
 
@@ -111,6 +109,7 @@ def upgrade_hemisphere_craniotomy(data: dict) -> dict:
 
 def upgrade_coordinate_craniotomy(data: dict) -> dict:
     """Upgrade old-style craniotomy"""
+    global coordinate_system_required
     coordinate_system_required = True
 
     # Move ml/ap position into Translation object, check units
@@ -327,8 +326,8 @@ def upgrade_fiber_implant(data: dict) -> dict:
 
     probes, configs = retrive_probe_config(upgraded_data)
 
-    implanted_devices.extend(probes)
-    device_configurations.extend(configs)
+    upgraded_data["implanted_device"] = [probe.model_dump() for probe in probes]
+    upgraded_data["device_config"] = [config.model_dump() for config in configs]
     upgraded_data["implanted_device_names"] = [device["name"] for device in probes]
 
     return ProbeImplant(**upgraded_data).model_dump()
