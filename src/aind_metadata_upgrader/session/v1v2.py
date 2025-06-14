@@ -81,8 +81,6 @@ class SessionV1V2(CoreUpgrader):
         if not data:
             return None
 
-        print(data)
-
         device_type = data.get("device_type")
         device_name = data.get("name", "Unknown Device")
         excitation_power = data.get("excitation_power")
@@ -234,62 +232,87 @@ class SessionV1V2(CoreUpgrader):
 
         return mri_scan.model_dump()
 
-    def _create_imaging_config(self, stream: Dict) -> Optional[Dict]:
-        """Create ImagingConfig from stream data"""
-
-        # Check if this is an imaging stream
+    def _determine_stream_modality(self, stream: Dict) -> Optional[str]:
+        """Determine the primary imaging modality for a stream"""
         modalities = stream.get("stream_modalities", [])
-        is_imaging = any(
-            mod.get("abbreviation") in ["ophys", "pophys", "slap"]
-            for mod in modalities
-            if isinstance(mod, dict)
-        )
+        
+        # Look for imaging modalities
+        for mod in modalities:
+            if isinstance(mod, dict):
+                abbreviation = mod.get("abbreviation", "")
+                if abbreviation in ["ophys", "pophys", "slap", "fib"]:
+                    return abbreviation
+        return None
 
-        if not is_imaging:
-            return None
-
-        # Create channels and images
+    def _create_ophys_components(self, stream: Dict, light_sources: List, detectors: List) -> tuple:
+        """Create channels and images for ophys/pophys modality"""
         channels = []
         images = []
+        
+        for i, fov in enumerate(stream.get("ophys_fovs", [])):
+            # Create channel for this FOV
+            channel = Channel(
+                channel_name=f"Channel_{i}",
+                detector=self._upgrade_detector_config(detectors[0]) if detectors else {
+                    "object_type": "Detector config",
+                    "device_name": "Unknown Detector",
+                    "exposure_time": 1.0,
+                    "exposure_time_unit": "millisecond",
+                    "trigger_type": "Internal"
+                },
+                light_sources=[self._upgrade_light_source_config(ls) for ls in light_sources],
+            ).model_dump()
+            channels.append(channel)
 
-        # Get light sources and detectors for reference
-        light_sources = stream.get("light_sources", [])
-        detectors = stream.get("detectors", [])
+            # Create plane and image
+            plane = self._upgrade_ophys_fov_to_plane(fov)
+            image = PlanarImage(
+                planes=[plane],
+                image_to_acquisition_transform=[],
+                channel_name=channel["channel_name"]
+            ).model_dump()
+            images.append(image)
+            
+        return channels, images
 
-        # Handle ophys FOVs
-        if "ophys_fovs" in stream and stream["ophys_fovs"]:
-            for i, fov in enumerate(stream["ophys_fovs"]):
-                # Create basic channel for this FOV
-                channel = Channel(
-                    channel_name=f"Channel_{i}",
-                    detector=self._upgrade_detector_config(detectors[0]) if detectors else {
-                        "object_type": "Detector config",
-                        "device_name": "Unknown Detector",
-                        "exposure_time": 1.0,
-                        "exposure_time_unit": "millisecond",
-                        "trigger_type": "Internal"
-                    },
-                    light_sources=[self._upgrade_light_source_config(ls) for ls in light_sources],
-                ).model_dump()
-                channels.append(channel)
+    def _create_slap_components(self, stream: Dict, light_sources: List, detectors: List) -> tuple:
+        """Create channels and images for SLAP modality"""
+        channels = []
+        images = []
+        
+        for i, slap_fov in enumerate(stream.get("slap_fovs", [])):
+            # Create channel for this SLAP FOV
+            channel = {
+                "object_type": "Channel config",
+                "channel_name": f"SLAP_Channel_{i}",
+                "detector": self._upgrade_detector_config(detectors[0]) if detectors else {
+                    "object_type": "Detector config",
+                    "device_name": "Unknown Detector",
+                    "exposure_time": 1.0,
+                    "exposure_time_unit": "millisecond",
+                    "trigger_type": "Internal"
+                },
+                "light_sources": []
+            }
+            channels.append(channel)
 
-                # Create plane and image
-                plane = self._upgrade_ophys_fov_to_plane(fov)
-                image = PlanarImage(
-                    planes=[plane],
-                    image_to_acquisition_transform=[],
-                    channel_name=channel["channel_name"]
-                )
-                
-                {
-                    "object_type": "Planar image",
-                    "channel_name": f"Channel_{i}",
-                    "planes": [plane],
-                    "image_to_acquisition_transform": None
-                }
-                images.append(image)
+            # Create SLAP plane and image
+            plane = self._upgrade_slap_fov_to_plane(slap_fov)
+            image = {
+                "object_type": "Planar image",
+                "channel_name": f"SLAP_Channel_{i}",
+                "planes": [plane],
+                "image_to_acquisition_transform": {"type": "translation", "translation": [0, 0, 0]}
+            }
+            images.append(image)
+            
+        return channels, images
 
-        # Handle fiber connections
+    def _create_fiber_components(self, stream: Dict, light_sources: List, detectors: List) -> tuple:
+        """Create channels and images for fiber photometry modality"""
+        channels = []
+        images = []
+        
         for fiber_conn in stream.get("fiber_connections", []):
             if "channel" in fiber_conn:
                 channel_data = fiber_conn["channel"]
@@ -309,50 +332,59 @@ class SessionV1V2(CoreUpgrader):
                     "emission_wavelength_unit": "nanometer" if channel_data.get("emission_wavelength") else None
                 }
                 channels.append(channel)
+                
+        return channels, images
 
-        # Handle SLAP FOVs
-        if "slap_fovs" in stream and stream["slap_fovs"]:
-            for i, slap_fov in enumerate(stream["slap_fovs"]):
-                # Create basic channel for this SLAP FOV
-                channel = {
-                    "object_type": "Channel config",
-                    "channel_name": f"SLAP_Channel_{i}",
-                    "detector": self._upgrade_detector_config(detectors[0]) if detectors else {
-                        "object_type": "Detector config",
-                        "device_name": "Unknown Detector",
-                        "exposure_time": 1.0,
-                        "exposure_time_unit": "millisecond",
-                        "trigger_type": "Internal"
-                    },
-                    "light_sources": []
-                }
-                channels.append(channel)
-
-                # Create SLAP plane and image
-                plane = self._upgrade_slap_fov_to_plane(slap_fov)
-                image = {
-                    "object_type": "Planar image",
-                    "channel_name": f"SLAP_Channel_{i}",
-                    "planes": [plane],
-                    "image_to_acquisition_transform": {"type": "translation", "translation": [0, 0, 0]}
-                }
-                images.append(image)
-
-        # Create sampling strategy if frame rate is available
-        sampling_strategy = None
-        if "ophys_fovs" in stream and stream["ophys_fovs"]:
+    def _create_sampling_strategy(self, stream: Dict, modality: str) -> Optional[Dict]:
+        """Create sampling strategy based on modality and stream data"""
+        frame_rate = None
+        
+        if modality in ["ophys", "pophys"] and stream.get("ophys_fovs"):
             fov = stream["ophys_fovs"][0]
             frame_rate = fov.get("frame_rate")
-            if frame_rate:
-                sampling_strategy = {
-                    "object_type": "Sampling strategy",
-                    "frame_rate": float(frame_rate),
-                    "frame_rate_unit": "hertz"
-                }
+        elif modality == "slap" and stream.get("slap_fovs"):
+            slap_fov = stream["slap_fovs"][0]
+            frame_rate = slap_fov.get("frame_rate")
+            
+        if frame_rate:
+            return {
+                "object_type": "Sampling strategy",
+                "frame_rate": float(frame_rate),
+                "frame_rate_unit": "hertz"
+            }
+        return None
 
-        # Don't create config if no channels or images
-        if not channels and not images:
+    def _create_imaging_config(self, stream: Dict) -> Optional[Dict]:
+        """Create ImagingConfig from stream data using modality-specific orchestration"""
+        
+        # Determine the primary imaging modality
+        modality = self._determine_stream_modality(stream)
+        if not modality:
             return None
+
+        # Get light sources and detectors for reference
+        light_sources = stream.get("light_sources", [])
+        if not isinstance(light_sources, list):
+            light_sources = [light_sources]
+        detectors = stream.get("detectors", [])
+
+        # Create components based on modality
+        channels = []
+        images = []
+        
+        if modality in ["ophys", "pophys"]:
+            channels, images = self._create_ophys_components(stream, light_sources, detectors)
+        elif modality == "slap":
+            channels, images = self._create_slap_components(stream, light_sources, detectors)
+        elif modality == "fib":
+            channels, images = self._create_fiber_components(stream, light_sources, detectors)
+
+        # Don't create config if no channels
+        if not channels:
+            return None
+
+        # Create sampling strategy
+        sampling_strategy = self._create_sampling_strategy(stream, modality)
 
         # Create the ImagingConfig
         return {
@@ -493,6 +525,8 @@ class SessionV1V2(CoreUpgrader):
         # Light source configs for stimulation
         if epoch.get("light_source_config"):
             for light_source in epoch.get("light_source_config", []):
+                print(epoch)
+                print(light_source)
                 config = self._upgrade_light_source_config(light_source)
                 if config:
                     configurations.append(config)
