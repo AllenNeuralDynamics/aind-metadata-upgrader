@@ -17,7 +17,6 @@ from aind_data_schema.components.configs import (
     EphysAssemblyConfig,
     FiberAssemblyConfig,
     PatchCordConfig,
-    ImagingConfig,
     Channel,
     Plane,
     CoupledPlane,
@@ -30,7 +29,9 @@ from aind_data_schema.components.configs import (
     MriScanSequence,
     ScanType,
     SubjectPosition,
-    SlapAcquisitionType
+    SlapAcquisitionType,
+    Channel,
+    PlanarImage,
 )
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.stimulus_modality import StimulusModality
@@ -41,7 +42,7 @@ from aind_data_schema_models.units import (
 )
 from aind_data_schema.base import GenericModel
 from aind_metadata_upgrader.base import CoreUpgrader
-from aind_metadata_upgrader.utils.v1v2_utils import upgrade_calibration
+from aind_metadata_upgrader.utils.v1v2_utils import upgrade_calibration, upgrade_targeted_structure
 
 
 class SessionV1V2(CoreUpgrader):
@@ -148,20 +149,14 @@ class SessionV1V2(CoreUpgrader):
     def _upgrade_ophys_fov_to_plane(self, fov: Dict) -> Dict:
         """Convert ophys FOV to Plane"""
         # Determine the targeted structure
-        targeted_structure = fov.get("targeted_structure")
-        if isinstance(targeted_structure, dict):
-            # It's already a CCFv3 object
-            ccf_structure = targeted_structure
-        else:
-            # It's a string, try to convert
-            ccf_structure = {"name": str(targeted_structure), "acronym": "Unknown", "id": "0"}
+        targeted_structure = upgrade_targeted_structure(fov.get("targeted_structure"))
 
         plane = Plane(
             depth=float(fov.get("imaging_depth", 0)),
             depth_unit=SizeUnit.UM,
             power=float(fov.get("power", 0)) if fov.get("power") else 0.0,
             power_unit=PowerUnit.PERCENT,
-            targeted_structure=ccf_structure
+            targeted_structure=targeted_structure
         ).model_dump()
 
         # Handle coupled FOVs
@@ -171,7 +166,7 @@ class SessionV1V2(CoreUpgrader):
                 depth_unit=SizeUnit.UM,
                 power=float(fov.get("power", 0)) if fov.get("power") else 0.0,
                 power_unit=PowerUnit.PERCENT,
-                targeted_structure=ccf_structure,
+                targeted_structure=targeted_structure,
                 plane_index=fov.get("index", 0),
                 coupled_plane_index=fov.get("coupled_fov_index"),
                 power_ratio=float(fov.get("power_ratio", 1.0)) if fov.get("power_ratio") else 1.0
@@ -210,51 +205,159 @@ class SessionV1V2(CoreUpgrader):
 
     def _upgrade_mri_scan_to_config(self, scan: Dict) -> Dict:
         """Convert MRI scan to MRIScan config"""
-        return MRIScan(
+        mri_scan = MRIScan(
             device_name=scan.get("mri_scanner", {}).get("name", "Unknown Scanner"),
+            scan_index=scan.get("scan_index", 0),
+            scan_type=(ScanType.SCAN_3D
+                       if scan.get("scan_type") == "3D Scan"
+                       else ScanType.SETUP),
+            primary_scan=scan.get("primary_scan", True),
             scan_sequence_type=(MriScanSequence.RARE
-                               if scan.get("scan_sequence_type") == "RARE"
-                               else MriScanSequence.OTHER),
-            scan_type=(ScanType.SCAN_3D 
-                      if scan.get("scan_type") == "3D Scan" 
-                      else ScanType.SETUP),
-            subject_position=(SubjectPosition.PRONE 
-                             if scan.get("subject_position") == "Prone" 
-                             else SubjectPosition.SUPINE)
-        ).model_dump()
+                                if scan.get("scan_sequence_type") == "RARE"
+                                else MriScanSequence.OTHER),
+            echo_time=scan.get("echo_time", 1.0),
+            echo_time_unit=TimeUnit.MS,
+            repetition_time=scan.get("repetition_time", 100.0),
+            repetition_time_unit=TimeUnit.MS,
+            subject_position=(SubjectPosition.PRONE
+                              if scan.get("subject_position") == "Prone"
+                              else SubjectPosition.SUPINE),
+            additional_scan_parameters=scan.get("additional_scan_parameters", {})
+        )
+
+        return mri_scan.model_dump()
 
     def _create_imaging_config(self, stream: Dict) -> Optional[Dict]:
         """Create ImagingConfig from stream data"""
+
+        # Check if this is an imaging stream
+        modalities = stream.get("stream_modalities", [])
+        is_imaging = any(
+            mod.get("abbreviation") in ["ophys", "pophys", "slap"]
+            for mod in modalities
+            if isinstance(mod, dict)
+        )
+
+        if not is_imaging:
+            return None
+
+        # Create channels and images
         channels = []
+        images = []
 
-        # Create channels from detectors and light sources
-        detectors = stream.get("detectors", [])
+        # Get light sources and detectors for reference
         light_sources = stream.get("light_sources", [])
+        detectors = stream.get("detectors", [])
 
-        if detectors and light_sources:
-            # Create a channel combining detector and light source info
-            detector = detectors[0]  # Use first detector
-            light_source = light_sources[0]  # Use first light source
+        # Handle ophys FOVs
+        if "ophys_fovs" in stream and stream["ophys_fovs"]:
+            for i, fov in enumerate(stream["ophys_fovs"]):
+                # Create basic channel for this FOV
+                channel = Channel(
+                    channel_name=f"Channel_{i}",
+                    detector=self._upgrade_detector_config(detectors[0]) if detectors else {
+                        "object_type": "Detector config",
+                        "device_name": "Unknown Detector",
+                        "exposure_time": 1.0,
+                        "exposure_time_unit": "millisecond",
+                        "trigger_type": "Internal"
+                    },
+                    light_sources=[
+                        self._upgrade_light_source_config(ls) for ls in light_sources
+                        if self._upgrade_light_source_config(ls)
+                    ],
+                ).model_dump()
+                channels.append(channel)
 
-            detector_config = self._upgrade_detector_config(detector)
-            light_configs = []
-            light_config = self._upgrade_light_source_config(light_source)
-            if light_config:
-                light_configs.append(light_config)
+                # Create plane and image
+                plane = self._upgrade_ophys_fov_to_plane(fov)
+                image = PlanarImage(
+                    planes=[plane],
+                    image_to_acquisition_transform=[],
+                    channel_name=channel["channel_name"]
+                )
+                
+                {
+                    "object_type": "Planar image",
+                    "channel_name": f"Channel_{i}",
+                    "planes": [plane],
+                    "image_to_acquisition_transform": None
+                }
+                images.append(image)
 
-            channel = Channel(
-                channel_name="Ch1",
-                detector=detector_config,
-                light_sources=light_configs
-            ).model_dump()
-            channels.append(channel)
+        # Handle fiber connections
+        for fiber_conn in stream.get("fiber_connections", []):
+            if "channel" in fiber_conn:
+                channel_data = fiber_conn["channel"]
+                channel = {
+                    "object_type": "Channel config",
+                    "channel_name": channel_data.get("channel_name", "Unknown Channel"),
+                    "intended_measurement": channel_data.get("intended_measurement"),
+                    "detector": {
+                        "object_type": "Detector config",
+                        "device_name": channel_data.get("detector_name", "Unknown Detector"),
+                        "exposure_time": 1.0,
+                        "exposure_time_unit": "millisecond",
+                        "trigger_type": "Internal"
+                    },
+                    "light_sources": [],
+                    "emission_wavelength": channel_data.get("emission_wavelength"),
+                    "emission_wavelength_unit": "nanometer" if channel_data.get("emission_wavelength") else None
+                }
+                channels.append(channel)
 
-        if channels:
-            return ImagingConfig(
-                device_name="Imaging System",
-                channels=channels
-            ).model_dump()
-        return None
+        # Handle SLAP FOVs
+        if "slap_fovs" in stream and stream["slap_fovs"]:
+            for i, slap_fov in enumerate(stream["slap_fovs"]):
+                # Create basic channel for this SLAP FOV
+                channel = {
+                    "object_type": "Channel config",
+                    "channel_name": f"SLAP_Channel_{i}",
+                    "detector": self._upgrade_detector_config(detectors[0]) if detectors else {
+                        "object_type": "Detector config",
+                        "device_name": "Unknown Detector",
+                        "exposure_time": 1.0,
+                        "exposure_time_unit": "millisecond",
+                        "trigger_type": "Internal"
+                    },
+                    "light_sources": []
+                }
+                channels.append(channel)
+
+                # Create SLAP plane and image
+                plane = self._upgrade_slap_fov_to_plane(slap_fov)
+                image = {
+                    "object_type": "Planar image",
+                    "channel_name": f"SLAP_Channel_{i}",
+                    "planes": [plane],
+                    "image_to_acquisition_transform": {"type": "translation", "translation": [0, 0, 0]}
+                }
+                images.append(image)
+
+        # Create sampling strategy if frame rate is available
+        sampling_strategy = None
+        if "ophys_fovs" in stream and stream["ophys_fovs"]:
+            fov = stream["ophys_fovs"][0]
+            frame_rate = fov.get("frame_rate")
+            if frame_rate:
+                sampling_strategy = {
+                    "object_type": "Sampling strategy",
+                    "frame_rate": float(frame_rate),
+                    "frame_rate_unit": "hertz"
+                }
+
+        # Don't create config if no channels or images
+        if not channels and not images:
+            return None
+
+        # Create the ImagingConfig
+        return {
+            "object_type": "Imaging config",
+            "device_name": "Imaging System",
+            "channels": channels,
+            "images": images,
+            "sampling_strategy": sampling_strategy
+        }
 
     def _create_sample_chamber_config(self, device_name: str) -> Dict:
         """Create a basic SampleChamberConfig"""
@@ -407,10 +510,11 @@ class SessionV1V2(CoreUpgrader):
         code = None
         if epoch.get("script"):
             script_data = epoch["script"]
+            url = script_data.get("url")
             code = Code(
                 name=script_data.get("name", "Unknown Script"),
                 version=script_data.get("version", "unknown"),
-                url=script_data.get("url")
+                url=url if url else "unknown",
             ).model_dump()
 
         return StimulusEpoch(

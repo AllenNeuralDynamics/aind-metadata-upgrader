@@ -32,6 +32,7 @@ from aind_data_schema.core.instrument import (
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
 from aind_data_schema_models.units import SizeUnit, TimeUnit, VolumeUnit, PowerUnit
+from aind_data_schema_models.brain_atlas import CCFv3
 
 MODALITY_MAP = {
     "SmartSPIM": Modality.SPIM,
@@ -546,3 +547,22 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
         raise ValueError(f"Unsupported calibration: {data}")
 
     return calibration.model_dump() if calibration else None
+
+
+CCF_MAPPING = {
+    "ALM": CCFv3.MO,
+}
+
+
+def upgrade_targeted_structure(data: dict | str) -> dict:
+    """Upgrade targeted structure, especially convert strings to structure objects"""
+
+    if isinstance(data, str):
+        if hasattr(CCFv3, data.upper()):
+            return getattr(CCFv3, data.upper()).model_dump()
+        if data in CCF_MAPPING.keys():
+            return CCF_MAPPING[data].model_dump()
+        else:
+            raise ValueError(f"Unsupported targeted structure: {data}. " "Expected one of the CCF structures.")
+
+    return data

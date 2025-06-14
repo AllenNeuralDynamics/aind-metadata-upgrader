@@ -14,16 +14,10 @@ from aind_data_schema.components.coordinates import (
     CoordinateSystemLibrary,
 )
 from aind_data_schema_models.coordinates import AnatomicalRelative
-from aind_data_schema_models.brain_atlas import CCFv3
 from aind_data_schema_models.units import AngleUnit
 from aind_data_schema_models.mouse_anatomy import InjectionTargets
 
-from aind_metadata_upgrader.utils.v1v2_utils import remove
-
-
-CCF_MAPPING = {
-    "ALM": CCFv3.MO,
-}
+from aind_metadata_upgrader.utils.v1v2_utils import remove, upgrade_targeted_structure
 
 
 def upgrade_viral_material(data: dict) -> dict:
@@ -106,20 +100,6 @@ def build_current_injection_dynamics(data: dict) -> dict:
     dynamics["alternating_current"] = data.get("alternating_current", None)
 
     return [InjectionDynamics(**dynamics).model_dump()]
-
-
-def upgrade_targeted_structure(data: dict | str) -> dict:
-    """Upgrade targeted structure, especially convert strings to structure objects"""
-
-    if isinstance(data, str):
-        if hasattr(CCFv3, data.upper()):
-            return getattr(CCFv3, data.upper()).model_dump()
-        if data in CCF_MAPPING.keys():
-            return CCF_MAPPING[data].model_dump()
-        else:
-            raise ValueError(f"Unsupported targeted structure: {data}. " "Expected one of the CCF structures.")
-
-    return data
 
 
 def upgrade_injection_coordinates(data: dict) -> dict:
