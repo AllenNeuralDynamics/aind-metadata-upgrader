@@ -1,13 +1,13 @@
 """Upgraders for injection procedures"""
 
-from aind_data_schema.core.procedures import (
-    BrainInjection,
+from aind_data_schema.components.injection_procedures import (
     Injection,
     InjectionDynamics,
     InjectionProfile,
     ViralMaterial,
     NonViralMaterial,
 )
+from aind_data_schema.components.surgery_procedures import BrainInjection
 from aind_data_schema.components.coordinates import (
     Translation,
     Rotation,

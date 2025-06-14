@@ -245,8 +245,6 @@ def upgrade_perfusion(data: dict) -> dict:
 def retrive_probe_config(data: dict) -> tuple:
     """Get the Probe object and the ProbeConfig object from a ProbeImplant dict"""
 
-    # {'procedure_type': 'Fiber implant', 'protocol_id': 'TO ENTER', 'probes': [{'ophys_probe': {'device_type': 'Fiber optic probe', 'name': 'Probe A', 'serial_number': None, 'manufacturer': None, 'model': None, 'path_to_cad': None, 'port_index': None, 'additional_settings': {}, 'notes': None, 'core_diameter': '200', 'core_diameter_unit': 'micrometer', 'numerical_aperture': '0.37', 'ferrule_material': 'Ceramic', 'active_length': None, 'total_length': '0.5', 'length_unit': 'millimeter'}, 'targeted_structure': {'atlas': 'CCFv3', 'name': 'Ventral tegmental area', 'acronym': 'VTA', 'id': '749'}, 'stereotactic_coordinate_ap': '-3.05', 'stereotactic_coordinate_ml': '-0.6', 'stereotactic_coordinate_dv': '-4', 'stereotactic_coordinate_unit': 'millimeter', 'stereotactic_coordinate_reference': 'Bregma', 'bregma_to_lambda_distance': None, 'bregma_to_lambda_unit': 'millimeter', 'angle': '0', 'angle_unit': 'degrees', 'notes': None}]}
-
     # Pull probes and move these to implanted_devices
     probe_implants = data.pop("probes", [])
 
@@ -318,7 +316,7 @@ def retrive_probe_config(data: dict) -> tuple:
     return probes, configs
 
 
-def upgrade_fiber_implant(data: dict) -> dict:
+def upgrade_fiber_implant(data: dict) -> list:
     """Upgrade FiberImplant procedure from V1 to V2"""
     global implanted_devices, device_configurations
     upgraded_data = data.copy()
@@ -326,11 +324,15 @@ def upgrade_fiber_implant(data: dict) -> dict:
 
     probes, configs = retrive_probe_config(upgraded_data)
 
-    upgraded_data["implanted_device"] = [probe.model_dump() for probe in probes]
-    upgraded_data["device_config"] = [config.model_dump() for config in configs]
-    upgraded_data["implanted_device_names"] = [device["name"] for device in probes]
+    implants = []
+    for i, probe in enumerate(probes):
+        implants.append(ProbeImplant(
+            protocol_id=data.get("protocol_id", "unknown"),
+            implanted_device=probe,
+            device_config=configs[i],
+        ))
 
-    return ProbeImplant(**upgraded_data).model_dump()
+    return implants
 
 
 def upgrade_myomatrix_insertion(data: dict) -> dict:
