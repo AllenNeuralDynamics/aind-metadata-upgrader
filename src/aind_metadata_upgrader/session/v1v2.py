@@ -150,7 +150,7 @@ class SessionV1V2(CoreUpgrader):
         # Determine the targeted structure
         targeted_structure = fov.get("targeted_structure")
         if isinstance(targeted_structure, dict):
-            # It's already a CCFStructure object
+            # It's already a CCFv3 object
             ccf_structure = targeted_structure
         else:
             # It's a string, try to convert

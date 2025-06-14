@@ -14,7 +14,7 @@ from aind_data_schema.components.coordinates import (
     CoordinateSystemLibrary,
 )
 from aind_data_schema_models.coordinates import AnatomicalRelative
-from aind_data_schema_models.brain_atlas import CCFStructure
+from aind_data_schema_models.brain_atlas import CCFv3
 from aind_data_schema_models.units import AngleUnit
 from aind_data_schema_models.mouse_anatomy import InjectionTargets
 
@@ -22,7 +22,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import remove
 
 
 CCF_MAPPING = {
-    "ALM": CCFStructure.MO,
+    "ALM": CCFv3.MO,
 }
 
 
@@ -110,8 +110,8 @@ def upgrade_targeted_structure(data: dict | str) -> dict:
     """Upgrade targeted structure, especially convert strings to structure objects"""
 
     if isinstance(data, str):
-        if hasattr(CCFStructure, data.upper()):
-            return getattr(CCFStructure, data.upper()).model_dump()
+        if hasattr(CCFv3, data.upper()):
+            return getattr(CCFv3, data.upper()).model_dump()
         if data in CCF_MAPPING.keys():
             return CCF_MAPPING[data].model_dump()
         else:

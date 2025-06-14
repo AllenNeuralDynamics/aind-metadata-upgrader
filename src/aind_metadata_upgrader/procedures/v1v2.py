@@ -12,8 +12,9 @@ from aind_data_schema.core.procedures import (
     TrainingProtocol,
     GenericSubjectProcedure,
     SpecimenProcedure,
-    GenericSurgeryProcedure,
 )
+from aind_data_schema.components.surgery_procedures import GenericSurgeryProcedure
+
 
 from aind_metadata_upgrader.utils.v1v2_utils import remove
 from aind_metadata_upgrader.procedures.v1v2_procedures import (
@@ -44,6 +45,8 @@ from aind_metadata_upgrader.procedures.v1v2_injections import (
     upgrade_intraperitoneal_injection,
 )
 
+from aind_data_schema.components.coordinates import CoordinateSystemLibrary
+
 PROC_UPGRADE_MAP = {
     "Craniotomy": upgrade_craniotomy,
     "Headframe": upgrade_headframe,
@@ -61,8 +64,6 @@ PROC_UPGRADE_MAP = {
     "Catheter implant": upgrade_catheter_implant,
     "Other Subject Procedure": upgrade_other_subject_procedure,
 }
-
-from aind_data_schema.components.coordinates import CoordinateSystemLibrary
 
 
 class ProceduresUpgraderV1V2(CoreUpgrader):
