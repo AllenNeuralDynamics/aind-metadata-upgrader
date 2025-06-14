@@ -3,6 +3,8 @@
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_data_schema.core.quality_control import QCMetric, CurationMetric
 
+from aind_metadata_upgrader.utils.v1v2_utils import remove
+
 
 def upgrade_metric(data: dict, modality: dict, stage: str, tags: list) -> dict:
     """Upgrade a metric to the new format"""
@@ -60,6 +62,7 @@ class QCUpgraderV1V2(CoreUpgrader):
         data["schema_version"] = schema_version
 
         metrics = []
+        default_grouping = []
 
         # Add "object_type" to all the evaluations and metrics
         for ei, evaluation in enumerate(data.get("evaluations", [])):
@@ -67,6 +70,7 @@ class QCUpgraderV1V2(CoreUpgrader):
             modality = evaluation.get("modality", {})
             stage = evaluation.get("stage", "unknown")
             tags = [evaluation["name"]]
+            default_grouping.append(evaluation["name"])  # Use original evaluations as default grouping
 
             for metric in evaluation.get("metrics", []):
                 if "type" in metric:
@@ -86,7 +90,11 @@ class QCUpgraderV1V2(CoreUpgrader):
                     )
                 metrics.append(metric_data)
 
+        remove(data, "evaluations")
+
         return {
             "object_type": "Quality control",
+            "metrics": metrics,
+            "default_grouping": default_grouping,
             **data,
         }

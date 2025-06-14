@@ -36,6 +36,8 @@ def upgrade_viral_material(data: dict) -> dict:
     if "name" not in data or not data["name"]:
         data["name"] = "unknown"
 
+    remove(data, "material_type")
+
     return ViralMaterial(**data).model_dump()
 
 
