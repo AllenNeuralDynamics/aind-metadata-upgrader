@@ -49,7 +49,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_targeted_structure,
     upgrade_light_source,
 )
-from aind_data_schema.components.coordinates import CoordinateSystemLibrary, Translation
+from aind_data_schema.components.coordinates import CoordinateSystemLibrary, Translation, Affine
 
 
 class SessionV1V2(CoreUpgrader):
@@ -280,6 +280,26 @@ class SessionV1V2(CoreUpgrader):
 
     def _upgrade_mri_scan_to_config(self, scan: Dict) -> Dict:
         """Convert MRI scan to MRIScan config"""
+        primary = scan.get("primary_scan", False)
+        if primary:
+            # Upgrade the affine transform
+            coordinate_system = CoordinateSystemLibrary.MRI_LPS
+            vc_orientation = scan.get("vc_orientation", None)
+            vc_position = scan.get("vc_position", None)
+            if not vc_orientation or not vc_position:
+                raise ValueError("Primary MRI scan must have 'vc_orientation' and 'vc_position' for primary scans")
+            rotation = Affine(
+                affine_transform=vc_orientation["rotation"]
+            )
+            translation = Translation(
+                translation=vc_position["translation"]
+            )
+            transform = [rotation, translation]
+        else:
+            coordinate_system = None
+            transform = None
+
+
         mri_scan = MRIScan(
             device_name=scan.get("mri_scanner", {}).get("name", "Unknown Scanner"),
             scan_index=scan.get("scan_index", 0),
@@ -294,10 +314,10 @@ class SessionV1V2(CoreUpgrader):
             echo_time_unit=TimeUnit.MS,
             repetition_time=scan.get("repetition_time", 100.0),
             repetition_time_unit=TimeUnit.MS,
-            subject_position=(SubjectPosition.PRONE
-                              if scan.get("subject_position") == "Prone"
-                              else SubjectPosition.SUPINE),
-            additional_scan_parameters=scan.get("additional_scan_parameters", {})
+            subject_position=scan.get("subject_position", "unknown"),
+            additional_scan_parameters=scan.get("additional_scan_parameters", {}),
+            scan_coordinate_system=coordinate_system,
+            scan_affine_transform=transform,
         )
 
         return mri_scan.model_dump()
