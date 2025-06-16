@@ -148,7 +148,13 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             remove(data, "iacuc_protocol")
 
             procedures = data.get("procedures", [])
-            data["procedures"] = [self._upgrade_procedure(proc) for proc in procedures]
+            data["procedures"] = []
+            for procedure in procedures:
+                upgraded = self._upgrade_procedure(procedure)
+                if isinstance(upgraded, list):
+                    data["procedures"].extend(upgraded)
+                else:
+                    data["procedures"].append(upgraded)
 
             if len(procedures) == 0:
                 data["procedures"].append(

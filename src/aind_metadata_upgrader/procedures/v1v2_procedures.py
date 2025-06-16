@@ -318,7 +318,6 @@ def retrive_probe_config(data: dict) -> tuple:
 
 def upgrade_fiber_implant(data: dict) -> list:
     """Upgrade FiberImplant procedure from V1 to V2"""
-    global implanted_devices, device_configurations
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
 
@@ -327,10 +326,11 @@ def upgrade_fiber_implant(data: dict) -> list:
     implants = []
     for i, probe in enumerate(probes):
         implants.append(ProbeImplant(
-            protocol_id=data.get("protocol_id", "unknown"),
-            implanted_device=probe,
-            device_config=configs[i],
-        ))
+                protocol_id=data.get("protocol_id", "unknown"),
+                implanted_device=probe,
+                device_config=configs[i],
+            ).model_dump()
+        )
 
     return implants
 
