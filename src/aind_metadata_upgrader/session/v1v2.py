@@ -38,6 +38,7 @@ from aind_data_schema.components.configs import (
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.stimulus_modality import StimulusModality
 from aind_data_schema_models.devices import ImmersionMedium
+from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
 from aind_data_schema_models.units import (
     TimeUnit, PowerUnit, SizeUnit,
     MassUnit, VolumeUnit, SoundIntensityUnit
@@ -200,26 +201,80 @@ class SessionV1V2(CoreUpgrader):
 
         return configs
 
-    def _upgrade_fiber_connection_to_config(self, fiber_conn: Dict) -> Dict:
-        """Convert fiber connection to PatchCordConfig"""
+    def _upgrade_fiber_connection_config(self, stream: Dict, fiber_connection: Dict) -> Dict:
+        """Convert a single fiber connection config, return Channel, PatchCordConfig, Connection"""
+
+        # First, gather the names of all the devices that are involved
+        patch_cord_name = fiber_connection.get("patch_cord_name", "unknown")
+        channel_data = fiber_connection.get("channel", {})
+
+        # Deal with the detector
+        detector_name = channel_data.get("detector_name", None)
+        detector_config = stream.get("detectors", [])
+        # Find the matching detector config
+        matching_detector = next((d for d in detector_config if d.get("name") == detector_name), None)
+        if not matching_detector:
+            raise ValueError(f"Detector '{detector_name}' not found in stream detectors")
+
+        # Build the PatchCordConfig
+        patch_cord_config = PatchCordConfig(
+            device_name=patch_cord_name,
+            channels=[channel_data.get("channel_name", "unknown")],
+        )
+
+# {
+#     'patch_cord_name': 'Patch Cord A',
+#     'patch_cord_output_power': '40',
+#     'output_power_unit': 'microwatt',
+#     'fiber_name': 'Fiber A',
+#     'channel': {
+#         'channel_name': 'Channel A',
+#         'intended_measurement': 'Dopamine',
+#         'light_source_name': 'Laser A',
+#         'filter_names': ['Excitation filter 410nm'],
+#         'detector_name': 'Green CMOS',
+#         'additional_device_names': [],
+#         'excitation_wavelength': 410,
+#         'excitation_wavelength_unit': 'nanometer',
+#         'excitation_power': 10.0,
+#         'excitation_power_unit': 'milliwatt',
+#         'filter_wheel_index': None,
+#         'emission_wavelength': 600,
+#         'emission_wavelength_unit': 'nanometer',
+#         'dilation': None,
+#         'dilation_unit': 'pixel',
+#         'description': None
+#     }
+# }
+
+        # Deal with the channel
+        laser_name = channel_data.get("light_source_name", None)
+        laser_wavelength = channel_data.get("excitation_wavelength", None)
+
+
+        # Build the connections
+        connections = []
+
+        
+
+
+    def _upgrade_fiber(self, stream: Dict) -> Dict:
+        """Convert all fiber data within a stream to the new Channel and PatchCordConfig format"""
+
+        # First gather all the old FiberConnectionConfig objects
+        fiber_connection_configs = stream.get("fiber_connections", [])
+        fiber_modules = stream.get("fiber_modules", [])
+        for module in fiber_modules:
+            fiber_connection_configs.extend(module.get("fiber_connections", []))
+
+        # For each FiberConnectionConfig, run the new upgrader which will create a Channel, PatchCordConfig, and a Connection
         channels = []
-        if "channel" in fiber_conn:
-            channel_data = fiber_conn["channel"]
-            channel = Channel(
-                channel_name=channel_data.get("channel_name", "Ch1")
-            ).model_dump()
-            channels.append(channel)
+        patch_cords = []
+        connections = []
+        for fiber_conn in fiber_connection_configs:
+            channel, patch_cord, connection = self._upgrade_fiber_connection_config(stream, fiber_conn)
 
-        return PatchCordConfig(
-            device_name=fiber_conn.get("patch_cord_name", "Unknown Patch Cord"),
-            channels=channels
-        ).model_dump()
-
-    def _upgrade_fiber_module_to_config(self, fiber_module: Dict) -> Dict:
-        """Convert fiber module to FiberAssemblyConfig"""
-        return FiberAssemblyConfig(
-            device_name=fiber_module.get("assembly_name", "Unknown Fiber Assembly")
-        ).model_dump()
+            raise NotImplementedError("Fiber connection upgrade not implemented yet")
 
     def _upgrade_ophys_fov_to_plane(self, fov: Dict) -> Dict:
         """Convert ophys FOV to Plane"""
@@ -558,12 +613,8 @@ class SessionV1V2(CoreUpgrader):
             configs = self._upgrade_ephys_module_to_configs(ephys_module)
             configurations.extend(configs)
 
-        # Fiber configs
-        for fiber_conn in stream.get("fiber_connections", []):
-            configurations.append(self._upgrade_fiber_connection_to_config(fiber_conn))
-
-        for fiber_module in stream.get("fiber_modules", []):
-            configurations.append(self._upgrade_fiber_module_to_config(fiber_module))
+        # Fiber upgrader
+        self._upgrade_fiber(stream)
 
         # MRI configs
         for mri_scan in stream.get("mri_scans", []):
