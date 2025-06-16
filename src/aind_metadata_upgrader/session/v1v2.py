@@ -32,6 +32,8 @@ from aind_data_schema.components.configs import (
     SlapAcquisitionType,
     Channel,
     PlanarImage,
+    MISModuleConfig,
+    ProbeConfig,
 )
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.stimulus_modality import StimulusModality
@@ -47,6 +49,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_targeted_structure,
     upgrade_light_source,
 )
+from aind_data_schema.components.coordinates import CoordinateSystemLibrary, Translation
 
 
 class SessionV1V2(CoreUpgrader):
@@ -116,17 +119,84 @@ class SessionV1V2(CoreUpgrader):
         """Convert ephys module to EphysAssemblyConfig and ManipulatorConfig"""
         configs = []
 
+        # We are going to assume this is an MPM system, since that's all we 
+        # supported in v1.4 anyways
+
+        # Build up the MPM config
+        mis_config = MISModuleConfig(
+            arc_angle=ephys_module.get("arc_angle", 0.0),
+            module_angle=ephys_module.get("module_angle", 0.0),
+            rotation_angle=ephys_module.get("rotation_angle", 0.0),
+            angle_unit=ephys_module.get("angle_unit", "degrees"),
+            notes=ephys_module.get("notes", None),
+        )
+
         # Create ManipulatorConfig for the manipulator/dome module
+        # Get manipulator coordinates
+        manipulator_coordinates = ephys_module.get("manipulator_coordinates", {})
+        x = manipulator_coordinates.get("x", 0.0)
+        y = manipulator_coordinates.get("y", 0.0)
+        z = manipulator_coordinates.get("z", 0.0)
+
         manipulator_config = ManipulatorConfig(
-            device_name=ephys_module.get("assembly_name", "Unknown Assembly")
-        ).model_dump()
-        configs.append(manipulator_config)
+            coordinate_system=CoordinateSystemLibrary.MPM_MANIP_RFB,
+            local_axis_positions=Translation(
+                translation=[x, y, z],
+            ),
+            device_name="unknown",  # Unfortunately manipulator names were not in v1.4
+        )
+
+        probes = ephys_module.get("ephys_probes", [])
+        probe_configs = []
+
+        anatomical_coordinates = ephys_module.get("anatomical_coordinates", {})
+        x = anatomical_coordinates.get("x", 0.0)
+        y = anatomical_coordinates.get("y", 0.0)
+        z = anatomical_coordinates.get("z", 0.0)
+        # We have no idea what these correspond to, but most likely
+        # they are in AP/ML/DV order and in micrometers. But we really don't know for sure.
+        ap = x
+        ml = y
+        dv = z
+
+        # Check that the micron ranges make sense
+        if ap < (-13000/2) or ap > (13000/2):
+            raise ValueError(f"AP coordinate {ap} is out of range for Bregma reference")
+        if ml < (-11400/2) or ml > (11400/2):
+            raise ValueError(f"ML coordinate {ml} is out of range for Bregma reference")
+        if dv < (-8000/2) or dv > (8000/2):
+            raise ValueError(f"DV coordinate {dv} is out of range for Bregma reference")
+
+        # Check that the reference is bremga
+        reference = ephys_module.get("anatomical_reference", None)
+        if not reference or reference.lower() != "bregma":
+            ValueError(f"Anatomical reference must be 'bregma', got '{reference}'")
+
+        for probe in probes:
+            probe_config = ProbeConfig(
+                device_name=probe.get("name", "unknown"),
+                primary_targeted_structure=upgrade_targeted_structure(
+                    ephys_module.get("primary_targeted_structure", "unknown")
+                ),
+                coordinate_system=CoordinateSystemLibrary.PINPOINT_PROBE_RSAB,
+                transform=[
+                    Translation(
+                        translation=[ap, ml, dv],
+                    ),
+                    # Technically there is a rotation, but we don't know how to
+                    # convert here so we'll just leave it as is...
+                ],
+            )
+            probe_configs.append(probe_config.model_dump())
 
         # Create EphysAssemblyConfig
         ephys_config = EphysAssemblyConfig(
-            device_name=ephys_module.get("assembly_name", "Unknown Assembly")
-        ).model_dump()
-        configs.append(ephys_config)
+            device_name=ephys_module.get("assembly_name", "unknown"),
+            manipulator=manipulator_config,
+            probes=probe_configs,
+            modules=[mis_config],
+        )
+        configs.append(ephys_config.model_dump())
 
         return configs
 
@@ -524,9 +594,10 @@ class SessionV1V2(CoreUpgrader):
 
         # Light source configs for stimulation
         if epoch.get("light_source_config"):
-            for light_source in epoch.get("light_source_config", []):
-                print(epoch)
-                print(light_source)
+            light_source_configs = epoch.get("light_source_config", [])
+            if not isinstance(light_source_configs, list):
+                light_source_configs = [light_source_configs]
+            for light_source in light_source_configs:
                 config = self._upgrade_light_source_config(light_source)
                 if config:
                     configurations.append(config)
