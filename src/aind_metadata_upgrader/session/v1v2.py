@@ -49,7 +49,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_targeted_structure,
     upgrade_light_source,
 )
-from aind_data_schema.components.coordinates import CoordinateSystemLibrary, Translation, Affine
+from aind_data_schema.components.coordinates import CoordinateSystemLibrary, Translation, Affine, Scale
 
 
 class SessionV1V2(CoreUpgrader):
@@ -288,16 +288,28 @@ class SessionV1V2(CoreUpgrader):
             vc_position = scan.get("vc_position", None)
             if not vc_orientation or not vc_position:
                 raise ValueError("Primary MRI scan must have 'vc_orientation' and 'vc_position' for primary scans")
+            rotation = vc_orientation["rotation"]
             rotation = Affine(
-                affine_transform=vc_orientation["rotation"]
+                affine_transform=[
+                    [float(rotation[0]), float(rotation[1]), float(rotation[2])],
+                    [float(rotation[3]), float(rotation[4]), float(rotation[5])],
+                    [float(rotation[6]), float(rotation[7]), float(rotation[8])]
+                ]
             )
             translation = Translation(
                 translation=vc_position["translation"]
             )
             transform = [rotation, translation]
+
+            # Get voxel size
+            voxel_size = scan.get("voxel_sizes", {})
+            resolution = Scale(
+                scale=voxel_size["scale"],
+            )
         else:
             coordinate_system = None
             transform = None
+            resolution = None
 
 
         mri_scan = MRIScan(
@@ -318,6 +330,8 @@ class SessionV1V2(CoreUpgrader):
             additional_scan_parameters=scan.get("additional_scan_parameters", {}),
             scan_coordinate_system=coordinate_system,
             scan_affine_transform=transform,
+            resolution=resolution,
+            resolution_unit=SizeUnit.MM,
         )
 
         return mri_scan.model_dump()
