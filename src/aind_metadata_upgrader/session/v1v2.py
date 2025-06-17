@@ -104,7 +104,10 @@ class SessionV1V2(CoreUpgrader):
                 power=float(excitation_power) if excitation_power else None,
                 power_unit=PowerUnit.MW if power_unit == "milliwatt" else PowerUnit.PERCENT
             ).model_dump()
-        return None
+        else:
+            raise NotImplementedError(
+                f"Light source device type '{device_type}' not supported in v2 upgrade"
+            )
 
     def _upgrade_detector_config(self, detector: Dict) -> Dict:
         """Upgrade detector config from v1 to v2"""
@@ -201,11 +204,12 @@ class SessionV1V2(CoreUpgrader):
 
         return configs
 
-    def _upgrade_fiber_connection_config(self, stream: Dict, fiber_connection: Dict) -> Dict:
+    def _upgrade_fiber_connection_config(self, stream: Dict, fiber_connection: Dict) -> tuple:
         """Convert a single fiber connection config, return Channel, PatchCordConfig, Connection"""
 
         # First, gather the names of all the devices that are involved
         patch_cord_name = fiber_connection.get("patch_cord_name", "unknown")
+        fiber_name = fiber_connection.get("fiber_name", "unknown")
         channel_data = fiber_connection.get("channel", {})
 
         # Deal with the detector
@@ -214,51 +218,91 @@ class SessionV1V2(CoreUpgrader):
         # Find the matching detector config
         matching_detector = next((d for d in detector_config if d.get("name") == detector_name), None)
         if not matching_detector:
-            raise ValueError(f"Detector '{detector_name}' not found in stream detectors")
+            # No matching detector found... create a default one
+            matching_detector = DetectorConfig(
+                device_name=detector_name,
+                exposure_time=-1,
+                trigger_type=TriggerType.INTERNAL,
+            )
+
+        # Build the light source
+        light_source_name = channel_data.get("light_source_name", None)
+        light_sources = stream.get("light_sources", [])
+        # Find the matching light source config
+        matching_light_source = next((ls for ls in light_sources if ls.get("name") == light_source_name), None)
+        if not matching_light_source:
+            raise ValueError(f"Light source '{light_source_name}' not found in stream light sources")
+
+        light_source_config = self._upgrade_light_source_config(matching_light_source)
+
+        # Build the actual channel object
+        # Note we don't care if multiple patch cords make the same channel,
+        # we'll sort it out when they get returned
+        print(channel_data)
+        channel = Channel(
+            channel_name=channel_data.get("channel_name", "unknown"),
+            intended_measurement=channel_data.get("intended_measurement", None),
+            detector=matching_detector,
+            additional_device_names=channel_data.get("additional_device_names", None),
+
+            light_sources=[light_source_config] if light_source_config else [],
+            # We don't know any of the filter data because it wasn't stored properly
+
+            emission_wavelength=channel_data.get("emission_wavelength", None),
+            emission_wavelength_unit=channel_data.get("emission_wavelength_unit", None),
+        )
 
         # Build the PatchCordConfig
         patch_cord_config = PatchCordConfig(
             device_name=patch_cord_name,
-            channels=[channel_data.get("channel_name", "unknown")],
-        )
-
-# {
-#     'patch_cord_name': 'Patch Cord A',
-#     'patch_cord_output_power': '40',
-#     'output_power_unit': 'microwatt',
-#     'fiber_name': 'Fiber A',
-#     'channel': {
-#         'channel_name': 'Channel A',
-#         'intended_measurement': 'Dopamine',
-#         'light_source_name': 'Laser A',
-#         'filter_names': ['Excitation filter 410nm'],
-#         'detector_name': 'Green CMOS',
-#         'additional_device_names': [],
-#         'excitation_wavelength': 410,
-#         'excitation_wavelength_unit': 'nanometer',
-#         'excitation_power': 10.0,
-#         'excitation_power_unit': 'milliwatt',
-#         'filter_wheel_index': None,
-#         'emission_wavelength': 600,
-#         'emission_wavelength_unit': 'nanometer',
-#         'dilation': None,
-#         'dilation_unit': 'pixel',
-#         'description': None
-#     }
-# }
-
-        # Deal with the channel
-        laser_name = channel_data.get("light_source_name", None)
-        laser_wavelength = channel_data.get("excitation_wavelength", None)
-
+            channels=[channel],
+        ).model_dump()
 
         # Build the connections
         connections = []
+        # Build the light source->patch cord connection
+        light_fiber_conn = Connection(
+            device_names=[light_source_name, patch_cord_name],
+            connection_data={
+                light_source_name: ConnectionData(
+                    direction=ConnectionDirection.SEND,
+                ),
+                patch_cord_name: ConnectionData(
+                    direction=ConnectionDirection.RECEIVE,
+                ),
+            }
+        )
+        # patch cord to fiber, send_and_receive:
+        patch_fiber_conn = Connection(
+            device_names=[patch_cord_name, fiber_name],
+            connection_data={
+                patch_cord_name: ConnectionData(
+                    direction=ConnectionDirection.SEND_AND_RECEIVE,
+                ),
+                fiber_name: ConnectionData(
+                    direction=ConnectionDirection.SEND_AND_RECEIVE,
+                ),
+            }
+        )
+        # Finally patch cord to detector
+        patch_detector_conn = Connection(
+            device_names=[patch_cord_name, matching_detector.device_name],
+            connection_data={
+                patch_cord_name: ConnectionData(
+                    direction=ConnectionDirection.SEND,
+                ),
+                matching_detector.device_name: ConnectionData(
+                    direction=ConnectionDirection.RECEIVE,
+                ),
+            }
+        )
+        connections.append(light_fiber_conn.model_dump())
+        connections.append(patch_fiber_conn.model_dump())
+        connections.append(patch_detector_conn.model_dump())
 
-        
+        return patch_cord_config, connections
 
-
-    def _upgrade_fiber(self, stream: Dict) -> Dict:
+    def _upgrade_fiber(self, stream: Dict) -> tuple:
         """Convert all fiber data within a stream to the new Channel and PatchCordConfig format"""
 
         # First gather all the old FiberConnectionConfig objects
@@ -268,13 +312,14 @@ class SessionV1V2(CoreUpgrader):
             fiber_connection_configs.extend(module.get("fiber_connections", []))
 
         # For each FiberConnectionConfig, run the new upgrader which will create a Channel, PatchCordConfig, and a Connection
-        channels = []
-        patch_cords = []
-        connections = []
+        patchcord_configs = []
+        all_connections = []
         for fiber_conn in fiber_connection_configs:
-            channel, patch_cord, connection = self._upgrade_fiber_connection_config(stream, fiber_conn)
+            patchcord_config, connections = self._upgrade_fiber_connection_config(stream, fiber_conn)
+            patchcord_configs.append(patchcord_config)
+            all_connections.extend(connections)
 
-            raise NotImplementedError("Fiber connection upgrade not implemented yet")
+        return patchcord_configs, all_connections
 
     def _upgrade_ophys_fov_to_plane(self, fov: Dict) -> Dict:
         """Convert ophys FOV to Plane"""
@@ -471,7 +516,7 @@ class SessionV1V2(CoreUpgrader):
         """Create channels and images for fiber photometry modality"""
         channels = []
         images = []
-        
+
         for fiber_conn in stream.get("fiber_connections", []):
             if "channel" in fiber_conn:
                 channel_data = fiber_conn["channel"]
@@ -530,13 +575,11 @@ class SessionV1V2(CoreUpgrader):
         # Create components based on modality
         channels = []
         images = []
-        
+
         if modality in ["ophys", "pophys"]:
             channels, images = self._create_ophys_components(stream, light_sources, detectors)
         elif modality == "slap":
             channels, images = self._create_slap_components(stream, light_sources, detectors)
-        elif modality == "fib":
-            channels, images = self._create_fiber_components(stream, light_sources, detectors)
 
         # Don't create config if no channels
         if not channels:
@@ -614,7 +657,8 @@ class SessionV1V2(CoreUpgrader):
             configurations.extend(configs)
 
         # Fiber upgrader
-        self._upgrade_fiber(stream)
+        patchcord_configs, connections = self._upgrade_fiber(stream)
+        configurations.extend(patchcord_configs)
 
         # MRI configs
         for mri_scan in stream.get("mri_scans", []):
@@ -629,6 +673,10 @@ class SessionV1V2(CoreUpgrader):
         if stream.get("ophys_fovs") or stream.get("slap_fovs"):
             configurations.append(self._create_sample_chamber_config(rig_id))
 
+        # Make sure all configuration devices are in active devices
+        configuration_device_names = [config.get("device_name") for config in configurations]
+        active_devices = list(set(active_devices + configuration_device_names))
+
         # Create the data stream
         return DataStream(
             stream_start_time=stream.get("stream_start_time"),
@@ -636,6 +684,7 @@ class SessionV1V2(CoreUpgrader):
             modalities=modalities,
             active_devices=active_devices,
             configurations=configurations,
+            connections=connections,
             notes=stream.get("notes")
         ).model_dump()
 
