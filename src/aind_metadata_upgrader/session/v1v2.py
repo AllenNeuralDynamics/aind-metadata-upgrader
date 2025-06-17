@@ -154,14 +154,20 @@ class SessionV1V2(CoreUpgrader):
         probe_configs = []
 
         anatomical_coordinates = ephys_module.get("anatomical_coordinates", {})
-        x = anatomical_coordinates.get("x", 0.0)
-        y = anatomical_coordinates.get("y", 0.0)
-        z = anatomical_coordinates.get("z", 0.0)
-        # We have no idea what these correspond to, but most likely
-        # they are in AP/ML/DV order and in micrometers. But we really don't know for sure.
-        ap = x
-        ml = y
-        dv = z
+        if anatomical_coordinates:
+            x = anatomical_coordinates.get("x", 0.0)
+            y = anatomical_coordinates.get("y", 0.0)
+            z = anatomical_coordinates.get("z", 0.0)
+            # We have no idea what these correspond to, but most likely
+            # they are in AP/ML/DV order and in micrometers. But we really don't know for sure.
+            ap = x
+            ml = y
+            dv = z
+        else:
+            # If no anatomical coordinates, default to the CCF origin coordinate
+            ap = -13000 / 2
+            ml = -11400 / 2
+            dv = -8000 / 2
 
         # Check that the micron ranges make sense
         if ap < (-13000/2) or ap > (13000/2):
@@ -185,7 +191,7 @@ class SessionV1V2(CoreUpgrader):
                 coordinate_system=CoordinateSystemLibrary.PINPOINT_PROBE_RSAB,
                 transform=[
                     Translation(
-                        translation=[ap, ml, dv],
+                        translation=[ap, dv, ml],
                     ),
                     # Technically there is a rotation, but we don't know how to
                     # convert here so we'll just leave it as is...
@@ -238,7 +244,6 @@ class SessionV1V2(CoreUpgrader):
         # Build the actual channel object
         # Note we don't care if multiple patch cords make the same channel,
         # we'll sort it out when they get returned
-        print(channel_data)
         channel = Channel(
             channel_name=channel_data.get("channel_name", "unknown"),
             intended_measurement=channel_data.get("intended_measurement", None),
