@@ -3,7 +3,7 @@
 from aind_data_schema.core.data_description import DataDescription
 from aind_data_schema.core.instrument import Instrument
 
-# from aind_data_schema.core.metadata import Metadata
+from aind_data_schema.core.metadata import Metadata
 from aind_data_schema.core.processing import Processing
 from aind_data_schema.core.acquisition import Acquisition
 from aind_data_schema.core.quality_control import QualityControl
@@ -36,6 +36,7 @@ UPGRADE_VERSIONS = {
     "procedures": Procedures.model_fields["schema_version"].default,
     "acquisition": Acquisition.model_fields["schema_version"].default,
     "session": Acquisition.model_fields["schema_version"].default,
+    "metadata": Metadata.model_fields["schema_version"].default,
 }
 
 CORE_MAPPING = {
@@ -59,10 +60,7 @@ class Upgrade:
                     self.upgrade_core_file(core_file)
                 )
 
-        # try:
-        #     self.metadata = Metadata(**core_files)
-        # except Exception as e:
-        #     raise ValueError(f"Failed to validated Metadata: {e}")
+        self.upgrade_metadata(core_files)
 
     def save(self):
         """Save the upgraded metadata to a standard file"""
@@ -93,6 +91,26 @@ class Upgrade:
                 raise ValueError(f"Unknown core file type: {core_file}")
         except Exception as e:
             raise ValueError(f"Failed to validate {core_file}: {e}")
+
+    def upgrade_metadata(self, new_core_files: dict):
+        """Use the metadata upgrader to upgrade and validate the metadata"""
+
+        original_metadata_version = Version(self.data.get("schema_version", "0.0.0"))
+
+        data = self.data.copy()
+        for core_file in CORE_FILES:
+            if core_file in data:
+                del data[core_file]  # Remove core files from the original data
+        data.update(new_core_files)  # Add upgraded core files
+
+        for specifier_set, upgrader in MAPPING["metadata"]:
+            if original_metadata_version in specifier_set:
+                metadata = upgrader().upgrade(data, UPGRADE_VERSIONS["metadata"])
+
+        try:
+            self.metadata = Metadata(**metadata)
+        except Exception as e:
+            raise ValueError(f"Failed to validated Metadata: {e}")
 
     def upgrade_core_file(self, core_file: str):
         """Initialize one core file"""

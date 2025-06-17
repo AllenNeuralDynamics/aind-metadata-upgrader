@@ -11,6 +11,7 @@ from aind_metadata_upgrader.subject.v1v2 import SubjectUpgraderV1V2
 from aind_metadata_upgrader.processing.v1v2 import ProcessingV1V2
 from aind_metadata_upgrader.procedures.v1v2 import ProceduresUpgraderV1V2
 from aind_metadata_upgrader.session.v1v2 import SessionV1V2
+from aind_metadata_upgrader.metadata.v1v2 import MetadataUpgraderV1V2
 
 ACQUISITION = [
     (SpecifierSet("<2.0.0"), AcquisitionV1V2),
@@ -25,7 +26,7 @@ INSTRUMENT = [
 ]
 
 METADATA = [
-    (SpecifierSet("<2.0.0"), None),
+    (SpecifierSet("<2.0.0"), MetadataUpgraderV1V2),
 ]
 
 PROCEDURES = [
