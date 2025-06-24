@@ -13,6 +13,21 @@ from packaging.version import Version
 
 from aind_metadata_upgrader.upgrade_mapping import MAPPING
 
+from aind_data_access_api.document_db import MetadataDbClient
+
+
+API_GATEWAY_HOST = "api.allenneuraldynamics-test.org"
+DATABASE = "metadata_index_v2"
+COLLECTION = "data_assets"
+
+
+client = MetadataDbClient(
+    host=API_GATEWAY_HOST,
+    database=DATABASE,
+    collection=COLLECTION,
+)
+
+
 CORE_FILES = [
     "subject",
     "data_description",
@@ -37,6 +52,19 @@ UPGRADE_VERSIONS = {
     "acquisition": Acquisition.model_fields["schema_version"].default,
     "session": Acquisition.model_fields["schema_version"].default,
     "metadata": Metadata.model_fields["schema_version"].default,
+}
+
+TYPE_MAPPING = {
+    "data_description": DataDescription,
+    "instrument": Instrument,
+    "subject": Subject,
+    "quality_control": QualityControl,
+    "rig": Instrument,
+    "processing": Processing,
+    "procedures": Procedures,
+    "acquisition": Acquisition,
+    "session": Acquisition,
+    "metadata": Metadata,
 }
 
 CORE_MAPPING = {
@@ -69,26 +97,9 @@ class Upgrade:
     def _try_validate(self, core_file: str, data: dict):
         """Try to validate the core file data against its schema"""
         try:
-            if core_file == "data_description":
-                return DataDescription(**data)
-            elif core_file == "subject":
-                return Subject(**data)
-            elif core_file == "quality_control":
-                return QualityControl(**data)
-            elif core_file == "instrument":
-                return Instrument(**data)
-            elif core_file == "rig":
-                return Instrument(**data)
-            elif core_file == "processing":
-                return Processing(**data)
-            elif core_file == "procedures":
-                return Procedures(**data)
-            elif core_file == "acquisition":
-                return Acquisition(**data)
-            elif core_file == "session":
-                return Acquisition(**data)
-            else:
-                raise ValueError(f"Unknown core file type: {core_file}")
+            if core_file not in TYPE_MAPPING:
+                raise ValueError(f"Core file '{core_file}' is not recognized for validation")
+            return TYPE_MAPPING[core_file].model_validate(data)
         except Exception as e:
             raise ValueError(f"Failed to validate {core_file}: {e}")
 
@@ -110,7 +121,12 @@ class Upgrade:
         try:
             self.metadata = Metadata(**metadata)
         except Exception as e:
-            raise ValueError(f"Failed to validated Metadata: {e}")
+            raise ValueError(f"Failed to validate Metadata: {e}")
+
+        # Push to new DocDB
+        # client.upsert_one_docdb_record(
+        #     record=self.metadata.model_dump(),
+        # )
 
     def upgrade_core_file(self, core_file: str):
         """Initialize one core file"""
