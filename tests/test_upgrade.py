@@ -5,6 +5,17 @@ import os
 import json
 
 from aind_metadata_upgrader.upgrade import Upgrade
+from aind_data_access_api.document_db import MetadataDbClient
+
+API_GATEWAY_HOST = os.getenv("API_GATEWAY_HOST", "api.allenneuraldynamics-test.org")
+DATABASE = os.getenv("DATABASE", "metadata_index")
+COLLECTION = "assets"
+
+client = MetadataDbClient(
+    host=API_GATEWAY_HOST,
+    database=DATABASE,
+    collection=COLLECTION,
+)
 
 
 class TestUpgrade(unittest.TestCase):
@@ -33,6 +44,11 @@ class TestUpgrade(unittest.TestCase):
 
                     upgraded = Upgrade(json.loads(data))
                     self.assertIsNotNone(upgraded)
+
+                    client.upsert_one_docdb_record(
+                        record=upgraded.metadata.model_dump(),
+                    )
+
 
 
 if __name__ == "__main__":
