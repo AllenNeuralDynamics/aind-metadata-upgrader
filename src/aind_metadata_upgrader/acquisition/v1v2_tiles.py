@@ -152,17 +152,18 @@ def extract_stream_times_from_tiles(tiles: List[Dict], session_start: str, sessi
 
 
 MEDIUM_MAP = {
-    "Cargille 1.52": ImmersionMedium.OIL,
-    "Cargille oil 1.5200": ImmersionMedium.OIL,
-    "EasyIndex": ImmersionMedium.EASYINDEX,
-    "0.05x SSC": ImmersionMedium.WATER,
+    "cargille 1.52": ImmersionMedium.OIL,
+    "cargille 1.5200": ImmersionMedium.OIL,
+    "cargille oil 1.5200": ImmersionMedium.OIL,
+    "easyindex": ImmersionMedium.EASYINDEX,
+    "0.05x ssc": ImmersionMedium.WATER,
 }
 
 
 def upgrade_immersion(data: dict) -> dict:
     """Upgrade an immersion dictionary to the new Immersion schema"""
 
-    if "medium" in data and any(key in data["medium"] for key in MEDIUM_MAP.keys()):
+    if "medium" in data and any(key in data["medium"].lower() for key in MEDIUM_MAP.keys()):
         # Find the matching medium key and update it
         for old_key, new_medium in MEDIUM_MAP.items():
             if old_key in data["medium"]:

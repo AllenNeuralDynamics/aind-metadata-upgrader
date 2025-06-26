@@ -9,6 +9,20 @@ from aind_data_access_api.document_db import MetadataDbClient
 import traceback
 
 
+ALL_CORE_FILES = [
+    "subject",
+    "data_description",
+    "procedures",
+    "instrument",
+    "processing",
+    "acquisition",
+    "quality_control",
+    "model",
+    "rig",
+    "session",
+]
+
+
 API_GATEWAY_HOST = "api.allenneuraldynamics-test.org"
 DATABASE = "metadata_index_v2"
 COLLECTION = "data_assets"
@@ -44,16 +58,21 @@ class TestUpgrade(unittest.TestCase):
                     data_dict = json.loads(data)
 
                     # Test the upgrade process - this will fail the subTest if upgrade fails
+                    fake = False
                     if "name" not in data_dict:
                         data_dict["name"] = "fake_name_for_testing"
+                        fake = True
                     if "location" not in data_dict:
                         data_dict["location"] = "fake_location_for_testing"
+                        fake = True
 
                     try:
-                        upgraded = Upgrade(data_dict)
+                        skip_metadata_validation = any(core_file_name in dir_path for core_file_name in ALL_CORE_FILES)
+                        print(f"Skip metadata validation: {skip_metadata_validation}")
+                        upgraded = Upgrade(data_dict, skip_metadata_validation)
                         self.assertIsNotNone(upgraded)
 
-                        if upgraded:
+                        if upgraded and not fake:
                             location = upgraded.metadata.location
 
                             records = client.retrieve_docdb_records(

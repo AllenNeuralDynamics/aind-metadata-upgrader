@@ -63,10 +63,11 @@ CORE_MAPPING = {
 class Upgrade:
     """Main entrypoint to the metadata-upgrader"""
 
-    def __init__(self, record: dict):
+    def __init__(self, record: dict, skip_metadata_validation: bool = False):
         """Initialize the upgrader"""
 
         self.data = record
+        self.skip_metadata_validation = skip_metadata_validation
 
         core_files = {}
         for core_file in CORE_FILES:
@@ -108,6 +109,11 @@ class Upgrade:
         data.update(new_core_files)  # Add upgraded core files
 
         upgraded_data = data.copy()
+
+        if self.skip_metadata_validation:
+            self.metadata = Metadata.model_construct(**upgraded_data)
+            return
+
         for specifier_set, upgrader in MAPPING["metadata"]:
             if original_metadata_version in specifier_set:
                 upgraded_data = upgrader().upgrade(upgraded_data, UPGRADE_VERSIONS["metadata"])

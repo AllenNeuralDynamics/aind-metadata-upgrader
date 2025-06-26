@@ -605,11 +605,14 @@ def repair_instrument_id_mismatch(data: dict) -> dict:
 def repair_missing_active_devices(data: dict) -> dict:
     """Create missing devices that are referenced in active_devices but not in instrument components"""
 
+    if "acquisition" not in data or "instrument" not in data:
+        return data
+
     # Collect active devices from data streams
     active_devices = []
     if data.get("acquisition") and "data_streams" in data["acquisition"]:
         for data_stream in data["acquisition"]["data_streams"]:
-            active_devices.extend(data_stream.active_devices)
+            active_devices.extend(data_stream["active_devices"])
 
     # Collect existing device names
     device_names = []
