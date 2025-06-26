@@ -29,6 +29,7 @@ from aind_data_schema.core.instrument import (
     ConnectionData,
     ConnectionDirection,
 )
+from aind_data_schema.core.procedures import Procedures
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
 from aind_data_schema_models.units import SizeUnit, TimeUnit, VolumeUnit, PowerUnit
@@ -577,26 +578,66 @@ def upgrade_targeted_structure(data: dict | str) -> dict:
     return data
 
 
+def repair_instrument_id_mismatch(data: dict) -> dict:
+    """Repair mismatched instrument IDs between acquisition and instrument sections"""
+
+    modalities = data.get("data_description", {}).get("modalities", [])
+    if any(modality["abbreviation"] == "SPIM" for modality in modalities):
+        if "acquisition" in data and data["acquisition"] and "instrument_id" in data["acquisition"]:
+            acquisition_instrument_id = data["acquisition"]["instrument_id"]
+            if "instrument" in data and data["instrument"]:
+                if "instrument_id" in data["instrument"]:
+                    instrument_id = data["instrument"]["instrument_id"]
+
+                    if acquisition_instrument_id != instrument_id:
+                        print(
+                            f"Warning: acquisition.instrument_id ({acquisition_instrument_id}) "
+                            f"does not match instrument.instrument_id ({instrument_id}). "
+                            "Updating acquisition.instrument_id to match."
+                        )
+                        data["instrument"]["instrument_id"] = acquisition_instrument_id
+                else:
+                    raise ValueError("instrument.instrument_id is missing while acquisition.instrument_id is present.")
+
+    return data
+
+
+def repair_missing_active_devices(data: dict) -> dict:
+    """Create missing devices that are referenced in active_devices but not in instrument components"""
+
+    # Collect active devices from data streams
+    active_devices = []
+    if data.get("acquisition") and "data_streams" in data["acquisition"]:
+        for data_stream in data["acquisition"]["data_streams"]:
+            active_devices.extend(data_stream.active_devices)
+
+    # Collect existing device names
+    device_names = []
+    if data.get("instrument"):
+        for component in data["instrument"].get("components", []):
+            device_names.append(component["name"])
+    if data.get("procedures"):
+        procedures = Procedures.model_validate(data["procedures"])
+        device_names.extend(procedures.get_device_names())
+
+    # Check if all active devices are in the available devices
+    if not all(device in device_names for device in active_devices):
+        missing_devices = set(active_devices) - set(device_names)
+        # Create missing devices with default names
+        for device in missing_devices:
+            print(f"Warning: Active device '{device}' not found in instrument devices. Creating default device.")
+            new_device = Device(
+                name=device,
+            )
+            data["instrument"]["components"].append(new_device.model_dump())
+
+    return data
+
+
 def repair_metadata(data: dict) -> dict:
     """Repair the full metadata record, checking for common issues"""
 
-    # Check for acquisition.instrument_id being different from instrument.instrument_id
-    if "acquisition" in data and data["acquisition"] and "instrument_id" in data["acquisition"]:
-        acquisition_instrument_id = data["acquisition"]["instrument_id"]
-        if "instrument" in data and data["instrument"]:
-            if "instrument_id" in data["instrument"]:
-                instrument_id = data["instrument"]["instrument_id"]
-
-                if acquisition_instrument_id != instrument_id:
-                    print(
-                        f"Warning: acquisition.instrument_id ({acquisition_instrument_id}) "
-                        f"does not match instrument.instrument_id ({instrument_id}). "
-                        "Updating acquisition.instrument_id to match."
-                    )
-                    data["acquisition"]["instrument_id"] = instrument_id
-            else:
-                raise ValueError("instrument.instrument_id is missing while acquisition.instrument_id is present.")
-
-    # Check for active devices that are not in the instrument devices, create them
+    data = repair_instrument_id_mismatch(data)
+    data = repair_missing_active_devices(data)
 
     return data
