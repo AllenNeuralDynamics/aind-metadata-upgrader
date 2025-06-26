@@ -242,7 +242,7 @@ def upgrade_perfusion(data: dict) -> dict:
     return Perfusion(**upgraded_data).model_dump()
 
 
-def retrive_probe_config(data: dict) -> tuple:
+def retrieve_probe_config(data: dict) -> tuple:
     """Get the Probe object and the ProbeConfig object from a ProbeImplant dict"""
 
     # Pull probes and move these to implanted_devices
@@ -252,11 +252,15 @@ def retrive_probe_config(data: dict) -> tuple:
     configs = []
 
     for implant in probe_implants:
-        # Upgrade the probe device
-        probe = implant["ophys_probe"]
-        probe = upgrade_fiber_probe(probe)
+        # Upgrade the probe device, if it exists
+        if "ophys_probe" in implant:
+            probe = implant["ophys_probe"]
+            probe = upgrade_fiber_probe(probe)
+            name = probe["name"]
 
-        probes.append(probe)
+            probes.append(probe)
+        else:
+            name = "unknown"
 
         # Upgrade the ProbeConfig
         targeted_structure = implant.get("targeted_structure", {})
@@ -303,7 +307,7 @@ def retrive_probe_config(data: dict) -> tuple:
             transforms.append(rotation)
 
         config = ProbeConfig(
-            device_name=probe["name"],
+            device_name=name,
             primary_targeted_structure=targeted_structure,
             coordinate_system=CoordinateSystemLibrary.MPM_MANIP_RFB,
             transform=transforms,
@@ -321,7 +325,7 @@ def upgrade_fiber_implant(data: dict) -> list:
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
 
-    probes, configs = retrive_probe_config(upgraded_data)
+    probes, configs = retrieve_probe_config(upgraded_data)
 
     implants = []
     for i, probe in enumerate(probes):
