@@ -245,6 +245,13 @@ def build_connection_from_channel(channel: dict, device_name: str) -> Connection
     raise ValueError("Channel must have a 'device_name' field to build a connection.")
 
 
+FILTER_WAVELENGTH_MAP = {
+    "493/574": [493, 574],
+    "ZET405/488/561/640mv2": [405, 488, 561, 640],
+    "ZET488/561m": [488, 561],
+}
+
+
 def upgrade_filter(data: dict) -> dict:
     """Upgrade filter data to the new model."""
 
@@ -265,6 +272,7 @@ def upgrade_filter(data: dict) -> dict:
     remove(data, "height")
     remove(data, "width")
     remove(data, "size_unit")
+    remove(data, "wavelength_unit")
 
     # Ensure filter_type is set
     if "type" in data:
@@ -273,8 +281,27 @@ def upgrade_filter(data: dict) -> dict:
 
     # For multiband filter, make the center_wavelength a list
     if data["filter_type"] == "Multiband":
-        if "center_wavelength" in data and isinstance(data["center_wavelength"], (int, float)):
-            data["center_wavelength"] = [data["center_wavelength"]]
+        if "center_wavelength" in data and not isinstance(data["center_wavelength"], list):
+            if not data["center_wavelength"]:
+                # Uh oh... we need to figure out what the wavelengths should be
+                if any(key in data["notes"] for key in FILTER_WAVELENGTH_MAP.keys()):
+                    # If the notes contain a known wavelength, use that
+                    for key, wavelengths in FILTER_WAVELENGTH_MAP.items():
+                        if key in data["notes"]:
+                            data["center_wavelength"] = wavelengths
+                            break
+                elif any(key in data["model"] for key in FILTER_WAVELENGTH_MAP.keys()):
+                    # If the model contains a known wavelength, use that
+                    for key, wavelengths in FILTER_WAVELENGTH_MAP.items():
+                        if key in data["model"]:
+                            data["center_wavelength"] = wavelengths
+                            break
+                else:
+                    print(data)
+                    print(data["center_wavelength"])
+                    raise ValueError("Multiband filter has no center_wavelength set, cannot upgrade.")
+            else:
+                data["center_wavelength"] = [data["center_wavelength"]]
 
     filter_device = Filter(**data)
     return filter_device.model_dump()
