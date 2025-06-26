@@ -12,20 +12,7 @@ from aind_data_schema.core.subject import Subject
 from packaging.version import Version
 
 from aind_metadata_upgrader.upgrade_mapping import MAPPING
-
-from aind_data_access_api.document_db import MetadataDbClient
-
-
-API_GATEWAY_HOST = "api.allenneuraldynamics-test.org"
-DATABASE = "metadata_index_v2"
-COLLECTION = "data_assets"
-
-
-client = MetadataDbClient(
-    host=API_GATEWAY_HOST,
-    database=DATABASE,
-    collection=COLLECTION,
-)
+from aind_metadata_upgrader.utils.v1v2_utils import repair_metadata
 
 
 CORE_FILES = [
@@ -84,9 +71,15 @@ class Upgrade:
         core_files = {}
         for core_file in CORE_FILES:
             if core_file in record:
-                core_files[CORE_MAPPING[core_file] if core_file in CORE_MAPPING.keys() else core_file] = (
-                    self.upgrade_core_file(core_file)
-                )
+                target_key = CORE_MAPPING.get(core_file, core_file)
+
+                # Only process if we haven't already processed the target key
+                if target_key not in core_files:
+                    # Prefer the canonical name over aliases (instrument over rig, acquisition over session)
+                    if target_key in record:
+                        core_files[target_key] = self.upgrade_core_file(target_key)
+                    else:
+                        core_files[target_key] = self.upgrade_core_file(core_file)
 
         self.upgrade_metadata(core_files)
 
@@ -99,7 +92,7 @@ class Upgrade:
         try:
             if core_file not in TYPE_MAPPING:
                 raise ValueError(f"Core file '{core_file}' is not recognized for validation")
-            return TYPE_MAPPING[core_file].model_validate(data)
+            return TYPE_MAPPING[core_file].model_validate(data).model_dump()
         except Exception as e:
             raise ValueError(f"Failed to validate {core_file}: {e}")
 
@@ -114,19 +107,17 @@ class Upgrade:
                 del data[core_file]  # Remove core files from the original data
         data.update(new_core_files)  # Add upgraded core files
 
+        upgraded_data = data.copy()
         for specifier_set, upgrader in MAPPING["metadata"]:
             if original_metadata_version in specifier_set:
-                metadata = upgrader().upgrade(data, UPGRADE_VERSIONS["metadata"])
+                upgraded_data = upgrader().upgrade(upgraded_data, UPGRADE_VERSIONS["metadata"])
+
+        metadata = repair_metadata(upgraded_data)
 
         try:
             self.metadata = Metadata(**metadata)
         except Exception as e:
             raise ValueError(f"Failed to validate Metadata: {e}")
-
-        # Push to new DocDB
-        # client.upsert_one_docdb_record(
-        #     record=self.metadata.model_dump(),
-        # )
 
     def upgrade_core_file(self, core_file: str):
         """Initialize one core file"""

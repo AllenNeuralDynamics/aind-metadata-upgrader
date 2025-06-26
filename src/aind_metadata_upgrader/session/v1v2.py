@@ -7,7 +7,7 @@ from aind_data_schema.core.acquisition import (
     DataStream,
     StimulusEpoch,
     PerformanceMetrics,
-    Acquisition
+    Acquisition,
 )
 from aind_data_schema.components.configs import (
     DetectorConfig,
@@ -39,10 +39,7 @@ from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.stimulus_modality import StimulusModality
 from aind_data_schema_models.devices import ImmersionMedium
 from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
-from aind_data_schema_models.units import (
-    TimeUnit, PowerUnit, SizeUnit,
-    MassUnit, VolumeUnit, SoundIntensityUnit
-)
+from aind_data_schema_models.units import TimeUnit, PowerUnit, SizeUnit, MassUnit, VolumeUnit, SoundIntensityUnit
 from aind_data_schema.base import GenericModel
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import (
@@ -96,18 +93,16 @@ class SessionV1V2(CoreUpgrader):
                 wavelength=data.get("wavelength", 0),
                 wavelength_unit=SizeUnit.NM,
                 power=float(excitation_power) if excitation_power else None,
-                power_unit=PowerUnit.MW if power_unit == "milliwatt" else PowerUnit.PERCENT
+                power_unit=PowerUnit.MW if power_unit == "milliwatt" else PowerUnit.PERCENT,
             ).model_dump()
         elif device_type == "Light emitting diode":
             return LightEmittingDiodeConfig(
                 device_name=device_name,
                 power=float(excitation_power) if excitation_power else None,
-                power_unit=PowerUnit.MW if power_unit == "milliwatt" else PowerUnit.PERCENT
+                power_unit=PowerUnit.MW if power_unit == "milliwatt" else PowerUnit.PERCENT,
             ).model_dump()
         else:
-            raise NotImplementedError(
-                f"Light source device type '{device_type}' not supported in v2 upgrade"
-            )
+            raise NotImplementedError(f"Light source device type '{device_type}' not supported in v2 upgrade")
 
     def _upgrade_detector_config(self, detector: Dict) -> Dict:
         """Upgrade detector config from v1 to v2"""
@@ -116,14 +111,14 @@ class SessionV1V2(CoreUpgrader):
             device_name=detector.get("name", "Unknown Detector"),
             exposure_time=float(exposure_time) if exposure_time else -1,
             exposure_time_unit=TimeUnit.MS,
-            trigger_type=TriggerType.INTERNAL if detector.get("trigger_type") == "Internal" else TriggerType.EXTERNAL
+            trigger_type=TriggerType.INTERNAL if detector.get("trigger_type") == "Internal" else TriggerType.EXTERNAL,
         ).model_dump()
 
     def _upgrade_ephys_module_to_configs(self, ephys_module: Dict) -> List[Dict]:
         """Convert ephys module to EphysAssemblyConfig and ManipulatorConfig"""
         configs = []
 
-        # We are going to assume this is an MPM system, since that's all we 
+        # We are going to assume this is an MPM system, since that's all we
         # supported in v1.4 anyways
 
         # Build up the MPM config
@@ -170,11 +165,11 @@ class SessionV1V2(CoreUpgrader):
             dv = -8000 / 2
 
         # Check that the micron ranges make sense
-        if ap < (-13000/2) or ap > (13000/2):
+        if ap < (-13000 / 2) or ap > (13000 / 2):
             raise ValueError(f"AP coordinate {ap} is out of range for Bregma reference")
-        if ml < (-11400/2) or ml > (11400/2):
+        if ml < (-11400 / 2) or ml > (11400 / 2):
             raise ValueError(f"ML coordinate {ml} is out of range for Bregma reference")
-        if dv < (-8000/2) or dv > (8000/2):
+        if dv < (-8000 / 2) or dv > (8000 / 2):
             raise ValueError(f"DV coordinate {dv} is out of range for Bregma reference")
 
         # Check that the reference is bremga
@@ -249,10 +244,8 @@ class SessionV1V2(CoreUpgrader):
             intended_measurement=channel_data.get("intended_measurement", None),
             detector=matching_detector,
             additional_device_names=channel_data.get("additional_device_names", None),
-
             light_sources=[light_source_config] if light_source_config else [],
             # We don't know any of the filter data because it wasn't stored properly
-
             emission_wavelength=channel_data.get("emission_wavelength", None),
             emission_wavelength_unit=channel_data.get("emission_wavelength_unit", None),
         )
@@ -275,7 +268,7 @@ class SessionV1V2(CoreUpgrader):
                 patch_cord_name: ConnectionData(
                     direction=ConnectionDirection.RECEIVE,
                 ),
-            }
+            },
         )
         # patch cord to fiber, send_and_receive:
         patch_fiber_conn = Connection(
@@ -287,7 +280,7 @@ class SessionV1V2(CoreUpgrader):
                 fiber_name: ConnectionData(
                     direction=ConnectionDirection.SEND_AND_RECEIVE,
                 ),
-            }
+            },
         )
         # Finally patch cord to detector
         patch_detector_conn = Connection(
@@ -299,7 +292,7 @@ class SessionV1V2(CoreUpgrader):
                 matching_detector.device_name: ConnectionData(
                     direction=ConnectionDirection.RECEIVE,
                 ),
-            }
+            },
         )
         connections.append(light_fiber_conn.model_dump())
         connections.append(patch_fiber_conn.model_dump())
@@ -336,7 +329,7 @@ class SessionV1V2(CoreUpgrader):
             depth_unit=SizeUnit.UM,
             power=float(fov.get("power", 0)) if fov.get("power") else 0.0,
             power_unit=PowerUnit.PERCENT,
-            targeted_structure=targeted_structure
+            targeted_structure=targeted_structure,
         ).model_dump()
 
         # Handle coupled FOVs
@@ -349,7 +342,7 @@ class SessionV1V2(CoreUpgrader):
                 targeted_structure=targeted_structure,
                 plane_index=fov.get("index", 0),
                 coupled_plane_index=fov.get("coupled_fov_index"),
-                power_ratio=float(fov.get("power_ratio", 1.0)) if fov.get("power_ratio") else 1.0
+                power_ratio=float(fov.get("power_ratio", 1.0)) if fov.get("power_ratio") else 1.0,
             ).model_dump()
             return coupled_plane
 
@@ -365,8 +358,7 @@ class SessionV1V2(CoreUpgrader):
             ccf_structure = {"name": str(targeted_structure), "acronym": "Unknown", "id": "0"}
 
         session_type = slap_fov.get("session_type")
-        acquisition_type = (SlapAcquisitionType.PARENT if session_type == "Parent"
-                            else SlapAcquisitionType.BRANCH)
+        acquisition_type = SlapAcquisitionType.PARENT if session_type == "Parent" else SlapAcquisitionType.BRANCH
 
         return SlapPlane(
             depth=float(slap_fov.get("imaging_depth", 0)),
@@ -380,7 +372,7 @@ class SessionV1V2(CoreUpgrader):
             slap_acquisition_type=acquisition_type,
             target_neuron=slap_fov.get("target_neuron"),
             target_branch=slap_fov.get("target_branch"),
-            path_to_array_of_frame_rates=slap_fov.get("path_to_array_of_frame_rates", "")
+            path_to_array_of_frame_rates=slap_fov.get("path_to_array_of_frame_rates", ""),
         ).model_dump()
 
     def _upgrade_mri_scan_to_config(self, scan: Dict) -> Dict:
@@ -398,12 +390,10 @@ class SessionV1V2(CoreUpgrader):
                 affine_transform=[
                     [float(rotation[0]), float(rotation[1]), float(rotation[2])],
                     [float(rotation[3]), float(rotation[4]), float(rotation[5])],
-                    [float(rotation[6]), float(rotation[7]), float(rotation[8])]
+                    [float(rotation[6]), float(rotation[7]), float(rotation[8])],
                 ]
             )
-            translation = Translation(
-                translation=vc_position["translation"]
-            )
+            translation = Translation(translation=vc_position["translation"])
             transform = [rotation, translation]
 
             # Get voxel size
@@ -416,17 +406,14 @@ class SessionV1V2(CoreUpgrader):
             transform = None
             resolution = None
 
-
         mri_scan = MRIScan(
             device_name=scan.get("mri_scanner", {}).get("name", "Unknown Scanner"),
             scan_index=scan.get("scan_index", 0),
-            scan_type=(ScanType.SCAN_3D
-                       if scan.get("scan_type") == "3D Scan"
-                       else ScanType.SETUP),
+            scan_type=(ScanType.SCAN_3D if scan.get("scan_type") == "3D Scan" else ScanType.SETUP),
             primary_scan=scan.get("primary_scan", True),
-            scan_sequence_type=(MriScanSequence.RARE
-                                if scan.get("scan_sequence_type") == "RARE"
-                                else MriScanSequence.OTHER),
+            scan_sequence_type=(
+                MriScanSequence.RARE if scan.get("scan_sequence_type") == "RARE" else MriScanSequence.OTHER
+            ),
             echo_time=scan.get("echo_time", 1.0),
             echo_time_unit=TimeUnit.MS,
             repetition_time=scan.get("repetition_time", 100.0),
@@ -444,7 +431,7 @@ class SessionV1V2(CoreUpgrader):
     def _determine_stream_modality(self, stream: Dict) -> Optional[str]:
         """Determine the primary imaging modality for a stream"""
         modalities = stream.get("stream_modalities", [])
-        
+
         # Look for imaging modalities
         for mod in modalities:
             if isinstance(mod, dict):
@@ -457,18 +444,22 @@ class SessionV1V2(CoreUpgrader):
         """Create channels and images for ophys/pophys modality"""
         channels = []
         images = []
-        
+
         for i, fov in enumerate(stream.get("ophys_fovs", [])):
             # Create channel for this FOV
             channel = Channel(
                 channel_name=f"Channel_{i}",
-                detector=self._upgrade_detector_config(detectors[0]) if detectors else {
-                    "object_type": "Detector config",
-                    "device_name": "Unknown Detector",
-                    "exposure_time": 1.0,
-                    "exposure_time_unit": "millisecond",
-                    "trigger_type": "Internal"
-                },
+                detector=(
+                    self._upgrade_detector_config(detectors[0])
+                    if detectors
+                    else {
+                        "object_type": "Detector config",
+                        "device_name": "Unknown Detector",
+                        "exposure_time": 1.0,
+                        "exposure_time_unit": "millisecond",
+                        "trigger_type": "Internal",
+                    }
+                ),
                 light_sources=[self._upgrade_light_source_config(ls) for ls in light_sources],
             ).model_dump()
             channels.append(channel)
@@ -476,32 +467,34 @@ class SessionV1V2(CoreUpgrader):
             # Create plane and image
             plane = self._upgrade_ophys_fov_to_plane(fov)
             image = PlanarImage(
-                planes=[plane],
-                image_to_acquisition_transform=[],
-                channel_name=channel["channel_name"]
+                planes=[plane], image_to_acquisition_transform=[], channel_name=channel["channel_name"]
             ).model_dump()
             images.append(image)
-            
+
         return channels, images
 
     def _create_slap_components(self, stream: Dict, light_sources: List, detectors: List) -> tuple:
         """Create channels and images for SLAP modality"""
         channels = []
         images = []
-        
+
         for i, slap_fov in enumerate(stream.get("slap_fovs", [])):
             # Create channel for this SLAP FOV
             channel = {
                 "object_type": "Channel config",
                 "channel_name": f"SLAP_Channel_{i}",
-                "detector": self._upgrade_detector_config(detectors[0]) if detectors else {
-                    "object_type": "Detector config",
-                    "device_name": "Unknown Detector",
-                    "exposure_time": 1.0,
-                    "exposure_time_unit": "millisecond",
-                    "trigger_type": "Internal"
-                },
-                "light_sources": []
+                "detector": (
+                    self._upgrade_detector_config(detectors[0])
+                    if detectors
+                    else {
+                        "object_type": "Detector config",
+                        "device_name": "Unknown Detector",
+                        "exposure_time": 1.0,
+                        "exposure_time_unit": "millisecond",
+                        "trigger_type": "Internal",
+                    }
+                ),
+                "light_sources": [],
             }
             channels.append(channel)
 
@@ -511,10 +504,10 @@ class SessionV1V2(CoreUpgrader):
                 "object_type": "Planar image",
                 "channel_name": f"SLAP_Channel_{i}",
                 "planes": [plane],
-                "image_to_acquisition_transform": {"type": "translation", "translation": [0, 0, 0]}
+                "image_to_acquisition_transform": {"type": "translation", "translation": [0, 0, 0]},
             }
             images.append(image)
-            
+
         return channels, images
 
     def _create_fiber_components(self, stream: Dict, light_sources: List, detectors: List) -> tuple:
@@ -534,38 +527,34 @@ class SessionV1V2(CoreUpgrader):
                         "device_name": channel_data.get("detector_name", "Unknown Detector"),
                         "exposure_time": 1.0,
                         "exposure_time_unit": "millisecond",
-                        "trigger_type": "Internal"
+                        "trigger_type": "Internal",
                     },
                     "light_sources": [],
                     "emission_wavelength": channel_data.get("emission_wavelength"),
-                    "emission_wavelength_unit": "nanometer" if channel_data.get("emission_wavelength") else None
+                    "emission_wavelength_unit": "nanometer" if channel_data.get("emission_wavelength") else None,
                 }
                 channels.append(channel)
-                
+
         return channels, images
 
     def _create_sampling_strategy(self, stream: Dict, modality: str) -> Optional[Dict]:
         """Create sampling strategy based on modality and stream data"""
         frame_rate = None
-        
+
         if modality in ["ophys", "pophys"] and stream.get("ophys_fovs"):
             fov = stream["ophys_fovs"][0]
             frame_rate = fov.get("frame_rate")
         elif modality == "slap" and stream.get("slap_fovs"):
             slap_fov = stream["slap_fovs"][0]
             frame_rate = slap_fov.get("frame_rate")
-            
+
         if frame_rate:
-            return {
-                "object_type": "Sampling strategy",
-                "frame_rate": float(frame_rate),
-                "frame_rate_unit": "hertz"
-            }
+            return {"object_type": "Sampling strategy", "frame_rate": float(frame_rate), "frame_rate_unit": "hertz"}
         return None
 
     def _create_imaging_config(self, stream: Dict) -> Optional[Dict]:
         """Create ImagingConfig from stream data using modality-specific orchestration"""
-        
+
         # Determine the primary imaging modality
         modality = self._determine_stream_modality(stream)
         if not modality:
@@ -599,21 +588,15 @@ class SessionV1V2(CoreUpgrader):
             "device_name": "Imaging System",
             "channels": channels,
             "images": images,
-            "sampling_strategy": sampling_strategy
+            "sampling_strategy": sampling_strategy,
         }
 
     def _create_sample_chamber_config(self, device_name: str) -> Dict:
         """Create a basic SampleChamberConfig"""
         # Create basic immersion - will be overridden if chamber_immersion exists
-        basic_immersion = Immersion(
-            medium=ImmersionMedium.AIR,
-            refractive_index=1.0
-        ).model_dump()
+        basic_immersion = Immersion(medium=ImmersionMedium.AIR, refractive_index=1.0).model_dump()
 
-        return SampleChamberConfig(
-            device_name=device_name,
-            chamber_immersion=basic_immersion
-        ).model_dump()
+        return SampleChamberConfig(device_name=device_name, chamber_immersion=basic_immersion).model_dump()
 
     def _upgrade_data_stream(self, stream: Dict, rig_id: str) -> Dict:
         """Upgrade a single data stream from v1 to v2"""
@@ -690,7 +673,7 @@ class SessionV1V2(CoreUpgrader):
             active_devices=active_devices,
             configurations=configurations,
             connections=connections,
-            notes=stream.get("notes")
+            notes=stream.get("notes"),
         ).model_dump()
 
     def _upgrade_stimulus_epoch(self, epoch: Dict) -> Dict:
@@ -703,19 +686,21 @@ class SessionV1V2(CoreUpgrader):
 
         # Create performance metrics
         performance_metrics = None
-        if any([
-            epoch.get("trials_total"),
-            epoch.get("trials_finished"),
-            epoch.get("trials_rewarded"),
-            epoch.get("reward_consumed_during_epoch")
-        ]):
+        if any(
+            [
+                epoch.get("trials_total"),
+                epoch.get("trials_finished"),
+                epoch.get("trials_rewarded"),
+                epoch.get("reward_consumed_during_epoch"),
+            ]
+        ):
             performance_metrics = PerformanceMetrics(
                 trials_total=epoch.get("trials_total"),
                 trials_finished=epoch.get("trials_finished"),
                 trials_rewarded=epoch.get("trials_rewarded"),
                 reward_consumed_during_epoch=epoch.get("reward_consumed_during_epoch"),
                 reward_consumed_unit=VolumeUnit.UL,
-                output_parameters=GenericModel(**epoch.get("output_parameters", {}))
+                output_parameters=GenericModel(**epoch.get("output_parameters", {})),
             ).model_dump()
 
         # Create configurations
@@ -727,7 +712,7 @@ class SessionV1V2(CoreUpgrader):
             speaker_config = SpeakerConfig(
                 device_name=speaker_data.get("name", "Unknown Speaker"),
                 volume=float(speaker_data.get("volume", 0)) if speaker_data.get("volume") else None,
-                volume_unit=SoundIntensityUnit.DB
+                volume_unit=SoundIntensityUnit.DB,
             ).model_dump()
             configurations.append(speaker_config)
 
@@ -761,7 +746,7 @@ class SessionV1V2(CoreUpgrader):
             code=code,
             active_devices=epoch.get("stimulus_device_names", []),
             configurations=configurations,
-            notes=epoch.get("notes")
+            notes=epoch.get("notes"),
         ).model_dump()
 
     def upgrade(self, data: dict, schema_version: str) -> dict:
@@ -825,7 +810,7 @@ class SessionV1V2(CoreUpgrader):
             anaesthesia=anaesthesia,
             mouse_platform_name=mouse_platform_name,
             reward_consumed_total=reward_consumed_total,
-            reward_consumed_unit=VolumeUnit.ML if reward_consumed_unit == "milliliter" else VolumeUnit.UL
+            reward_consumed_unit=VolumeUnit.ML if reward_consumed_unit == "milliliter" else VolumeUnit.UL,
         ).model_dump()
 
         # Build V2 acquisition object
@@ -843,7 +828,7 @@ class SessionV1V2(CoreUpgrader):
             maintenance=upgraded_maintenance,
             data_streams=upgraded_data_streams,
             stimulus_epochs=upgraded_stimulus_epochs,
-            subject_details=subject_details
+            subject_details=subject_details,
         )
 
         return acquisition.model_dump()

@@ -270,6 +270,11 @@ def upgrade_filter(data: dict) -> dict:
         data["filter_type"] = data["type"]
         remove(data, "type")
 
+    # For multiband filter, make the center_wavelength a list
+    if data["filter_type"] == "Multiband":
+        if "center_wavelength" in data and isinstance(data["center_wavelength"], (int, float)):
+            data["center_wavelength"] = [data["center_wavelength"]]
+
     filter_device = Filter(**data)
     return filter_device.model_dump()
 
@@ -472,7 +477,11 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
                 else "" + " (v1v2 upgrade): Liquid calibration upgraded from v1.x format."
             ),
         )
-    elif "laser power calibration" in data.get("description", "").lower() and "power_setting" in data.get("input", {}) and "power_output" in data.get("output", {}):
+    elif (
+        "laser power calibration" in data.get("description", "").lower()
+        and "power_setting" in data.get("input", {})
+        and "power_output" in data.get("output", {})
+    ):
         # Laser calibration, may or may not have data
 
         power_setting = data["input"].get("power_setting", None)
@@ -490,7 +499,11 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
             output=power_output,
             output_unit=PowerUnit.MW,
         )
-    elif "laser power calibration" in data.get("description", "").lower() and "power_setting" in data.get("input", {}) and "power_measurement" in data.get("output", {}):
+    elif (
+        "laser power calibration" in data.get("description", "").lower()
+        and "power_setting" in data.get("input", {})
+        and "power_measurement" in data.get("output", {})
+    ):
         # Laser calibration, may or may not have data
 
         power_setting = data["input"].get("power_setting", {}).get("value", None)
@@ -512,9 +525,7 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
             output=[power_output],
             output_unit=output_unit,
         )
-    elif "laser power calibration" in data.get("description", "").lower() and "power percent" in data.get(
-        "input", {}
-    ):
+    elif "laser power calibration" in data.get("description", "").lower() and "power percent" in data.get("input", {}):
         # Laser calibration, may or may not have data
 
         # Drop empty calibrations
@@ -549,10 +560,7 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
     return calibration.model_dump() if calibration else None
 
 
-CCF_MAPPING = {
-    "ALM": CCFv3.MO,
-    "Primary Motor Cortex": CCFv3.MO
-}
+CCF_MAPPING = {"ALM": CCFv3.MO, "Primary Motor Cortex": CCFv3.MO}
 
 
 def upgrade_targeted_structure(data: dict | str) -> dict:
@@ -565,5 +573,30 @@ def upgrade_targeted_structure(data: dict | str) -> dict:
             return CCF_MAPPING[data].model_dump()
         else:
             raise ValueError(f"Unsupported targeted structure: {data}. " "Expected one of the CCF structures.")
+
+    return data
+
+
+def repair_metadata(data: dict) -> dict:
+    """Repair the full metadata record, checking for common issues"""
+
+    # Check for acquisition.instrument_id being different from instrument.instrument_id
+    if "acquisition" in data and data["acquisition"] and "instrument_id" in data["acquisition"]:
+        acquisition_instrument_id = data["acquisition"]["instrument_id"]
+        if "instrument" in data and data["instrument"]:
+            if "instrument_id" in data["instrument"]:
+                instrument_id = data["instrument"]["instrument_id"]
+
+                if acquisition_instrument_id != instrument_id:
+                    print(
+                        f"Warning: acquisition.instrument_id ({acquisition_instrument_id}) "
+                        f"does not match instrument.instrument_id ({instrument_id}). "
+                        "Updating acquisition.instrument_id to match."
+                    )
+                    data["acquisition"]["instrument_id"] = instrument_id
+            else:
+                raise ValueError("instrument.instrument_id is missing while acquisition.instrument_id is present.")
+
+    # Check for active devices that are not in the instrument devices, create them
 
     return data

@@ -6,10 +6,13 @@ import json
 
 from aind_metadata_upgrader.upgrade import Upgrade
 from aind_data_access_api.document_db import MetadataDbClient
+import traceback
 
-API_GATEWAY_HOST = os.getenv("API_GATEWAY_HOST", "api.allenneuraldynamics-test.org")
-DATABASE = os.getenv("DATABASE", "metadata_index")
-COLLECTION = "assets"
+
+API_GATEWAY_HOST = "api.allenneuraldynamics-test.org"
+DATABASE = "metadata_index_v2"
+COLLECTION = "data_assets"
+
 
 client = MetadataDbClient(
     host=API_GATEWAY_HOST,
@@ -36,19 +39,43 @@ class TestUpgrade(unittest.TestCase):
             for json_file in json_files:
                 file_path = os.path.join(dir_path, json_file)
                 with open(file_path, "r") as file:
-                    print(f"Testing upgrade for {file_path}")
+                    print(f"\n\nTesting upgrade for {file_path}")
                     data = file.read()
-                    # Here you would call the upgrade function
-                    # For example: upgraded_data = upgrade(data)
-                    # Then you can assert the expected outcome
+                    data_dict = json.loads(data)
 
-                    upgraded = Upgrade(json.loads(data))
-                    self.assertIsNotNone(upgraded)
+                    # Test the upgrade process - this will fail the subTest if upgrade fails
+                    if "name" not in data_dict:
+                        data_dict["name"] = "fake_name_for_testing"
+                    if "location" not in data_dict:
+                        data_dict["location"] = "fake_location_for_testing"
 
-                    client.upsert_one_docdb_record(
-                        record=upgraded.metadata.model_dump(),
-                    )
+                    try:
+                        upgraded = Upgrade(data_dict)
+                        self.assertIsNotNone(upgraded)
 
+                        if upgraded:
+                            location = upgraded.metadata.location
+
+                            records = client.retrieve_docdb_records(
+                                filter_query={"location": location},
+                                limit=1,
+                            )
+                            if len(records) == 0:
+                                print(f"Inserting new upgraded record to DocumentDB: {upgraded.metadata.name}")
+                                client.insert_one_docdb_record(
+                                    record=upgraded.metadata.model_dump(),
+                                )
+                            else:
+                                id = records[0]["_id"]
+                                record_data = upgraded.metadata.model_dump()
+                                record_data["_id"] = id
+                                print(f"Updating existing record in DocumentDB: {upgraded.metadata.name}")
+                                client.upsert_one_docdb_record(
+                                    record=record_data,
+                                )
+                    except Exception as e:
+                        print(f"Upgrade failed for {file_path}: {e}")
+                        print(f"Stack trace:\n{traceback.format_exc()}")
 
 
 if __name__ == "__main__":

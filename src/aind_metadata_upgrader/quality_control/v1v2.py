@@ -46,7 +46,7 @@ def upgrade_curation_metric(data: dict, modality: dict, stage: str, tags: list) 
         type="unknown",
         curation_history=curation_history,
     )
-    
+
     return metric.model_dump()
 
 
@@ -96,5 +96,5 @@ class QCUpgraderV1V2(CoreUpgrader):
             "object_type": "Quality control",
             "metrics": metrics,
             "default_grouping": default_grouping,
-            **data,
+            "notes": data.get("notes", None),
         }

@@ -78,13 +78,13 @@ class AcquisitionV1V2(CoreUpgrader):
         tiles = data.get("tiles", [])
         axes = data.get("axes", [])
         notes = data.get("notes")
-        
+
         # Repair specimen_id, if needed
         if not specimen_id:
             specimen_id = f"{subject_id}_001"
 
         active_objectives = data.get("active_objectives", [])
-        
+
         software = data.get("software", [])
 
         chamber_immersion = data.get("chamber_immersion")

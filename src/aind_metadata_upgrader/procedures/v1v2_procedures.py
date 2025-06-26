@@ -325,7 +325,8 @@ def upgrade_fiber_implant(data: dict) -> list:
 
     implants = []
     for i, probe in enumerate(probes):
-        implants.append(ProbeImplant(
+        implants.append(
+            ProbeImplant(
                 protocol_id=data.get("protocol_id", "unknown"),
                 implanted_device=probe,
                 device_config=configs[i],
