@@ -2189,7 +2189,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "2p_PC",
+                "name": "LEVIATHON",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -2207,34 +2207,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "vDAQ0",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "harp_clock_generator",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Harp sound amplifier",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "ACQ",
+                "name": "SYNC",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -2252,106 +2225,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "harp_olfactometer",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Video Monitor",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Probe Camera",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "SideCamera",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "PXI",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "VBEB DAQ",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Photometry Clock",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "SYNC",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Olfactometer",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Eye Camera",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "harp_behavior",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Bottom face Camera",
+                "name": "Solenoid",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -2369,6 +2243,69 @@
             },
             {
                 "object_type": "Device",
+                "name": "Face Camera",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Behavior Camera",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Harp Behavior",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "harp_clock_generator",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "VR Wheel",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "PXI",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Harp sound amplifier",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
                 "name": "STIM",
                 "serial_number": null,
                 "manufacturer": null,
@@ -2378,7 +2315,61 @@
             },
             {
                 "object_type": "Device",
-                "name": "LEVIATHON",
+                "name": "harp_olfactometer",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "harp_behavior",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Speaker",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "W10DT714030",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Harp Sound",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "VBEB DAQ",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Side face camera",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -2396,7 +2387,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "FaceCamera",
+                "name": "Eye Camera",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -2405,7 +2396,52 @@
             },
             {
                 "object_type": "Device",
-                "name": "Harp Behavior",
+                "name": "Video Monitor",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "STIM DAQ",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "SideCamera",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Photometry Clock",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "harp_clock_repeaters",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "FaceCamera",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -2432,7 +2468,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "Face Camera",
+                "name": "Probe Camera",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -2441,7 +2477,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "STIM DAQ",
+                "name": "Olfactometer",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -2450,7 +2486,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "Side face camera",
+                "name": "vDAQ0",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -2459,34 +2495,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "VR Wheel",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Speaker",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Harp Sound",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "W10DT714030",
+                "name": "Bottom face Camera",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -2504,7 +2513,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "harp_clock_repeaters",
+                "name": "2p_PC",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -2513,16 +2522,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "Solenoid",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Behavior Camera",
+                "name": "ACQ",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -2630,10 +2630,10 @@
                 "code": null,
                 "notes": null,
                 "active_devices": [
-                    "Microscope Assembly 1",
-                    "Ephys_AssemblyA",
+                    "Ephys_AssemblyB",
                     "Microscope Assembly 2",
-                    "Ephys_AssemblyB"
+                    "Microscope Assembly 1",
+                    "Ephys_AssemblyA"
                 ],
                 "configurations": [
                     {
@@ -2861,5 +2861,5 @@
     "quality_control": null,
     "model": null,
     "_created": "2025-06-25T21:56:53.227Z",
-    "_last_modified": "2025-06-27T04:48:59.649Z"
+    "_last_modified": "2025-06-27T04:51:11.678Z"
 }

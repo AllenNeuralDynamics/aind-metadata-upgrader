@@ -1529,7 +1529,16 @@
             },
             {
                 "object_type": "Device",
-                "name": "Applied Scientific Instrumentation Tiger",
+                "name": "Laser Launch",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "SmartSPIM1-1",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -1556,7 +1565,16 @@
             },
             {
                 "object_type": "Device",
-                "name": "SmartSPIM1-1",
+                "name": "MightyZap",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Applied Scientific Instrumentation Tiger",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -1566,24 +1584,6 @@
             {
                 "object_type": "Device",
                 "name": "ASI Tiger",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Laser Launch",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "MightyZap",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -1844,5 +1844,5 @@
     "quality_control": null,
     "model": null,
     "_created": "2025-06-25T21:56:48.946Z",
-    "_last_modified": "2025-06-27T04:48:54.762Z"
+    "_last_modified": "2025-06-27T04:51:06.471Z"
 }

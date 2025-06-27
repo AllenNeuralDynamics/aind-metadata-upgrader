@@ -2114,97 +2114,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "Face Camera",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Eye Camera",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Bottom face Camera",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "STIM DAQ",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "ABAIA",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "STIM",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Video Monitor",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
                 "name": "LEVIATHON",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Solenoid",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "VBEB DAQ",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "SYNC",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -2222,7 +2132,97 @@
             },
             {
                 "object_type": "Device",
+                "name": "SYNC",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "ABAIA",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Eye Camera",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Video Monitor",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "STIM",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Solenoid",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "STIM DAQ",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Face Camera",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Bottom face Camera",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
                 "name": "Behavior Camera",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "VBEB DAQ",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -2343,15 +2343,15 @@
                 "code": null,
                 "notes": null,
                 "active_devices": [
-                    "harp_behavior",
-                    "harp_sniff_detector",
                     "harp_clock_generator",
                     "FaceCamera",
-                    "SideCamera",
                     "harp_lickometer",
-                    "harp_treadmill",
+                    "harp_sniff_detector",
+                    "harp_olfactometer",
                     "manipulator",
-                    "harp_olfactometer"
+                    "harp_behavior",
+                    "SideCamera",
+                    "harp_treadmill"
                 ],
                 "configurations": [],
                 "connections": []
@@ -2424,5 +2424,5 @@
     "quality_control": null,
     "model": null,
     "_created": "2025-06-25T21:56:49.147Z",
-    "_last_modified": "2025-06-27T04:48:55.041Z"
+    "_last_modified": "2025-06-27T04:51:06.749Z"
 }

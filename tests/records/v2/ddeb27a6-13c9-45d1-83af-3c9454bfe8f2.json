@@ -1015,25 +1015,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "Applied Scientific Instrumentation Tiger",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "SmartSPIM1-7",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "ASI Tiger",
+                "name": "Laser Launch",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -1051,7 +1033,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "Laser Launch",
+                "name": "SmartSPIM1-7",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -1069,7 +1051,25 @@
             },
             {
                 "object_type": "Device",
-                "name": "639",
+                "name": "Applied Scientific Instrumentation Tiger",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "ASI Tiger",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "665",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -1078,7 +1078,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "665",
+                "name": "639",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -1240,8 +1240,8 @@
                 "code": null,
                 "notes": "\nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration",
                 "active_devices": [
-                    "639",
                     "665",
+                    "639",
                     "561",
                     "LCT 3.6x"
                 ],
@@ -1348,5 +1348,5 @@
     "quality_control": null,
     "model": null,
     "_created": "2025-06-26T22:19:08.495Z",
-    "_last_modified": "2025-06-27T04:48:53.096Z"
+    "_last_modified": "2025-06-27T04:51:05.694Z"
 }

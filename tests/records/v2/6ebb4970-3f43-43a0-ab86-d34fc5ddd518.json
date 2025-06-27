@@ -1745,6 +1745,33 @@
             },
             {
                 "object_type": "Device",
+                "name": "exaSPIM1-01",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Galvo servo 1",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Z scanning stage",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
                 "name": "SmartSPIM1-1",
                 "serial_number": null,
                 "manufacturer": null,
@@ -1754,7 +1781,97 @@
             },
             {
                 "object_type": "Device",
+                "name": "AOTF RF driver, 639 nm",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "W10DTA03416",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "440_SmartSPIM1_20250116",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Applied Scientific Instrumentation Tiger",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
                 "name": "ASI Tiger",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Tiger Controller",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Laser Launch",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "SmartSPIM1-7",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "ETL",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Galvo servo 2",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "MightyZap",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -1790,114 +1907,6 @@
             },
             {
                 "object_type": "Device",
-                "name": "Galvo servo 1",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Laser Launch",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "MightyZap",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Z scanning stage",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "exaSPIM1-01",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "SmartSPIM1-7",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "W10DTA03416",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "440_SmartSPIM1_20250116",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "AOTF RF driver, 488 nm",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Galvo servo 2",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "ETL",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "Applied Scientific Instrumentation Tiger",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
                 "name": "AOTF RF driver",
                 "serial_number": null,
                 "manufacturer": null,
@@ -1907,16 +1916,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "Tiger Controller",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "AOTF RF driver, 639 nm",
+                "name": "AOTF RF driver, 488 nm",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -2070,5 +2070,5 @@
     "quality_control": null,
     "model": null,
     "_created": "2025-06-26T22:21:26.793Z",
-    "_last_modified": "2025-06-27T04:48:59.357Z"
+    "_last_modified": "2025-06-27T04:51:11.442Z"
 }

@@ -1112,27 +1112,27 @@
         ],
         "allow_tag_failures": [],
         "status": {
-            "Complete Synchronization Pulse": "Pass",
-            "Preprocessing using method 'exp'": "Pending",
-            "Check researcher name": "Pass",
-            "Check for minimum trials": "Pass",
-            "Lick Intervals": "Pass",
             "Preprocessing using method 'poly'": "Pending",
-            "Data length check": "Pass",
-            "No sudden changes in signals": "Pass",
-            "Preprocessing using method 'bright'": "Pending",
-            "Check for untracked file changes": "Pass",
+            "Check for minimum trials": "Pass",
             "CMOS Floor signal": "Fail",
             "dropped frames check": "Pass",
+            "Lick Intervals": "Pass",
+            "Check for untracked file changes": "Pass",
+            "Preprocessing using method 'bright'": "Pending",
             "No NaN values in data": "Pass",
-            "behavior": "Pass",
+            "Complete Synchronization Pulse": "Pass",
+            "Data length check": "Pass",
+            "No sudden changes in signals": "Pass",
+            "Check researcher name": "Pass",
+            "Preprocessing using method 'exp'": "Pending",
             "behavior-videos": "Pass",
             "fib": "Fail",
-            "Raw data": "Fail",
-            "Processing": "Pending"
+            "behavior": "Pass",
+            "Processing": "Pending",
+            "Raw data": "Fail"
         }
     },
     "model": null,
     "_created": "2025-06-26T22:58:21.265Z",
-    "_last_modified": "2025-06-27T04:48:58.676Z"
+    "_last_modified": "2025-06-27T04:51:10.570Z"
 }

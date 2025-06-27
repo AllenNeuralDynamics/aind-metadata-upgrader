@@ -1301,7 +1301,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "ASI Tiger",
+                "name": "MightyZap",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -1319,7 +1319,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "MightyZap",
+                "name": "ASI Tiger",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -1572,5 +1572,5 @@
     "quality_control": null,
     "model": null,
     "_created": "2025-06-25T21:14:20.363Z",
-    "_last_modified": "2025-06-27T04:48:52.322Z"
+    "_last_modified": "2025-06-27T04:51:04.856Z"
 }

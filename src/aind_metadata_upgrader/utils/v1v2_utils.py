@@ -613,7 +613,7 @@ def upgrade_targeted_structure(data: dict | str) -> dict:
 
 
 # List of acquisition IDs where the instrument_id needs to be copied from instrument to acquisition
-SHORT_ACQ_ID_LIST = ["5B", "4D", "MESO.1"]
+SHORT_ACQ_ID_LIST = ["5B", "4D", "MESO.1", "MESO.2"]
 
 
 def repair_instrument_id_mismatch(data: dict) -> dict:
@@ -650,6 +650,10 @@ def repair_missing_active_devices(data: dict) -> dict:
     if data.get("acquisition") and "data_streams" in data["acquisition"]:
         for data_stream in data["acquisition"]["data_streams"]:
             active_devices.extend(data_stream["active_devices"])
+    # Collective active devices from stimulus epochs
+    if data.get("acquisition") and "stimulus_epochs" in data["acquisition"]:
+        for stimulus_epoch in data["acquisition"]["stimulus_epochs"]:
+            active_devices.extend(stimulus_epoch.get("active_devices", []))
 
     # Collect existing device names
     device_names = []
@@ -670,31 +674,6 @@ def repair_missing_active_devices(data: dict) -> dict:
                 notes="(v1v2 upgrade) This device was not found in the components list, but is referenced in Acquisition.",
             )
             data["instrument"]["components"].append(new_device.model_dump())
-
-    return data
-
-
-def repair_missing_stimulus_epoch_devices(data: dict) -> dict:
-    """Create missing devices that are referenced in stimulus epochs but not in instrument components"""
-
-    acquisition = Acquisition.model_validate(data.get("acquisition", {}))
-    instrument = Instrument.model_validate(data.get("instrument", {}))
-
-    acquisition_stimulus_devices = [
-        stimulus_device_name
-        for stimulus_epoch in getattr(acquisition, "stimulus_epochs", [])
-        for stimulus_device_name in getattr(stimulus_epoch, "active_devices")
-    ]
-    instrument_component_names = [getattr(comp, "name", None) for comp in getattr(instrument, "components", [])]
-
-    for device_name in acquisition_stimulus_devices:
-        if device_name not in instrument_component_names:
-            # Create a new Device object with the missing name
-            new_device = Device(
-                name=device_name,
-                notes="(v1v2 upgrade) This device was not found in the components list, but is referenced in Acquisition stimulus epochs.",
-            )
-            data["instrument"]["components"].append(new_device)
 
     return data
 

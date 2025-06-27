@@ -1456,16 +1456,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "Applied Scientific Instrumentation Tiger",
-                "serial_number": null,
-                "manufacturer": null,
-                "model": null,
-                "additional_settings": null,
-                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
-            },
-            {
-                "object_type": "Device",
-                "name": "ASI Tiger",
+                "name": "Laser Launch",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -1483,7 +1474,7 @@
             },
             {
                 "object_type": "Device",
-                "name": "Laser Launch",
+                "name": "MightyZap",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -1492,7 +1483,16 @@
             },
             {
                 "object_type": "Device",
-                "name": "MightyZap",
+                "name": "Applied Scientific Instrumentation Tiger",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "ASI Tiger",
                 "serial_number": null,
                 "manufacturer": null,
                 "model": null,
@@ -1721,5 +1721,5 @@
     "quality_control": null,
     "model": null,
     "_created": "2025-06-25T21:14:20.496Z",
-    "_last_modified": "2025-06-27T04:48:52.551Z"
+    "_last_modified": "2025-06-27T04:51:05.140Z"
 }
