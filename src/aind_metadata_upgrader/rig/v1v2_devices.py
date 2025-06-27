@@ -677,6 +677,10 @@ def upgrade_fiber_probe(data: dict) -> dict:
     if "core_diameter_unit" in data and data["core_diameter_unit"]:
         data["core_diameter_unit"] = repair_unit(data["core_diameter_unit"])
 
+    if "total_length" in data and not data["total_length"]:
+        data["total_length"] = 0
+        data["notes"] = "(v1v2 upgrade): total_length was not specified, set to 0."
+
     fiber_probe = FiberProbe(**data)
 
     return fiber_probe.model_dump()
