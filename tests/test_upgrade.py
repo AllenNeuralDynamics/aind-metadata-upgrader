@@ -95,14 +95,14 @@ class TestUpgrade(unittest.TestCase):
 
                             # Retrieve the record and save into the v2 folder, using the v1 filename
 
-                            retrieved_records = client.retrieve_docdb_records(
-                                filter_query={"location": location},
-                                limit=1,
-                            )
-                            output_file_path = os.path.join(base_dir, "v2", json_file)
-                            # Save the upgraded record to the v2 folder
-                            with open(output_file_path, "w") as output_file:
-                                json.dump(retrieved_records[0], output_file, indent=4)
+                            # retrieved_records = client.retrieve_docdb_records(
+                            #     filter_query={"location": location},
+                            #     limit=1,
+                            # )
+                            # output_file_path = os.path.join(base_dir, "v2", json_file)
+                            # # Save the upgraded record to the v2 folder
+                            # with open(output_file_path, "w") as output_file:
+                            #     json.dump(retrieved_records[0], output_file, indent=4)
 
                     except Exception as e:
                         print(f"Upgrade failed for {file_path}: {e}")
