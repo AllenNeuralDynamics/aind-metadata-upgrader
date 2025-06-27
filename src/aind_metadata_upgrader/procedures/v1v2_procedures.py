@@ -386,11 +386,14 @@ def upgrade_reagent(data: dict) -> dict:
 
 
 def upgrade_anaesthetic(data: dict) -> dict:
-    """Upgrade anesthetic from V1 to V2"""
+    """Upgrade anaesthetic from V1 to V2"""
     upgraded_data = data.copy()
 
     upgraded_data["anaesthetic_type"] = upgraded_data.get("type", "Unknown")
     remove(upgraded_data, "type")
+
+    if upgraded_data["duration"] is None:
+        upgraded_data["duration"] = 0
 
     return Anaesthetic(**upgraded_data).model_dump()
 
