@@ -667,7 +667,7 @@ def upgrade_targeted_structure(data: dict | str) -> dict:
 
 
 # List of acquisition IDs where the instrument_id needs to be copied from instrument to acquisition
-SHORT_ACQ_ID_LIST = ["5B", "4D", "MESO.1", "MESO.2", "5A"]
+SHORT_ACQ_ID_LIST = ["5B", "4D", "MESO.1", "MESO.2", "5A", "4A", "4B", "4C"]
 # List of acquisition IDs where the instrument_id needs to be copied from acquisition to instrument
 LONG_ACQ_ID_LIST = ["323_EPHYS1_2024-06-11", "442_Bergamo_2p_photostim"]
 

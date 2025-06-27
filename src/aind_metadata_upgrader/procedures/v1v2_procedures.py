@@ -102,6 +102,9 @@ def upgrade_hemisphere_craniotomy(data: dict) -> dict:
         # If craniotomy type is circle, we don't know where it is unfortunately, so we put it at the origin
         data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
         data["position"] = [AnatomicalRelative.ORIGIN]
+    else:
+        # We don't know the hemisphere, so we put position at origin unfortunately
+        data["position"] = [AnatomicalRelative.ORIGIN]
     remove(data, "craniotomy_hemisphere")
 
     return data
@@ -189,7 +192,6 @@ def upgrade_craniotomy(data: dict) -> dict:
         upgraded_data = upgrade_coordinate_craniotomy(upgraded_data)
     elif "craniotomy_hemisphere" in upgraded_data:
         upgraded_data = upgrade_hemisphere_craniotomy(upgraded_data)
-
     else:
         raise ValueError("Unknown craniotomy type, unclear how to upgrade coordinate/hemisphere data")
 
