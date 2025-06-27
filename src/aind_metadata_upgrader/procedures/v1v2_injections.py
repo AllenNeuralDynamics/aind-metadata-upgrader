@@ -33,9 +33,7 @@ def upgrade_viral_material(data: dict) -> dict:
     if "tars_identifiers" in data and data["tars_identifiers"]:
         # We need to upgrade the plasmid_tars_alias into a list of strings
         if "plasmid_tars_alias" in data["tars_identifiers"] and data["tars_identifiers"]["plasmid_tars_alias"]:
-            data["tars_identifiers"]["plasmid_tars_alias"] = [
-                data["tars_identifiers"]["plasmid_tars_alias"]
-            ]
+            data["tars_identifiers"]["plasmid_tars_alias"] = [data["tars_identifiers"]["plasmid_tars_alias"]]
 
     remove(data, "material_type")
 

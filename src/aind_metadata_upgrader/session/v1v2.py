@@ -240,7 +240,7 @@ class SessionV1V2(CoreUpgrader):
         # Build the actual channel object
         # Note we don't care if multiple patch cords make the same channel,
         # we'll sort it out when they get returned
-        
+
         channel = Channel(
             channel_name=channel_data.get("channel_name", "unknown"),
             intended_measurement=channel_data.get("intended_measurement", None),

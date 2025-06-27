@@ -193,7 +193,11 @@ def upgrade_craniotomy(data: dict) -> dict:
     else:
         raise ValueError("Unknown craniotomy type, unclear how to upgrade coordinate/hemisphere data")
 
-    if "protocol_id" in upgraded_data and upgraded_data["protocol_id"].lower() == "none":
+    if (
+        "protocol_id" in upgraded_data
+        and upgraded_data["protocol_id"]
+        and upgraded_data["protocol_id"].lower() == "none"
+    ):
         upgraded_data["protocol_id"] = None
 
     try:

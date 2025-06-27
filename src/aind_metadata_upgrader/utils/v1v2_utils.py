@@ -30,8 +30,6 @@ from aind_data_schema.core.instrument import (
     ConnectionDirection,
 )
 from aind_data_schema.core.procedures import Procedures
-from aind_data_schema.core.acquisition import Acquisition
-from aind_data_schema.core.instrument import Instrument
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
 from aind_data_schema_models.units import SizeUnit, TimeUnit, VolumeUnit, PowerUnit
@@ -589,6 +587,62 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
             output=data["output"]["Power mW"],
             output_unit=PowerUnit.MW,
         )
+    elif "Calibration of the water valve delivery system" in data.get("description", ""):
+        # Water valve delivery system calibration
+        measurements = data.get("input", {}).get("measurements", [])
+
+        if not measurements:
+            return None
+
+        # Extract input (valve open times) and output (water weights) from measurements
+        input_values = []
+        output_values = []
+        # repeat_counts = []  # Will be added to VolumeCalibration schema soon
+
+        for measurement in measurements:
+            input_values.append(measurement.get("valve_open_time", 0))
+            # Average the water weights if multiple values exist
+            water_weights = measurement.get("water_weight", [])
+            if water_weights:
+                output_values.append(sum(water_weights) / len(water_weights))
+            else:
+                output_values.append(0)
+            # repeat_counts.append(measurement.get("repeat_count", 1))
+
+        # Drop empty calibrations
+        if not any(input_values) and not any(output_values):
+            return None
+
+        calibration = VolumeCalibration(
+            calibration_date=data["calibration_date"],
+            device_name=data["device_name"],
+            input=input_values,
+            input_unit=TimeUnit.S,
+            output=output_values,
+            output_unit=VolumeUnit.ML,
+            # repeats=repeat_counts,  # Will be added to schema soon
+        )
+    elif "Spot check of water calibration" in data.get("description", "") or (
+        "valve open time (s):" in data.get("input", {}) and "water volume (ul):" in data.get("output", {})
+    ):
+        # Spot check water calibration with different field format
+
+        # Extract input and output values (could be lists or single values)
+        input_values = data["input"]["valve open time (s):"]
+        output_values = data["output"]["water volume (ul):"]
+
+        # Drop empty calibrations
+        if not input_values and not output_values:
+            return None
+
+        calibration = VolumeCalibration(
+            calibration_date=data["calibration_date"],
+            device_name=data["device_name"],
+            input=input_values,
+            input_unit=TimeUnit.S,
+            output=output_values,
+            output_unit=VolumeUnit.UL,
+        )
     else:
         raise ValueError(f"Unsupported calibration: {data}")
 
@@ -613,7 +667,9 @@ def upgrade_targeted_structure(data: dict | str) -> dict:
 
 
 # List of acquisition IDs where the instrument_id needs to be copied from instrument to acquisition
-SHORT_ACQ_ID_LIST = ["5B", "4D", "MESO.1", "MESO.2"]
+SHORT_ACQ_ID_LIST = ["5B", "4D", "MESO.1", "MESO.2", "5A"]
+# List of acquisition IDs where the instrument_id needs to be copied from acquisition to instrument
+LONG_ACQ_ID_LIST = ["323_EPHYS1_2024-06-11", "442_Bergamo_2p_photostim"]
 
 
 def repair_instrument_id_mismatch(data: dict) -> dict:
@@ -632,8 +688,8 @@ def repair_instrument_id_mismatch(data: dict) -> dict:
                 else:
                     raise ValueError("instrument.instrument_id is missing while acquisition.instrument_id is present.")
     elif "acquisition" in data and data["acquisition"] and "instrument_id" in data["acquisition"]:
-        if data["acquisition"]["instrument_id"] == "442_Bergamo_2p_photostim":
-            data["instrument"]["instrument_id"] = "442_Bergamo_2p_photostim"
+        if data["acquisition"]["instrument_id"] in LONG_ACQ_ID_LIST:
+            data["instrument"]["instrument_id"] = data["acquisition"]["instrument_id"]
         elif data["acquisition"]["instrument_id"] in SHORT_ACQ_ID_LIST:
             data["acquisition"]["instrument_id"] = data["instrument"]["instrument_id"]
     return data

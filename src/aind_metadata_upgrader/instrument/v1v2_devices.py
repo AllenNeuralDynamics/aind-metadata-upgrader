@@ -42,6 +42,9 @@ def upgrade_detector(data: dict) -> dict:
             )
         del data["computer_name"]
 
+    # Remove old Device fields
+    remove(data, "max_frame_rate")
+
     if "type" in data and data["type"] == "Camera":
         del data["type"]
         detector = Camera(**data)
