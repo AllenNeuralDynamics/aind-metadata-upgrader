@@ -46,6 +46,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_calibration,
     upgrade_targeted_structure,
     upgrade_light_source,
+    remove,
 )
 from aind_data_schema.components.coordinates import CoordinateSystemLibrary, Translation, Affine, Scale
 
@@ -211,6 +212,7 @@ class SessionV1V2(CoreUpgrader):
         """Upgrade detector config from v1 to v2"""
 
         data["device_name"] = data.get("name", "Unknown Detector")
+        remove(data, "name")
 
         if "exposure_time" not in data or data["exposure_time"] is None:
             data["exposure_time"] = 0
@@ -226,6 +228,9 @@ class SessionV1V2(CoreUpgrader):
         patch_cord_name = fiber_connection.get("patch_cord_name", "unknown")
         fiber_name = fiber_connection.get("fiber_name", "unknown")
         channel_data = fiber_connection.get("channel", {})
+
+        if channel_data["channel_name"] is "disconnected":
+            return None, []
 
         # Deal with the detector
         detector_name = channel_data.get("detector_name", None)
@@ -331,8 +336,9 @@ class SessionV1V2(CoreUpgrader):
         all_connections = []
         for fiber_conn in fiber_connection_configs:
             patchcord_config, connections = self._upgrade_fiber_connection_config(stream, fiber_conn)
-            patchcord_configs.append(patchcord_config)
-            all_connections.extend(connections)
+            if patchcord_config:
+                patchcord_configs.append(patchcord_config)
+                all_connections.extend(connections)
 
         return patchcord_configs, all_connections
 

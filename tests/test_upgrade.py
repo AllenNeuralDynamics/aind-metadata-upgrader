@@ -34,6 +34,17 @@ client = MetadataDbClient(
     collection=COLLECTION,
 )
 
+# ids = client.retrieve_docdb_records(
+#     filter_query={},
+#     limit=0,
+#     projection={"_id": 1},
+# )
+# ids = [id["_id"] for id in ids]
+
+# client.delete_many_records(
+#     data_asset_record_ids=ids,
+# )
+
 
 class TestUpgrade(unittest.TestCase):
     """Test the upgrade process"""

@@ -98,7 +98,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                         v2_procedures["subject_procedures"].append(upgraded_proc)
 
         # Upgrade specimen procedures
-        if "specimen_procedures" in procedures_data:
+        if "specimen_procedures" in procedures_data and procedures_data["specimen_procedures"]:
             for spec_proc in procedures_data["specimen_procedures"]:
                 upgraded_proc = self._upgrade_specimen_procedure(spec_proc)
                 if upgraded_proc:

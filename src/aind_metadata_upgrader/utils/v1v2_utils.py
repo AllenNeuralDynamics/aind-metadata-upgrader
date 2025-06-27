@@ -99,11 +99,14 @@ def repair_organization(data: str) -> dict:
 def repair_manufacturer(data: dict) -> dict:
     """Repair the manufacturer field to ensure it's an Organization object."""
 
-    if "manufacturer" in data and isinstance(data["manufacturer"], str):
+    if "manufacturer" not in data:
+        return data
+
+    if isinstance(data["manufacturer"], str):
         # Convert string to Organization object
         data["manufacturer"] = repair_organization(data["manufacturer"])
 
-    if "manufacturer" in data and isinstance(data["manufacturer"], dict):
+    if isinstance(data["manufacturer"], dict):
         if data["manufacturer"]["name"] == "Other" and not data["notes"]:
             data["notes"] = (
                 data["notes"]
@@ -112,7 +115,7 @@ def repair_manufacturer(data: dict) -> dict:
                 " and notes were empty, manufacturer is unknown."
             )
 
-    if "manufacturer" not in data or not data["manufacturer"]:
+    if not data["manufacturer"]:
         data["manufacturer"] = Organization.OTHER.model_dump()
         if "notes" in data:
             data["notes"] = (
@@ -121,10 +124,8 @@ def repair_manufacturer(data: dict) -> dict:
                 else "" + " (v1v2 upgrade): 'manufacturer' field was missing, defaulting to 'Other'."
             )
 
-    if "manufacturer" in data and (
-        "abbreviation" not in data["manufacturer"] or data["manufacturer"]["abbreviation"] is None
-    ):
-        data["manufacturer"] = Organization.from_name(data["manufacturer"]["name"]).model_dump()
+    # Rebuild the manufacturer
+    data["manufacturer"] = Organization.from_name(data["manufacturer"]["name"]).model_dump()
 
     return data
 
