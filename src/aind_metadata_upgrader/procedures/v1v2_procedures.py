@@ -210,8 +210,10 @@ def upgrade_headframe(data: dict) -> dict:
     remove(upgraded_data, "procedure_type")
 
     if "headframe_part_number" in upgraded_data and not upgraded_data["headframe_part_number"]:
-        # If headframe part number is empty, we set it to None
         upgraded_data["headframe_part_number"] = "unknown"
+
+    if "headframe_type" in upgraded_data and not upgraded_data["headframe_type"]:
+        upgraded_data["headframe_type"] = "unknown"
 
     return Headframe(**upgraded_data).model_dump()
 
@@ -286,6 +288,8 @@ def retrieve_probe_config(data: dict) -> tuple:
             )
 
         stereotactic_coordinate_reference = implant.get("stereotactic_coordinate_reference", "Bregma")
+        if not stereotactic_coordinate_reference:
+            stereotactic_coordinate_reference = "Bregma"
 
         if stereotactic_coordinate_reference != "Bregma":
             raise ValueError(
