@@ -243,17 +243,21 @@ class RigUpgraderV1V2(CoreUpgrader):
         connection_names = [name for conn in connections for name in conn["device_names"]]
         component_names = [comp["name"] for comp in components]
 
+        missing_names = []
         for name in connection_names:
             if name not in component_names:
-                # Create an empty Device with the name
-                device = Device(
-                    name=name,
-                    notes=(
-                        "(v1v2 upgrade) This device was not found in the components"
-                        "list, but is referenced in connections."
-                    ),
-                )
-                components.append(device.model_dump())
+                missing_names.append(name)
+
+        for name in set(missing_names):
+            # Create an empty Device with the name
+            device = Device(
+                name=name,
+                notes=(
+                    "(v1v2 upgrade) This device was not found in the components list, "
+                    "but is referenced in connections."
+                ),
+            )
+            components.append(device.model_dump())
 
         return (components, connections)
 

@@ -1,0 +1,2865 @@
+{
+    "_id": "4ffe34b0-2784-456f-af8c-13547ce960f0",
+    "object_type": "Metadata",
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "schema_version": "2.0.71",
+    "name": "ecephys_693179_2023-12-14_14-25-36",
+    "location": "s3://aind-open-data/ecephys_693179_2023-12-14_14-25-36",
+    "other_identifiers": {},
+    "subject": {
+        "object_type": "Subject",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "schema_version": "2.0.9",
+        "subject_id": "693179",
+        "subject_details": {
+            "object_type": "Mouse subject",
+            "sex": "Male",
+            "date_of_birth": "2023-07-11",
+            "strain": {
+                "name": "C57BL/6J",
+                "species": "Mus musculus",
+                "registry": {
+                    "name": "Mouse Genome Informatics",
+                    "abbreviation": "MGI"
+                },
+                "registry_identifier": "MGI:3028467"
+            },
+            "species": {
+                "name": "Mus musculus",
+                "registry": {
+                    "name": "National Center for Biotechnology Information",
+                    "abbreviation": "NCBI"
+                },
+                "registry_identifier": "NCBI:txid10090"
+            },
+            "alleles": [],
+            "genotype": "Gad2-IRES-Cre/Gad2-IRES-Cre",
+            "breeding_info": null,
+            "wellness_reports": [],
+            "housing": null,
+            "source": {
+                "name": "Other",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            },
+            "restrictions": null,
+            "rrid": null
+        },
+        "notes": " (SubjectUpgraderV1V2): Source not specified, defaulting to 'Other'."
+    },
+    "data_description": {
+        "object_type": "Data description",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "2.0.11",
+        "license": "CC-BY-4.0",
+        "subject_id": "693179",
+        "creation_time": "2023-12-14 14:25:36-08:00",
+        "tags": null,
+        "name": "ecephys_693179_2023-12-14_14-25-36",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "object_type": "Funding",
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": null
+            },
+            {
+                "object_type": "Funding",
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": null
+            },
+            {
+                "object_type": "Funding",
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": null
+            }
+        ],
+        "data_level": "raw",
+        "group": null,
+        "investigators": [
+            {
+                "object_type": "Person",
+                "name": "Kenta Hagihara",
+                "registry": {
+                    "name": "Open Researcher and Contributor ID",
+                    "abbreviation": "ORCID"
+                },
+                "registry_identifier": null
+            }
+        ],
+        "project_name": "Discovery-Neuromodulator circuit dynamics during foraging",
+        "restrictions": null,
+        "modalities": [
+            {
+                "name": "Extracellular electrophysiology",
+                "abbreviation": "ecephys"
+            }
+        ],
+        "data_summary": null
+    },
+    "procedures": {
+        "object_type": "Procedures",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "schema_version": "2.0.28",
+        "subject_id": "693179",
+        "subject_procedures": [
+            {
+                "object_type": "Surgery",
+                "protocol_id": "dx.doi.org/10.17504/protocols.io.kqdg392o7g25/v2",
+                "start_date": "2023-11-15",
+                "experimenters": [
+                    {
+                        "object_type": "Person",
+                        "name": "NSB-2846",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ],
+                "ethics_review_id": "2109",
+                "animal_weight_prior": 27.5,
+                "animal_weight_post": 29.5,
+                "weight_unit": "gram",
+                "anaesthesia": {
+                    "object_type": "Anaesthetic",
+                    "anaesthetic_type": "isoflurane",
+                    "duration": 180,
+                    "duration_unit": "minute",
+                    "level": 1.5
+                },
+                "workstation_id": "SWS 4",
+                "coordinate_system": null,
+                "measured_coordinates": null,
+                "procedures": [
+                    {
+                        "object_type": "Brain injection",
+                        "injection_materials": [
+                            {
+                                "object_type": "Viral material",
+                                "name": "(v1v2 upgrade) No injection material provided",
+                                "tars_identifiers": null,
+                                "addgene_id": null,
+                                "titer": null,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "targeted_structure": null,
+                        "relative_position": [
+                            "Left"
+                        ],
+                        "dynamics": [
+                            {
+                                "object_type": "Injection dynamics",
+                                "profile": "Bolus",
+                                "volume": 300,
+                                "volume_unit": "nanoliter",
+                                "rate": null,
+                                "rate_unit": null,
+                                "duration": null,
+                                "duration_unit": "minute",
+                                "injection_current": null,
+                                "injection_current_unit": null,
+                                "alternating_current": null
+                            }
+                        ],
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+                        "coordinate_system_name": "BREGMA_ARID",
+                        "coordinates": [
+                            [
+                                {
+                                    "object_type": "Translation",
+                                    "translation": [
+                                        1,
+                                        -1.5,
+                                        0,
+                                        4
+                                    ]
+                                },
+                                {
+                                    "object_type": "Rotation",
+                                    "angles": [
+                                        0,
+                                        0,
+                                        0
+                                    ],
+                                    "angles_unit": "degrees"
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "object_type": "Brain injection",
+                        "injection_materials": [
+                            {
+                                "object_type": "Viral material",
+                                "name": "(v1v2 upgrade) No injection material provided",
+                                "tars_identifiers": null,
+                                "addgene_id": null,
+                                "titer": null,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "targeted_structure": null,
+                        "relative_position": [
+                            "Right"
+                        ],
+                        "dynamics": [
+                            {
+                                "object_type": "Injection dynamics",
+                                "profile": "Bolus",
+                                "volume": 300,
+                                "volume_unit": "nanoliter",
+                                "rate": null,
+                                "rate_unit": null,
+                                "duration": null,
+                                "duration_unit": "minute",
+                                "injection_current": null,
+                                "injection_current_unit": null,
+                                "alternating_current": null
+                            }
+                        ],
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+                        "coordinate_system_name": "BREGMA_ARID",
+                        "coordinates": [
+                            [
+                                {
+                                    "object_type": "Translation",
+                                    "translation": [
+                                        1,
+                                        1.5,
+                                        0,
+                                        4
+                                    ]
+                                }
+                            ]
+                        ]
+                    }
+                ],
+                "notes": null
+            }
+        ],
+        "specimen_procedures": [
+            {
+                "object_type": "Specimen procedure",
+                "procedure_type": "Fixation",
+                "procedure_name": "SHIELD OFF",
+                "specimen_id": "693179_709392",
+                "start_date": "2024-01-05",
+                "end_date": "2024-01-08",
+                "experimenters": [
+                    {
+                        "object_type": "Person",
+                        "name": "Holly Myers",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ],
+                "protocol_id": [
+                    "none"
+                ],
+                "protocol_parameters": null,
+                "procedure_details": [
+                    {
+                        "object_type": "Reagent",
+                        "name": "SHIELD Epoxy",
+                        "source": {
+                            "name": "LifeCanvas",
+                            "abbreviation": null,
+                            "registry": null,
+                            "registry_identifier": null
+                        },
+                        "rrid": null,
+                        "lot_number": "ex42",
+                        "expiration_date": null
+                    },
+                    {
+                        "object_type": "Reagent",
+                        "name": "SHIELD Buffer",
+                        "source": {
+                            "name": "LifeCanvas",
+                            "abbreviation": null,
+                            "registry": null,
+                            "registry_identifier": null
+                        },
+                        "rrid": null,
+                        "lot_number": "bu16",
+                        "expiration_date": null
+                    }
+                ],
+                "notes": "None"
+            },
+            {
+                "object_type": "Specimen procedure",
+                "procedure_type": "Fixation",
+                "procedure_name": "SHIELD ON",
+                "specimen_id": "693179_709392",
+                "start_date": "2024-01-08",
+                "end_date": "2024-01-09",
+                "experimenters": [
+                    {
+                        "object_type": "Person",
+                        "name": "Holly Myers",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ],
+                "protocol_id": [
+                    "none"
+                ],
+                "protocol_parameters": null,
+                "procedure_details": [
+                    {
+                        "object_type": "Reagent",
+                        "name": "SHIELD ON",
+                        "source": {
+                            "name": "LifeCanvas",
+                            "abbreviation": null,
+                            "registry": null,
+                            "registry_identifier": null
+                        },
+                        "rrid": null,
+                        "lot_number": "on22",
+                        "expiration_date": null
+                    }
+                ],
+                "notes": "None"
+            },
+            {
+                "object_type": "Specimen procedure",
+                "procedure_type": "Delipidation",
+                "procedure_name": "24h Delipidation",
+                "specimen_id": "693179_709392",
+                "start_date": "2024-01-09",
+                "end_date": "2024-01-10",
+                "experimenters": [
+                    {
+                        "object_type": "Person",
+                        "name": "Holly Myers",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ],
+                "protocol_id": [
+                    "none"
+                ],
+                "protocol_parameters": null,
+                "procedure_details": [
+                    {
+                        "object_type": "Reagent",
+                        "name": "Delipidation Buffer",
+                        "source": {
+                            "name": "LifeCanvas",
+                            "abbreviation": null,
+                            "registry": null,
+                            "registry_identifier": null
+                        },
+                        "rrid": null,
+                        "lot_number": "D18",
+                        "expiration_date": null
+                    }
+                ],
+                "notes": "None"
+            },
+            {
+                "object_type": "Specimen procedure",
+                "procedure_type": "Delipidation",
+                "procedure_name": "Active Delipidation",
+                "specimen_id": "693179_709392",
+                "start_date": "2024-01-10",
+                "end_date": "2024-01-12",
+                "experimenters": [
+                    {
+                        "object_type": "Person",
+                        "name": "Holly Myers",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ],
+                "protocol_id": [
+                    "none"
+                ],
+                "protocol_parameters": null,
+                "procedure_details": [
+                    {
+                        "object_type": "Reagent",
+                        "name": "Conduction Buffer",
+                        "source": {
+                            "name": "LifeCanvas",
+                            "abbreviation": null,
+                            "registry": null,
+                            "registry_identifier": null
+                        },
+                        "rrid": null,
+                        "lot_number": "c11",
+                        "expiration_date": null
+                    }
+                ],
+                "notes": "None"
+            },
+            {
+                "object_type": "Specimen procedure",
+                "procedure_type": "Refractive index matching",
+                "procedure_name": "50% EasyIndex",
+                "specimen_id": "693179_709392",
+                "start_date": "2024-01-12",
+                "end_date": "2024-01-17",
+                "experimenters": [
+                    {
+                        "object_type": "Person",
+                        "name": "Holly Myers",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ],
+                "protocol_id": [
+                    "none"
+                ],
+                "protocol_parameters": null,
+                "procedure_details": [
+                    {
+                        "object_type": "Reagent",
+                        "name": "EasyIndex",
+                        "source": {
+                            "name": "LifeCanvas",
+                            "abbreviation": null,
+                            "registry": null,
+                            "registry_identifier": null
+                        },
+                        "rrid": null,
+                        "lot_number": "EI48",
+                        "expiration_date": null
+                    }
+                ],
+                "notes": "1/12/24 - 1/16/24 50% EasyIndex RT"
+            },
+            {
+                "object_type": "Specimen procedure",
+                "procedure_type": "Refractive index matching",
+                "procedure_name": "100% EasyIndex",
+                "specimen_id": "693179_709392",
+                "start_date": "2024-01-17",
+                "end_date": "2024-01-19",
+                "experimenters": [
+                    {
+                        "object_type": "Person",
+                        "name": "Holly Myers",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ],
+                "protocol_id": [
+                    "none"
+                ],
+                "protocol_parameters": null,
+                "procedure_details": [
+                    {
+                        "object_type": "Reagent",
+                        "name": "EasyIndex",
+                        "source": {
+                            "name": "LifeCanvas",
+                            "abbreviation": null,
+                            "registry": null,
+                            "registry_identifier": null
+                        },
+                        "rrid": null,
+                        "lot_number": "EI48",
+                        "expiration_date": null
+                    }
+                ],
+                "notes": "1/12/24 - 1/16/24 50% EasyIndex RT"
+            }
+        ],
+        "coordinate_system": {
+            "object_type": "Coordinate system",
+            "name": "BREGMA_ARID",
+            "origin": "Bregma",
+            "axes": [
+                {
+                    "object_type": "Axis",
+                    "name": "AP",
+                    "direction": "Posterior_to_anterior"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "ML",
+                    "direction": "Left_to_right"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "SI",
+                    "direction": "Superior_to_inferior"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "Depth",
+                    "direction": "Up_to_down"
+                }
+            ],
+            "axis_unit": "millimeter"
+        },
+        "notes": null
+    },
+    "instrument": {
+        "object_type": "Instrument",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/instrument.py",
+        "schema_version": "2.0.34",
+        "location": null,
+        "instrument_id": "323_EPHYS3",
+        "modification_date": "2023-11-22",
+        "modalities": [],
+        "calibrations": [],
+        "coordinate_system": {
+            "object_type": "Coordinate system",
+            "name": "BREGMA_ARI",
+            "origin": "Bregma",
+            "axes": [
+                {
+                    "object_type": "Axis",
+                    "name": "AP",
+                    "direction": "Posterior_to_anterior"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "ML",
+                    "direction": "Left_to_right"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "SI",
+                    "direction": "Superior_to_inferior"
+                }
+            ],
+            "axis_unit": "millimeter"
+        },
+        "temperature_control": null,
+        "notes": null,
+        "connections": [
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Behavior Camera",
+                    "Video Monitor"
+                ],
+                "connection_data": {
+                    "Behavior Camera": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Video Monitor": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Eye Camera",
+                    "Video Monitor"
+                ],
+                "connection_data": {
+                    "Eye Camera": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Video Monitor": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Face Camera",
+                    "Video Monitor"
+                ],
+                "connection_data": {
+                    "Face Camera": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Video Monitor": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "VBEB DAQ",
+                    "STIM"
+                ],
+                "connection_data": {
+                    "VBEB DAQ": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "STIM": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SYNC DAQ",
+                    "SYNC"
+                ],
+                "connection_data": {
+                    "SYNC DAQ": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "SYNC": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "STIM DAQ",
+                    "STIM"
+                ],
+                "connection_data": {
+                    "STIM DAQ": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "STIM": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_treadmill",
+                    "VR Wheel"
+                ],
+                "connection_data": {
+                    "harp_treadmill": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "Encoder"
+                    },
+                    "VR Wheel": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "Encoder"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_treadmill",
+                    "VR Wheel"
+                ],
+                "connection_data": {
+                    "harp_treadmill": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "Magnetic brake"
+                    },
+                    "VR Wheel": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "Magnetic brake"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_treadmill",
+                    "VR Wheel"
+                ],
+                "connection_data": {
+                    "harp_treadmill": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "Torque sensor"
+                    },
+                    "VR Wheel": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "Torque sensor"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "LEVIATHON",
+                    "Olfactometer"
+                ],
+                "connection_data": {
+                    "LEVIATHON": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Olfactometer": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "FaceCamera",
+                    "LEVIATHON"
+                ],
+                "connection_data": {
+                    "FaceCamera": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "LEVIATHON": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SideCamera",
+                    "LEVIATHON"
+                ],
+                "connection_data": {
+                    "SideCamera": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "LEVIATHON": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Bottom face Camera",
+                    "LEVIATHON"
+                ],
+                "connection_data": {
+                    "Bottom face Camera": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "LEVIATHON": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_behavior",
+                    "LEVIATHON"
+                ],
+                "connection_data": {
+                    "harp_behavior": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "LEVIATHON": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_behavior",
+                    "FaceCamera"
+                ],
+                "connection_data": {
+                    "harp_behavior": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "DO0"
+                    },
+                    "FaceCamera": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "DO0"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_behavior",
+                    "SideCamera"
+                ],
+                "connection_data": {
+                    "harp_behavior": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "DO0"
+                    },
+                    "SideCamera": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "DO0"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_behavior",
+                    "Speaker"
+                ],
+                "connection_data": {
+                    "harp_behavior": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "DO1"
+                    },
+                    "Speaker": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "DO1"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_behavior",
+                    "Solenoid"
+                ],
+                "connection_data": {
+                    "harp_behavior": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "DO1"
+                    },
+                    "Solenoid": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "DO1"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_clock_generator",
+                    "LEVIATHON"
+                ],
+                "connection_data": {
+                    "harp_clock_generator": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "LEVIATHON": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_clock_repeaters",
+                    "LEVIATHON"
+                ],
+                "connection_data": {
+                    "harp_clock_repeaters": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "LEVIATHON": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_treadmill",
+                    "LEVIATHON"
+                ],
+                "connection_data": {
+                    "harp_treadmill": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "LEVIATHON": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_treadmill",
+                    "harp_treadmill"
+                ],
+                "connection_data": {
+                    "harp_treadmill": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "Torque sensor"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_treadmill",
+                    "harp_treadmill"
+                ],
+                "connection_data": {
+                    "harp_treadmill": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "Encoder"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_treadmill",
+                    "harp_treadmill"
+                ],
+                "connection_data": {
+                    "harp_treadmill": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "Magnetic brake"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_lickometer",
+                    "LEVIATHON"
+                ],
+                "connection_data": {
+                    "harp_lickometer": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "LEVIATHON": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Stepper driver",
+                    "LEVIATHON"
+                ],
+                "connection_data": {
+                    "Stepper driver": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "LEVIATHON": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_olfactometer",
+                    "LEVIATHON"
+                ],
+                "connection_data": {
+                    "harp_olfactometer": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "LEVIATHON": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_treadmill",
+                    "VR Wheel"
+                ],
+                "connection_data": {
+                    "harp_treadmill": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "Encoder"
+                    },
+                    "VR Wheel": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "Encoder"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_treadmill",
+                    "VR Wheel"
+                ],
+                "connection_data": {
+                    "harp_treadmill": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "Magnetic brake"
+                    },
+                    "VR Wheel": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "Magnetic brake"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_treadmill",
+                    "VR Wheel"
+                ],
+                "connection_data": {
+                    "harp_treadmill": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "Torque sensor"
+                    },
+                    "VR Wheel": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "Torque sensor"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "ABAIA",
+                    "Olfactometer"
+                ],
+                "connection_data": {
+                    "ABAIA": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Olfactometer": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "FaceCamera",
+                    "ABAIA"
+                ],
+                "connection_data": {
+                    "FaceCamera": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "ABAIA": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SideCamera",
+                    "ABAIA"
+                ],
+                "connection_data": {
+                    "SideCamera": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "ABAIA": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Bottom face Camera",
+                    "ABAIA"
+                ],
+                "connection_data": {
+                    "Bottom face Camera": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "ABAIA": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_behavior",
+                    "ABAIA"
+                ],
+                "connection_data": {
+                    "harp_behavior": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "ABAIA": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_behavior",
+                    "FaceCamera"
+                ],
+                "connection_data": {
+                    "harp_behavior": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "DO0"
+                    },
+                    "FaceCamera": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "DO0"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_behavior",
+                    "SideCamera"
+                ],
+                "connection_data": {
+                    "harp_behavior": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "DO0"
+                    },
+                    "SideCamera": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "DO0"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_behavior",
+                    "Speaker"
+                ],
+                "connection_data": {
+                    "harp_behavior": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "DO1"
+                    },
+                    "Speaker": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "DO1"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_behavior",
+                    "Solenoid"
+                ],
+                "connection_data": {
+                    "harp_behavior": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "DO1"
+                    },
+                    "Solenoid": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "DO1"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_clock_generator",
+                    "ABAIA"
+                ],
+                "connection_data": {
+                    "harp_clock_generator": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "ABAIA": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_clock_repeaters",
+                    "ABAIA"
+                ],
+                "connection_data": {
+                    "harp_clock_repeaters": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "ABAIA": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_treadmill",
+                    "ABAIA"
+                ],
+                "connection_data": {
+                    "harp_treadmill": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "ABAIA": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_treadmill",
+                    "harp_treadmill"
+                ],
+                "connection_data": {
+                    "harp_treadmill": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "Torque sensor"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_treadmill",
+                    "harp_treadmill"
+                ],
+                "connection_data": {
+                    "harp_treadmill": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "Encoder"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_treadmill",
+                    "harp_treadmill"
+                ],
+                "connection_data": {
+                    "harp_treadmill": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "Magnetic brake"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_lickometer",
+                    "ABAIA"
+                ],
+                "connection_data": {
+                    "harp_lickometer": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "ABAIA": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Stepper driver",
+                    "ABAIA"
+                ],
+                "connection_data": {
+                    "Stepper driver": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "ABAIA": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "harp_olfactometer",
+                    "ABAIA"
+                ],
+                "connection_data": {
+                    "harp_olfactometer": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "ABAIA": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Behavior Camera",
+                    "Video Monitor"
+                ],
+                "connection_data": {
+                    "Behavior Camera": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Video Monitor": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Eye Camera",
+                    "Video Monitor"
+                ],
+                "connection_data": {
+                    "Eye Camera": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Video Monitor": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Face Camera",
+                    "Video Monitor"
+                ],
+                "connection_data": {
+                    "Face Camera": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Video Monitor": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "VBEB DAQ",
+                    "STIM"
+                ],
+                "connection_data": {
+                    "VBEB DAQ": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "STIM": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SYNC DAQ",
+                    "SYNC"
+                ],
+                "connection_data": {
+                    "SYNC DAQ": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "SYNC": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "STIM DAQ",
+                    "STIM"
+                ],
+                "connection_data": {
+                    "STIM DAQ": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "STIM": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "vDAQ0",
+                    "ACQ"
+                ],
+                "connection_data": {
+                    "vDAQ0": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "ACQ": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "PXI",
+                    "2p_PC"
+                ],
+                "connection_data": {
+                    "PXI": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "2p_PC": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Side face camera",
+                    "W10DT714030"
+                ],
+                "connection_data": {
+                    "Side face camera": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "W10DT714030": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Bottom face Camera",
+                    "W10DT714030"
+                ],
+                "connection_data": {
+                    "Bottom face Camera": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "W10DT714030": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Harp Behavior",
+                    "W10DT714030"
+                ],
+                "connection_data": {
+                    "Harp Behavior": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "W10DT714030": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Photometry Clock",
+                    "Harp Behavior"
+                ],
+                "connection_data": {
+                    "Photometry Clock": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "DI3"
+                    },
+                    "Harp Behavior": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "DI3"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Harp Sound",
+                    "W10DT714030"
+                ],
+                "connection_data": {
+                    "Harp Sound": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "W10DT714030": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Harp clock synchronization board",
+                    "W10DT714030"
+                ],
+                "connection_data": {
+                    "Harp clock synchronization board": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "W10DT714030": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Harp sound amplifier",
+                    "W10DT714030"
+                ],
+                "connection_data": {
+                    "Harp sound amplifier": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "W10DT714030": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "PXI",
+                    "2p_PC"
+                ],
+                "connection_data": {
+                    "PXI": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "2p_PC": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Probe Camera",
+                    "W10DT713881"
+                ],
+                "connection_data": {
+                    "Probe Camera": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "W10DT713881": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Probe Camera",
+                    "W10DT713881"
+                ],
+                "connection_data": {
+                    "Probe Camera": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "W10DT713881": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "Basestation Slot 2",
+                    "W10DT713881"
+                ],
+                "connection_data": {
+                    "Basestation Slot 2": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "W10DT713881": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            }
+        ],
+        "components": [
+            {
+                "object_type": "Tube",
+                "name": "Mouse Tube",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Other",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "additional_settings": {},
+                "notes": " (v1v2 upgrade): 'manufacturer' field was missing, defaulting to 'Other'.",
+                "diameter": "30",
+                "diameter_unit": "centimeter"
+            },
+            {
+                "object_type": "Neuropixels basestation",
+                "name": "Basestation Slot 2",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Interuniversity Microelectronics Center",
+                    "abbreviation": "IMEC",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "02kcbn207"
+                },
+                "model": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "PXI",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "basestation_firmware_version": "2.069",
+                "bsc_firmware_version": "3.2189",
+                "slot": 2,
+                "ports": [
+                    {
+                        "object_type": "Probe port",
+                        "index": 1,
+                        "probes": [
+                            "Probe A"
+                        ]
+                    },
+                    {
+                        "object_type": "Probe port",
+                        "index": 2,
+                        "probes": [
+                            "Probe B"
+                        ]
+                    }
+                ]
+            },
+            {
+                "object_type": "Ephys assembly",
+                "name": "Ephys_AssemblyA",
+                "manipulator": {
+                    "object_type": "Manipulator",
+                    "name": "Ephys Manipulator A",
+                    "serial_number": "SN46122",
+                    "manufacturer": {
+                        "name": "New Scale Technologies",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "additional_settings": {},
+                    "notes": null
+                },
+                "probes": [
+                    {
+                        "object_type": "Ephys probe",
+                        "name": "Probe A",
+                        "serial_number": "20403319394",
+                        "manufacturer": {
+                            "name": "Other",
+                            "abbreviation": null,
+                            "registry": null,
+                            "registry_identifier": null
+                        },
+                        "model": null,
+                        "additional_settings": {},
+                        "notes": " (v1v2 upgrade): 'manufacturer' field was missing, defaulting to 'Other'.",
+                        "probe_model": "Neuropixels 2.0 (Single Shank)",
+                        "headstage": null
+                    }
+                ]
+            },
+            {
+                "object_type": "Ephys assembly",
+                "name": "Ephys_AssemblyB",
+                "manipulator": {
+                    "object_type": "Manipulator",
+                    "name": "Ephys Manipulator B",
+                    "serial_number": "SN45881",
+                    "manufacturer": {
+                        "name": "New Scale Technologies",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "additional_settings": {},
+                    "notes": null
+                },
+                "probes": [
+                    {
+                        "object_type": "Ephys probe",
+                        "name": "Probe B",
+                        "serial_number": "20403319304",
+                        "manufacturer": {
+                            "name": "Other",
+                            "abbreviation": null,
+                            "registry": null,
+                            "registry_identifier": null
+                        },
+                        "model": null,
+                        "additional_settings": {},
+                        "notes": " (v1v2 upgrade): 'manufacturer' field was missing, defaulting to 'Other'.",
+                        "probe_model": "Neuropixels 2.0 (Single Shank)",
+                        "headstage": null
+                    }
+                ]
+            },
+            {
+                "object_type": "Fiber assembly",
+                "name": "Fiber_AssemblyA",
+                "manipulator": {
+                    "object_type": "Manipulator",
+                    "name": "Fiber Manipulator A",
+                    "serial_number": "SN46116",
+                    "manufacturer": {
+                        "name": "New Scale Technologies",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "additional_settings": {},
+                    "notes": null
+                },
+                "fibers": [
+                    {
+                        "object_type": "Fiber probe",
+                        "name": "FiberB",
+                        "serial_number": null,
+                        "manufacturer": {
+                            "name": "Other",
+                            "abbreviation": null,
+                            "registry": null,
+                            "registry_identifier": null
+                        },
+                        "model": null,
+                        "additional_settings": {},
+                        "notes": " (v1v2 upgrade): 'manufacturer' field was missing, defaulting to 'Other'.",
+                        "core_diameter": "200.0",
+                        "core_diameter_unit": "micrometer",
+                        "numerical_aperture": "0.39",
+                        "ferrule_material": "Ceramic",
+                        "active_length": "1.5",
+                        "total_length": "30.0",
+                        "length_unit": "millimeter"
+                    }
+                ]
+            },
+            {
+                "object_type": "Fiber assembly",
+                "name": "Fiber_AssemblyB",
+                "manipulator": {
+                    "object_type": "Manipulator",
+                    "name": "Fiber Manipulator B",
+                    "serial_number": "SN46110",
+                    "manufacturer": {
+                        "name": "New Scale Technologies",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "additional_settings": {},
+                    "notes": null
+                },
+                "fibers": [
+                    {
+                        "object_type": "Fiber probe",
+                        "name": "FiberB",
+                        "serial_number": null,
+                        "manufacturer": {
+                            "name": "Other",
+                            "abbreviation": null,
+                            "registry": null,
+                            "registry_identifier": null
+                        },
+                        "model": null,
+                        "additional_settings": {},
+                        "notes": " (v1v2 upgrade): 'manufacturer' field was missing, defaulting to 'Other'.",
+                        "core_diameter": "200.0",
+                        "core_diameter_unit": "micrometer",
+                        "numerical_aperture": "0.39",
+                        "ferrule_material": "Ceramic",
+                        "active_length": "1.5",
+                        "total_length": "30.0",
+                        "length_unit": "millimeter"
+                    }
+                ]
+            },
+            {
+                "object_type": "Camera assembly",
+                "relative_position": [
+                    "Superior"
+                ],
+                "coordinate_system": null,
+                "transform": null,
+                "name": "Microscope Assembly 1",
+                "target": "Brain",
+                "camera": {
+                    "object_type": "Camera",
+                    "name": "Probe Camera",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Teledyne FLIR",
+                        "abbreviation": "FLIR",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "No cooling",
+                    "frame_rate": null,
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Color",
+                    "sensor_width": 1080,
+                    "sensor_height": 570,
+                    "size_unit": "pixel",
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inches",
+                    "bit_depth": null,
+                    "bin_mode": "No binning",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": null,
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "object_type": "Lens",
+                    "name": "Probe lens",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Edmund Optics",
+                        "abbreviation": null,
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": null,
+                    "additional_settings": {},
+                    "notes": null
+                },
+                "filter": null
+            },
+            {
+                "object_type": "Camera assembly",
+                "relative_position": [
+                    "Superior"
+                ],
+                "coordinate_system": null,
+                "transform": null,
+                "name": "Microscope Assembly 2",
+                "target": "Brain",
+                "camera": {
+                    "object_type": "Camera",
+                    "name": "Probe Camera",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Teledyne FLIR",
+                        "abbreviation": "FLIR",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "No cooling",
+                    "frame_rate": null,
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Color",
+                    "sensor_width": 1080,
+                    "sensor_height": 570,
+                    "size_unit": "pixel",
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inches",
+                    "bit_depth": null,
+                    "bin_mode": "No binning",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": null,
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "object_type": "Lens",
+                    "name": "Probe lens",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Edmund Optics",
+                        "abbreviation": null,
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": null,
+                    "additional_settings": {},
+                    "notes": null
+                },
+                "filter": null
+            },
+            {
+                "object_type": "Device",
+                "name": "2p_PC",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "ABAIA",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "vDAQ0",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "harp_clock_generator",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Harp sound amplifier",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "ACQ",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "W10DT713881",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "harp_olfactometer",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Video Monitor",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Probe Camera",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "SideCamera",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "PXI",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "VBEB DAQ",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Photometry Clock",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "SYNC",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Olfactometer",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Eye Camera",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "harp_behavior",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Bottom face Camera",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Stepper driver",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "STIM",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "LEVIATHON",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "SYNC DAQ",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "FaceCamera",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Harp Behavior",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "harp_lickometer",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Harp clock synchronization board",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Face Camera",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "STIM DAQ",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Side face camera",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "VR Wheel",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Speaker",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Harp Sound",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "W10DT714030",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "harp_treadmill",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "harp_clock_repeaters",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Solenoid",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Behavior Camera",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            }
+        ]
+    },
+    "processing": {
+        "object_type": "Processing",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "schema_version": "2.0.71",
+        "data_processes": [
+            {
+                "object_type": "Data process",
+                "process_type": "Compression",
+                "name": "Compression_5",
+                "stage": "Processing",
+                "code": {
+                    "object_type": "Code",
+                    "url": "https://github.com/AllenNeuralDynamics/aind-data-transfer",
+                    "name": "Compression",
+                    "version": null,
+                    "container": null,
+                    "run_script": null,
+                    "language": null,
+                    "language_version": null,
+                    "input_data": null,
+                    "parameters": {
+                        "compress_raw_data": true,
+                        "extra_configs": null,
+                        "modality": {
+                            "abbreviation": "ecephys",
+                            "name": "Extracellular electrophysiology"
+                        },
+                        "skip_staging": false,
+                        "source": "/allen/aind/scratch/ephys/temp/693179_2023-12-14_14-25-36"
+                    },
+                    "core_dependency": null
+                },
+                "experimenters": [
+                    {
+                        "object_type": "Person",
+                        "name": "service",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ],
+                "pipeline_name": null,
+                "start_date_time": "2024-01-30 01:06:04.992918+00:00",
+                "end_date_time": "2024-01-30 01:56:22.348886+00:00",
+                "output_path": "s3:/aind-ephys-data/ecephys_693179_2023-12-14_14-25-36",
+                "output_parameters": {},
+                "notes": null,
+                "resources": null
+            }
+        ],
+        "pipelines": null,
+        "notes": null,
+        "dependency_graph": {
+            "Compression_5": []
+        }
+    },
+    "acquisition": {
+        "object_type": "Acquisition",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/acquisition.py",
+        "schema_version": "2.0.30",
+        "subject_id": "693179",
+        "specimen_id": null,
+        "acquisition_start_time": "2023-12-14 14:25:36-08:00",
+        "acquisition_end_time": "2023-12-14 15:33:35-08:00",
+        "experimenters": [
+            {
+                "object_type": "Person",
+                "name": "Josh Siegle",
+                "registry": {
+                    "name": "Open Researcher and Contributor ID",
+                    "abbreviation": "ORCID"
+                },
+                "registry_identifier": null
+            }
+        ],
+        "protocol_id": null,
+        "ethics_review_id": null,
+        "instrument_id": "323_EPHYS3",
+        "acquisition_type": "Photometry + Ephys",
+        "notes": null,
+        "coordinate_system": null,
+        "calibrations": [],
+        "maintenance": [],
+        "data_streams": [
+            {
+                "object_type": "Data stream",
+                "stream_start_time": "2023-12-14 14:25:36-08:00",
+                "stream_end_time": "2023-12-14 15:33:35-08:00",
+                "modalities": [
+                    {
+                        "name": "Extracellular electrophysiology",
+                        "abbreviation": "ecephys"
+                    }
+                ],
+                "code": null,
+                "notes": null,
+                "active_devices": [
+                    "Microscope Assembly 1",
+                    "Ephys_AssemblyA",
+                    "Microscope Assembly 2",
+                    "Ephys_AssemblyB"
+                ],
+                "configurations": [
+                    {
+                        "object_type": "Ephys assembly config",
+                        "device_name": "Ephys_AssemblyA",
+                        "manipulator": {
+                            "object_type": "Manipulator config",
+                            "device_name": "unknown",
+                            "coordinate_system": {
+                                "object_type": "Coordinate system",
+                                "name": "MPM_MANIP_RFB",
+                                "origin": "Tip",
+                                "axes": [
+                                    {
+                                        "object_type": "Axis",
+                                        "name": "X",
+                                        "direction": "Left_to_right"
+                                    },
+                                    {
+                                        "object_type": "Axis",
+                                        "name": "Y",
+                                        "direction": "Back_to_front"
+                                    },
+                                    {
+                                        "object_type": "Axis",
+                                        "name": "Z",
+                                        "direction": "Up_to_down"
+                                    }
+                                ],
+                                "axis_unit": "millimeter"
+                            },
+                            "local_axis_positions": {
+                                "object_type": "Translation",
+                                "translation": [
+                                    8329,
+                                    5987,
+                                    8068
+                                ]
+                            }
+                        },
+                        "probes": [
+                            {
+                                "object_type": "Probe config",
+                                "device_name": "Probe A",
+                                "primary_targeted_structure": {
+                                    "atlas": "CCFv3",
+                                    "name": "Nucleus accumbens",
+                                    "acronym": "ACB",
+                                    "id": "56"
+                                },
+                                "other_targeted_structure": null,
+                                "atlas_coordinate": null,
+                                "coordinate_system": {
+                                    "object_type": "Coordinate system",
+                                    "name": "PINPOINT_PROBE_RSAB",
+                                    "origin": "Tip",
+                                    "axes": [
+                                        {
+                                            "object_type": "Axis",
+                                            "name": "X",
+                                            "direction": "Left_to_right"
+                                        },
+                                        {
+                                            "object_type": "Axis",
+                                            "name": "Y",
+                                            "direction": "Inferior_to_superior"
+                                        },
+                                        {
+                                            "object_type": "Axis",
+                                            "name": "Z",
+                                            "direction": "Posterior_to_anterior"
+                                        },
+                                        {
+                                            "object_type": "Axis",
+                                            "name": "Depth",
+                                            "direction": "Up_to_down"
+                                        }
+                                    ],
+                                    "axis_unit": "millimeter"
+                                },
+                                "transform": [
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -6500,
+                                            -4000,
+                                            -5700
+                                        ]
+                                    }
+                                ],
+                                "dye": null,
+                                "notes": null
+                            }
+                        ],
+                        "modules": [
+                            {
+                                "object_type": "MIS module config",
+                                "arc_angle": -5,
+                                "module_angle": 0,
+                                "rotation_angle": null,
+                                "angle_unit": "degrees",
+                                "notes": null
+                            }
+                        ]
+                    },
+                    {
+                        "object_type": "Ephys assembly config",
+                        "device_name": "Ephys_AssemblyB",
+                        "manipulator": {
+                            "object_type": "Manipulator config",
+                            "device_name": "unknown",
+                            "coordinate_system": {
+                                "object_type": "Coordinate system",
+                                "name": "MPM_MANIP_RFB",
+                                "origin": "Tip",
+                                "axes": [
+                                    {
+                                        "object_type": "Axis",
+                                        "name": "X",
+                                        "direction": "Left_to_right"
+                                    },
+                                    {
+                                        "object_type": "Axis",
+                                        "name": "Y",
+                                        "direction": "Back_to_front"
+                                    },
+                                    {
+                                        "object_type": "Axis",
+                                        "name": "Z",
+                                        "direction": "Up_to_down"
+                                    }
+                                ],
+                                "axis_unit": "millimeter"
+                            },
+                            "local_axis_positions": {
+                                "object_type": "Translation",
+                                "translation": [
+                                    4112,
+                                    6617,
+                                    8642
+                                ]
+                            }
+                        },
+                        "probes": [
+                            {
+                                "object_type": "Probe config",
+                                "device_name": "Probe B",
+                                "primary_targeted_structure": {
+                                    "atlas": "CCFv3",
+                                    "name": "Nucleus accumbens",
+                                    "acronym": "ACB",
+                                    "id": "56"
+                                },
+                                "other_targeted_structure": null,
+                                "atlas_coordinate": null,
+                                "coordinate_system": {
+                                    "object_type": "Coordinate system",
+                                    "name": "PINPOINT_PROBE_RSAB",
+                                    "origin": "Tip",
+                                    "axes": [
+                                        {
+                                            "object_type": "Axis",
+                                            "name": "X",
+                                            "direction": "Left_to_right"
+                                        },
+                                        {
+                                            "object_type": "Axis",
+                                            "name": "Y",
+                                            "direction": "Inferior_to_superior"
+                                        },
+                                        {
+                                            "object_type": "Axis",
+                                            "name": "Z",
+                                            "direction": "Posterior_to_anterior"
+                                        },
+                                        {
+                                            "object_type": "Axis",
+                                            "name": "Depth",
+                                            "direction": "Up_to_down"
+                                        }
+                                    ],
+                                    "axis_unit": "millimeter"
+                                },
+                                "transform": [
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -6500,
+                                            -4000,
+                                            -5700
+                                        ]
+                                    }
+                                ],
+                                "dye": null,
+                                "notes": null
+                            }
+                        ],
+                        "modules": [
+                            {
+                                "object_type": "MIS module config",
+                                "arc_angle": 10,
+                                "module_angle": 25,
+                                "rotation_angle": null,
+                                "angle_unit": "degrees",
+                                "notes": null
+                            }
+                        ]
+                    }
+                ],
+                "connections": []
+            }
+        ],
+        "stimulus_epochs": [],
+        "subject_details": {
+            "object_type": "Acquisition subject details",
+            "animal_weight_prior": null,
+            "animal_weight_post": null,
+            "weight_unit": "gram",
+            "anaesthesia": null,
+            "mouse_platform_name": "Unknown Platform",
+            "reward_consumed_total": null,
+            "reward_consumed_unit": "microliter"
+        }
+    },
+    "quality_control": null,
+    "model": null,
+    "_created": "2025-06-25T21:56:53.227Z",
+    "_last_modified": "2025-06-27T04:48:59.649Z"
+}

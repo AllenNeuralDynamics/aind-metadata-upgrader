@@ -1,0 +1,1757 @@
+{
+    "_id": "a6e67c06-fefd-4838-a7a8-be172d03d5e7",
+    "object_type": "Metadata",
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "schema_version": "2.0.71",
+    "name": "exaSPIM_675375_2024-02-27_18-50-24",
+    "location": "s3://aind-open-data/exaSPIM_675375_2024-02-27_18-50-24",
+    "other_identifiers": {},
+    "subject": {
+        "object_type": "Subject",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "schema_version": "2.0.9",
+        "subject_id": "675375",
+        "subject_details": {
+            "object_type": "Mouse subject",
+            "sex": "Female",
+            "date_of_birth": "2023-02-21",
+            "strain": {
+                "name": "C57BL/6J",
+                "species": "Mus musculus",
+                "registry": {
+                    "name": "Mouse Genome Informatics",
+                    "abbreviation": "MGI"
+                },
+                "registry_identifier": "MGI:3028467"
+            },
+            "species": {
+                "name": "Mus musculus",
+                "registry": {
+                    "name": "National Center for Biotechnology Information",
+                    "abbreviation": "NCBI"
+                },
+                "registry_identifier": "NCBI:txid10090"
+            },
+            "alleles": [],
+            "genotype": "wt/wt",
+            "breeding_info": {
+                "object_type": "Breeding info",
+                "breeding_group": "unknown",
+                "maternal_id": "unknown",
+                "maternal_genotype": "unknown",
+                "paternal_id": "unknown",
+                "paternal_genotype": "unknown"
+            },
+            "wellness_reports": [],
+            "housing": null,
+            "source": {
+                "name": "Allen Institute",
+                "abbreviation": "AI",
+                "registry": {
+                    "name": "Research Organization Registry",
+                    "abbreviation": "ROR"
+                },
+                "registry_identifier": "03cpe7c52"
+            },
+            "restrictions": null,
+            "rrid": null
+        },
+        "notes": null
+    },
+    "data_description": {
+        "object_type": "Data description",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "2.0.11",
+        "license": "CC-BY-4.0",
+        "subject_id": "675375",
+        "creation_time": "2024-02-27 18:50:24-08:00",
+        "tags": null,
+        "name": "exaSPIM_675375_2024-02-27_18-50-24",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "object_type": "Funding",
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": null
+            }
+        ],
+        "data_level": "raw",
+        "group": null,
+        "investigators": [
+            {
+                "object_type": "Person",
+                "name": "unknown",
+                "registry": {
+                    "name": "Open Researcher and Contributor ID",
+                    "abbreviation": "ORCID"
+                },
+                "registry_identifier": null
+            }
+        ],
+        "project_name": "unknown",
+        "restrictions": null,
+        "modalities": [
+            {
+                "name": "Selective plane illumination microscopy",
+                "abbreviation": "SPIM"
+            }
+        ],
+        "data_summary": null
+    },
+    "procedures": {
+        "object_type": "Procedures",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "schema_version": "2.0.28",
+        "subject_id": "675375",
+        "subject_procedures": [
+            {
+                "object_type": "Surgery",
+                "protocol_id": null,
+                "start_date": "2023-03-31",
+                "experimenters": [
+                    {
+                        "object_type": "Person",
+                        "name": "30509",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ],
+                "ethics_review_id": "2109",
+                "animal_weight_prior": null,
+                "animal_weight_post": null,
+                "weight_unit": "gram",
+                "anaesthesia": null,
+                "workstation_id": null,
+                "coordinate_system": null,
+                "measured_coordinates": null,
+                "procedures": [
+                    {
+                        "object_type": "Injection",
+                        "injection_materials": [
+                            {
+                                "object_type": "Viral material",
+                                "name": "(v1v2 upgrade) No injection material provided",
+                                "tars_identifiers": null,
+                                "addgene_id": null,
+                                "titer": null,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "targeted_structure": {
+                            "name": "venous sinus",
+                            "registry": {
+                                "name": "Edinburgh Mouse Atlas Project",
+                                "abbreviation": "EMAPA"
+                            },
+                            "registry_identifier": "37025"
+                        },
+                        "relative_position": null,
+                        "dynamics": [],
+                        "protocol_id": null
+                    }
+                ],
+                "notes": null
+            },
+            {
+                "object_type": "Surgery",
+                "protocol_id": null,
+                "start_date": "2023-05-05",
+                "experimenters": [
+                    {
+                        "object_type": "Person",
+                        "name": "30509",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ],
+                "ethics_review_id": "2109",
+                "animal_weight_prior": null,
+                "animal_weight_post": null,
+                "weight_unit": "gram",
+                "anaesthesia": null,
+                "workstation_id": null,
+                "coordinate_system": null,
+                "measured_coordinates": null,
+                "procedures": [
+                    {
+                        "object_type": "Perfusion",
+                        "protocol_id": null,
+                        "output_specimen_ids": [
+                            "675375"
+                        ]
+                    }
+                ],
+                "notes": null
+            }
+        ],
+        "specimen_procedures": [],
+        "coordinate_system": {
+            "object_type": "Coordinate system",
+            "name": "BREGMA_ARID",
+            "origin": "Bregma",
+            "axes": [
+                {
+                    "object_type": "Axis",
+                    "name": "AP",
+                    "direction": "Posterior_to_anterior"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "ML",
+                    "direction": "Left_to_right"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "SI",
+                    "direction": "Superior_to_inferior"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "Depth",
+                    "direction": "Up_to_down"
+                }
+            ],
+            "axis_unit": "millimeter"
+        },
+        "notes": null
+    },
+    "instrument": {
+        "object_type": "Instrument",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/instrument.py",
+        "schema_version": "2.0.34",
+        "location": null,
+        "instrument_id": "exaspim-01",
+        "modification_date": "2023-10-27",
+        "modalities": [
+            {
+                "name": "Selective plane illumination microscopy",
+                "abbreviation": "SPIM"
+            }
+        ],
+        "calibrations": null,
+        "coordinate_system": {
+            "object_type": "Coordinate system",
+            "name": "BREGMA_ARI",
+            "origin": "Bregma",
+            "axes": [
+                {
+                    "object_type": "Axis",
+                    "name": "AP",
+                    "direction": "Posterior_to_anterior"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "ML",
+                    "direction": "Left_to_right"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "SI",
+                    "direction": "Superior_to_inferior"
+                }
+            ],
+            "axis_unit": "millimeter"
+        },
+        "temperature_control": false,
+        "notes": null,
+        "connections": [
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-2",
+                    "Laser Launch"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-2": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Laser Launch": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-2",
+                    "ASI Tiger"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-2": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "ASI Tiger": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-2",
+                    "MightyZap"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-2": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "MightyZap": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-7",
+                    "Laser Launch"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-7": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Laser Launch": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-7",
+                    "Applied Scientific Instrumentation Tiger"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-7": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Applied Scientific Instrumentation Tiger": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-7",
+                    "MightyZap"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-7": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "MightyZap": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "440_SmartSPIM1_20250116",
+                    "Laser Launch"
+                ],
+                "connection_data": {
+                    "440_SmartSPIM1_20250116": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Laser Launch": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "440_SmartSPIM1_20250116",
+                    "Applied Scientific Instrumentation Tiger"
+                ],
+                "connection_data": {
+                    "440_SmartSPIM1_20250116": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Applied Scientific Instrumentation Tiger": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "440_SmartSPIM1_20250116",
+                    "MightyZap"
+                ],
+                "connection_data": {
+                    "440_SmartSPIM1_20250116": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "MightyZap": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-1",
+                    "Laser Launch"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-1": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Laser Launch": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-1",
+                    "ASI Tiger"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-1": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "ASI Tiger": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-1",
+                    "MightyZap"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-1": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "MightyZap": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-2",
+                    "Laser Launch"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-2": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Laser Launch": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-2",
+                    "ASI Tiger"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-2": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "ASI Tiger": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-2",
+                    "MightyZap"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-2": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "MightyZap": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "exaSPIM1-01",
+                    "AOTF RF driver"
+                ],
+                "connection_data": {
+                    "exaSPIM1-01": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "AOTF RF driver": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "exaSPIM1-01",
+                    "Tiger Controller"
+                ],
+                "connection_data": {
+                    "exaSPIM1-01": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Tiger Controller": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "NIDAQ",
+                    "W10DTA03416"
+                ],
+                "connection_data": {
+                    "NIDAQ": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "W10DTA03416": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "NIDAQ",
+                    "ETL"
+                ],
+                "connection_data": {
+                    "NIDAQ": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "AO0"
+                    },
+                    "ETL": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "AO0"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "NIDAQ",
+                    "Imaging camera"
+                ],
+                "connection_data": {
+                    "NIDAQ": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "AO1"
+                    },
+                    "Imaging camera": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "AO1"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "NIDAQ",
+                    "Z scanning stage"
+                ],
+                "connection_data": {
+                    "NIDAQ": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "AO2"
+                    },
+                    "Z scanning stage": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "AO2"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "NIDAQ",
+                    "AOTF RF driver, 488 nm"
+                ],
+                "connection_data": {
+                    "NIDAQ": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "AO3"
+                    },
+                    "AOTF RF driver, 488 nm": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "AO3"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "NIDAQ",
+                    "AOTF RF driver, 488 nm"
+                ],
+                "connection_data": {
+                    "NIDAQ": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "AO3"
+                    },
+                    "AOTF RF driver, 488 nm": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "AO3"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "NIDAQ",
+                    "AOTF RF driver, 639 nm"
+                ],
+                "connection_data": {
+                    "NIDAQ": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "AO4"
+                    },
+                    "AOTF RF driver, 639 nm": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "AO4"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "NIDAQ",
+                    "AOTF RF driver, 561 nm"
+                ],
+                "connection_data": {
+                    "NIDAQ": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "AO13"
+                    },
+                    "AOTF RF driver, 561 nm": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "AO13"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "NIDAQ",
+                    "Galvo servo 1"
+                ],
+                "connection_data": {
+                    "NIDAQ": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "AO17"
+                    },
+                    "Galvo servo 1": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "AO17"
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "NIDAQ",
+                    "Galvo servo 2"
+                ],
+                "connection_data": {
+                    "NIDAQ": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": "AO19"
+                    },
+                    "Galvo servo 2": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": "AO19"
+                    }
+                }
+            }
+        ],
+        "components": [
+            {
+                "object_type": "Objective",
+                "name": "Detection objective",
+                "serial_number": "15618844",
+                "manufacturer": {
+                    "name": "Vieworks",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "JM_DIAMOND 5.0X/1.3",
+                "additional_settings": null,
+                "notes": "detection objective. manufacturer collaboration between Schneider-Kreuznach and Vieworks",
+                "numerical_aperture": "0.305",
+                "magnification": "5",
+                "immersion": "air",
+                "objective_type": null
+            },
+            {
+                "object_type": "Objective",
+                "name": "Excitation objective",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "TL2X-SAP",
+                "additional_settings": null,
+                "notes": "excitation objective. magnification assuming 200 mm tube lens focal length",
+                "numerical_aperture": "0.1",
+                "magnification": "2",
+                "immersion": "air",
+                "objective_type": null
+            },
+            {
+                "object_type": "Detector",
+                "name": "Detector 5",
+                "serial_number": "MP151BBX006",
+                "manufacturer": {
+                    "name": "Vieworks",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "VP-151MX-M6H0",
+                "additional_settings": null,
+                "notes": null,
+                "detector_type": "Camera",
+                "data_interface": "Coax",
+                "cooling": "Air",
+                "frame_rate": null,
+                "frame_rate_unit": null,
+                "immersion": null,
+                "chroma": null,
+                "sensor_width": null,
+                "sensor_height": null,
+                "size_unit": "pixel",
+                "sensor_format": null,
+                "sensor_format_unit": null,
+                "bit_depth": null,
+                "bin_mode": "No binning",
+                "bin_width": null,
+                "bin_height": null,
+                "bin_unit": "pixel",
+                "gain": null,
+                "crop_offset_x": null,
+                "crop_offset_y": null,
+                "crop_width": null,
+                "crop_height": null,
+                "crop_unit": "pixel",
+                "recording_software": null,
+                "driver": null,
+                "driver_version": null
+            },
+            {
+                "object_type": "Laser",
+                "name": "488 nm laser",
+                "serial_number": "MX1275",
+                "manufacturer": {
+                    "name": "Coherent Scientific",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "031tysd23"
+                },
+                "model": "Genesis MX488-1000 STM OPSLaser-Diode System",
+                "additional_settings": null,
+                "notes": "Housed in custom laser combiner. Water cooled.",
+                "wavelength": 488,
+                "wavelength_unit": "nanometer",
+                "coupling": "Free-space",
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent"
+            },
+            {
+                "object_type": "Laser",
+                "name": "561 nm laser",
+                "serial_number": "MX1276",
+                "manufacturer": {
+                    "name": "Coherent Scientific",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "031tysd23"
+                },
+                "model": "Genesis MX561-1000 STM OPSLaser-Diode System",
+                "additional_settings": null,
+                "notes": "Housed in custom laser combiner. Water cooled.",
+                "wavelength": 561,
+                "wavelength_unit": "nanometer",
+                "coupling": "Free-space",
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent"
+            },
+            {
+                "object_type": "Laser",
+                "name": "639 nm laser",
+                "serial_number": "MX1274",
+                "manufacturer": {
+                    "name": "Coherent Scientific",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "031tysd23"
+                },
+                "model": "Genesis MX639-1000 STM OPSLaser-Diode System",
+                "additional_settings": null,
+                "notes": "Housed in custom laser combiner. Water cooled.",
+                "wavelength": 639,
+                "wavelength_unit": "nanometer",
+                "coupling": "Free-space",
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent"
+            },
+            {
+                "object_type": "Filter",
+                "name": "Emission filter",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Chroma",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "ZET488/561m",
+                "additional_settings": null,
+                "notes": "Custom made filter. No filter wheel.",
+                "filter_type": "Multiband",
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "center_wavelength": [
+                    488,
+                    561
+                ],
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "object_type": "Motorized stage",
+                "name": "Illumination objective stage 1",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Applied Scientific Instrumentation",
+                    "abbreviation": "ASI",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LS-50",
+                "additional_settings": null,
+                "notes": "translates illumination objective along detection axis. tiger M axis.",
+                "travel": "50",
+                "travel_unit": "millimeter",
+                "firmware": null
+            },
+            {
+                "object_type": "Motorized stage",
+                "name": "Illumination objective stage 2",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Applied Scientific Instrumentation",
+                    "abbreviation": "ASI",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LS-50",
+                "additional_settings": null,
+                "notes": "translates illumination objective perpendicular to detection axis. tiger N axis.",
+                "travel": "50",
+                "travel_unit": "millimeter",
+                "firmware": null
+            },
+            {
+                "object_type": "Scanning stage",
+                "name": "X scanning stage",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Applied Scientific Instrumentation",
+                    "abbreviation": "ASI",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "MS-8000",
+                "additional_settings": null,
+                "notes": null,
+                "travel": "1000",
+                "travel_unit": "millimeter",
+                "firmware": null,
+                "stage_axis_direction": "Detection axis",
+                "stage_axis_name": "X"
+            },
+            {
+                "object_type": "Scanning stage",
+                "name": "Y scanning stage",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Applied Scientific Instrumentation",
+                    "abbreviation": "ASI",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "MS-8000",
+                "additional_settings": null,
+                "notes": null,
+                "travel": "1000",
+                "travel_unit": "millimeter",
+                "firmware": null,
+                "stage_axis_direction": "Perpendicular axis",
+                "stage_axis_name": "Y"
+            },
+            {
+                "object_type": "Scanning stage",
+                "name": "Z scanning stage",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Applied Scientific Instrumentation",
+                    "abbreviation": "ASI",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LS-100",
+                "additional_settings": null,
+                "notes": null,
+                "travel": "100",
+                "travel_unit": "millimeter",
+                "firmware": null,
+                "stage_axis_direction": "Illumination axis",
+                "stage_axis_name": "Z"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "L1",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Other",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LMPLANFL N 50X",
+                "additional_settings": null,
+                "notes": "L1. first beam expander lens. f = 3.6 mm",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "L2",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Other",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "7.5X Mitutoyo Plan Apo",
+                "additional_settings": null,
+                "notes": "L2. second beam expander lens. f = 26.67 mm",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "L3",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "ACY254-050-A-ML",
+                "additional_settings": null,
+                "notes": "L3. cylindrical lens. f = 50 mm",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "L4",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "AC508-200-A-ML",
+                "additional_settings": null,
+                "notes": "L4. first relay lens. f = 200 mm",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "L5",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "AC508-300-A-ML",
+                "additional_settings": null,
+                "notes": "L5. second relay lens. f = 300 mm",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "ETL",
+                "serial_number": "ANAC4286",
+                "manufacturer": {
+                    "name": "Optotune",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "EL-16-40-TC-VIS-20D-C",
+                "additional_settings": null,
+                "notes": " (v1v2 upgrade): 'imaging_device_type' field was missing, defaulting to 'Other'.",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "Cylindrical lens rotation stage",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Applied Scientific Instrumentation",
+                    "abbreviation": "ASI",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "C60-3060-CMR-MO",
+                "additional_settings": null,
+                "notes": " (v1v2 upgrade): 'imaging_device_type' field was missing, defaulting to 'Other'.",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "AOTF",
+                "serial_number": "1002-Q220234",
+                "manufacturer": {
+                    "name": "Other",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "AOTFnC-400.650-TN",
+                "additional_settings": null,
+                "notes": " (v1v2 upgrade): 'manufacturer' was set to 'Other' and notes were empty, manufacturer is unknown.",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "AOTF RF driver",
+                "serial_number": "2001-Q220234",
+                "manufacturer": {
+                    "name": "Other",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "MPDS8C-D65-22-74.158-RS",
+                "additional_settings": null,
+                "notes": " (v1v2 upgrade): 'manufacturer' was set to 'Other' and notes were empty, manufacturer is unknown.",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "Tiger controller",
+                "serial_number": "2112-2317-8584-5632-5631",
+                "manufacturer": {
+                    "name": "Applied Scientific Instrumentation",
+                    "abbreviation": "ASI",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "TG8-XY:A(Xb)H-Z/F:5A:FTP",
+                "additional_settings": null,
+                "notes": " (v1v2 upgrade): 'imaging_device_type' field was missing, defaulting to 'Other'.",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "NIDAQ breakout board",
+                "serial_number": "1FCD210",
+                "manufacturer": {
+                    "name": "National Instruments",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "026exqw73"
+                },
+                "model": "SCB-68A",
+                "additional_settings": null,
+                "notes": " (v1v2 upgrade): 'imaging_device_type' field was missing, defaulting to 'Other'.",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "Galvo 1",
+                "serial_number": "20375",
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "QS20Y-AG",
+                "additional_settings": null,
+                "notes": " (v1v2 upgrade): 'imaging_device_type' field was missing, defaulting to 'Other'.",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "Galvo 2",
+                "serial_number": "20385",
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "QS20Y-AG",
+                "additional_settings": null,
+                "notes": " (v1v2 upgrade): 'imaging_device_type' field was missing, defaulting to 'Other'.",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "Galvo servo 1",
+                "serial_number": "02232",
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "QS20Y-AG",
+                "additional_settings": null,
+                "notes": " (v1v2 upgrade): 'imaging_device_type' field was missing, defaulting to 'Other'.",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "Galvo servo 2",
+                "serial_number": "02216",
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "QS20Y-AG",
+                "additional_settings": null,
+                "notes": " (v1v2 upgrade): 'imaging_device_type' field was missing, defaulting to 'Other'.",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "488 nm laser 210 Watt Thermoelectric Chiller with Coherent Logo",
+                "serial_number": "A76636",
+                "manufacturer": {
+                    "name": "Coherent Scientific",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "031tysd23"
+                },
+                "model": "0P9T257P30",
+                "additional_settings": null,
+                "notes": " (v1v2 upgrade): 'imaging_device_type' field was missing, defaulting to 'Other'.",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "561 nm laser 210 Watt Thermoelectric Chiller with Coherent Logo",
+                "serial_number": "A76626",
+                "manufacturer": {
+                    "name": "Coherent Scientific",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "031tysd23"
+                },
+                "model": "0P9T257P30",
+                "additional_settings": null,
+                "notes": " (v1v2 upgrade): 'imaging_device_type' field was missing, defaulting to 'Other'.",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "639 nm laser 210 Watt Thermoelectric Chiller with Coherent Logo",
+                "serial_number": "A76606",
+                "manufacturer": {
+                    "name": "Coherent Scientific",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "031tysd23"
+                },
+                "model": "0P9T257P30",
+                "additional_settings": null,
+                "notes": " (v1v2 upgrade): 'imaging_device_type' field was missing, defaulting to 'Other'.",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "DAQ device",
+                "name": "NIDAQ",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "National Instruments",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "026exqw73"
+                },
+                "model": "PCIe-6738",
+                "additional_settings": null,
+                "notes": "Dev2",
+                "data_interface": "PCIe",
+                "channels": [
+                    {
+                        "object_type": "DAQ channel",
+                        "channel_name": "AO0",
+                        "channel_type": "Analog Output",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": "10000",
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "object_type": "DAQ channel",
+                        "channel_name": "AO1",
+                        "channel_type": "Analog Output",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": "10000",
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "object_type": "DAQ channel",
+                        "channel_name": "AO2",
+                        "channel_type": "Analog Output",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": "10000",
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "object_type": "DAQ channel",
+                        "channel_name": "AO3",
+                        "channel_type": "Analog Output",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": "10000",
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "object_type": "DAQ channel",
+                        "channel_name": "AO3",
+                        "channel_type": "Analog Output",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": "10000",
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "object_type": "DAQ channel",
+                        "channel_name": "AO4",
+                        "channel_type": "Analog Output",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": "10000",
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "object_type": "DAQ channel",
+                        "channel_name": "AO13",
+                        "channel_type": "Analog Output",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": "10000",
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "object_type": "DAQ channel",
+                        "channel_name": "AO17",
+                        "channel_type": "Analog Output",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": "10000",
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "object_type": "DAQ channel",
+                        "channel_name": "AO19",
+                        "channel_type": "Analog Output",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": "10000",
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    }
+                ],
+                "firmware_version": null,
+                "hardware_version": null
+            },
+            {
+                "object_type": "Microscope",
+                "name": "exaSPIM1-01",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": null
+            },
+            {
+                "object_type": "Device",
+                "name": "Imaging camera",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "AOTF RF driver, 561 nm",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Applied Scientific Instrumentation Tiger",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "SmartSPIM1-7",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Tiger Controller",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "W10DTA03416",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "AOTF RF driver, 639 nm",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "440_SmartSPIM1_20250116",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "SmartSPIM1-1",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "AOTF RF driver, 488 nm",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "ASI Tiger",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "SmartSPIM1-2",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Laser Launch",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "MightyZap",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "561",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in Acquisition."
+            },
+            {
+                "object_type": "Device",
+                "name": "488",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in Acquisition."
+            }
+        ]
+    },
+    "processing": {
+        "object_type": "Processing",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "schema_version": "2.0.71",
+        "data_processes": [],
+        "pipelines": null,
+        "notes": null,
+        "dependency_graph": {}
+    },
+    "acquisition": {
+        "object_type": "Acquisition",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/acquisition.py",
+        "schema_version": "2.0.30",
+        "subject_id": "667857",
+        "specimen_id": "667857",
+        "acquisition_start_time": "2024-02-19 12:47:17-08:00",
+        "acquisition_end_time": "2024-02-26 08:52:44-08:00",
+        "experimenters": [
+            {
+                "object_type": "Person",
+                "name": "John Rohde",
+                "registry": {
+                    "name": "Open Researcher and Contributor ID",
+                    "abbreviation": "ORCID"
+                },
+                "registry_identifier": null
+            }
+        ],
+        "protocol_id": null,
+        "ethics_review_id": null,
+        "instrument_id": "exaspim-01",
+        "acquisition_type": "Imaging session",
+        "notes": null,
+        "coordinate_system": null,
+        "calibrations": [],
+        "maintenance": [],
+        "data_streams": [
+            {
+                "object_type": "Data stream",
+                "stream_start_time": "2024-02-19 12:47:17-08:00",
+                "stream_end_time": "2024-02-26 08:52:44-08:00",
+                "modalities": [
+                    {
+                        "name": "Selective plane illumination microscopy",
+                        "abbreviation": "SPIM"
+                    }
+                ],
+                "code": null,
+                "notes": null,
+                "active_devices": [
+                    "561",
+                    "488"
+                ],
+                "configurations": [
+                    {
+                        "object_type": "Imaging config",
+                        "device_name": "unknown",
+                        "channels": [
+                            {
+                                "object_type": "Channel",
+                                "channel_name": "488",
+                                "intended_measurement": null,
+                                "detector": {
+                                    "object_type": "Detector config",
+                                    "device_name": "unknown_detector",
+                                    "exposure_time": 1,
+                                    "exposure_time_unit": "millisecond",
+                                    "trigger_type": "Internal",
+                                    "compression": null
+                                },
+                                "additional_device_names": null,
+                                "light_sources": [],
+                                "variable_power": false,
+                                "excitation_filters": null,
+                                "emission_filters": null,
+                                "emission_wavelength": null,
+                                "emission_wavelength_unit": null
+                            },
+                            {
+                                "object_type": "Channel",
+                                "channel_name": "561",
+                                "intended_measurement": null,
+                                "detector": {
+                                    "object_type": "Detector config",
+                                    "device_name": "unknown_detector",
+                                    "exposure_time": 1,
+                                    "exposure_time_unit": "millisecond",
+                                    "trigger_type": "Internal",
+                                    "compression": null
+                                },
+                                "additional_device_names": null,
+                                "light_sources": [],
+                                "variable_power": false,
+                                "excitation_filters": null,
+                                "emission_filters": null,
+                                "emission_wavelength": null,
+                                "emission_wavelength_unit": null
+                            }
+                        ],
+                        "coordinate_system": null,
+                        "images": [],
+                        "sampling_strategy": null
+                    },
+                    {
+                        "object_type": "Sample chamber config",
+                        "device_name": "exaspim-01",
+                        "chamber_immersion": {
+                            "object_type": "Immersion",
+                            "medium": "water",
+                            "refractive_index": 1.33
+                        },
+                        "sample_immersion": null
+                    }
+                ],
+                "connections": []
+            }
+        ],
+        "stimulus_epochs": [],
+        "subject_details": {
+            "object_type": "Acquisition subject details",
+            "animal_weight_prior": null,
+            "animal_weight_post": null,
+            "weight_unit": "gram",
+            "anaesthesia": null,
+            "mouse_platform_name": "N/A",
+            "reward_consumed_total": null,
+            "reward_consumed_unit": null
+        }
+    },
+    "quality_control": null,
+    "model": null,
+    "_created": "2025-06-26T22:36:04.538Z",
+    "_last_modified": "2025-06-27T04:48:59.125Z"
+}

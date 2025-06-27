@@ -30,6 +30,8 @@ from aind_data_schema.core.instrument import (
     ConnectionDirection,
 )
 from aind_data_schema.core.procedures import Procedures
+from aind_data_schema.core.acquisition import Acquisition
+from aind_data_schema.core.instrument import Instrument
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
 from aind_data_schema_models.units import SizeUnit, TimeUnit, VolumeUnit, PowerUnit
@@ -120,6 +122,11 @@ def repair_manufacturer(data: dict) -> dict:
                 if data["notes"]
                 else "" + " (v1v2 upgrade): 'manufacturer' field was missing, defaulting to 'Other'."
             )
+
+    if "manufacturer" in data and (
+        "abbreviation" not in data["manufacturer"] or data["manufacturer"]["abbreviation"] is None
+    ):
+        data["manufacturer"] = Organization.from_name(data["manufacturer"]["name"]).model_dump()
 
     return data
 
@@ -605,6 +612,10 @@ def upgrade_targeted_structure(data: dict | str) -> dict:
     return data
 
 
+# List of acquisition IDs where the instrument_id needs to be copied from instrument to acquisition
+SHORT_ACQ_ID_LIST = ["5B", "4D", "MESO.1"]
+
+
 def repair_instrument_id_mismatch(data: dict) -> dict:
     """Repair mismatched instrument IDs between acquisition and instrument sections"""
 
@@ -617,15 +628,14 @@ def repair_instrument_id_mismatch(data: dict) -> dict:
                     instrument_id = data["instrument"]["instrument_id"]
 
                     if acquisition_instrument_id != instrument_id:
-                        print(
-                            f"Warning: acquisition.instrument_id ({acquisition_instrument_id}) "
-                            f"does not match instrument.instrument_id ({instrument_id}). "
-                            "Updating acquisition.instrument_id to match."
-                        )
                         data["instrument"]["instrument_id"] = acquisition_instrument_id
                 else:
                     raise ValueError("instrument.instrument_id is missing while acquisition.instrument_id is present.")
-
+    elif "acquisition" in data and data["acquisition"] and "instrument_id" in data["acquisition"]:
+        if data["acquisition"]["instrument_id"] == "442_Bergamo_2p_photostim":
+            data["instrument"]["instrument_id"] = "442_Bergamo_2p_photostim"
+        elif data["acquisition"]["instrument_id"] in SHORT_ACQ_ID_LIST:
+            data["acquisition"]["instrument_id"] = data["instrument"]["instrument_id"]
     return data
 
 
@@ -655,11 +665,36 @@ def repair_missing_active_devices(data: dict) -> dict:
         missing_devices = set(active_devices) - set(device_names)
         # Create missing devices with default names
         for device in missing_devices:
-            print(f"Warning: Active device '{device}' not found in instrument devices. Creating default device.")
             new_device = Device(
                 name=device,
+                notes="(v1v2 upgrade) This device was not found in the components list, but is referenced in Acquisition.",
             )
             data["instrument"]["components"].append(new_device.model_dump())
+
+    return data
+
+
+def repair_missing_stimulus_epoch_devices(data: dict) -> dict:
+    """Create missing devices that are referenced in stimulus epochs but not in instrument components"""
+
+    acquisition = Acquisition.model_validate(data.get("acquisition", {}))
+    instrument = Instrument.model_validate(data.get("instrument", {}))
+
+    acquisition_stimulus_devices = [
+        stimulus_device_name
+        for stimulus_epoch in getattr(acquisition, "stimulus_epochs", [])
+        for stimulus_device_name in getattr(stimulus_epoch, "active_devices")
+    ]
+    instrument_component_names = [getattr(comp, "name", None) for comp in getattr(instrument, "components", [])]
+
+    for device_name in acquisition_stimulus_devices:
+        if device_name not in instrument_component_names:
+            # Create a new Device object with the missing name
+            new_device = Device(
+                name=device_name,
+                notes="(v1v2 upgrade) This device was not found in the components list, but is referenced in Acquisition stimulus epochs.",
+            )
+            data["instrument"]["components"].append(new_device)
 
     return data
 

@@ -69,20 +69,29 @@ class Upgrade:
         self.data = record
         self.skip_metadata_validation = skip_metadata_validation
 
+        # Figure out what core files we have, and what outputs we expected
+        expected_core_files = []
+        for core_file in CORE_FILES:
+            if core_file in self.data and self.data[core_file]:
+                # We have data for this file
+                expected_core_files.append(CORE_MAPPING.get(core_file, core_file))
+
+        print(expected_core_files)
+
         core_files = {}
         for core_file in CORE_FILES:
-            if core_file in record:
+            if core_file in record and record[core_file]:
                 target_key = CORE_MAPPING.get(core_file, core_file)
 
                 # Only process if we haven't already processed the target key
                 if target_key not in core_files:
-                    # Prefer the canonical name over aliases (instrument over rig, acquisition over session)
-                    if target_key in record:
-                        core_files[target_key] = self.upgrade_core_file(target_key)
-                    else:
-                        core_files[target_key] = self.upgrade_core_file(core_file)
+                    core_files[target_key] = self.upgrade_core_file(core_file)
 
         self.upgrade_metadata(core_files)
+
+        for expected_core_file in expected_core_files:
+            if not hasattr(self.metadata, expected_core_file) or getattr(self.metadata, expected_core_file) is None:
+                raise ValueError(f"Expected core file '{expected_core_file}' not found in upgraded metadata")
 
     def save(self):
         """Save the upgraded metadata to a standard file"""
@@ -102,13 +111,11 @@ class Upgrade:
 
         original_metadata_version = Version(self.data.get("schema_version", "0.0.0"))
 
-        data = self.data.copy()
+        upgraded_data = self.data.copy()
         for core_file in CORE_FILES:
-            if core_file in data:
-                del data[core_file]  # Remove core files from the original data
-        data.update(new_core_files)  # Add upgraded core files
-
-        upgraded_data = data.copy()
+            if core_file in upgraded_data:
+                del upgraded_data[core_file]  # Remove core files from the original data
+        upgraded_data.update(new_core_files)  # Add upgraded core files
 
         if self.skip_metadata_validation:
             self.metadata = Metadata.model_construct(**upgraded_data)
@@ -130,10 +137,6 @@ class Upgrade:
 
         if core_file not in self.data:
             raise ValueError(f"Core file '{core_file}' not found in record")
-
-        if core_file not in UPGRADE_VERSIONS:
-            print(f"Skipping upgrade for {core_file} (not in UPGRADE_VERSIONS)")
-            return {}  # [TODO: Remove when all core files are upgradeable]
 
         core_data = self.data[core_file]
 

@@ -95,13 +95,14 @@ class SessionV1V2(CoreUpgrader):
                 power=float(excitation_power) if excitation_power else None,
                 power_unit=PowerUnit.MW if power_unit == "milliwatt" else PowerUnit.PERCENT,
             ).model_dump()
-        elif device_type == "Light emitting diode":
+        elif device_type == "Light emitting diode" or "led" in device_name.lower():
             return LightEmittingDiodeConfig(
                 device_name=device_name,
                 power=float(excitation_power) if excitation_power else None,
                 power_unit=PowerUnit.MW if power_unit == "milliwatt" else PowerUnit.PERCENT,
             ).model_dump()
         else:
+            print(data)
             raise NotImplementedError(f"Light source device type '{device_type}' not supported in v2 upgrade")
 
     def _upgrade_detector_config(self, detector: Dict) -> Dict:

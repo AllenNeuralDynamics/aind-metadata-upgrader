@@ -50,6 +50,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_positioned_device,
     upgrade_software,
     repair_unit,
+    repair_manufacturer,
 )
 
 saved_connections = []
@@ -457,7 +458,7 @@ def upgrade_camera(data: dict) -> dict:
             )
         remove(data, "computer_name")
 
-    if "cooling" in data and not data["cooling"] or data["cooling"] == "None":
+    if "cooling" in data and (not data["cooling"] or data["cooling"] == "None"):
         # If someone put None it's ambiguous, but we can assume they meant no cooling
         data["cooling"] = "No cooling"
 

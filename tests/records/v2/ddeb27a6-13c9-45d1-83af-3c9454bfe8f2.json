@@ -1,0 +1,1352 @@
+{
+    "_id": "bbe109c7-d678-49b5-9eca-c212eb38fbc3",
+    "object_type": "Metadata",
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "schema_version": "2.0.71",
+    "name": "SmartSPIM_713468_2025-04-09_12-23-31",
+    "location": "s3://aind-open-data/SmartSPIM_713468_2025-04-09_12-23-31",
+    "other_identifiers": {},
+    "subject": {
+        "object_type": "Subject",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "schema_version": "2.0.9",
+        "subject_id": "713468",
+        "subject_details": {
+            "object_type": "Mouse subject",
+            "sex": "Male",
+            "date_of_birth": "2023-11-22",
+            "strain": {
+                "name": "C57BL/6J",
+                "species": "Mus musculus",
+                "registry": {
+                    "name": "Mouse Genome Informatics",
+                    "abbreviation": "MGI"
+                },
+                "registry_identifier": "MGI:3028467"
+            },
+            "species": {
+                "name": "Mus musculus",
+                "registry": {
+                    "name": "National Center for Biotechnology Information",
+                    "abbreviation": "NCBI"
+                },
+                "registry_identifier": "NCBI:txid10090"
+            },
+            "alleles": [],
+            "genotype": "Dbh-Cre-KI/wt;Ai230(TIT2L-XCaMPG-WPRE-ICL-ChRmine-oScarlet-IRES2-tTA2-WPRE)-hyg/wt",
+            "breeding_info": {
+                "object_type": "Breeding info",
+                "breeding_group": "Dbh-Cre-KI;Ai230-hyg(ND)",
+                "maternal_id": "697943",
+                "maternal_genotype": "Ai230(TIT2L-XCaMPG-WPRE-ICL-ChRmine-oScarlet-IRES2-tTA2-WPRE)-hyg/wt",
+                "paternal_id": "702765",
+                "paternal_genotype": "Dbh-Cre-KI/wt"
+            },
+            "wellness_reports": [],
+            "housing": null,
+            "source": {
+                "name": "Allen Institute",
+                "abbreviation": "AI",
+                "registry": {
+                    "name": "Research Organization Registry",
+                    "abbreviation": "ROR"
+                },
+                "registry_identifier": "03cpe7c52"
+            },
+            "restrictions": null,
+            "rrid": null
+        },
+        "notes": null
+    },
+    "data_description": {
+        "object_type": "Data description",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "2.0.11",
+        "license": "CC-BY-4.0",
+        "subject_id": "713468",
+        "creation_time": "2025-04-09 12:23:31-07:00",
+        "tags": null,
+        "name": "SmartSPIM_713468_2025-04-09_12-23-31",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "object_type": "Funding",
+                "funder": {
+                    "name": "National Institute of Neurological Disorders and Stroke",
+                    "abbreviation": "NINDS",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "01s5ya894"
+                },
+                "grant_number": "1U19NS123714-01",
+                "fundee": null
+            }
+        ],
+        "data_level": "raw",
+        "group": null,
+        "investigators": [
+            {
+                "object_type": "Person",
+                "name": "Jayaram Chandrashekar",
+                "registry": {
+                    "name": "Open Researcher and Contributor ID",
+                    "abbreviation": "ORCID"
+                },
+                "registry_identifier": null
+            },
+            {
+                "object_type": "Person",
+                "name": "Mathew Summers",
+                "registry": {
+                    "name": "Open Researcher and Contributor ID",
+                    "abbreviation": "ORCID"
+                },
+                "registry_identifier": null
+            }
+        ],
+        "project_name": "Thalamus in the middle - Project 2 Cell-type specific thalamocortical projectome",
+        "restrictions": null,
+        "modalities": [
+            {
+                "name": "Selective plane illumination microscopy",
+                "abbreviation": "SPIM"
+            }
+        ],
+        "data_summary": null
+    },
+    "procedures": {
+        "object_type": "Procedures",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "schema_version": "2.0.28",
+        "subject_id": "713468",
+        "subject_procedures": [
+            {
+                "object_type": "Surgery",
+                "protocol_id": null,
+                "start_date": "2024-02-14",
+                "experimenters": [
+                    {
+                        "object_type": "Person",
+                        "name": "30921",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ],
+                "ethics_review_id": "2109",
+                "animal_weight_prior": null,
+                "animal_weight_post": null,
+                "weight_unit": "gram",
+                "anaesthesia": null,
+                "workstation_id": null,
+                "coordinate_system": null,
+                "measured_coordinates": null,
+                "procedures": [
+                    {
+                        "object_type": "Perfusion",
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.8epv51bejl1b/v6",
+                        "output_specimen_ids": [
+                            "713468"
+                        ]
+                    }
+                ],
+                "notes": null
+            },
+            {
+                "object_type": "Surgery",
+                "protocol_id": "dx.doi.org/10.17504/protocols.io.kqdg392o7g25/v2",
+                "start_date": "2024-01-11",
+                "experimenters": [
+                    {
+                        "object_type": "Person",
+                        "name": "NSB",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ],
+                "ethics_review_id": "2109",
+                "animal_weight_prior": 23,
+                "animal_weight_post": 24.8,
+                "weight_unit": "gram",
+                "anaesthesia": {
+                    "object_type": "Anaesthetic",
+                    "anaesthetic_type": "isoflurane",
+                    "duration": 45,
+                    "duration_unit": "minute",
+                    "level": 1.75
+                },
+                "workstation_id": "SWS 5",
+                "coordinate_system": null,
+                "measured_coordinates": null,
+                "procedures": [
+                    {
+                        "object_type": "Headframe",
+                        "protocol_id": null,
+                        "headframe_type": "LC",
+                        "headframe_part_number": "unknown",
+                        "headframe_material": null,
+                        "well_part_number": null,
+                        "well_type": "No Well"
+                    }
+                ],
+                "notes": null
+            }
+        ],
+        "specimen_procedures": [],
+        "coordinate_system": {
+            "object_type": "Coordinate system",
+            "name": "BREGMA_ARID",
+            "origin": "Bregma",
+            "axes": [
+                {
+                    "object_type": "Axis",
+                    "name": "AP",
+                    "direction": "Posterior_to_anterior"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "ML",
+                    "direction": "Left_to_right"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "SI",
+                    "direction": "Superior_to_inferior"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "Depth",
+                    "direction": "Up_to_down"
+                }
+            ],
+            "axis_unit": "millimeter"
+        },
+        "notes": null
+    },
+    "instrument": {
+        "object_type": "Instrument",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/instrument.py",
+        "schema_version": "2.0.34",
+        "location": null,
+        "instrument_id": "440_SmartSPIM1_20250116",
+        "modification_date": "2025-01-16",
+        "modalities": [],
+        "calibrations": null,
+        "coordinate_system": {
+            "object_type": "Coordinate system",
+            "name": "BREGMA_ARI",
+            "origin": "Bregma",
+            "axes": [
+                {
+                    "object_type": "Axis",
+                    "name": "AP",
+                    "direction": "Posterior_to_anterior"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "ML",
+                    "direction": "Left_to_right"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "SI",
+                    "direction": "Superior_to_inferior"
+                }
+            ],
+            "axis_unit": "millimeter"
+        },
+        "temperature_control": false,
+        "notes": null,
+        "connections": [
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-2",
+                    "Laser Launch"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-2": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Laser Launch": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-2",
+                    "ASI Tiger"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-2": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "ASI Tiger": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-2",
+                    "MightyZap"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-2": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "MightyZap": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-7",
+                    "Laser Launch"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-7": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Laser Launch": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-7",
+                    "Applied Scientific Instrumentation Tiger"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-7": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Applied Scientific Instrumentation Tiger": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "SmartSPIM1-7",
+                    "MightyZap"
+                ],
+                "connection_data": {
+                    "SmartSPIM1-7": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "MightyZap": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "440_SmartSPIM1_20250116",
+                    "Laser Launch"
+                ],
+                "connection_data": {
+                    "440_SmartSPIM1_20250116": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Laser Launch": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "440_SmartSPIM1_20250116",
+                    "Applied Scientific Instrumentation Tiger"
+                ],
+                "connection_data": {
+                    "440_SmartSPIM1_20250116": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "Applied Scientific Instrumentation Tiger": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            },
+            {
+                "object_type": "Connection",
+                "device_names": [
+                    "440_SmartSPIM1_20250116",
+                    "MightyZap"
+                ],
+                "connection_data": {
+                    "440_SmartSPIM1_20250116": {
+                        "object_type": "Connection data",
+                        "direction": "Send",
+                        "port": null
+                    },
+                    "MightyZap": {
+                        "object_type": "Connection data",
+                        "direction": "Receive",
+                        "port": null
+                    }
+                }
+            }
+        ],
+        "components": [
+            {
+                "object_type": "Objective",
+                "name": "LCT 3.6x",
+                "serial_number": "Unknown",
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "TL4X-SAP",
+                "additional_settings": {},
+                "notes": "Thorlabs TL4X-SAP with LifeCanvas dipping cap and correction optics.",
+                "numerical_aperture": "0.2",
+                "magnification": "3.6",
+                "immersion": "multi",
+                "objective_type": null
+            },
+            {
+                "object_type": "Objective",
+                "name": "LCT 1.625x",
+                "serial_number": "Unknown",
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "TL2X-SAP",
+                "additional_settings": {},
+                "notes": null,
+                "numerical_aperture": "0.1",
+                "magnification": "1.6",
+                "immersion": "multi",
+                "objective_type": null
+            },
+            {
+                "object_type": "Objective",
+                "name": "Nikon16x",
+                "serial_number": "Unknown",
+                "manufacturer": {
+                    "name": "Nikon",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "0280y9h11"
+                },
+                "model": "MRD77220",
+                "additional_settings": {},
+                "notes": null,
+                "numerical_aperture": "0.8",
+                "magnification": "16.0",
+                "immersion": "water",
+                "objective_type": null
+            },
+            {
+                "object_type": "Detector",
+                "name": "Camera",
+                "serial_number": "220302-SYS-060443",
+                "manufacturer": {
+                    "name": "Hamamatsu",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03natb733"
+                },
+                "model": "C14440-20UP",
+                "additional_settings": {},
+                "notes": null,
+                "detector_type": "Camera",
+                "data_interface": "USB",
+                "cooling": "Water",
+                "frame_rate": null,
+                "frame_rate_unit": "hertz",
+                "immersion": null,
+                "chroma": null,
+                "sensor_width": null,
+                "sensor_height": null,
+                "size_unit": "pixel",
+                "sensor_format": null,
+                "sensor_format_unit": null,
+                "bit_depth": null,
+                "bin_mode": "No binning",
+                "bin_width": null,
+                "bin_height": null,
+                "bin_unit": "pixel",
+                "gain": null,
+                "crop_offset_x": null,
+                "crop_offset_y": null,
+                "crop_width": null,
+                "crop_height": null,
+                "crop_unit": "pixel",
+                "recording_software": null,
+                "driver": null,
+                "driver_version": null
+            },
+            {
+                "object_type": "Laser",
+                "name": "Ex_445",
+                "serial_number": "VL08223M03",
+                "manufacturer": {
+                    "name": "Vortran",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "Stradus",
+                "additional_settings": {},
+                "notes": "All lasers controlled via Vortran VersaLase System",
+                "wavelength": 445,
+                "wavelength_unit": "nanometer",
+                "coupling": "Single-mode fiber",
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent"
+            },
+            {
+                "object_type": "Laser",
+                "name": "Ex_488",
+                "serial_number": "VL08223M03",
+                "manufacturer": {
+                    "name": "Vortran",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "Stradus",
+                "additional_settings": {},
+                "notes": "All lasers controlled via Vortran VersaLase System",
+                "wavelength": 488,
+                "wavelength_unit": "nanometer",
+                "coupling": "Single-mode fiber",
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent"
+            },
+            {
+                "object_type": "Laser",
+                "name": "Ex_561",
+                "serial_number": "",
+                "manufacturer": {
+                    "name": "Other",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "Obis",
+                "additional_settings": {},
+                "notes": "All lasers controlled via Vortran VersaLase System",
+                "wavelength": 561,
+                "wavelength_unit": "nanometer",
+                "coupling": "Single-mode fiber",
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent"
+            },
+            {
+                "object_type": "Laser",
+                "name": "Ex_594",
+                "serial_number": "VL08223M03",
+                "manufacturer": {
+                    "name": "Vortran",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "Stradus",
+                "additional_settings": {},
+                "notes": "All lasers controlled via Vortran VersaLase System",
+                "wavelength": 594,
+                "wavelength_unit": "nanometer",
+                "coupling": "Single-mode fiber",
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent"
+            },
+            {
+                "object_type": "Laser",
+                "name": "Ex_639",
+                "serial_number": "",
+                "manufacturer": {
+                    "name": "Vortran",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "Stradus",
+                "additional_settings": {},
+                "notes": "All lasers controlled via Vortran VersaLase System",
+                "wavelength": 639,
+                "wavelength_unit": "nanometer",
+                "coupling": "Single-mode fiber",
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent"
+            },
+            {
+                "object_type": "Laser",
+                "name": "Ex_665",
+                "serial_number": "VL08223M03",
+                "manufacturer": {
+                    "name": "Vortran",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "Stradus",
+                "additional_settings": {},
+                "notes": "All lasers controlled via Vortran VersaLase System",
+                "wavelength": 665,
+                "wavelength_unit": "nanometer",
+                "coupling": "Single-mode fiber",
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent"
+            },
+            {
+                "object_type": "Filter",
+                "name": "Em_469",
+                "serial_number": "Unknown-1",
+                "manufacturer": {
+                    "name": "Semrock",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "FF01-469/35-32",
+                "additional_settings": {},
+                "notes": null,
+                "filter_type": "Band pass",
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "center_wavelength": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "object_type": "Filter",
+                "name": "Em_525",
+                "serial_number": "Unknown-1",
+                "manufacturer": {
+                    "name": "Semrock",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "FF03-525/50-32",
+                "additional_settings": {},
+                "notes": null,
+                "filter_type": "Band pass",
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "center_wavelength": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "object_type": "Filter",
+                "name": "Em_593",
+                "serial_number": "Unknown-2",
+                "manufacturer": {
+                    "name": "Semrock",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "FF01-593/40-32",
+                "additional_settings": {},
+                "notes": null,
+                "filter_type": "Band pass",
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "center_wavelength": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "object_type": "Filter",
+                "name": "Em_624",
+                "serial_number": "Unknown-2",
+                "manufacturer": {
+                    "name": "Semrock",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "FF01-624/40-32",
+                "additional_settings": {},
+                "notes": null,
+                "filter_type": "Band pass",
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "center_wavelength": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "object_type": "Filter",
+                "name": "Em_667",
+                "serial_number": "Unknown-3",
+                "manufacturer": {
+                    "name": "Chroma",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "ET667/30m",
+                "additional_settings": {},
+                "notes": null,
+                "filter_type": "Band pass",
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "center_wavelength": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "object_type": "Filter",
+                "name": "Em_700",
+                "serial_number": "Unknown-2",
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "FELH0700",
+                "additional_settings": {},
+                "notes": null,
+                "filter_type": "Long pass",
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "center_wavelength": 700,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "object_type": "Filter",
+                "name": "Em_000",
+                "serial_number": "Unknown-2",
+                "manufacturer": {
+                    "name": "Other",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "none000",
+                "additional_settings": {},
+                "notes": " (v1v2 upgrade): 'manufacturer' was set to 'Other' and notes were empty, manufacturer is unknown.",
+                "filter_type": "Long pass",
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "center_wavelength": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "object_type": "Motorized stage",
+                "name": "Focus stage",
+                "serial_number": "Unknown-0",
+                "manufacturer": {
+                    "name": "Applied Scientific Instrumentation",
+                    "abbreviation": "ASI",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LS-100",
+                "additional_settings": {},
+                "notes": null,
+                "travel": "100",
+                "travel_unit": "millimeter",
+                "firmware": null
+            },
+            {
+                "object_type": "Motorized stage",
+                "name": "Cylindrical lens #1",
+                "serial_number": "Unknown-1",
+                "manufacturer": {
+                    "name": "Other",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "L12-20F-4",
+                "additional_settings": {},
+                "notes": " (v1v2 upgrade): 'manufacturer' was set to 'Other' and notes were empty, manufacturer is unknown.",
+                "travel": "41",
+                "travel_unit": "millimeter",
+                "firmware": null
+            },
+            {
+                "object_type": "Motorized stage",
+                "name": "Cylindrical lens #2",
+                "serial_number": "Unknown-2",
+                "manufacturer": {
+                    "name": "Other",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "L12-20F-4",
+                "additional_settings": {},
+                "notes": " (v1v2 upgrade): 'manufacturer' was set to 'Other' and notes were empty, manufacturer is unknown.",
+                "travel": "41",
+                "travel_unit": "millimeter",
+                "firmware": null
+            },
+            {
+                "object_type": "Motorized stage",
+                "name": "Cylindrical lens #3",
+                "serial_number": "Unknown-3",
+                "manufacturer": {
+                    "name": "Other",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "L12-20F-4",
+                "additional_settings": {},
+                "notes": " (v1v2 upgrade): 'manufacturer' was set to 'Other' and notes were empty, manufacturer is unknown.",
+                "travel": "41",
+                "travel_unit": "millimeter",
+                "firmware": null
+            },
+            {
+                "object_type": "Motorized stage",
+                "name": "Cylindrical lens #4",
+                "serial_number": "Unknown-4",
+                "manufacturer": {
+                    "name": "Other",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "L12-20F-4",
+                "additional_settings": {},
+                "notes": " (v1v2 upgrade): 'manufacturer' was set to 'Other' and notes were empty, manufacturer is unknown.",
+                "travel": "41",
+                "travel_unit": "millimeter",
+                "firmware": null
+            },
+            {
+                "object_type": "Scanning stage",
+                "name": "Sample stage Z",
+                "serial_number": "Unknown-0",
+                "manufacturer": {
+                    "name": "Applied Scientific Instrumentation",
+                    "abbreviation": "ASI",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LS-50",
+                "additional_settings": {},
+                "notes": null,
+                "travel": "50",
+                "travel_unit": "millimeter",
+                "firmware": null,
+                "stage_axis_direction": "Detection axis",
+                "stage_axis_name": "Z"
+            },
+            {
+                "object_type": "Scanning stage",
+                "name": "Sample stage X",
+                "serial_number": "Unknown-1",
+                "manufacturer": {
+                    "name": "Applied Scientific Instrumentation",
+                    "abbreviation": "ASI",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LS-50",
+                "additional_settings": {},
+                "notes": null,
+                "travel": "50",
+                "travel_unit": "millimeter",
+                "firmware": null,
+                "stage_axis_direction": "Illumination axis",
+                "stage_axis_name": "X"
+            },
+            {
+                "object_type": "Scanning stage",
+                "name": "Sample stage Y",
+                "serial_number": "Unknown-2",
+                "manufacturer": {
+                    "name": "Applied Scientific Instrumentation",
+                    "abbreviation": "ASI",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LS-50",
+                "additional_settings": {},
+                "notes": null,
+                "travel": "50",
+                "travel_unit": "millimeter",
+                "firmware": null,
+                "stage_axis_direction": "Perpendicular axis",
+                "stage_axis_name": "Y"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "Chiller",
+                "serial_number": "10436130",
+                "manufacturer": {
+                    "name": "Julabo",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "200F",
+                "additional_settings": {},
+                "notes": "Water chiller for camera cooling",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "tunable lens",
+                "serial_number": "Unknown-1",
+                "manufacturer": {
+                    "name": "Optotune",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "EL-16-40-TC",
+                "additional_settings": {},
+                "notes": "Electrically tunable lens",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "tunable lens",
+                "serial_number": "Unknown-2",
+                "manufacturer": {
+                    "name": "Optotune",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "EL-16-40-TC",
+                "additional_settings": {},
+                "notes": "Electrically tunable lens",
+                "imaging_device_type": "Other"
+            },
+            {
+                "object_type": "Additional imaging device",
+                "name": "Sample Chamber",
+                "serial_number": "Unknown-1",
+                "manufacturer": {
+                    "name": "LifeCanvas",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "Large-uncoated-glass",
+                "additional_settings": {},
+                "notes": null,
+                "imaging_device_type": "Sample Chamber"
+            },
+            {
+                "object_type": "Microscope",
+                "name": "440_SmartSPIM1_20250116",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": null
+            },
+            {
+                "object_type": "Device",
+                "name": "Applied Scientific Instrumentation Tiger",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "SmartSPIM1-7",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "ASI Tiger",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "SmartSPIM1-2",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "Laser Launch",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "MightyZap",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in connections."
+            },
+            {
+                "object_type": "Device",
+                "name": "639",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in Acquisition."
+            },
+            {
+                "object_type": "Device",
+                "name": "665",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in Acquisition."
+            },
+            {
+                "object_type": "Device",
+                "name": "561",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "additional_settings": null,
+                "notes": "(v1v2 upgrade) This device was not found in the components list, but is referenced in Acquisition."
+            }
+        ]
+    },
+    "processing": {
+        "object_type": "Processing",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "schema_version": "2.0.71",
+        "data_processes": [
+            {
+                "object_type": "Data process",
+                "process_type": "Compression",
+                "name": "Compression_2",
+                "stage": "Processing",
+                "code": {
+                    "object_type": "Code",
+                    "url": "/allen/aind/scratch/svc_aind_airflow/singularity/aind_smartspim_data_transformation_0_1_3.sif",
+                    "name": "Compression",
+                    "version": null,
+                    "container": null,
+                    "run_script": null,
+                    "language": null,
+                    "language_version": null,
+                    "input_data": null,
+                    "parameters": {
+                        "compress_data_settings": {
+                            "aws": {
+                                "bucket_map": {
+                                    "archive": "aind-archive",
+                                    "open": "aind-open-data",
+                                    "private": "aind-private-data-prod-o5171v",
+                                    "scratch": "aind-scratch-data"
+                                }
+                            },
+                            "job_properties": {
+                                "array": "0-9",
+                                "environment": {
+                                    "LD_LIBRARY_PATH": "/lib/:/lib64/:/usr/local/lib",
+                                    "PATH": "/bin:/usr/bin/:/usr/local/bin/"
+                                },
+                                "memory_per_cpu": 1000,
+                                "minimum_cpus_per_node": 4,
+                                "name": "SmartSPIM_713468_job_1744234258_19a3a_SPIM",
+                                "partition": "aind",
+                                "qos": "production",
+                                "standard_error": "/allen/aind/scratch/svc_aind_airflow/prod/logs/SmartSPIM_713468_job_1744234258_19a3a_SPIM_error.out",
+                                "standard_out": "/allen/aind/scratch/svc_aind_airflow/prod/logs/SmartSPIM_713468_job_1744234258_19a3a_SPIM.out",
+                                "time_limit": 120
+                            },
+                            "logs_directory": "/allen/aind/scratch/svc_aind_airflow/prod/logs",
+                            "module": "aind_smartspim_data_transformation.smartspim_job",
+                            "process_name": "Compression",
+                            "sif_container": "/allen/aind/scratch/svc_aind_airflow/singularity/aind_smartspim_data_transformation_0_1_3.sif",
+                            "singularity": {
+                                "env_file_map": {
+                                    "archive": "/home/svc_aind_airflow/.aws_envs/prod.env",
+                                    "open": "/home/svc_aind_airflow/.aws_envs/open.env",
+                                    "private": "/home/svc_aind_airflow/.aws_envs/prod.env",
+                                    "scratch": "/home/svc_aind_airflow/.aws_envs/prod.env"
+                                }
+                            }
+                        },
+                        "compress_raw_data": true,
+                        "modality": {
+                            "abbreviation": "SPIM",
+                            "name": "Selective plane illumination microscopy"
+                        },
+                        "output_folder_name": "SPIM",
+                        "platform": "SmartSPIM",
+                        "s3_bucket": "open",
+                        "s3_prefix": "SmartSPIM_713468_2025-04-09_12-23-31",
+                        "slurm_settings": {
+                            "array": "0-11",
+                            "environment": {},
+                            "open_mode": "append",
+                            "time_limit": 180
+                        },
+                        "source": "//allen/aind/stage/SmartSPIM/SmartSPIM_713468_2025-04-09_12-23-31"
+                    },
+                    "core_dependency": null
+                },
+                "experimenters": [
+                    {
+                        "object_type": "Person",
+                        "name": "AIND Scientific Computing",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ],
+                "pipeline_name": null,
+                "start_date_time": "2025-04-09 21:30:58.928695+00:00",
+                "end_date_time": "2025-04-09 22:03:01.101258+00:00",
+                "output_path": "/allen/aind/stage/svc_aind_airflow/prod/SmartSPIM_713468_job_1744233943_e79a4_cf/SPIM",
+                "output_parameters": {},
+                "notes": null,
+                "resources": null
+            }
+        ],
+        "pipelines": null,
+        "notes": null,
+        "dependency_graph": {
+            "Compression_2": []
+        }
+    },
+    "acquisition": {
+        "object_type": "Acquisition",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/acquisition.py",
+        "schema_version": "2.0.30",
+        "subject_id": "713468",
+        "specimen_id": "713468_001",
+        "acquisition_start_time": "2025-04-09 12:23:31-07:00",
+        "acquisition_end_time": "2025-04-09 13:34:49-07:00",
+        "experimenters": [
+            {
+                "object_type": "Person",
+                "name": "John Rohde",
+                "registry": {
+                    "name": "Open Researcher and Contributor ID",
+                    "abbreviation": "ORCID"
+                },
+                "registry_identifier": null
+            }
+        ],
+        "protocol_id": null,
+        "ethics_review_id": null,
+        "instrument_id": "440_SmartSPIM1_20250116",
+        "acquisition_type": "Imaging session",
+        "notes": "Chamber immersion: oil - Sample immersion: easy index",
+        "coordinate_system": null,
+        "calibrations": [],
+        "maintenance": [],
+        "data_streams": [
+            {
+                "object_type": "Data stream",
+                "stream_start_time": "2025-04-09 12:23:31-07:00",
+                "stream_end_time": "2025-04-09 13:34:49-07:00",
+                "modalities": [
+                    {
+                        "name": "Selective plane illumination microscopy",
+                        "abbreviation": "SPIM"
+                    }
+                ],
+                "code": null,
+                "notes": "\nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration; \nLaser power is in percentage of total, it needs calibration",
+                "active_devices": [
+                    "639",
+                    "665",
+                    "561",
+                    "LCT 3.6x"
+                ],
+                "configurations": [
+                    {
+                        "object_type": "Imaging config",
+                        "device_name": "unknown",
+                        "channels": [
+                            {
+                                "object_type": "Channel",
+                                "channel_name": "561",
+                                "intended_measurement": null,
+                                "detector": {
+                                    "object_type": "Detector config",
+                                    "device_name": "unknown_detector",
+                                    "exposure_time": 1,
+                                    "exposure_time_unit": "millisecond",
+                                    "trigger_type": "Internal",
+                                    "compression": null
+                                },
+                                "additional_device_names": null,
+                                "light_sources": [],
+                                "variable_power": false,
+                                "excitation_filters": null,
+                                "emission_filters": null,
+                                "emission_wavelength": null,
+                                "emission_wavelength_unit": null
+                            },
+                            {
+                                "object_type": "Channel",
+                                "channel_name": "639",
+                                "intended_measurement": null,
+                                "detector": {
+                                    "object_type": "Detector config",
+                                    "device_name": "unknown_detector",
+                                    "exposure_time": 1,
+                                    "exposure_time_unit": "millisecond",
+                                    "trigger_type": "Internal",
+                                    "compression": null
+                                },
+                                "additional_device_names": null,
+                                "light_sources": [],
+                                "variable_power": false,
+                                "excitation_filters": null,
+                                "emission_filters": null,
+                                "emission_wavelength": null,
+                                "emission_wavelength_unit": null
+                            },
+                            {
+                                "object_type": "Channel",
+                                "channel_name": "665",
+                                "intended_measurement": null,
+                                "detector": {
+                                    "object_type": "Detector config",
+                                    "device_name": "unknown_detector",
+                                    "exposure_time": 1,
+                                    "exposure_time_unit": "millisecond",
+                                    "trigger_type": "Internal",
+                                    "compression": null
+                                },
+                                "additional_device_names": null,
+                                "light_sources": [],
+                                "variable_power": false,
+                                "excitation_filters": null,
+                                "emission_filters": null,
+                                "emission_wavelength": null,
+                                "emission_wavelength_unit": null
+                            }
+                        ],
+                        "coordinate_system": null,
+                        "images": [],
+                        "sampling_strategy": null
+                    },
+                    {
+                        "object_type": "Sample chamber config",
+                        "device_name": "440_SmartSPIM1_20250116",
+                        "chamber_immersion": {
+                            "object_type": "Immersion",
+                            "medium": "other",
+                            "refractive_index": 1.5182
+                        },
+                        "sample_immersion": {
+                            "object_type": "Immersion",
+                            "medium": "other",
+                            "refractive_index": 1.5178
+                        }
+                    }
+                ],
+                "connections": []
+            }
+        ],
+        "stimulus_epochs": [],
+        "subject_details": {
+            "object_type": "Acquisition subject details",
+            "animal_weight_prior": null,
+            "animal_weight_post": null,
+            "weight_unit": "gram",
+            "anaesthesia": null,
+            "mouse_platform_name": "N/A",
+            "reward_consumed_total": null,
+            "reward_consumed_unit": null
+        }
+    },
+    "quality_control": null,
+    "model": null,
+    "_created": "2025-06-26T22:19:08.495Z",
+    "_last_modified": "2025-06-27T04:48:53.096Z"
+}

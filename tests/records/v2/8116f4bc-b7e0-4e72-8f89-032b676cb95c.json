@@ -1,0 +1,812 @@
+{
+    "_id": "ab1a6c19-381b-4e26-a0ca-e63338f094fe",
+    "object_type": "Metadata",
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "schema_version": "2.0.71",
+    "name": "single-plane-ophys_608552_2022-05-18_15-21-24",
+    "location": "s3://aind-private-data-prod-o5171v/single-plane-ophys_608552_2022-05-18_15-21-24",
+    "other_identifiers": {},
+    "subject": {
+        "object_type": "Subject",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "schema_version": "2.0.9",
+        "subject_id": "608552",
+        "subject_details": {
+            "object_type": "Mouse subject",
+            "sex": "Female",
+            "date_of_birth": "2021-11-04",
+            "strain": {
+                "name": "C57BL/6J",
+                "species": "Mus musculus",
+                "registry": {
+                    "name": "Mouse Genome Informatics",
+                    "abbreviation": "MGI"
+                },
+                "registry_identifier": "MGI:3028467"
+            },
+            "species": {
+                "name": "Mus musculus",
+                "registry": {
+                    "name": "National Center for Biotechnology Information",
+                    "abbreviation": "NCBI"
+                },
+                "registry_identifier": "NCBI:txid10090"
+            },
+            "alleles": [],
+            "genotype": "Camk2a-tTA/wt;tetO-GCaMP6s/wt",
+            "breeding_info": {
+                "object_type": "Breeding info",
+                "breeding_group": "TetO-GCaMP6s;Camk2a-tTA",
+                "maternal_id": "584262",
+                "maternal_genotype": "Camk2a-tTA/wt",
+                "paternal_id": "574377",
+                "paternal_genotype": "unknown"
+            },
+            "wellness_reports": [],
+            "housing": null,
+            "source": {
+                "name": "Allen Institute",
+                "abbreviation": "AI",
+                "registry": {
+                    "name": "Research Organization Registry",
+                    "abbreviation": "ROR"
+                },
+                "registry_identifier": "03cpe7c52"
+            },
+            "restrictions": null,
+            "rrid": null
+        },
+        "notes": null
+    },
+    "data_description": {
+        "object_type": "Data description",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "2.0.11",
+        "license": "CC-BY-4.0",
+        "subject_id": "608552",
+        "creation_time": "2022-05-18 15:21:24-07:00",
+        "tags": null,
+        "name": "single-plane-ophys_608552_2022-05-18_15-21-24",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "object_type": "Funding",
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": [
+                    {
+                        "object_type": "Person",
+                        "name": "Kayvon Daie",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    },
+                    {
+                        "object_type": "Person",
+                        "name": "Marton Rozsa",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ]
+            }
+        ],
+        "data_level": "raw",
+        "group": null,
+        "investigators": [
+            {
+                "object_type": "Person",
+                "name": "Kayvon Daie",
+                "registry": {
+                    "name": "Open Researcher and Contributor ID",
+                    "abbreviation": "ORCID"
+                },
+                "registry_identifier": null
+            },
+            {
+                "object_type": "Person",
+                "name": "Marton Rozsa",
+                "registry": {
+                    "name": "Open Researcher and Contributor ID",
+                    "abbreviation": "ORCID"
+                },
+                "registry_identifier": null
+            }
+        ],
+        "project_name": "Brain Computer Interface",
+        "restrictions": null,
+        "modalities": [
+            {
+                "name": "Planar optical physiology",
+                "abbreviation": "pophys"
+            },
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            },
+            {
+                "name": "Behavior videos",
+                "abbreviation": "behavior-videos"
+            }
+        ],
+        "data_summary": null
+    },
+    "procedures": {
+        "object_type": "Procedures",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "schema_version": "2.0.28",
+        "subject_id": "608552",
+        "subject_procedures": [
+            {
+                "object_type": "Surgery",
+                "protocol_id": null,
+                "start_date": "2022-04-13",
+                "experimenters": [
+                    {
+                        "object_type": "Person",
+                        "name": "M\u00e1rton R\u00f3zsa",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ],
+                "ethics_review_id": "2109",
+                "animal_weight_prior": 22,
+                "animal_weight_post": null,
+                "weight_unit": "gram",
+                "anaesthesia": null,
+                "workstation_id": null,
+                "coordinate_system": null,
+                "measured_coordinates": null,
+                "procedures": [
+                    {
+                        "object_type": "Craniotomy",
+                        "protocol_id": null,
+                        "craniotomy_type": "Circle",
+                        "coordinate_system_name": "BREGMA_ARID",
+                        "position": {
+                            "object_type": "Translation",
+                            "translation": [
+                                1,
+                                -2,
+                                0,
+                                0
+                            ]
+                        },
+                        "size": 2.5,
+                        "size_unit": "millimeter",
+                        "protective_material": null,
+                        "implant_part_number": null,
+                        "dura_removed": null
+                    },
+                    {
+                        "object_type": "Headframe",
+                        "protocol_id": "None",
+                        "headframe_type": "Custom Svoboda lab ALM headbar",
+                        "headframe_part_number": "N/A",
+                        "headframe_material": null,
+                        "well_part_number": null,
+                        "well_type": null
+                    },
+                    {
+                        "object_type": "Brain injection",
+                        "injection_materials": [
+                            {
+                                "object_type": "Viral material",
+                                "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                                "tars_identifiers": null,
+                                "addgene_id": null,
+                                "titer": 1800000000000,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "targeted_structure": {
+                            "atlas": "CCFv3",
+                            "name": "Primary motor area",
+                            "acronym": "MOp",
+                            "id": "985"
+                        },
+                        "relative_position": [
+                            "Left"
+                        ],
+                        "dynamics": [
+                            {
+                                "object_type": "Injection dynamics",
+                                "profile": "Bolus",
+                                "volume": 40,
+                                "volume_unit": "nanoliter",
+                                "rate": null,
+                                "rate_unit": null,
+                                "duration": null,
+                                "duration_unit": "minute",
+                                "injection_current": null,
+                                "injection_current_unit": null,
+                                "alternating_current": null
+                            }
+                        ],
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+                        "coordinate_system_name": "BREGMA_ARID",
+                        "coordinates": [
+                            [
+                                {
+                                    "object_type": "Translation",
+                                    "translation": [
+                                        1.4,
+                                        2,
+                                        0,
+                                        0.4
+                                    ]
+                                },
+                                {
+                                    "object_type": "Rotation",
+                                    "angles": [
+                                        0,
+                                        0,
+                                        0
+                                    ],
+                                    "angles_unit": "degrees"
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "object_type": "Brain injection",
+                        "injection_materials": [
+                            {
+                                "object_type": "Viral material",
+                                "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                                "tars_identifiers": null,
+                                "addgene_id": null,
+                                "titer": 1800000000000,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "targeted_structure": {
+                            "atlas": "CCFv3",
+                            "name": "Primary motor area",
+                            "acronym": "MOp",
+                            "id": "985"
+                        },
+                        "relative_position": [
+                            "Left"
+                        ],
+                        "dynamics": [
+                            {
+                                "object_type": "Injection dynamics",
+                                "profile": "Bolus",
+                                "volume": 40,
+                                "volume_unit": "nanoliter",
+                                "rate": null,
+                                "rate_unit": null,
+                                "duration": null,
+                                "duration_unit": "minute",
+                                "injection_current": null,
+                                "injection_current_unit": null,
+                                "alternating_current": null
+                            }
+                        ],
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+                        "coordinate_system_name": "BREGMA_ARID",
+                        "coordinates": [
+                            [
+                                {
+                                    "object_type": "Translation",
+                                    "translation": [
+                                        0.8,
+                                        2,
+                                        0,
+                                        0.4
+                                    ]
+                                },
+                                {
+                                    "object_type": "Rotation",
+                                    "angles": [
+                                        0,
+                                        0,
+                                        0
+                                    ],
+                                    "angles_unit": "degrees"
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "object_type": "Brain injection",
+                        "injection_materials": [
+                            {
+                                "object_type": "Viral material",
+                                "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                                "tars_identifiers": null,
+                                "addgene_id": null,
+                                "titer": 1800000000000,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "targeted_structure": {
+                            "atlas": "CCFv3",
+                            "name": "Primary motor area",
+                            "acronym": "MOp",
+                            "id": "985"
+                        },
+                        "relative_position": [
+                            "Left"
+                        ],
+                        "dynamics": [
+                            {
+                                "object_type": "Injection dynamics",
+                                "profile": "Bolus",
+                                "volume": 40,
+                                "volume_unit": "nanoliter",
+                                "rate": null,
+                                "rate_unit": null,
+                                "duration": null,
+                                "duration_unit": "minute",
+                                "injection_current": null,
+                                "injection_current_unit": null,
+                                "alternating_current": null
+                            }
+                        ],
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+                        "coordinate_system_name": "BREGMA_ARID",
+                        "coordinates": [
+                            [
+                                {
+                                    "object_type": "Translation",
+                                    "translation": [
+                                        0.2,
+                                        2,
+                                        0,
+                                        0.4
+                                    ]
+                                },
+                                {
+                                    "object_type": "Rotation",
+                                    "angles": [
+                                        0,
+                                        0,
+                                        0
+                                    ],
+                                    "angles_unit": "degrees"
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "object_type": "Brain injection",
+                        "injection_materials": [
+                            {
+                                "object_type": "Viral material",
+                                "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                                "tars_identifiers": null,
+                                "addgene_id": null,
+                                "titer": 1800000000000,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "targeted_structure": {
+                            "atlas": "CCFv3",
+                            "name": "Primary motor area",
+                            "acronym": "MOp",
+                            "id": "985"
+                        },
+                        "relative_position": [
+                            "Left"
+                        ],
+                        "dynamics": [
+                            {
+                                "object_type": "Injection dynamics",
+                                "profile": "Bolus",
+                                "volume": 40,
+                                "volume_unit": "nanoliter",
+                                "rate": null,
+                                "rate_unit": null,
+                                "duration": null,
+                                "duration_unit": "minute",
+                                "injection_current": null,
+                                "injection_current_unit": null,
+                                "alternating_current": null
+                            }
+                        ],
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+                        "coordinate_system_name": "BREGMA_ARID",
+                        "coordinates": [
+                            [
+                                {
+                                    "object_type": "Translation",
+                                    "translation": [
+                                        0.4,
+                                        2.6,
+                                        0,
+                                        0.4
+                                    ]
+                                },
+                                {
+                                    "object_type": "Rotation",
+                                    "angles": [
+                                        0,
+                                        0,
+                                        0
+                                    ],
+                                    "angles_unit": "degrees"
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "object_type": "Brain injection",
+                        "injection_materials": [
+                            {
+                                "object_type": "Viral material",
+                                "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                                "tars_identifiers": null,
+                                "addgene_id": null,
+                                "titer": 1800000000000,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "targeted_structure": {
+                            "atlas": "CCFv3",
+                            "name": "Primary motor area",
+                            "acronym": "MOp",
+                            "id": "985"
+                        },
+                        "relative_position": [
+                            "Left"
+                        ],
+                        "dynamics": [
+                            {
+                                "object_type": "Injection dynamics",
+                                "profile": "Bolus",
+                                "volume": 40,
+                                "volume_unit": "nanoliter",
+                                "rate": null,
+                                "rate_unit": null,
+                                "duration": null,
+                                "duration_unit": "minute",
+                                "injection_current": null,
+                                "injection_current_unit": null,
+                                "alternating_current": null
+                            }
+                        ],
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+                        "coordinate_system_name": "BREGMA_ARID",
+                        "coordinates": [
+                            [
+                                {
+                                    "object_type": "Translation",
+                                    "translation": [
+                                        1,
+                                        2.6,
+                                        0,
+                                        0.4
+                                    ]
+                                },
+                                {
+                                    "object_type": "Rotation",
+                                    "angles": [
+                                        0,
+                                        0,
+                                        0
+                                    ],
+                                    "angles_unit": "degrees"
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "object_type": "Brain injection",
+                        "injection_materials": [
+                            {
+                                "object_type": "Viral material",
+                                "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                                "tars_identifiers": null,
+                                "addgene_id": null,
+                                "titer": 1800000000000,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "targeted_structure": {
+                            "atlas": "CCFv3",
+                            "name": "Primary motor area",
+                            "acronym": "MOp",
+                            "id": "985"
+                        },
+                        "relative_position": [
+                            "Left"
+                        ],
+                        "dynamics": [
+                            {
+                                "object_type": "Injection dynamics",
+                                "profile": "Bolus",
+                                "volume": 40,
+                                "volume_unit": "nanoliter",
+                                "rate": null,
+                                "rate_unit": null,
+                                "duration": null,
+                                "duration_unit": "minute",
+                                "injection_current": null,
+                                "injection_current_unit": null,
+                                "alternating_current": null
+                            }
+                        ],
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+                        "coordinate_system_name": "BREGMA_ARID",
+                        "coordinates": [
+                            [
+                                {
+                                    "object_type": "Translation",
+                                    "translation": [
+                                        1.6,
+                                        2.6,
+                                        0,
+                                        0.4
+                                    ]
+                                },
+                                {
+                                    "object_type": "Rotation",
+                                    "angles": [
+                                        0,
+                                        0,
+                                        0
+                                    ],
+                                    "angles_unit": "degrees"
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "object_type": "Brain injection",
+                        "injection_materials": [
+                            {
+                                "object_type": "Viral material",
+                                "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                                "tars_identifiers": null,
+                                "addgene_id": null,
+                                "titer": 1800000000000,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "targeted_structure": {
+                            "atlas": "CCFv3",
+                            "name": "Primary motor area",
+                            "acronym": "MOp",
+                            "id": "985"
+                        },
+                        "relative_position": [
+                            "Left"
+                        ],
+                        "dynamics": [
+                            {
+                                "object_type": "Injection dynamics",
+                                "profile": "Bolus",
+                                "volume": 40,
+                                "volume_unit": "nanoliter",
+                                "rate": null,
+                                "rate_unit": null,
+                                "duration": null,
+                                "duration_unit": "minute",
+                                "injection_current": null,
+                                "injection_current_unit": null,
+                                "alternating_current": null
+                            }
+                        ],
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+                        "coordinate_system_name": "BREGMA_ARID",
+                        "coordinates": [
+                            [
+                                {
+                                    "object_type": "Translation",
+                                    "translation": [
+                                        1.4,
+                                        1.4,
+                                        0,
+                                        0.4
+                                    ]
+                                },
+                                {
+                                    "object_type": "Rotation",
+                                    "angles": [
+                                        0,
+                                        0,
+                                        0
+                                    ],
+                                    "angles_unit": "degrees"
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "object_type": "Brain injection",
+                        "injection_materials": [
+                            {
+                                "object_type": "Viral material",
+                                "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                                "tars_identifiers": null,
+                                "addgene_id": null,
+                                "titer": 1800000000000,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "targeted_structure": {
+                            "atlas": "CCFv3",
+                            "name": "Primary motor area",
+                            "acronym": "MOp",
+                            "id": "985"
+                        },
+                        "relative_position": [
+                            "Left"
+                        ],
+                        "dynamics": [
+                            {
+                                "object_type": "Injection dynamics",
+                                "profile": "Bolus",
+                                "volume": 40,
+                                "volume_unit": "nanoliter",
+                                "rate": null,
+                                "rate_unit": null,
+                                "duration": null,
+                                "duration_unit": "minute",
+                                "injection_current": null,
+                                "injection_current_unit": null,
+                                "alternating_current": null
+                            }
+                        ],
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+                        "coordinate_system_name": "BREGMA_ARID",
+                        "coordinates": [
+                            [
+                                {
+                                    "object_type": "Translation",
+                                    "translation": [
+                                        0.8,
+                                        1.4,
+                                        0,
+                                        0.4
+                                    ]
+                                },
+                                {
+                                    "object_type": "Rotation",
+                                    "angles": [
+                                        0,
+                                        0,
+                                        0
+                                    ],
+                                    "angles_unit": "degrees"
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "object_type": "Brain injection",
+                        "injection_materials": [
+                            {
+                                "object_type": "Viral material",
+                                "name": "CamKIIa_ChrimsonR_FusionRed_Kv2.1",
+                                "tars_identifiers": null,
+                                "addgene_id": null,
+                                "titer": 1800000000000,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "targeted_structure": {
+                            "atlas": "CCFv3",
+                            "name": "Primary motor area",
+                            "acronym": "MOp",
+                            "id": "985"
+                        },
+                        "relative_position": [
+                            "Left"
+                        ],
+                        "dynamics": [
+                            {
+                                "object_type": "Injection dynamics",
+                                "profile": "Bolus",
+                                "volume": 40,
+                                "volume_unit": "nanoliter",
+                                "rate": null,
+                                "rate_unit": null,
+                                "duration": null,
+                                "duration_unit": "minute",
+                                "injection_current": null,
+                                "injection_current_unit": null,
+                                "alternating_current": null
+                            }
+                        ],
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+                        "coordinate_system_name": "BREGMA_ARID",
+                        "coordinates": [
+                            [
+                                {
+                                    "object_type": "Translation",
+                                    "translation": [
+                                        0.2,
+                                        1.4,
+                                        0,
+                                        0.4
+                                    ]
+                                },
+                                {
+                                    "object_type": "Rotation",
+                                    "angles": [
+                                        0,
+                                        0,
+                                        0
+                                    ],
+                                    "angles_unit": "degrees"
+                                }
+                            ]
+                        ]
+                    }
+                ],
+                "notes": null
+            }
+        ],
+        "specimen_procedures": [],
+        "coordinate_system": {
+            "object_type": "Coordinate system",
+            "name": "BREGMA_ARID",
+            "origin": "Bregma",
+            "axes": [
+                {
+                    "object_type": "Axis",
+                    "name": "AP",
+                    "direction": "Posterior_to_anterior"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "ML",
+                    "direction": "Left_to_right"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "SI",
+                    "direction": "Superior_to_inferior"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "Depth",
+                    "direction": "Up_to_down"
+                }
+            ],
+            "axis_unit": "millimeter"
+        },
+        "notes": null
+    },
+    "instrument": null,
+    "processing": {
+        "object_type": "Processing",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "schema_version": "2.0.71",
+        "data_processes": [],
+        "pipelines": null,
+        "notes": null,
+        "dependency_graph": {}
+    },
+    "acquisition": null,
+    "quality_control": null,
+    "model": null,
+    "_created": "2025-06-25T21:56:52.100Z",
+    "_last_modified": "2025-06-27T04:48:58.265Z"
+}

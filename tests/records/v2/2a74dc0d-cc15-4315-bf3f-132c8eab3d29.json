@@ -1,0 +1,1138 @@
+{
+    "_id": "01840334-0522-408e-bb9d-eaf2a465ccf5",
+    "object_type": "Metadata",
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "schema_version": "2.0.71",
+    "name": "behavior_726649_2024-10-07_13-27-02_processed_2025-02-23_03-30-46",
+    "location": "s3://codeocean-s3datasetsbucket-1u41qdg42ur9/8a849836-40b2-4379-b9ea-74deaac196c5",
+    "other_identifiers": {},
+    "subject": {
+        "object_type": "Subject",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "schema_version": "2.0.9",
+        "subject_id": "726649",
+        "subject_details": {
+            "object_type": "Mouse subject",
+            "sex": "Male",
+            "date_of_birth": "2024-02-17",
+            "strain": {
+                "name": "C57BL/6J",
+                "species": "Mus musculus",
+                "registry": {
+                    "name": "Mouse Genome Informatics",
+                    "abbreviation": "MGI"
+                },
+                "registry_identifier": "MGI:3028467"
+            },
+            "species": {
+                "name": "Mus musculus",
+                "registry": {
+                    "name": "National Center for Biotechnology Information",
+                    "abbreviation": "NCBI"
+                },
+                "registry_identifier": "NCBI:txid10090"
+            },
+            "alleles": [],
+            "genotype": "Slc6a3-IRES-Cre_Bkmn/wt",
+            "breeding_info": {
+                "object_type": "Breeding info",
+                "breeding_group": "Slc6a3-IRES-Cre_Bkmn(ND)",
+                "maternal_id": "708081",
+                "maternal_genotype": "wt/wt",
+                "paternal_id": "686321",
+                "paternal_genotype": "Slc6a3-IRES-Cre_Bkmn/wt"
+            },
+            "wellness_reports": [],
+            "housing": {
+                "object_type": "Housing",
+                "cage_id": "8259932",
+                "room_id": "221",
+                "light_cycle": null,
+                "home_cage_enrichment": [],
+                "cohoused_subjects": []
+            },
+            "source": {
+                "name": "Allen Institute",
+                "abbreviation": "AI",
+                "registry": {
+                    "name": "Research Organization Registry",
+                    "abbreviation": "ROR"
+                },
+                "registry_identifier": "03cpe7c52"
+            },
+            "restrictions": null,
+            "rrid": null
+        },
+        "notes": null
+    },
+    "data_description": {
+        "object_type": "Data description",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "2.0.11",
+        "license": "CC-BY-4.0",
+        "subject_id": "726649",
+        "creation_time": "2025-02-23 03:30:46.923865+00:00",
+        "tags": null,
+        "name": "behavior_726649_2024-10-07_13-27-02_processed_2025-02-23_03-30-46",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "object_type": "Funding",
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": [
+                    {
+                        "object_type": "Person",
+                        "name": "Cindy Poo",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    },
+                    {
+                        "object_type": "Person",
+                        "name": "Jeremiah Cohen",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ]
+            }
+        ],
+        "data_level": "derived",
+        "group": null,
+        "investigators": [
+            {
+                "object_type": "Person",
+                "name": "Cindy Poo",
+                "registry": {
+                    "name": "Open Researcher and Contributor ID",
+                    "abbreviation": "ORCID"
+                },
+                "registry_identifier": null
+            },
+            {
+                "object_type": "Person",
+                "name": "Jeremiah Cohen",
+                "registry": {
+                    "name": "Open Researcher and Contributor ID",
+                    "abbreviation": "ORCID"
+                },
+                "registry_identifier": null
+            }
+        ],
+        "project_name": "Behavior Platform",
+        "restrictions": null,
+        "modalities": [
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            },
+            {
+                "name": "Behavior videos",
+                "abbreviation": "behavior-videos"
+            },
+            {
+                "name": "Fiber photometry",
+                "abbreviation": "fib"
+            }
+        ],
+        "data_summary": null
+    },
+    "procedures": {
+        "object_type": "Procedures",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "schema_version": "2.0.28",
+        "subject_id": "726649",
+        "subject_procedures": [
+            {
+                "object_type": "Surgery",
+                "protocol_id": "dx.doi.org/10.17504/protocols.io.kqdg392o7g25/v2",
+                "start_date": "2024-04-04",
+                "experimenters": [
+                    {
+                        "object_type": "Person",
+                        "name": "NSB-5313",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ],
+                "ethics_review_id": "2115",
+                "animal_weight_prior": 23.9,
+                "animal_weight_post": 25.9,
+                "weight_unit": "gram",
+                "anaesthesia": {
+                    "object_type": "Anaesthetic",
+                    "anaesthetic_type": "isoflurane",
+                    "duration": 120,
+                    "duration_unit": "minute",
+                    "level": 1.5
+                },
+                "workstation_id": "SWS 2",
+                "coordinate_system": null,
+                "measured_coordinates": null,
+                "procedures": [
+                    {
+                        "object_type": "Headframe",
+                        "protocol_id": null,
+                        "headframe_type": "AI Straight bar",
+                        "headframe_part_number": "unknown",
+                        "headframe_material": null,
+                        "well_part_number": null,
+                        "well_type": "No Well"
+                    },
+                    {
+                        "object_type": "Brain injection",
+                        "injection_materials": [
+                            {
+                                "object_type": "Viral material",
+                                "name": "pGP-AAV-CAG-FLEX-jGCaMP8s-WPRE (AAV1)",
+                                "tars_identifiers": {
+                                    "object_type": "Tars virus identifiers",
+                                    "virus_tars_id": "AiV300087",
+                                    "plasmid_tars_alias": null,
+                                    "prep_lot_number": "v114469",
+                                    "prep_date": "1900-01-01",
+                                    "prep_type": null,
+                                    "prep_protocol": null
+                                },
+                                "addgene_id": null,
+                                "titer": 5000000000000,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "targeted_structure": null,
+                        "relative_position": [
+                            "Left"
+                        ],
+                        "dynamics": [
+                            {
+                                "object_type": "Injection dynamics",
+                                "profile": "Bolus",
+                                "volume": 400,
+                                "volume_unit": "nanoliter",
+                                "rate": null,
+                                "rate_unit": null,
+                                "duration": null,
+                                "duration_unit": "minute",
+                                "injection_current": null,
+                                "injection_current_unit": null,
+                                "alternating_current": null
+                            }
+                        ],
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+                        "coordinate_system_name": "BREGMA_ARID",
+                        "coordinates": [
+                            [
+                                {
+                                    "object_type": "Translation",
+                                    "translation": [
+                                        -3.05,
+                                        -0.6,
+                                        0,
+                                        -4.3
+                                    ]
+                                },
+                                {
+                                    "object_type": "Rotation",
+                                    "angles": [
+                                        0,
+                                        0,
+                                        0
+                                    ],
+                                    "angles_unit": "degrees"
+                                }
+                            ]
+                        ]
+                    },
+                    {
+                        "object_type": "Brain injection",
+                        "injection_materials": [
+                            {
+                                "object_type": "Viral material",
+                                "name": "VT5122G",
+                                "tars_identifiers": null,
+                                "addgene_id": null,
+                                "titer": 5000000000000,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "targeted_structure": null,
+                        "relative_position": [
+                            "Left"
+                        ],
+                        "dynamics": [
+                            {
+                                "object_type": "Injection dynamics",
+                                "profile": "Bolus",
+                                "volume": 300,
+                                "volume_unit": "nanoliter",
+                                "rate": null,
+                                "rate_unit": null,
+                                "duration": null,
+                                "duration_unit": "minute",
+                                "injection_current": null,
+                                "injection_current_unit": null,
+                                "alternating_current": null
+                            }
+                        ],
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+                        "coordinate_system_name": "BREGMA_ARID",
+                        "coordinates": [
+                            [
+                                {
+                                    "object_type": "Translation",
+                                    "translation": [
+                                        1.5,
+                                        -0.7,
+                                        0,
+                                        -4.3
+                                    ]
+                                },
+                                {
+                                    "object_type": "Rotation",
+                                    "angles": [
+                                        0,
+                                        0,
+                                        0
+                                    ],
+                                    "angles_unit": "degrees"
+                                }
+                            ]
+                        ]
+                    }
+                ],
+                "notes": null
+            }
+        ],
+        "specimen_procedures": [],
+        "coordinate_system": {
+            "object_type": "Coordinate system",
+            "name": "BREGMA_ARID",
+            "origin": "Bregma",
+            "axes": [
+                {
+                    "object_type": "Axis",
+                    "name": "AP",
+                    "direction": "Posterior_to_anterior"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "ML",
+                    "direction": "Left_to_right"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "SI",
+                    "direction": "Superior_to_inferior"
+                },
+                {
+                    "object_type": "Axis",
+                    "name": "Depth",
+                    "direction": "Up_to_down"
+                }
+            ],
+            "axis_unit": "millimeter"
+        },
+        "notes": null
+    },
+    "instrument": null,
+    "processing": {
+        "object_type": "Processing",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "schema_version": "2.0.71",
+        "data_processes": [
+            {
+                "object_type": "Data process",
+                "process_type": "dF/F estimation",
+                "name": "dF/F estimation_11",
+                "stage": "Processing",
+                "code": {
+                    "object_type": "Code",
+                    "url": "https://github.com/AllenNeuralDynamics/aind-fip-dff",
+                    "name": "dF/F estimation",
+                    "version": null,
+                    "container": null,
+                    "run_script": null,
+                    "language": null,
+                    "language_version": null,
+                    "input_data": null,
+                    "parameters": {
+                        "source_pattern": "/data/nwb/*.nwb",
+                        "output_dir": "/results/",
+                        "fiber_path": "/data/fiber_raw_data",
+                        "dff_methods": [
+                            "poly",
+                            "exp",
+                            "bright"
+                        ],
+                        "no_qc": false
+                    },
+                    "core_dependency": null
+                },
+                "experimenters": [
+                    {
+                        "object_type": "Person",
+                        "name": "AIND Scientific Computing",
+                        "registry": {
+                            "name": "Open Researcher and Contributor ID",
+                            "abbreviation": "ORCID"
+                        },
+                        "registry_identifier": null
+                    }
+                ],
+                "pipeline_name": "Processing Pipeline",
+                "start_date_time": "2025-02-23 03:25:43.882133+00:00",
+                "end_date_time": "2025-02-23 03:30:46.914576+00:00",
+                "output_path": "/results/nwb",
+                "output_parameters": {},
+                "notes": null,
+                "resources": null
+            }
+        ],
+        "pipelines": [
+            {
+                "object_type": "Code",
+                "url": "https://codeocean.allenneuraldynamics.org/capsule/1307799",
+                "name": "Processing Pipeline",
+                "version": "1.0",
+                "container": null,
+                "run_script": null,
+                "language": null,
+                "language_version": null,
+                "input_data": null,
+                "parameters": null,
+                "core_dependency": null
+            }
+        ],
+        "notes": null,
+        "dependency_graph": {
+            "dF/F estimation_11": []
+        }
+    },
+    "acquisition": null,
+    "quality_control": {
+        "object_type": "Quality control",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/quality_control.py",
+        "schema_version": "2.0.5",
+        "metrics": [
+            {
+                "object_type": "QC metric",
+                "name": "Data length same",
+                "modality": {
+                    "name": "Fiber photometry",
+                    "abbreviation": "fib"
+                },
+                "stage": "Raw data",
+                "value": 102390,
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Pass",
+                        "timestamp": "2025-02-22 19:20:26.439024-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": "qc-raw/raw_traces.png",
+                "tags": [
+                    "Data length check"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "Session length >15min",
+                "modality": {
+                    "name": "Fiber photometry",
+                    "abbreviation": "fib"
+                },
+                "stage": "Raw data",
+                "value": 85.325,
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Pass",
+                        "timestamp": "2025-02-22 19:20:26.439181-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": "qc-raw/raw_traces.png",
+                "tags": [
+                    "Data length check"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "Data length same (Rising)",
+                "modality": {
+                    "name": "Fiber photometry",
+                    "abbreviation": "fib"
+                },
+                "stage": "Raw data",
+                "value": 102390,
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Pass",
+                        "timestamp": "2025-02-22 19:20:26.439419-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": "qc-raw/SyncPulseDiff.png",
+                "tags": [
+                    "Complete Synchronization Pulse"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "Data length same (Falling)",
+                "modality": {
+                    "name": "Fiber photometry",
+                    "abbreviation": "fib"
+                },
+                "stage": "Raw data",
+                "value": 102390,
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Pass",
+                        "timestamp": "2025-02-22 19:20:26.439470-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": "qc-raw/SyncPulseDiff.png",
+                "tags": [
+                    "Complete Synchronization Pulse"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "No NaN in Green channel",
+                "modality": {
+                    "name": "Fiber photometry",
+                    "abbreviation": "fib"
+                },
+                "stage": "Raw data",
+                "value": 0,
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Pass",
+                        "timestamp": "2025-02-22 19:20:26.440365-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": null,
+                "tags": [
+                    "No NaN values in data"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "No NaN in Iso channel",
+                "modality": {
+                    "name": "Fiber photometry",
+                    "abbreviation": "fib"
+                },
+                "stage": "Raw data",
+                "value": 0,
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Pass",
+                        "timestamp": "2025-02-22 19:20:26.441596-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": null,
+                "tags": [
+                    "No NaN values in data"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "No NaN in Red channel",
+                "modality": {
+                    "name": "Fiber photometry",
+                    "abbreviation": "fib"
+                },
+                "stage": "Raw data",
+                "value": 0,
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Pass",
+                        "timestamp": "2025-02-22 19:20:26.442437-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": null,
+                "tags": [
+                    "No NaN values in data"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "Floor average signal in Green channel",
+                "modality": {
+                    "name": "Fiber photometry",
+                    "abbreviation": "fib"
+                },
+                "stage": "Raw data",
+                "value": 258.5120544433594,
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Pass",
+                        "timestamp": "2025-02-22 19:20:26.442493-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": "qc-raw/CMOS_Floor.png",
+                "tags": [
+                    "CMOS Floor signal"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "Floor average signal in Iso channel",
+                "modality": {
+                    "name": "Fiber photometry",
+                    "abbreviation": "fib"
+                },
+                "stage": "Raw data",
+                "value": 257.47747802734375,
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Pass",
+                        "timestamp": "2025-02-22 19:20:26.442537-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": "qc-raw/CMOS_Floor.png",
+                "tags": [
+                    "CMOS Floor signal"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "Floor average signal in Red channel",
+                "modality": {
+                    "name": "Fiber photometry",
+                    "abbreviation": "fib"
+                },
+                "stage": "Raw data",
+                "value": 801.1137084960938,
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Fail",
+                        "timestamp": "2025-02-22 19:20:26.442571-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": "qc-raw/CMOS_Floor.png",
+                "tags": [
+                    "CMOS Floor signal"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "Max 1st derivative",
+                "modality": {
+                    "name": "Fiber photometry",
+                    "abbreviation": "fib"
+                },
+                "stage": "Raw data",
+                "value": 624.248779296875,
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Pass",
+                        "timestamp": "2025-02-22 19:20:26.443263-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": "qc-raw/raw_traces.png",
+                "tags": [
+                    "No sudden changes in signals"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "Preprocessing of Fiber 1 using method 'poly'",
+                "modality": {
+                    "name": "Fiber photometry",
+                    "abbreviation": "fib"
+                },
+                "stage": "Processing",
+                "value": {
+                    "value": [],
+                    "options": [
+                        "Preprocessing successful",
+                        "Baseline correction (dF/F) failed",
+                        "Motion correction failed"
+                    ],
+                    "status": [
+                        "Pass",
+                        "Fail",
+                        "Fail"
+                    ],
+                    "type": "dropdown"
+                },
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Pending review",
+                        "status": "Pending",
+                        "timestamp": "2025-02-23 03:30:30.275451+00:00"
+                    }
+                ],
+                "description": null,
+                "reference": "dff-qc/Fiber1_poly.png",
+                "tags": [
+                    "Preprocessing using method 'poly'"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "Preprocessing of Fiber 2 using method 'poly'",
+                "modality": {
+                    "name": "Fiber photometry",
+                    "abbreviation": "fib"
+                },
+                "stage": "Processing",
+                "value": {
+                    "value": [],
+                    "options": [
+                        "Preprocessing successful",
+                        "Baseline correction (dF/F) failed",
+                        "Motion correction failed"
+                    ],
+                    "status": [
+                        "Pass",
+                        "Fail",
+                        "Fail"
+                    ],
+                    "type": "dropdown"
+                },
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Pending review",
+                        "status": "Pending",
+                        "timestamp": "2025-02-23 03:30:33.724428+00:00"
+                    }
+                ],
+                "description": null,
+                "reference": "dff-qc/Fiber2_poly.png",
+                "tags": [
+                    "Preprocessing using method 'poly'"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "Preprocessing of Fiber 1 using method 'exp'",
+                "modality": {
+                    "name": "Fiber photometry",
+                    "abbreviation": "fib"
+                },
+                "stage": "Processing",
+                "value": {
+                    "value": [],
+                    "options": [
+                        "Preprocessing successful",
+                        "Baseline correction (dF/F) failed",
+                        "Motion correction failed"
+                    ],
+                    "status": [
+                        "Pass",
+                        "Fail",
+                        "Fail"
+                    ],
+                    "type": "dropdown"
+                },
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Pending review",
+                        "status": "Pending",
+                        "timestamp": "2025-02-23 03:30:36.745506+00:00"
+                    }
+                ],
+                "description": null,
+                "reference": "dff-qc/Fiber1_exp.png",
+                "tags": [
+                    "Preprocessing using method 'exp'"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "Preprocessing of Fiber 2 using method 'exp'",
+                "modality": {
+                    "name": "Fiber photometry",
+                    "abbreviation": "fib"
+                },
+                "stage": "Processing",
+                "value": {
+                    "value": [],
+                    "options": [
+                        "Preprocessing successful",
+                        "Baseline correction (dF/F) failed",
+                        "Motion correction failed"
+                    ],
+                    "status": [
+                        "Pass",
+                        "Fail",
+                        "Fail"
+                    ],
+                    "type": "dropdown"
+                },
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Pending review",
+                        "status": "Pending",
+                        "timestamp": "2025-02-23 03:30:40.247816+00:00"
+                    }
+                ],
+                "description": null,
+                "reference": "dff-qc/Fiber2_exp.png",
+                "tags": [
+                    "Preprocessing using method 'exp'"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "Preprocessing of Fiber 1 using method 'bright'",
+                "modality": {
+                    "name": "Fiber photometry",
+                    "abbreviation": "fib"
+                },
+                "stage": "Processing",
+                "value": {
+                    "value": [],
+                    "options": [
+                        "Preprocessing successful",
+                        "Baseline correction (dF/F) failed",
+                        "Motion correction failed"
+                    ],
+                    "status": [
+                        "Pass",
+                        "Fail",
+                        "Fail"
+                    ],
+                    "type": "dropdown"
+                },
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Pending review",
+                        "status": "Pending",
+                        "timestamp": "2025-02-23 03:30:43.590060+00:00"
+                    }
+                ],
+                "description": null,
+                "reference": "dff-qc/Fiber1_bright.png",
+                "tags": [
+                    "Preprocessing using method 'bright'"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "Preprocessing of Fiber 2 using method 'bright'",
+                "modality": {
+                    "name": "Fiber photometry",
+                    "abbreviation": "fib"
+                },
+                "stage": "Processing",
+                "value": {
+                    "value": [],
+                    "options": [
+                        "Preprocessing successful",
+                        "Baseline correction (dF/F) failed",
+                        "Motion correction failed"
+                    ],
+                    "status": [
+                        "Pass",
+                        "Fail",
+                        "Fail"
+                    ],
+                    "type": "dropdown"
+                },
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Pending review",
+                        "status": "Pending",
+                        "timestamp": "2025-02-23 03:30:46.904206+00:00"
+                    }
+                ],
+                "description": null,
+                "reference": "dff-qc/Fiber2_bright.png",
+                "tags": [
+                    "Preprocessing using method 'bright'"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "dropped frames",
+                "modality": {
+                    "name": "Behavior videos",
+                    "abbreviation": "behavior-videos"
+                },
+                "stage": "Raw data",
+                "value": 0,
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Pass",
+                        "timestamp": "2025-02-22 19:20:24.325888-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": null,
+                "tags": [
+                    "dropped frames check"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "researcher name",
+                "modality": {
+                    "name": "Behavior",
+                    "abbreviation": "behavior"
+                },
+                "stage": "Raw data",
+                "value": "Jaimie Kenney",
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Pass",
+                        "timestamp": "2025-02-22 19:20:24.326372-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": null,
+                "tags": [
+                    "Check researcher name"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "untracked local changes",
+                "modality": {
+                    "name": "Behavior",
+                    "abbreviation": "behavior"
+                },
+                "stage": "Raw data",
+                "value": "",
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Pass",
+                        "timestamp": "2025-02-22 19:20:24.326691-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": null,
+                "tags": [
+                    "Check for untracked file changes"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "Left Lick Interval (%)",
+                "modality": {
+                    "name": "Behavior",
+                    "abbreviation": "behavior"
+                },
+                "stage": "Raw data",
+                "value": 2.36,
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Pass",
+                        "timestamp": "2025-02-22 19:20:24.332503-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": null,
+                "tags": [
+                    "Lick Intervals"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "Right Lick Interval (%)",
+                "modality": {
+                    "name": "Behavior",
+                    "abbreviation": "behavior"
+                },
+                "stage": "Raw data",
+                "value": 4.390000000000001,
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Pass",
+                        "timestamp": "2025-02-22 19:20:24.332554-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": null,
+                "tags": [
+                    "Lick Intervals"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "Cross Side Lick Interval (%)",
+                "modality": {
+                    "name": "Behavior",
+                    "abbreviation": "behavior"
+                },
+                "stage": "Raw data",
+                "value": 3.5700000000000003,
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Pass",
+                        "timestamp": "2025-02-22 19:20:24.332588-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": null,
+                "tags": [
+                    "Lick Intervals"
+                ],
+                "evaluated_assets": null
+            },
+            {
+                "object_type": "QC metric",
+                "name": "Number of completed trials",
+                "modality": {
+                    "name": "Behavior",
+                    "abbreviation": "behavior"
+                },
+                "stage": "Raw data",
+                "value": 209,
+                "status_history": [
+                    {
+                        "object_type": "QC status",
+                        "evaluator": "Automated",
+                        "status": "Pass",
+                        "timestamp": "2025-02-22 19:20:24.332933-08:00"
+                    }
+                ],
+                "description": null,
+                "reference": null,
+                "tags": [
+                    "Check for minimum trials"
+                ],
+                "evaluated_assets": null
+            }
+        ],
+        "key_experimenters": null,
+        "notes": null,
+        "default_grouping": [
+            "Data length check",
+            "Complete Synchronization Pulse",
+            "No NaN values in data",
+            "CMOS Floor signal",
+            "No sudden changes in signals",
+            "Preprocessing using method 'poly'",
+            "Preprocessing using method 'exp'",
+            "Preprocessing using method 'bright'",
+            "dropped frames check",
+            "Check researcher name",
+            "Check for untracked file changes",
+            "Lick Intervals",
+            "Check for minimum trials"
+        ],
+        "allow_tag_failures": [],
+        "status": {
+            "Complete Synchronization Pulse": "Pass",
+            "Preprocessing using method 'exp'": "Pending",
+            "Check researcher name": "Pass",
+            "Check for minimum trials": "Pass",
+            "Lick Intervals": "Pass",
+            "Preprocessing using method 'poly'": "Pending",
+            "Data length check": "Pass",
+            "No sudden changes in signals": "Pass",
+            "Preprocessing using method 'bright'": "Pending",
+            "Check for untracked file changes": "Pass",
+            "CMOS Floor signal": "Fail",
+            "dropped frames check": "Pass",
+            "No NaN values in data": "Pass",
+            "behavior": "Pass",
+            "behavior-videos": "Pass",
+            "fib": "Fail",
+            "Raw data": "Fail",
+            "Processing": "Pending"
+        }
+    },
+    "model": null,
+    "_created": "2025-06-26T22:58:21.265Z",
+    "_last_modified": "2025-06-27T04:48:58.676Z"
+}
