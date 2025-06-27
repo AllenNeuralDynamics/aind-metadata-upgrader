@@ -168,7 +168,7 @@ def upgrade_craniotomy(data: dict) -> dict:
     remove(upgraded_data, "recovery_time")
     remove(upgraded_data, "recovery_time_unit")
 
-    if upgraded_data["craniotomy_type"] not in CraniotomyType.__members__:
+    if upgraded_data["craniotomy_type"] not in CraniotomyType:
         # Need to conver craniotomy type
         if upgraded_data["craniotomy_type"] in CRANIO_TYPES.keys():
             if "5" in upgraded_data["craniotomy_type"]:

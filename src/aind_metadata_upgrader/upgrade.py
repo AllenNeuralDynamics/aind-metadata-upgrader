@@ -13,6 +13,7 @@ from packaging.version import Version
 
 from aind_metadata_upgrader.upgrade_mapping import MAPPING
 from aind_metadata_upgrader.utils.v1v2_utils import repair_metadata
+import traceback
 
 
 CORE_FILES = [
@@ -76,8 +77,6 @@ class Upgrade:
                 # We have data for this file
                 expected_core_files.append(CORE_MAPPING.get(core_file, core_file))
 
-        print(expected_core_files)
-
         core_files = {}
         for core_file in CORE_FILES:
             if core_file in record and record[core_file]:
@@ -102,8 +101,10 @@ class Upgrade:
         try:
             if core_file not in TYPE_MAPPING:
                 raise ValueError(f"Core file '{core_file}' is not recognized for validation")
+
             return TYPE_MAPPING[core_file].model_validate(data).model_dump()
         except Exception as e:
+            traceback.print_exc()
             raise ValueError(f"Failed to validate {core_file}: {e}")
 
     def upgrade_metadata(self, new_core_files: dict):

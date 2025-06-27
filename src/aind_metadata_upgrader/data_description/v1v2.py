@@ -28,11 +28,11 @@ class DataDescriptionV1V2(CoreUpgrader):
                 if "," in funding["fundee"]:
                     # Handle records where multiple fundees were put into one single string
                     fundees = funding["fundee"].split(",")
-                    funding["fundee"] = [Person(name=fundee.strip()) for fundee in fundees]
+                    funding["fundee"] = [Person(name=fundee.strip()).model_dump() for fundee in fundees]
                 else:
-                    funding["fundee"] = Person(
+                    funding["fundee"] = [Person(
                         name=funding["fundee"],
-                    )
+                    ).model_dump()]
             funding_source[i] = funding
 
         # Update "funder" field to Organization objects
