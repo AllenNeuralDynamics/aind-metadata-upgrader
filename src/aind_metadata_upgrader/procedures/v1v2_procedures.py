@@ -104,6 +104,7 @@ def upgrade_hemisphere_craniotomy(data: dict) -> dict:
         data["position"] = [AnatomicalRelative.ORIGIN]
     else:
         # We don't know the hemisphere, so we put position at origin unfortunately
+        data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
         data["position"] = [AnatomicalRelative.ORIGIN]
     remove(data, "craniotomy_hemisphere")
 

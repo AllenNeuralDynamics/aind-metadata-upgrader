@@ -88,7 +88,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         }
 
         # Upgrade subject procedures
-        if "subject_procedures" in procedures_data:
+        if "subject_procedures" in procedures_data and procedures_data["subject_procedures"]:
             for subj_proc in procedures_data["subject_procedures"]:
                 upgraded_proc = self._upgrade_subject_procedure(subj_proc)
                 if upgraded_proc:

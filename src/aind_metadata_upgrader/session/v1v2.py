@@ -206,6 +206,19 @@ class SessionV1V2(CoreUpgrader):
 
         return configs
 
+
+    def _upgrade_detector_config(self, data: Dict) -> Dict:
+        """Upgrade detector config from v1 to v2"""
+
+        data["device_name"] = data.get("name", "Unknown Detector")
+
+        if "exposure_time" not in data or data["exposure_time"] is None:
+            data["exposure_time"] = 0
+        if "trigger_type" not in data or data["trigger_type"] is None:
+            data["trigger_type"] = TriggerType.INTERNAL
+
+        return DetectorConfig(**data).model_dump()
+
     def _upgrade_fiber_connection_config(self, stream: Dict, fiber_connection: Dict) -> tuple:
         """Convert a single fiber connection config, return Channel, PatchCordConfig, Connection"""
 
@@ -219,7 +232,9 @@ class SessionV1V2(CoreUpgrader):
         detector_config = stream.get("detectors", [])
         # Find the matching detector config
         matching_detector = next((d for d in detector_config if d.get("name") == detector_name), None)
-        if not matching_detector:
+        if matching_detector:
+            matching_detector = self._upgrade_detector_config(matching_detector)
+        else:
             # No matching detector found... create a default one
             matching_detector = DetectorConfig(
                 device_name=detector_name,
