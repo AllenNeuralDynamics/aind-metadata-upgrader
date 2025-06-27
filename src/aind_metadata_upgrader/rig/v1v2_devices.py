@@ -466,6 +466,15 @@ def upgrade_camera(data: dict) -> dict:
         data["bin_mode"] = "No binning"
 
     remove(data, "max_frame_rate")  # no idea when that was in v1.x
+    remove(data, "format_unit")
+
+    if "pixel_width" in data:
+        data["sensor_width"] = data["pixel_width"]
+    if "pixel_height" in data:
+        data["sensor_height"] = data["pixel_height"]
+
+    if "frame_rate_unit" in data and data["frame_rate_unit"] == "Hertz":
+        data["frame_rate_unit"] = "hertz"
 
     if "recording_software" in data and data["recording_software"]:
         data["recording_software"] = upgrade_software(data.get("recording_software", {}))

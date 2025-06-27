@@ -58,10 +58,13 @@ class SubjectUpgraderV1V2(CoreUpgrader):
 
         # Species model seems to have changed for some records, make sure it matches the new model
         species = data.get("species", None)
-        if species and species["name"] == "Mus musculus":
+        if species and isinstance(species, str) and species == "Mus musculus":
+            # Convert string species name to Species model
+            species = Species.MUS_MUSCULUS.model_dump()
+        if species and isinstance(species, dict) and species["name"] == "Mus musculus":
             # Replace with the new Species model
             species = Species.MUS_MUSCULUS.model_dump()
-        if not species:
+        else:
             raise ValueError("Species must be specified")
 
         alleles = data.get("alleles", [])
