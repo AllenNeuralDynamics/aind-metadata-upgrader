@@ -121,6 +121,8 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
     def _get_components_connections(self, data: dict) -> tuple[Optional[list], list]:
         """Pull components from data"""
+        
+        saved_connections = []
 
         # Note we are ignoring optical_tables, which are gone
         enclosure = data.get("enclosure", None)

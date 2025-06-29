@@ -45,6 +45,8 @@ client = MetadataDbClient(
 #     data_asset_record_ids=ids,
 # )
 
+run_one = "f7600d90-e047-4ff9-bfd7-854b93bb15aa"
+
 
 class TestUpgrade(unittest.TestCase):
     """Test the upgrade process"""
@@ -63,6 +65,10 @@ class TestUpgrade(unittest.TestCase):
 
             for json_file in json_files:
                 file_path = os.path.join(dir_path, json_file)
+                
+                if run_one not in file_path:
+                    continue
+                
                 with open(file_path, "r") as file:
                     print(f"\n\nTesting upgrade for {file_path}")
                     data = file.read()
