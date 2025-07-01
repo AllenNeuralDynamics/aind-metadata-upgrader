@@ -23,7 +23,7 @@ ALL_CORE_FILES = [
 ]
 
 
-API_GATEWAY_HOST = "api.allenneuraldynamics-test.org"
+API_GATEWAY_HOST = "api.allenneuraldynamics.org"
 DATABASE = "metadata_index_v2"
 COLLECTION = "data_assets"
 
@@ -45,7 +45,7 @@ client = MetadataDbClient(
 #     data_asset_record_ids=ids,
 # )
 
-run_one = "f7600d90-e047-4ff9-bfd7-854b93bb15aa"
+run_one = "91a3e8f7-f26b-4b84-904d-4d6560b542d3"
 
 
 class TestUpgrade(unittest.TestCase):
@@ -66,8 +66,8 @@ class TestUpgrade(unittest.TestCase):
             for json_file in json_files:
                 file_path = os.path.join(dir_path, json_file)
 
-                # if run_one not in file_path:
-                #     continue
+                if run_one and run_one not in file_path:
+                    continue
 
                 with open(file_path, "r") as file:
                     print(f"\n\nTesting upgrade for {file_path}")
