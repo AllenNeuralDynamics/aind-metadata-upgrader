@@ -65,10 +65,10 @@ class TestUpgrade(unittest.TestCase):
 
             for json_file in json_files:
                 file_path = os.path.join(dir_path, json_file)
-                
-                if run_one not in file_path:
-                    continue
-                
+
+                # if run_one not in file_path:
+                #     continue
+
                 with open(file_path, "r") as file:
                     print(f"\n\nTesting upgrade for {file_path}")
                     data = file.read()
