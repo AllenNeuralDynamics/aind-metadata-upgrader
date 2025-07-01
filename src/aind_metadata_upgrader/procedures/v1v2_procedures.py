@@ -393,7 +393,7 @@ def upgrade_anaesthetic(data: dict) -> dict:
     upgraded_data["anaesthetic_type"] = upgraded_data.get("type", "Unknown")
     remove(upgraded_data, "type")
 
-    if upgraded_data["duration"] is None:
+    if "duration" not in upgraded_data or upgraded_data["duration"] is None:
         upgraded_data["duration"] = 0
 
     return Anaesthetic(**upgraded_data).model_dump()
