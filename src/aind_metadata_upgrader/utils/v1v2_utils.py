@@ -779,9 +779,6 @@ def repair_missing_active_devices(data: dict) -> dict:
     return data
 
 
-def 
-
-
 def repair_metadata(data: dict) -> dict:
     """Repair the full metadata record, checking for common issues"""
 
