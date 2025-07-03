@@ -39,12 +39,6 @@ coordinate_system_required = False
 measured_coordinates = []
 
 
-CRANIO_TYPES = {
-    "5 mm": CraniotomyType.CIRCLE,
-    "3 mm": CraniotomyType.CIRCLE,
-}
-
-
 def retrieve_bl_distance(data: dict) -> dict:
     """Pull out the Bregma/Lambda distance data"""
 
@@ -161,6 +155,12 @@ def upgrade_coordinate_craniotomy(data: dict) -> dict:
     data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
 
     return data
+
+
+CRANIO_TYPES = {
+    "5 mm": CraniotomyType.CIRCLE,
+    "3 mm": CraniotomyType.CIRCLE,
+}
 
 
 def upgrade_craniotomy(data: dict) -> dict:
