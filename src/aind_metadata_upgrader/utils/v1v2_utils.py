@@ -4,6 +4,7 @@ from typing import Optional
 from aind_data_schema.components.measurements import (
     PowerCalibration,
     VolumeCalibration,
+    Calibration,
 )
 
 from aind_data_schema.components.coordinates import (
@@ -32,7 +33,7 @@ from aind_data_schema.core.instrument import (
 from aind_data_schema.core.procedures import Procedures
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
-from aind_data_schema_models.units import SizeUnit, TimeUnit, VolumeUnit, PowerUnit
+from aind_data_schema_models.units import SizeUnit, TimeUnit, VolumeUnit, PowerUnit, VoltageUnit
 from aind_data_schema_models.brain_atlas import CCFv3
 
 MODALITY_MAP = {
@@ -644,6 +645,37 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
             output=output_values,
             output_unit=VolumeUnit.UL,
         )
+    elif "Optogenetic calibration" in data.get("description", ""):
+        # Optogenetic calibration with input voltage and laser power output
+        input_voltages = data["input"]["input voltage (v)"]
+        output_powers = data["output"]["laser power (mw)"]
+
+        # Filter out 'NA' values from output
+        filtered_inputs = []
+        filtered_outputs = []
+        for i, output in enumerate(output_powers):
+            if output != 'NA':
+                filtered_inputs.append(input_voltages[i])
+                filtered_outputs.append(output)
+
+        # Drop empty calibrations
+        if not filtered_inputs and not filtered_outputs:
+            return None
+
+        calibration = Calibration(
+            calibration_date=data["calibration_date"],
+            description=data.get("description", ""),
+            device_name=data["device_name"],
+            input=filtered_inputs,
+            input_unit=VoltageUnit.V,
+            output=filtered_outputs,
+            output_unit=PowerUnit.MW,
+            notes=(
+                data["notes"]
+                if data["notes"]
+                else "" + " (v1v2 upgrade): Optogenetic calibration upgraded from v1.x format. NA values filtered out."
+            ),
+        )
     else:
         raise ValueError(f"Unsupported calibration: {data}")
 
@@ -733,6 +765,9 @@ def repair_missing_active_devices(data: dict) -> dict:
             data["instrument"]["components"].append(new_device.model_dump())
 
     return data
+
+
+def 
 
 
 def repair_metadata(data: dict) -> dict:
