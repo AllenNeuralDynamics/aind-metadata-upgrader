@@ -8,11 +8,8 @@ from aind_data_schema.components.surgery_procedures import (
     GenericSurgeryProcedure,
 )
 from aind_data_schema.core.procedures import (
-    GenericSubjectProcedure,
     SpecimenProcedure,
     Surgery,
-    TrainingProtocol,
-    WaterRestriction,
 )
 
 from aind_metadata_upgrader.base import CoreUpgrader
@@ -40,6 +37,9 @@ from aind_metadata_upgrader.procedures.v1v2_procedures import (
     upgrade_protective_material_replacement,
     upgrade_reagent,
     upgrade_sample_collection,
+    upgrade_water_restriction,
+    upgrade_training_protocol,
+    upgrade_generic_subject_procedure,
 )
 from aind_metadata_upgrader.utils.v1v2_utils import remove
 
@@ -173,41 +173,13 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             )
             return surgery.model_dump()
         elif data.get("procedure_type") == "Water restriction":
-            remove(data, "procedure_type")
-            data["ethics_review_id"] = data.get("iacuc_protocol", "unknown")
-            remove(data, "iacuc_protocol")
-            if not data["baseline_weight"]:
-                # If baseline_weight is not provided, set it to 0
-                data["baseline_weight"] = 0.0
-            return WaterRestriction(
-                **data,
-            ).model_dump()
+            return upgrade_water_restriction(data)
         elif data.get("procedure_type") == "Training protocol":
-            remove(data, "procedure_type")
-            data["ethics_review_id"] = data.get("iacuc_protocol", "unknown")
-            remove(data, "iacuc_protocol")
-            return TrainingProtocol(
-                **data,
-            ).model_dump()
+            return upgrade_training_protocol(data)
         elif data.get("procedure_type") == "Generic Subject Procedure":
             # Convert experimenter_full_name to experimenters list
             data = self._replace_experimenter_full_name(data)
-
-            # Convert protocol_id from list to string (V1 has it as list, V2 as string)
-            protocol_id = data.get("protocol_id", None)
-            if isinstance(protocol_id, str) and protocol_id.lower() == "none":
-                protocol_id = None
-
-            generic_subject_procedure = GenericSubjectProcedure(
-                start_date=data.get("start_date"),
-                experimenters=data.get("experimenters", []),
-                ethics_review_id=data.get("iacuc_protocol", "unknown"),
-                protocol_id=protocol_id,
-                description=data.get("description", ""),
-                notes=data.get("notes"),
-            )
-
-            return generic_subject_procedure.model_dump()
+            return upgrade_generic_subject_procedure(data)
 
         raise ValueError("Unsupported subject procedure type: {}".format(data.get("procedure_type")))
 

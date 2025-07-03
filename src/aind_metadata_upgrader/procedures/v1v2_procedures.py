@@ -23,6 +23,9 @@ from aind_data_schema.components.subject_procedures import (
     Perfusion,
     ProbeImplant,
     SampleCollection,
+    WaterRestriction,
+    TrainingProtocol,
+    GenericSubjectProcedure,
 )
 from aind_data_schema.components.surgery_procedures import (
     CraniotomyType,
@@ -424,6 +427,55 @@ def upgrade_hcr_series(data: dict) -> dict:
     return HCRSeries(**upgraded_data).model_dump()
 
 
+def _create_section(
+    index: int,
+    specimen_id: str,
+    section_distance_from_reference: float,
+    section_thickness: float,
+    section_thickness_unit: SizeUnit,
+    section_orientation: SectionOrientation,
+    section_strategy: str,
+    targeted_structure,  # Remove type annotation to match usage
+    coordinate_system_name: str,
+) -> Section:
+    """Create a single Section object for planar sectioning."""
+    # Calculate the position of this slice
+    slice_position = section_distance_from_reference + (index * section_thickness)
+
+    # Create start and end coordinates based on orientation
+    if section_orientation == SectionOrientation.CORONAL:
+        # Coronal sections: varying anterior-posterior (A) coordinate
+        start_coord = Translation(translation=[slice_position, 0, 0])
+        end_coord = Translation(translation=[slice_position + section_thickness, 0, 0])
+    elif section_orientation == SectionOrientation.SAGITTAL:
+        # Sagittal sections: varying medial-lateral (R) coordinate
+        start_coord = Translation(translation=[0, slice_position, 0])
+        end_coord = Translation(translation=[0, slice_position + section_thickness, 0])
+    elif section_orientation == SectionOrientation.TRANSVERSE:
+        # Transverse sections: varying dorsal-ventral (I) coordinate
+        start_coord = Translation(translation=[0, 0, slice_position])
+        end_coord = Translation(translation=[0, 0, slice_position + section_thickness])
+    else:
+        raise ValueError(f"Unsupported section_orientation: {section_orientation}")
+
+    # Handle partial slice based on section strategy
+    partial_slice = None
+    if section_strategy == "Hemi brain":
+        partial_slice = [AnatomicalRelative.LEFT]  # Using LEFT instead of OTHER
+    # For "Whole brain" or other strategies, leave partial_slice as None (empty list)
+
+    return Section(
+        output_specimen_id=specimen_id,
+        targeted_structure=targeted_structure,
+        coordinate_system_name=coordinate_system_name,
+        start_coordinate=start_coord,
+        end_coordinate=end_coord,
+        thickness=section_thickness,
+        thickness_unit=section_thickness_unit,
+        partial_slice=partial_slice,
+    )
+
+
 def upgrade_planar_sectioning(data: dict) -> dict:
     """Upgrade Sectioning from V1 to V2 PlanarSectioning"""
     upgraded_data = {}
@@ -445,7 +497,8 @@ def upgrade_planar_sectioning(data: dict) -> dict:
     # Validate that output_specimen_ids matches number_of_slices
     if len(output_specimen_ids) != number_of_slices:
         raise ValueError(
-            f"Number of output_specimen_ids ({len(output_specimen_ids)}) must match number_of_slices ({number_of_slices})"
+            f"Number of output_specimen_ids ({len(output_specimen_ids)}) "
+            f"must match number_of_slices ({number_of_slices})"
         )
 
     # Convert units to mm if needed
@@ -467,40 +520,16 @@ def upgrade_planar_sectioning(data: dict) -> dict:
     sections = []
 
     for i, specimen_id in enumerate(output_specimen_ids):
-        # Calculate the position of this slice
-        slice_position = section_distance_from_reference + (i * section_thickness)
-
-        # Create start and end coordinates based on orientation
-        if section_orientation == SectionOrientation.CORONAL:
-            # Coronal sections: varying anterior-posterior (A) coordinate
-            start_coord = Translation(translation=[slice_position, 0, 0])
-            end_coord = Translation(translation=[slice_position + section_thickness, 0, 0])
-        elif section_orientation == SectionOrientation.SAGITTAL:
-            # Sagittal sections: varying medial-lateral (R) coordinate
-            start_coord = Translation(translation=[0, slice_position, 0])
-            end_coord = Translation(translation=[0, slice_position + section_thickness, 0])
-        elif section_orientation == SectionOrientation.TRANSVERSE:
-            # Transverse sections: varying dorsal-ventral (I) coordinate
-            start_coord = Translation(translation=[0, 0, slice_position])
-            end_coord = Translation(translation=[0, 0, slice_position + section_thickness])
-        else:
-            raise ValueError(f"Unsupported section_orientation: {section_orientation}")
-
-        # Handle partial slice based on section strategy
-        partial_slice = None
-        if section_strategy == "Hemi brain":
-            partial_slice = [AnatomicalRelative.OTHER]
-        # For "Whole brain" or other strategies, leave partial_slice as None (empty list)
-
-        section = Section(
-            output_specimen_id=specimen_id,
+        section = _create_section(
+            index=i,
+            specimen_id=specimen_id,
+            section_distance_from_reference=section_distance_from_reference,
+            section_thickness=section_thickness,
+            section_thickness_unit=section_thickness_unit,
+            section_orientation=section_orientation,
+            section_strategy=section_strategy,
             targeted_structure=targeted_structure,
             coordinate_system_name=coordinate_system_name,
-            start_coordinate=start_coord,
-            end_coordinate=end_coord,
-            thickness=section_thickness,
-            thickness_unit=section_thickness_unit,
-            partial_slice=partial_slice,
         )
 
         sections.append(section)
@@ -512,3 +541,45 @@ def upgrade_planar_sectioning(data: dict) -> dict:
     }
 
     return PlanarSectioning(**upgraded_data).model_dump()
+
+
+def upgrade_water_restriction(data: dict) -> dict:
+    """Upgrade WaterRestriction from V1 to V2"""
+    remove(data, "procedure_type")
+    data["ethics_review_id"] = data.get("iacuc_protocol", "unknown")
+    remove(data, "iacuc_protocol")
+    if not data["baseline_weight"]:
+        # If baseline_weight is not provided, set it to 0
+        data["baseline_weight"] = 0.0
+    return WaterRestriction(
+        **data,
+    ).model_dump()
+
+
+def upgrade_training_protocol(data: dict) -> dict:
+    """Upgrade TrainingProtocol"""
+    remove(data, "procedure_type")
+    data["ethics_review_id"] = data.get("iacuc_protocol", "unknown")
+    remove(data, "iacuc_protocol")
+    return TrainingProtocol(
+        **data,
+    ).model_dump()
+
+
+def upgrade_generic_subject_procedure(data: dict) -> dict:
+    """Upgrade GenericSubjectProcedure from V1 to V2"""
+    # Convert protocol_id from list to string (V1 has it as list, V2 as string)
+    protocol_id = data.get("protocol_id", None)
+    if isinstance(protocol_id, str) and protocol_id.lower() == "none":
+        protocol_id = None
+
+    generic_subject_procedure = GenericSubjectProcedure(
+        start_date=data.get("start_date"),
+        experimenters=data.get("experimenters", []),
+        ethics_review_id=data.get("iacuc_protocol", "unknown"),
+        protocol_id=protocol_id,
+        description=data.get("description", ""),
+        notes=data.get("notes"),
+    )
+
+    return generic_subject_procedure.model_dump()

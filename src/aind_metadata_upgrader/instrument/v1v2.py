@@ -17,7 +17,6 @@ from aind_data_schema_models.units import SizeUnit
 
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.instrument.v1v2_devices import (
-    saved_connections,
     upgrade_additional_devices,
     upgrade_daq_devices,
     upgrade_detector,

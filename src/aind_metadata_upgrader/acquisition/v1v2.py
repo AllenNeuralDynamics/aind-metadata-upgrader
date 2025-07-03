@@ -2,7 +2,6 @@
 
 from typing import Dict, List, Optional
 
-from aind_data_schema.components.coordinates import CoordinateSystem
 from aind_data_schema.components.identifiers import Person
 from aind_data_schema.core.acquisition import AcquisitionSubjectDetails
 

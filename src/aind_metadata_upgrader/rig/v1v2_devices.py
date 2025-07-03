@@ -45,7 +45,6 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     build_connection_from_channel,
     capitalize,
     remove,
-    repair_manufacturer,
     repair_unit,
     upgrade_filter,
     upgrade_light_source,

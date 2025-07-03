@@ -265,10 +265,8 @@ FILTER_WAVELENGTH_MAP = {
 }
 
 
-def upgrade_filter(data: dict) -> dict:
-    """Upgrade filter data to the new model."""
-
-    data = basic_device_checks(data, "Filter")
+def upgrade_filter_helper(data: dict) -> dict:
+    """Helper for the filter upgrader"""
 
     # Remove old Device fields
     remove(data, "device_type")
@@ -287,6 +285,43 @@ def upgrade_filter(data: dict) -> dict:
     remove(data, "size_unit")
     remove(data, "wavelength_unit")
 
+    return data
+
+
+def upgrade_filter_multiband(data: dict) -> dict:
+    """Handle multiband filter center wavelength issues"""
+    if "center_wavelength" in data and not isinstance(data["center_wavelength"], list):
+        if not data["center_wavelength"]:
+            # Uh oh... we need to figure out what the wavelengths should be
+            if any(key in data["notes"] for key in FILTER_WAVELENGTH_MAP.keys()):
+                # If the notes contain a known wavelength, use that
+                for key, wavelengths in FILTER_WAVELENGTH_MAP.items():
+                    if key in data["notes"]:
+                        data["center_wavelength"] = wavelengths
+                        break
+            elif any(key in data["model"] for key in FILTER_WAVELENGTH_MAP.keys()):
+                # If the model contains a known wavelength, use that
+                for key, wavelengths in FILTER_WAVELENGTH_MAP.items():
+                    if key in data["model"]:
+                        data["center_wavelength"] = wavelengths
+                        break
+            else:
+                print(data)
+                print(data["center_wavelength"])
+                raise ValueError("Multiband filter has no center_wavelength set, cannot upgrade.")
+        else:
+            data["center_wavelength"] = [data["center_wavelength"]]
+
+    return data
+
+
+def upgrade_filter(data: dict) -> dict:
+    """Upgrade filter data to the new model."""
+
+    data = basic_device_checks(data, "Filter")
+
+    data = upgrade_filter_helper(data)
+
     # Ensure filter_type is set
     if "type" in data:
         data["filter_type"] = data["type"]
@@ -294,27 +329,7 @@ def upgrade_filter(data: dict) -> dict:
 
     # For multiband filter, make the center_wavelength a list
     if data["filter_type"] == "Multiband":
-        if "center_wavelength" in data and not isinstance(data["center_wavelength"], list):
-            if not data["center_wavelength"]:
-                # Uh oh... we need to figure out what the wavelengths should be
-                if any(key in data["notes"] for key in FILTER_WAVELENGTH_MAP.keys()):
-                    # If the notes contain a known wavelength, use that
-                    for key, wavelengths in FILTER_WAVELENGTH_MAP.items():
-                        if key in data["notes"]:
-                            data["center_wavelength"] = wavelengths
-                            break
-                elif any(key in data["model"] for key in FILTER_WAVELENGTH_MAP.keys()):
-                    # If the model contains a known wavelength, use that
-                    for key, wavelengths in FILTER_WAVELENGTH_MAP.items():
-                        if key in data["model"]:
-                            data["center_wavelength"] = wavelengths
-                            break
-                else:
-                    print(data)
-                    print(data["center_wavelength"])
-                    raise ValueError("Multiband filter has no center_wavelength set, cannot upgrade.")
-            else:
-                data["center_wavelength"] = [data["center_wavelength"]]
+        data = upgrade_filter_multiband(data)
 
     filter_device = Filter(**data)
     return filter_device.model_dump()
@@ -495,96 +510,206 @@ def repair_unit(broken_unit: str) -> str:
         return broken_unit
 
 
-def upgrade_calibration(data: dict) -> Optional[dict]:
-    """Pull calibration information"""
+def _upgrade_volume_calibration_basic(data: dict) -> Optional[VolumeCalibration]:
+    """Handle basic water calibration format."""
+    # Drop empty calibrations
+    if not data["input"]["valve open time (s):"] and not data["output"]["water volume (ul):"]:
+        return None
 
-    if "Water calibration" in data.get("description", ""):
-        # Water calibration, we can handle this
+    return VolumeCalibration(
+        calibration_date=data["calibration_date"],
+        device_name=data["device_name"],
+        input=data["input"]["valve open time (s):"],
+        input_unit=TimeUnit.S,
+        output=data["output"]["water volume (ul):"],
+        output_unit=VolumeUnit.UL,
+        notes=(
+            data["notes"] if data["notes"] else "" + " (v1v2 upgrade): Liquid calibration upgraded from v1.x format."
+        ),
+    )
 
-        # drop empty calibratoins
-        if not data["input"]["valve open time (s):"] and not data["output"]["water volume (ul):"]:
-            return None
 
-        calibration = VolumeCalibration(
-            calibration_date=data["calibration_date"],
-            device_name=data["device_name"],
-            input=data["input"]["valve open time (s):"],
-            input_unit=TimeUnit.S,
-            output=data["output"]["water volume (ul):"],
-            output_unit=VolumeUnit.UL,
-            notes=(
-                data["notes"]
-                if data["notes"]
-                else "" + " (v1v2 upgrade): Liquid calibration upgraded from v1.x format."
-            ),
-        )
-    elif (
-        "laser power calibration" in data.get("description", "").lower()
-        and "power_setting" in data.get("input", {})
-        and "power_output" in data.get("output", {})
+def _upgrade_volume_calibration_delivery_system(data: dict) -> Optional[VolumeCalibration]:
+    """Handle water valve delivery system calibration format."""
+    measurements = data.get("input", {}).get("measurements", [])
+
+    if not measurements:
+        return None
+
+    # Extract input (valve open times) and output (water weights) from measurements
+    input_values = []
+    output_values = []
+
+    for measurement in measurements:
+        input_values.append(measurement.get("valve_open_time", 0))
+        # Average the water weights if multiple values exist
+        water_weights = measurement.get("water_weight", [])
+        if water_weights:
+            output_values.append(sum(water_weights) / len(water_weights))
+        else:
+            output_values.append(0)
+
+    # Drop empty calibrations
+    if not any(input_values) and not any(output_values):
+        return None
+
+    return VolumeCalibration(
+        calibration_date=data["calibration_date"],
+        device_name=data["device_name"],
+        input=input_values,
+        input_unit=TimeUnit.S,
+        output=output_values,
+        output_unit=VolumeUnit.ML,
+    )
+
+
+def _upgrade_volume_calibration_spot_check(data: dict) -> Optional[VolumeCalibration]:
+    """Handle spot check water calibration format."""
+    # Extract input and output values (could be lists or single values)
+    input_values = data["input"]["valve open time (s):"]
+    output_values = data["output"]["water volume (ul):"]
+
+    # Drop empty calibrations
+    if not input_values and not output_values:
+        return None
+
+    return VolumeCalibration(
+        calibration_date=data["calibration_date"],
+        device_name=data["device_name"],
+        input=input_values,
+        input_unit=TimeUnit.S,
+        output=output_values,
+        output_unit=VolumeUnit.UL,
+    )
+
+
+def _upgrade_volume_calibration(data: dict) -> Optional[dict]:
+    """Upgrade volume/water calibration data."""
+    description = data.get("description", "")
+    input_data = data.get("input", {})
+    output_data = data.get("output", {})
+
+    # Check for different volume calibration formats
+    if "Water calibration" in description:
+        calibration = _upgrade_volume_calibration_basic(data)
+    elif "Calibration of the water valve delivery system" in description:
+        calibration = _upgrade_volume_calibration_delivery_system(data)
+    elif "Spot check of water calibration" in description or (
+        "valve open time (s):" in input_data and "water volume (ul):" in output_data
     ):
-        # Laser calibration, may or may not have data
+        calibration = _upgrade_volume_calibration_spot_check(data)
+    else:
+        return None
 
-        power_setting = data["input"].get("power_setting", None)
-        power_output = data["output"].get("power_output", None)
+    return calibration.model_dump() if calibration else None
 
-        # Drop empty calibrations
-        if not power_setting and not power_output:
-            return None
 
-        calibration = PowerCalibration(
-            calibration_date=data["calibration_date"],
-            device_name=data["device_name"],
-            input=power_setting,
-            input_unit=PowerUnit.PERCENT,
-            output=power_output,
-            output_unit=PowerUnit.MW,
-        )
+def _upgrade_power_calibration_basic_laser(data: dict) -> Optional[PowerCalibration]:
+    """Handle basic laser power calibration with power_setting/power_output format."""
+    power_setting = data["input"].get("power_setting", None)
+    power_output = data["output"].get("power_output", None)
+
+    # Drop empty calibrations
+    if not power_setting and not power_output:
+        return None
+
+    return PowerCalibration(
+        calibration_date=data["calibration_date"],
+        device_name=data["device_name"],
+        input=power_setting,
+        input_unit=PowerUnit.PERCENT,
+        output=power_output,
+        output_unit=PowerUnit.MW,
+    )
+
+
+def _upgrade_power_calibration_measurement_laser(data: dict) -> Optional[PowerCalibration]:
+    """Handle laser power calibration with power_setting/power_measurement format."""
+    power_setting = data["input"].get("power_setting", {}).get("value", None)
+    input_unit = data["input"].get("power_setting", {}).get("unit", PowerUnit.PERCENT.value)
+    power_output = data["output"].get("power_measurement", {}).get("value", None)
+    output_unit = data["output"].get("power_measurement", {}).get("unit", PowerUnit.MW.value)
+
+    # Drop empty calibrations
+    if not power_setting and not power_output:
+        return None
+
+    print(data)
+
+    return PowerCalibration(
+        calibration_date=data["calibration_date"],
+        device_name=data["device_name"],
+        input=[power_setting],
+        input_unit=input_unit,
+        output=[power_output],
+        output_unit=output_unit,
+    )
+
+
+def _upgrade_power_calibration_percent_laser(data: dict) -> Optional[PowerCalibration]:
+    """Handle laser power calibration with power percent format."""
+    # Drop empty calibrations
+    if not data["input"]["power percent"] and not data["output"]["power mW"]:
+        return None
+
+    return PowerCalibration(
+        calibration_date=data["calibration_date"],
+        device_name=data["device_name"],
+        input=data["input"]["power percent"],
+        input_unit=PowerUnit.PERCENT,
+        output=data["output"]["power mW"],
+        output_unit=PowerUnit.MW,
+    )
+
+
+def _upgrade_power_calibration_led(data: dict) -> Optional[PowerCalibration]:
+    """Handle LED power calibration format."""
+    if not data["input"]["Power setting"] and not data["output"]["Power mW"]:
+        return None
+
+    return PowerCalibration(
+        calibration_date=data["calibration_date"],
+        device_name=data["device_name"],
+        input=data["input"]["Power setting"],
+        input_unit=PowerUnit.PERCENT,
+        output=data["output"]["Power mW"],
+        output_unit=PowerUnit.MW,
+    )
+
+
+def _upgrade_power_calibration(data: dict) -> Optional[dict]:
+    """Upgrade power calibration data (laser, LED)."""
+    description = data.get("description", "").lower()
+    input_data = data.get("input", {})
+    output_data = data.get("output", {})
+
+    # Check for different power calibration formats
+    if "laser power calibration" in description and "power_setting" in input_data and "power_output" in output_data:
+        calibration = _upgrade_power_calibration_basic_laser(data)
     elif (
-        "laser power calibration" in data.get("description", "").lower()
-        and "power_setting" in data.get("input", {})
-        and "power_measurement" in data.get("output", {})
+        "laser power calibration" in description
+        and "power_setting" in input_data
+        and "power_measurement" in output_data
     ):
-        # Laser calibration, may or may not have data
+        calibration = _upgrade_power_calibration_measurement_laser(data)
+    elif "laser power calibration" in description and "power percent" in input_data:
+        calibration = _upgrade_power_calibration_percent_laser(data)
+    elif "led calibration" in description:
+        calibration = _upgrade_power_calibration_led(data)
+    else:
+        return None
 
-        power_setting = data["input"].get("power_setting", {}).get("value", None)
-        input_unit = data["input"].get("power_setting", {}).get("unit", PowerUnit.PERCENT.value)
-        power_output = data["output"].get("power_measurement", {}).get("value", None)
-        output_unit = data["output"].get("power_measurement", {}).get("unit", PowerUnit.MW.value)
+    return calibration.model_dump() if calibration else None
 
-        # Drop empty calibrations
-        if not power_setting and not power_output:
-            return None
 
-        print(data)
+def _upgrade_generic_calibration_voltage_power(data: dict) -> Optional[Calibration]:
+    """Handle voltage to power calibrations (laser and optogenetic)."""
+    description = data.get("description", "")
+    input_data = data.get("input", {})
 
-        calibration = PowerCalibration(
-            calibration_date=data["calibration_date"],
-            device_name=data["device_name"],
-            input=[power_setting],
-            input_unit=input_unit,
-            output=[power_output],
-            output_unit=output_unit,
-        )
-    elif "laser power calibration" in data.get("description", "").lower() and "power percent" in data.get("input", {}):
-        # Laser calibration, may or may not have data
-
-        # Drop empty calibrations
-        if not data["input"]["power percent"] and not data["output"]["power mW"]:
-            return None
-
-        calibration = PowerCalibration(
-            calibration_date=data["calibration_date"],
-            device_name=data["device_name"],
-            input=data["input"]["power percent"],
-            input_unit=PowerUnit.PERCENT,
-            output=data["output"]["power mW"],
-            output_unit=PowerUnit.MW,
-        )
-    elif "laser power calibration" in data.get("description", "").lower() and "voltage (V)" in data.get("input", {}):
-        # {'calibration_date': '2024-12-05T00:00:00-08:00', 'description': 'Laser power calibration', 'device_name': 'Oxxius Red Laser', 'input': {'voltage (V)': [0.113, 0.189, 0.267, 0.343, 0.414, 0.492, 0.561, 0.634, 0.715, 0.779, 1.15, 1.52, 2.28, 2.98, 4, 5]}, 'notes': None, 'output': {'power (mW)': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40, 47.3, 53.5]}}
-        # Laser power calibration with input voltage and output power
-        calibration = Calibration(
+    if "laser power calibration" in description.lower() and "voltage (V)" in input_data:
+        # Laser power calibration with voltage input
+        return Calibration(
             calibration_date=data["calibration_date"],
             description=data.get("description", ""),
             device_name=data["device_name"],
@@ -593,77 +718,7 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
             output=data["output"]["power (mW)"],
             output_unit=PowerUnit.MW,
         )
-    elif "led calibration" in data.get("description", "").lower():
-        # LED calibration, may or may not have data
-
-        if not data["input"]["Power setting"] and not data["output"]["Power mW"]:
-            return None
-
-        calibration = PowerCalibration(
-            calibration_date=data["calibration_date"],
-            device_name=data["device_name"],
-            input=data["input"]["Power setting"],
-            input_unit=PowerUnit.PERCENT,
-            output=data["output"]["Power mW"],
-            output_unit=PowerUnit.MW,
-        )
-    elif "Calibration of the water valve delivery system" in data.get("description", ""):
-        # Water valve delivery system calibration
-        measurements = data.get("input", {}).get("measurements", [])
-
-        if not measurements:
-            return None
-
-        # Extract input (valve open times) and output (water weights) from measurements
-        input_values = []
-        output_values = []
-        # repeat_counts = []  # Will be added to VolumeCalibration schema soon
-
-        for measurement in measurements:
-            input_values.append(measurement.get("valve_open_time", 0))
-            # Average the water weights if multiple values exist
-            water_weights = measurement.get("water_weight", [])
-            if water_weights:
-                output_values.append(sum(water_weights) / len(water_weights))
-            else:
-                output_values.append(0)
-            # repeat_counts.append(measurement.get("repeat_count", 1))
-
-        # Drop empty calibrations
-        if not any(input_values) and not any(output_values):
-            return None
-
-        calibration = VolumeCalibration(
-            calibration_date=data["calibration_date"],
-            device_name=data["device_name"],
-            input=input_values,
-            input_unit=TimeUnit.S,
-            output=output_values,
-            output_unit=VolumeUnit.ML,
-            # repeats=repeat_counts,  # Will be added to schema soon
-        )
-    elif "Spot check of water calibration" in data.get("description", "") or (
-        "valve open time (s):" in data.get("input", {}) and "water volume (ul):" in data.get("output", {})
-    ):
-        # Spot check water calibration with different field format
-
-        # Extract input and output values (could be lists or single values)
-        input_values = data["input"]["valve open time (s):"]
-        output_values = data["output"]["water volume (ul):"]
-
-        # Drop empty calibrations
-        if not input_values and not output_values:
-            return None
-
-        calibration = VolumeCalibration(
-            calibration_date=data["calibration_date"],
-            device_name=data["device_name"],
-            input=input_values,
-            input_unit=TimeUnit.S,
-            output=output_values,
-            output_unit=VolumeUnit.UL,
-        )
-    elif "Optogenetic calibration" in data.get("description", ""):
+    elif "Optogenetic calibration" in description:
         # Optogenetic calibration with input voltage and laser power output
         input_voltages = data["input"]["input voltage (v)"]
         output_powers = data["output"]["laser power (mw)"]
@@ -680,7 +735,7 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
         if not filtered_inputs and not filtered_outputs:
             return None
 
-        calibration = Calibration(
+        return Calibration(
             calibration_date=data["calibration_date"],
             description=data.get("description", ""),
             device_name=data["device_name"],
@@ -694,10 +749,40 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
                 else "" + " (v1v2 upgrade): Optogenetic calibration upgraded from v1.x format. NA values filtered out."
             ),
         )
-    else:
-        raise ValueError(f"Unsupported calibration: {data}")
 
-    return calibration.model_dump() if calibration else None
+    return None
+
+
+def _upgrade_generic_calibration(data: dict) -> Optional[dict]:
+    """Upgrade generic calibration data that doesn't fit volume or power categories."""
+    calibration = _upgrade_generic_calibration_voltage_power(data)
+
+    if calibration:
+        return calibration.model_dump()
+
+    return None
+
+
+def upgrade_calibration(data: dict) -> Optional[dict]:
+    """Upgrade calibration information by categorizing and delegating to specific handlers."""
+
+    # Try volume calibrations first
+    result = _upgrade_volume_calibration(data)
+    if result:
+        return result
+
+    # Try power calibrations
+    result = _upgrade_power_calibration(data)
+    if result:
+        return result
+
+    # Try generic calibrations
+    result = _upgrade_generic_calibration(data)
+    if result:
+        return result
+
+    # If none of the handlers can process it, raise an error
+    raise ValueError(f"Unsupported calibration: {data}")
 
 
 CCF_MAPPING = {"ALM": CCFv3.MO, "Primary Motor Cortex": CCFv3.MO}
@@ -746,6 +831,25 @@ def repair_instrument_id_mismatch(data: dict) -> dict:
     return data
 
 
+def get_active_devices(data: dict) -> list:
+    """Get a list of active devices from the acquisition data streams and stimulus epochs."""
+
+    active_devices = []
+
+    if "acquisition" in data:
+        # Collect active devices from data streams
+        if "data_streams" in data["acquisition"]:
+            for data_stream in data["acquisition"]["data_streams"]:
+                active_devices.extend(data_stream.get("active_devices", []))
+
+        # Collective active devices from stimulus epochs
+        if "stimulus_epochs" in data["acquisition"]:
+            for stimulus_epoch in data["acquisition"]["stimulus_epochs"]:
+                active_devices.extend(stimulus_epoch.get("active_devices", []))
+
+    return active_devices
+
+
 def repair_missing_active_devices(data: dict) -> dict:
     """Create missing devices that are referenced in active_devices but not in instrument components"""
 
@@ -753,14 +857,7 @@ def repair_missing_active_devices(data: dict) -> dict:
         return data
 
     # Collect active devices from data streams
-    active_devices = []
-    if data.get("acquisition") and "data_streams" in data["acquisition"]:
-        for data_stream in data["acquisition"]["data_streams"]:
-            active_devices.extend(data_stream["active_devices"])
-    # Collective active devices from stimulus epochs
-    if data.get("acquisition") and "stimulus_epochs" in data["acquisition"]:
-        for stimulus_epoch in data["acquisition"]["stimulus_epochs"]:
-            active_devices.extend(stimulus_epoch.get("active_devices", []))
+    active_devices = get_active_devices(data)
 
     # Collect existing device names
     device_names = []
@@ -778,20 +875,19 @@ def repair_missing_active_devices(data: dict) -> dict:
         for device in missing_devices:
             new_device = Device(
                 name=device,
-                notes="(v1v2 upgrade) This device was not found in the components list, but is referenced in Acquisition.",
+                notes=(
+                    "(v1v2 upgrade) This device was not found in the components list, "
+                    "but is referenced in Acquisition."
+                ),
             )
             data["instrument"]["components"].append(new_device.model_dump())
 
     return data
 
 
-def repair_connection_devices(data: dict) -> dict:
-    """Create missing devices that are referenced in connections but not in instrument components"""
+def get_connection_devices(data: dict) -> list:
+    """Get a list of device names referenced in connections from the instrument and acquisition data."""
 
-    if "instrument" not in data:
-        return data
-
-    # Collect all device names referenced in connections
     connection_devices = []
 
     # Check instrument connections
@@ -805,6 +901,18 @@ def repair_connection_devices(data: dict) -> dict:
             if "connections" in data_stream:
                 for connection in data_stream["connections"]:
                     connection_devices.extend(connection["device_names"])
+
+    return connection_devices
+
+
+def repair_connection_devices(data: dict) -> dict:
+    """Create missing devices that are referenced in connections but not in instrument components"""
+
+    if "instrument" not in data:
+        return data
+
+    # Collect all device names referenced in connections
+    connection_devices = get_connection_devices(data)
 
     # Collect existing device names
     device_names = []
@@ -822,7 +930,10 @@ def repair_connection_devices(data: dict) -> dict:
         for device in missing_devices:
             new_device = Device(
                 name=device,
-                notes="(v1v2 upgrade) This device was not found in the components list, but is referenced in connections.",
+                notes=(
+                    "(v1v2 upgrade) This device was not found in the components list, "
+                    "but is referenced in connections."
+                ),
             )
             data["instrument"]["components"].append(new_device.model_dump())
 

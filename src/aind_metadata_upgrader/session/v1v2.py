@@ -8,7 +8,6 @@ from aind_data_schema.components.configs import (
     CoupledPlane,
     DetectorConfig,
     EphysAssemblyConfig,
-    FiberAssemblyConfig,
     Immersion,
     LaserConfig,
     LightEmittingDiodeConfig,
@@ -25,7 +24,6 @@ from aind_data_schema.components.configs import (
     SlapAcquisitionType,
     SlapPlane,
     SpeakerConfig,
-    SubjectPosition,
     TriggerType,
 )
 from aind_data_schema.components.coordinates import (
@@ -63,7 +61,6 @@ from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import (
     remove,
     upgrade_calibration,
-    upgrade_light_source,
     upgrade_targeted_structure,
 )
 
@@ -224,8 +221,8 @@ class SessionV1V2(CoreUpgrader):
 
         return configs
 
-    def _upgrade_detector_config(self, data: Dict) -> Dict:
-        """Upgrade detector config from v1 to v2"""
+    def _upgrade_detector_config_v2(self, data: Dict) -> Dict:
+        """Upgrade detector config from v1 to v2 (alternative implementation)"""
 
         data["device_name"] = data.get("name", "Unknown Detector")
         remove(data, "name")
@@ -347,7 +344,8 @@ class SessionV1V2(CoreUpgrader):
         for module in fiber_modules:
             fiber_connection_configs.extend(module.get("fiber_connections", []))
 
-        # For each FiberConnectionConfig, run the new upgrader which will create a Channel, PatchCordConfig, and a Connection
+        # For each FiberConnectionConfig, run the new upgrader which will create a
+        # Channel, PatchCordConfig, and a Connection
         patchcord_configs = []
         all_connections = []
         for fiber_conn in fiber_connection_configs:
@@ -647,7 +645,7 @@ class SessionV1V2(CoreUpgrader):
                 try:
                     modality_obj = Modality.from_abbreviation(abbreviation)
                     modalities.append(modality_obj.model_dump())
-                except:
+                except Exception:
                     # Default to behavior if unknown
                     modalities.append(Modality.BEHAVIOR.model_dump())
             else:
@@ -666,39 +664,8 @@ class SessionV1V2(CoreUpgrader):
         for stick_microscope in stream.get("stick_microscopes", []):
             active_devices.append(stick_microscope.get("assembly_name", "Unknown Stick Microscope"))
 
-        # Create configurations
-        configurations = []
-
-        # Light source and detector configs
-        for light_source in stream.get("light_sources", []):
-            config = self._upgrade_light_source_config(light_source)
-            if config:
-                configurations.append(config)
-
-        for detector in stream.get("detectors", []):
-            configurations.append(self._upgrade_detector_config(detector))
-
-        # Ephys configs
-        for ephys_module in stream.get("ephys_modules", []):
-            configs = self._upgrade_ephys_module_to_configs(ephys_module)
-            configurations.extend(configs)
-
-        # Fiber upgrader
-        patchcord_configs, connections = self._upgrade_fiber(stream)
-        configurations.extend(patchcord_configs)
-
-        # MRI configs
-        for mri_scan in stream.get("mri_scans", []):
-            configurations.append(self._upgrade_mri_scan_to_config(mri_scan))
-
-        # Imaging config
-        imaging_config = self._create_imaging_config(stream)
-        if imaging_config:
-            configurations.append(imaging_config)
-
-        # Sample chamber config (basic one for now)
-        if stream.get("ophys_fovs") or stream.get("slap_fovs"):
-            configurations.append(self._create_sample_chamber_config(rig_id))
+        # Create configurations and connections
+        configurations, connections = self._upgrade_all_device_configurations(stream, rig_id)
 
         # Make sure all configuration devices are in active devices
         configuration_device_names = [config.get("device_name") for config in configurations]
@@ -871,3 +838,42 @@ class SessionV1V2(CoreUpgrader):
         )
 
         return acquisition.model_dump()
+
+    def _upgrade_all_device_configurations(self, stream: Dict, rig_id: str) -> tuple:
+        """Upgrade all device configurations from a stream and return configurations and connections"""
+        configurations = []
+        connections = []
+
+        # Light source and detector configs
+        for light_source in stream.get("light_sources", []):
+            config = self._upgrade_light_source_config(light_source)
+            if config:
+                configurations.append(config)
+
+        for detector in stream.get("detectors", []):
+            configurations.append(self._upgrade_detector_config(detector))
+
+        # Ephys configs
+        for ephys_module in stream.get("ephys_modules", []):
+            configs = self._upgrade_ephys_module_to_configs(ephys_module)
+            configurations.extend(configs)
+
+        # Fiber upgrader
+        patchcord_configs, fiber_connections = self._upgrade_fiber(stream)
+        configurations.extend(patchcord_configs)
+        connections.extend(fiber_connections)
+
+        # MRI configs
+        for mri_scan in stream.get("mri_scans", []):
+            configurations.append(self._upgrade_mri_scan_to_config(mri_scan))
+
+        # Imaging config
+        imaging_config = self._create_imaging_config(stream)
+        if imaging_config:
+            configurations.append(imaging_config)
+
+        # Sample chamber config (basic one for now)
+        if stream.get("ophys_fovs") or stream.get("slap_fovs"):
+            configurations.append(self._create_sample_chamber_config(rig_id))
+
+        return configurations, connections

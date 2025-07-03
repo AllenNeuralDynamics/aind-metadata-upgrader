@@ -70,91 +70,91 @@ class DataDescriptionV1V2(CoreUpgrader):
                 )
         return investigators
 
+    def _get_creation_time(self, data: dict) -> str | None:
+        """Handle old records that have both creation_date and creation_time"""
+        if "creation_date" in data and "creation_time" in data:
+            return data["creation_date"] + "T" + data["creation_time"]
+        else:
+            return data.get("creation_time", None)
+
+    def _get_institution(self, data: dict):
+        """Handle old records that have institution as a string"""
+        institution = data.get("institution", None)
+        if isinstance(institution, str):
+            try:
+                return Organization.from_abbreviation(institution)
+            except ValueError:
+                raise ValueError(f"Unsupported institution abbreviation: {institution}")
+        return institution
+
+    def _get_data_level(self, data: dict) -> str | None:
+        """Handle old data_level types"""
+        data_level = data.get("data_level", None)
+        if data_level:
+            if "raw" in data_level.lower():
+                return "raw"
+            elif "derived" in data_level.lower():
+                return "derived"
+        return data_level
+
+    def _get_project_name(self, data: dict) -> str:
+        """Handle missing project_name"""
+        project_name = data.get("project_name", "unknown")
+        if not project_name:
+            project_name = "unknown"
+        return project_name
+
+    def _ensure_investigators_exist(self, investigators: list) -> list:
+        """Ensure at least one investigator exists"""
+        if len(investigators) == 0:
+            investigators.append(Person(name="unknown"))
+        return investigators
+
+    def _build_output_dict(self, data: dict, **kwargs) -> dict:
+        """Build the output dictionary with all upgraded fields"""
+        return {
+            "schema_version": "2.0.0",
+            "license": data.get("license", License.CC_BY_40),
+            "subject_id": data.get("subject_id", None),
+            "creation_time": kwargs.get("creation_time"),
+            "tags": None,  # Set to None as specified in the original
+            "name": data.get("name", None),
+            "institution": kwargs.get("institution"),
+            "funding_source": kwargs.get("funding_source"),
+            "data_level": kwargs.get("data_level"),
+            "group": data.get("group", None),
+            "investigators": kwargs.get("investigators"),
+            "project_name": kwargs.get("project_name"),
+            "restrictions": data.get("restrictions", None),
+            "modalities": kwargs.get("modalities"),
+            "data_summary": data.get("data_summary", None),
+            "object_type": "Data description",
+        }
+
     def upgrade(self, data: dict, schema_version: str) -> dict:
         """Upgrade the data description to v2.0"""
 
         if not isinstance(data, dict):
             raise ValueError("Data must be a dictionary")
 
-        # removed fields:
-        # platform
-        # label
-        # related_data
-
-        # remaining fields:
-        schema_version = "2.0.0"
-        license = data.get("license", License.CC_BY_40)
-        subject_id = data.get("subject_id", None)
-
-        # Handle old records that have both creation_date and creation_time
-        if "creation_date" in data and "creation_time" in data:
-            creation_time = data["creation_date"] + "T" + data["creation_time"]
-        else:
-            creation_time = data.get("creation_time", None)
-        tags = data.get("tags", None)
-        name = data.get("name", None)
-
-        # Handle old records that have institution as a string
-        institution = data.get("institution", None)
-        if isinstance(institution, str):
-            try:
-                institution = Organization.from_abbreviation(institution)
-            except ValueError:
-                raise ValueError(f"Unsupported institution abbreviation: {institution}")
-
+        # Get upgraded field values using helper methods
         funding_source = self._get_funding_source(data)
-
-        # Handle old data_level types
-        data_level = data.get("data_level", None)
-        if data_level:
-            if "raw" in data_level.lower():
-                data_level = "raw"
-            elif "derived" in data_level.lower():
-                data_level = "derived"
-
-        group = data.get("group", None)
-
-        # Originally a List[PIDName], now List[Person]
+        creation_time = self._get_creation_time(data)
+        institution = self._get_institution(data)
+        data_level = self._get_data_level(data)
+        project_name = self._get_project_name(data)
         investigators = self._get_investigators(data)
-
-        if len(investigators) == 0:
-            # Create a fake investigator
-            investigators.append(Person(name="unknown"))
-
-        # Handle missing project_name
-        project_name = data.get("project_name", "unknown")
-        if not project_name:
-            project_name = "unknown"
-
-        restrictions = data.get("restrictions", None)
-
-        # Modalities may need to be converted to a list
+        investigators = self._ensure_investigators_exist(investigators)
         modalities = upgrade_v1_modalities(data)
 
-        # New fields
-        data_summary = data.get("data_summary", None)
-        object_type = "Data description"
-        tags = None
-
-        output = {
-            # new fields in v2
-            "schema_version": schema_version,
-            "license": license,
-            "subject_id": subject_id,
-            "creation_time": creation_time,
-            "tags": tags,
-            "name": name,
-            "institution": institution,
-            "funding_source": funding_source,
-            "data_level": data_level,
-            "group": group,
-            "investigators": investigators,
-            "project_name": project_name,
-            "restrictions": restrictions,
-            "modalities": modalities,
-            "data_summary": data_summary,
-            "object_type": object_type,
-            "tags": tags,
-        }
-
-        return output
+        # Build and return the upgraded output
+        return self._build_output_dict(
+            data,
+            funding_source=funding_source,
+            creation_time=creation_time,
+            institution=institution,
+            data_level=data_level,
+            project_name=project_name,
+            investigators=investigators,
+            modalities=modalities,
+        )
