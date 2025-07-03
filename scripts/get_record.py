@@ -1,3 +1,5 @@
+"""Helper to get a single record"""
+
 from aind_data_access_api.document_db import MetadataDbClient
 import json
 import os
