@@ -1,8 +1,8 @@
 """<=v1.4 to v2.0 quality control upgrade functions"""
 
-from aind_metadata_upgrader.base import CoreUpgrader
-from aind_data_schema.core.quality_control import QCMetric, CurationMetric
+from aind_data_schema.core.quality_control import CurationMetric, QCMetric
 
+from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import remove
 
 

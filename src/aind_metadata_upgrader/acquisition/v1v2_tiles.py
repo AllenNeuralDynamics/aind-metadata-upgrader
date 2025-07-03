@@ -1,18 +1,19 @@
 """Tile upgrade functions for v1.4 to v2.0 acquisition upgrade"""
 
 from typing import Dict, List, Optional
-from aind_data_schema_models.modalities import Modality
+
 from aind_data_schema.components.configs import (
     Channel,
-    LaserConfig,
     DetectorConfig,
-    TriggerType,
-    SampleChamberConfig,
     Immersion,
+    LaserConfig,
+    SampleChamberConfig,
+    TriggerType,
 )
 from aind_data_schema.core.acquisition import DataStream
-from aind_data_schema_models.units import PowerUnit, SizeUnit, TimeUnit
 from aind_data_schema_models.devices import ImmersionMedium
+from aind_data_schema_models.modalities import Modality
+from aind_data_schema_models.units import PowerUnit, SizeUnit, TimeUnit
 
 
 def extract_channels_from_tiles(tiles: List[Dict]) -> List[Channel]:

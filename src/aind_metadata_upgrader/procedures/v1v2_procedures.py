@@ -1,36 +1,36 @@
 """Individual procedure upgrade functions for V1 to V2"""
 
-from aind_data_schema.components.subject_procedures import (
-    Craniotomy,
-    Headframe,
-    SampleCollection,
-    Perfusion,
-    ProbeImplant,
-    MyomatrixInsertion,
-    CatheterImplant,
-    GenericSurgeryProcedure,
-    Anaesthetic,
+from aind_data_schema.components.configs import ProbeConfig
+from aind_data_schema.components.coordinates import (
+    CoordinateSystemLibrary,
+    Rotation,
+    Translation,
 )
-from aind_data_schema.components.surgery_procedures import (
-    GroundWireImplant,
-    CraniotomyType,
-)
+from aind_data_schema.components.reagent import Antibody, Reagent
 from aind_data_schema.components.specimen_procedures import (
     HCRSeries,
     PlanarSectioning,
     Section,
     SectionOrientation,
 )
-from aind_data_schema.components.reagent import Reagent, Antibody
-from aind_data_schema.components.coordinates import (
-    Translation,
-    Rotation,
-    CoordinateSystemLibrary,
+from aind_data_schema.components.subject_procedures import (
+    Anaesthetic,
+    CatheterImplant,
+    Craniotomy,
+    GenericSurgeryProcedure,
+    Headframe,
+    MyomatrixInsertion,
+    Perfusion,
+    ProbeImplant,
+    SampleCollection,
 )
-from aind_data_schema.components.configs import ProbeConfig
+from aind_data_schema.components.surgery_procedures import (
+    CraniotomyType,
+    GroundWireImplant,
+)
+from aind_data_schema_models.brain_atlas import CCFv3
 from aind_data_schema_models.coordinates import AnatomicalRelative, Origin
 from aind_data_schema_models.units import SizeUnit
-from aind_data_schema_models.brain_atlas import CCFv3
 
 from aind_metadata_upgrader.rig.v1v2_devices import upgrade_fiber_probe
 from aind_metadata_upgrader.utils.v1v2_utils import remove, repair_organization

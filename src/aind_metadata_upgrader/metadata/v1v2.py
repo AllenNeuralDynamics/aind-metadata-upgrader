@@ -1,7 +1,6 @@
 """<=v1.4 to v2.0 metadata upgrade functions"""
 
 from aind_metadata_upgrader.base import CoreUpgrader
-
 from aind_metadata_upgrader.utils.v1v2_utils import remove
 
 

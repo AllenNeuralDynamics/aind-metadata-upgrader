@@ -1,20 +1,19 @@
 """Main entrypoint for upgrader"""
 
+import traceback
+
+from aind_data_schema.core.acquisition import Acquisition
 from aind_data_schema.core.data_description import DataDescription
 from aind_data_schema.core.instrument import Instrument
-
 from aind_data_schema.core.metadata import Metadata
-from aind_data_schema.core.processing import Processing
-from aind_data_schema.core.acquisition import Acquisition
-from aind_data_schema.core.quality_control import QualityControl
 from aind_data_schema.core.procedures import Procedures
+from aind_data_schema.core.processing import Processing
+from aind_data_schema.core.quality_control import QualityControl
 from aind_data_schema.core.subject import Subject
 from packaging.version import Version
 
 from aind_metadata_upgrader.upgrade_mapping import MAPPING
 from aind_metadata_upgrader.utils.v1v2_utils import repair_metadata
-import traceback
-
 
 CORE_FILES = [
     "subject",

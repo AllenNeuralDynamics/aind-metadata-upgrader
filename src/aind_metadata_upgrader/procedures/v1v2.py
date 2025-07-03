@@ -2,48 +2,46 @@
 
 from datetime import date
 
+from aind_data_schema.components.coordinates import CoordinateSystemLibrary
 from aind_data_schema.components.identifiers import Person
-
-from aind_metadata_upgrader.base import CoreUpgrader
-
+from aind_data_schema.components.surgery_procedures import (
+    GenericSurgeryProcedure,
+)
 from aind_data_schema.core.procedures import (
-    Surgery,
-    WaterRestriction,
-    TrainingProtocol,
     GenericSubjectProcedure,
     SpecimenProcedure,
+    Surgery,
+    TrainingProtocol,
+    WaterRestriction,
 )
-from aind_data_schema.components.surgery_procedures import GenericSurgeryProcedure
 
-
-from aind_metadata_upgrader.utils.v1v2_utils import remove
-from aind_metadata_upgrader.procedures.v1v2_procedures import (
-    upgrade_craniotomy,
-    upgrade_headframe,
-    upgrade_protective_material_replacement,
-    upgrade_sample_collection,
-    upgrade_perfusion,
-    upgrade_fiber_implant,
-    upgrade_myomatrix_insertion,
-    upgrade_catheter_implant,
-    upgrade_other_subject_procedure,
-    upgrade_reagent,
-    upgrade_anaesthetic,
-    repair_generic_surgery_procedure,
-    upgrade_antibody,
-    upgrade_hcr_series,
-    upgrade_planar_sectioning,
-)
+from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.procedures.v1v2_injections import (
-    upgrade_nanoject_injection,
-    upgrade_iontophoresis_injection,
-    upgrade_icv_injection,
     upgrade_icm_injection,
-    upgrade_retro_orbital_injection,
+    upgrade_icv_injection,
     upgrade_intraperitoneal_injection,
+    upgrade_iontophoresis_injection,
+    upgrade_nanoject_injection,
+    upgrade_retro_orbital_injection,
 )
-
-from aind_data_schema.components.coordinates import CoordinateSystemLibrary
+from aind_metadata_upgrader.procedures.v1v2_procedures import (
+    repair_generic_surgery_procedure,
+    upgrade_anaesthetic,
+    upgrade_antibody,
+    upgrade_catheter_implant,
+    upgrade_craniotomy,
+    upgrade_fiber_implant,
+    upgrade_hcr_series,
+    upgrade_headframe,
+    upgrade_myomatrix_insertion,
+    upgrade_other_subject_procedure,
+    upgrade_perfusion,
+    upgrade_planar_sectioning,
+    upgrade_protective_material_replacement,
+    upgrade_reagent,
+    upgrade_sample_collection,
+)
+from aind_metadata_upgrader.utils.v1v2_utils import remove
 
 PROC_UPGRADE_MAP = {
     "Craniotomy": upgrade_craniotomy,

@@ -27,9 +27,9 @@ from aind_metadata_upgrader.instrument.v1v2_devices import (
 from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_enclosure,
     upgrade_filter,
+    upgrade_lens,
     upgrade_light_source,
     upgrade_objective,
-    upgrade_lens,
 )
 
 

@@ -1,12 +1,15 @@
 """<=v1.4 to v2.0 acquisition upgrade functions"""
 
 from typing import Dict, List, Optional
-from aind_data_schema.components.identifiers import Person
-from aind_data_schema.components.coordinates import CoordinateSystem
-from aind_data_schema.core.acquisition import AcquisitionSubjectDetails
-from aind_metadata_upgrader.base import CoreUpgrader
-from aind_metadata_upgrader.acquisition.v1v2_tiles import upgrade_tiles_to_data_stream
 
+from aind_data_schema.components.coordinates import CoordinateSystem
+from aind_data_schema.components.identifiers import Person
+from aind_data_schema.core.acquisition import AcquisitionSubjectDetails
+
+from aind_metadata_upgrader.acquisition.v1v2_tiles import (
+    upgrade_tiles_to_data_stream,
+)
+from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import upgrade_calibration
 
 

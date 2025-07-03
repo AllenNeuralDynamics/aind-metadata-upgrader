@@ -1,11 +1,6 @@
 """Shared utility functions for the AIND Metadata Upgrader."""
 
 from typing import Optional
-from aind_data_schema.components.measurements import (
-    PowerCalibration,
-    VolumeCalibration,
-    Calibration,
-)
 
 from aind_data_schema.components.coordinates import (
     Affine,
@@ -14,27 +9,38 @@ from aind_data_schema.components.coordinates import (
     Translation,
 )
 from aind_data_schema.components.devices import (
+    Computer,
+    Device,
     Enclosure,
     Filter,
     Lamp,
     Laser,
+    Lens,
     LightEmittingDiode,
     Objective,
-    Lens,
-    Computer,
-    Device,
 )
 from aind_data_schema.components.identifiers import Software
+from aind_data_schema.components.measurements import (
+    Calibration,
+    PowerCalibration,
+    VolumeCalibration,
+)
 from aind_data_schema.core.instrument import (
     Connection,
     ConnectionData,
     ConnectionDirection,
 )
 from aind_data_schema.core.procedures import Procedures
+from aind_data_schema_models.brain_atlas import CCFv3
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
-from aind_data_schema_models.units import SizeUnit, TimeUnit, VolumeUnit, PowerUnit, VoltageUnit
-from aind_data_schema_models.brain_atlas import CCFv3
+from aind_data_schema_models.units import (
+    PowerUnit,
+    SizeUnit,
+    TimeUnit,
+    VoltageUnit,
+    VolumeUnit,
+)
 
 MODALITY_MAP = {
     "SmartSPIM": Modality.SPIM,

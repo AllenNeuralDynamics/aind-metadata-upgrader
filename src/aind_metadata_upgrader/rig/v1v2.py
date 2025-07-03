@@ -18,9 +18,7 @@ from aind_data_schema.core.instrument import (
     ConnectionData,
     ConnectionDirection,
 )
-from aind_data_schema_models.units import (
-    SizeUnit,
-)
+from aind_data_schema_models.units import SizeUnit
 
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.rig.v1v2_devices import (
@@ -28,25 +26,25 @@ from aind_metadata_upgrader.rig.v1v2_devices import (
     upgrade_camera_assembly,
     upgrade_daq_devices,
     upgrade_detector,
+    upgrade_dmd,
     upgrade_ephys_assembly,
     upgrade_fiber_assembly,
     upgrade_fiber_patch_cord,
     upgrade_laser_assembly,
     upgrade_mouse_platform,
-    upgrade_stimulus_device,
-    upgrade_dmd,
-    upgrade_polygonal_scanner,
     upgrade_pockels_cell,
+    upgrade_polygonal_scanner,
+    upgrade_stimulus_device,
 )
 from aind_metadata_upgrader.utils.v1v2_utils import (
+    upgrade_calibration,
     upgrade_enclosure,
+    upgrade_filter,
+    upgrade_generic_Device,
+    upgrade_lens,
     upgrade_light_source,
     upgrade_objective,
     upgrade_v1_modalities,
-    upgrade_lens,
-    upgrade_filter,
-    upgrade_generic_Device,
-    upgrade_calibration,
 )
 
 BREGMA_ALS = CoordinateSystem(

@@ -1,54 +1,71 @@
 """<=v1.4 to v2.0 session upgrade functions"""
 
 from typing import Dict, List, Optional, Union
-from aind_data_schema.components.identifiers import Person, Code
-from aind_data_schema.core.acquisition import (
-    AcquisitionSubjectDetails,
-    DataStream,
-    StimulusEpoch,
-    PerformanceMetrics,
-    Acquisition,
-)
+
+from aind_data_schema.base import GenericModel
 from aind_data_schema.components.configs import (
+    Channel,
+    CoupledPlane,
     DetectorConfig,
+    EphysAssemblyConfig,
+    FiberAssemblyConfig,
+    Immersion,
     LaserConfig,
     LightEmittingDiodeConfig,
     ManipulatorConfig,
-    EphysAssemblyConfig,
-    FiberAssemblyConfig,
-    PatchCordConfig,
-    Channel,
-    Plane,
-    CoupledPlane,
-    SlapPlane,
-    SampleChamberConfig,
-    Immersion,
-    MRIScan,
-    SpeakerConfig,
-    TriggerType,
-    MriScanSequence,
-    ScanType,
-    SubjectPosition,
-    SlapAcquisitionType,
-    Channel,
-    PlanarImage,
     MISModuleConfig,
+    MRIScan,
+    MriScanSequence,
+    PatchCordConfig,
+    PlanarImage,
+    Plane,
     ProbeConfig,
+    SampleChamberConfig,
+    ScanType,
+    SlapAcquisitionType,
+    SlapPlane,
+    SpeakerConfig,
+    SubjectPosition,
+    TriggerType,
 )
+from aind_data_schema.components.coordinates import (
+    Affine,
+    CoordinateSystemLibrary,
+    Scale,
+    Translation,
+)
+from aind_data_schema.components.identifiers import Code, Person
+from aind_data_schema.core.acquisition import (
+    Acquisition,
+    AcquisitionSubjectDetails,
+    DataStream,
+    PerformanceMetrics,
+    StimulusEpoch,
+)
+from aind_data_schema.core.instrument import (
+    Connection,
+    ConnectionData,
+    ConnectionDirection,
+)
+from aind_data_schema_models.devices import ImmersionMedium
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.stimulus_modality import StimulusModality
-from aind_data_schema_models.devices import ImmersionMedium
-from aind_data_schema.core.instrument import Connection, ConnectionData, ConnectionDirection
-from aind_data_schema_models.units import TimeUnit, PowerUnit, SizeUnit, MassUnit, VolumeUnit, SoundIntensityUnit
-from aind_data_schema.base import GenericModel
+from aind_data_schema_models.units import (
+    MassUnit,
+    PowerUnit,
+    SizeUnit,
+    SoundIntensityUnit,
+    TimeUnit,
+    VolumeUnit,
+)
+
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import (
-    upgrade_calibration,
-    upgrade_targeted_structure,
-    upgrade_light_source,
     remove,
+    upgrade_calibration,
+    upgrade_light_source,
+    upgrade_targeted_structure,
 )
-from aind_data_schema.components.coordinates import CoordinateSystemLibrary, Translation, Affine, Scale
 
 
 class SessionV1V2(CoreUpgrader):

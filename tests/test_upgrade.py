@@ -1,13 +1,13 @@
 """Main entrypoint to the metadata-upgrader"""
 
-import unittest
-import os
 import json
+import os
+import traceback
+import unittest
+
+from aind_data_access_api.document_db import MetadataDbClient
 
 from aind_metadata_upgrader.upgrade import Upgrade
-from aind_data_access_api.document_db import MetadataDbClient
-import traceback
-
 
 ALL_CORE_FILES = [
     "subject",

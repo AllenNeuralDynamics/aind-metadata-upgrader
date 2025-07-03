@@ -6,9 +6,10 @@ from aind_data_schema.components.devices import (
     CameraAssembly,
     CameraTarget,
     DAQDevice,
-    Device,
-    Disc,
     Detector,
+    Device,
+    DigitalMicromirrorDevice,
+    Disc,
     EphysAssembly,
     EphysProbe,
     FiberAssembly,
@@ -24,13 +25,12 @@ from aind_data_schema.components.devices import (
     MotorizedStage,
     NeuropixelsBasestation,
     Olfactometer,
+    PockelsCell,
+    PolygonalScanner,
     Speaker,
     Treadmill,
     Tube,
     Wheel,
-    DigitalMicromirrorDevice,
-    PolygonalScanner,
-    PockelsCell,
 )
 from aind_data_schema.core.instrument import (
     Connection,
@@ -45,12 +45,12 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     build_connection_from_channel,
     capitalize,
     remove,
+    repair_manufacturer,
+    repair_unit,
     upgrade_filter,
     upgrade_light_source,
     upgrade_positioned_device,
     upgrade_software,
-    repair_unit,
-    repair_manufacturer,
 )
 
 saved_connections = []

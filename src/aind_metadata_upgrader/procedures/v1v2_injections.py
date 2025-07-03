@@ -1,23 +1,26 @@
 """Upgraders for injection procedures"""
 
+from aind_data_schema.components.coordinates import (
+    CoordinateSystemLibrary,
+    Rotation,
+    Translation,
+)
 from aind_data_schema.components.injection_procedures import (
     Injection,
     InjectionDynamics,
     InjectionProfile,
-    ViralMaterial,
     NonViralMaterial,
+    ViralMaterial,
 )
 from aind_data_schema.components.surgery_procedures import BrainInjection
-from aind_data_schema.components.coordinates import (
-    Translation,
-    Rotation,
-    CoordinateSystemLibrary,
-)
 from aind_data_schema_models.coordinates import AnatomicalRelative
-from aind_data_schema_models.units import AngleUnit
 from aind_data_schema_models.mouse_anatomy import InjectionTargets
+from aind_data_schema_models.units import AngleUnit
 
-from aind_metadata_upgrader.utils.v1v2_utils import remove, upgrade_targeted_structure
+from aind_metadata_upgrader.utils.v1v2_utils import (
+    remove,
+    upgrade_targeted_structure,
+)
 
 
 def upgrade_viral_material(data: dict) -> dict:
@@ -171,7 +174,9 @@ def upgrade_generic_injection(data: dict) -> dict:
 def upgrade_nanoject_injection(data: dict) -> dict:
     """Upgrade NanojectInjection procedure from V1 to V2"""
     # Import retrieve_bl_distance from the procedures module to avoid circular imports
-    from aind_metadata_upgrader.procedures.v1v2_procedures import retrieve_bl_distance
+    from aind_metadata_upgrader.procedures.v1v2_procedures import (
+        retrieve_bl_distance,
+    )
 
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
