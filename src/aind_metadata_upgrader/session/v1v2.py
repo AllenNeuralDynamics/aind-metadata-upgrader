@@ -707,7 +707,7 @@ class SessionV1V2(CoreUpgrader):
                 reward_consumed_during_epoch=epoch.get("reward_consumed_during_epoch"),
                 reward_consumed_unit=VolumeUnit.UL,
                 output_parameters=GenericModel(**epoch.get("output_parameters", {})),
-            ).model_dump()
+            )
 
         # Create configurations
         configurations = []
@@ -736,12 +736,12 @@ class SessionV1V2(CoreUpgrader):
         code = None
         if epoch.get("script"):
             script_data = epoch["script"]
-            url = script_data.get("url")
             code = Code(
                 name=script_data.get("name", "Unknown Script"),
                 version=script_data.get("version", "unknown"),
-                url=url if url else "unknown",
-            ).model_dump()
+                url=script_data.get("url", "unknown"),
+                parameters=script_data.get("parameters", {}),
+            )
 
         return StimulusEpoch(
             stimulus_start_time=epoch.get("stimulus_start_time"),

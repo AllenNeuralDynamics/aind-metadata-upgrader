@@ -99,11 +99,11 @@ class TestUpgrade(unittest.TestCase):
                             if len(records) == 0:
                                 print(f"Inserting new upgraded record to DocumentDB: {upgraded.metadata.name}")
                                 client.insert_one_docdb_record(
-                                    record=upgraded.metadata.model_dump(),
+                                    record=upgraded.metadata.model_dump(mode="json"),
                                 )
                             else:
                                 id = records[0]["_id"]
-                                record_data = upgraded.metadata.model_dump()
+                                record_data = upgraded.metadata.model_dump(mode="json")
                                 record_data["_id"] = id
                                 print(f"Updating existing record in DocumentDB: {upgraded.metadata.name}")
                                 client.upsert_one_docdb_record(

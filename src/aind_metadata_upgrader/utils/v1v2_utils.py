@@ -512,13 +512,12 @@ def repair_unit(broken_unit: str) -> str:
 
 def _upgrade_volume_calibration_basic(data: dict) -> Optional[VolumeCalibration]:
     """Handle basic water calibration format."""
-    # Drop empty calibrations
-    if not data["input"]["valve open time (s):"] and not data["output"]["water volume (ul):"]:
-        return None
+    repeats = data["input"]["measurements"][0]["repeat_count"]
 
     return VolumeCalibration(
         calibration_date=data["calibration_date"],
         device_name=data["device_name"],
+        repeats=repeats,
         input=data["input"]["valve open time (s):"],
         input_unit=TimeUnit.S,
         output=data["output"]["water volume (ul):"],
