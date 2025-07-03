@@ -575,6 +575,18 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
             output=data["output"]["power mW"],
             output_unit=PowerUnit.MW,
         )
+    elif "laser power calibration" in data.get("description", "").lower() and "voltage (V)" in data.get("input", {}):
+        # {'calibration_date': '2024-12-05T00:00:00-08:00', 'description': 'Laser power calibration', 'device_name': 'Oxxius Red Laser', 'input': {'voltage (V)': [0.113, 0.189, 0.267, 0.343, 0.414, 0.492, 0.561, 0.634, 0.715, 0.779, 1.15, 1.52, 2.28, 2.98, 4, 5]}, 'notes': None, 'output': {'power (mW)': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 30, 40, 47.3, 53.5]}}
+        # Laser power calibration with input voltage and output power
+        calibration = Calibration(
+            calibration_date=data["calibration_date"],
+            description=data.get("description", ""),
+            device_name=data["device_name"],
+            input=data["input"]["voltage (V)"],
+            input_unit=VoltageUnit.V,
+            output=data["output"]["power (mW)"],
+            output_unit=PowerUnit.MW,
+        )
     elif "led calibration" in data.get("description", "").lower():
         # LED calibration, may or may not have data
 

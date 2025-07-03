@@ -56,6 +56,10 @@ class ProcessingV1V2(CoreUpgrader):
         # Move parameters into Code
         output_parameters = process_data.get("outputs", None)
 
+        notes = process_data.get("notes", "")
+        if process_data.get("name", "Other") == "Other" and not notes:
+            notes = "(v1v2 upgrade) Process type is unknown, no notes were provided."
+
         v2_process = DataProcess(
             process_type=process_data.get("name", "Unknown"),
             name=self._get_process_name(process_data.get("name", "Unknown")),
@@ -67,7 +71,7 @@ class ProcessingV1V2(CoreUpgrader):
             end_date_time=process_data.get("end_date_time"),
             output_path=process_data.get("output_location"),  # Map output_location to output_path
             output_parameters=output_parameters if output_parameters else {},
-            notes=process_data.get("notes"),
+            notes=notes,
             resources=process_data.get("resources"),  # ResourceUsage structure is compatible
         )
 
