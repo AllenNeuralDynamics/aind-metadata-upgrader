@@ -13,7 +13,7 @@ from aind_data_schema.components.coordinates import (
     Origin,
 )
 from aind_data_schema.components.devices import Device
-from aind_data_schema.core.instrument import (
+from aind_data_schema.components.connections import (
     Connection,
     ConnectionData,
     ConnectionDirection,

@@ -32,7 +32,7 @@ from aind_data_schema.components.devices import (
     Tube,
     Wheel,
 )
-from aind_data_schema.core.instrument import (
+from aind_data_schema.components.connections import (
     Connection,
     ConnectionData,
     ConnectionDirection,
