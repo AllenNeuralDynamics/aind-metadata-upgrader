@@ -56,6 +56,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         return instrument_id, location
 
     def _get_modalities(self, data: dict) -> list:
+        """Pull modalities from data"""
         modalities = []
         instrument_type = data.get("instrument_type", None)
         if not instrument_type:
