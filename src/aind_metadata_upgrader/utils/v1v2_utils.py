@@ -76,7 +76,7 @@ def add_name(data: dict, type: str) -> dict:
     variable."""
 
     if "name" not in data or not data["name"]:
-        global counts
+        global counts  # noqa: F824
         if type not in counts:
             counts[type] = 0
         counts[type] += 1
