@@ -666,7 +666,7 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
         filtered_inputs = []
         filtered_outputs = []
         for i, output in enumerate(output_powers):
-            if output != 'NA':
+            if output != "NA":
                 filtered_inputs.append(input_voltages[i])
                 filtered_outputs.append(output)
 
@@ -779,10 +779,55 @@ def repair_missing_active_devices(data: dict) -> dict:
     return data
 
 
+def repair_connection_devices(data: dict) -> dict:
+    """Create missing devices that are referenced in connections but not in instrument components"""
+
+    if "instrument" not in data:
+        return data
+
+    # Collect all device names referenced in connections
+    connection_devices = []
+
+    # Check instrument connections
+    if data.get("instrument") and "connections" in data["instrument"]:
+        for connection in data["instrument"]["connections"]:
+            connection_devices.extend(connection["device_names"])
+
+    # Check acquisition data stream connections
+    if data.get("acquisition") and "data_streams" in data["acquisition"]:
+        for data_stream in data["acquisition"]["data_streams"]:
+            if "connections" in data_stream:
+                for connection in data_stream["connections"]:
+                    connection_devices.extend(connection["device_names"])
+
+    # Collect existing device names
+    device_names = []
+    if data.get("instrument"):
+        for component in data["instrument"].get("components", []):
+            device_names.append(component["name"])
+    if data.get("procedures"):
+        procedures = Procedures.model_validate(data["procedures"])
+        device_names.extend(procedures.get_device_names())
+
+    # Check if all connection devices are in the available devices
+    if not all(device in device_names for device in connection_devices):
+        missing_devices = set(connection_devices) - set(device_names)
+        # Create missing devices with default names
+        for device in missing_devices:
+            new_device = Device(
+                name=device,
+                notes="(v1v2 upgrade) This device was not found in the components list, but is referenced in connections.",
+            )
+            data["instrument"]["components"].append(new_device.model_dump())
+
+    return data
+
+
 def repair_metadata(data: dict) -> dict:
     """Repair the full metadata record, checking for common issues"""
 
     data = repair_instrument_id_mismatch(data)
     data = repair_missing_active_devices(data)
+    data = repair_connection_devices(data)
 
     return data

@@ -24,21 +24,20 @@ records = client.retrieve_docdb_records(
 
 if records:
     record = records[0]
-    
+
     # Create tests/records/v1 directory relative to script location
     script_dir = os.path.dirname(os.path.abspath(__file__))
     v1_dir = os.path.join(script_dir, "..", "tests", "records", "v1")
     os.makedirs(v1_dir, exist_ok=True)
-    
+
     # Use _id field as filename
     record_id = record["_id"]
     output_filename = os.path.join(v1_dir, f"{record_id}.json")
-    
+
     # Save the record as JSON
     with open(output_filename, "w") as output_file:
         json.dump(record, output_file, indent=4)
-    
+
     print(f"Record saved to {output_filename}")
 else:
     print(f"No record found with name: {record_name}")
-
