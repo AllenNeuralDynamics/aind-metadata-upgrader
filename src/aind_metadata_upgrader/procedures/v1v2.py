@@ -178,6 +178,9 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             remove(data, "procedure_type")
             data["ethics_review_id"] = data.get("iacuc_protocol", "unknown")
             remove(data, "iacuc_protocol")
+            if not data["baseline_weight"]:
+                # If baseline_weight is not provided, set it to 0
+                data["baseline_weight"] = 0.0
             return WaterRestriction(
                 **data,
             ).model_dump()

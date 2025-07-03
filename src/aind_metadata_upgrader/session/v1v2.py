@@ -207,7 +207,6 @@ class SessionV1V2(CoreUpgrader):
 
         return configs
 
-
     def _upgrade_detector_config(self, data: Dict) -> Dict:
         """Upgrade detector config from v1 to v2"""
 
