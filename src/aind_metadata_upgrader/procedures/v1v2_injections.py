@@ -127,14 +127,14 @@ def upgrade_injection_coordinates(data: dict) -> dict:
         elif not unit == "millimeter":
             raise ValueError(f"Need more conditions to handle other kinds of units: {unit}")
 
-    if ml is not None:
+    if depths is not None:
 
         data["coordinates"] = []
 
         for depth in depths:
 
             # Create the translation object in BREGMA_ARID space
-            translation = Translation(translation=[ap, ml, 0, depth])
+            translation = Translation(translation=[ap if ap else 0, ml if ml else 0, 0, depth])
 
             # Wrap translation in a list (this is to allow for chained translations or rotations, etc)
             coordinate = [translation.model_dump()]
