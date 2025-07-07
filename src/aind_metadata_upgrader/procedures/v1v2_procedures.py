@@ -6,7 +6,7 @@ from aind_data_schema.components.coordinates import (
     Rotation,
     Translation,
 )
-from aind_data_schema.components.reagent import Antibody, Reagent
+from aind_data_schema.components.reagent import ProteinProbe, Reagent
 from aind_data_schema.components.specimen_procedures import (
     HCRSeries,
     PlanarSectioning,
@@ -417,7 +417,18 @@ def upgrade_antibody(data: dict) -> dict:
     """Upgrade antibodies from V1 to V2"""
     upgraded_data = data.copy()
 
-    return Antibody(**upgraded_data).model_dump()
+    # Notes:
+    # Primary -> ProbeReagent
+    # Secondary -> FluorescentStain
+
+    # Antibodies previously had names like "Goat anti chicken IGy" and these would need to be parsed
+
+    raise NotImplementedError(
+        "Antibody upgrade is not implemented yet. "
+        "Please provide a specific format for the antibody data to be upgraded."
+    )
+
+    return None
 
 
 def upgrade_hcr_series(data: dict) -> dict:
