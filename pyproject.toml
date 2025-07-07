@@ -17,7 +17,7 @@ readme = "README.md"
 dynamic = ["version"]
 
 dependencies = [
-    'aind-data-schema @ git+https://github.com/AllenNeuralDynamics/aind-data-schema.git@release-v2.0.0',
+    'aind-data-schema @ git+https://github.com/AllenNeuralDynamics/aind-data-schema.git@dev',
     'packaging',
 ]
 
@@ -31,7 +31,7 @@ dev = [
     'Sphinx',
     'tzlocal',
     'furo',
-    'aind-data-access-api @ git+https://github.com/AllenNeuralDynamics/aind-data-access-api.git@dev',
+    'aind-data-access-api',
 ]
 oldpython = [
     "backports-datetime-fromisoformat",
