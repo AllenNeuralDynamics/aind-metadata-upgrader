@@ -73,9 +73,11 @@ class DataDescriptionV1V2(CoreUpgrader):
     def _get_creation_time(self, data: dict) -> str | None:
         """Handle old records that have both creation_date and creation_time"""
         if "creation_date" in data and "creation_time" in data:
-            return data["creation_date"] + "T" + data["creation_time"]
+            creation_datetime = data["creation_date"] + "T" + data["creation_time"]
         else:
-            return data.get("creation_time", None)
+            creation_datetime = data.get("creation_date", None)
+
+        return creation_datetime
 
     def _get_institution(self, data: dict):
         """Handle old records that have institution as a string"""

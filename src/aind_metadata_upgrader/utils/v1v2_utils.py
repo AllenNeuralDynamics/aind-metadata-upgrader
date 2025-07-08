@@ -34,6 +34,7 @@ from aind_data_schema.core.procedures import Procedures
 from aind_data_schema_models.brain_atlas import CCFv3
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
+from datetime import datetime
 from aind_data_schema_models.units import (
     PowerUnit,
     SizeUnit,
@@ -512,7 +513,15 @@ def repair_unit(broken_unit: str) -> str:
 
 def _upgrade_volume_calibration_basic(data: dict) -> Optional[VolumeCalibration]:
     """Handle basic water calibration format."""
-    repeats = data["input"]["measurements"][0]["repeat_count"]
+
+    repeats = None
+    if (
+        data.get("input")
+        and data["input"].get("measurements")
+        and len(data["input"]["measurements"]) > 0
+        and data["input"]["measurements"][0].get("repeat_count")
+    ):
+        repeats = data["input"]["measurements"][0]["repeat_count"]
 
     return VolumeCalibration(
         calibration_date=data["calibration_date"],
@@ -608,10 +617,6 @@ def _upgrade_power_calibration_basic_laser(data: dict) -> Optional[PowerCalibrat
     power_setting = data["input"].get("power_setting", None)
     power_output = data["output"].get("power_output", None)
 
-    # Drop empty calibrations
-    if not power_setting and not power_output:
-        return None
-
     return PowerCalibration(
         calibration_date=data["calibration_date"],
         device_name=data["device_name"],
@@ -629,12 +634,6 @@ def _upgrade_power_calibration_measurement_laser(data: dict) -> Optional[PowerCa
     power_output = data["output"].get("power_measurement", {}).get("value", None)
     output_unit = data["output"].get("power_measurement", {}).get("unit", PowerUnit.MW.value)
 
-    # Drop empty calibrations
-    if not power_setting and not power_output:
-        return None
-
-    print(data)
-
     return PowerCalibration(
         calibration_date=data["calibration_date"],
         device_name=data["device_name"],
@@ -647,9 +646,6 @@ def _upgrade_power_calibration_measurement_laser(data: dict) -> Optional[PowerCa
 
 def _upgrade_power_calibration_percent_laser(data: dict) -> Optional[PowerCalibration]:
     """Handle laser power calibration with power percent format."""
-    # Drop empty calibrations
-    if not data["input"]["power percent"] and not data["output"]["power mW"]:
-        return None
 
     return PowerCalibration(
         calibration_date=data["calibration_date"],
@@ -663,8 +659,6 @@ def _upgrade_power_calibration_percent_laser(data: dict) -> Optional[PowerCalibr
 
 def _upgrade_power_calibration_led(data: dict) -> Optional[PowerCalibration]:
     """Handle LED power calibration format."""
-    if not data["input"]["Power setting"] and not data["output"]["Power mW"]:
-        return None
 
     return PowerCalibration(
         calibration_date=data["calibration_date"],
@@ -939,11 +933,35 @@ def repair_connection_devices(data: dict) -> dict:
     return data
 
 
+def repair_creation_time(data: dict) -> dict:
+    """If the data_description.creation_time is before the acquisition.acquisition_end_time, copy the end time"""
+
+    if "data_description" not in data or "acquisition" not in data:
+        return data
+
+    creation_time = data["data_description"].get("creation_time")
+    acquisition_end_time = data["acquisition"].get("acquisition_end_time")
+
+    # Convert to datetime objects if they are strings
+    if isinstance(creation_time, str):
+        creation_time = datetime.fromisoformat(creation_time.replace('Z', '+00:00'))
+    if isinstance(acquisition_end_time, str):
+        acquisition_end_time = datetime.fromisoformat(acquisition_end_time.replace('Z', '+00:00'))
+
+    if creation_time and acquisition_end_time:
+        # If creation time is before acquisition end time, copy the end time
+        if creation_time < acquisition_end_time:
+            data["data_description"]["creation_time"] = acquisition_end_time
+
+    return data
+
+
 def repair_metadata(data: dict) -> dict:
     """Repair the full metadata record, checking for common issues"""
 
     data = repair_instrument_id_mismatch(data)
     data = repair_missing_active_devices(data)
     data = repair_connection_devices(data)
+    data = repair_creation_time(data)
 
     return data

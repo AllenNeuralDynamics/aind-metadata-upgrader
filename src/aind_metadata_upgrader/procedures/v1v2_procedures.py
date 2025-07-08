@@ -6,7 +6,7 @@ from aind_data_schema.components.coordinates import (
     Rotation,
     Translation,
 )
-from aind_data_schema.components.reagent import ProteinProbe, Reagent
+from aind_data_schema.components.reagent import ProteinProbe, Reagent, ProbeReagent
 from aind_data_schema.components.specimen_procedures import (
     HCRSeries,
     PlanarSectioning,
@@ -34,6 +34,9 @@ from aind_data_schema.components.surgery_procedures import (
 from aind_data_schema_models.brain_atlas import CCFv3
 from aind_data_schema_models.coordinates import AnatomicalRelative, Origin
 from aind_data_schema_models.units import SizeUnit
+from aind_data_schema_models.species import Species
+from aind_data_schema_models.pid_names import PIDName
+from aind_data_schema_models.registries import Registry
 
 from aind_metadata_upgrader.rig.v1v2_devices import upgrade_fiber_probe
 from aind_metadata_upgrader.utils.v1v2_utils import remove, repair_organization
@@ -417,18 +420,31 @@ def upgrade_antibody(data: dict) -> dict:
     """Upgrade antibodies from V1 to V2"""
     upgraded_data = data.copy()
 
+    if "immunolabel_class" in upgraded_data:
+        if upgraded_data["immunolabel_class"].lower() == "primary":
+            # Upgrade to ProbeReagent pattern
+            if upgraded_data["rrid"]["name"] == "Chicken polyclonal to GFP":
+                target = ProteinProbe(
+                    protein=PIDName(name="GFP", registry=Registry.UNIPROT, registry_identifier="P42212"),
+                    mass=float(upgraded_data.get("mass", 0)),
+                    mass_unit=upgraded_data.get("mass_unit"),
+                    species=Species.CHICKEN,
+                )
+            return ProbeReagent(
+                target=target,
+                name="Chicken polyclonal to GFP",
+                source=repair_organization(upgraded_data["source"]),
+                rrid=PIDName(name="Chicken polyclonal to GFP", registry=Registry.RRID, registry_identifier="ab13970"),
+            ).model_dump()
+        else:
+            raise NotImplementedError("TODO")
+
+    raise NotImplementedError("TODO")
     # Notes:
     # Primary -> ProbeReagent
     # Secondary -> FluorescentStain
 
     # Antibodies previously had names like "Goat anti chicken IGy" and these would need to be parsed
-
-    raise NotImplementedError(
-        "Antibody upgrade is not implemented yet. "
-        "Please provide a specific format for the antibody data to be upgraded."
-    )
-
-    return None
 
 
 def upgrade_hcr_series(data: dict) -> dict:

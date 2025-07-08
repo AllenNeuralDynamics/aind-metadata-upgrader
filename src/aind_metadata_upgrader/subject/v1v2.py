@@ -60,10 +60,10 @@ class SubjectUpgraderV1V2(CoreUpgrader):
         species = data.get("species", None)
         if species and isinstance(species, str) and species == "Mus musculus":
             # Convert string species name to Species model
-            species = Species.MUS_MUSCULUS.model_dump()
+            species = Species.HOUSE_MOUSE.model_dump()
         if species and isinstance(species, dict) and species["name"] == "Mus musculus":
             # Replace with the new Species model
-            species = Species.MUS_MUSCULUS.model_dump()
+            species = Species.HOUSE_MOUSE.model_dump()
         else:
             raise ValueError("Species must be specified")
 
