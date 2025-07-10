@@ -118,6 +118,8 @@ class RigUpgraderV1V2(CoreUpgrader):
         mouse_platform = upgrade_mouse_platform(mouse_platform) if mouse_platform else None
 
         stimulus_devices = data.get("stimulus_devices", [])
+        if isinstance(stimulus_devices, dict):
+            stimulus_devices = [stimulus_devices]
         stimulus_devices = self._none_to_list(stimulus_devices)
         stimulus_devices = [upgrade_stimulus_device(device) for device in stimulus_devices]
 

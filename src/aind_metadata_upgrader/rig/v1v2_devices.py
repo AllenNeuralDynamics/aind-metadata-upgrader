@@ -24,6 +24,7 @@ from aind_data_schema.components.devices import (
     Monitor,
     MotorizedStage,
     NeuropixelsBasestation,
+    OpenEphysAcquisitionBoard,
     Olfactometer,
     PockelsCell,
     PolygonalScanner,
@@ -275,7 +276,7 @@ def upgrade_daq_devices(device: dict) -> dict:
     device_data = basic_device_checks(device, "DAQ Device")
 
     # Remove old Device fields specific to DAQ
-    remove(device_data, "device_type")
+    device_type = device_data.get("device_type")
 
     # Handle computer_name connection if present
     if "computer_name" in device_data:
@@ -292,10 +293,12 @@ def upgrade_daq_devices(device: dict) -> dict:
     device_data["channels"] = upgrade_daq_channels(device_data)
 
     # Create the DAQ device, or HarpDevice
-    if "is_clock_generator" in device_data:
+    if device_type == "Harp device":
         daq_device = HarpDevice(**device_data)
-    elif "bsc_firmware_version" in device_data:
+    elif "Neuropixels basestation" == device_type or "bsc_firmware_version" in device_data:
         daq_device = NeuropixelsBasestation(**device_data)
+    elif device_type == "Open Ephys acquisition board" or "Open Ephys" in device_data.get("manufacturer", {}).get("name", ""):
+        daq_device = OpenEphysAcquisitionBoard(**device_data)
     else:
         daq_device = DAQDevice(**device_data)
 
@@ -561,6 +564,9 @@ def upgrade_camera_assembly(data: dict) -> dict:
     if "scope_assembly_name" in data and not data.get("name"):
         data["name"] = data["scope_assembly_name"]
         remove(data, "scope_assembly_name")
+    if "camera_assembly_name" in data and not data.get("name"):
+        data["name"] = data["camera_assembly_name"]
+        remove(data, "camera_assembly_name")
     data = add_name(data, "CameraAssembly")
 
     if "filter" in data and data["filter"]:

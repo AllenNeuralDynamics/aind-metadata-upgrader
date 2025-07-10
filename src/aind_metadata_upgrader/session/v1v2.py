@@ -102,7 +102,7 @@ class SessionV1V2(CoreUpgrader):
         excitation_power = data.get("excitation_power")
         power_unit = data.get("excitation_power_unit")
 
-        if device_type == "Laser":
+        if device_type == "Laser" or "laser" in device_name.lower():
             return LaserConfig(
                 device_name=device_name,
                 wavelength=data.get("wavelength", 0),
@@ -766,6 +766,8 @@ class SessionV1V2(CoreUpgrader):
 
         # Extract V1 fields
         protocol_id = session_data.get("protocol_id", [])
+        if not isinstance(protocol_id, list):
+            protocol_id = [protocol_id]
         experimenter_full_name = session_data.get("experimenter_full_name", [])
         subject_id = session_data.get("subject_id")
         rig_id = session_data.get("rig_id")

@@ -8,6 +8,8 @@ from aind_data_schema_models.species import Species, Strain
 
 from aind_metadata_upgrader.base import CoreUpgrader
 
+from aind_metadata_upgrader.utils.v1v2_utils import upgrade_registry
+
 
 class SubjectUpgraderV1V2(CoreUpgrader):
     """Upgrade subject core file from v1.x to v2.0"""
@@ -77,6 +79,8 @@ class SubjectUpgraderV1V2(CoreUpgrader):
 
         # If missing, assign to "Other" and update notes
         source = data.get("source", None)
+        if source:
+            source = upgrade_registry(source)
         if not source:
             source = Organization.OTHER
             if not notes:

@@ -45,7 +45,7 @@ client = MetadataDbClient(
 #     data_asset_record_ids=ids,
 # )
 
-run_one = None
+run_one = "09c3fc84-946d-4e44-8471-4a279fce411f"
 
 
 class TestUpgrade(unittest.TestCase):

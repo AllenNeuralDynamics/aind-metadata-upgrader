@@ -34,6 +34,7 @@ from aind_data_schema.core.procedures import Procedures
 from aind_data_schema_models.brain_atlas import CCFv3
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
+from aind_data_schema_models.registries import Registry
 from datetime import datetime
 from aind_data_schema_models.units import (
     PowerUnit,
@@ -384,8 +385,12 @@ def upgrade_positioned_device(data: dict, relative_position_list: list = []) -> 
         # Rather than parse the origin/axes, we'll use a library coordinate system
         if origin == "Center of Screen on Face":
             data["coordinate_system"] = CoordinateSystemLibrary.SIPE_MONITOR_RTF
-        elif origin == "Located on face of the lens mounting surface in its center":
+        elif "Located on face of the lens mounting surface in its center" in origin:
             data["coordinate_system"] = CoordinateSystemLibrary.SIPE_CAMERA_RBF
+        elif "Located on the face of the lens mounting surface at its center" in origin:
+            data["coordinate_system"] = CoordinateSystemLibrary.SIPE_CAMERA_RBF
+        elif "Located at the center of the screen" in origin:
+            data["coordinate_system"] = CoordinateSystemLibrary.SIPE_MONITOR_RTF
         else:
             print(relative_position)
             raise ValueError(f"Unsupported origin: {origin}")
@@ -963,5 +968,17 @@ def repair_metadata(data: dict) -> dict:
     data = repair_missing_active_devices(data)
     data = repair_connection_devices(data)
     data = repair_creation_time(data)
+
+    return data
+
+
+def upgrade_registry(data: dict) -> dict:
+    """Input dictionary is anything that has a "registry" field
+
+    Output replaces the registry object dictionary with just a Registry enum object
+    """
+
+    if "registry" in data:
+        data["registry"] = getattr(Registry, data["registry"]["abbreviation"].upper())
 
     return data

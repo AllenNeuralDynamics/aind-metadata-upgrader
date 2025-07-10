@@ -72,7 +72,10 @@ class DataDescriptionV1V2(CoreUpgrader):
 
     def _get_creation_time(self, data: dict) -> str | None:
         """Handle old records that have both creation_date and creation_time"""
-        if "creation_date" in data and "creation_time" in data:
+        # If only creation_time exists, return that
+        if "creation_time" in data and "creation_date" not in data:
+            return data["creation_time"]
+        elif "creation_date" in data and "creation_time" in data:
             creation_datetime = data["creation_date"] + "T" + data["creation_time"]
         else:
             creation_datetime = data.get("creation_date", None)
