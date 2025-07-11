@@ -1,5 +1,6 @@
 """<=v1.4 to v2.0 session upgrade functions"""
 
+from datetime import datetime
 from typing import Dict, List, Optional, Union
 
 from aind_data_schema.base import GenericModel
@@ -801,6 +802,29 @@ class SessionV1V2(CoreUpgrader):
             reward_consumed_total=reward_consumed_total,
             reward_consumed_unit=VolumeUnit.ML if reward_consumed_unit == "milliliter" else VolumeUnit.UL,
         ).model_dump()
+        
+        # Validate that the start/end times are before all the data streams and epochs
+        start_times = []
+        end_times = []
+        for stream in upgraded_data_streams:
+            start_times.append(stream.get("stream_start_time"))
+            end_times.append(stream.get("stream_end_time"))
+        for epoch in upgraded_stimulus_epochs:
+            start_times.append(epoch.get("stimulus_start_time"))
+            end_times.append(epoch.get("stimulus_end_time"))
+        
+        # Convert start and end times to datetime objects if they are strings
+        if isinstance(session_start_time, str):
+            session_start_time = datetime.fromisoformat(session_start_time)
+        if isinstance(session_end_time, str):
+            session_end_time = datetime.fromisoformat(session_end_time)
+
+        if any(start >= session_start_time for start in start_times):
+            notes = notes if notes else "" + f" (v1v2 upgrade) Session start time was adjusted from {session_start_time} to {min(start_times)}"
+            session_start_time = min(start_times)
+        if any(end <= session_end_time for end in end_times):
+            notes = notes if notes else "" + f" (v1v2 upgrade) Session end time was adjusted from {session_end_time} to {max(end_times)}"
+            session_end_time = max(end_times)
 
         # Build V2 acquisition object
         acquisition = Acquisition(
