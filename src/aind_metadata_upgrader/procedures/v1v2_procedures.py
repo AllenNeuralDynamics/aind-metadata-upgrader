@@ -37,9 +37,10 @@ from aind_data_schema_models.units import SizeUnit
 from aind_data_schema_models.species import Species
 from aind_data_schema_models.pid_names import PIDName
 from aind_data_schema_models.registries import Registry
+from aind_data_schema_models.organizations import Organization
 
 from aind_metadata_upgrader.rig.v1v2_devices import upgrade_fiber_probe
-from aind_metadata_upgrader.utils.v1v2_utils import remove, repair_organization
+from aind_metadata_upgrader.utils.v1v2_utils import remove
 
 coordinate_system_required = False
 measured_coordinates = []
@@ -422,7 +423,7 @@ def upgrade_antibody(data: dict) -> dict:
             return ProbeReagent(
                 target=target,
                 name="Chicken polyclonal to GFP",
-                source=repair_organization(upgraded_data["source"]),
+                source=Organization.from_name(upgraded_data["source"]["name"]),
                 rrid=PIDName(name="Chicken polyclonal to GFP", registry=Registry.RRID, registry_identifier="ab13970"),
             ).model_dump()
         else:
