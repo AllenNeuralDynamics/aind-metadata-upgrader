@@ -8,6 +8,7 @@ from aind_data_schema.components.coordinates import (
     Scale,
     Translation,
 )
+from aind_data_schema.components.reagent import Reagent
 from aind_data_schema.components.devices import (
     Computer,
     Device,
@@ -933,9 +934,9 @@ def repair_creation_time(data: dict) -> dict:
 
     # Convert to datetime objects if they are strings
     if isinstance(creation_time, str):
-        creation_time = datetime.fromisoformat(creation_time.replace('Z', '+00:00'))
+        creation_time = datetime.fromisoformat(creation_time.replace("Z", "+00:00"))
     if isinstance(acquisition_end_time, str):
-        acquisition_end_time = datetime.fromisoformat(acquisition_end_time.replace('Z', '+00:00'))
+        acquisition_end_time = datetime.fromisoformat(acquisition_end_time.replace("Z", "+00:00"))
 
     if creation_time and acquisition_end_time:
         # If creation time is before acquisition end time, copy the end time
@@ -962,7 +963,25 @@ def upgrade_registry(data: dict) -> dict:
     Output replaces the registry object dictionary with just a Registry enum object
     """
 
-    if "registry" in data:
+    if "registry" in data and data["registry"]:
         data["registry"] = getattr(Registry, data["registry"]["abbreviation"].upper())
 
     return data
+
+
+def upgrade_reagent(data: dict) -> dict:
+    """Upgrade reagents from V1 to V2"""
+    upgraded_data = data.copy()
+
+    if "source" in upgraded_data:
+        if upgraded_data["source"]:
+            if isinstance(upgraded_data["source"], str):
+                # Convert source to organization
+                upgraded_data["source"] = repair_organization(upgraded_data["source"])
+            else:
+                upgraded_data["source"] = upgrade_registry(upgraded_data["source"])
+
+    if "rrid" in upgraded_data and upgraded_data["rrid"]:
+        upgraded_data["rrid"] = upgrade_registry(upgraded_data["rrid"])
+
+    return Reagent(**upgraded_data).model_dump()

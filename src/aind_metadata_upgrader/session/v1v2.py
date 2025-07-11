@@ -647,7 +647,10 @@ class SessionV1V2(CoreUpgrader):
 
         # Make sure all configuration devices are in active devices
         configuration_device_names = [config.get("device_name") for config in configurations]
-        active_devices = list(set(active_devices + configuration_device_names))
+        connection_device_names = [conn.get("source_device") for conn in connections] + [
+            conn.get("target_device") for conn in connections
+        ]
+        active_devices = list(set(active_devices + configuration_device_names + connection_device_names))
 
         # Create the data stream
         return DataStream(

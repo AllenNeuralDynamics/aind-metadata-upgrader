@@ -18,36 +18,18 @@ class DataDescriptionV1V2(CoreUpgrader):
 
         funding_source = data.get("funding_source", [])
 
-        # Add object_type to funding_source (List[FundingSource])
         for i, funding in enumerate(funding_source):
-            funding_source[i]["object_type"] = "Funding source"
+            funder = funding.get("funder", None)
+            fundee = funding.get("fundee", [])
+            if not fundee:
+                fundee = "unknown"
+            grant_number = funding.get("grant_number", None)
 
-        # Upgrade "fundee" field to Person objects
-        for i, funding in enumerate(funding_source):
-            if isinstance(funding["fundee"], str):
-                if "," in funding["fundee"]:
-                    # Handle records where multiple fundees were put into one single string
-                    fundees = funding["fundee"].split(",")
-                    funding["fundee"] = [Person(name=fundee.strip()).model_dump() for fundee in fundees]
-                else:
-                    funding["fundee"] = [
-                        Person(
-                            name=funding["fundee"],
-                        ).model_dump()
-                    ]
-            funding_source[i] = funding
-
-        # Update "funder" field to Organization objects
-        for i, funding in enumerate(funding_source):
-            if isinstance(funding["funder"], str):
-                if "," in funding["funder"]:
-                    # Handle records where multiple funders were put into one single string
-                    funders = funding["funder"].split(",")
-                    # We can only keep one funder
-                    funding["funder"] = Organization.from_name(funders[0].strip())
-                else:
-                    funding["funder"] = Organization.from_name(funding["funder"])
-            funding_source[i] = funding
+            funding_source[i] = Funding(
+                funder=Organization.from_abbreviation(funder["abbreviation"]) if funder else Organization.AI,
+                fundee=[Person(name=f) for f in fundee] if isinstance(fundee, list) else [Person(name=fundee)],
+                grant_number=grant_number,
+            ).model_dump()
 
         if len(funding_source) == 0 and FAKE_MISSING_DATA:
             funding_source.append(

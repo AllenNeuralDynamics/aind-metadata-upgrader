@@ -6,7 +6,7 @@ from aind_data_schema.components.coordinates import (
     Rotation,
     Translation,
 )
-from aind_data_schema.components.reagent import ProteinProbe, Reagent, ProbeReagent
+from aind_data_schema.components.reagent import ProteinProbe, ProbeReagent
 from aind_data_schema.components.specimen_procedures import (
     HCRSeries,
     PlanarSectioning,
@@ -379,17 +379,6 @@ def upgrade_other_subject_procedure(data: dict) -> dict:
     upgraded_data.pop("procedure_type", None)
 
     return GenericSurgeryProcedure(**upgraded_data).model_dump()
-
-
-def upgrade_reagent(data: dict) -> dict:
-    """Upgrade reagents from V1 to V2"""
-    upgraded_data = data.copy()
-
-    if "source" in upgraded_data and upgraded_data["source"] and isinstance(upgraded_data["source"], str):
-        # Convert source to organization
-        upgraded_data["source"] = repair_organization(upgraded_data["source"])
-
-    return Reagent(**upgraded_data).model_dump()
 
 
 def upgrade_anaesthetic(data: dict) -> dict:

@@ -9,18 +9,18 @@ from aind_metadata_upgrader.acquisition.v1v2_tiles import (
     upgrade_tiles_to_data_stream,
 )
 from aind_metadata_upgrader.base import CoreUpgrader
-from aind_metadata_upgrader.utils.v1v2_utils import upgrade_calibration
+from aind_metadata_upgrader.utils.v1v2_utils import upgrade_calibration, upgrade_reagent
 
 
 class AcquisitionV1V2(CoreUpgrader):
     """Upgrade acquisition from v1.4 to v2.0"""
 
-    def _upgrade_experimenter_names_to_persons(self, experimenter_names: List[str]) -> List[Dict]:
+    def _upgrade_experimenter_names(self, experimenter_names: List[str]) -> List[Dict]:
         """Convert experimenter full names to Person objects"""
         experimenters = []
         for name in experimenter_names:
             if name and name.strip():
-                experimenters.append(Person(name=name.strip()).model_dump())
+                experimenters.append(name.strip())
         return experimenters
 
     def _upgrade_maintenance(self, maintenance: List[Dict]) -> List[Dict]:
@@ -29,6 +29,8 @@ class AcquisitionV1V2(CoreUpgrader):
         if maintenance:
             for maint in maintenance:
                 if maint:
+                    if "reagents" in maint and maint["reagents"]:
+                        maint["reagents"] = [upgrade_reagent(reagent) for reagent in maint["reagents"]]
                     upgraded_maintenance.append(maint)
         return upgraded_maintenance
 
@@ -93,7 +95,7 @@ class AcquisitionV1V2(CoreUpgrader):
         sample_immersion = data.get("sample_immersion")
 
         # Upgrade experimenter names to Person objects
-        experimenters = self._upgrade_experimenter_names_to_persons(experimenter_full_name)
+        experimenters = self._upgrade_experimenter_names(experimenter_full_name)
 
         # Upgrade tiles to data streams
         if session_start_time and session_end_time:

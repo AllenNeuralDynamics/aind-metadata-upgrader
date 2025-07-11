@@ -19,6 +19,7 @@ from aind_data_schema_models.units import AngleUnit
 
 from aind_metadata_upgrader.utils.v1v2_utils import (
     remove,
+    upgrade_registry,
     upgrade_targeted_structure,
 )
 
@@ -39,6 +40,9 @@ def upgrade_viral_material(data: dict) -> dict:
             data["tars_identifiers"]["plasmid_tars_alias"] = [data["tars_identifiers"]["plasmid_tars_alias"]]
 
     remove(data, "material_type")
+
+    if "addgene_id" in data and data["addgene_id"]:
+        data["addgene_id"] = upgrade_registry(data["addgene_id"])
 
     return ViralMaterial(**data).model_dump()
 

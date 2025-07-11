@@ -69,10 +69,14 @@ class SubjectUpgraderV1V2(CoreUpgrader):
         else:
             raise ValueError("Species must be specified")
 
+        if isinstance(species["registry"], dict):
+            species = upgrade_registry(species)
         alleles = data.get("alleles", [])
 
         # Handle upgrade to new Strain
         background_strain = self._get_background_strain(data)
+        if isinstance(background_strain["registry"], dict):
+            background_strain = upgrade_registry(background_strain)
 
         # Add object_type
         breeding_info = self._get_breeding_info(data)

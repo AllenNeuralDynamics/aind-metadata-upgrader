@@ -35,13 +35,12 @@ from aind_metadata_upgrader.procedures.v1v2_procedures import (
     upgrade_perfusion,
     upgrade_planar_sectioning,
     upgrade_protective_material_replacement,
-    upgrade_reagent,
     upgrade_sample_collection,
     upgrade_water_restriction,
     upgrade_training_protocol,
     upgrade_generic_subject_procedure,
 )
-from aind_metadata_upgrader.utils.v1v2_utils import remove
+from aind_metadata_upgrader.utils.v1v2_utils import remove, upgrade_reagent
 
 PROC_UPGRADE_MAP = {
     "Craniotomy": upgrade_craniotomy,
@@ -189,8 +188,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         # Convert experimenter_full_name to experimenters list
         experimenters = []
         if data.get("experimenter_full_name"):
-            experimenter = Person(name=data["experimenter_full_name"])
-            experimenters.append(experimenter)
+            experimenters.append(data["experimenter_full_name"])
 
         # Convert protocol_id from list to string (V1 has it as list, V2 as string)
         protocol_id = data.get("protocol_id", None)
