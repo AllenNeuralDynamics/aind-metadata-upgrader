@@ -80,7 +80,6 @@ def upgrade_wheel(data: dict) -> dict:
 
     # Convert encoder_output, brake_output, and torque_output to Connection objects
     print(data)
-    raise NotImplementedError("Check whether target_port is correct")
     if "encoder_output" in data and data["encoder_output"]:
         encoder_output = data["encoder_output"]
         if "device_name" in encoder_output and encoder_output["device_name"]:
@@ -97,15 +96,10 @@ def upgrade_wheel(data: dict) -> dict:
         brake_output = data["brake_output"]
         if "device_name" in brake_output and brake_output["device_name"]:
             connection = Connection(
-                device_names=[brake_output["device_name"], data["name"]],
-                connection_data={
-                    brake_output["device_name"]: ConnectionData(
-                        direction=ConnectionDirection.SEND, port=brake_output["channel_name"]
-                    ),
-                    data["name"]: ConnectionData(
-                        direction=ConnectionDirection.RECEIVE, port=brake_output["channel_name"]
-                    ),
-                },
+                source_device=brake_output["device_name"],
+                source_port=brake_output["channel_name"],
+                target_device=data["name"],
+                target_port=brake_output["channel_name"],
             )
             saved_connections.append(connection.model_dump())
         del data["brake_output"]
@@ -114,15 +108,10 @@ def upgrade_wheel(data: dict) -> dict:
         torque_output = data["torque_output"]
         if "device_name" in torque_output and torque_output["device_name"]:
             connection = Connection(
-                device_names=[torque_output["device_name"], data["name"]],
-                connection_data={
-                    torque_output["device_name"]: ConnectionData(
-                        direction=ConnectionDirection.SEND, port=torque_output["channel_name"]
-                    ),
-                    data["name"]: ConnectionData(
-                        direction=ConnectionDirection.RECEIVE, port=torque_output["channel_name"]
-                    ),
-                },
+                source_device=torque_output["device_name"],
+                source_port=torque_output["channel_name"],
+                target_device=data["name"],
+                target_port=torque_output["channel_name"],
             )
             saved_connections.append(connection.model_dump())
         del data["torque_output"]
