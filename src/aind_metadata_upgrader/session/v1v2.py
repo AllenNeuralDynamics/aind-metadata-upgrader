@@ -2,6 +2,7 @@
 
 from datetime import datetime
 from typing import Dict, List, Optional, Union
+from zoneinfo import ZoneInfo
 
 from aind_data_schema.base import GenericModel
 from aind_data_schema.components.configs import (
@@ -802,7 +803,7 @@ class SessionV1V2(CoreUpgrader):
             reward_consumed_total=reward_consumed_total,
             reward_consumed_unit=VolumeUnit.ML if reward_consumed_unit == "milliliter" else VolumeUnit.UL,
         ).model_dump()
-        
+
         # Validate that the start/end times are before all the data streams and epochs
         start_times = []
         end_times = []
@@ -812,19 +813,44 @@ class SessionV1V2(CoreUpgrader):
         for epoch in upgraded_stimulus_epochs:
             start_times.append(epoch.get("stimulus_start_time"))
             end_times.append(epoch.get("stimulus_end_time"))
-        
-        # Convert start and end times to datetime objects if they are strings
-        if isinstance(session_start_time, str):
-            session_start_time = datetime.fromisoformat(session_start_time)
-        if isinstance(session_end_time, str):
-            session_end_time = datetime.fromisoformat(session_end_time)
 
-        if any(start >= session_start_time for start in start_times):
-            notes = notes if notes else "" + f" (v1v2 upgrade) Session start time was adjusted from {session_start_time} to {min(start_times)}"
-            session_start_time = min(start_times)
-        if any(end <= session_end_time for end in end_times):
-            notes = notes if notes else "" + f" (v1v2 upgrade) Session end time was adjusted from {session_end_time} to {max(end_times)}"
-            session_end_time = max(end_times)
+        # Pacific timezone - automatically handles PST/PDT transitions
+        pacific_tz = ZoneInfo("America/Los_Angeles")
+
+        # Helper function to ensure datetime has Pacific timezone
+        def ensure_pacific_timezone(dt):
+            if dt is None:
+                return None
+            if isinstance(dt, str):
+                dt = datetime.fromisoformat(dt)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=pacific_tz)
+            return dt
+
+        # Convert start and end times to datetime objects and ensure Pacific timezone
+        session_start_time = ensure_pacific_timezone(session_start_time)
+        session_end_time = ensure_pacific_timezone(session_end_time)
+
+        # Convert all times in lists to datetime objects with Pacific timezone, filter out None values
+        valid_start_times = [ensure_pacific_timezone(t) for t in start_times if t is not None]
+        valid_start_times = [t for t in valid_start_times if t is not None]
+        valid_end_times = [ensure_pacific_timezone(t) for t in end_times if t is not None]
+        valid_end_times = [t for t in valid_end_times if t is not None]
+
+        if valid_start_times and session_start_time and any(start >= session_start_time for start in valid_start_times):
+            min_start = min(valid_start_times)
+            notes = (notes if notes else "") + (
+                f" (v1v2 upgrade) Session start time was adjusted from {session_start_time} "
+                f"to {min_start}"
+            )
+            session_start_time = min_start
+        if valid_end_times and session_end_time and any(end <= session_end_time for end in valid_end_times):
+            max_end = max(valid_end_times)
+            notes = (notes if notes else "") + (
+                f" (v1v2 upgrade) Session end time was adjusted from {session_end_time} "
+                f"to {max_end}"
+            )
+            session_end_time = max_end
 
         # Build V2 acquisition object
         acquisition = Acquisition(
