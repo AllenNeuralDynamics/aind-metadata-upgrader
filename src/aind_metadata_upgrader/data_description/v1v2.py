@@ -18,35 +18,65 @@ class DataDescriptionV1V2(CoreUpgrader):
 
         funding_source = data.get("funding_source", [])
 
-        if isinstance(funding_source, str):
-            # Old records where funder is a comma-separated string
-            print(funding_source)
-            raise NotImplementedError(
-                "Funder as a string is no longer supported. Please upgrade the funding source format."
-            )
+        # Handle empty funding source
+        if not funding_source:
+            if FAKE_MISSING_DATA:
+                return [Funding(funder=Organization.AI, fundee=[Person(name="unknown")]).model_dump()]
+            return []
 
-        for i, funding in enumerate(funding_source):
+        # Process each funding source
+        result_funding_sources = []
+        for funding in funding_source:
             funder = funding.get("funder", None)
             fundee = funding.get("fundee", [])
-            if not fundee:
-                fundee = "unknown"
             grant_number = funding.get("grant_number", None)
 
-            funding_source[i] = Funding(
-                funder=Organization.from_abbreviation(funder["abbreviation"]) if funder else Organization.AI,
-                fundee=[Person(name=f) for f in fundee] if isinstance(fundee, list) else [Person(name=fundee)],
-                grant_number=grant_number,
-            ).model_dump()
+            # Handle funder - can be string (possibly comma-separated) or dict
+            if isinstance(funder, str) and "," in funder:
+                # Split comma-separated funders into separate funding sources
+                fundee_list = fundee
+                if isinstance(fundee_list, str):
+                    fundee_list = [name.strip() for name in fundee_list.split(",")]
+                elif not isinstance(fundee_list, list):
+                    fundee_list = ["unknown"]
 
-        if len(funding_source) == 0 and FAKE_MISSING_DATA:
-            funding_source.append(
-                Funding(
-                    funder=Organization.AI,
-                    fundee=[Person(name="unknown")],
-                ).model_dump()
-            )
+                for funder_name in funder.split(","):
+                    result_funding_sources.append(
+                        Funding(
+                            funder=Organization.from_name(funder_name.strip()),
+                            fundee=[Person(name=f) for f in fundee_list],
+                            grant_number=grant_number,
+                        ).model_dump()
+                    )
+            else:
+                # Handle single funder (string or dict)
+                if isinstance(funder, str):
+                    funder_org = Organization.from_name(funder)
+                elif isinstance(funder, dict):
+                    funder_org = upgrade_registry(funder)
+                else:
+                    funder_org = Organization.AI
 
-        return funding_source
+                # Handle fundee - can be string (comma-separated) or list
+                if isinstance(fundee, str):
+                    if fundee:
+                        fundee_list = [Person(name=name.strip()) for name in fundee.split(",")]
+                    else:
+                        fundee_list = [Person(name="unknown")]
+                elif isinstance(fundee, list):
+                    fundee_list = [Person(name=f) for f in fundee]
+                else:
+                    fundee_list = [Person(name="unknown")]
+
+                result_funding_sources.append(
+                    Funding(
+                        funder=funder_org,
+                        fundee=fundee_list,
+                        grant_number=grant_number,
+                    ).model_dump()
+                )
+
+        return result_funding_sources
 
     def _get_investigators(self, data: dict) -> list:
         """Build investigators list"""
