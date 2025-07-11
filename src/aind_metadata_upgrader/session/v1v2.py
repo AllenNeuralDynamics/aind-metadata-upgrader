@@ -42,8 +42,6 @@ from aind_data_schema.core.acquisition import (
 )
 from aind_data_schema.components.connections import (
     Connection,
-    ConnectionData,
-    ConnectionDirection,
 )
 from aind_data_schema_models.devices import ImmersionMedium
 from aind_data_schema_models.modalities import Modality
@@ -295,39 +293,19 @@ class SessionV1V2(CoreUpgrader):
         connections = []
         # Build the light source->patch cord connection
         light_fiber_conn = Connection(
-            device_names=[light_source_name, patch_cord_name],
-            connection_data={
-                light_source_name: ConnectionData(
-                    direction=ConnectionDirection.SEND,
-                ),
-                patch_cord_name: ConnectionData(
-                    direction=ConnectionDirection.RECEIVE,
-                ),
-            },
+            source_device=light_source_name,
+            target_device=patch_cord_name,
         )
         # patch cord to fiber, send_and_receive:
         patch_fiber_conn = Connection(
-            device_names=[patch_cord_name, fiber_name],
-            connection_data={
-                patch_cord_name: ConnectionData(
-                    direction=ConnectionDirection.SEND_AND_RECEIVE,
-                ),
-                fiber_name: ConnectionData(
-                    direction=ConnectionDirection.SEND_AND_RECEIVE,
-                ),
-            },
+            source_device=patch_cord_name,
+            target_device=fiber_name,
+            send_and_receive=True,
         )
         # Finally patch cord to detector
         patch_detector_conn = Connection(
-            device_names=[patch_cord_name, matching_detector.device_name],
-            connection_data={
-                patch_cord_name: ConnectionData(
-                    direction=ConnectionDirection.SEND,
-                ),
-                matching_detector.device_name: ConnectionData(
-                    direction=ConnectionDirection.RECEIVE,
-                ),
-            },
+            source_device=patch_cord_name,
+            target_device=matching_detector.device_name,
         )
         connections.append(light_fiber_conn.model_dump())
         connections.append(patch_fiber_conn.model_dump())

@@ -27,8 +27,6 @@ from aind_data_schema.components.measurements import (
 )
 from aind_data_schema.components.connections import (
     Connection,
-    ConnectionData,
-    ConnectionDirection,
 )
 from aind_data_schema.core.procedures import Procedures
 from aind_data_schema_models.brain_atlas import CCFv3
@@ -221,9 +219,15 @@ def build_connection_from_channel(channel: dict, device_name: str) -> Connection
     if "device_name" in channel and channel["device_name"]:
         channel_type = channel.get("channel_type", "")
 
+        print(channel)
+        raise NotImplementedError("Check whether target_port is correct")
         if "Output" in channel_type:
             # For output channels, DAQ sends to the device
             connection = Connection(
+                source_device=device_name,
+                target_device=channel["device_name"],
+                source_port=channel["channel_name"],
+                target_port=channel["channel_name"],
                 device_names=[device_name, channel["device_name"]],
                 connection_data={
                     device_name: ConnectionData(direction=ConnectionDirection.SEND, port=channel["channel_name"]),

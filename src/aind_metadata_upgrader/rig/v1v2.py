@@ -15,8 +15,6 @@ from aind_data_schema.components.coordinates import (
 from aind_data_schema.components.devices import Device
 from aind_data_schema.components.connections import (
     Connection,
-    ConnectionData,
-    ConnectionDirection,
 )
 from aind_data_schema_models.units import SizeUnit
 
@@ -226,15 +224,8 @@ class RigUpgraderV1V2(CoreUpgrader):
             else:
                 connections.append(
                     Connection(
-                        device_names=[connection["send"], connection["receive"]],
-                        connection_data={
-                            connection["send"]: ConnectionData(
-                                direction=ConnectionDirection.SEND,
-                            ),
-                            connection["receive"]: ConnectionData(
-                                direction=ConnectionDirection.RECEIVE,
-                            ),
-                        },
+                        source_device=connection["send"],
+                        target_device=connection["receive"],
                     ).model_dump()
                 )
 

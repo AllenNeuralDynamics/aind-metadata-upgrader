@@ -35,8 +35,6 @@ from aind_data_schema.components.devices import (
 )
 from aind_data_schema.components.connections import (
     Connection,
-    ConnectionData,
-    ConnectionDirection,
 )
 from aind_data_schema_models.coordinates import AnatomicalRelative
 
@@ -81,19 +79,16 @@ def upgrade_wheel(data: dict) -> dict:
     data["torque_sensor"] = upgrade_generic_device(data.get("torque_sensor", {}))
 
     # Convert encoder_output, brake_output, and torque_output to Connection objects
+    print(data)
+    raise NotImplementedError("Check whether target_port is correct")
     if "encoder_output" in data and data["encoder_output"]:
         encoder_output = data["encoder_output"]
         if "device_name" in encoder_output and encoder_output["device_name"]:
             connection = Connection(
-                device_names=[encoder_output["device_name"], data["name"]],
-                connection_data={
-                    encoder_output["device_name"]: ConnectionData(
-                        direction=ConnectionDirection.SEND, port=encoder_output["channel_name"]
-                    ),
-                    data["name"]: ConnectionData(
-                        direction=ConnectionDirection.RECEIVE, port=encoder_output["channel_name"]
-                    ),
-                },
+                source_device=encoder_output["device_name"],
+                source_port=encoder_output["channel_name"],
+                target_device=data["name"],
+                target_port=encoder_output["channel_name"],
             )
             saved_connections.append(connection.model_dump())
         del data["encoder_output"]
