@@ -201,7 +201,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         for connection in saved_connections:
             # Check if this is just a model_dump of a Connection object
-            if "device_names" in connection:
+            if "object_type" in connection:
                 connections.append(connection)
             else:
                 connections.append(

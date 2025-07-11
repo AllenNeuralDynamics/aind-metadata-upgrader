@@ -219,45 +219,23 @@ def build_connection_from_channel(channel: dict, device_name: str) -> Connection
     if "device_name" in channel and channel["device_name"]:
         channel_type = channel.get("channel_type", "")
 
-        print(channel)
-        raise NotImplementedError("Check whether target_port is correct")
         if "Output" in channel_type:
             # For output channels, DAQ sends to the device
             connection = Connection(
                 source_device=device_name,
                 target_device=channel["device_name"],
                 source_port=channel["channel_name"],
-                target_port=channel["channel_name"],
-                device_names=[device_name, channel["device_name"]],
-                connection_data={
-                    device_name: ConnectionData(direction=ConnectionDirection.SEND, port=channel["channel_name"]),
-                    channel["device_name"]: ConnectionData(
-                        direction=ConnectionDirection.RECEIVE, port=channel["channel_name"]
-                    ),
-                },
             )
         elif "Input" in channel_type:
             # For input channels, device sends to DAQ
             connection = Connection(
-                device_names=[channel["device_name"], device_name],
-                connection_data={
-                    channel["device_name"]: ConnectionData(
-                        direction=ConnectionDirection.SEND, port=channel["channel_name"]
-                    ),
-                    device_name: ConnectionData(direction=ConnectionDirection.RECEIVE, port=channel["channel_name"]),
-                },
+                source_device=channel["device_name"],
+                target_device=device_name,
+                target_port=channel["channel_name"],
             )
         else:
-            # Default case - assume output
-            connection = Connection(
-                device_names=[device_name, channel["device_name"]],
-                connection_data={
-                    device_name: ConnectionData(direction=ConnectionDirection.SEND, port=channel["channel_name"]),
-                    channel["device_name"]: ConnectionData(
-                        direction=ConnectionDirection.RECEIVE, port=channel["channel_name"]
-                    ),
-                },
-            )
+            print(channel)
+            raise ValueError(f"Unsupported channel type: {channel_type}. Expected 'Input' or 'Output'.")
 
         return connection
 
@@ -895,14 +873,16 @@ def get_connection_devices(data: dict) -> list:
     # Check instrument connections
     if data.get("instrument") and "connections" in data["instrument"]:
         for connection in data["instrument"]["connections"]:
-            connection_devices.extend(connection["device_names"])
+            connection_devices.extend(connection["source_device"])
+            connection_devices.extend(connection["target_device"])
 
     # Check acquisition data stream connections
     if data.get("acquisition") and "data_streams" in data["acquisition"]:
         for data_stream in data["acquisition"]["data_streams"]:
             if "connections" in data_stream:
                 for connection in data_stream["connections"]:
-                    connection_devices.extend(connection["device_names"])
+                    connection_devices.extend(connection["source_device"])
+                    connection_devices.extend(connection["target_device"])
 
     return connection_devices
 

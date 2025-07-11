@@ -66,12 +66,12 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
 class SessionV1V2(CoreUpgrader):
     """Upgrade session from v1.4 to v2.0 (acquisition)"""
 
-    def _upgrade_experimenter_names_to_persons(self, experimenter_names: List[str]) -> List[Dict]:
+    def _upgrade_experimenter_names(self, experimenter_names: List[str]) -> List[str]:
         """Convert experimenter full names to Person objects"""
         experimenters = []
         for name in experimenter_names:
             if name and name.strip():
-                experimenters.append(Person(name=name.strip()).model_dump())
+                experimenters.append(name.strip())
         return experimenters
 
     def _upgrade_maintenance(self, maintenance: List[Dict]) -> List[Dict]:
@@ -767,7 +767,7 @@ class SessionV1V2(CoreUpgrader):
         reward_consumed_unit = session_data.get("reward_consumed_unit", "milliliter")
 
         # Upgrade experimenter names to Person objects
-        experimenters = self._upgrade_experimenter_names_to_persons(experimenter_full_name)
+        experimenters = self._upgrade_experimenter_names(experimenter_full_name)
 
         # Upgrade data streams
         upgraded_data_streams = []

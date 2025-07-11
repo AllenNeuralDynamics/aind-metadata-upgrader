@@ -110,8 +110,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
     def _replace_experimenter_full_name(self, data: dict):
         """Replace experimenter_full_name with experimenters list"""
         if "experimenter_full_name" in data:
-            experimenter = Person(name=data["experimenter_full_name"])
-            data["experimenters"] = [experimenter]
+            data["experimenters"] = [data["experimenter_full_name"]]
             del data["experimenter_full_name"]
         return data
 

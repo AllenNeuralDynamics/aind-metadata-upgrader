@@ -219,7 +219,7 @@ class RigUpgraderV1V2(CoreUpgrader):
 
         for connection in saved_connections:
             # Check if this is just a model_dump of a Connection object
-            if "device_names" in connection:
+            if "object_type" in connection:
                 connections.append(connection)
             else:
                 connections.append(
@@ -231,7 +231,7 @@ class RigUpgraderV1V2(CoreUpgrader):
 
         # # Check that we're going to pass the connection validation
         # # Flatten the list of device names from all connections
-        connection_names = [name for conn in connections for name in conn["device_names"]]
+        connection_names = [name for conn in connections for name in [conn["source_device"], conn["target_device"]]]
         component_names = [comp["name"] for comp in components]
 
         missing_names = []

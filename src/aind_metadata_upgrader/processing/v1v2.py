@@ -20,10 +20,6 @@ class ProcessingV1V2(CoreUpgrader):
             parameters=process_data.get("parameters", None),
         )
 
-    def _create_person_from_name(self, name: str) -> Person:
-        """Create a Person object from a name string"""
-        return Person(name=name)
-
     def _get_process_name(self, name: str) -> str:
         """Get a name for this process, append 1/2/3 for duplicates"""
 
@@ -45,11 +41,11 @@ class ProcessingV1V2(CoreUpgrader):
             # For analyses, get analyst_full_name
             analyst_name = process_data.get("analyst_full_name")
             if analyst_name:
-                experimenters.append(self._create_person_from_name(analyst_name))
+                experimenters.append(analyst_name)
 
         if not experimenters:
             # Default experimenter if none specified
-            experimenters.append(Person(name="Unknown"))
+            experimenters.append("unknown")
 
         # Move parameters into Code
         output_parameters = process_data.get("outputs", None)
@@ -80,7 +76,7 @@ class ProcessingV1V2(CoreUpgrader):
         for process_data in pipeline_processes:
             v2_process = self._convert_v1_process_to_v2(process_data, "Processing")
             # Set experimenter to processor from pipeline
-            v2_process["experimenters"] = [self._create_person_from_name(processor_name)]
+            v2_process["experimenters"] = [processor_name]
             # Set pipeline name if pipeline exists
             if v2_data["pipelines"]:
                 v2_process["pipeline_name"] = "Processing Pipeline"
