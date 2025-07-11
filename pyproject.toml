@@ -33,9 +33,6 @@ dev = [
     'furo',
     'aind-data-access-api',
 ]
-oldpython = [
-    "backports-datetime-fromisoformat",
-]
 
 [tool.setuptools.packages.find]
 where = ["src"]
