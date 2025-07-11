@@ -264,12 +264,6 @@ def upgrade_daq_channels(device_data: dict) -> list:
     return upgraded_channels
 
 
-harp_name_remap = {
-    "Sound Card": "SoundCard",
-    "Clock Synchronizer": "ClockSynchronizer",
-}
-
-
 def upgrade_daq_devices(device: dict) -> dict:
     """Upgrade DAQ devices to the new model."""
 
@@ -295,8 +289,10 @@ def upgrade_daq_devices(device: dict) -> dict:
 
     # Create the DAQ device, or HarpDevice
     if device_type == "Harp device" or "harp_device_type" in device_data:
-        if device_data["harp_device_type"]["name"] in harp_name_remap:
-            device_data["harp_device_type"]["name"] = harp_name_remap[device_data["harp_device_type"]["name"]]
+        name = device_data["harp_device_type"]["name"]
+        # remove spaces from name
+        name = name.replace(" ", "")
+        device_data["harp_device_type"]["name"] = name
         daq_device = HarpDevice(**device_data)
     elif "Neuropixels basestation" == device_type or "bsc_firmware_version" in device_data:
         daq_device = NeuropixelsBasestation(**device_data)

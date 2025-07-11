@@ -13,10 +13,14 @@ class ProcessingV1V2(CoreUpgrader):
 
     def _create_code_object(self, process_data: dict, parameters=None) -> Code:
         """Create a Code object from V1 process data"""
+        url = process_data.get("code_url", "")
+        if not url:
+            url=""
+
         return Code(
             name=process_data.get("name", "Unknown"),
             version=process_data.get("code_version", "unknown"),
-            url=process_data.get("code_url", ""),
+            url=url,
             parameters=process_data.get("parameters", None),
         )
 

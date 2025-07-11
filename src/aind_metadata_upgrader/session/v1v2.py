@@ -256,7 +256,7 @@ class SessionV1V2(CoreUpgrader):
                 device_name=detector_name,
                 exposure_time=-1,
                 trigger_type=TriggerType.INTERNAL,
-            )
+            ).model_dump()
 
         # Build the light source
         light_source_name = channel_data.get("light_source_name", None)
@@ -305,7 +305,7 @@ class SessionV1V2(CoreUpgrader):
         # Finally patch cord to detector
         patch_detector_conn = Connection(
             source_device=patch_cord_name,
-            target_device=matching_detector.device_name,
+            target_device=matching_detector["device_name"],
         )
         connections.append(light_fiber_conn.model_dump())
         connections.append(patch_fiber_conn.model_dump())
@@ -720,7 +720,7 @@ class SessionV1V2(CoreUpgrader):
             code = Code(
                 name=script_data.get("name", "Unknown Script"),
                 version=script_data.get("version", "unknown"),
-                url=script_data.get("url", "unknown"),
+                url=script_data.get("url", "unknown") or "",
                 parameters=script_data.get("parameters", {}),
             )
 

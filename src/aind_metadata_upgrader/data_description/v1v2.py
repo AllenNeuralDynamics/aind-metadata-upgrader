@@ -18,6 +18,13 @@ class DataDescriptionV1V2(CoreUpgrader):
 
         funding_source = data.get("funding_source", [])
 
+        if isinstance(funding_source, str):
+            # Old records where funder is a comma-separated string
+            print(funding_source)
+            raise NotImplementedError(
+                "Funder as a string is no longer supported. Please upgrade the funding source format."
+            )
+
         for i, funding in enumerate(funding_source):
             funder = funding.get("funder", None)
             fundee = funding.get("fundee", [])

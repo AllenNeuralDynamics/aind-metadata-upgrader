@@ -6,7 +6,7 @@ from aind_data_schema.components.coordinates import (
     Rotation,
     Translation,
 )
-from aind_data_schema.components.reagent import ProteinProbe, ProbeReagent
+from aind_data_schema.components.reagent import ProteinProbe, ProbeReagent, FluorescentStain, StainType, Fluorophore, FluorophoreType
 from aind_data_schema.components.specimen_procedures import (
     HCRSeries,
     PlanarSectioning,
@@ -426,9 +426,36 @@ def upgrade_antibody(data: dict) -> dict:
                 source=Organization.from_name(upgraded_data["source"]["name"]),
                 rrid=PIDName(name="Chicken polyclonal to GFP", registry=Registry.RRID, registry_identifier="ab13970"),
             ).model_dump()
+        elif upgraded_data["immunolabel_class"].lower() == "secondary":
+            # Upgrade to FluorescentStain
+            # Example data: {'name': 'Alexa Fluor 488 goat anti-chicken IgY (H+L)', 'source': {'name': 'Thermo Fisher Scientific', 'abbreviation': None, 'registry': {'name': 'Research Organization Registry', 'abbreviation': 'ROR'}, 'registry_identifier': '03x1ewr52'}, 'rrid': {'name': 'Alexa Fluor 488 goat anti-chicken IgY (H+L)', 'abbreviation': None, 'registry': {'name': 'Research Resource Identifiers', 'abbreviation': 'RRID'}, 'registry_identifier': 'A11039'}, 'lot_number': '2420700', 'expiration_date': None, 'immunolabel_class': 'Secondary', 'fluorophore': 'Alexa Fluor 488', 'mass': '4', 'mass_unit': 'microgram', 'notes': None}
+
+            if upgraded_data["rrid"]["name"] == "Alexa Fluor 488 goat anti-chicken IgY (H+L)":
+                probe = ProteinProbe(
+                    protein=PIDName(name="TODO", registry=Registry.UNIPROT, registry_identifier="unknown"),
+                    mass=4,
+                    mass_unit="microgram",
+                    species=Species.CHICKEN,
+                )
+                
+                fluorophore = Fluorophore(
+                    fluorophore_type=FluorophoreType.ALEXA,
+                    excitation_wavelength=488,
+                    excitation_wavelength_unit=SizeUnit.NM,
+                )
+                
+                return FluorescentStain(
+                    name=upgraded_data["rrid"]["name"],
+                    source=Organization.from_name(upgraded_data["source"]["name"]),
+                    probe=probe,
+                    stain_type=StainType.PROTEIN,
+                    fluorophore=fluorophore,
+                ).model_dump()
         else:
+            print(data)
             raise NotImplementedError("TODO")
 
+    print(data)
     raise NotImplementedError("TODO")
     # Notes:
     # Primary -> ProbeReagent
