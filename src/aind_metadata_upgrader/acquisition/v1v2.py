@@ -1,6 +1,8 @@
 """<=v1.4 to v2.0 acquisition upgrade functions"""
 
+from datetime import datetime
 from typing import Dict, List, Optional
+from zoneinfo import ZoneInfo
 
 from aind_data_schema.components.identifiers import Person
 from aind_data_schema.core.acquisition import AcquisitionSubjectDetails
@@ -82,6 +84,29 @@ class AcquisitionV1V2(CoreUpgrader):
         tiles = data.get("tiles", [])
         axes = data.get("axes", [])
         notes = data.get("notes")
+        
+        # Pacific timezone - automatically handles PST/PDT transitions
+        pacific_tz = ZoneInfo("America/Los_Angeles")
+
+        # Helper function to ensure datetime has Pacific timezone
+        def ensure_pacific_timezone(dt):
+            if dt is None:
+                return None
+            if isinstance(dt, str):
+                dt = datetime.fromisoformat(dt)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=pacific_tz)
+            return dt
+
+        # Convert start and end times to datetime objects and ensure Pacific timezone
+        session_start_time = ensure_pacific_timezone(session_start_time)
+        session_end_time = ensure_pacific_timezone(session_end_time)
+
+        # Invert start/end time if they are in the wrong order
+        if session_start_time and session_end_time and session_start_time > session_end_time:
+            temp = session_start_time
+            session_start_time = session_end_time
+            session_end_time = temp
 
         # Repair specimen_id, if needed
         if not specimen_id:
