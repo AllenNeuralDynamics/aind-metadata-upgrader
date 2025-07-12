@@ -462,8 +462,10 @@ def upgrade_camera(data: dict) -> dict:
 
     if "pixel_width" in data:
         data["sensor_width"] = data["pixel_width"]
+        remove(data, "pixel_width")
     if "pixel_height" in data:
         data["sensor_height"] = data["pixel_height"]
+        remove(data, "pixel_height")
 
     if "frame_rate_unit" in data and data["frame_rate_unit"] == "Hertz":
         data["frame_rate_unit"] = "hertz"
