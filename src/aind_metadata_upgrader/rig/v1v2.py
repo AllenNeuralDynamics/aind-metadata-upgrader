@@ -90,7 +90,6 @@ class RigUpgraderV1V2(CoreUpgrader):
             return CoordinateSystemLibrary.BREGMA_ARI.model_dump()
         else:
             # We need to interpret the user's coordinate system (good luck to us)
-
             if (
                 rig_axes
                 and "lays on the Mouse Sagittal Plane, Positive direction is towards the nose of the mouse"
@@ -99,7 +98,23 @@ class RigUpgraderV1V2(CoreUpgrader):
                 and "defined by the right hand rule and the other two axis" in rig_axes[2]["direction"]
             ):
                 return BREGMA_ALS.model_dump()
-            raise NotImplementedError("todo")
+            elif (
+                origin == "Bregma"
+                and rig_axes
+                and "towards the nose of the mouse" in rig_axes[0]["direction"]
+                and "away from the nose of the mouse" in rig_axes[1]["direction"]
+                and "Positive pointing up" in rig_axes[2]["direction"]
+            ):
+                # This appears to be a Bregma coordinate system with:
+                # X: towards nose (posterior to anterior)
+                # Y: away from nose (possibly right to left, but ambiguous)
+                # Z: up
+                # We'll assume this matches BREGMA_ALS based on the X and Z definitions
+                # this is probably an older version of the same SIPE CS
+                return BREGMA_ALS.model_dump()
+            else:
+                print((origin, rig_axes))
+                raise NotImplementedError("todo")
 
     def _none_to_list(self, devices: Optional[list]) -> list:
         """Upgrade a device to it's new device model"""

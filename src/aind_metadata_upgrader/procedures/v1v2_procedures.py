@@ -89,6 +89,14 @@ def retrieve_bl_distance(data: dict) -> dict:
 
 def upgrade_hemisphere_craniotomy(data: dict) -> dict:
     """Upgrade the new-style craniotomy"""
+    
+    remove(data, "craniotomy_coordinates_ml")
+    remove(data, "craniotomy_coordinates_ap")
+    remove(data, "craniotomy_coordinates_unit")
+    remove(data, "craniotomy_coordinates_reference")
+    remove(data, "craniotomy_size")
+    remove(data, "craniotomy_size_unit")
+    
     if "craniotomy_hemisphere" in data and data["craniotomy_hemisphere"]:
         data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
         if data["craniotomy_hemisphere"].lower() == "left":
@@ -116,6 +124,8 @@ def upgrade_coordinate_craniotomy(data: dict) -> dict:
     """Upgrade old-style craniotomy"""
     global coordinate_system_required
     coordinate_system_required = True
+    
+    print(data)
 
     # Move ml/ap position into Translation object, check units
     ml = float(data["craniotomy_coordinates_ml"])
@@ -196,7 +206,7 @@ def upgrade_craniotomy(data: dict) -> dict:
 
     upgraded_data = retrieve_bl_distance(upgraded_data)
 
-    if "craniotomy_coordinates_ml" in upgraded_data:
+    if "craniotomy_coordinates_ml" in upgraded_data and upgraded_data["craniotomy_coordinates_ml"]:
         upgraded_data = upgrade_coordinate_craniotomy(upgraded_data)
     elif "craniotomy_hemisphere" in upgraded_data:
         upgraded_data = upgrade_hemisphere_craniotomy(upgraded_data)
