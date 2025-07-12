@@ -79,7 +79,6 @@ def upgrade_wheel(data: dict) -> dict:
     data["torque_sensor"] = upgrade_generic_device(data.get("torque_sensor", {}))
 
     # Convert encoder_output, brake_output, and torque_output to Connection objects
-    print(data)
     if "encoder_output" in data and data["encoder_output"]:
         encoder_output = data["encoder_output"]
         if "device_name" in encoder_output and encoder_output["device_name"]:

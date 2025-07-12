@@ -46,7 +46,8 @@ client = MetadataDbClient(
 #     data_asset_record_ids=ids,
 # )
 
-run_one = "8a7b06fa-2ff5-4e75-b097-5cca6df35ee4"
+run_one = None
+upsert = False
 
 
 class TestUpgrade(unittest.TestCase):
@@ -90,7 +91,7 @@ class TestUpgrade(unittest.TestCase):
                         upgraded = Upgrade(data_dict, skip_metadata_validation)
                         self.assertIsNotNone(upgraded)
 
-                        if upgraded and not fake:
+                        if upsert and upgraded and not fake:
                             location = upgraded.metadata.location
 
                             records = client.retrieve_docdb_records(
@@ -113,17 +114,6 @@ class TestUpgrade(unittest.TestCase):
                                 )
                                 end = time.time()
                                 print(f"Upsert took {end - start:.2f} seconds")
-
-                            # Retrieve the record and save into the v2 folder, using the v1 filename
-
-                            # retrieved_records = client.retrieve_docdb_records(
-                            #     filter_query={"location": location},
-                            #     limit=1,
-                            # )
-                            # output_file_path = os.path.join(base_dir, "v2", json_file)
-                            # # Save the upgraded record to the v2 folder
-                            # with open(output_file_path, "w") as output_file:
-                            #     json.dump(retrieved_records[0], output_file, indent=4)
 
                     except Exception as e:
                         print(f"Upgrade failed for {file_path}: {e}")

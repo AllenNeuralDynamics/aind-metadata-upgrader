@@ -831,6 +831,12 @@ class SessionV1V2(CoreUpgrader):
         session_start_time = ensure_pacific_timezone(session_start_time)
         session_end_time = ensure_pacific_timezone(session_end_time)
 
+        # Invert start/end time if they are in the wrong order
+        if session_start_time and session_end_time and session_start_time > session_end_time:
+            temp = session_start_time
+            session_start_time = session_end_time
+            session_end_time = temp
+
         # Convert all times in lists to datetime objects with Pacific timezone, filter out None values
         valid_start_times = [ensure_pacific_timezone(t) for t in start_times if t is not None]
         valid_start_times = [t for t in valid_start_times if t is not None]

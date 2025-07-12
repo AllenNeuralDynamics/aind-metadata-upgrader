@@ -1,7 +1,6 @@
 """Main entrypoint for upgrader"""
 
 import traceback
-import time
 
 from aind_data_schema.core.acquisition import Acquisition
 from aind_data_schema.core.data_description import DataDescription
@@ -78,29 +77,19 @@ class Upgrade:
                 expected_core_files.append(CORE_MAPPING.get(core_file, core_file))
 
         core_files = {}
-        core_file_timestamps = {}
         for core_file in CORE_FILES:
-            start = time.time()
             if core_file in record and record[core_file]:
                 target_key = CORE_MAPPING.get(core_file, core_file)
 
                 # Only process if we haven't already processed the target key
                 if target_key not in core_files:
                     core_files[target_key] = self.upgrade_core_file(core_file)
-            core_file_timestamps[core_file] = time.time() - start
 
-        start = time.time()
         self.upgrade_metadata(core_files)
-        core_file_timestamps["metadata"] = time.time() - start
 
         for expected_core_file in expected_core_files:
             if not hasattr(self.metadata, expected_core_file) or getattr(self.metadata, expected_core_file) is None:
                 raise ValueError(f"Expected core file '{expected_core_file}' not found in upgraded metadata")
-        
-        # Nicely print the core file timestamps
-        print("Core file upgrade times:")
-        for core_file, duration in core_file_timestamps.items():
-            print(f"  {core_file}: {duration:.2f} seconds")
 
     def save(self):
         """Save the upgraded metadata to a standard file"""
