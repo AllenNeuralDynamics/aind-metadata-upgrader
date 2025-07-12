@@ -23,6 +23,8 @@ from aind_data_schema.components.devices import (
 from aind_data_schema.components.identifiers import Software
 from aind_data_schema.components.measurements import (
     Calibration,
+    CalibrationFit,
+    FitType,
     PowerCalibration,
     VolumeCalibration,
 )
@@ -41,6 +43,7 @@ from aind_data_schema_models.units import (
     TimeUnit,
     VoltageUnit,
     VolumeUnit,
+    SoundIntensityUnit,
 )
 
 MODALITY_MAP = {
@@ -776,6 +779,11 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
     if result:
         return result
 
+    # Try sound intensity calibrations
+    result = _upgrade_sound_calibration(data)
+    if result:
+        return result
+
     # Try generic calibrations
     result = _upgrade_generic_calibration(data)
     if result:
@@ -1007,3 +1015,40 @@ def upgrade_reagent(data: dict) -> dict:
         upgraded_data["rrid"] = upgrade_registry(upgraded_data["rrid"])
 
     return Reagent(**upgraded_data).model_dump()
+
+
+def _upgrade_sound_calibration(data: dict) -> Optional[dict]:
+    """Handle sound calibration with equation parameters in input field."""
+    description = data.get("description", "")
+    input_data = data.get("input", {})
+
+    # Check if this is a sound calibration with equation parameters
+    if ("sound_volume" in description.lower() or "sound" in description.lower()) and isinstance(input_data, dict):
+        # Extract equation parameters with well-named keys
+        equation_parameters = {}
+        for param_name, param_value in input_data.items():
+            if param_name in ["a", "b", "c"]:
+                equation_parameters[f"equation_parameter_{param_name}"] = param_value
+            else:
+                equation_parameters[param_name] = param_value
+
+        # Create the calibration fit
+        calibration_fit = CalibrationFit(fit_type=FitType.OTHER, fit_parameters=equation_parameters)
+
+        return Calibration(
+            calibration_date=data["calibration_date"],
+            description=data.get("description", ""),
+            device_name=data["device_name"],
+            input=[],  # No input measurements, equation parameters are in fit
+            input_unit=SoundIntensityUnit.DB,  # Placeholder unit since no actual input
+            output=[],  # No output measurements
+            output_unit=SoundIntensityUnit.DB,  # Placeholder unit since no actual output
+            fit=calibration_fit,
+            notes=data.get("notes", "")
+            + (
+                " (v1v2 upgrade): Sound calibration equation upgraded from v1.x format, equation volume = "
+                "log(1 - ((dB - c) / a)) / b."
+            ),
+        ).model_dump()
+
+    return None
