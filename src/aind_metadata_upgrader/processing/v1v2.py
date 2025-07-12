@@ -15,7 +15,7 @@ class ProcessingV1V2(CoreUpgrader):
         """Create a Code object from V1 process data"""
         url = process_data.get("code_url", "")
         if not url:
-            url=""
+            url = ""
 
         return Code(
             name=process_data.get("name", "Unknown"),

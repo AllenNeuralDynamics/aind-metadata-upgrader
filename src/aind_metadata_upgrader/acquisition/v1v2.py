@@ -84,7 +84,7 @@ class AcquisitionV1V2(CoreUpgrader):
         tiles = data.get("tiles", [])
         axes = data.get("axes", [])
         notes = data.get("notes")
-        
+
         # Pacific timezone - automatically handles PST/PDT transitions
         pacific_tz = ZoneInfo("America/Los_Angeles")
 

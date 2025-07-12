@@ -846,15 +846,13 @@ class SessionV1V2(CoreUpgrader):
         if valid_start_times and session_start_time and any(start >= session_start_time for start in valid_start_times):
             min_start = min(valid_start_times)
             notes = (notes if notes else "") + (
-                f" (v1v2 upgrade) Session start time was adjusted from {session_start_time} "
-                f"to {min_start}"
+                f" (v1v2 upgrade) Session start time was adjusted from {session_start_time} " f"to {min_start}"
             )
             session_start_time = min_start
         if valid_end_times and session_end_time and any(end <= session_end_time for end in valid_end_times):
             max_end = max(valid_end_times)
             notes = (notes if notes else "") + (
-                f" (v1v2 upgrade) Session end time was adjusted from {session_end_time} "
-                f"to {max_end}"
+                f" (v1v2 upgrade) Session end time was adjusted from {session_end_time} " f"to {max_end}"
             )
             session_end_time = max_end
 

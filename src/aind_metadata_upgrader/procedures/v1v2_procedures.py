@@ -6,7 +6,14 @@ from aind_data_schema.components.coordinates import (
     Rotation,
     Translation,
 )
-from aind_data_schema.components.reagent import ProteinProbe, ProbeReagent, FluorescentStain, StainType, Fluorophore, FluorophoreType
+from aind_data_schema.components.reagent import (
+    ProteinProbe,
+    ProbeReagent,
+    FluorescentStain,
+    StainType,
+    Fluorophore,
+    FluorophoreType,
+)
 from aind_data_schema.components.specimen_procedures import (
     HCRSeries,
     PlanarSectioning,
@@ -89,14 +96,14 @@ def retrieve_bl_distance(data: dict) -> dict:
 
 def upgrade_hemisphere_craniotomy(data: dict) -> dict:
     """Upgrade the new-style craniotomy"""
-    
+
     remove(data, "craniotomy_coordinates_ml")
     remove(data, "craniotomy_coordinates_ap")
     remove(data, "craniotomy_coordinates_unit")
     remove(data, "craniotomy_coordinates_reference")
     remove(data, "craniotomy_size")
     remove(data, "craniotomy_size_unit")
-    
+
     if "craniotomy_hemisphere" in data and data["craniotomy_hemisphere"]:
         data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
         if data["craniotomy_hemisphere"].lower() == "left":
@@ -124,7 +131,7 @@ def upgrade_coordinate_craniotomy(data: dict) -> dict:
     """Upgrade old-style craniotomy"""
     global coordinate_system_required
     coordinate_system_required = True
-    
+
     print(data)
 
     # Move ml/ap position into Translation object, check units
@@ -447,13 +454,13 @@ def upgrade_antibody(data: dict) -> dict:
                     mass_unit="microgram",
                     species=Species.CHICKEN,
                 )
-                
+
                 fluorophore = Fluorophore(
                     fluorophore_type=FluorophoreType.ALEXA,
                     excitation_wavelength=488,
                     excitation_wavelength_unit=SizeUnit.NM,
                 )
-                
+
                 return FluorescentStain(
                     name=upgraded_data["rrid"]["name"],
                     source=Organization.from_name(upgraded_data["source"]["name"]),
