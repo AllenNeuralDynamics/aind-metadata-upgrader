@@ -813,6 +813,8 @@ def upgrade_targeted_structure(data: dict | str) -> dict:
     if isinstance(data, str):
         if hasattr(CCFv3, data.upper()):
             return getattr(CCFv3, data.upper()).model_dump()
+        if "none" in data.lower():
+            return CCFv3.ROOT.model_dump()
         if data in CCF_MAPPING.keys():
             return CCF_MAPPING[data].model_dump()
         else:
@@ -825,6 +827,10 @@ def upgrade_targeted_structure(data: dict | str) -> dict:
 SHORT_ACQ_ID_LIST = ["5B", "4D", "MESO.1", "MESO.2", "5A", "4A", "4B", "4C"]
 # List of acquisition IDs where the instrument_id needs to be copied from acquisition to instrument
 LONG_ACQ_ID_LIST = ["323_EPHYS1_2024-06-11", "442_Bergamo_2p_photostim", "323_EPHYS3_2024-06-28"]
+# Instrument/Acquisition pairs where id copied from instrument -> acquisition
+PAIRED_INSTRUMENT_ACQUISITION_IDS = [
+    ("342_NP3_240417", "342_NP3_240401"),
+]
 
 
 def repair_instrument_id_mismatch(data: dict) -> dict:
@@ -847,6 +853,12 @@ def repair_instrument_id_mismatch(data: dict) -> dict:
             data["instrument"]["instrument_id"] = data["acquisition"]["instrument_id"]
         elif data["acquisition"]["instrument_id"] in SHORT_ACQ_ID_LIST:
             data["acquisition"]["instrument_id"] = data["instrument"]["instrument_id"]
+        else:
+            # Check the paired list
+            acquisition_id = data["acquisition"]["instrument_id"]
+            instrument_id = data["instrument"]["instrument_id"]
+            if (instrument_id, acquisition_id) in PAIRED_INSTRUMENT_ACQUISITION_IDS:
+                data["acquisition"]["instrument_id"] = instrument_id
     return data
 
 
