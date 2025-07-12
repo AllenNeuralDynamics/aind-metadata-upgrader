@@ -380,6 +380,8 @@ def upgrade_positioned_device(data: dict, relative_position_list: list = []) -> 
             data["coordinate_system"] = CoordinateSystemLibrary.SIPE_CAMERA_RBF
         elif "Located at the center of the screen" in origin:
             data["coordinate_system"] = CoordinateSystemLibrary.SIPE_MONITOR_RTF
+        elif "Located on the front mounting flange face. Right and left conventions are relative to the front side of the speaker, ie. from the subject's perspective"  in origin:
+            data["coordinate_system"] = CoordinateSystemLibrary.SIPE_SPEAKER_LTF
         else:
             print(relative_position)
             raise ValueError(f"Unsupported origin: {origin}")
