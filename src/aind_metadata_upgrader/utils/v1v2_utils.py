@@ -766,8 +766,17 @@ def _upgrade_generic_calibration(data: dict) -> Optional[dict]:
     return None
 
 
+IGNORED_CALIBRATIONS = [
+    "solenoid open time (ms) = slope * expected water volume (mL) + intercept",
+]
+
+
 def upgrade_calibration(data: dict) -> Optional[dict]:
     """Upgrade calibration information by categorizing and delegating to specific handlers."""
+
+    if any(ignored in data.get("description", "") for ignored in IGNORED_CALIBRATIONS):
+        # Skip ignored calibrations
+        return None
 
     # Try volume calibrations first
     result = _upgrade_volume_calibration(data)
