@@ -277,8 +277,11 @@ def upgrade_filter_multiband(data: dict) -> dict:
     """Handle multiband filter center wavelength issues"""
     if "center_wavelength" in data and not isinstance(data["center_wavelength"], list):
         if not data["center_wavelength"]:
+            if "IR (UV/VIS Cut) M35.5 x 0.50 High Performance Machine Vision Filter" in data["name"]:
+                # Special case
+                data["center_wavelength"] = [285, 925]
             # Uh oh... we need to figure out what the wavelengths should be
-            if any(key in data["notes"] for key in FILTER_WAVELENGTH_MAP.keys()):
+            elif any(key in data["notes"] for key in FILTER_WAVELENGTH_MAP.keys()):
                 # If the notes contain a known wavelength, use that
                 for key, wavelengths in FILTER_WAVELENGTH_MAP.items():
                     if key in data["notes"]:
@@ -511,13 +514,29 @@ def _upgrade_volume_calibration_basic(data: dict) -> Optional[VolumeCalibration]
     ):
         repeats = data["input"]["measurements"][0]["repeat_count"]
 
+    if "valve open time (s):" in data["input"]:
+        input = data["input"].get("valve open time (s):", [])
+    elif "valve open time (s)" in data["input"]:
+        input = data["input"].get("valve open time (s)", [])
+    else:
+        print(data)
+        raise ValueError("Input data does not contain 'valve open time (s):' or 'valve open time (s)'.")
+
+    if "water volume (ul):" in data["output"]:
+        output = data["output"].get("water volume (ul):", [])
+    elif "water volume (ul)" in data["output"]:
+        output = data["output"].get("water volume (ul)", [])
+    else:
+        print(data)
+        raise ValueError("Output data does not contain 'water volume (ul):' or 'water volume (ul)'.")
+
     return VolumeCalibration(
         calibration_date=data["calibration_date"],
         device_name=data["device_name"],
         repeats=repeats,
-        input=data["input"]["valve open time (s):"],
+        input=input,
         input_unit=TimeUnit.S,
-        output=data["output"]["water volume (ul):"],
+        output=output,
         output_unit=VolumeUnit.UL,
         notes=(
             data["notes"] if data["notes"] else "" + " (v1v2 upgrade): Liquid calibration upgraded from v1.x format."
@@ -786,7 +805,7 @@ def upgrade_targeted_structure(data: dict | str) -> dict:
 # List of acquisition IDs where the instrument_id needs to be copied from instrument to acquisition
 SHORT_ACQ_ID_LIST = ["5B", "4D", "MESO.1", "MESO.2", "5A", "4A", "4B", "4C"]
 # List of acquisition IDs where the instrument_id needs to be copied from acquisition to instrument
-LONG_ACQ_ID_LIST = ["323_EPHYS1_2024-06-11", "442_Bergamo_2p_photostim"]
+LONG_ACQ_ID_LIST = ["323_EPHYS1_2024-06-11", "442_Bergamo_2p_photostim", "323_EPHYS3_2024-06-28"]
 
 
 def repair_instrument_id_mismatch(data: dict) -> dict:
@@ -980,6 +999,9 @@ def upgrade_reagent(data: dict) -> dict:
                 upgraded_data["source"] = repair_organization(upgraded_data["source"])
             else:
                 upgraded_data["source"] = upgrade_registry(upgraded_data["source"])
+    else:
+        # Unknown source
+        upgraded_data["source"] = Organization.OTHER
 
     if "rrid" in upgraded_data and upgraded_data["rrid"]:
         upgraded_data["rrid"] = upgrade_registry(upgraded_data["rrid"])
