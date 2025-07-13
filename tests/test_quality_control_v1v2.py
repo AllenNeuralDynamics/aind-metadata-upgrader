@@ -9,6 +9,7 @@ class TestQualityControlV1V2(unittest.TestCase):
     """Test the QCUpgraderV1V2 class"""
 
     def setUp(self):
+        """Setup"""
         self.upgrader = QCUpgraderV1V2()
 
     def test_upgrade_with_invalid_data_type(self):

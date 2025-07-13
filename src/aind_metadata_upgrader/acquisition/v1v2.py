@@ -66,6 +66,7 @@ class AcquisitionV1V2(CoreUpgrader):
 
         # Helper function to ensure datetime has Pacific timezone
         def ensure_pacific_timezone(dt):
+            """Ensure datetime is in Pacific timezone"""
             if dt is None:
                 return None
             if isinstance(dt, str):

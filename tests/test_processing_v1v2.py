@@ -9,6 +9,7 @@ class TestProcessingV1V2(unittest.TestCase):
     """Test the ProcessingV1V2 class"""
 
     def setUp(self):
+        """Setup"""
         self.upgrader = ProcessingV1V2()
 
     def test_upgrade_with_invalid_data_type(self):
