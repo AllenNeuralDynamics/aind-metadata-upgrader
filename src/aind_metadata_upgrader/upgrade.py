@@ -10,6 +10,7 @@ from aind_data_schema.core.procedures import Procedures
 from aind_data_schema.core.processing import Processing
 from aind_data_schema.core.quality_control import QualityControl
 from aind_data_schema.core.subject import Subject
+from aind_data_schema.core.metadata import REQUIRED_FILE_SETS
 from packaging.version import Version
 
 from aind_metadata_upgrader.upgrade_mapping import MAPPING
@@ -84,6 +85,16 @@ class Upgrade:
                 # Only process if we haven't already processed the target key
                 if target_key not in core_files:
                     core_files[target_key] = self.upgrade_core_file(core_file)
+
+        for trigger_file, required_files in REQUIRED_FILE_SETS.items():
+            if trigger_file in core_files.keys():
+                if not all(
+                    required_file in core_files and core_files[required_file] is not None
+                    for required_file in required_files
+                ):
+                    raise ValueError(
+                        f"All required core files {required_files} were not found. This asset cannot be upgraded."
+                    )
 
         self.upgrade_metadata(core_files)
 
