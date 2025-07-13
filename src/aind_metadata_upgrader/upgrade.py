@@ -64,28 +64,29 @@ CORE_MAPPING = {
 class Upgrade:
     """Main entrypoint to the metadata-upgrader"""
 
-    def __init__(self, record: dict, skip_metadata_validation: bool = False):
-        """Initialize the upgrader"""
-
-        self.data = record
-        self.skip_metadata_validation = skip_metadata_validation
-
-        # Figure out what core files we have, and what outputs we expected
+    def _determine_expected_core_files(self) -> list:
+        """Determine what core files we have and what outputs we expect"""
         expected_core_files = []
         for core_file in CORE_FILES:
             if core_file in self.data and self.data[core_file]:
                 # We have data for this file
                 expected_core_files.append(CORE_MAPPING.get(core_file, core_file))
+        return expected_core_files
 
+    def _process_core_files(self) -> dict:
+        """Process all available core files"""
         core_files = {}
         for core_file in CORE_FILES:
-            if core_file in record and record[core_file]:
+            if core_file in self.data and self.data[core_file]:
                 target_key = CORE_MAPPING.get(core_file, core_file)
 
                 # Only process if we haven't already processed the target key
                 if target_key not in core_files:
                     core_files[target_key] = self.upgrade_core_file(core_file)
+        return core_files
 
+    def _validate_required_files(self, core_files: dict):
+        """Validate that all required core files are present"""
         if not self.skip_metadata_validation:
             for trigger_file, required_files in REQUIRED_FILE_SETS.items():
                 if trigger_file in core_files.keys():
@@ -96,6 +97,19 @@ class Upgrade:
                         raise ValueError(
                             f"All required core files {required_files} were not found. This asset cannot be upgraded."
                         )
+
+    def __init__(self, record: dict, skip_metadata_validation: bool = False):
+        """Initialize the upgrader"""
+
+        self.data = record
+        self.skip_metadata_validation = skip_metadata_validation
+
+        # Figure out what core files we have, and what outputs we expected
+        expected_core_files = self._determine_expected_core_files()
+
+        core_files = self._process_core_files()
+
+        self._validate_required_files(core_files)
 
         self.upgrade_metadata(core_files)
 

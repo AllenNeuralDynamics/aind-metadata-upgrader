@@ -48,7 +48,6 @@ from aind_data_schema.core.acquisition import (
 from aind_data_schema.components.connections import (
     Connection,
 )
-from aind_data_schema_models.brain_atlas import BrainStructureModel
 from aind_data_schema_models.devices import ImmersionMedium
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.stimulus_modality import StimulusModality
@@ -903,57 +902,10 @@ class SessionV1V2(CoreUpgrader):
             reward_consumed_unit=VolumeUnit.ML if reward_consumed_unit == "milliliter" else VolumeUnit.UL,
         ).model_dump()
 
-        # Validate that the start/end times are before all the data streams and epochs
-        start_times = []
-        end_times = []
-        for stream in upgraded_data_streams:
-            start_times.append(stream.get("stream_start_time"))
-            end_times.append(stream.get("stream_end_time"))
-        for epoch in upgraded_stimulus_epochs:
-            start_times.append(epoch.get("stimulus_start_time"))
-            end_times.append(epoch.get("stimulus_end_time"))
-
-        # Pacific timezone - automatically handles PST/PDT transitions
-        pacific_tz = ZoneInfo("America/Los_Angeles")
-
-        # Helper function to ensure datetime has Pacific timezone
-        def ensure_pacific_timezone(dt):
-            if dt is None:
-                return None
-            if isinstance(dt, str):
-                dt = datetime.fromisoformat(dt)
-            if dt.tzinfo is None:
-                dt = dt.replace(tzinfo=pacific_tz)
-            return dt
-
-        # Convert start and end times to datetime objects and ensure Pacific timezone
-        session_start_time = ensure_pacific_timezone(session_start_time)
-        session_end_time = ensure_pacific_timezone(session_end_time)
-
-        # Invert start/end time if they are in the wrong order
-        if session_start_time and session_end_time and session_start_time > session_end_time:
-            temp = session_start_time
-            session_start_time = session_end_time
-            session_end_time = temp
-
-        # Convert all times in lists to datetime objects with Pacific timezone, filter out None values
-        valid_start_times = [ensure_pacific_timezone(t) for t in start_times if t is not None]
-        valid_start_times = [t for t in valid_start_times if t is not None]
-        valid_end_times = [ensure_pacific_timezone(t) for t in end_times if t is not None]
-        valid_end_times = [t for t in valid_end_times if t is not None]
-
-        if valid_start_times and session_start_time and any(start >= session_start_time for start in valid_start_times):
-            min_start = min(valid_start_times)
-            notes = (notes if notes else "") + (
-                f" (v1v2 upgrade) Session start time was adjusted from {session_start_time} " f"to {min_start}"
-            )
-            session_start_time = min_start
-        if valid_end_times and session_end_time and any(end <= session_end_time for end in valid_end_times):
-            max_end = max(valid_end_times)
-            notes = (notes if notes else "") + (
-                f" (v1v2 upgrade) Session end time was adjusted from {session_end_time} " f"to {max_end}"
-            )
-            session_end_time = max_end
+        # Validate and adjust session start/end times
+        session_start_time, session_end_time, notes = self._validate_and_adjust_session_times(
+            session_start_time, session_end_time, upgraded_data_streams, upgraded_stimulus_epochs, notes
+        )
 
         # Build V2 acquisition object
         acquisition = Acquisition(
@@ -1013,3 +965,59 @@ class SessionV1V2(CoreUpgrader):
             configurations.append(self._create_sample_chamber_config(rig_id))
 
         return configurations, connections
+
+    def _validate_and_adjust_session_times(
+        self, session_start_time, session_end_time, upgraded_data_streams, upgraded_stimulus_epochs, notes
+    ):
+        """Validate session times against data streams and epochs, adjusting if necessary"""
+        # Validate that the start/end times are before all the data streams and epochs
+        start_times = []
+        end_times = []
+        for stream in upgraded_data_streams:
+            start_times.append(stream.get("stream_start_time"))
+            end_times.append(stream.get("stream_end_time"))
+        for epoch in upgraded_stimulus_epochs:
+            start_times.append(epoch.get("stimulus_start_time"))
+            end_times.append(epoch.get("stimulus_end_time"))
+
+        # Pacific timezone - automatically handles PST/PDT transitions
+        pacific_tz = ZoneInfo("America/Los_Angeles")
+
+        # Helper function to ensure datetime has Pacific timezone
+        def ensure_pacific_timezone(dt):
+            if dt is None:
+                return None
+            if isinstance(dt, str):
+                dt = datetime.fromisoformat(dt)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=pacific_tz)
+            return dt
+
+        # Convert start and end times to datetime objects and ensure Pacific timezone
+        session_start_time = ensure_pacific_timezone(session_start_time)
+        session_end_time = ensure_pacific_timezone(session_end_time)
+
+        # Invert start/end time if they are in the wrong order
+        if session_start_time and session_end_time and session_start_time > session_end_time:
+            session_start_time, session_end_time = session_end_time, session_start_time
+
+        # Convert all times in lists to datetime objects with Pacific timezone, filter out None values
+        valid_start_times = [ensure_pacific_timezone(t) for t in start_times if t is not None]
+        valid_start_times = [t for t in valid_start_times if t is not None]
+        valid_end_times = [ensure_pacific_timezone(t) for t in end_times if t is not None]
+        valid_end_times = [t for t in valid_end_times if t is not None]
+
+        if valid_start_times and session_start_time and any(start >= session_start_time for start in valid_start_times):
+            min_start = min(valid_start_times)
+            notes = (notes if notes else "") + (
+                f" (v1v2 upgrade) Session start time was adjusted from {session_start_time} " f"to {min_start}"
+            )
+            session_start_time = min_start
+        if valid_end_times and session_end_time and any(end <= session_end_time for end in valid_end_times):
+            max_end = max(valid_end_times)
+            notes = (notes if notes else "") + (
+                f" (v1v2 upgrade) Session end time was adjusted from {session_end_time} " f"to {max_end}"
+            )
+            session_end_time = max_end
+
+        return session_start_time, session_end_time, notes

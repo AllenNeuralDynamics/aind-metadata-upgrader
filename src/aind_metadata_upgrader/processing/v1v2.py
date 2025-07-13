@@ -1,6 +1,6 @@
 """<=v1.4 to v2.0 processing upgrade functions"""
 
-from aind_data_schema.components.identifiers import Code, Person
+from aind_data_schema.components.identifiers import Code
 from aind_data_schema.core.processing import DataProcess
 
 from aind_metadata_upgrader.base import CoreUpgrader

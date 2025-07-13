@@ -13,6 +13,25 @@ from aind_metadata_upgrader.utils.v1v2_utils import upgrade_v1_modalities, upgra
 class DataDescriptionV1V2(CoreUpgrader):
     """Upgrade data description from v1.4 to v2.0"""
 
+    def _process_comma_separated_funders(self, funder: str, fundee, grant_number) -> list:
+        """Process comma-separated funders into separate funding sources"""
+        result = []
+        fundee_list = fundee
+        if isinstance(fundee_list, str):
+            fundee_list = [name.strip() for name in fundee_list.split(",")]
+        elif not isinstance(fundee_list, list):
+            fundee_list = ["unknown"]
+
+        for funder_name in funder.split(","):
+            result.append(
+                Funding(
+                    funder=Organization.from_name(funder_name.strip()),
+                    fundee=[Person(name=f) for f in fundee_list],
+                    grant_number=grant_number,
+                ).model_dump()
+            )
+        return result
+
     def _get_funding_source(self, data: dict) -> list:
         """Get and upgrade funding source information from the data dictionary."""
 
@@ -34,20 +53,7 @@ class DataDescriptionV1V2(CoreUpgrader):
             # Handle funder - can be string (possibly comma-separated) or dict
             if isinstance(funder, str) and "," in funder:
                 # Split comma-separated funders into separate funding sources
-                fundee_list = fundee
-                if isinstance(fundee_list, str):
-                    fundee_list = [name.strip() for name in fundee_list.split(",")]
-                elif not isinstance(fundee_list, list):
-                    fundee_list = ["unknown"]
-
-                for funder_name in funder.split(","):
-                    result_funding_sources.append(
-                        Funding(
-                            funder=Organization.from_name(funder_name.strip()),
-                            fundee=[Person(name=f) for f in fundee_list],
-                            grant_number=grant_number,
-                        ).model_dump()
-                    )
+                result_funding_sources.extend(self._process_comma_separated_funders(funder, fundee, grant_number))
             else:
                 # Handle single funder (string or dict)
                 if isinstance(funder, str):

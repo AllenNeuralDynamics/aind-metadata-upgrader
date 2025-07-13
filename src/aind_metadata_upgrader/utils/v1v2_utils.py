@@ -381,7 +381,8 @@ def upgrade_positioned_device(data: dict, relative_position_list: list = []) -> 
         elif "Located at the center of the screen" in origin:
             data["coordinate_system"] = CoordinateSystemLibrary.SIPE_MONITOR_RTF
         elif (
-            "Located on the front mounting flange face. Right and left conventions are relative to the front side of the speaker, ie. from the subject's perspective"
+            "Located on the front mounting flange face. Right and left conventions are relative to "
+            "the front side of the speaker, ie. from the subject's perspective"
             in origin
         ):
             data["coordinate_system"] = CoordinateSystemLibrary.SIPE_SPEAKER_LTF
@@ -836,25 +837,24 @@ PAIRED_INSTRUMENT_ACQUISITION_IDS = [
 ]
 
 
-def repair_instrument_id_mismatch(data: dict) -> dict:
-    """Repair mismatched instrument IDs between acquisition and instrument sections"""
+def _handle_spim_modality_mismatch(data: dict) -> dict:
+    """Handle instrument ID mismatch for SPIM modality"""
+    if "acquisition" in data and data["acquisition"] and "instrument_id" in data["acquisition"]:
+        acquisition_instrument_id = data["acquisition"]["instrument_id"]
+        if "instrument" in data and data["instrument"]:
+            if "instrument_id" in data["instrument"]:
+                instrument_id = data["instrument"]["instrument_id"]
 
-    if "instrument" not in data or "acquisition" not in data:
-        return data
+                if acquisition_instrument_id != instrument_id:
+                    data["instrument"]["instrument_id"] = acquisition_instrument_id
+            else:
+                raise ValueError("instrument.instrument_id is missing while acquisition.instrument_id is present.")
+    return data
 
-    modalities = data.get("data_description", {}).get("modalities", [])
-    if any(modality["abbreviation"] == "SPIM" for modality in modalities):
-        if "acquisition" in data and data["acquisition"] and "instrument_id" in data["acquisition"]:
-            acquisition_instrument_id = data["acquisition"]["instrument_id"]
-            if "instrument" in data and data["instrument"]:
-                if "instrument_id" in data["instrument"]:
-                    instrument_id = data["instrument"]["instrument_id"]
 
-                    if acquisition_instrument_id != instrument_id:
-                        data["instrument"]["instrument_id"] = acquisition_instrument_id
-                else:
-                    raise ValueError("instrument.instrument_id is missing while acquisition.instrument_id is present.")
-    elif "acquisition" in data and data["acquisition"] and "instrument_id" in data["acquisition"]:
+def _handle_general_id_mismatch(data: dict) -> dict:
+    """Handle instrument ID mismatch for general cases"""
+    if "acquisition" in data and data["acquisition"] and "instrument_id" in data["acquisition"]:
         if data["acquisition"]["instrument_id"] in LONG_ACQ_ID_LIST:
             data["instrument"]["instrument_id"] = data["acquisition"]["instrument_id"]
         elif data["acquisition"]["instrument_id"] in SHORT_ACQ_ID_LIST:
@@ -866,6 +866,19 @@ def repair_instrument_id_mismatch(data: dict) -> dict:
             if (instrument_id, acquisition_id) in PAIRED_INSTRUMENT_ACQUISITION_IDS:
                 data["acquisition"]["instrument_id"] = instrument_id
     return data
+
+
+def repair_instrument_id_mismatch(data: dict) -> dict:
+    """Repair mismatched instrument IDs between acquisition and instrument sections"""
+
+    if "instrument" not in data or "acquisition" not in data:
+        return data
+
+    modalities = data.get("data_description", {}).get("modalities", [])
+    if any(modality["abbreviation"] == "SPIM" for modality in modalities):
+        return _handle_spim_modality_mismatch(data)
+    else:
+        return _handle_general_id_mismatch(data)
 
 
 def get_active_devices(data: dict) -> list:

@@ -4,7 +4,6 @@ from datetime import datetime
 from typing import Dict, List, Optional
 from zoneinfo import ZoneInfo
 
-from aind_data_schema.components.identifiers import Person
 from aind_data_schema.core.acquisition import AcquisitionSubjectDetails
 
 from aind_metadata_upgrader.acquisition.v1v2_tiles import (
@@ -60,6 +59,31 @@ class AcquisitionV1V2(CoreUpgrader):
         # Default fallback
         return "Acquisition session"
 
+    def _process_session_times(self, session_start_time, session_end_time):
+        """Process and validate session start and end times with Pacific timezone"""
+        # Pacific timezone - automatically handles PST/PDT transitions
+        pacific_tz = ZoneInfo("America/Los_Angeles")
+
+        # Helper function to ensure datetime has Pacific timezone
+        def ensure_pacific_timezone(dt):
+            if dt is None:
+                return None
+            if isinstance(dt, str):
+                dt = datetime.fromisoformat(dt)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=pacific_tz)
+            return dt
+
+        # Convert start and end times to datetime objects and ensure Pacific timezone
+        session_start_time = ensure_pacific_timezone(session_start_time)
+        session_end_time = ensure_pacific_timezone(session_end_time)
+
+        # Invert start/end time if they are in the wrong order
+        if session_start_time and session_end_time and session_start_time > session_end_time:
+            session_start_time, session_end_time = session_end_time, session_start_time
+
+        return session_start_time, session_end_time
+
     def upgrade(self, data: dict, schema_version: str) -> dict:
         """Upgrade the acquisition data to v2.0"""
 
@@ -85,28 +109,8 @@ class AcquisitionV1V2(CoreUpgrader):
         axes = data.get("axes", [])
         notes = data.get("notes")
 
-        # Pacific timezone - automatically handles PST/PDT transitions
-        pacific_tz = ZoneInfo("America/Los_Angeles")
-
-        # Helper function to ensure datetime has Pacific timezone
-        def ensure_pacific_timezone(dt):
-            if dt is None:
-                return None
-            if isinstance(dt, str):
-                dt = datetime.fromisoformat(dt)
-            if dt.tzinfo is None:
-                dt = dt.replace(tzinfo=pacific_tz)
-            return dt
-
-        # Convert start and end times to datetime objects and ensure Pacific timezone
-        session_start_time = ensure_pacific_timezone(session_start_time)
-        session_end_time = ensure_pacific_timezone(session_end_time)
-
-        # Invert start/end time if they are in the wrong order
-        if session_start_time and session_end_time and session_start_time > session_end_time:
-            temp = session_start_time
-            session_start_time = session_end_time
-            session_end_time = temp
+        # Convert start and end times to Pacific timezone
+        session_start_time, session_end_time = self._process_session_times(session_start_time, session_end_time)
 
         # Repair specimen_id, if needed
         if not specimen_id:
@@ -124,13 +128,23 @@ class AcquisitionV1V2(CoreUpgrader):
 
         # Upgrade tiles to data streams
         if session_start_time and session_end_time:
+            start_str = (
+                session_start_time.isoformat()
+                if hasattr(session_start_time, 'isoformat')
+                else str(session_start_time)
+            )
+            end_str = (
+                session_end_time.isoformat()
+                if hasattr(session_end_time, 'isoformat')
+                else str(session_end_time)
+            )
             data_streams = upgrade_tiles_to_data_stream(
                 tiles,
-                session_start_time,
-                session_end_time,
-                chamber_immersion=chamber_immersion,
+                start_str,
+                end_str,
+                chamber_immersion=chamber_immersion or {},
                 sample_immersion=sample_immersion,
-                device_name=instrument_id,
+                device_name=instrument_id or "",
                 software=software,
             )
             if active_objectives:

@@ -3,7 +3,6 @@
 from datetime import date
 
 from aind_data_schema.components.coordinates import CoordinateSystemLibrary
-from aind_data_schema.components.identifiers import Person
 from aind_data_schema.components.surgery_procedures import (
     GenericSurgeryProcedure,
 )

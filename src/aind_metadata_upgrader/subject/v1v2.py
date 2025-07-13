@@ -43,6 +43,29 @@ class SubjectUpgraderV1V2(CoreUpgrader):
 
         return breeding_info
 
+    def _process_species_and_strain(self, data: dict):
+        """Process and validate species and background strain data"""
+        # Species model seems to have changed for some records, make sure it matches the new model
+        species = data.get("species", None)
+        if species and isinstance(species, str) and species == "Mus musculus":
+            # Convert string species name to Species model
+            species = Species.HOUSE_MOUSE.model_dump()
+        if species and isinstance(species, dict) and species["name"] == "Mus musculus":
+            # Replace with the new Species model
+            species = Species.HOUSE_MOUSE.model_dump()
+        else:
+            raise ValueError("Species must be specified")
+
+        if isinstance(species["registry"], dict):
+            species = upgrade_registry(species)
+
+        # Handle upgrade to new Strain
+        background_strain = self._get_background_strain(data)
+        if isinstance(background_strain["registry"], dict):
+            background_strain = upgrade_registry(background_strain)
+
+        return species, background_strain
+
     def upgrade(self, data: dict, schema_version: str) -> dict:
         """Upgrade the subject core file data to v2.0"""
 
@@ -58,25 +81,9 @@ class SubjectUpgraderV1V2(CoreUpgrader):
         date_of_birth = data.get("date_of_birth", "")
         genotype = data.get("genotype", "unknown")
 
-        # Species model seems to have changed for some records, make sure it matches the new model
-        species = data.get("species", None)
-        if species and isinstance(species, str) and species == "Mus musculus":
-            # Convert string species name to Species model
-            species = Species.HOUSE_MOUSE.model_dump()
-        if species and isinstance(species, dict) and species["name"] == "Mus musculus":
-            # Replace with the new Species model
-            species = Species.HOUSE_MOUSE.model_dump()
-        else:
-            raise ValueError("Species must be specified")
+        species, background_strain = self._process_species_and_strain(data)
 
-        if isinstance(species["registry"], dict):
-            species = upgrade_registry(species)
         alleles = data.get("alleles", [])
-
-        # Handle upgrade to new Strain
-        background_strain = self._get_background_strain(data)
-        if isinstance(background_strain["registry"], dict):
-            background_strain = upgrade_registry(background_strain)
 
         # Add object_type
         breeding_info = self._get_breeding_info(data)

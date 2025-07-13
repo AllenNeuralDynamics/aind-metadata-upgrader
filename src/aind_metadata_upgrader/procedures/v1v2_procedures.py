@@ -443,7 +443,17 @@ def upgrade_antibody(data: dict) -> dict:
             ).model_dump()
         elif upgraded_data["immunolabel_class"].lower() == "secondary":
             # Upgrade to FluorescentStain
-            # Example data: {'name': 'Alexa Fluor 488 goat anti-chicken IgY (H+L)', 'source': {'name': 'Thermo Fisher Scientific', 'abbreviation': None, 'registry': {'name': 'Research Organization Registry', 'abbreviation': 'ROR'}, 'registry_identifier': '03x1ewr52'}, 'rrid': {'name': 'Alexa Fluor 488 goat anti-chicken IgY (H+L)', 'abbreviation': None, 'registry': {'name': 'Research Resource Identifiers', 'abbreviation': 'RRID'}, 'registry_identifier': 'A11039'}, 'lot_number': '2420700', 'expiration_date': None, 'immunolabel_class': 'Secondary', 'fluorophore': 'Alexa Fluor 488', 'mass': '4', 'mass_unit': 'microgram', 'notes': None}
+            # Example data: {
+            #   'name': 'Alexa Fluor 488 goat anti-chicken IgY (H+L)',
+            #   'source': {'name': 'Thermo Fisher Scientific', 'abbreviation': None,
+            #              'registry': {'name': 'Research Organization Registry', 'abbreviation': 'ROR'},
+            #              'registry_identifier': '03x1ewr52'},
+            #   'rrid': {'name': 'Alexa Fluor 488 goat anti-chicken IgY (H+L)', 'abbreviation': None,
+            #            'registry': {'name': 'Research Resource Identifiers', 'abbreviation': 'RRID'},
+            #            'registry_identifier': 'A11039'},
+            #   'lot_number': '2420700', 'expiration_date': None, 'immunolabel_class': 'Secondary',
+            #   'fluorophore': 'Alexa Fluor 488', 'mass': '4', 'mass_unit': 'microgram', 'notes': None
+            # }
 
             if upgraded_data["rrid"]["name"] == "Alexa Fluor 488 goat anti-chicken IgY (H+L)":
                 probe = ProteinProbe(
