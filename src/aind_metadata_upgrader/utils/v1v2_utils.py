@@ -380,7 +380,10 @@ def upgrade_positioned_device(data: dict, relative_position_list: list = []) -> 
             data["coordinate_system"] = CoordinateSystemLibrary.SIPE_CAMERA_RBF
         elif "Located at the center of the screen" in origin:
             data["coordinate_system"] = CoordinateSystemLibrary.SIPE_MONITOR_RTF
-        elif "Located on the front mounting flange face. Right and left conventions are relative to the front side of the speaker, ie. from the subject's perspective"  in origin:
+        elif (
+            "Located on the front mounting flange face. Right and left conventions are relative to the front side of the speaker, ie. from the subject's perspective"
+            in origin
+        ):
             data["coordinate_system"] = CoordinateSystemLibrary.SIPE_SPEAKER_LTF
         else:
             print(relative_position)
@@ -835,6 +838,9 @@ PAIRED_INSTRUMENT_ACQUISITION_IDS = [
 
 def repair_instrument_id_mismatch(data: dict) -> dict:
     """Repair mismatched instrument IDs between acquisition and instrument sections"""
+
+    if "instrument" not in data or "acquisition" not in data:
+        return data
 
     modalities = data.get("data_description", {}).get("modalities", [])
     if any(modality["abbreviation"] == "SPIM" for modality in modalities):
