@@ -46,7 +46,7 @@ client = MetadataDbClient(
 #     data_asset_record_ids=ids,
 # )
 
-run_one = None
+run_one = "31e6efb6-1691-446f-8ed4-fa50d2630a3d"
 upsert = False
 
 
@@ -90,6 +90,11 @@ class TestUpgrade(unittest.TestCase):
                         print(f"Skip metadata validation: {skip_metadata_validation}")
                         upgraded = Upgrade(data_dict, skip_metadata_validation)
                         self.assertIsNotNone(upgraded)
+                        
+                        # Save the upgraded file to the current directory
+                        upgraded_file_path = os.path.join(dir_path, f"upgraded_{json_file}")
+                        with open(upgraded_file_path, "w") as upgraded_file:
+                            upgraded_file.write(upgraded.metadata.model_dump_json())
 
                         if upsert and upgraded and not fake:
                             location = upgraded.metadata.location
