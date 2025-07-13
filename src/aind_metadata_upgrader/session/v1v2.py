@@ -37,7 +37,7 @@ from aind_data_schema.components.coordinates import (
     Scale,
     Translation,
 )
-from aind_data_schema.components.identifiers import Code
+from aind_data_schema.components.identifiers import Code, Software
 from aind_data_schema.core.acquisition import (
     Acquisition,
     AcquisitionSubjectDetails,
@@ -817,11 +817,22 @@ class SessionV1V2(CoreUpgrader):
         code = None
         if epoch.get("script"):
             script_data = epoch["script"]
+            software = epoch["software"]
+
+            if software:
+                core_dependency = Software(
+                    name=software.get("name", "unknown"),
+                    version=software.get("version", None),
+                )
+            else:
+                core_dependency = None
+
             code = Code(
                 name=script_data.get("name", "Unknown Script"),
                 version=script_data.get("version", "unknown"),
                 url=script_data.get("url", "unknown") or "",
                 parameters=script_data.get("parameters", {}),
+                core_dependency=core_dependency,
             )
 
         return StimulusEpoch(
