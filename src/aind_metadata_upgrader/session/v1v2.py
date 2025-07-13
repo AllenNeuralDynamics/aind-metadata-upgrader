@@ -19,7 +19,9 @@ from aind_data_schema.components.configs import (
     MriScanSequence,
     PatchCordConfig,
     PlanarImage,
+    PlanarImageStack,
     Plane,
+    PowerFunction,
     ProbeConfig,
     SampleChamberConfig,
     ScanType,
@@ -27,6 +29,7 @@ from aind_data_schema.components.configs import (
     SlapPlane,
     SpeakerConfig,
     TriggerType,
+    ImagingConfig,
 )
 from aind_data_schema.components.coordinates import (
     Affine,
@@ -34,7 +37,7 @@ from aind_data_schema.components.coordinates import (
     Scale,
     Translation,
 )
-from aind_data_schema.components.identifiers import Code, Person
+from aind_data_schema.components.identifiers import Code
 from aind_data_schema.core.acquisition import (
     Acquisition,
     AcquisitionSubjectDetails,
@@ -45,6 +48,7 @@ from aind_data_schema.core.acquisition import (
 from aind_data_schema.components.connections import (
     Connection,
 )
+from aind_data_schema_models.brain_atlas import BrainStructureModel
 from aind_data_schema_models.devices import ImmersionMedium
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.stimulus_modality import StimulusModality
@@ -459,6 +463,16 @@ class SessionV1V2(CoreUpgrader):
 
     def _create_ophys_components(self, stream: Dict, light_sources: List, detectors: List) -> tuple:
         """Create channels and images for ophys/pophys modality"""
+        # Check if we have ophys_fovs or stack_parameters
+        if stream.get("ophys_fovs"):
+            return self._create_ophys_fov_components(stream, light_sources, detectors)
+        elif stream.get("stack_parameters"):
+            return self._create_stack_components(stream, light_sources, detectors)
+        else:
+            return [], []
+
+    def _create_ophys_fov_components(self, stream: Dict, light_sources: List, detectors: List) -> tuple:
+        """Create channels and PlanarImage objects from ophys_fovs"""
         channels = []
         images = []
 
@@ -487,6 +501,92 @@ class SessionV1V2(CoreUpgrader):
                 planes=[plane], image_to_acquisition_transform=[], channel_name=channel["channel_name"]
             ).model_dump()
             images.append(image)
+
+        return channels, images
+
+    def _create_stack_components(self, stream: Dict, light_sources: List, detectors: List) -> tuple:
+        """Create channels and PlanarImageStack objects from stack_parameters"""
+        channels = []
+        images = []
+
+        stack_params = stream.get("stack_parameters", {})
+        stack_channels = stack_params.get("channels", [])
+
+        # Create a detector lookup for efficiency
+        detector_lookup = {d.get("name"): d for d in detectors}
+        light_source_lookup = {ls.get("name"): ls for ls in light_sources}
+
+        for stack_channel in stack_channels:
+            # Find matching detector
+            detector_name = stack_channel.get("detector_name")
+            detector_data = detector_lookup.get(detector_name)
+            if detector_data:
+                exposure_time = (
+                    float(detector_data.get("exposure_time", -1)) if detector_data.get("exposure_time") else -1
+                )
+                trigger_type = (
+                    TriggerType.INTERNAL if detector_data.get("trigger_type") == "Internal" else TriggerType.EXTERNAL
+                )
+                detector_config = DetectorConfig(
+                    device_name=detector_data.get("name", "Unknown Detector"),
+                    exposure_time=exposure_time,
+                    exposure_time_unit=TimeUnit.MS,
+                    trigger_type=trigger_type,
+                )
+            else:
+                detector_config = DetectorConfig(
+                    device_name=detector_name or "Unknown Detector",
+                    exposure_time=-1,
+                    exposure_time_unit=TimeUnit.MS,
+                    trigger_type=TriggerType.INTERNAL,
+                )
+
+            # Find matching light source
+            light_source_name = stack_channel.get("light_source_name")
+            light_source_data = light_source_lookup.get(light_source_name)
+            light_source_configs = []
+            if light_source_data:
+                light_source_config = self._upgrade_light_source_config(light_source_data)
+                if light_source_config:
+                    light_source_configs.append(light_source_config)
+
+            # Create channel
+            channel = Channel(
+                channel_name=stack_channel.get("channel_name", "Unknown Channel"),
+                detector=detector_config,
+                light_sources=light_source_configs,
+                emission_wavelength=stack_channel.get("emission_wavelength"),
+                emission_wavelength_unit=stack_channel.get("emission_wavelength_unit"),
+            )
+            channels.append(channel.model_dump())
+
+            # Create plane for the stack
+            targeted_structure = upgrade_targeted_structure(stack_params.get("targeted_structure", "unknown"))
+
+            plane = Plane(
+                depth=float(stack_channel.get("start_depth", 0)),
+                depth_unit=SizeUnit.UM,
+                power=float(stack_channel.get("excitation_power", 0)),
+                power_unit=PowerUnit.PERCENT,
+                targeted_structure=targeted_structure,
+            )
+
+            ap = stack_channel.get("fov_coordinate_ap", 0)
+            ml = stack_channel.get("fov_coordinate_ml", 0)
+            transform = [Translation(translation=[ap, ml, 0])]
+
+            # Create PlanarImageStack
+            image = PlanarImageStack(
+                channel_name=stack_channel.get("channel_name", "Unknown Channel"),
+                planes=[plane],
+                image_to_acquisition_transform=transform,
+                power_function=PowerFunction.CONSTANT,  # Assuming constant for now
+                depth_start=float(stack_channel.get("start_depth", 0)),
+                depth_end=float(stack_channel.get("end_depth", 0)),
+                depth_step=float(stack_params.get("step_size", 1)),
+                depth_unit=SizeUnit.UM,
+            )
+            images.append(image.model_dump())
 
         return channels, images
 
@@ -600,13 +700,12 @@ class SessionV1V2(CoreUpgrader):
         sampling_strategy = self._create_sampling_strategy(stream, modality)
 
         # Create the ImagingConfig
-        return {
-            "object_type": "Imaging config",
-            "device_name": "Imaging System",
-            "channels": channels,
-            "images": images,
-            "sampling_strategy": sampling_strategy,
-        }
+        return ImagingConfig(
+            device_name="Imaging System",
+            channels=channels,
+            images=images,
+            sampling_strategy=sampling_strategy,
+        ).model_dump()
 
     def _create_sample_chamber_config(self, device_name: str) -> Dict:
         """Create a basic SampleChamberConfig"""
