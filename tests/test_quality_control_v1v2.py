@@ -27,14 +27,7 @@ class TestQualityControlV1V2(unittest.TestCase):
         """Test upgrade_curation_metric function with invalid type - covers lines 31-32"""
         # Note: There's a bug in the original code - it uses 'type' instead of data.get("type")
         # This test covers the error case but the condition is always True due to the bug
-        data = {
-            "type": "not_curation",
-            "name": "test_metric",
-            "value": {
-                "curations": [],
-                "curation_history": []
-            }
-        }
+        data = {"type": "not_curation", "name": "test_metric", "value": {"curations": [], "curation_history": []}}
         with self.assertRaises(ValueError):
             upgrade_curation_metric(data, {}, "test_stage", [])
 
@@ -45,19 +38,12 @@ class TestQualityControlV1V2(unittest.TestCase):
             "value": 1.5,
             "description": "Test description",
             "reference": "Test reference",
-            "status_history": [{
-                "status": "Pass",
-                "timestamp": "2024-01-01T10:00:00Z",
-                "evaluator": "test_evaluator"
-            }],
-            "evaluated_assets": None  # Use None instead of empty list for single-asset metrics
+            "status_history": [{"status": "Pass", "timestamp": "2024-01-01T10:00:00Z", "evaluator": "test_evaluator"}],
+            "evaluated_assets": None,  # Use None instead of empty list for single-asset metrics
         }
-        modality = {
-            "name": "Extracellular electrophysiology",
-            "abbreviation": "ecephys"
-        }
+        modality = {"name": "Extracellular electrophysiology", "abbreviation": "ecephys"}
         result = upgrade_metric(data, modality, "Raw data", ["tag1"])
-        
+
         self.assertEqual(result["name"], "test_metric")
         self.assertEqual(result["value"], 1.5)
         self.assertEqual(result["modality"], modality)
@@ -70,31 +56,26 @@ class TestQualityControlV1V2(unittest.TestCase):
             "evaluations": [
                 {
                     "name": "test_evaluation",
-                    "modality": {
-                        "name": "Extracellular electrophysiology",
-                        "abbreviation": "ecephys"
-                    },
+                    "modality": {"name": "Extracellular electrophysiology", "abbreviation": "ecephys"},
                     "stage": "Raw data",
                     "metrics": [
                         {
                             "name": "test_metric",
                             "value": 1.0,
                             "description": "Test metric description",
-                            "status_history": [{
-                                "status": "Pass",
-                                "timestamp": "2024-01-01T10:00:00Z",
-                                "evaluator": "test_evaluator"
-                            }],
-                            "evaluated_assets": None
+                            "status_history": [
+                                {"status": "Pass", "timestamp": "2024-01-01T10:00:00Z", "evaluator": "test_evaluator"}
+                            ],
+                            "evaluated_assets": None,
                         }
-                    ]
+                    ],
                 }
             ],
-            "notes": "Test notes"
+            "notes": "Test notes",
         }
-        
+
         result = self.upgrader.upgrade(data, "2.0.6")
-        
+
         self.assertEqual(result["object_type"], "Quality control")
         self.assertEqual(len(result["metrics"]), 1)
         self.assertEqual(result["metrics"][0]["name"], "test_metric")
@@ -107,20 +88,14 @@ class TestQualityControlV1V2(unittest.TestCase):
         data = {
             "type": "curation",
             "name": "curation_metric",
-            "value": {
-                "curations": ["curation1", "curation2"],
-                "curation_history": [{"action": "approve"}]
-            },
+            "value": {"curations": ["curation1", "curation2"], "curation_history": [{"action": "approve"}]},
             "description": "Curation description",
             "reference": "Curation reference",
-            "evaluated_assets": ["asset1", "asset2"]
+            "evaluated_assets": ["asset1", "asset2"],
         }
-        
-        modality = {
-            "name": "Extracellular electrophysiology",
-            "abbreviation": "ecephys"
-        }
-        
+
+        modality = {"name": "Extracellular electrophysiology", "abbreviation": "ecephys"}
+
         # Due to the bug, this will likely raise an error, but it covers the function
         try:
             result = upgrade_curation_metric(data, modality, "Raw data", ["curation_tag"])
@@ -137,25 +112,19 @@ class TestQualityControlV1V2(unittest.TestCase):
             "evaluations": [
                 {
                     "name": "curation_evaluation",
-                    "modality": {
-                        "name": "Extracellular electrophysiology",
-                        "abbreviation": "ecephys"
-                    },
+                    "modality": {"name": "Extracellular electrophysiology", "abbreviation": "ecephys"},
                     "stage": "Raw data",
                     "metrics": [
                         {
                             "type": "curation",  # This triggers the curation metric path
                             "name": "curation_metric",
-                            "value": {
-                                "curations": ["approved"],
-                                "curation_history": []
-                            }
+                            "value": {"curations": ["approved"], "curation_history": []},
                         }
-                    ]
+                    ],
                 }
             ]
         }
-        
+
         # This test covers the path where metric has "type" field but will likely error
         # due to the bug in upgrade_curation_metric function
         try:

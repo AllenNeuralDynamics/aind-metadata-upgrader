@@ -27,7 +27,7 @@ class TestProcessingV1V2(unittest.TestCase):
             "start_date_time": "2024-01-01T10:00:00Z",
             "end_date_time": "2024-01-01T12:00:00Z",
             "output_location": "/path/to/output",
-            "notes": "Test notes"
+            "notes": "Test notes",
         }
         result = self.upgrader._convert_v1_process_to_v2(process_data, "Analysis")
         self.assertEqual(result["experimenters"], ["Test Analyst"])
@@ -39,7 +39,7 @@ class TestProcessingV1V2(unittest.TestCase):
             "code_url": "http://example.com",
             "code_version": "1.0",
             "start_date_time": "2024-01-01T10:00:00Z",
-            "end_date_time": "2024-01-01T12:00:00Z"
+            "end_date_time": "2024-01-01T12:00:00Z",
         }
         result = self.upgrader._convert_v1_process_to_v2(process_data, "Processing")
         self.assertEqual(result["notes"], "(v1v2 upgrade) Process type is unknown, no notes were provided.")
@@ -48,8 +48,9 @@ class TestProcessingV1V2(unittest.TestCase):
         """Test upgrade with analyses having duplicate names - covers lines 126-138"""
         # Reset the global names dictionary for this test
         from aind_metadata_upgrader.processing.v1v2 import names
+
         names.clear()
-        
+
         data = {
             "processing_pipeline": {
                 "data_processes": [
@@ -58,10 +59,10 @@ class TestProcessingV1V2(unittest.TestCase):
                         "code_url": "http://example.com",
                         "code_version": "1.0",
                         "start_date_time": "2024-01-01T10:00:00Z",
-                        "end_date_time": "2024-01-01T12:00:00Z"
+                        "end_date_time": "2024-01-01T12:00:00Z",
                     }
                 ],
-                "processor_full_name": "Test Processor"
+                "processor_full_name": "Test Processor",
             },
             "analyses": [
                 {
@@ -69,19 +70,19 @@ class TestProcessingV1V2(unittest.TestCase):
                     "code_url": "http://example.com",
                     "code_version": "1.0",
                     "start_date_time": "2024-01-01T10:00:00Z",
-                    "end_date_time": "2024-01-01T12:00:00Z"
+                    "end_date_time": "2024-01-01T12:00:00Z",
                 },
                 {
                     "name": "Analysis",
                     "code_url": "http://example.com",
                     "code_version": "1.0",
                     "start_date_time": "2024-01-01T10:00:00Z",
-                    "end_date_time": "2024-01-01T12:00:00Z"
-                }
-            ]
+                    "end_date_time": "2024-01-01T12:00:00Z",
+                },
+            ],
         }
         result = self.upgrader.upgrade(data, "2.0.78")
-        
+
         # Check that duplicate names are handled
         process_names = [proc["name"] for proc in result["data_processes"]]
         self.assertIn("Analysis_1", process_names)  # First processing process
@@ -92,8 +93,9 @@ class TestProcessingV1V2(unittest.TestCase):
         """Test upgrade with analyses having complex duplicate names - covers lines 132-135"""
         # Reset the global names dictionary for this test
         from aind_metadata_upgrader.processing.v1v2 import names
+
         names.clear()
-        
+
         # Create a scenario where processing creates "Analysis_1", "Analysis_2",
         # and then analyses has "Analysis" which should become "Analysis_3"
         # and another "Analysis" which should check if "Analysis_1" is in seen_names
@@ -105,17 +107,17 @@ class TestProcessingV1V2(unittest.TestCase):
                         "code_url": "http://example.com",
                         "code_version": "1.0",
                         "start_date_time": "2024-01-01T10:00:00Z",
-                        "end_date_time": "2024-01-01T12:00:00Z"
+                        "end_date_time": "2024-01-01T12:00:00Z",
                     },
                     {
                         "name": "Analysis",
                         "code_url": "http://example.com",
                         "code_version": "1.0",
                         "start_date_time": "2024-01-01T10:00:00Z",
-                        "end_date_time": "2024-01-01T12:00:00Z"
-                    }
+                        "end_date_time": "2024-01-01T12:00:00Z",
+                    },
                 ],
-                "processor_full_name": "Test Processor"
+                "processor_full_name": "Test Processor",
             },
             "analyses": [
                 {
@@ -123,19 +125,19 @@ class TestProcessingV1V2(unittest.TestCase):
                     "code_url": "http://example.com",
                     "code_version": "1.0",
                     "start_date_time": "2024-01-01T10:00:00Z",
-                    "end_date_time": "2024-01-01T12:00:00Z"
+                    "end_date_time": "2024-01-01T12:00:00Z",
                 },
                 {
                     "name": "Analysis",  # This will try Analysis_1, Analysis_2, Analysis_3, finally use Analysis_4
                     "code_url": "http://example.com",
                     "code_version": "1.0",
                     "start_date_time": "2024-01-01T10:00:00Z",
-                    "end_date_time": "2024-01-01T12:00:00Z"
-                }
-            ]
+                    "end_date_time": "2024-01-01T12:00:00Z",
+                },
+            ],
         }
         result = self.upgrader.upgrade(data, "2.0.78")
-        
+
         # Check that the while loop incremented properly when Analysis_1, Analysis_2, Analysis_3 were already seen
         process_names = [proc["name"] for proc in result["data_processes"]]
         self.assertIn("Analysis_1", process_names)  # First processing process
