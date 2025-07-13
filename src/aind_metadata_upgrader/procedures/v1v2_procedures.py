@@ -132,8 +132,6 @@ def upgrade_coordinate_craniotomy(data: dict) -> dict:
     global coordinate_system_required
     coordinate_system_required = True
 
-    print(data)
-
     # Move ml/ap position into Translation object, check units
     ml = float(data["craniotomy_coordinates_ml"])
     ap = float(data["craniotomy_coordinates_ap"])

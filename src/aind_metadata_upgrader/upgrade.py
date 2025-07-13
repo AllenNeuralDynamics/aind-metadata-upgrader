@@ -86,15 +86,16 @@ class Upgrade:
                 if target_key not in core_files:
                     core_files[target_key] = self.upgrade_core_file(core_file)
 
-        for trigger_file, required_files in REQUIRED_FILE_SETS.items():
-            if trigger_file in core_files.keys():
-                if not all(
-                    required_file in core_files and core_files[required_file] is not None
-                    for required_file in required_files
-                ):
-                    raise ValueError(
-                        f"All required core files {required_files} were not found. This asset cannot be upgraded."
-                    )
+        if not self.skip_metadata_validation:
+            for trigger_file, required_files in REQUIRED_FILE_SETS.items():
+                if trigger_file in core_files.keys():
+                    if not all(
+                        required_file in core_files and core_files[required_file] is not None
+                        for required_file in required_files
+                    ):
+                        raise ValueError(
+                            f"All required core files {required_files} were not found. This asset cannot be upgraded."
+                        )
 
         self.upgrade_metadata(core_files)
 
