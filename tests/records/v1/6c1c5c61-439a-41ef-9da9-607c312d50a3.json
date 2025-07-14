@@ -1,0 +1,490 @@
+{
+    "_id": "6c1c5c61-439a-41ef-9da9-607c312d50a3",
+    "acquisition": null,
+    "created": "2024-07-09T16:00:56.116662",
+    "data_description": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "1.0.0",
+        "license": "CC-BY-4.0",
+        "platform": {
+            "name": "Behavior platform",
+            "abbreviation": "behavior"
+        },
+        "subject_id": "614910",
+        "creation_time": "2022-05-12T17:02:11-07:00",
+        "label": null,
+        "name": "behavior_614910_2022-05-12_17-02-11",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": "Shawn Olsen"
+            }
+        ],
+        "data_level": "raw",
+        "group": null,
+        "investigators": [
+            {
+                "name": "Shawn Olsen",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            }
+        ],
+        "project_name": "Dynamic Routing",
+        "restrictions": null,
+        "modality": [
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            }
+        ],
+        "related_data": [],
+        "data_summary": null
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": {
+        "Code Ocean": [
+            "54fbdfda-bb09-40ae-aa1b-0526e78ee179"
+        ]
+    },
+    "instrument": null,
+    "last_modified": "2024-11-26T18:59:37.356189Z",
+    "location": "s3://aind-private-data-prod-o5171v/behavior_614910_2022-05-12_17-02-11",
+    "metadata_status": "Invalid",
+    "name": "behavior_614910_2022-05-12_17-02-11",
+    "procedures": null,
+    "processing": {
+        "analyses": [],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "notes": null,
+        "processing_pipeline": {
+            "data_processes": [],
+            "note": null,
+            "pipeline_url": null,
+            "pipeline_version": null,
+            "processor_full_name": "AIND Scientific Computing"
+        },
+        "schema_version": "0.4.8"
+    },
+    "rig": {
+        "additional_devices": [],
+        "calibrations": [],
+        "cameras": [],
+        "ccf_coordinate_transform": null,
+        "daqs": [],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/rig.py",
+        "detectors": [],
+        "digital_micromirror_devices": [],
+        "enclosure": null,
+        "ephys_assemblies": [],
+        "fiber_assemblies": [],
+        "filters": [],
+        "laser_assemblies": [],
+        "lenses": [],
+        "light_sources": [],
+        "modalities": [
+            {
+                "abbreviation": "behavior",
+                "name": "Behavior"
+            }
+        ],
+        "modification_date": "2024-04-01",
+        "mouse_platform": {
+            "additional_settings": {},
+            "date_surface_replaced": null,
+            "decoder": null,
+            "device_type": "Disc",
+            "encoder": null,
+            "encoder_firmware": null,
+            "manufacturer": null,
+            "model": null,
+            "name": "Mouse Platform",
+            "notes": "Radius is the distance from the center of the wheel to the mouse.",
+            "output": null,
+            "path_to_cad": null,
+            "port_index": null,
+            "radius": "4.69",
+            "radius_unit": "centimeter",
+            "serial_number": null,
+            "surface_material": null
+        },
+        "notes": null,
+        "objectives": [],
+        "origin": null,
+        "patch_cords": [],
+        "pockels_cells": [],
+        "polygonal_scanners": [],
+        "rig_axes": null,
+        "rig_id": "342_BEHDEV.B-1_20240401",
+        "schema_version": "0.3.2",
+        "stick_microscopes": [],
+        "stimulus_devices": [
+            {
+                "additional_settings": {},
+                "brightness": 43,
+                "contrast": 50,
+                "device_type": "Monitor",
+                "height": 1200,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "ASUS",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "00bxkz165"
+                },
+                "model": "PA248",
+                "name": "Stim",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "position": null,
+                "refresh_rate": 60,
+                "serial_number": null,
+                "size_unit": "pixel",
+                "viewing_distance": "15.3",
+                "viewing_distance_unit": "centimeter",
+                "width": 1920
+            },
+            {
+                "device_type": "Reward delivery",
+                "reward_spouts": [
+                    {
+                        "additional_settings": {},
+                        "device_type": "Reward spout",
+                        "lick_sensor": {
+                            "additional_settings": {},
+                            "device_type": "Lick Sensor",
+                            "manufacturer": {
+                                "abbreviation": null,
+                                "name": "Other",
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": null,
+                            "name": "Lick Sensor",
+                            "notes": null,
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "serial_number": null
+                        },
+                        "lick_sensor_type": "Piezoelectric",
+                        "manufacturer": {
+                            "abbreviation": null,
+                            "name": "Hamilton",
+                            "registry": null,
+                            "registry_identifier": null
+                        },
+                        "model": "8649-01 Custom",
+                        "name": "Reward Spout",
+                        "notes": "Spout diameter is for inner diameter. Outer diameter is 1.575mm. ",
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "serial_number": null,
+                        "side": "Center",
+                        "solenoid_valve": {
+                            "additional_settings": {},
+                            "device_type": "Solenoid Valve",
+                            "manufacturer": {
+                                "abbreviation": null,
+                                "name": "NResearch Inc",
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": "161K011",
+                            "name": "Solenoid Valve",
+                            "notes": "Model number is product number.",
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "serial_number": null
+                        },
+                        "spout_diameter": "0.672",
+                        "spout_diameter_unit": "millimeter",
+                        "spout_position": null
+                    }
+                ],
+                "stage_type": null
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Speaker",
+                "manufacturer": {
+                    "abbreviation": "ISL",
+                    "name": "ISL Products International",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "SPK-I-81345",
+                "name": "Speaker",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "position": null,
+                "serial_number": null
+            }
+        ]
+    },
+    "schema_version": "0.2.19",
+    "session": {
+        "active_mouse_platform": false,
+        "anaesthesia": null,
+        "animal_weight_post": null,
+        "animal_weight_prior": null,
+        "calibrations": [],
+        "data_streams": [],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/session.py",
+        "experimenter_full_name": [
+            "Jackie Kuyat"
+        ],
+        "iacuc_protocol": "2104",
+        "maintenance": [],
+        "mouse_platform_name": "Mouse Platform",
+        "notes": null,
+        "protocol_id": [],
+        "reward_consumed_total": "2.68",
+        "reward_consumed_unit": "milliliter",
+        "reward_delivery": {
+            "notes": null,
+            "reward_solution": "Water",
+            "reward_spouts": [
+                {
+                    "side": "Center",
+                    "starting_position": {
+                        "device_axes": [
+                            {
+                                "direction": "Positive is from the centerline of the subject's mouth towards its right",
+                                "name": "X"
+                            },
+                            {
+                                "direction": "Positive is from the centerline of the subject's mouth towards the sky",
+                                "name": "Y"
+                            },
+                            {
+                                "direction": "Positive is from the anterior-most part of the subject's mouth towards its tail",
+                                "name": "Z"
+                            }
+                        ],
+                        "device_origin": "Located on the tip of the spout (which is also the lick sensor), centered in front of the subject's mouth",
+                        "device_position_transformations": [
+                            {
+                                "translation": [
+                                    "0.0",
+                                    "0.0",
+                                    "0.0"
+                                ],
+                                "type": "translation"
+                            }
+                        ],
+                        "notes": null
+                    },
+                    "variable_position": false
+                }
+            ]
+        },
+        "rig_id": "342_BEHDEV.B-1_20240401",
+        "schema_version": "0.2.1",
+        "session_end_time": "2022-05-12T18:02:26.689631-07:00",
+        "session_start_time": "2022-05-12T17:02:11-07:00",
+        "session_type": "training session with behavioral task data (day 31), without precise timing information",
+        "stimulus_epochs": [
+            {
+                "light_source_config": null,
+                "notes": "",
+                "output_parameters": {
+                    "block_metrics": {
+                        "0": {
+                            "block_index": 0,
+                            "block_stim_rewarded": "sound1",
+                            "dprime_other_modal_go": 1.690308635544163,
+                            "dprime_same_modal": 3.77901992066686,
+                            "hit_count": 17
+                        },
+                        "1": {
+                            "block_index": 1,
+                            "block_stim_rewarded": "vis1",
+                            "dprime_other_modal_go": 1.805858226426301,
+                            "dprime_same_modal": 3.0763413930892485,
+                            "hit_count": 17
+                        },
+                        "2": {
+                            "block_index": 2,
+                            "block_stim_rewarded": "sound1",
+                            "dprime_other_modal_go": 2.4559009101846447,
+                            "dprime_same_modal": 3.4792322964173557,
+                            "hit_count": 18
+                        },
+                        "3": {
+                            "block_index": 3,
+                            "block_stim_rewarded": "vis1",
+                            "dprime_other_modal_go": 0.7515975844501357,
+                            "dprime_same_modal": 2.8747703835676504,
+                            "hit_count": 17
+                        },
+                        "4": {
+                            "block_index": 4,
+                            "block_stim_rewarded": "sound1",
+                            "dprime_other_modal_go": 1.1412095834393083,
+                            "dprime_same_modal": 3.777237692477209,
+                            "hit_count": 16
+                        },
+                        "5": {
+                            "block_index": 5,
+                            "block_stim_rewarded": "vis1",
+                            "dprime_other_modal_go": 0.31807525221456,
+                            "dprime_same_modal": 3.0882808912288375,
+                            "hit_count": 19
+                        }
+                    },
+                    "task_version": "stage 5 tone ori"
+                },
+                "reward_consumed_during_epoch": "2.68",
+                "reward_consumed_unit": "milliliter",
+                "script": {
+                    "name": "DynamicRouting1",
+                    "parameters": {},
+                    "url": "https://github.com/samgale/DynamicRoutingTask/blob/main/DynamicRouting1.py",
+                    "version": "unknown"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "parameters": {},
+                        "url": "https://www.psychopy.org/",
+                        "version": "2022.1.2"
+                    }
+                ],
+                "speaker_config": {
+                    "name": "Speaker",
+                    "volume": "68.0",
+                    "volume_unit": "decibels"
+                },
+                "stimulus_device_names": [
+                    "Stim",
+                    "Speaker"
+                ],
+                "stimulus_end_time": "2022-05-12T18:02:26.689631-07:00",
+                "stimulus_modalities": [
+                    "Visual",
+                    "Auditory"
+                ],
+                "stimulus_name": "DynamicRouting1",
+                "stimulus_parameters": [
+                    {
+                        "notes": null,
+                        "stimulus_name": "target and non-target visual grating stimuli",
+                        "stimulus_parameters": {
+                            "orientations_deg": [
+                                0,
+                                90
+                            ],
+                            "phase": [
+                                0,
+                                0.5
+                            ],
+                            "position_xy": [
+                                0,
+                                0
+                            ],
+                            "size_deg": 50,
+                            "spatial_frequency_cycles_per_deg": 0.04,
+                            "temporal_frequency_cycles_per_sec": 2,
+                            "type": "sqr"
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    },
+                    {
+                        "amplitude_modulation_frequency": 70,
+                        "bandpass_filter_type": null,
+                        "bandpass_high_frequency": null,
+                        "bandpass_low_frequency": null,
+                        "bandpass_order": null,
+                        "frequency_unit": "hertz",
+                        "notes": null,
+                        "sample_frequency": "10000",
+                        "sitmulus_name": "target amplitude-modulated noise stimulus",
+                        "stimulus_type": "Auditory Stimulation"
+                    },
+                    {
+                        "amplitude_modulation_frequency": 12,
+                        "bandpass_filter_type": null,
+                        "bandpass_high_frequency": null,
+                        "bandpass_low_frequency": null,
+                        "bandpass_order": null,
+                        "frequency_unit": "hertz",
+                        "notes": null,
+                        "sample_frequency": "10000",
+                        "sitmulus_name": "non-target amplitude-modulated noise stimulus",
+                        "stimulus_type": "Auditory Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2022-05-12T17:02:11-07:00",
+                "trials_finished": 516,
+                "trials_rewarded": 134,
+                "trials_total": 516
+            }
+        ],
+        "subject_id": "614910",
+        "weight_unit": "gram"
+    },
+    "subject": {
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": {
+            "breeding_group": "C57BL6J(VB)",
+            "maternal_genotype": "wt/wt",
+            "maternal_id": "596765",
+            "paternal_genotype": "wt/wt",
+            "paternal_id": "599362"
+        },
+        "date_of_birth": "2021-12-21",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "genotype": "wt/wt",
+        "housing": null,
+        "notes": null,
+        "restrictions": null,
+        "rrid": null,
+        "schema_version": "0.5.5",
+        "sex": "Male",
+        "source": {
+            "abbreviation": "AI",
+            "name": "Allen Institute",
+            "registry": {
+                "abbreviation": "ROR",
+                "name": "Research Organization Registry"
+            },
+            "registry_identifier": "03cpe7c52"
+        },
+        "species": {
+            "abbreviation": null,
+            "name": "Mus musculus",
+            "registry": {
+                "abbreviation": "NCBI",
+                "name": "National Center for Biotechnology Information"
+            },
+            "registry_identifier": "10090"
+        },
+        "subject_id": "614910",
+        "wellness_reports": []
+    }
+}

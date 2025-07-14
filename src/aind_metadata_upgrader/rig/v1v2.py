@@ -126,6 +126,8 @@ class RigUpgraderV1V2(CoreUpgrader):
 
     def _get_components_connections(self, data: dict) -> tuple[Optional[list], list]:
         """Pull components from data"""
+        global saved_connections
+        saved_connections = []
 
         mouse_platform = data.get("mouse_platform", None)
         mouse_platform = upgrade_mouse_platform(mouse_platform) if mouse_platform else None
