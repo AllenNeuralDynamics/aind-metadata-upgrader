@@ -819,6 +819,12 @@ class SessionV1V2(CoreUpgrader):
             script_data = epoch["script"]
             software = epoch["software"]
 
+            if isinstance(software, list):
+                if len(software) == 1:
+                    software = software[0]
+                else:
+                    raise ValueError("Multiple software entries found, cannot upgrade")
+
             if software:
                 core_dependency = Software(
                     name=software.get("name", "unknown"),
