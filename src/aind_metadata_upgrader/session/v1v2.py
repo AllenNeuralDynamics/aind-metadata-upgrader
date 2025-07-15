@@ -867,8 +867,6 @@ class SessionV1V2(CoreUpgrader):
             else:
                 core_dependency = None
 
-            print(stimulus_parameters)
-
             code = Code(
                 name=script_data.get("name", "Unknown Script"),
                 version=script_data.get("version", "unknown"),
