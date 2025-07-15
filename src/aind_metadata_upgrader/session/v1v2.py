@@ -828,17 +828,21 @@ class SessionV1V2(CoreUpgrader):
         if epoch.get("script"):
             script_data = epoch["script"]
 
-            stimulus_parameters = script_data.get("stimulus_parameters", [])
-            if len(stimulus_parameters) == 1:
-                stimulus_parameters = stimulus_parameters[0]
-            elif len(stimulus_parameters) > 1:
-                split_parameters = {}
-                for params in stimulus_parameters:
-                    split_parameters[params["stimulus_name"]] = params
-                stimulus_parameters = split_parameters
+            stimulus_parameters = epoch.get("stimulus_parameters", [])
+            if isinstance(stimulus_parameters, list):
+                if len(stimulus_parameters) == 1:
+                    stimulus_parameters = stimulus_parameters[0]
+                elif len(stimulus_parameters) > 1:
+                    split_parameters = {}
+                    for params in stimulus_parameters:
+                        split_parameters[params["stimulus_name"]] = params
+                    stimulus_parameters = split_parameters
 
             if not stimulus_parameters:
                 stimulus_parameters = None
+
+            if "parameters" in script_data:
+                stimulus_parameters = (stimulus_parameters if stimulus_parameters else {}) | script_data["parameters"]
 
             software = epoch["software"]
 
@@ -862,6 +866,8 @@ class SessionV1V2(CoreUpgrader):
                 )
             else:
                 core_dependency = None
+
+            print(stimulus_parameters)
 
             code = Code(
                 name=script_data.get("name", "Unknown Script"),
