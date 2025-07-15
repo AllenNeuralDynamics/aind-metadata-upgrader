@@ -214,7 +214,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         # Check that we're going to pass the connection validation
         # Flatten the list of device names from all connections
         connection_names = [name for conn in connections for name in [conn["source_device"], conn["target_device"]]]
-        
+
         # TODO: This needs to properly handle nested components, e.g. in assemblies
         component_names = [comp["name"] for comp in components]
 

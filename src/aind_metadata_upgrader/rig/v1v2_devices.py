@@ -252,7 +252,9 @@ def upgrade_daq_channels(device_data: dict) -> list:
     # Drop duplicate channel dictionaries
     seen_channels = set()
     upgraded_channels = [
-        channel for channel in upgraded_channels if tuple(channel.items()) not in seen_channels and not seen_channels.add(tuple(channel.items()))
+        channel
+        for channel in upgraded_channels
+        if tuple(channel.items()) not in seen_channels and not seen_channels.add(tuple(channel.items()))
     ]
 
     return upgraded_channels

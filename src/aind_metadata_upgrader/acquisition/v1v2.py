@@ -130,15 +130,9 @@ class AcquisitionV1V2(CoreUpgrader):
         # Upgrade tiles to data streams
         if session_start_time and session_end_time:
             start_str = (
-                session_start_time.isoformat()
-                if hasattr(session_start_time, 'isoformat')
-                else str(session_start_time)
+                session_start_time.isoformat() if hasattr(session_start_time, "isoformat") else str(session_start_time)
             )
-            end_str = (
-                session_end_time.isoformat()
-                if hasattr(session_end_time, 'isoformat')
-                else str(session_end_time)
-            )
+            end_str = session_end_time.isoformat() if hasattr(session_end_time, "isoformat") else str(session_end_time)
             data_streams = upgrade_tiles_to_data_stream(
                 tiles,
                 start_str,
