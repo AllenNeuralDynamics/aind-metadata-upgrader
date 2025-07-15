@@ -17,11 +17,10 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     remove,
 )
 
-saved_connections = []
 
-
-def upgrade_detector(data: dict) -> dict:
+def upgrade_detector(data: dict) -> tuple[dict, list]:
     """Upgrade detector data to the new model."""
+    connections = []
 
     data = basic_device_checks(data, "Detector")
 
@@ -34,7 +33,7 @@ def upgrade_detector(data: dict) -> dict:
     # Save computer_name connection
     if "computer_name" in data:
         if data["computer_name"]:
-            saved_connections.append(
+            connections.append(
                 {
                     "send": data["name"],
                     "receive": data["computer_name"],
@@ -57,7 +56,7 @@ def upgrade_detector(data: dict) -> dict:
     else:
         detector = Detector(**data)
 
-    return detector.model_dump()
+    return detector.model_dump(), connections
 
 
 def upgrade_motorized_stages(data: dict) -> dict:
@@ -105,8 +104,9 @@ def upgrade_additional_devices(data: dict) -> dict:
     return device.model_dump()
 
 
-def upgrade_daq_devices(device: dict) -> dict:
+def upgrade_daq_devices(device: dict) -> tuple[dict, list]:
     """Upgrade DAQ devices to the new model."""
+    connections = []
 
     # Perform basic device upgrades
     device_data = basic_device_checks(device, "DAQ Device")
@@ -117,7 +117,7 @@ def upgrade_daq_devices(device: dict) -> dict:
     # Handle computer_name connection if present
     if "computer_name" in device_data:
         if device_data["computer_name"]:
-            saved_connections.append(
+            connections.append(
                 {
                     "send": device_data["name"],
                     "receive": device_data["computer_name"],
@@ -151,11 +151,11 @@ def upgrade_daq_devices(device: dict) -> dict:
 
             # Save connection information based on channel type
             connection = build_connection_from_channel(channel, device_data["name"])
-            saved_connections.append(connection.model_dump())
+            connections.append(connection.model_dump())
 
         device_data["channels"] = upgraded_channels
 
     # Create the DAQ device
     daq_device = DAQDevice(**device_data)
 
-    return daq_device.model_dump()
+    return daq_device.model_dump(), connections

@@ -119,7 +119,6 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
     def _get_components_connections(self, data: dict) -> tuple[Optional[list], list]:
         """Pull components from data"""
-
         saved_connections = []
 
         # Note we are ignoring optical_tables, which are gone
@@ -132,7 +131,9 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         detectors = data.get("detectors", [])
         detectors = self._none_to_list(detectors)
-        detectors = [upgrade_detector(detector) for detector in detectors]
+        for detector in detectors:
+            detector, connections = upgrade_detector(detector)
+            saved_connections.extend(connections)
 
         light_sources = data.get("light_sources", [])
         light_sources = self._none_to_list(light_sources)
@@ -175,7 +176,9 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         del data["com_ports"]
 
         daqs = self._none_to_list(data.get("daqs", []))
-        daqs = [upgrade_daq_devices(daq) for daq in daqs]
+        for daq in daqs:
+            daq, connections = upgrade_daq_devices(daq)
+            saved_connections.extend(connections)
         del data["daqs"]
 
         # Compile components list
