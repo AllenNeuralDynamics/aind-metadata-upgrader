@@ -51,15 +51,6 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_software,
 )
 
-# Global variable for backward compatibility, but prefer passing connections explicitly
-saved_connections = []
-
-
-def set_connections_list(connections_list: list):
-    """Set the connections list to use for storing connections during upgrades."""
-    global saved_connections
-    saved_connections = connections_list
-
 
 def upgrade_generic_device(data: dict) -> dict:
     """Upgrade Encodder object from v1.x to v2.0."""
@@ -73,10 +64,11 @@ def upgrade_generic_device(data: dict) -> dict:
     return encoder.model_dump()
 
 
-def upgrade_wheel(data: dict) -> dict:
+def upgrade_wheel(data: dict) -> tuple[dict, list]:
     """Upgrade a Wheel object from v1.x to v2.0."""
 
     data = basic_device_checks(data, "Wheel")
+    connections = []
 
     remove(data, "date_surface_replaced")
     remove(data, "surface_material")
@@ -95,7 +87,7 @@ def upgrade_wheel(data: dict) -> dict:
                 target_device=data["name"],
                 target_port=encoder_output["channel_name"],
             )
-            saved_connections.append(connection.model_dump())
+            connections.append(connection.model_dump())
         del data["encoder_output"]
 
     if "brake_output" in data and data["brake_output"]:
@@ -107,7 +99,7 @@ def upgrade_wheel(data: dict) -> dict:
                 target_device=data["name"],
                 target_port=brake_output["channel_name"],
             )
-            saved_connections.append(connection.model_dump())
+            connections.append(connection.model_dump())
         del data["brake_output"]
 
     if "torque_output" in data and data["torque_output"]:
@@ -119,14 +111,14 @@ def upgrade_wheel(data: dict) -> dict:
                 target_device=data["name"],
                 target_port=torque_output["channel_name"],
             )
-            saved_connections.append(connection.model_dump())
+            connections.append(connection.model_dump())
         del data["torque_output"]
 
     wheel = Wheel(
         **data,
     )
 
-    return wheel.model_dump()
+    return wheel.model_dump(), connections
 
 
 def upgrade_disc(data: dict) -> dict:
@@ -194,7 +186,7 @@ def upgrade_arena(data: dict) -> dict:
     return arena.model_dump()
 
 
-def upgrade_mouse_platform(data: dict) -> dict:
+def upgrade_mouse_platform(data: dict) -> tuple[dict, list]:
     """Upgrade mouse platform data from v1.x to v2.0."""
 
     data = basic_device_checks(data, "Mouse platform")
@@ -215,20 +207,21 @@ def upgrade_mouse_platform(data: dict) -> dict:
     if data["device_type"] == "Wheel":
         return upgrade_wheel(data)
     elif data["device_type"] == "Disc":
-        return upgrade_disc(data)
+        return upgrade_disc(data), []
     elif data["device_type"] == "Treadmill":
-        return upgrade_treadmill(data)
+        return upgrade_treadmill(data), []
     elif data["device_type"] == "Tube":
-        return upgrade_tube(data)
+        return upgrade_tube(data), []
     elif data["device_type"] == "Arena":
-        return upgrade_arena(data)
+        return upgrade_arena(data), []
     else:
         raise ValueError(f"Unsupported mouse platform type: {data['device_type']}")
 
 
-def upgrade_daq_channels(device_data: dict) -> list:
+def upgrade_daq_channels(device_data: dict) -> tuple[list, list]:
     """Upgrade DAQ device channels and save connection information."""
     upgraded_channels = []
+    connections = []
 
     if "channels" in device_data:
         for channel in device_data["channels"]:
@@ -254,7 +247,7 @@ def upgrade_daq_channels(device_data: dict) -> list:
 
             # Save connection information based on channel type
             connection = build_connection_from_channel(channel, device_data["name"])
-            saved_connections.append(connection.model_dump())
+            connections.append(connection.model_dump())
 
     # Drop duplicate channel dictionaries
     seen_channels = set()
@@ -264,14 +257,15 @@ def upgrade_daq_channels(device_data: dict) -> list:
         if tuple(channel.items()) not in seen_channels and not seen_channels.add(tuple(channel.items()))
     ]
 
-    return upgraded_channels
+    return upgraded_channels, connections
 
 
-def upgrade_daq_devices(device: dict) -> dict:
+def upgrade_daq_devices(device: dict) -> tuple[dict, list]:
     """Upgrade DAQ devices to the new model."""
 
     # Perform basic device upgrades
     device_data = basic_device_checks(device, "DAQ Device")
+    connections = []
 
     # Remove old Device fields specific to DAQ
     device_type = device_data.get("device_type")
@@ -279,7 +273,7 @@ def upgrade_daq_devices(device: dict) -> dict:
     # Handle computer_name connection if present
     if "computer_name" in device_data:
         if device_data["computer_name"]:
-            saved_connections.append(
+            connections.append(
                 {
                     "send": device_data["name"],
                     "receive": device_data["computer_name"],
@@ -288,7 +282,8 @@ def upgrade_daq_devices(device: dict) -> dict:
         remove(device_data, "computer_name")
 
     # Process channels and save connections
-    device_data["channels"] = upgrade_daq_channels(device_data)
+    device_data["channels"], channel_connections = upgrade_daq_channels(device_data)
+    connections.extend(channel_connections)
 
     # Create the DAQ device, or HarpDevice
     if device_type == "Harp device" or "harp_device_type" in device_data:
@@ -307,7 +302,7 @@ def upgrade_daq_devices(device: dict) -> dict:
     else:
         daq_device = DAQDevice(**device_data)
 
-    return daq_device.model_dump()
+    return daq_device.model_dump(), connections
 
 
 def upgrade_monitor(data: dict) -> dict:
@@ -324,15 +319,16 @@ def upgrade_monitor(data: dict) -> dict:
     return monitor.model_dump()
 
 
-def upgrade_olfactometer(data: dict) -> dict:
+def upgrade_olfactometer(data: dict) -> tuple[dict, list]:
     """Upgrade Olfactometer device data from v1.x to v2.0."""
 
     data = basic_device_checks(data, "Olfactometer")
+    connections = []
 
     # Pull computer_name and create a connection if present
     if "computer_name" in data and data["computer_name"]:
         if data["computer_name"]:
-            saved_connections.append(
+            connections.append(
                 {
                     "receive": data["name"],
                     "send": data["computer_name"],
@@ -344,7 +340,7 @@ def upgrade_olfactometer(data: dict) -> dict:
         **data,
     )
 
-    return olfactometer.model_dump()
+    return olfactometer.model_dump(), connections
 
 
 def upgrade_lick_spout(data: dict) -> dict:
@@ -432,32 +428,33 @@ def upgrade_speaker(data: dict) -> dict:
     return speaker.model_dump()
 
 
-def upgrade_stimulus_device(data: dict) -> dict:
+def upgrade_stimulus_device(data: dict) -> tuple[dict, list]:
     """Upgrade stimulus device data from v1.x to v2.0."""
 
     # Figure out which stimulus device type this is and use the appropriate upgrader
     device_type = data.get("device_type")
 
     if device_type == "Monitor":
-        return upgrade_monitor(data)
+        return upgrade_monitor(data), []
     elif device_type == "Olfactometer":
         return upgrade_olfactometer(data)
     elif device_type == "Reward delivery":
-        return upgrade_lick_spout_assembly(data)
+        return upgrade_lick_spout_assembly(data), []
     elif device_type == "Speaker":
-        return upgrade_speaker(data)
+        return upgrade_speaker(data), []
     else:
         raise ValueError(f"Unsupported stimulus device type: {device_type}")
 
 
-def upgrade_camera(data: dict) -> dict:
+def upgrade_camera(data: dict) -> tuple[dict, list]:
     """Upgrade Camera device data from v1.x to v2.0."""
 
     data = basic_device_checks(data, "Camera")
+    connections = []
 
     if "computer_name" in data:
         if data["computer_name"]:
-            saved_connections.append(
+            connections.append(
                 {
                     "send": data["name"],
                     "receive": data["computer_name"],
@@ -492,7 +489,7 @@ def upgrade_camera(data: dict) -> dict:
         **data,
     )
 
-    return camera.model_dump()
+    return camera.model_dump(), connections
 
 
 def upgrade_lens(data: dict) -> dict:
@@ -564,7 +561,7 @@ def parse_camera_target(target: str):
     return camera_target, relative_positions
 
 
-def upgrade_camera_assembly(data: dict) -> dict:
+def upgrade_camera_assembly(data: dict) -> tuple[dict, list]:
     """Upgrade CameraAssembly device data from v1.x to v2.0."""
 
     # Perform basic device checks
@@ -576,9 +573,13 @@ def upgrade_camera_assembly(data: dict) -> dict:
         remove(data, "camera_assembly_name")
     data = add_name(data, "CameraAssembly")
 
+    connections = []
+
     if "filter" in data and data["filter"]:
         data["filter"] = upgrade_filter(data.get("filter", {}))
-    data["camera"] = upgrade_camera(data.get("camera", {}))
+    camera_data, camera_connections = upgrade_camera(data.get("camera", {}))
+    data["camera"] = camera_data
+    connections.extend(camera_connections)
     data["lens"] = upgrade_lens(data.get("lens", {}))
 
     if "camera_target" not in data or not data["camera_target"]:
@@ -600,7 +601,7 @@ def upgrade_camera_assembly(data: dict) -> dict:
         **data,
     )
 
-    return camera_assembly.model_dump()
+    return camera_assembly.model_dump(), connections
 
 
 def upgrade_manipulator(data: dict) -> dict:
@@ -707,10 +708,11 @@ def upgrade_fiber_probe(data: dict) -> dict:
     return fiber_probe.model_dump()
 
 
-def upgrade_detector(data: dict) -> dict:
+def upgrade_detector(data: dict) -> tuple[dict, list]:
     """Upgrade detector data to the new model."""
 
     data = basic_device_checks(data, "Detector")
+    connections = []
 
     data = capitalize(data, "cooling")
     data = capitalize(data, "bin_mode")
@@ -726,7 +728,7 @@ def upgrade_detector(data: dict) -> dict:
     # Save computer_name connection
     if "computer_name" in data:
         if data["computer_name"]:
-            saved_connections.append(
+            connections.append(
                 {
                     "send": data["name"],
                     "receive": data["computer_name"],
@@ -740,7 +742,7 @@ def upgrade_detector(data: dict) -> dict:
     else:
         detector = Detector(**data)
 
-    return detector.model_dump()
+    return detector.model_dump(), connections
 
 
 def upgrade_fiber_patch_cord(data: dict) -> dict:

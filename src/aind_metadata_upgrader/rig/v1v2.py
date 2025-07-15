@@ -20,7 +20,6 @@ from aind_data_schema_models.units import SizeUnit
 
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.rig.v1v2_devices import (
-    set_connections_list,
     upgrade_camera_assembly,
     upgrade_daq_devices,
     upgrade_detector,
@@ -62,7 +61,6 @@ class RigUpgraderV1V2(CoreUpgrader):
 
     def __init__(self):
         super().__init__()
-        self.saved_connections = []
 
     def _parse_name(self, data: dict):
         """Pull the rig_id and location from the rig_id field"""
@@ -130,23 +128,36 @@ class RigUpgraderV1V2(CoreUpgrader):
 
     def _get_components_connections(self, data: dict) -> tuple[Optional[list], list]:
         """Pull components from data"""
-        # Reset connections for this upgrade run
-        self.saved_connections = []
-        # Set the global connections list in the v1v2_devices module
-        set_connections_list(self.saved_connections)
+        # Collect all connections from upgrade functions
+        all_connections = []
 
         mouse_platform = data.get("mouse_platform", None)
-        mouse_platform = upgrade_mouse_platform(mouse_platform) if mouse_platform else None
+        if mouse_platform:
+            mouse_platform_data, mouse_platform_connections = upgrade_mouse_platform(mouse_platform)
+            mouse_platform = mouse_platform_data
+            all_connections.extend(mouse_platform_connections)
+        else:
+            mouse_platform = None
 
         stimulus_devices = data.get("stimulus_devices", [])
         if isinstance(stimulus_devices, dict):
             stimulus_devices = [stimulus_devices]
         stimulus_devices = self._none_to_list(stimulus_devices)
-        stimulus_devices = [upgrade_stimulus_device(device) for device in stimulus_devices]
+        
+        upgraded_stimulus_devices, stimulus_connections = self._upgrade_devices_with_connections(
+            stimulus_devices, upgrade_stimulus_device
+        )
+        stimulus_devices = upgraded_stimulus_devices
+        all_connections.extend(stimulus_connections)
 
         camera_assemblies = data.get("cameras", [])
         camera_assemblies = self._none_to_list(camera_assemblies)
-        camera_assemblies = [upgrade_camera_assembly(device) for device in camera_assemblies]
+        
+        upgraded_camera_assemblies, camera_connections = self._upgrade_devices_with_connections(
+            camera_assemblies, upgrade_camera_assembly
+        )
+        camera_assemblies = upgraded_camera_assemblies
+        all_connections.extend(camera_connections)
 
         enclosure = data.get("enclosure", None)
         enclosure = upgrade_enclosure(enclosure) if enclosure else None
@@ -161,7 +172,13 @@ class RigUpgraderV1V2(CoreUpgrader):
 
         stick_microscopes = data.get("stick_microscopes", [])
         stick_microscopes = self._none_to_list(stick_microscopes)
-        stick_microscopes = [upgrade_camera_assembly(scope) for scope in stick_microscopes]
+        
+        upgraded_stick_microscopes = []
+        for scope in stick_microscopes:
+            scope_data, scope_connections = upgrade_camera_assembly(scope)
+            upgraded_stick_microscopes.append(scope_data)
+            all_connections.extend(scope_connections)
+        stick_microscopes = upgraded_stick_microscopes
 
         laser_assemblies = data.get("laser_assemblies", [])
         laser_assemblies = self._none_to_list(laser_assemblies)
@@ -177,7 +194,10 @@ class RigUpgraderV1V2(CoreUpgrader):
 
         detectors = data.get("detectors", [])
         detectors = self._none_to_list(detectors)
-        detectors = [upgrade_detector(detector) for detector in detectors]
+        
+        upgraded_detectors, detector_connections = self._upgrade_devices_with_connections(detectors, upgrade_detector)
+        detectors = upgraded_detectors
+        all_connections.extend(detector_connections)
 
         objectives = data.get("objectives", [])
         objectives = self._none_to_list(objectives)
@@ -208,7 +228,10 @@ class RigUpgraderV1V2(CoreUpgrader):
         additional_devices = [upgrade_generic_Device(device) for device in additional_devices]
 
         daqs = self._none_to_list(data.get("daqs", []))
-        daqs = [upgrade_daq_devices(daq) for daq in daqs]
+        
+        upgraded_daqs, daq_connections = self._upgrade_devices_with_connections(daqs, upgrade_daq_devices)
+        daqs = upgraded_daqs
+        all_connections.extend(daq_connections)
         del data["daqs"]
 
         # Compile components list
@@ -235,12 +258,10 @@ class RigUpgraderV1V2(CoreUpgrader):
         if enclosure:
             components.append(enclosure)
 
-        # # Handle connections and upgrade DAQDevice to new version
-
-        # print(f"{len(self.saved_connections)} saved connections pending")
+        # Handle connections
         connections = []
 
-        for connection in self.saved_connections:
+        for connection in all_connections:
             # Check if this is just a model_dump of a Connection object
             if "object_type" in connection:
                 connections.append(connection)
@@ -274,6 +295,20 @@ class RigUpgraderV1V2(CoreUpgrader):
             components.append(device.model_dump())
 
         return (components, connections)
+
+    def _upgrade_devices_with_connections(self, devices: list, upgrade_func) -> tuple[list, list]:
+        """Helper method to upgrade devices that return connections."""
+        upgraded_devices = []
+        all_connections = []
+        for device in devices:
+            device_data, device_connections = upgrade_func(device)
+            upgraded_devices.append(device_data)
+            all_connections.extend(device_connections)
+        return upgraded_devices, all_connections
+
+    def _upgrade_simple_devices(self, devices: list, upgrade_func) -> list:
+        """Helper method to upgrade devices that don't return connections."""
+        return [upgrade_func(device) for device in devices]
 
     def upgrade(self, data: dict, schema_version: str) -> dict:
         """Upgrade the rig core file data to a v2.0 instrument"""
