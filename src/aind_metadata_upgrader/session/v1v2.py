@@ -773,6 +773,16 @@ class SessionV1V2(CoreUpgrader):
 
         # Create performance metrics
         performance_metrics = None
+        reward_consumed_during_epoch = epoch.get("reward_consumed_during_epoch")
+        reward_consumed_unit = epoch.get("reward_consumed_unit")
+
+        # Try to generate unit if missing
+        if reward_consumed_during_epoch and not reward_consumed_unit:
+            if float(reward_consumed_during_epoch) < 3:
+                reward_consumed_unit = VolumeUnit.ML
+            else:
+                reward_consumed_unit = VolumeUnit.UL
+
         if any(
             [
                 epoch.get("trials_total"),
@@ -785,8 +795,8 @@ class SessionV1V2(CoreUpgrader):
                 trials_total=epoch.get("trials_total"),
                 trials_finished=epoch.get("trials_finished"),
                 trials_rewarded=epoch.get("trials_rewarded"),
-                reward_consumed_during_epoch=epoch.get("reward_consumed_during_epoch"),
-                reward_consumed_unit=VolumeUnit.UL,
+                reward_consumed_during_epoch=reward_consumed_during_epoch,
+                reward_consumed_unit=reward_consumed_unit,
                 output_parameters=GenericModel(**epoch.get("output_parameters", {})),
             )
 
@@ -817,12 +827,26 @@ class SessionV1V2(CoreUpgrader):
         code = None
         if epoch.get("script"):
             script_data = epoch["script"]
+
+            stimulus_parameters = script_data.get("stimulus_parameters", [])
+            if len(stimulus_parameters) == 1:
+                stimulus_parameters = stimulus_parameters[0]
+            elif len(stimulus_parameters) > 1:
+                split_parameters = {}
+                for params in stimulus_parameters:
+                    split_parameters[params["stimulus_name"]] = params
+                stimulus_parameters = split_parameters
+
+            if not stimulus_parameters:
+                stimulus_parameters = None
+
             software = epoch["software"]
 
             if isinstance(software, list):
                 if len(software) == 1:
                     software = software[0]
                 else:
+                    print(software)
                     raise ValueError("Multiple software entries found, cannot upgrade")
 
             if software:
@@ -837,7 +861,7 @@ class SessionV1V2(CoreUpgrader):
                 name=script_data.get("name", "Unknown Script"),
                 version=script_data.get("version", "unknown"),
                 url=script_data.get("url", "unknown") or "",
-                parameters=script_data.get("parameters", {}),
+                parameters=stimulus_parameters,
                 core_dependency=core_dependency,
             )
 
