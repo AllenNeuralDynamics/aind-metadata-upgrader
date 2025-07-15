@@ -20,7 +20,7 @@ from aind_data_schema_models.units import SizeUnit
 
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.rig.v1v2_devices import (
-    saved_connections,
+    set_connections_list,
     upgrade_camera_assembly,
     upgrade_daq_devices,
     upgrade_detector,
@@ -59,6 +59,10 @@ BREGMA_ALS = CoordinateSystem(
 
 class RigUpgraderV1V2(CoreUpgrader):
     """Upgrade rig core file from v1.x to v2.0"""
+
+    def __init__(self):
+        super().__init__()
+        self.saved_connections = []
 
     def _parse_name(self, data: dict):
         """Pull the rig_id and location from the rig_id field"""
@@ -126,8 +130,10 @@ class RigUpgraderV1V2(CoreUpgrader):
 
     def _get_components_connections(self, data: dict) -> tuple[Optional[list], list]:
         """Pull components from data"""
-        global saved_connections
-        saved_connections = []
+        # Reset connections for this upgrade run
+        self.saved_connections = []
+        # Set the global connections list in the v1v2_devices module
+        set_connections_list(self.saved_connections)
 
         mouse_platform = data.get("mouse_platform", None)
         mouse_platform = upgrade_mouse_platform(mouse_platform) if mouse_platform else None
@@ -231,10 +237,10 @@ class RigUpgraderV1V2(CoreUpgrader):
 
         # # Handle connections and upgrade DAQDevice to new version
 
-        # print(f"{len(saved_connections)} saved connections pending")
+        # print(f"{len(self.saved_connections)} saved connections pending")
         connections = []
 
-        for connection in saved_connections:
+        for connection in self.saved_connections:
             # Check if this is just a model_dump of a Connection object
             if "object_type" in connection:
                 connections.append(connection)

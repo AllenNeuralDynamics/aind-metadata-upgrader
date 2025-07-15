@@ -51,7 +51,14 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_software,
 )
 
+# Global variable for backward compatibility, but prefer passing connections explicitly
 saved_connections = []
+
+
+def set_connections_list(connections_list: list):
+    """Set the connections list to use for storing connections during upgrades."""
+    global saved_connections
+    saved_connections = connections_list
 
 
 def upgrade_generic_device(data: dict) -> dict:
