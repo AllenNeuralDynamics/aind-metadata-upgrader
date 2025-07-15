@@ -131,8 +131,10 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         detectors = data.get("detectors", [])
         detectors = self._none_to_list(detectors)
+        upgraded_detectors = []
         for detector in detectors:
             detector, connections = upgrade_detector(detector)
+            upgraded_detectors.append(detector)
             saved_connections.extend(connections)
 
         light_sources = data.get("light_sources", [])
@@ -176,22 +178,24 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         del data["com_ports"]
 
         daqs = self._none_to_list(data.get("daqs", []))
+        upgraded_daqs = []
         for daq in daqs:
             daq, connections = upgrade_daq_devices(daq)
             saved_connections.extend(connections)
+            upgraded_daqs.append
         del data["daqs"]
 
         # Compile components list
         components = [
             *objectives,
-            *detectors,
+            *upgraded_detectors,
             *light_sources,
             *lenses,
             *fluorescence_filters,
             *motorized_stages,
             *scanning_stages,
             *additional_devices,
-            *daqs,
+            *upgraded_daqs,
             microscope.model_dump(),
         ]
         if enclosure:
