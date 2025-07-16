@@ -60,6 +60,8 @@ class RigUpgraderV1V2(CoreUpgrader):
     """Upgrade rig core file from v1.x to v2.0"""
 
     def __init__(self):
+        """Init
+        """
         super().__init__()
 
     def _parse_name(self, data: dict):

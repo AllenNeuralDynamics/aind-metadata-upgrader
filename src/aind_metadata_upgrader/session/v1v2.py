@@ -806,6 +806,7 @@ class SessionV1V2(CoreUpgrader):
         return performance_metrics.model_dump() if performance_metrics else None
 
     def _get_software(self, epoch: Dict) -> Optional[Dict]:
+        """Extract software information from epoch data, handling cases with multiple software entries"""
         software = epoch["software"]
 
         if isinstance(software, list):
