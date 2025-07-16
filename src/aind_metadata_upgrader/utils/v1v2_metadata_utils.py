@@ -147,8 +147,8 @@ def repair_connection_devices(data: dict) -> dict:
     # Collect existing device names
     device_names = []
     if data.get("instrument"):
-        for component in data["instrument"].get("components", []):
-            device_names.append(component["name"])
+        instrument = Instrument.model_validate(data.get("instrument"))
+        device_names.extend(instrument.get_component_names())
     if data.get("procedures"):
         procedures = Procedures.model_validate(data["procedures"])
         device_names.extend(procedures.get_device_names())
