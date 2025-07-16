@@ -767,16 +767,11 @@ class SessionV1V2(CoreUpgrader):
             notes=stream.get("notes"),
         ).model_dump()
 
-    def _upgrade_stimulus_epoch(self, epoch: Dict) -> Dict:
-        """Upgrade stimulus epoch from v1 to v2"""
-        # Convert stimulus modalities
-        stimulus_modalities = epoch.get("stimulus_modalities", [])
-        if not stimulus_modalities or stimulus_modalities == ["None"]:
-            if "spontaneous" in epoch.get("stimulus_name", "").lower():
-                stimulus_modalities = [StimulusModality.NO_STIMULUS]
+    def _create_performance_metrics(self, epoch: Dict) -> Optional[Dict]:
+        """Create performance metrics from epoch data"""
+        performance_metrics = None
 
         # Create performance metrics
-        performance_metrics = None
         reward_consumed_during_epoch = epoch.get("reward_consumed_during_epoch")
         reward_consumed_unit = epoch.get("reward_consumed_unit")
 
@@ -804,6 +799,80 @@ class SessionV1V2(CoreUpgrader):
                 output_parameters=GenericModel(**epoch.get("output_parameters", {})),
             )
 
+        return performance_metrics.model_dump() if performance_metrics else None
+
+    def _get_software(self, epoch: Dict) -> Optional[Dict]:
+        software = epoch["software"]
+
+        if isinstance(software, list):
+            if len(software) == 1:
+                software = software[0]
+            elif len(software) == 2:
+                names = [sw.get("name", "").lower() for sw in software]
+                if "python" in names:
+                    # If one is Python, take the other one
+                    software = next((sw for sw in software if sw.get("name", "").lower() != "python"), None)
+            else:
+                # If there's two softwares, take the one that isn't Python
+                print(software)
+                raise ValueError("More than two software entries found, cannot upgrade")
+
+        return software
+
+    def _create_code_object(self, epoch: Dict) -> Optional[Dict]:
+        """Create code object from epoch script"""
+        code = None
+        if epoch.get("script"):
+            script_data = epoch["script"]
+
+            stimulus_parameters = epoch.get("stimulus_parameters", [])
+            if isinstance(stimulus_parameters, list):
+                if len(stimulus_parameters) == 1:
+                    stimulus_parameters = stimulus_parameters[0]
+                elif len(stimulus_parameters) > 1:
+                    split_parameters = {}
+                    for i, params in enumerate(stimulus_parameters):
+                        if "stimulus_name" in params:
+                            split_parameters[params["stimulus_name"]] = params
+                        else:
+                            split_parameters[f"Stimulus_{i}"] = params
+                    stimulus_parameters = split_parameters
+
+            if not stimulus_parameters:
+                stimulus_parameters = None
+
+            if "parameters" in script_data:
+                stimulus_parameters = (stimulus_parameters if stimulus_parameters else {}) | script_data["parameters"]
+
+            software = self._get_software(epoch)
+
+            if software:
+                core_dependency = Software(
+                    name=software.get("name", "unknown"),
+                    version=software.get("version", None),
+                )
+            else:
+                core_dependency = None
+
+            code = Code(
+                name=script_data.get("name", "Unknown Script"),
+                version=script_data.get("version", "unknown"),
+                url=script_data.get("url", "unknown") or "",
+                parameters=stimulus_parameters,
+                core_dependency=core_dependency,
+            )
+        return code.model_dump() if code else None
+
+    def _upgrade_stimulus_epoch(self, epoch: Dict) -> Dict:
+        """Upgrade stimulus epoch from v1 to v2"""
+        # Convert stimulus modalities
+        stimulus_modalities = epoch.get("stimulus_modalities", [])
+        if not stimulus_modalities or stimulus_modalities == ["None"]:
+            if "spontaneous" in epoch.get("stimulus_name", "").lower():
+                stimulus_modalities = [StimulusModality.NO_STIMULUS]
+
+        performance_metrics = self._create_performance_metrics(epoch)
+
         # Create configurations
         configurations = []
 
@@ -828,59 +897,7 @@ class SessionV1V2(CoreUpgrader):
                     configurations.append(config)
 
         # Create code object if script is present
-        code = None
-        if epoch.get("script"):
-            script_data = epoch["script"]
-
-            stimulus_parameters = epoch.get("stimulus_parameters", [])
-            if isinstance(stimulus_parameters, list):
-                if len(stimulus_parameters) == 1:
-                    stimulus_parameters = stimulus_parameters[0]
-                elif len(stimulus_parameters) > 1:
-                    split_parameters = {}
-                    for i, params in enumerate(stimulus_parameters):
-                        if "stimulus_name" in params:
-                            split_parameters[params["stimulus_name"]] = params
-                        else:
-                            split_parameters[f"Stimulus_{i}"] = params
-                    stimulus_parameters = split_parameters
-
-            if not stimulus_parameters:
-                stimulus_parameters = None
-
-            if "parameters" in script_data:
-                stimulus_parameters = (stimulus_parameters if stimulus_parameters else {}) | script_data["parameters"]
-
-            software = epoch["software"]
-
-            if isinstance(software, list):
-                if len(software) == 1:
-                    software = software[0]
-                elif len(software) == 2:
-                    names = [sw.get("name", "").lower() for sw in software]
-                    if "python" in names:
-                        # If one is Python, take the other one
-                        software = next((sw for sw in software if sw.get("name", "").lower() != "python"), None)
-                else:
-                    # If there's two softwares, take the one that isn't Python
-                    print(software)
-                    raise ValueError("More than two software entries found, cannot upgrade")
-
-            if software:
-                core_dependency = Software(
-                    name=software.get("name", "unknown"),
-                    version=software.get("version", None),
-                )
-            else:
-                core_dependency = None
-
-            code = Code(
-                name=script_data.get("name", "Unknown Script"),
-                version=script_data.get("version", "unknown"),
-                url=script_data.get("url", "unknown") or "",
-                parameters=stimulus_parameters,
-                core_dependency=core_dependency,
-            )
+        code = self._create_code_object(epoch)
 
         return StimulusEpoch(
             stimulus_start_time=epoch.get("stimulus_start_time"),
