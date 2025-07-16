@@ -31,17 +31,22 @@ class SubjectUpgraderV1V2(CoreUpgrader):
 
     def _get_breeding_info(self, data: dict) -> Optional[dict]:
         """Handle breeding info upgrade logic"""
-        breeding_info = data.get("breeding_info", None)
-        if breeding_info:
-            # Ensure object_type is set
-            breeding_info["object_type"] = "Breeding info"
-            # Ensure all fields are strings, fill with unknown if missing
-            fields = ["breeding_group", "maternal_genotype", "paternal_genotype", "maternal_id", "paternal_id"]
-            for field in fields:
-                if not breeding_info.get(field):
-                    breeding_info[field] = "unknown"
+        # Extract fields with defaults, convert to string
+        breeding_group = str(data.get("breeding_group", "unknown"))
+        maternal_genotype = str(data.get("maternal_genotype", "unknown"))
+        paternal_genotype = str(data.get("paternal_genotype", "unknown"))
+        maternal_id = str(data.get("maternal_id", "unknown"))
+        paternal_id = str(data.get("paternal_id", "unknown"))
 
-        return breeding_info
+        breeding_info = BreedingInfo(
+            breeding_group=breeding_group,
+            maternal_genotype=maternal_genotype,
+            paternal_genotype=paternal_genotype,
+            maternal_id=maternal_id,
+            paternal_id=paternal_id
+        )
+
+        return breeding_info.model_dump()
 
     def _process_species_and_strain(self, data: dict):
         """Process and validate species and background strain data"""
@@ -120,7 +125,7 @@ class SubjectUpgraderV1V2(CoreUpgrader):
                 species=species,
                 alleles=alleles,
                 genotype=genotype,
-                breeding_info=BreedingInfo(**breeding_info) if breeding_info else None,
+                breeding_info=breeding_info,
                 wellness_reports=wellness_reports,
                 housing=housing,
                 source=source,
