@@ -143,7 +143,7 @@ class RigUpgraderV1V2(CoreUpgrader):
         if isinstance(stimulus_devices, dict):
             stimulus_devices = [stimulus_devices]
         stimulus_devices = self._none_to_list(stimulus_devices)
-        
+
         upgraded_stimulus_devices, stimulus_connections = self._upgrade_devices_with_connections(
             stimulus_devices, upgrade_stimulus_device
         )
@@ -152,7 +152,7 @@ class RigUpgraderV1V2(CoreUpgrader):
 
         camera_assemblies = data.get("cameras", [])
         camera_assemblies = self._none_to_list(camera_assemblies)
-        
+
         upgraded_camera_assemblies, camera_connections = self._upgrade_devices_with_connections(
             camera_assemblies, upgrade_camera_assembly
         )
@@ -172,7 +172,7 @@ class RigUpgraderV1V2(CoreUpgrader):
 
         stick_microscopes = data.get("stick_microscopes", [])
         stick_microscopes = self._none_to_list(stick_microscopes)
-        
+
         upgraded_stick_microscopes = []
         for scope in stick_microscopes:
             scope_data, scope_connections = upgrade_camera_assembly(scope)
@@ -194,7 +194,7 @@ class RigUpgraderV1V2(CoreUpgrader):
 
         detectors = data.get("detectors", [])
         detectors = self._none_to_list(detectors)
-        
+
         upgraded_detectors, detector_connections = self._upgrade_devices_with_connections(detectors, upgrade_detector)
         detectors = upgraded_detectors
         all_connections.extend(detector_connections)
@@ -228,7 +228,7 @@ class RigUpgraderV1V2(CoreUpgrader):
         additional_devices = [upgrade_generic_Device(device) for device in additional_devices]
 
         daqs = self._none_to_list(data.get("daqs", []))
-        
+
         upgraded_daqs, daq_connections = self._upgrade_devices_with_connections(daqs, upgrade_daq_devices)
         daqs = upgraded_daqs
         all_connections.extend(daq_connections)

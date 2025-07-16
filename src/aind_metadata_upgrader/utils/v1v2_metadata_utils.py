@@ -85,7 +85,6 @@ def repair_missing_active_devices(data: dict) -> dict:
 
     # Collect active devices from data streams
     active_devices = get_active_devices(data)
-    
 
     # Collect existing device names
     device_names = []
