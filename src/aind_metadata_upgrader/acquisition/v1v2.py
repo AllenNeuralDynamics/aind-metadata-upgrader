@@ -11,6 +11,7 @@ from aind_metadata_upgrader.acquisition.v1v2_tiles import (
 )
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import upgrade_calibration, upgrade_reagent
+from aind_data_schema.components.coordinates import CoordinateSystem, Origin, Axis, AxisName, Direction, CoordinateSystemLibrary
 
 
 class AcquisitionV1V2(CoreUpgrader):
@@ -44,10 +45,67 @@ class AcquisitionV1V2(CoreUpgrader):
         if not axes:
             return None
 
-        # For now, return None and let the system use defaults
-        # In a more sophisticated implementation, you could construct a coordinate system
-        # from the axis information
-        return None
+        # Sort axes by dimension to ensure consistent ordering
+        sorted_axes = sorted(axes, key=lambda x: x["dimension"])
+        
+        # Extract directions for each dimension (0, 1, 2)
+        directions = [axis["direction"] for axis in sorted_axes]
+        
+        # Check for SPIM_RAI configuration - variant 1 (X=LR, Y=AP, Z=SI)
+        if (
+            directions[0] == "Superior_to_inferior"
+            and directions[1] == "Anterior_to_posterior"
+            and directions[2] == "Left_to_right"
+        ):
+            coordinate_system = CoordinateSystem(
+                name="SPIM_RAI",
+                origin=Origin.ORIGIN,
+                axis_unit=axes[0]["unit"],
+                axes=[
+                    Axis(name=AxisName.X, direction=Direction.LR),
+                    Axis(name=AxisName.Y, direction=Direction.AP),
+                    Axis(name=AxisName.Z, direction=Direction.SI),
+                ],
+            )
+            return coordinate_system.model_dump()
+        
+        # Check for SPIM_RAI configuration - variant 2 (X=LR, Y=PA, Z=SI)
+        elif (
+            directions[0] == "Superior_to_inferior"
+            and directions[1] == "Posterior_to_anterior"
+            and directions[2] == "Left_to_right"
+        ):
+            coordinate_system = CoordinateSystem(
+                name="SPIM_RAI",
+                origin=Origin.ORIGIN,
+                axis_unit=axes[0]["unit"],
+                axes=[
+                    Axis(name=AxisName.X, direction=Direction.LR),
+                    Axis(name=AxisName.Y, direction=Direction.AP),
+                    Axis(name=AxisName.Z, direction=Direction.SI),
+                ],
+            )
+            return coordinate_system.model_dump()
+        
+        # Check for SPIM_RPI configuration (X=RL, Y=PA, Z=IS)
+        elif (
+            directions[0] == "Inferior_to_superior"
+            and directions[1] == "Anterior_to_posterior"
+            and directions[2] == "Left_to_right"
+        ):
+            return CoordinateSystemLibrary.SPIM_RPI.model_dump()
+            
+        # Check for SPIM_LPS configuration (X=PA, Y=IS, Z=RL)
+        elif (
+            directions[0] == "Right_to_left"
+            and directions[1] == "Inferior_to_superior"
+            and directions[2] == "Posterior_to_anterior"
+        ):
+            return CoordinateSystemLibrary.SPIM_LPS.model_dump()
+            
+        else:
+            print(axes)
+            raise ValueError("Unsupported axes configuration for coordinate system creation, needs to be implemented")
 
     def _determine_acquisition_type(self, data: Dict) -> str:
         """Determine acquisition type from V1 data"""

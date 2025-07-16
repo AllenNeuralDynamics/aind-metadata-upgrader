@@ -104,7 +104,7 @@ def repair_missing_active_devices(data: dict) -> dict:
                 name=device,
                 notes=(
                     "(v1v2 upgrade) This device was not found in the components list, "
-                    "but is referenced in Acquisition."
+                    "but is referenced in Acquisition.active_devices."
                 ),
             )
             data["instrument"]["components"].append(new_device.model_dump())
@@ -112,26 +112,26 @@ def repair_missing_active_devices(data: dict) -> dict:
     return data
 
 
-def get_connection_devices(data: dict) -> list:
+def get_connection_device_names(data: dict) -> list:
     """Get a list of device names referenced in connections from the instrument and acquisition data."""
 
-    connection_devices = []
+    connection_device_names = []
 
     # Check instrument connections
     if data.get("instrument") and "connections" in data["instrument"]:
         for connection in data["instrument"]["connections"]:
-            connection_devices.extend(connection["source_device"])
-            connection_devices.extend(connection["target_device"])
+            connection_device_names.append(connection["source_device"])
+            connection_device_names.append(connection["target_device"])
 
     # Check acquisition data stream connections
     if data.get("acquisition") and "data_streams" in data["acquisition"]:
         for data_stream in data["acquisition"]["data_streams"]:
             if "connections" in data_stream:
                 for connection in data_stream["connections"]:
-                    connection_devices.extend(connection["source_device"])
-                    connection_devices.extend(connection["target_device"])
+                    connection_device_names.append(connection["source_device"])
+                    connection_device_names.append(connection["target_device"])
 
-    return connection_devices
+    return connection_device_names
 
 
 def repair_connection_devices(data: dict) -> dict:
@@ -141,7 +141,7 @@ def repair_connection_devices(data: dict) -> dict:
         return data
 
     # Collect all device names referenced in connections
-    connection_devices = get_connection_devices(data)
+    connection_devices = get_connection_device_names(data)
 
     # Collect existing device names
     device_names = []
@@ -153,12 +153,11 @@ def repair_connection_devices(data: dict) -> dict:
         device_names.extend(procedures.get_device_names())
 
     # Check if all connection devices are in the available devices
-    if not all(device in device_names for device in connection_devices):
-        missing_devices = set(connection_devices) - set(device_names)
-        # Create missing devices with default names
-        for device in missing_devices:
+    for device_name in connection_devices:
+        if device_name not in device_names:
+            # Create a new device with a note indicating it was missing
             new_device = Device(
-                name=device,
+                name=device_name,
                 notes=(
                     "(v1v2 upgrade) This device was not found in the components list, "
                     "but is referenced in connections."

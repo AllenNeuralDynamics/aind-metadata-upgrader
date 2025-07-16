@@ -43,7 +43,7 @@ class SubjectUpgraderV1V2(CoreUpgrader):
             maternal_genotype=maternal_genotype,
             paternal_genotype=paternal_genotype,
             maternal_id=maternal_id,
-            paternal_id=paternal_id
+            paternal_id=paternal_id,
         )
 
         return breeding_info.model_dump()

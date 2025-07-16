@@ -46,7 +46,7 @@ client = MetadataDbClient(
 #     data_asset_record_ids=ids,
 # )
 
-run_one = "5f6325ff-5920-429c-880b-35e287af716a"
+run_one = None
 upsert = True
 
 
