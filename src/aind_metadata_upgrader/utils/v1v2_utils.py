@@ -46,6 +46,7 @@ from aind_data_schema_models.units import (
 
 MODALITY_MAP = {
     "SmartSPIM": Modality.SPIM,
+    "FIP": Modality.FIB
 }
 
 counts = {}

@@ -57,11 +57,17 @@ class DataDescriptionV1V2(CoreUpgrader):
             else:
                 # Handle single funder (string or dict)
                 if isinstance(funder, str):
-                    funder_org = Organization.from_name(funder)
+                    if funder == "AIND":
+                        funder_org = Organization.AI
+                    else:
+                        funder_org = Organization.from_name(funder)
                 elif isinstance(funder, dict):
                     funder_org = upgrade_registry(funder)
                 else:
                     funder_org = Organization.AI
+
+                if not funder_org:
+                    raise ValueError(f"Unsupported funder type: {funder}")
 
                 # Handle fundee - can be string (comma-separated) or list
                 if isinstance(fundee, str):
