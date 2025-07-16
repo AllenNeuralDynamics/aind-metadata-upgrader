@@ -99,8 +99,6 @@ class SessionV1V2(CoreUpgrader):
         """Upgrade light source config from v1 to v2"""
         if not data:
             return None
-        
-        print(data)
 
         device_type = data.get("device_type")
         device_name = data.get("name", "Unknown Device")
