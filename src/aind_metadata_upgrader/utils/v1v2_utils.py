@@ -44,10 +44,7 @@ from aind_data_schema_models.units import (
     SoundIntensityUnit,
 )
 
-MODALITY_MAP = {
-    "SmartSPIM": Modality.SPIM,
-    "FIP": Modality.FIB
-}
+MODALITY_MAP = {"SmartSPIM": Modality.SPIM, "FIP": Modality.FIB}
 
 counts = {}
 

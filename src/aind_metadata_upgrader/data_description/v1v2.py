@@ -32,6 +32,18 @@ class DataDescriptionV1V2(CoreUpgrader):
             )
         return result
 
+    def _upgrade_funder(self, funder: str):
+        """Upgrade a single funder string to an Organization."""
+        if isinstance(funder, str):
+            if funder == "AIND":
+                return Organization.AI
+            else:
+                return Organization.from_name(funder)
+        elif isinstance(funder, dict):
+            return Organization.from_name(funder.get("name", "Allen Institute"))
+        else:
+            return None
+
     def _get_funding_source(self, data: dict) -> list:
         """Get and upgrade funding source information from the data dictionary."""
 
@@ -55,16 +67,7 @@ class DataDescriptionV1V2(CoreUpgrader):
                 # Split comma-separated funders into separate funding sources
                 result_funding_sources.extend(self._process_comma_separated_funders(funder, fundee, grant_number))
             else:
-                # Handle single funder (string or dict)
-                if isinstance(funder, str):
-                    if funder == "AIND":
-                        funder_org = Organization.AI
-                    else:
-                        funder_org = Organization.from_name(funder)
-                elif isinstance(funder, dict):
-                    funder_org = upgrade_registry(funder)
-                else:
-                    funder_org = Organization.AI
+                funder_org = self._upgrade_funder(funder)
 
                 if not funder_org:
                     raise ValueError(f"Unsupported funder type: {funder}")

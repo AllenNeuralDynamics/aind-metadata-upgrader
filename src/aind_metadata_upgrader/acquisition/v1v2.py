@@ -11,7 +11,14 @@ from aind_metadata_upgrader.acquisition.v1v2_tiles import (
 )
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import upgrade_calibration, upgrade_reagent
-from aind_data_schema.components.coordinates import CoordinateSystem, Origin, Axis, AxisName, Direction, CoordinateSystemLibrary
+from aind_data_schema.components.coordinates import (
+    CoordinateSystem,
+    Origin,
+    Axis,
+    AxisName,
+    Direction,
+    CoordinateSystemLibrary,
+)
 
 
 class AcquisitionV1V2(CoreUpgrader):
@@ -47,10 +54,10 @@ class AcquisitionV1V2(CoreUpgrader):
 
         # Sort axes by dimension to ensure consistent ordering
         sorted_axes = sorted(axes, key=lambda x: x["dimension"])
-        
+
         # Extract directions for each dimension (0, 1, 2)
         directions = [axis["direction"] for axis in sorted_axes]
-        
+
         # Check for SPIM_RAI configuration - variant 1 (X=LR, Y=AP, Z=SI)
         if (
             directions[0] == "Superior_to_inferior"
@@ -68,7 +75,7 @@ class AcquisitionV1V2(CoreUpgrader):
                 ],
             )
             return coordinate_system.model_dump()
-        
+
         # Check for SPIM_RAI configuration - variant 2 (X=LR, Y=PA, Z=SI)
         elif (
             directions[0] == "Superior_to_inferior"
@@ -86,7 +93,7 @@ class AcquisitionV1V2(CoreUpgrader):
                 ],
             )
             return coordinate_system.model_dump()
-        
+
         # Check for SPIM_RPI configuration (X=RL, Y=PA, Z=IS)
         elif (
             directions[0] == "Inferior_to_superior"
@@ -94,7 +101,7 @@ class AcquisitionV1V2(CoreUpgrader):
             and directions[2] == "Left_to_right"
         ):
             return CoordinateSystemLibrary.SPIM_RPI.model_dump()
-            
+
         # Check for SPIM_LPS configuration (X=PA, Y=IS, Z=RL)
         elif (
             directions[0] == "Right_to_left"
@@ -102,7 +109,7 @@ class AcquisitionV1V2(CoreUpgrader):
             and directions[2] == "Posterior_to_anterior"
         ):
             return CoordinateSystemLibrary.SPIM_LPS.model_dump()
-            
+
         else:
             print(axes)
             raise ValueError("Unsupported axes configuration for coordinate system creation, needs to be implemented")
