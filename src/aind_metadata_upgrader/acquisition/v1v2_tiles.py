@@ -213,6 +213,7 @@ def upgrade_tiles_to_data_stream(
 
     # Combine notes from tiles
     tile_notes = [tile.get("notes", "") for tile in tiles if tile.get("notes")]
+    tile_notes = set(tile_notes)  # Remove duplicates
     combined_notes = "; ".join(filter(None, tile_notes)) if tile_notes else None
 
     # Handle software

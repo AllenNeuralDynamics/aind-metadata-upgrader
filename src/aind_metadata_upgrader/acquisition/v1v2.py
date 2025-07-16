@@ -19,6 +19,10 @@ class AcquisitionV1V2(CoreUpgrader):
     def _upgrade_experimenter_names(self, experimenter_names: List[str]) -> List[Dict]:
         """Convert experimenter full names to Person objects"""
         experimenters = []
+
+        if isinstance(experimenter_names, str):
+            experimenter_names = [experimenter_names]
+
         for name in experimenter_names:
             if name and name.strip():
                 experimenters.append(name.strip())

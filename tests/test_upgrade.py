@@ -47,7 +47,7 @@ client = MetadataDbClient(
 # )
 
 run_one = "5f6325ff-5920-429c-880b-35e287af716a"
-upsert = False
+upsert = True
 
 
 class TestUpgrade(unittest.TestCase):
