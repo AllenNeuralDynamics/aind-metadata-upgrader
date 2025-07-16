@@ -834,8 +834,11 @@ class SessionV1V2(CoreUpgrader):
                     stimulus_parameters = stimulus_parameters[0]
                 elif len(stimulus_parameters) > 1:
                     split_parameters = {}
-                    for params in stimulus_parameters:
-                        split_parameters[params["stimulus_name"]] = params
+                    for i, params in enumerate(stimulus_parameters):
+                        if "stimulus_name" in params:
+                            split_parameters[params["stimulus_name"]] = params
+                        else:
+                            split_parameters[f"Stimulus_{i}"] = params
                     stimulus_parameters = split_parameters
 
             if not stimulus_parameters:
