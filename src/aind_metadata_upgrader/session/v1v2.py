@@ -99,11 +99,17 @@ class SessionV1V2(CoreUpgrader):
         """Upgrade light source config from v1 to v2"""
         if not data:
             return None
+        
+        print(data)
 
         device_type = data.get("device_type")
         device_name = data.get("name", "Unknown Device")
         excitation_power = data.get("excitation_power")
+        if not excitation_power and "laser_power" in data:
+            excitation_power = data["laser_power"]
         power_unit = data.get("excitation_power_unit")
+        if not power_unit and "laser_power_unit" in data:
+            power_unit = data["laser_power_unit"]
 
         if device_type == "Laser" or "laser" in device_name.lower():
             return LaserConfig(
