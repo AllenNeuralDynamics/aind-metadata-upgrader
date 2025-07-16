@@ -14,7 +14,7 @@ from aind_data_schema.core.metadata import REQUIRED_FILE_SETS
 from packaging.version import Version
 
 from aind_metadata_upgrader.upgrade_mapping import MAPPING
-from aind_metadata_upgrader.utils.v1v2_utils import repair_metadata
+from aind_metadata_upgrader.utils.v1v2_metadata_utils import repair_metadata
 
 CORE_FILES = [
     "subject",
