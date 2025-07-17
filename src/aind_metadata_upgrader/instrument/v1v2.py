@@ -28,6 +28,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_light_source,
     upgrade_objective,
 )
+from aind_data_schema.utils.validators import recursive_get_all_names
 
 
 class InstrumentUpgraderV1V2(CoreUpgrader):
@@ -222,8 +223,10 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         # Flatten the list of device names from all connections
         connection_names = [name for conn in connections for name in [conn["source_device"], conn["target_device"]]]
 
-        # TODO: This needs to properly handle nested components, e.g. in assemblies
-        component_names = [comp["name"] for comp in components]
+        component_names = []
+        for component in components:
+            component_names.extend(recursive_get_all_names(component))
+        component_names = [name for name in component_names if name is not None]
 
         missing_names = []
         for name in connection_names:
