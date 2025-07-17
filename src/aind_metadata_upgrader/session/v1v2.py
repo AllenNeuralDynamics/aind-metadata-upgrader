@@ -483,25 +483,26 @@ class SessionV1V2(CoreUpgrader):
         channels = []
         images = []
 
-        for i, fov in enumerate(stream.get("ophys_fovs", [])):
-            # Create channel for this FOV
-            channel = Channel(
-                channel_name=f"Channel_{i}",
-                detector=(
-                    self._upgrade_detector_config(detectors[0])
-                    if detectors
-                    else {
-                        "object_type": "Detector config",
-                        "device_name": "Unknown Detector",
-                        "exposure_time": 1.0,
-                        "exposure_time_unit": "millisecond",
-                        "trigger_type": "Internal",
-                    }
-                ),
-                light_sources=[self._upgrade_light_source_config(ls) for ls in light_sources],
-            ).model_dump()
-            channels.append(channel)
+        if len(detectors) > 1:
+            raise ValueError("Multiple detectors are not yet supported in ophys upgrade")
 
+        channel = Channel(
+            channel_name="Ophys Channel",
+            detector=(
+                self._upgrade_detector_config(detectors[0])
+                if detectors
+                else DetectorConfig(
+                    device_name="Unknown Detector",
+                    exposure_time=1.0,
+                    exposure_time_unit=TimeUnit.MS,
+                    trigger_type=TriggerType.INTERNAL,
+                )
+            ),
+            light_sources=[self._upgrade_light_source_config(ls) for ls in light_sources],
+        ).model_dump()
+        channels.append(channel)
+
+        for i, fov in enumerate(stream.get("ophys_fovs", [])):
             # Create plane and image
             plane = self._upgrade_ophys_fov_to_plane(fov)
             image = PlanarImage(

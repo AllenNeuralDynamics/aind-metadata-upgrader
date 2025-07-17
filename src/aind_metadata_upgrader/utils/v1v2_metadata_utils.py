@@ -1,4 +1,5 @@
 """Metadata level utilities"""
+
 from datetime import datetime
 from aind_data_schema.core.procedures import Procedures
 from aind_data_schema.core.instrument import Instrument
