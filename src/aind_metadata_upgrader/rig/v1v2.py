@@ -43,6 +43,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_objective,
     upgrade_v1_modalities,
 )
+from aind_data_schema.utils.validators import recursive_get_all_names
 
 BREGMA_ALS = CoordinateSystem(
     name="BREGMA_ALS",
@@ -278,7 +279,10 @@ class RigUpgraderV1V2(CoreUpgrader):
         # # Check that we're going to pass the connection validation
         # # Flatten the list of device names from all connections
         connection_names = [name for conn in connections for name in [conn["source_device"], conn["target_device"]]]
-        component_names = [comp["name"] for comp in components]
+        component_names = []
+        for component in components:
+            component_names.extend(recursive_get_all_names(component))
+        component_names = [name for name in component_names if name is not None]
 
         missing_names = []
         for name in connection_names:
