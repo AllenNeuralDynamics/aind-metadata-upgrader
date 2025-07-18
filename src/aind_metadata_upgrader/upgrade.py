@@ -88,6 +88,13 @@ class Upgrade:
     def _validate_required_files(self, core_files: dict):
         """Validate that all required core files are present"""
         if not self.skip_metadata_validation:
+            # Check that at least one of the required file sets is present
+            if not any(file in core_files for file in REQUIRED_FILE_SETS):
+                raise ValueError(
+                    "No required core files found. At least one of the required file sets must be present. "
+                    "This asset cannot be upgraded."
+                )
+
             for trigger_file, required_files in REQUIRED_FILE_SETS.items():
                 if trigger_file in core_files.keys():
                     if not all(
