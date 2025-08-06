@@ -1,0 +1,3276 @@
+{
+    "_id": "31e6efb6-1691-446f-8ed4-fa50d2630a3d",
+    "acquisition": null,
+    "created": "2025-06-26T06:32:42.340759",
+    "data_description": {
+        "creation_time": "2025-06-24T20:13:22-07:00",
+        "data_level": "raw",
+        "data_summary": null,
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "funding_source": [
+            {
+                "fundee": null,
+                "funder": {
+                    "abbreviation": "AI",
+                    "name": "Allen Institute",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": "Simons863738"
+            },
+            {
+                "fundee": null,
+                "funder": {
+                    "abbreviation": null,
+                    "name": "Simons Foundation",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "01cmst727"
+                },
+                "grant_number": "Simons863738"
+            }
+        ],
+        "group": null,
+        "institution": {
+            "abbreviation": "AIND",
+            "name": "Allen Institute for Neural Dynamics",
+            "registry": {
+                "abbreviation": "ROR",
+                "name": "Research Organization Registry"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "investigators": [
+            {
+                "abbreviation": null,
+                "name": "Bruno Cruz",
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "abbreviation": null,
+                "name": "Cindy Poo",
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "abbreviation": null,
+                "name": "Tiffany Ona",
+                "registry": null,
+                "registry_identifier": null
+            }
+        ],
+        "label": null,
+        "license": "CC-BY-4.0",
+        "modality": [
+            {
+                "abbreviation": "behavior",
+                "name": "Behavior"
+            },
+            {
+                "abbreviation": "behavior-videos",
+                "name": "Behavior videos"
+            }
+        ],
+        "name": "behavior_789910_2025-06-24_20-13-22",
+        "platform": {
+            "abbreviation": "behavior",
+            "name": "Behavior platform"
+        },
+        "project_name": "Cognitive flexibility in patch foraging",
+        "related_data": [],
+        "restrictions": null,
+        "schema_version": "1.0.3",
+        "subject_id": "789910"
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": {
+        "Code Ocean": [
+            "8655acfe-1bc1-4411-9d84-d0a8e3bd794a"
+        ]
+    },
+    "instrument": null,
+    "last_modified": "2025-06-26T06:39:50.399Z",
+    "location": "s3://aind-private-data-prod-o5171v/behavior_789910_2025-06-24_20-13-22",
+    "metadata_status": "Missing",
+    "name": "behavior_789910_2025-06-24_20-13-22",
+    "procedures": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "notes": null,
+        "schema_version": "1.1.3",
+        "specimen_procedures": [],
+        "subject_id": "789910",
+        "subject_procedures": [
+            {
+                "baseline_weight": "24.26",
+                "end_date": null,
+                "minimum_water_per_day": "1.0",
+                "minimum_water_per_day_unit": "milliliter",
+                "procedure_type": "Water restriction",
+                "start_date": "2025-03-21",
+                "target_fraction_weight": 85,
+                "target_fraction_weight_unit": "percent",
+                "weight_unit": "gram"
+            }
+        ]
+    },
+    "processing": {
+        "analyses": [],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "notes": null,
+        "processing_pipeline": {
+            "data_processes": [
+                {
+                    "code_url": "oras://ghcr.io/allenneuraldynamics/aind-behavior-video-transformation:0.1.6",
+                    "code_version": null,
+                    "end_date_time": "2025-06-26T06:31:31.724872Z",
+                    "input_location": "/allen/aind/scratch/vr-foraging/data/789910/789910_2025-06-24T201322Z/behavior-videos",
+                    "name": "Compression",
+                    "notes": null,
+                    "output_location": "/allen/aind/stage/svc_aind_airflow/prod/behavior_789910_job_1750879986_3f40b_cf/behavior-videos",
+                    "outputs": {},
+                    "parameters": {
+                        "compress_data_settings": {
+                            "job_properties": {
+                                "environment": {
+                                    "LD_LIBRARY_PATH": "/lib/:/lib64/:/usr/local/lib",
+                                    "PATH": "/bin:/usr/bin/:/usr/local/bin/"
+                                },
+                                "memory_per_cpu": 250,
+                                "minimum_cpus_per_node": 32,
+                                "name": "behavior_789910_job_1750880333_8436b_behavior-videos",
+                                "nodes": [
+                                    1,
+                                    1
+                                ],
+                                "partition": "aind",
+                                "qos": "production",
+                                "standard_error": "/allen/aind/scratch/svc_aind_airflow/prod/logs/behavior_789910_job_1750880333_8436b_behavior-videos_error.out",
+                                "standard_out": "/allen/aind/scratch/svc_aind_airflow/prod/logs/behavior_789910_job_1750880333_8436b_behavior-videos.out",
+                                "tasks": 1,
+                                "time_limit": 1440
+                            },
+                            "logs_directory": "/allen/aind/scratch/svc_aind_airflow/prod/logs",
+                            "module": "aind_behavior_video_transformation.etl",
+                            "process_name": "Compression",
+                            "sif_container": "oras://ghcr.io/allenneuraldynamics/aind-behavior-video-transformation:0.1.6"
+                        },
+                        "compress_raw_data": true,
+                        "job_settings": {
+                            "compression_requested": {
+                                "compression_enum": "gamma"
+                            },
+                            "input_source": "/allen/aind/scratch/vr-foraging/data/789910/789910_2025-06-24T201322Z/behavior-videos",
+                            "output_directory": "/allen/aind/stage/svc_aind_airflow/prod/behavior_789910_job_1750879986_3f40b_cf/behavior-videos"
+                        },
+                        "modality": {
+                            "abbreviation": "behavior-videos",
+                            "name": "Behavior videos"
+                        },
+                        "output_folder_name": "behavior-videos",
+                        "platform": "behavior",
+                        "s3_bucket": "private",
+                        "s3_prefix": "behavior_789910_2025-06-24_20-13-22",
+                        "source": "/allen/aind/scratch/vr-foraging/data/789910/789910_2025-06-24T201322Z/behavior-videos"
+                    },
+                    "resources": null,
+                    "software_version": "0.1.6",
+                    "start_date_time": "2025-06-25T19:38:53.489460Z"
+                }
+            ],
+            "note": null,
+            "pipeline_url": null,
+            "pipeline_version": null,
+            "processor_full_name": "AIND Scientific Computing"
+        },
+        "schema_version": "1.1.3"
+    },
+    "quality_control": null,
+    "rig": {
+        "additional_devices": [],
+        "calibrations": [
+            {
+                "calibration_date": "2024-03-11T00:00:00-07:00",
+                "description": "Water calibration for Lick spout. The input is the valve open time in seconds and the output is the volume of water delivered in microliters.",
+                "device_name": "WaterValve",
+                "input": {
+                    "valve open time (s):": [
+                        0.03,
+                        0.05,
+                        0.08,
+                        0.1,
+                        0.12,
+                        0.17,
+                        0.2
+                    ]
+                },
+                "notes": null,
+                "output": {
+                    "water volume (ul):": [
+                        0.57,
+                        0.84,
+                        1.3,
+                        1.58,
+                        1.84,
+                        2.23,
+                        3.01
+                    ]
+                }
+            }
+        ],
+        "cameras": [
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "SAKTIMUNA",
+                    "cooling": "Air",
+                    "crop_height": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "360",
+                    "frame_rate_unit": "hertz",
+                    "gain": "3.0",
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "name": "FaceCamera",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inch",
+                    "sensor_height": 540,
+                    "sensor_width": 720,
+                    "serial_number": "23022711",
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Face side right",
+                "filter": {
+                    "additional_settings": {},
+                    "center_wavelength": null,
+                    "cut_off_wavelength": null,
+                    "cut_on_wavelength": null,
+                    "description": "810 nm longpass filter",
+                    "device_type": "Filter",
+                    "diameter": null,
+                    "filter_type": "Long pass",
+                    "filter_wheel_index": null,
+                    "height": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Thorlabs",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "04gsnvb07"
+                    },
+                    "model": null,
+                    "name": "LP filter",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size_unit": "millimeter",
+                    "thickness": null,
+                    "thickness_unit": "millimeter",
+                    "wavelength_unit": "nanometer",
+                    "width": null
+                },
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "16",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Tamron",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "M112FM16",
+                    "name": "Behavior Video Lens Face View",
+                    "notes": null,
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "FaceCamera",
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "SAKTIMUNA",
+                    "cooling": "Air",
+                    "crop_height": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "360",
+                    "frame_rate_unit": "hertz",
+                    "gain": "3.0",
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "name": "SideCamera",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inch",
+                    "sensor_height": 540,
+                    "sensor_width": 720,
+                    "serial_number": "23022718",
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Side",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "5",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "LM5JCM",
+                    "name": "Behavior Video Lens Side View",
+                    "notes": "Manufacturer is KOWA",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "SideCamera",
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "Additive",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Color",
+                    "computer_name": "SAKTIMUNA",
+                    "cooling": "Air",
+                    "crop_height": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "30",
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "Ailipu",
+                        "name": "Ailipu Technology Co",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "ELP-USBFHD05MT-KL170IR",
+                    "name": "Bottom face Camera",
+                    "notes": "The targe is top of the body",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": {
+                        "name": "Bonsai",
+                        "parameters": {},
+                        "url": null,
+                        "version": "2.5"
+                    },
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 480,
+                    "sensor_width": 640,
+                    "serial_number": null,
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Body",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": null,
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": "f/1.4",
+                    "model": "XC0922LENS",
+                    "name": "Xenocam 2",
+                    "notes": "Focal Length 9-22mm 1/3\" IR F1.4",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": "unknown",
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "USB_top_view",
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "SAKTIMUNA",
+                    "cooling": "Air",
+                    "crop_height": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "360",
+                    "frame_rate_unit": "hertz",
+                    "gain": "0.0",
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "name": "FrontCamera",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inch",
+                    "sensor_height": 540,
+                    "sensor_width": 720,
+                    "serial_number": "24067699",
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Face side right",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "25",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "LM25HC",
+                    "name": "Behavior Video Lens Front View",
+                    "notes": "Manufacturer is KOWA",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "FrontCamera",
+                "position": null
+            }
+        ],
+        "ccf_coordinate_transform": null,
+        "daqs": [
+            {
+                "additional_settings": {},
+                "channels": [
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "FaceCamera",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "SideCamera",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "FrontCamera",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO1",
+                        "channel_type": "Digital Output",
+                        "device_name": "Speaker",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "PWM0",
+                        "channel_type": "Digital Output",
+                        "device_name": "Solenoid",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    }
+                ],
+                "computer_name": "SAKTIMUNA",
+                "core_version": null,
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Behavior",
+                    "whoami": 1216
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "OEPS",
+                    "name": "Open Ephys Production Site",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "007rkz355"
+                },
+                "model": null,
+                "name": "harp_behavior",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [],
+                "computer_name": "SAKTIMUNA",
+                "core_version": null,
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Clock Synchronizer",
+                    "whoami": 1152
+                },
+                "is_clock_generator": true,
+                "manufacturer": {
+                    "abbreviation": "AIND",
+                    "name": "Allen Institute for Neural Dynamics",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04szwah67"
+                },
+                "model": null,
+                "name": "harp_white_rabbit",
+                "notes": "White Rabbit clock for synchronization: https://github.com/AllenNeuralDynamics/harp.device.white-rabbit",
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [
+                    {
+                        "channel_index": null,
+                        "channel_name": "Torque sensor",
+                        "channel_type": "Analog Output",
+                        "device_name": "harp_treadmill",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "Encoder",
+                        "channel_type": "Analog Output",
+                        "device_name": "harp_treadmill",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "Magnetic brake",
+                        "channel_type": "Analog Output",
+                        "device_name": "harp_treadmill",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    }
+                ],
+                "computer_name": "SAKTIMUNA",
+                "core_version": null,
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Treadmill",
+                    "whoami": 1402
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "AIND",
+                    "name": "Allen Institute for Neural Dynamics",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04szwah67"
+                },
+                "model": null,
+                "name": "harp_treadmill",
+                "notes": "https://github.com/AllenNeuralDynamics/harp.device.treadmill-driver",
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [],
+                "computer_name": "SAKTIMUNA",
+                "core_version": null,
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Lickety Split",
+                    "whoami": 1400
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "AIND",
+                    "name": "Allen Institute for Neural Dynamics",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04szwah67"
+                },
+                "model": null,
+                "name": "harp_lickometer",
+                "notes": "Lick sensor with low noise artifacts; https://github.com/AllenNeuralDynamics/harp.device.lickety-split",
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [],
+                "computer_name": "SAKTIMUNA",
+                "core_version": null,
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Stepper Driver",
+                    "whoami": 1130
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "AIND",
+                    "name": "Allen Institute for Neural Dynamics",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04szwah67"
+                },
+                "model": null,
+                "name": "Stepper driver",
+                "notes": "Stepper driver for positioning the lick spout and the odor tubes; https://allenneuraldynamics.github.io/Bonsai.AllenNeuralDynamics/articles/aind-manipulator.html",
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [],
+                "computer_name": "SAKTIMUNA",
+                "core_version": null,
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Olfactometer",
+                    "whoami": 1140
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "Champalimaud",
+                    "name": "Champalimaud Foundation",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "name": "harp_olfactometer",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/rig.py",
+        "detectors": [],
+        "digital_micromirror_devices": [],
+        "enclosure": {
+            "additional_settings": {},
+            "air_filtration": false,
+            "device_type": "Enclosure",
+            "external_material": "Wood and aluminium frame",
+            "grounded": true,
+            "internal_material": "High density foam",
+            "laser_interlock": false,
+            "manufacturer": {
+                "abbreviation": "AIND",
+                "name": "Allen Institute for Neural Dynamics",
+                "registry": {
+                    "abbreviation": "ROR",
+                    "name": "Research Organization Registry"
+                },
+                "registry_identifier": "04szwah67"
+            },
+            "model": null,
+            "name": "Behavior enclosure",
+            "notes": null,
+            "path_to_cad": null,
+            "port_index": null,
+            "serial_number": null,
+            "size": {
+                "height": 506,
+                "length": 540,
+                "unit": "millimeter",
+                "width": 568
+            }
+        },
+        "ephys_assemblies": [],
+        "fiber_assemblies": [],
+        "filters": [
+            {
+                "additional_settings": {},
+                "center_wavelength": null,
+                "cut_off_wavelength": 750,
+                "cut_on_wavelength": null,
+                "description": null,
+                "device_type": "Filter",
+                "diameter": null,
+                "filter_type": "Dichroic",
+                "filter_wheel_index": null,
+                "height": "6",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "HM-VS-1150",
+                "name": "Hot Mirror Filter",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "size_unit": "inch",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "wavelength_unit": "nanometer",
+                "width": "8"
+            }
+        ],
+        "laser_assemblies": [],
+        "lenses": [
+            {
+                "additional_settings": {},
+                "device_type": "Lens",
+                "focal_length": "50",
+                "focal_length_unit": "millimeter",
+                "lens_size_unit": "inch",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "max_aperture": null,
+                "model": "LA1255-B",
+                "name": "IR LED - Face lens",
+                "notes": null,
+                "optimized_wavelength_range": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "size": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Lens",
+                "focal_length": "30",
+                "focal_length_unit": "millimeter",
+                "lens_size_unit": "inch",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "max_aperture": null,
+                "model": "LA1805-B",
+                "name": "IR LED - Side lens",
+                "notes": null,
+                "optimized_wavelength_range": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "size": null,
+                "wavelength_unit": "nanometer"
+            }
+        ],
+        "light_sources": [
+            {
+                "additional_settings": {},
+                "bandwidth": null,
+                "bandwidth_unit": "nanometer",
+                "device_type": "Light emitting diode",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M810L5",
+                "name": "IR LED - Face",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "wavelength": 810,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": {},
+                "bandwidth": null,
+                "bandwidth_unit": "nanometer",
+                "device_type": "Light emitting diode",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M810L5",
+                "name": "IR LED - Side",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "wavelength": 810,
+                "wavelength_unit": "nanometer"
+            }
+        ],
+        "modalities": [
+            {
+                "abbreviation": "behavior",
+                "name": "Behavior"
+            },
+            {
+                "abbreviation": "behavior-videos",
+                "name": "Behavior videos"
+            }
+        ],
+        "modification_date": "2025-06-12",
+        "mouse_platform": {
+            "additional_settings": {},
+            "brake_output": {
+                "channel_index": null,
+                "channel_name": "Magnetic brake",
+                "channel_type": "Analog Output",
+                "device_name": "harp_treadmill",
+                "event_based_sampling": null,
+                "port": null,
+                "sample_rate": null,
+                "sample_rate_unit": "hertz"
+            },
+            "date_surface_replaced": null,
+            "device_type": "Wheel",
+            "encoder": {
+                "additional_settings": {},
+                "device_type": "Encoder",
+                "manufacturer": null,
+                "model": "AMT102-V",
+                "name": "Encoder",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null
+            },
+            "encoder_output": {
+                "channel_index": null,
+                "channel_name": "Encoder",
+                "channel_type": "Analog Output",
+                "device_name": "harp_treadmill",
+                "event_based_sampling": null,
+                "port": null,
+                "sample_rate": null,
+                "sample_rate_unit": "hertz"
+            },
+            "magnetic_brake": {
+                "additional_settings": {},
+                "device_type": "Magnetic brake",
+                "manufacturer": null,
+                "model": "B1-2FM",
+                "name": "Magnetic brake",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null
+            },
+            "manufacturer": {
+                "abbreviation": "AIND",
+                "name": "Allen Institute for Neural Dynamics",
+                "registry": {
+                    "abbreviation": "ROR",
+                    "name": "Research Organization Registry"
+                },
+                "registry_identifier": "04szwah67"
+            },
+            "model": null,
+            "name": "VR Wheel",
+            "notes": null,
+            "path_to_cad": "https://tinyurl.com/AI-RunningWheel",
+            "port_index": null,
+            "pulse_per_revolution": 8192,
+            "radius": "7.5",
+            "serial_number": null,
+            "size_unit": "centimeter",
+            "surface_material": "Rubber",
+            "torque_output": {
+                "channel_index": null,
+                "channel_name": "Torque sensor",
+                "channel_type": "Analog Output",
+                "device_name": "harp_treadmill",
+                "event_based_sampling": null,
+                "port": null,
+                "sample_rate": null,
+                "sample_rate_unit": "hertz"
+            },
+            "torque_sensor": {
+                "additional_settings": {},
+                "device_type": "Torque sensor",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Transducer Techniques",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "RTS-10",
+                "name": "Torque sensor",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null
+            },
+            "width": "3.5"
+        },
+        "notes": null,
+        "objectives": [],
+        "origin": null,
+        "patch_cords": [],
+        "pockels_cells": [],
+        "polygonal_scanners": [],
+        "rig_axes": null,
+        "rig_id": "426_5A_20250612",
+        "schema_version": "1.1.1",
+        "stick_microscopes": [],
+        "stimulus_devices": [
+            {
+                "device_type": "Reward delivery",
+                "reward_spouts": [
+                    {
+                        "additional_settings": {},
+                        "device_type": "Reward spout",
+                        "lick_sensor": {
+                            "additional_settings": {},
+                            "device_type": "Harp device",
+                            "manufacturer": {
+                                "abbreviation": "AIND",
+                                "name": "Allen Institute for Neural Dynamics",
+                                "registry": {
+                                    "abbreviation": "ROR",
+                                    "name": "Research Organization Registry"
+                                },
+                                "registry_identifier": "04szwah67"
+                            },
+                            "model": null,
+                            "name": "harp_lickometer",
+                            "notes": "Lick sensor with low noise artifacts; https://github.com/AllenNeuralDynamics/harp.device.lickety-split",
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "serial_number": null
+                        },
+                        "lick_sensor_type": "Capacitive",
+                        "manufacturer": {
+                            "abbreviation": null,
+                            "name": "Other",
+                            "registry": null,
+                            "registry_identifier": null
+                        },
+                        "model": "89875K27",
+                        "name": "Lick spout",
+                        "notes": "Lick spout for water delivery, the tube is ordered from McMaster, cut to size and shaped by AIND",
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "serial_number": null,
+                        "side": "Center",
+                        "solenoid_valve": {
+                            "additional_settings": {},
+                            "device_type": "Solenoid",
+                            "manufacturer": {
+                                "abbreviation": null,
+                                "name": "The Lee Company",
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": "LHDB1233518H",
+                            "name": "Solenoid",
+                            "notes": null,
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "serial_number": null
+                        },
+                        "spout_diameter": "1.2",
+                        "spout_diameter_unit": "millimeter",
+                        "spout_position": null
+                    }
+                ],
+                "stage_type": {
+                    "additional_settings": {},
+                    "device_type": "Motorized stage",
+                    "firmware": null,
+                    "manufacturer": {
+                        "abbreviation": "AIND",
+                        "name": "Allen Institute for Neural Dynamics",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "04szwah67"
+                    },
+                    "model": "328-300-00",
+                    "name": "Motorized stage",
+                    "notes": "Motorized stage for positioning",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "travel": "30",
+                    "travel_unit": "millimeter"
+                }
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Speaker",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Tymphany",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "XT25SC90-04",
+                "name": "Speaker",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "position": null,
+                "serial_number": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [
+                    {
+                        "channel_index": 0,
+                        "channel_type": "Odor",
+                        "flow_capacity": 100,
+                        "flow_unit": "mL/min"
+                    },
+                    {
+                        "channel_index": 1,
+                        "channel_type": "Odor",
+                        "flow_capacity": 100,
+                        "flow_unit": "mL/min"
+                    },
+                    {
+                        "channel_index": 2,
+                        "channel_type": "Odor",
+                        "flow_capacity": 100,
+                        "flow_unit": "mL/min"
+                    },
+                    {
+                        "channel_index": 3,
+                        "channel_type": "Carrier",
+                        "flow_capacity": 1000,
+                        "flow_unit": "mL/min"
+                    },
+                    {
+                        "channel_index": 4,
+                        "channel_type": "Carrier",
+                        "flow_capacity": 1000,
+                        "flow_unit": "mL/min"
+                    }
+                ],
+                "computer_name": "SAKTIMUNA",
+                "core_version": null,
+                "data_interface": "USB",
+                "device_type": "Olfactometer",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Olfactometer",
+                    "whoami": 1140
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "Champalimaud",
+                    "name": "Champalimaud Foundation",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "name": "Olfactometer",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "brightness": null,
+                "contrast": null,
+                "device_type": "Monitor",
+                "height": 1536,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "LG",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "02b948n83"
+                },
+                "model": "LG LP097QX1",
+                "name": "Screen Left",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "position": null,
+                "refresh_rate": 60,
+                "serial_number": null,
+                "size_unit": "pixel",
+                "viewing_distance": "15.5",
+                "viewing_distance_unit": "centimeter",
+                "width": 2048
+            },
+            {
+                "additional_settings": {},
+                "brightness": null,
+                "contrast": null,
+                "device_type": "Monitor",
+                "height": 1536,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "LG",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "02b948n83"
+                },
+                "model": "LG LP097QX1",
+                "name": "Screen Center",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "position": null,
+                "refresh_rate": 60,
+                "serial_number": null,
+                "size_unit": "pixel",
+                "viewing_distance": "17.5",
+                "viewing_distance_unit": "centimeter",
+                "width": 2048
+            },
+            {
+                "additional_settings": {},
+                "brightness": null,
+                "contrast": null,
+                "device_type": "Monitor",
+                "height": 1536,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "LG",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "02b948n83"
+                },
+                "model": "LG LP097QX1",
+                "name": "Screen Right",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "position": null,
+                "refresh_rate": 60,
+                "serial_number": null,
+                "size_unit": "pixel",
+                "viewing_distance": "17.5",
+                "viewing_distance_unit": "centimeter",
+                "width": 2048
+            }
+        ]
+    },
+    "schema_version": "1.1.1",
+    "session": {
+        "active_mouse_platform": true,
+        "anaesthesia": null,
+        "animal_weight_post": null,
+        "animal_weight_prior": null,
+        "calibrations": [
+            {
+                "calibration_date": "2024-10-24T00:00:00-07:00",
+                "description": "Calibration of the water valve delivery system",
+                "device_name": "WaterValve",
+                "input": {
+                    "measurements": [
+                        {
+                            "repeat_count": 200,
+                            "valve_open_interval": 0.5,
+                            "valve_open_time": 0.03,
+                            "water_weight": [
+                                0.36
+                            ]
+                        },
+                        {
+                            "repeat_count": 200,
+                            "valve_open_interval": 0.5,
+                            "valve_open_time": 0.04,
+                            "water_weight": [
+                                0.42
+                            ]
+                        },
+                        {
+                            "repeat_count": 200,
+                            "valve_open_interval": 0.5,
+                            "valve_open_time": 0.05,
+                            "water_weight": [
+                                0.5
+                            ]
+                        },
+                        {
+                            "repeat_count": 200,
+                            "valve_open_interval": 0.5,
+                            "valve_open_time": 0.08,
+                            "water_weight": [
+                                0.79
+                            ]
+                        },
+                        {
+                            "repeat_count": 200,
+                            "valve_open_interval": 0.5,
+                            "valve_open_time": 0.1,
+                            "water_weight": [
+                                1.02
+                            ]
+                        },
+                        {
+                            "repeat_count": 200,
+                            "valve_open_interval": 0.5,
+                            "valve_open_time": 0.2,
+                            "water_weight": [
+                                2.22
+                            ]
+                        },
+                        {
+                            "repeat_count": 200,
+                            "valve_open_interval": 0.5,
+                            "valve_open_time": 0.3,
+                            "water_weight": [
+                                3.29
+                            ]
+                        }
+                    ]
+                },
+                "notes": null,
+                "output": {
+                    "interval_average": {
+                        "0.03": 0.0018,
+                        "0.04": 0.0021,
+                        "0.05": 0.0025,
+                        "0.08": 0.00395,
+                        "0.1": 0.0051,
+                        "0.2": 0.0111,
+                        "0.3": 0.01645
+                    },
+                    "offset": -0.0002024773701762737,
+                    "r2": 0.9983215345976744,
+                    "slope": 0.05552167698904239,
+                    "valid_domain": [
+                        0.03,
+                        0.04,
+                        0.05,
+                        0.08,
+                        0.1,
+                        0.2,
+                        0.3
+                    ]
+                }
+            }
+        ],
+        "data_streams": [
+            {
+                "camera_names": [
+                    "FaceCamera",
+                    "SideCamera",
+                    "FrontCamera"
+                ],
+                "daq_names": [],
+                "detectors": [],
+                "ephys_modules": [],
+                "fiber_connections": [],
+                "fiber_modules": [],
+                "light_sources": [],
+                "manipulator_modules": [],
+                "mri_scans": [],
+                "notes": null,
+                "ophys_fovs": [],
+                "slap_fovs": [],
+                "software": [],
+                "stack_parameters": null,
+                "stick_microscopes": [],
+                "stream_end_time": "2025-06-24T21:31:01.214495Z",
+                "stream_modalities": [
+                    {
+                        "abbreviation": "behavior",
+                        "name": "Behavior"
+                    },
+                    {
+                        "abbreviation": "behavior-videos",
+                        "name": "Behavior videos"
+                    }
+                ],
+                "stream_start_time": "2025-06-24T20:13:22.265585Z"
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/session.py",
+        "experimenter_full_name": [
+            "Huy"
+        ],
+        "headframe_registration": null,
+        "iacuc_protocol": null,
+        "maintenance": [],
+        "mouse_platform_name": "wheel",
+        "notes": "",
+        "protocol_id": [],
+        "reward_consumed_total": null,
+        "reward_consumed_unit": "milliliter",
+        "reward_delivery": {
+            "notes": null,
+            "reward_solution": "Water",
+            "reward_spouts": [
+                {
+                    "side": "Center",
+                    "starting_position": {
+                        "device_axes": [
+                            {
+                                "direction": "Left",
+                                "name": "X"
+                            },
+                            {
+                                "direction": "Front",
+                                "name": "Y"
+                            },
+                            {
+                                "direction": "Top",
+                                "name": "Z"
+                            }
+                        ],
+                        "device_origin": "Manipulator home",
+                        "device_position_transformations": [
+                            {
+                                "translation": [
+                                    "15.5",
+                                    "25.5",
+                                    "17.0"
+                                ],
+                                "type": "translation"
+                            }
+                        ],
+                        "notes": null
+                    },
+                    "variable_position": true
+                }
+            ]
+        },
+        "rig_id": "426_5A_20250612",
+        "schema_version": "1.1.2",
+        "session_end_time": "2025-06-24T21:31:01.214495Z",
+        "session_start_time": "2025-06-24T20:13:22.265585Z",
+        "session_type": "AindVrForaging",
+        "stimulus_epochs": [
+            {
+                "light_source_config": [],
+                "notes": null,
+                "objects_in_arena": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "microliter",
+                "script": {
+                    "name": "vr-foraging",
+                    "parameters": {
+                        "description": "",
+                        "name": "AindVrForaging",
+                        "stage_name": "learning_task_set4_reversal_set5",
+                        "task_parameters": {
+                            "aind_behavior_services_pkg_version": "0.10.2",
+                            "environment": {
+                                "blocks": [
+                                    {
+                                        "end_conditions": [
+                                            {
+                                                "condition_type": "PatchCount",
+                                                "value": {
+                                                    "distribution_parameters": {
+                                                        "family": "Scalar",
+                                                        "value": 20
+                                                    },
+                                                    "family": "Scalar",
+                                                    "scaling_parameters": null,
+                                                    "truncation_parameters": null
+                                                }
+                                            }
+                                        ],
+                                        "environment_statistics": {
+                                            "first_state_occupancy": [
+                                                0.3333333333333333,
+                                                0.3333333333333333,
+                                                0.3333333333333333
+                                            ],
+                                            "patches": [
+                                                {
+                                                    "label": "noreward_set4",
+                                                    "odor_specification": {
+                                                        "concentration": 1,
+                                                        "index": 2
+                                                    },
+                                                    "reward_specification": {
+                                                        "delay": {
+                                                            "distribution_parameters": {
+                                                                "family": "Normal",
+                                                                "mean": 0.25,
+                                                                "std": 0.25
+                                                            },
+                                                            "family": "Normal",
+                                                            "scaling_parameters": {
+                                                                "offset": 0,
+                                                                "scale": 1
+                                                            },
+                                                            "truncation_parameters": {
+                                                                "is_truncated": true,
+                                                                "max": 1,
+                                                                "min": 0
+                                                            }
+                                                        },
+                                                        "operant_logic": {
+                                                            "grace_distance_threshold": 10,
+                                                            "is_operant": false,
+                                                            "stop_duration": 1,
+                                                            "time_to_collect_reward": 100000
+                                                        },
+                                                        "reward_function": {
+                                                            "amount": {
+                                                                "function_type": "ConstantFunction",
+                                                                "value": 0
+                                                            },
+                                                            "available": {
+                                                                "function_type": "ConstantFunction",
+                                                                "value": 0
+                                                            },
+                                                            "depletion_rule": "OnChoice",
+                                                            "probability": {
+                                                                "function_type": "ConstantFunction",
+                                                                "value": 0
+                                                            }
+                                                        }
+                                                    },
+                                                    "state_index": 0,
+                                                    "virtual_site_generation": {
+                                                        "inter_patch": {
+                                                            "label": "InterPatch",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Exponential",
+                                                                    "rate": 0.01
+                                                                },
+                                                                "family": "Exponential",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 400,
+                                                                    "min": 100
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 1
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        },
+                                                        "inter_site": {
+                                                            "label": "InterSite",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Exponential",
+                                                                    "rate": 0.05
+                                                                },
+                                                                "family": "Exponential",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 100,
+                                                                    "min": 20
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 0.5
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        },
+                                                        "post_patch": null,
+                                                        "reward_site": {
+                                                            "label": "RewardSite",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Uniform",
+                                                                    "max": 50,
+                                                                    "min": 50
+                                                                },
+                                                                "family": "Uniform",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 10000,
+                                                                    "min": 0
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 0.5
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "label": "delayed_set4",
+                                                    "odor_specification": {
+                                                        "concentration": 1,
+                                                        "index": 0
+                                                    },
+                                                    "reward_specification": {
+                                                        "delay": {
+                                                            "distribution_parameters": {
+                                                                "family": "Normal",
+                                                                "mean": 0.25,
+                                                                "std": 0.25
+                                                            },
+                                                            "family": "Normal",
+                                                            "scaling_parameters": {
+                                                                "offset": 0,
+                                                                "scale": 1
+                                                            },
+                                                            "truncation_parameters": {
+                                                                "is_truncated": true,
+                                                                "max": 1,
+                                                                "min": 0
+                                                            }
+                                                        },
+                                                        "operant_logic": {
+                                                            "grace_distance_threshold": 10,
+                                                            "is_operant": false,
+                                                            "stop_duration": 1,
+                                                            "time_to_collect_reward": 100000
+                                                        },
+                                                        "reward_function": {
+                                                            "amount": {
+                                                                "function_type": "ConstantFunction",
+                                                                "value": 6
+                                                            },
+                                                            "available": {
+                                                                "function_type": "ConstantFunction",
+                                                                "value": 150
+                                                            },
+                                                            "depletion_rule": "OnChoice",
+                                                            "probability": {
+                                                                "function_type": "LookupTableFunction",
+                                                                "lut_keys": [
+                                                                    0,
+                                                                    1,
+                                                                    2,
+                                                                    3,
+                                                                    4,
+                                                                    5,
+                                                                    6,
+                                                                    7,
+                                                                    8,
+                                                                    9,
+                                                                    10,
+                                                                    11,
+                                                                    12,
+                                                                    13,
+                                                                    14,
+                                                                    15,
+                                                                    16,
+                                                                    17,
+                                                                    18,
+                                                                    19,
+                                                                    20,
+                                                                    21,
+                                                                    22,
+                                                                    23,
+                                                                    24,
+                                                                    25,
+                                                                    26,
+                                                                    27,
+                                                                    28,
+                                                                    29,
+                                                                    30,
+                                                                    31,
+                                                                    32,
+                                                                    33,
+                                                                    34,
+                                                                    35,
+                                                                    36,
+                                                                    37,
+                                                                    38,
+                                                                    39,
+                                                                    40,
+                                                                    41,
+                                                                    42,
+                                                                    43,
+                                                                    44,
+                                                                    45,
+                                                                    46,
+                                                                    47,
+                                                                    48,
+                                                                    49,
+                                                                    50,
+                                                                    51,
+                                                                    52,
+                                                                    53,
+                                                                    54,
+                                                                    55,
+                                                                    56,
+                                                                    57,
+                                                                    58,
+                                                                    59,
+                                                                    60,
+                                                                    61,
+                                                                    62,
+                                                                    63,
+                                                                    64,
+                                                                    65,
+                                                                    66,
+                                                                    67,
+                                                                    68,
+                                                                    69,
+                                                                    70,
+                                                                    71,
+                                                                    72,
+                                                                    73,
+                                                                    74,
+                                                                    75,
+                                                                    76,
+                                                                    77,
+                                                                    78,
+                                                                    79,
+                                                                    80,
+                                                                    81,
+                                                                    82,
+                                                                    83,
+                                                                    84,
+                                                                    85,
+                                                                    86,
+                                                                    87,
+                                                                    88,
+                                                                    89,
+                                                                    90,
+                                                                    91,
+                                                                    92,
+                                                                    93,
+                                                                    94,
+                                                                    95,
+                                                                    96,
+                                                                    97,
+                                                                    98,
+                                                                    99
+                                                                ],
+                                                                "lut_values": [
+                                                                    0.5,
+                                                                    1,
+                                                                    1,
+                                                                    1,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0
+                                                                ]
+                                                            }
+                                                        }
+                                                    },
+                                                    "state_index": 1,
+                                                    "virtual_site_generation": {
+                                                        "inter_patch": {
+                                                            "label": "InterPatch",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Exponential",
+                                                                    "rate": 0.01
+                                                                },
+                                                                "family": "Exponential",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 400,
+                                                                    "min": 100
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 1
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        },
+                                                        "inter_site": {
+                                                            "label": "InterSite",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Exponential",
+                                                                    "rate": 0.05
+                                                                },
+                                                                "family": "Exponential",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 100,
+                                                                    "min": 20
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 0.5
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        },
+                                                        "post_patch": null,
+                                                        "reward_site": {
+                                                            "label": "RewardSite",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Uniform",
+                                                                    "max": 50,
+                                                                    "min": 50
+                                                                },
+                                                                "family": "Uniform",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 10000,
+                                                                    "min": 0
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 0.5
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "label": "single_set4",
+                                                    "odor_specification": {
+                                                        "concentration": 1,
+                                                        "index": 1
+                                                    },
+                                                    "reward_specification": {
+                                                        "delay": {
+                                                            "distribution_parameters": {
+                                                                "family": "Normal",
+                                                                "mean": 0.25,
+                                                                "std": 0.25
+                                                            },
+                                                            "family": "Normal",
+                                                            "scaling_parameters": {
+                                                                "offset": 0,
+                                                                "scale": 1
+                                                            },
+                                                            "truncation_parameters": {
+                                                                "is_truncated": true,
+                                                                "max": 1,
+                                                                "min": 0
+                                                            }
+                                                        },
+                                                        "operant_logic": {
+                                                            "grace_distance_threshold": 10,
+                                                            "is_operant": false,
+                                                            "stop_duration": 1,
+                                                            "time_to_collect_reward": 100000
+                                                        },
+                                                        "reward_function": {
+                                                            "amount": {
+                                                                "function_type": "ConstantFunction",
+                                                                "value": 6
+                                                            },
+                                                            "available": {
+                                                                "function_type": "ConstantFunction",
+                                                                "value": 50
+                                                            },
+                                                            "depletion_rule": "OnChoice",
+                                                            "probability": {
+                                                                "a": -1,
+                                                                "b": 1,
+                                                                "function_type": "LinearFunction",
+                                                                "maximum": 1,
+                                                                "minimum": 0
+                                                            }
+                                                        }
+                                                    },
+                                                    "state_index": 2,
+                                                    "virtual_site_generation": {
+                                                        "inter_patch": {
+                                                            "label": "InterPatch",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Exponential",
+                                                                    "rate": 0.01
+                                                                },
+                                                                "family": "Exponential",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 400,
+                                                                    "min": 100
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 1
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        },
+                                                        "inter_site": {
+                                                            "label": "InterSite",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Exponential",
+                                                                    "rate": 0.05
+                                                                },
+                                                                "family": "Exponential",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 100,
+                                                                    "min": 20
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 0.5
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        },
+                                                        "post_patch": null,
+                                                        "reward_site": {
+                                                            "label": "RewardSite",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Uniform",
+                                                                    "max": 50,
+                                                                    "min": 50
+                                                                },
+                                                                "family": "Uniform",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 10000,
+                                                                    "min": 0
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 0.5
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ],
+                                            "transition_matrix": [
+                                                [
+                                                    0.3333333333333333,
+                                                    0.3333333333333333,
+                                                    0.3333333333333333
+                                                ],
+                                                [
+                                                    0.3333333333333333,
+                                                    0.3333333333333333,
+                                                    0.3333333333333333
+                                                ],
+                                                [
+                                                    0.3333333333333333,
+                                                    0.3333333333333333,
+                                                    0.3333333333333333
+                                                ]
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "end_conditions": [],
+                                        "environment_statistics": {
+                                            "first_state_occupancy": [
+                                                0.3333333333333333,
+                                                0.3333333333333333,
+                                                0.3333333333333333
+                                            ],
+                                            "patches": [
+                                                {
+                                                    "label": "noreward_set5",
+                                                    "odor_specification": {
+                                                        "concentration": 1,
+                                                        "index": 1
+                                                    },
+                                                    "reward_specification": {
+                                                        "delay": {
+                                                            "distribution_parameters": {
+                                                                "family": "Normal",
+                                                                "mean": 0.25,
+                                                                "std": 0.25
+                                                            },
+                                                            "family": "Normal",
+                                                            "scaling_parameters": {
+                                                                "offset": 0,
+                                                                "scale": 1
+                                                            },
+                                                            "truncation_parameters": {
+                                                                "is_truncated": true,
+                                                                "max": 1,
+                                                                "min": 0
+                                                            }
+                                                        },
+                                                        "operant_logic": {
+                                                            "grace_distance_threshold": 10,
+                                                            "is_operant": false,
+                                                            "stop_duration": 1,
+                                                            "time_to_collect_reward": 100000
+                                                        },
+                                                        "reward_function": {
+                                                            "amount": {
+                                                                "function_type": "ConstantFunction",
+                                                                "value": 0
+                                                            },
+                                                            "available": {
+                                                                "function_type": "ConstantFunction",
+                                                                "value": 0
+                                                            },
+                                                            "depletion_rule": "OnChoice",
+                                                            "probability": {
+                                                                "function_type": "ConstantFunction",
+                                                                "value": 0
+                                                            }
+                                                        }
+                                                    },
+                                                    "state_index": 0,
+                                                    "virtual_site_generation": {
+                                                        "inter_patch": {
+                                                            "label": "InterPatch",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Exponential",
+                                                                    "rate": 0.01
+                                                                },
+                                                                "family": "Exponential",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 400,
+                                                                    "min": 100
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 1
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        },
+                                                        "inter_site": {
+                                                            "label": "InterSite",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Exponential",
+                                                                    "rate": 0.05
+                                                                },
+                                                                "family": "Exponential",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 100,
+                                                                    "min": 20
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 0.5
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        },
+                                                        "post_patch": null,
+                                                        "reward_site": {
+                                                            "label": "RewardSite",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Uniform",
+                                                                    "max": 50,
+                                                                    "min": 50
+                                                                },
+                                                                "family": "Uniform",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 10000,
+                                                                    "min": 0
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 0.5
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "label": "delayed_set5",
+                                                    "odor_specification": {
+                                                        "concentration": 1,
+                                                        "index": 2
+                                                    },
+                                                    "reward_specification": {
+                                                        "delay": {
+                                                            "distribution_parameters": {
+                                                                "family": "Normal",
+                                                                "mean": 0.25,
+                                                                "std": 0.25
+                                                            },
+                                                            "family": "Normal",
+                                                            "scaling_parameters": {
+                                                                "offset": 0,
+                                                                "scale": 1
+                                                            },
+                                                            "truncation_parameters": {
+                                                                "is_truncated": true,
+                                                                "max": 1,
+                                                                "min": 0
+                                                            }
+                                                        },
+                                                        "operant_logic": {
+                                                            "grace_distance_threshold": 10,
+                                                            "is_operant": false,
+                                                            "stop_duration": 1,
+                                                            "time_to_collect_reward": 100000
+                                                        },
+                                                        "reward_function": {
+                                                            "amount": {
+                                                                "function_type": "ConstantFunction",
+                                                                "value": 6
+                                                            },
+                                                            "available": {
+                                                                "function_type": "ConstantFunction",
+                                                                "value": 150
+                                                            },
+                                                            "depletion_rule": "OnChoice",
+                                                            "probability": {
+                                                                "function_type": "LookupTableFunction",
+                                                                "lut_keys": [
+                                                                    0,
+                                                                    1,
+                                                                    2,
+                                                                    3,
+                                                                    4,
+                                                                    5,
+                                                                    6,
+                                                                    7,
+                                                                    8,
+                                                                    9,
+                                                                    10,
+                                                                    11,
+                                                                    12,
+                                                                    13,
+                                                                    14,
+                                                                    15,
+                                                                    16,
+                                                                    17,
+                                                                    18,
+                                                                    19,
+                                                                    20,
+                                                                    21,
+                                                                    22,
+                                                                    23,
+                                                                    24,
+                                                                    25,
+                                                                    26,
+                                                                    27,
+                                                                    28,
+                                                                    29,
+                                                                    30,
+                                                                    31,
+                                                                    32,
+                                                                    33,
+                                                                    34,
+                                                                    35,
+                                                                    36,
+                                                                    37,
+                                                                    38,
+                                                                    39,
+                                                                    40,
+                                                                    41,
+                                                                    42,
+                                                                    43,
+                                                                    44,
+                                                                    45,
+                                                                    46,
+                                                                    47,
+                                                                    48,
+                                                                    49,
+                                                                    50,
+                                                                    51,
+                                                                    52,
+                                                                    53,
+                                                                    54,
+                                                                    55,
+                                                                    56,
+                                                                    57,
+                                                                    58,
+                                                                    59,
+                                                                    60,
+                                                                    61,
+                                                                    62,
+                                                                    63,
+                                                                    64,
+                                                                    65,
+                                                                    66,
+                                                                    67,
+                                                                    68,
+                                                                    69,
+                                                                    70,
+                                                                    71,
+                                                                    72,
+                                                                    73,
+                                                                    74,
+                                                                    75,
+                                                                    76,
+                                                                    77,
+                                                                    78,
+                                                                    79,
+                                                                    80,
+                                                                    81,
+                                                                    82,
+                                                                    83,
+                                                                    84,
+                                                                    85,
+                                                                    86,
+                                                                    87,
+                                                                    88,
+                                                                    89,
+                                                                    90,
+                                                                    91,
+                                                                    92,
+                                                                    93,
+                                                                    94,
+                                                                    95,
+                                                                    96,
+                                                                    97,
+                                                                    98,
+                                                                    99
+                                                                ],
+                                                                "lut_values": [
+                                                                    0.5,
+                                                                    1,
+                                                                    1,
+                                                                    1,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0,
+                                                                    0
+                                                                ]
+                                                            }
+                                                        }
+                                                    },
+                                                    "state_index": 1,
+                                                    "virtual_site_generation": {
+                                                        "inter_patch": {
+                                                            "label": "InterPatch",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Exponential",
+                                                                    "rate": 0.01
+                                                                },
+                                                                "family": "Exponential",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 400,
+                                                                    "min": 100
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 1
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        },
+                                                        "inter_site": {
+                                                            "label": "InterSite",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Exponential",
+                                                                    "rate": 0.05
+                                                                },
+                                                                "family": "Exponential",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 100,
+                                                                    "min": 20
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 0.5
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        },
+                                                        "post_patch": null,
+                                                        "reward_site": {
+                                                            "label": "RewardSite",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Uniform",
+                                                                    "max": 50,
+                                                                    "min": 50
+                                                                },
+                                                                "family": "Uniform",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 10000,
+                                                                    "min": 0
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 0.5
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    "label": "single_set5",
+                                                    "odor_specification": {
+                                                        "concentration": 1,
+                                                        "index": 0
+                                                    },
+                                                    "reward_specification": {
+                                                        "delay": {
+                                                            "distribution_parameters": {
+                                                                "family": "Normal",
+                                                                "mean": 0.25,
+                                                                "std": 0.25
+                                                            },
+                                                            "family": "Normal",
+                                                            "scaling_parameters": {
+                                                                "offset": 0,
+                                                                "scale": 1
+                                                            },
+                                                            "truncation_parameters": {
+                                                                "is_truncated": true,
+                                                                "max": 1,
+                                                                "min": 0
+                                                            }
+                                                        },
+                                                        "operant_logic": {
+                                                            "grace_distance_threshold": 10,
+                                                            "is_operant": false,
+                                                            "stop_duration": 1,
+                                                            "time_to_collect_reward": 100000
+                                                        },
+                                                        "reward_function": {
+                                                            "amount": {
+                                                                "function_type": "ConstantFunction",
+                                                                "value": 6
+                                                            },
+                                                            "available": {
+                                                                "function_type": "ConstantFunction",
+                                                                "value": 50
+                                                            },
+                                                            "depletion_rule": "OnChoice",
+                                                            "probability": {
+                                                                "a": -1,
+                                                                "b": 1,
+                                                                "function_type": "LinearFunction",
+                                                                "maximum": 1,
+                                                                "minimum": 0
+                                                            }
+                                                        }
+                                                    },
+                                                    "state_index": 2,
+                                                    "virtual_site_generation": {
+                                                        "inter_patch": {
+                                                            "label": "InterPatch",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Exponential",
+                                                                    "rate": 0.01
+                                                                },
+                                                                "family": "Exponential",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 400,
+                                                                    "min": 100
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 1
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        },
+                                                        "inter_site": {
+                                                            "label": "InterSite",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Exponential",
+                                                                    "rate": 0.05
+                                                                },
+                                                                "family": "Exponential",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 100,
+                                                                    "min": 20
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 0.5
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        },
+                                                        "post_patch": null,
+                                                        "reward_site": {
+                                                            "label": "RewardSite",
+                                                            "length_distribution": {
+                                                                "distribution_parameters": {
+                                                                    "family": "Uniform",
+                                                                    "max": 50,
+                                                                    "min": 50
+                                                                },
+                                                                "family": "Uniform",
+                                                                "scaling_parameters": {
+                                                                    "offset": 0,
+                                                                    "scale": 1
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "max": 10000,
+                                                                    "min": 0
+                                                                }
+                                                            },
+                                                            "render_specification": {
+                                                                "contrast": 0.5
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "family": "Scalar",
+                                                                    "scaling_parameters": null,
+                                                                    "truncation_parameters": null
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ],
+                                            "transition_matrix": [
+                                                [
+                                                    0.3333333333333333,
+                                                    0.3333333333333333,
+                                                    0.3333333333333333
+                                                ],
+                                                [
+                                                    0.3333333333333333,
+                                                    0.3333333333333333,
+                                                    0.3333333333333333
+                                                ],
+                                                [
+                                                    0.3333333333333333,
+                                                    0.3333333333333333,
+                                                    0.3333333333333333
+                                                ]
+                                            ]
+                                        }
+                                    }
+                                ],
+                                "sampling_mode": "Sequential"
+                            },
+                            "operation_control": {
+                                "audio_control": {
+                                    "duration": 0.3,
+                                    "frequency": 5000
+                                },
+                                "movable_spout_control": {
+                                    "enabled": false,
+                                    "retracting_distance": 2000,
+                                    "time_to_collect_after_reward": 1000
+                                },
+                                "odor_control": {
+                                    "target_odor_flow": 100,
+                                    "target_total_flow": 1000,
+                                    "use_channel_3_as_carrier": true,
+                                    "valve_max_open_time": 10
+                                },
+                                "position_control": {
+                                    "frequency_filter_cutoff": 5,
+                                    "gain": {
+                                        "x": 1,
+                                        "y": 1,
+                                        "z": 1
+                                    },
+                                    "initial_position": {
+                                        "x": 0,
+                                        "y": 2.56,
+                                        "z": 0
+                                    },
+                                    "velocity_threshold": 8
+                                }
+                            },
+                            "rng_seed": null,
+                            "task_mode_settings": {
+                                "task_mode": "FORAGING"
+                            },
+                            "updaters": {}
+                        },
+                        "version": "0.5.2"
+                    },
+                    "url": "https://github.com/AllenNeuralDynamics/Aind.Behavior.VrForaging.git/blob/5a32379e1b8f721c92f36d3e1b522c00c7c6cebc/src\\vr-foraging.bonsai",
+                    "version": "5a32379e1b8f721c92f36d3e1b522c00c7c6cebc"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "Bonsai",
+                        "parameters": {
+                            "AForge": "2.2.5",
+                            "AForge.Video": "2.2.5",
+                            "AForge.Video.DirectShow": "2.2.5",
+                            "AllenNeuralDynamics.AindBehaviorServices": "0.10.2",
+                            "AllenNeuralDynamics.AindManipulator": "0.1.6",
+                            "AllenNeuralDynamics.Core": "0.4.0",
+                            "AllenNeuralDynamics.Core.Design": "0.2.3",
+                            "AllenNeuralDynamics.EnvironmentSensor": "0.3.0",
+                            "AllenNeuralDynamics.HarpUtils": "0.3.2",
+                            "AllenNeuralDynamics.LicketySplit": "0.2.0",
+                            "AllenNeuralDynamics.SniffDetector": "0.2.0",
+                            "AllenNeuralDynamics.Treadmill": "0.2.0",
+                            "AllenNeuralDynamics.VersionControl": "0.1.1",
+                            "AllenNeuralDynamics.WhiteRabbit": "0.2.0",
+                            "AssimpNet": "4.1.0",
+                            "BonVision": "0.11.0",
+                            "Bonsai": "2.8.5",
+                            "Bonsai.Audio": "2.8.0",
+                            "Bonsai.Core": "2.8.5",
+                            "Bonsai.Design": "2.8.5",
+                            "Bonsai.Design.Visualizers": "2.8.0",
+                            "Bonsai.Dsp": "2.8.1",
+                            "Bonsai.Dsp.Design": "2.8.0",
+                            "Bonsai.Editor": "2.8.5",
+                            "Bonsai.Gui": "0.1.0",
+                            "Bonsai.Gui.ZedGraph": "0.1.0",
+                            "Bonsai.Harp": "3.5.2",
+                            "Bonsai.Harp.Design": "3.5.0",
+                            "Bonsai.Numerics": "0.9.0",
+                            "Bonsai.Player": "2.8.5",
+                            "Bonsai.Scripting.Expressions": "2.8.0",
+                            "Bonsai.Scripting.Expressions.Design": "2.8.0",
+                            "Bonsai.Shaders": "0.27.0",
+                            "Bonsai.Shaders.Design": "0.27.0",
+                            "Bonsai.Shaders.Rendering": "0.3.1",
+                            "Bonsai.Spinnaker": "0.7.1",
+                            "Bonsai.System": "2.8.1",
+                            "Bonsai.System.Design": "2.8.0",
+                            "Bonsai.VR": "0.6.0",
+                            "Bonsai.Video": "2.4.0",
+                            "Bonsai.Video.Design": "2.4.0",
+                            "Bonsai.Vision": "2.8.1",
+                            "Bonsai.Vision.Design": "2.8.1",
+                            "Bonsai.Windows.Input": "2.7.0",
+                            "Harp.AnalogInput": "0.2.0",
+                            "Harp.Behavior": "0.1.0",
+                            "Harp.LoadCells": "0.2.0",
+                            "Harp.Olfactometer": "0.2.0",
+                            "Harp.StepperDriver": "0.3.0",
+                            "LibGit2Sharp": "0.27.2",
+                            "LibGit2Sharp.NativeBinaries": "2.0.320",
+                            "Markdig": "0.18.1",
+                            "MathNet.Numerics": "4.15.0",
+                            "Microsoft.Web.WebView2": "1.0.1823.32",
+                            "Newtonsoft.Json": "13.0.3",
+                            "OpenCV.Net": "3.4.2",
+                            "OpenTK": "3.1.0",
+                            "OpenTK.GLControl": "3.1.0",
+                            "Rx-Core": "2.2.5",
+                            "Rx-Interfaces": "2.2.5",
+                            "Rx-Linq": "2.2.5",
+                            "Rx-PlatformServices": "2.2.5",
+                            "SvgNet": "3.3.3",
+                            "System.Buffers": "4.5.1",
+                            "System.Collections.Immutable": "8.0.0",
+                            "System.Linq.Dynamic": "1.0.7",
+                            "System.Memory": "4.5.5",
+                            "System.Numerics.Vectors": "4.5.0",
+                            "System.Resources.Extensions": "8.0.0",
+                            "System.Runtime.CompilerServices.Unsafe": "6.0.0",
+                            "YamlDotNet": "16.0.0",
+                            "ZedGraph": "5.1.7",
+                            "jacobslusser.ScintillaNET": "3.6.3",
+                            "openal.redist": "2.0.7"
+                        },
+                        "url": "https://github.com/AllenNeuralDynamics/Aind.Behavior.VrForaging.git/blob/5a32379e1b8f721c92f36d3e1b522c00c7c6cebc/bonsai",
+                        "version": "https://github.com/AllenNeuralDynamics/Aind.Behavior.VrForaging.git/blob/5a32379e1b8f721c92f36d3e1b522c00c7c6cebc/bonsai/Bonsai.config"
+                    },
+                    {
+                        "name": "Python",
+                        "parameters": {
+                            "Flask": "3.1.1",
+                            "GitPython": "3.1.44",
+                            "Jinja2": "3.1.6",
+                            "MarkupSafe": "3.0.2",
+                            "PyYAML": "6.0.2",
+                            "Pygments": "2.19.1",
+                            "Werkzeug": "3.1.3",
+                            "aind-behavior-curriculum": "0.0.33",
+                            "aind-behavior-experiment-launcher": "0.4.2",
+                            "aind-behavior-services": "0.10.2",
+                            "aind-behavior-vr-foraging": "0.5.2",
+                            "aind-codeocean-pipeline-monitor": "0.7.2",
+                            "aind-data-schema": "1.4.0",
+                            "aind-data-schema-models": "0.7.5",
+                            "aind-data-transfer-models": "0.17.1",
+                            "aind-metadata-mapper": "0.25.0",
+                            "aind-slims-api": "0.1.23",
+                            "aind-slurm-rest": "0.2.0",
+                            "aind-watchdog-service": "0.1.5",
+                            "annotated-types": "0.7.0",
+                            "blinker": "1.9.0",
+                            "certifi": "2025.4.26",
+                            "charset-normalizer": "3.4.2",
+                            "click": "8.1.8",
+                            "codeocean": "0.5.0",
+                            "colorama": "0.4.6",
+                            "dataclasses-json": "0.6.7",
+                            "deprecation": "2.1.0",
+                            "dnspython": "2.7.0",
+                            "email_validator": "2.2.0",
+                            "gitdb": "4.0.12",
+                            "harp-python": "0.4.1",
+                            "idna": "3.10",
+                            "importlib_resources": "6.5.2",
+                            "itsdangerous": "2.2.0",
+                            "joblib": "1.5.0",
+                            "markdown-it-py": "3.0.0",
+                            "marshmallow": "3.26.1",
+                            "mdurl": "0.1.2",
+                            "mypy_extensions": "1.1.0",
+                            "numpy": "2.2.6",
+                            "oauthlib": "3.2.2",
+                            "packaging": "25.0",
+                            "pandas": "2.2.3",
+                            "pydantic": "2.11.4",
+                            "pydantic-settings": "2.9.1",
+                            "pydantic_core": "2.33.2",
+                            "pydantic_yaml": "1.4.0",
+                            "python-dateutil": "2.9.0.post0",
+                            "python-dotenv": "1.1.0",
+                            "pytz": "2025.2",
+                            "requests": "2.32.3",
+                            "requests-oauthlib": "2.0.0",
+                            "requests-toolbelt": "1.0.0",
+                            "rich": "14.0.0",
+                            "ruamel.yaml": "0.18.10",
+                            "ruamel.yaml.clib": "0.2.12",
+                            "scikit-learn": "1.6.1",
+                            "scipy": "1.15.3",
+                            "semver": "3.0.4",
+                            "six": "1.17.0",
+                            "slims-python-api": "7.2.0",
+                            "smmap": "5.0.2",
+                            "threadpoolctl": "3.6.0",
+                            "typing-inspect": "0.9.0",
+                            "typing-inspection": "0.4.0",
+                            "typing_extensions": "4.13.2",
+                            "tzdata": "2025.2",
+                            "urllib3": "2.4.0"
+                        },
+                        "url": "https://github.com/AllenNeuralDynamics/Aind.Behavior.VrForaging.git/blob/5a32379e1b8f721c92f36d3e1b522c00c7c6cebc",
+                        "version": "https://github.com/AllenNeuralDynamics/Aind.Behavior.VrForaging.git/blob/5a32379e1b8f721c92f36d3e1b522c00c7c6cebc/pyproject.toml"
+                    }
+                ],
+                "speaker_config": {
+                    "name": "Speaker",
+                    "volume": "60",
+                    "volume_unit": "decibels"
+                },
+                "stimulus_device_names": [
+                    "harp_olfactometer",
+                    "speaker",
+                    "screen"
+                ],
+                "stimulus_end_time": "2025-06-24T21:31:01.214495Z",
+                "stimulus_modalities": [
+                    "Olfactory",
+                    "Auditory",
+                    "Visual",
+                    "Virtual reality",
+                    "Wheel friction"
+                ],
+                "stimulus_name": "AindVrForaging",
+                "stimulus_parameters": [
+                    {
+                        "channels": [
+                            {
+                                "channel_index": 0,
+                                "notes": null,
+                                "odorant": "Dipropyl sulfide",
+                                "odorant_dilution": "10.0",
+                                "odorant_dilution_unit": "% v/v"
+                            },
+                            {
+                                "channel_index": 1,
+                                "notes": null,
+                                "odorant": "Pentyl acetate",
+                                "odorant_dilution": "10.0",
+                                "odorant_dilution_unit": "% v/v"
+                            },
+                            {
+                                "channel_index": 2,
+                                "notes": null,
+                                "odorant": "Hexanal",
+                                "odorant_dilution": "10.0",
+                                "odorant_dilution_unit": "% v/v"
+                            }
+                        ],
+                        "notes": null,
+                        "stimulus_name": "Olfactory",
+                        "stimulus_type": "Olfactory Stimulation"
+                    },
+                    {
+                        "amplitude_modulation_frequency": null,
+                        "bandpass_filter_type": null,
+                        "bandpass_high_frequency": null,
+                        "bandpass_low_frequency": null,
+                        "bandpass_order": null,
+                        "frequency_unit": "hertz",
+                        "notes": null,
+                        "sample_frequency": "0",
+                        "stimulus_name": "Beep",
+                        "stimulus_type": "Auditory Stimulation"
+                    },
+                    {
+                        "notes": null,
+                        "stimulus_name": "VrScreen",
+                        "stimulus_parameters": {},
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2025-06-24T20:13:22.265585Z",
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "trials_total": null
+            }
+        ],
+        "subject_id": "789910",
+        "weight_unit": "gram"
+    },
+    "subject": {
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": null,
+        "date_of_birth": "2024-12-17",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "genotype": "wt/wt",
+        "housing": {
+            "cage_id": "8289051",
+            "cohoused_subjects": [],
+            "home_cage_enrichment": [],
+            "light_cycle": null,
+            "room_id": "221"
+        },
+        "notes": null,
+        "restrictions": null,
+        "rrid": null,
+        "schema_version": "1.0.2",
+        "sex": "Female",
+        "source": {
+            "abbreviation": null,
+            "name": "Other",
+            "registry": null,
+            "registry_identifier": null
+        },
+        "species": {
+            "name": "Mus musculus",
+            "registry": {
+                "abbreviation": "NCBI",
+                "name": "National Center for Biotechnology Information"
+            },
+            "registry_identifier": "NCBI:txid10090"
+        },
+        "subject_id": "789910",
+        "wellness_reports": []
+    }
+}

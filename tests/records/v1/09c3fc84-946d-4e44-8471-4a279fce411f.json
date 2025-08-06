@@ -1,0 +1,2189 @@
+{
+    "_id": "09c3fc84-946d-4e44-8471-4a279fce411f",
+    "acquisition": null,
+    "created": "2024-06-19T04:01:56.107795",
+    "data_description": {
+        "creation_time": "2024-05-14T13:22:07",
+        "data_level": "raw",
+        "data_summary": null,
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "funding_source": [],
+        "group": null,
+        "institution": {
+            "abbreviation": "AIND",
+            "name": "Allen Institute for Neural Dynamics",
+            "registry": {
+                "abbreviation": "ROR",
+                "name": "Research Organization Registry"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "investigators": [],
+        "label": null,
+        "license": "CC-BY-4.0",
+        "modality": [
+            {
+                "abbreviation": "ecephys",
+                "name": "Extracellular electrophysiology"
+            },
+            {
+                "abbreviation": "behavior",
+                "name": "Behavior"
+            },
+            {
+                "abbreviation": "behavior-videos",
+                "name": "Behavior videos"
+            }
+        ],
+        "name": "ecephys_714527_2024-05-14_13-22-07",
+        "platform": {
+            "abbreviation": "ecephys",
+            "name": "Electrophysiology platform"
+        },
+        "project_name": "NP Ultra and Psychedelics",
+        "related_data": [],
+        "restrictions": null,
+        "schema_version": "0.13.6",
+        "subject_id": "714527"
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": {
+        "Code Ocean": [
+            "458739e4-979d-4763-b424-92867b93a28d"
+        ]
+    },
+    "instrument": null,
+    "last_modified": "2025-03-06T15:47:04.480Z",
+    "location": "s3://aind-private-data-prod-o5171v/ecephys_714527_2024-05-14_13-22-07",
+    "metadata_status": "Invalid",
+    "name": "ecephys_714527_2024-05-14_13-22-07",
+    "procedures": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "notes": null,
+        "schema_version": "0.13.3",
+        "specimen_procedures": [],
+        "subject_id": "714527",
+        "subject_procedures": [
+            {
+                "anaesthesia": null,
+                "animal_weight_post": null,
+                "animal_weight_prior": null,
+                "experimenter_full_name": "30371",
+                "iacuc_protocol": "2212",
+                "notes": null,
+                "procedure_type": "Surgery",
+                "procedures": [
+                    {
+                        "output_specimen_ids": [
+                            "714527"
+                        ],
+                        "procedure_type": "Perfusion",
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bg5vjy66"
+                    }
+                ],
+                "protocol_id": "dx.doi.org/10.17504/protocols.io.kqdg392o7g25/v1",
+                "start_date": "2024-05-15",
+                "weight_unit": "gram",
+                "workstation_id": null
+            },
+            {
+                "anaesthesia": {
+                    "duration": "108.0",
+                    "duration_unit": "minute",
+                    "level": "1.5",
+                    "type": "isoflurane"
+                },
+                "animal_weight_post": "22.0",
+                "animal_weight_prior": "20.0",
+                "experimenter_full_name": "NSB-6311",
+                "iacuc_protocol": "2104",
+                "notes": null,
+                "procedure_type": "Surgery",
+                "procedures": [
+                    {
+                        "bregma_to_lambda_distance": "4.1",
+                        "bregma_to_lambda_unit": "millimeter",
+                        "craniotomy_hemisphere": null,
+                        "craniotomy_type": "Whole hemisphere craniotomy",
+                        "dura_removed": null,
+                        "implant_part_number": "2002",
+                        "procedure_type": "Craniotomy",
+                        "protective_material": null,
+                        "recovery_time": "15.0",
+                        "recovery_time_unit": "minute"
+                    },
+                    {
+                        "headframe_material": null,
+                        "headframe_part_number": null,
+                        "headframe_type": "WHC (Full ring)",
+                        "procedure_type": "Headframe",
+                        "well_part_number": "0160-055-08",
+                        "well_type": "WHC NP"
+                    }
+                ],
+                "protocol_id": "dx.doi.org/10.17504/protocols.io.kqdg392o7g25/v1",
+                "start_date": "2024-01-24",
+                "weight_unit": "gram",
+                "workstation_id": "SWS 3"
+            }
+        ]
+    },
+    "processing": {
+        "analyses": [],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "notes": null,
+        "processing_pipeline": {
+            "data_processes": [
+                {
+                    "code_url": "oras://ghcr.io/allenneuraldynamics/aind-ephys-transformation:0.1.0",
+                    "code_version": null,
+                    "end_date_time": "2024-06-19T04:01:26.504919Z",
+                    "input_location": "//allen/aind/scratch/andrew.shelton/NPUltra_data/raw_npultra_data/2024-05-14_714527/20240514_714527_1",
+                    "name": "Compression",
+                    "notes": null,
+                    "output_location": "/allen/aind/stage/svc_aind_airflow/prod/ecephys_714527_job_1718755072_e18f2/ecephys",
+                    "outputs": {},
+                    "parameters": {},
+                    "software_version": "0.1.0",
+                    "start_date_time": "2024-06-19T00:01:15.393786Z"
+                }
+            ],
+            "note": null,
+            "pipeline_url": null,
+            "pipeline_version": null,
+            "processor_full_name": "AIND Scientific Computing"
+        },
+        "schema_version": "0.4.8"
+    },
+    "rig": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/rig.py",
+        "schema_version": "0.3.2",
+        "rig_id": "325_NP1_Ultra_20240506",
+        "modification_date": "2024-06-14",
+        "mouse_platform": {
+            "device_type": "Disc",
+            "name": "Mouse Platform",
+            "serial_number": null,
+            "manufacturer": null,
+            "model": null,
+            "path_to_cad": null,
+            "port_index": null,
+            "additional_settings": {},
+            "notes": "Radius is the distance from the center of the wheel to the mouse.",
+            "surface_material": null,
+            "date_surface_replaced": null,
+            "radius": 4.69,
+            "radius_unit": "centimeter",
+            "output": null,
+            "encoder": null,
+            "decoder": null,
+            "encoder_firmware": null
+        },
+        "modalities": [
+            {
+                "name": "Extracellular electrophysiology",
+                "abbreviation": "ecephys"
+            },
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            },
+            {
+                "name": "Behavior videos",
+                "abbreviation": "behavior-videos"
+            }
+        ],
+        "stimulus_devices": {
+            "device_type": "Monitor",
+            "name": "Stim",
+            "serial_number": null,
+            "manufacturer": {
+                "name": "ASUS",
+                "abbreviation": null,
+                "registry": {
+                    "name": "Research Organization Registry",
+                    "abbreviation": "ROR"
+                },
+                "registry_identifier": "00bxkz165"
+            },
+            "model": "PA248",
+            "path_to_cad": null,
+            "port_index": null,
+            "additional_settings": {},
+            "notes": null,
+            "refresh_rate": 60,
+            "width": 1920,
+            "height": 1200,
+            "size_unit": "pixel",
+            "viewing_distance": 15.3,
+            "viewing_distance_unit": "centimeter",
+            "position": {
+                "device_position_transformations": [
+                    {
+                        "type": "rotation",
+                        "rotation": [
+                            -0.80914,
+                            -0.58761,
+                            0,
+                            -0.12391,
+                            0.17063,
+                            0.97751,
+                            0.08751,
+                            -0.12079,
+                            0.02298
+                        ]
+                    },
+                    {
+                        "type": "translation",
+                        "translation": [
+                            0.08751,
+                            -0.12079,
+                            0.02298
+                        ]
+                    }
+                ],
+                "device_origin": "Located at the center of the screen. Right and left conventions are relative to the screen side of the monitor, ie. from the subject's perspective.",
+                "device_axes": [
+                    {
+                        "name": "X",
+                        "direction": "Positive is from the center towards the right of the screen, from the subject's perspective."
+                    },
+                    {
+                        "name": "Y",
+                        "direction": "Positive is from the center towards the top of the screen."
+                    },
+                    {
+                        "name": "Z",
+                        "direction": "Positive is from the front of the screen towards the subject."
+                    }
+                ],
+                "notes": "The rotation matrix is represented as: a,b,c,d,e,f,g,h,i. Wherein a, b, c correspond to the first row of the matrix. The translation matrix is represented as: x,y,z."
+            },
+            "contrast": 50,
+            "brightness": 43
+        },
+        "cameras": [
+            {
+                "camera_assembly_name": "Microscope Assembly 1",
+                "camera_target": "Brain surface",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "Probe Camera",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Allied",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "None",
+                    "computer_name": "W10DT713843",
+                    "max_frame_rate": 50,
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Color",
+                    "sensor_width": 1080,
+                    "sensor_height": 570,
+                    "size_unit": "pixel",
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inches",
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": null,
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Probe lens",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Edmund Optics",
+                        "abbreviation": null,
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "focal_length": null,
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": null,
+                "position": null
+            },
+            {
+                "camera_assembly_name": "Camera Assembly 1",
+                "camera_target": "Face forward",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "Front",
+                    "serial_number": "50-0536953463",
+                    "manufacturer": {
+                        "name": "Allied",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "G-032",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "None",
+                    "computer_name": "W10DT713843",
+                    "max_frame_rate": 50,
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Monochrome",
+                    "sensor_width": 7400,
+                    "sensor_height": 7400,
+                    "size_unit": "nanometer",
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": {
+                        "name": "MVR",
+                        "version": "Not detected/provided.",
+                        "url": null,
+                        "parameters": {}
+                    },
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Front lens",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Edmund Optics",
+                        "abbreviation": null,
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "86604",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "focal_length": 8.5,
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": {
+                    "device_type": "Filter",
+                    "name": "Side Filter",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Semrock",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "FF01-747/33-25",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "filter_type": "Band pass",
+                    "diameter": null,
+                    "width": null,
+                    "height": null,
+                    "size_unit": "millimeter",
+                    "thickness": null,
+                    "thickness_unit": "millimeter",
+                    "filter_wheel_index": null,
+                    "cut_off_wavelength": null,
+                    "cut_on_wavelength": null,
+                    "center_wavelength": null,
+                    "wavelength_unit": "nanometer",
+                    "description": null
+                },
+                "position": {
+                    "device_position_transformations": [
+                        {
+                            "type": "rotation",
+                            "rotation": [
+                                -0.17365,
+                                0.98481,
+                                0,
+                                0.44709,
+                                0.07883,
+                                -0.89101,
+                                -0.87747,
+                                -0.15472,
+                                -0.45399
+                            ]
+                        },
+                        {
+                            "type": "translation",
+                            "translation": [
+                                0.154,
+                                0.03078,
+                                0.06346
+                            ]
+                        }
+                    ],
+                    "device_origin": "Located on the face of the lens mounting surface at its center, ie. just ahead of the camera sensor.",
+                    "device_axes": [
+                        {
+                            "name": "X",
+                            "direction": "Positive is from the center of the sensor towards the left of the assembly, from the subject's perspective."
+                        },
+                        {
+                            "name": "Y",
+                            "direction": "Positive is from the center of the sensor towards the bottom of the assembly."
+                        },
+                        {
+                            "name": "Z",
+                            "direction": "Positive is from the sensor towards the subject."
+                        }
+                    ],
+                    "notes": "The rotation matrix is represented as: a,b,c,d,e,f,g,h,i. Wherein a, b, c correspond to the first row of the matrix. The translation matrix is represented as: x,y,z."
+                }
+            },
+            {
+                "camera_assembly_name": "Camera Assembly 2",
+                "camera_target": "Body",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "Side",
+                    "serial_number": "50-0536905751",
+                    "manufacturer": {
+                        "name": "Allied",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "G-032",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "None",
+                    "computer_name": "W10DT713843",
+                    "max_frame_rate": 50,
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Monochrome",
+                    "sensor_width": 7400,
+                    "sensor_height": 7400,
+                    "size_unit": "nanometer",
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": {
+                        "name": "MVR",
+                        "version": "Not detected/provided.",
+                        "url": null,
+                        "parameters": {}
+                    },
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Side lens",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Navitar",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "focal_length": 6,
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": {
+                    "device_type": "Filter",
+                    "name": "Side Filter",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Semrock",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "FF01-747/33-25",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "filter_type": "Band pass",
+                    "diameter": null,
+                    "width": null,
+                    "height": null,
+                    "size_unit": "millimeter",
+                    "thickness": null,
+                    "thickness_unit": "millimeter",
+                    "filter_wheel_index": null,
+                    "cut_off_wavelength": null,
+                    "cut_on_wavelength": null,
+                    "center_wavelength": null,
+                    "wavelength_unit": "nanometer",
+                    "description": null
+                },
+                "position": {
+                    "device_position_transformations": [
+                        {
+                            "type": "rotation",
+                            "rotation": [
+                                -1,
+                                0,
+                                0,
+                                0,
+                                0,
+                                -1,
+                                0,
+                                -1,
+                                0
+                            ]
+                        },
+                        {
+                            "type": "translation",
+                            "translation": [
+                                -0.03617,
+                                0.23887,
+                                -0.02535
+                            ]
+                        }
+                    ],
+                    "device_origin": "Located on the face of the lens mounting surface at its center, ie. just ahead of the camera sensor.",
+                    "device_axes": [
+                        {
+                            "name": "X",
+                            "direction": "Positive is from the center of the sensor towards the left of the assembly, from the subject's perspective."
+                        },
+                        {
+                            "name": "Y",
+                            "direction": "Positive is from the center of the sensor towards the bottom of the assembly."
+                        },
+                        {
+                            "name": "Z",
+                            "direction": "Positive is from the sensor towards the subject."
+                        }
+                    ],
+                    "notes": "The rotation matrix is represented as: a,b,c,d,e,f,g,h,i. Wherein a, b, c correspond to the first row of the matrix. The translation matrix is represented as: x,y,z."
+                }
+            },
+            {
+                "camera_assembly_name": "Camera Assembly 3",
+                "camera_target": "Eye",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "Eye",
+                    "serial_number": "50-0536889077",
+                    "manufacturer": {
+                        "name": "Allied",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "G-032",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "None",
+                    "computer_name": "W10DT713843",
+                    "max_frame_rate": 50,
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Monochrome",
+                    "sensor_width": 7400,
+                    "sensor_height": 7400,
+                    "size_unit": "nanometer",
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": {
+                        "name": "MVR",
+                        "version": "Not detected/provided.",
+                        "url": null,
+                        "parameters": {}
+                    },
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Eye lens",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Navitar",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "focal_length": 6,
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": {
+                    "device_type": "Filter",
+                    "name": "Side Filter",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Semrock",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "FF01-747/33-25",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "filter_type": "Band pass",
+                    "diameter": null,
+                    "width": null,
+                    "height": null,
+                    "size_unit": "millimeter",
+                    "thickness": null,
+                    "thickness_unit": "millimeter",
+                    "filter_wheel_index": null,
+                    "cut_off_wavelength": null,
+                    "cut_on_wavelength": null,
+                    "center_wavelength": null,
+                    "wavelength_unit": "nanometer",
+                    "description": null
+                },
+                "position": {
+                    "device_position_transformations": [
+                        {
+                            "type": "rotation",
+                            "rotation": [
+                                -0.5,
+                                -0.86603,
+                                0,
+                                -0.366,
+                                0.21131,
+                                -0.90631,
+                                0.78489,
+                                -0.45315,
+                                -0.42262
+                            ]
+                        },
+                        {
+                            "type": "translation",
+                            "translation": [
+                                -0.14259,
+                                0.06209,
+                                0.09576
+                            ]
+                        }
+                    ],
+                    "device_origin": "Located on the face of the lens mounting surface at its center, ie. just ahead of the camera sensor.",
+                    "device_axes": [
+                        {
+                            "name": "X",
+                            "direction": "Positive is from the center of the sensor towards the left of the assembly, from the subject's perspective."
+                        },
+                        {
+                            "name": "Y",
+                            "direction": "Positive is from the center of the sensor towards the bottom of the assembly."
+                        },
+                        {
+                            "name": "Z",
+                            "direction": "Positive is from the sensor towards the subject."
+                        }
+                    ],
+                    "notes": "The rotation matrix is represented as: a,b,c,d,e,f,g,h,i. Wherein a, b, c correspond to the first row of the matrix. The translation matrix is represented as: x,y,z."
+                }
+            }
+        ],
+        "enclosure": null,
+        "ephys_assemblies": [
+            {
+                "ephys_assembly_name": "Ephys_AssemblyA",
+                "manipulator": {
+                    "device_type": "Manipulator",
+                    "name": "Ephys Manipulator A",
+                    "serial_number": "SN46355",
+                    "manufacturer": {
+                        "name": "New Scale Technologies",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null
+                },
+                "probes": [
+                    {
+                        "device_type": "Ephys probe",
+                        "name": "ProbeA",
+                        "serial_number": "21144102191",
+                        "manufacturer": null,
+                        "model": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "additional_settings": {},
+                        "notes": null,
+                        "probe_model": "Neuropixels UHD (Switchable)",
+                        "lasers": [],
+                        "headstage": null
+                    }
+                ]
+            },
+            {
+                "ephys_assembly_name": "Ephys_AssemblyB",
+                "manipulator": {
+                    "device_type": "Manipulator",
+                    "name": "Ephys Manipulator B",
+                    "serial_number": "SN45489",
+                    "manufacturer": {
+                        "name": "New Scale Technologies",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null
+                },
+                "probes": [
+                    {
+                        "device_type": "Ephys probe",
+                        "name": "ProbeB",
+                        "serial_number": "21144108242",
+                        "manufacturer": null,
+                        "model": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "additional_settings": {},
+                        "notes": null,
+                        "probe_model": "Neuropixels UHD (Switchable)",
+                        "lasers": [],
+                        "headstage": null
+                    }
+                ]
+            },
+            {
+                "ephys_assembly_name": "Ephys_AssemblyD",
+                "manipulator": {
+                    "device_type": "Manipulator",
+                    "name": "Ephys Manipulator D",
+                    "serial_number": "SN45360",
+                    "manufacturer": {
+                        "name": "New Scale Technologies",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null
+                },
+                "probes": [
+                    {
+                        "device_type": "Ephys probe",
+                        "name": "ProbeD",
+                        "serial_number": "21144102861",
+                        "manufacturer": null,
+                        "model": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "additional_settings": {},
+                        "notes": null,
+                        "probe_model": "Neuropixels UHD (Switchable)",
+                        "lasers": [],
+                        "headstage": null
+                    }
+                ]
+            },
+            {
+                "ephys_assembly_name": "Ephys_AssemblyF",
+                "manipulator": {
+                    "device_type": "Manipulator",
+                    "name": "Ephys Manipulator F",
+                    "serial_number": "SN45366",
+                    "manufacturer": {
+                        "name": "New Scale Technologies",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null
+                },
+                "probes": [
+                    {
+                        "device_type": "Ephys probe",
+                        "name": "ProbeF",
+                        "serial_number": "21144102141",
+                        "manufacturer": null,
+                        "model": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "additional_settings": {},
+                        "notes": null,
+                        "probe_model": "Neuropixels UHD (Switchable)",
+                        "lasers": [],
+                        "headstage": null
+                    }
+                ]
+            }
+        ],
+        "fiber_assemblies": [],
+        "stick_microscopes": [],
+        "laser_assemblies": [],
+        "patch_cords": [],
+        "light_sources": [
+            {
+                "device_type": "Light emitting diode",
+                "name": "Face forward LED",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "ams OSRAM",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "045d0h266"
+                },
+                "model": "LZ4-40R308-0000",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "wavelength": 740,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "device_type": "Light emitting diode",
+                "name": "Body LED",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "ams OSRAM",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "045d0h266"
+                },
+                "model": "Stradus 488-50",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "wavelength": 740,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "device_type": "Light emitting diode",
+                "name": "Eye LED",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "ams OSRAM",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "045d0h266"
+                },
+                "model": "LZ4-40R308-0000",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "wavelength": 850,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "device_type": "Laser",
+                "name": "Laser #0",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Vortran",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "Stradus 488-50",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "wavelength": 488,
+                "wavelength_unit": "nanometer",
+                "maximum_power": null,
+                "power_unit": "milliwatt",
+                "coupling": null,
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "item_number": null
+            },
+            {
+                "device_type": "Laser",
+                "name": "Laser #1",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Vortran",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "Stradus 633-80",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "wavelength": 633,
+                "wavelength_unit": "nanometer",
+                "maximum_power": null,
+                "power_unit": "milliwatt",
+                "coupling": null,
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "item_number": null
+            }
+        ],
+        "detectors": [],
+        "objectives": [],
+        "filters": [],
+        "lenses": [],
+        "digital_micromirror_devices": [],
+        "polygonal_scanners": [],
+        "pockels_cells": [],
+        "additional_devices": [],
+        "daqs": [
+            {
+                "device_type": "Neuropixels basestation",
+                "name": "Basestation Slot 2",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Interuniversity Microelectronics Center",
+                    "abbreviation": "IMEC",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "02kcbn207"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "PXI",
+                "computer_name": "W10DT713843",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "basestation_firmware_version": "2.0169",
+                "bsc_firmware_version": "3.2189",
+                "slot": 2,
+                "ports": [
+                    {
+                        "index": 2,
+                        "probes": [
+                            "ProbeA, ProbeB, ProbeF"
+                        ]
+                    }
+                ]
+            },
+            {
+                "device_type": "Open Ephys Acquisition Board",
+                "name": "Acquisition Board",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Open Ephys Production Site",
+                    "abbreviation": "OEPS",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "007rkz355"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DT713843",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "ports": [
+                    {
+                        "index": 3,
+                        "probes": [
+                            "ProbeD"
+                        ]
+                    }
+                ]
+            },
+            {
+                "device_type": "DAQ Device",
+                "name": "Sync",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "National Instruments",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "026exqw73"
+                },
+                "model": "NI-6612",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "PCIe",
+                "computer_name": "W10DTSM18306 ",
+                "channels": [
+                    {
+                        "channel_name": "barcode_ephys",
+                        "device_name": "Sync",
+                        "channel_type": "Digital Input",
+                        "port": null,
+                        "channel_index": 0,
+                        "sample_rate": 100000,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "channel_name": "vsync_stim",
+                        "device_name": "Sync",
+                        "channel_type": "Digital Input",
+                        "port": null,
+                        "channel_index": 2,
+                        "sample_rate": 100000,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "channel_name": "stim_photodiode",
+                        "device_name": "Sync",
+                        "channel_type": "Digital Input",
+                        "port": null,
+                        "channel_index": 4,
+                        "sample_rate": 100000,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "channel_name": "stim_running",
+                        "device_name": "Sync",
+                        "channel_type": "Digital Input",
+                        "port": null,
+                        "channel_index": 5,
+                        "sample_rate": 100000,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "channel_name": "beh_frame_received",
+                        "device_name": "Sync",
+                        "channel_type": "Digital Input",
+                        "port": null,
+                        "channel_index": 8,
+                        "sample_rate": 100000,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "channel_name": "eye_frame_received",
+                        "device_name": "Sync",
+                        "channel_type": "Digital Input",
+                        "port": null,
+                        "channel_index": 9,
+                        "sample_rate": 100000,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "channel_name": "face_frame_received",
+                        "device_name": "Sync",
+                        "channel_type": "Digital Input",
+                        "port": null,
+                        "channel_index": 10,
+                        "sample_rate": 100000,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "channel_name": "stim_running_opto",
+                        "device_name": "Sync",
+                        "channel_type": "Digital Input",
+                        "port": null,
+                        "channel_index": 17,
+                        "sample_rate": 100000,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "channel_name": "stim_trial_opto",
+                        "device_name": "Sync",
+                        "channel_type": "Digital Input",
+                        "port": null,
+                        "channel_index": 18,
+                        "sample_rate": 100000,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "channel_name": "beh_cam_frame_readout",
+                        "device_name": "Sync",
+                        "channel_type": "Digital Input",
+                        "port": null,
+                        "channel_index": 21,
+                        "sample_rate": 100000,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "channel_name": "face_cam_frame_readout",
+                        "device_name": "Sync",
+                        "channel_type": "Digital Input",
+                        "port": null,
+                        "channel_index": 22,
+                        "sample_rate": 100000,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "channel_name": "eye_cam_frame_readout",
+                        "device_name": "Sync",
+                        "channel_type": "Digital Input",
+                        "port": null,
+                        "channel_index": 25,
+                        "sample_rate": 100000,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "channel_name": "beh_cam_exposing",
+                        "device_name": "Sync",
+                        "channel_type": "Digital Input",
+                        "port": null,
+                        "channel_index": 27,
+                        "sample_rate": 100000,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "channel_name": "face_cam_exposing",
+                        "device_name": "Sync",
+                        "channel_type": "Digital Input",
+                        "port": null,
+                        "channel_index": 28,
+                        "sample_rate": 100000,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "channel_name": "eye_cam_exposing",
+                        "device_name": "Sync",
+                        "channel_type": "Digital Input",
+                        "port": null,
+                        "channel_index": 29,
+                        "sample_rate": 100000,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    },
+                    {
+                        "channel_name": "lick_sensor",
+                        "device_name": "Sync",
+                        "channel_type": "Digital Input",
+                        "port": null,
+                        "channel_index": 31,
+                        "sample_rate": 100000,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": false
+                    }
+                ],
+                "firmware_version": null,
+                "hardware_version": null
+            },
+            {
+                "device_type": "DAQ Device",
+                "name": "Behavior",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "National Instruments",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "026exqw73"
+                },
+                "model": "NI-6323",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DT713942",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null
+            },
+            {
+                "device_type": "DAQ Device",
+                "name": "BehaviorSync",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "National Instruments",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "026exqw73"
+                },
+                "model": "NI-6001",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "PCIe",
+                "computer_name": "W10DT713942",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null
+            },
+            {
+                "device_type": "DAQ Device",
+                "name": "Opto",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "National Instruments",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "026exqw73"
+                },
+                "model": "NI-9264",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "Ethernet",
+                "computer_name": "W10DT713942",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null
+            }
+        ]
+    },
+    "schema_version": "0.2.19",
+    "session": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/session.py",
+        "schema_version": "0.2.1",
+        "protocol_id": "121-01-026-20",
+        "experimenter_full_name": [
+            "Andrew Shelton"
+        ],
+        "session_start_time": "2024-05-14T10:25:34.114677+00:00",
+        "session_end_time": "2024-05-14T13:22:08.190834+00:00",
+        "session_type": "A study on the effect of psilocybin on neocortical L5 pyramidal neurons using NP UHD (Switchable) probes",
+        "iacuc_protocol": "2104",
+        "rig_id": "325_NP1_Ultra_20240506",
+        "calibrations": [],
+        "maintenance": [],
+        "subject_id": "714527",
+        "animal_weight_prior": 24.8,
+        "animal_weight_post": null,
+        "weight_unit": "gram",
+        "data_streams": [
+            {
+                "stream_start_time": "2024-05-14T10:25:34.114677+00:00",
+                "stream_end_time": "2024-05-14T13:22:08.190834+00:00",
+                "daq_names": [
+                    "Sync"
+                ],
+                "stim_modalities": "Behavior"
+            },
+            {
+                "stream_start_time": "2024-05-14T10:25:34.114677+00:00",
+                "stream_end_time": "2024-05-14T13:22:08.190834+00:00",
+                "daq_names": [],
+                "camera_names": [
+                    "Front camera",
+                    "Side camera",
+                    "Eye camera"
+                ],
+                "stream_modalities": [
+                    {
+                        "name": "Behavior videos",
+                        "abbreviation": "behavior-videos"
+                    }
+                ]
+            }
+        ],
+        "stimulus_epochs": [
+            {
+                "stimulus_start_time": "2024-05-14T11:06:41+00:00",
+                "stimulus_end_time": "2024-05-14T11:10:11.800000+00:00",
+                "stimulus_name": "OptoTagging",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "version": "2022.1.2",
+                        "url": "https://www.psychopy.org/",
+                        "parameters": {
+                            "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/OptoTagging.py",
+                            "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                            "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                        }
+                    }
+                ],
+                "script": {
+                    "name": "OptoTagging",
+                    "version": "a498cb9582051b2fba3ccdbd4703cd97ad4033ad",
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/OptoTagging.py",
+                    "parameters": {
+                        "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/OptoTagging.py",
+                        "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                        "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                    }
+                },
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_parameters": {},
+                "stimulus_device_names": [
+                    "Stim"
+                ],
+                "light_source_config": {
+                    "name": "laser_488",
+                    "wavelength": "488",
+                    "wavelength_unit": "nanometers",
+                    "laser_power": 13.5,
+                    "laser_power_unit": "milliwatt",
+                    "laser_duration": [
+                        0.01,
+                        0.2
+                    ],
+                    "optotagging_locations_bregmaX": [
+                        -0.9,
+                        -0.6,
+                        -1.6,
+                        -3
+                    ],
+                    "optotagging_locations_bregmaY": [
+                        1.25,
+                        -2.5,
+                        -3.5,
+                        -1.5
+                    ],
+                    "probes_targeted": [
+                        "A",
+                        "B",
+                        "D",
+                        "F"
+                    ]
+                },
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "trials_total": 100,
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "notes": "Saline injection occurred ~5 min after this script finished running."
+            },
+            {
+                "stimulus_start_time": "2024-05-14T11:56:52+00:00",
+                "stimulus_end_time": "2024-05-14T12:00:22.900000+00:00",
+                "stimulus_name": "OptoTagging",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "version": "2022.1.2",
+                        "url": "https://www.psychopy.org/",
+                        "parameters": {
+                            "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/OptoTagging.py",
+                            "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                            "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                        }
+                    }
+                ],
+                "script": {
+                    "name": "OptoTagging",
+                    "version": "a498cb9582051b2fba3ccdbd4703cd97ad4033ad",
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/OptoTagging.py",
+                    "parameters": {
+                        "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/OptoTagging.py",
+                        "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                        "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                    }
+                },
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_parameters": {},
+                "stimulus_device_names": [
+                    "Stim"
+                ],
+                "light_source_config": {
+                    "name": "laser_488",
+                    "wavelength": "488",
+                    "wavelength_unit": "nanometers",
+                    "laser_power": 13.5,
+                    "laser_power_unit": "milliwatt",
+                    "laser_duration": [
+                        0.01,
+                        0.2
+                    ],
+                    "optotagging_locations_bregmaX": [
+                        -0.9,
+                        -0.6,
+                        -1.6,
+                        -3
+                    ],
+                    "optotagging_locations_bregmaY": [
+                        1.25,
+                        -2.5,
+                        -3.5,
+                        -1.5
+                    ],
+                    "probes_targeted": [
+                        "A",
+                        "B",
+                        "D",
+                        "F"
+                    ]
+                },
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "trials_total": 100,
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "notes": ""
+            },
+            {
+                "stimulus_start_time": "2024-05-14T12:41:27+00:00",
+                "stimulus_end_time": "2024-05-14T12:44:58.316667+00:00",
+                "stimulus_name": "OptoTagging",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "version": "2022.1.2",
+                        "url": "https://www.psychopy.org/",
+                        "parameters": {
+                            "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/OptoTagging.py",
+                            "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                            "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                        }
+                    }
+                ],
+                "script": {
+                    "name": "OptoTagging",
+                    "version": "a498cb9582051b2fba3ccdbd4703cd97ad4033ad",
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/OptoTagging.py",
+                    "parameters": {
+                        "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/OptoTagging.py",
+                        "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                        "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                    }
+                },
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_parameters": {},
+                "stimulus_device_names": [
+                    "Stim"
+                ],
+                "light_source_config": {
+                    "name": "laser_488",
+                    "wavelength": "488",
+                    "wavelength_unit": "nanometers",
+                    "laser_power": 13.5,
+                    "laser_power_unit": "milliwatt",
+                    "laser_duration": [
+                        0.01,
+                        0.2
+                    ],
+                    "optotagging_locations_bregmaX": [
+                        -0.9,
+                        -0.6,
+                        -1.6,
+                        -3
+                    ],
+                    "optotagging_locations_bregmaY": [
+                        1.25,
+                        -2.5,
+                        -3.5,
+                        -1.5
+                    ],
+                    "probes_targeted": [
+                        "A",
+                        "B",
+                        "D",
+                        "F"
+                    ]
+                },
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "trials_total": 100,
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "notes": "anesthesia (1.5% isoflurane) began ~1 minute after this stimulus epoch ended"
+            },
+            {
+                "stimulus_start_time": "2024-05-14T10:46:28+00:00",
+                "stimulus_end_time": "2024-05-14T11:06:27.983333+00:00",
+                "stimulus_name": "RFMapping",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "version": "2022.1.2",
+                        "url": "https://www.psychopy.org/",
+                        "parameters": {
+                            "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/RFMapping.py",
+                            "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                            "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                        }
+                    }
+                ],
+                "script": {
+                    "name": "RFMapping",
+                    "version": "a498cb9582051b2fba3ccdbd4703cd97ad4033ad",
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/RFMapping.py",
+                    "parameters": {
+                        "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/RFMapping.py",
+                        "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                        "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                    }
+                },
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_parameters": {
+                    "stimulus_type": "Visual Stimulation",
+                    "stimulus_name": "receptive-field mapping grating stimuli",
+                    "orientations_deg": [
+                        0,
+                        45,
+                        90,
+                        135,
+                        180,
+                        225,
+                        270,
+                        315
+                    ],
+                    "position_x": [
+                        -798.722752847133,
+                        -479.2336517082798,
+                        -159.74455056942656,
+                        159.74455056942668,
+                        479.2336517082799,
+                        798.722752847133
+                    ],
+                    "position_y": [
+                        -438.7227528471331,
+                        -146.24091761571106,
+                        146.240917615711,
+                        438.7227528471331
+                    ],
+                    "size_deg": 20,
+                    "spatial_frequency_cycles_per_deg": 0.08,
+                    "temporal_frequency_cycles_per_sec": 4,
+                    "type": "sqr",
+                    "duration_sec": 0.25
+                },
+                "stimulus_device_names": [
+                    "Stim"
+                ],
+                "light_source_config": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "trials_total": 2323,
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "notes": ""
+            },
+            {
+                "stimulus_start_time": "2024-05-14T11:36:39+00:00",
+                "stimulus_end_time": "2024-05-14T11:56:38.983333+00:00",
+                "stimulus_name": "RFMapping",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "version": "2022.1.2",
+                        "url": "https://www.psychopy.org/",
+                        "parameters": {
+                            "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/RFMapping.py",
+                            "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                            "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                        }
+                    }
+                ],
+                "script": {
+                    "name": "RFMapping",
+                    "version": "a498cb9582051b2fba3ccdbd4703cd97ad4033ad",
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/RFMapping.py",
+                    "parameters": {
+                        "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/RFMapping.py",
+                        "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                        "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                    }
+                },
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_parameters": {
+                    "stimulus_type": "Visual Stimulation",
+                    "stimulus_name": "receptive-field mapping grating stimuli",
+                    "orientations_deg": [
+                        0,
+                        45,
+                        90,
+                        135,
+                        180,
+                        225,
+                        270,
+                        315
+                    ],
+                    "position_x": [
+                        -798.722752847133,
+                        -479.2336517082798,
+                        -159.74455056942656,
+                        159.74455056942668,
+                        479.2336517082799,
+                        798.722752847133
+                    ],
+                    "position_y": [
+                        -438.7227528471331,
+                        -146.24091761571106,
+                        146.240917615711,
+                        438.7227528471331
+                    ],
+                    "size_deg": 20,
+                    "spatial_frequency_cycles_per_deg": 0.08,
+                    "temporal_frequency_cycles_per_sec": 4,
+                    "type": "sqr",
+                    "duration_sec": 0.25
+                },
+                "stimulus_device_names": [
+                    "Stim"
+                ],
+                "light_source_config": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "trials_total": 2323,
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "notes": ""
+            },
+            {
+                "stimulus_start_time": "2024-05-14T12:21:14+00:00",
+                "stimulus_end_time": "2024-05-14T12:41:13.983333+00:00",
+                "stimulus_name": "RFMapping",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "version": "2022.1.2",
+                        "url": "https://www.psychopy.org/",
+                        "parameters": {
+                            "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/RFMapping.py",
+                            "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                            "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                        }
+                    }
+                ],
+                "script": {
+                    "name": "RFMapping",
+                    "version": "a498cb9582051b2fba3ccdbd4703cd97ad4033ad",
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/RFMapping.py",
+                    "parameters": {
+                        "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/RFMapping.py",
+                        "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                        "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                    }
+                },
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_parameters": {
+                    "stimulus_type": "Visual Stimulation",
+                    "stimulus_name": "receptive-field mapping grating stimuli",
+                    "orientations_deg": [
+                        0,
+                        45,
+                        90,
+                        135,
+                        180,
+                        225,
+                        270,
+                        315
+                    ],
+                    "position_x": [
+                        -798.722752847133,
+                        -479.2336517082798,
+                        -159.74455056942656,
+                        159.74455056942668,
+                        479.2336517082799,
+                        798.722752847133
+                    ],
+                    "position_y": [
+                        -438.7227528471331,
+                        -146.24091761571106,
+                        146.240917615711,
+                        438.7227528471331
+                    ],
+                    "size_deg": 20,
+                    "spatial_frequency_cycles_per_deg": 0.08,
+                    "temporal_frequency_cycles_per_sec": 4,
+                    "type": "sqr",
+                    "duration_sec": 0.25
+                },
+                "stimulus_device_names": [
+                    "Stim"
+                ],
+                "light_source_config": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "trials_total": 2323,
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "notes": ""
+            },
+            {
+                "stimulus_start_time": "2024-05-14T13:00:42+00:00",
+                "stimulus_end_time": "2024-05-14T13:10:41.983333+00:00",
+                "stimulus_name": "RFMapping",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "version": "2022.1.2",
+                        "url": "https://www.psychopy.org/",
+                        "parameters": {
+                            "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/RFMapping.py",
+                            "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                            "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                        }
+                    }
+                ],
+                "script": {
+                    "name": "RFMapping",
+                    "version": "a498cb9582051b2fba3ccdbd4703cd97ad4033ad",
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/RFMapping.py",
+                    "parameters": {
+                        "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/RFMapping.py",
+                        "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                        "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                    }
+                },
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_parameters": {
+                    "stimulus_type": "Visual Stimulation",
+                    "stimulus_name": "receptive-field mapping grating stimuli",
+                    "orientations_deg": [
+                        0,
+                        45,
+                        90,
+                        135,
+                        180,
+                        225,
+                        270,
+                        315
+                    ],
+                    "position_x": [
+                        -798.722752847133,
+                        -479.2336517082798,
+                        -159.74455056942656,
+                        159.74455056942668,
+                        479.2336517082799,
+                        798.722752847133
+                    ],
+                    "position_y": [
+                        -438.7227528471331,
+                        -146.24091761571106,
+                        146.240917615711,
+                        438.7227528471331
+                    ],
+                    "size_deg": 20,
+                    "spatial_frequency_cycles_per_deg": 0.08,
+                    "temporal_frequency_cycles_per_sec": 4,
+                    "type": "sqr",
+                    "duration_sec": 0.25
+                },
+                "stimulus_device_names": [
+                    "Stim"
+                ],
+                "light_source_config": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "trials_total": 1162,
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "notes": "anesthesia (1.5% isoflurane) ended ~1 minute after this stimulus epoch ended."
+            },
+            {
+                "stimulus_start_time": "2024-05-14T10:26:16+00:00",
+                "stimulus_end_time": "2024-05-14T10:46:15.983333+00:00",
+                "stimulus_name": "Spontaneous",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "version": "2022.1.2",
+                        "url": "https://www.psychopy.org/",
+                        "parameters": {
+                            "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                            "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                            "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                        }
+                    }
+                ],
+                "script": {
+                    "name": "Spontaneous",
+                    "version": "a498cb9582051b2fba3ccdbd4703cd97ad4033ad",
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                    "parameters": {
+                        "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                        "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                        "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                    }
+                },
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_parameters": {},
+                "stimulus_device_names": [
+                    "Stim"
+                ],
+                "light_source_config": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "trials_total": null,
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "notes": ""
+            },
+            {
+                "stimulus_start_time": "2024-05-14T11:16:27+00:00",
+                "stimulus_end_time": "2024-05-14T11:36:26.983333+00:00",
+                "stimulus_name": "Spontaneous",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "version": "2022.1.2",
+                        "url": "https://www.psychopy.org/",
+                        "parameters": {
+                            "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                            "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                            "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                        }
+                    }
+                ],
+                "script": {
+                    "name": "Spontaneous",
+                    "version": "a498cb9582051b2fba3ccdbd4703cd97ad4033ad",
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                    "parameters": {
+                        "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                        "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                        "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                    }
+                },
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_parameters": {},
+                "stimulus_device_names": [
+                    "Stim"
+                ],
+                "light_source_config": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "trials_total": null,
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "notes": ""
+            },
+            {
+                "stimulus_start_time": "2024-05-14T12:01:03+00:00",
+                "stimulus_end_time": "2024-05-14T12:21:02.983333+00:00",
+                "stimulus_name": "Spontaneous",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "version": "2022.1.2",
+                        "url": "https://www.psychopy.org/",
+                        "parameters": {
+                            "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                            "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                            "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                        }
+                    }
+                ],
+                "script": {
+                    "name": "Spontaneous",
+                    "version": "a498cb9582051b2fba3ccdbd4703cd97ad4033ad",
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                    "parameters": {
+                        "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                        "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                        "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                    }
+                },
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_parameters": {},
+                "stimulus_device_names": [
+                    "Stim"
+                ],
+                "light_source_config": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "trials_total": null,
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "notes": ""
+            },
+            {
+                "stimulus_start_time": "2024-05-14T12:50:32+00:00",
+                "stimulus_end_time": "2024-05-14T13:00:31.983333+00:00",
+                "stimulus_name": "Spontaneous",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "version": "2022.1.2",
+                        "url": "https://www.psychopy.org/",
+                        "parameters": {
+                            "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                            "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                            "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                        }
+                    }
+                ],
+                "script": {
+                    "name": "Spontaneous",
+                    "version": "a498cb9582051b2fba3ccdbd4703cd97ad4033ad",
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                    "parameters": {
+                        "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                        "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                        "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                    }
+                },
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_parameters": {},
+                "stimulus_device_names": [
+                    "Stim"
+                ],
+                "light_source_config": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "trials_total": null,
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "notes": ""
+            },
+            {
+                "stimulus_start_time": "2024-05-14T13:11:55+00:00",
+                "stimulus_end_time": "2024-05-14T13:21:54.983333+00:00",
+                "stimulus_name": "Spontaneous",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "version": "2022.1.2",
+                        "url": "https://www.psychopy.org/",
+                        "parameters": {
+                            "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                            "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                            "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                        }
+                    }
+                ],
+                "script": {
+                    "name": "Spontaneous",
+                    "version": "a498cb9582051b2fba3ccdbd4703cd97ad4033ad",
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                    "parameters": {
+                        "taskScript": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                        "taskControl": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskControl.py",
+                        "taskUtils": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask//a498cb9582051b2fba3ccdbd4703cd97ad4033ad/TaskUtils.py"
+                    }
+                },
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_parameters": {},
+                "stimulus_device_names": [
+                    "Stim"
+                ],
+                "light_source_config": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "trials_total": null,
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "notes": ""
+            }
+        ],
+        "mouse_platform_name": "Mouse Platform",
+        "active_mouse_platform": false,
+        "notes": null
+    },
+    "subject": {
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": {
+            "breeding_group": "Sim1-Cre_KJ18;Ai32",
+            "maternal_genotype": "Sim1-Cre_KJ18/wt",
+            "maternal_id": "700283",
+            "paternal_genotype": "Ai32(RCL-ChR2(H134R)_EYFP)/wt",
+            "paternal_id": "703531"
+        },
+        "date_of_birth": "2023-11-30",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "genotype": "Sim1-Cre_KJ18/wt;Ai32(RCL-ChR2(H134R)_EYFP)/wt",
+        "housing": null,
+        "notes": null,
+        "restrictions": null,
+        "rrid": null,
+        "schema_version": "0.5.5",
+        "sex": "Female",
+        "source": {
+            "abbreviation": "AI",
+            "name": "Allen Institute",
+            "registry": {
+                "abbreviation": "ROR",
+                "name": "Research Organization Registry"
+            },
+            "registry_identifier": "03cpe7c52"
+        },
+        "species": {
+            "abbreviation": null,
+            "name": "Mus musculus",
+            "registry": {
+                "abbreviation": "NCBI",
+                "name": "National Center for Biotechnology Information"
+            },
+            "registry_identifier": "10090"
+        },
+        "subject_id": "714527",
+        "wellness_reports": []
+    }
+}

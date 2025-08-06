@@ -1,0 +1,236 @@
+"""Tile upgrade functions for v1.4 to v2.0 acquisition upgrade"""
+
+from typing import Dict, List, Optional
+
+from aind_data_schema.components.configs import (
+    Channel,
+    DetectorConfig,
+    Immersion,
+    LaserConfig,
+    SampleChamberConfig,
+    TriggerType,
+)
+from aind_data_schema.core.acquisition import DataStream
+from aind_data_schema_models.devices import ImmersionMedium
+from aind_data_schema_models.modalities import Modality
+from aind_data_schema_models.units import PowerUnit, SizeUnit, TimeUnit
+
+
+def extract_channels_from_tiles(tiles: List[Dict]) -> List[Channel]:
+    """Extract and accumulate unique channels from tile data"""
+    channels_dict = {}  # Use dict to avoid duplicates by channel name
+
+    for tile in tiles:
+        channel_data = tile.get("channel", {})
+        if not channel_data:
+            continue
+
+        channel_name = channel_data.get("channel_name")
+        if not channel_name:
+            continue
+
+        # If we've already seen this channel name, skip it
+        # (assuming identical channel names have identical configurations)
+        if channel_name in channels_dict:
+            continue
+
+        # Create detector config - using defaults since we don't have detector info in tiles
+        detector_config = DetectorConfig(
+            device_name="unknown_detector",  # Will need to be filled in later
+            exposure_time=1.0,  # Default value
+            exposure_time_unit=TimeUnit.MS,
+            trigger_type=TriggerType.INTERNAL,  # Default value
+        )
+
+        # Create laser config from channel data
+        light_sources = []
+        if "laser_wavelength" in channel_data:
+            laser_config_params = {
+                "device_name": f"laser_{channel_data['laser_wavelength']}nm",
+                "wavelength": channel_data["laser_wavelength"],
+                "wavelength_unit": SizeUnit.NM,
+            }
+
+            # Add power if available
+            if "laser_power" in channel_data:
+                laser_config_params["power"] = channel_data["laser_power"]
+
+                # Map power unit from tile to schema
+                power_unit = channel_data.get("laser_power_unit", "milliwatt")
+                if power_unit == "milliwatt":
+                    laser_config_params["power_unit"] = PowerUnit.MW
+                else:
+                    # For unknown units, default to milliwatts
+                    laser_config_params["power_unit"] = PowerUnit.MW
+
+            laser_config = LaserConfig(**laser_config_params)
+            light_sources.append(laser_config)
+
+        # Create the channel
+        channel = Channel(
+            channel_name=channel_name, detector=detector_config, light_sources=light_sources, variable_power=False
+        )
+
+        channels_dict[channel_name] = channel
+
+    return list(channels_dict.values())
+
+
+def extract_modality_from_tiles(tiles: List[Dict]) -> Dict:
+    """Extract modality from tile data - assume SPIM for imaging tiles"""
+    # For now, assume SPIM since that's what the example data shows
+    # In a more sophisticated implementation, you could analyze the tile structure
+    return Modality.SPIM.model_dump()
+
+
+def create_basic_imaging_config(channels: List[Channel]) -> Dict:
+    """Create a basic imaging configuration placeholder"""
+    # Since ImagingConfig has many required fields we don't have from tiles,
+    # create a minimal configuration placeholder
+    return {
+        "object_type": "Imaging config",
+        "device_name": "unknown",
+        "channels": [channel.model_dump() for channel in channels],
+        "images": [],
+    }
+
+
+def determine_active_devices_from_tiles(tiles: List[Dict]) -> List[str]:
+    """Extract active device names from tile data"""
+    active_devices = set()
+
+    for tile in tiles:
+        channel = tile.get("channel", {})
+
+        # Extract device names from channel info
+        if "light_source_name" in channel and channel["light_source_name"]:
+            active_devices.add(channel["light_source_name"])
+
+        if "detector_name" in channel and channel["detector_name"]:
+            active_devices.add(channel["detector_name"])
+
+        # Add filter names
+        filter_names = channel.get("filter_names", [])
+        for filter_name in filter_names:
+            if filter_name:
+                active_devices.add(filter_name)
+
+        # Add any additional device names
+        additional_devices = channel.get("additional_device_names", [])
+        if additional_devices:
+            for device in additional_devices:
+                if device:
+                    active_devices.add(device)
+
+    return list(active_devices)
+
+
+def extract_stream_times_from_tiles(tiles: List[Dict], session_start: str, session_end: str) -> tuple[str, str]:
+    """Extract stream start/end times from tiles, falling back to session times"""
+
+    # Look for acquisition times in tiles
+    tile_start_times = []
+    tile_end_times = []
+
+    for tile in tiles:
+        if tile.get("acquisition_start_time"):
+            tile_start_times.append(tile["acquisition_start_time"])
+        if tile.get("acquisition_end_time"):
+            tile_end_times.append(tile["acquisition_end_time"])
+
+    # Use tile times if available, otherwise fall back to session times
+    if tile_start_times:
+        stream_start = min(tile_start_times)
+    else:
+        stream_start = session_start
+
+    if tile_end_times:
+        stream_end = max(tile_end_times)
+    else:
+        stream_end = session_end
+
+    return stream_start, stream_end
+
+
+MEDIUM_MAP = {
+    "Cargille 1.52": ImmersionMedium.OIL,
+    "Cargille 1.5200": ImmersionMedium.OIL,
+    "Cargille Oil 1.5200": ImmersionMedium.OIL,
+    "Cargille oil 1.5200": ImmersionMedium.OIL,
+    "EasyIndex": ImmersionMedium.EASYINDEX,
+    "0.05x SSC": ImmersionMedium.WATER,
+}
+
+
+def upgrade_immersion(data: dict) -> dict:
+    """Upgrade an immersion dictionary to the new Immersion schema"""
+
+    if "medium" in data and any(key in data["medium"] for key in MEDIUM_MAP.keys()):
+        # Find the matching medium key and update it
+        for old_key, new_medium in MEDIUM_MAP.items():
+            if old_key in data["medium"]:
+                data["medium"] = new_medium
+                break
+
+    return Immersion(**data).model_dump()
+
+
+def upgrade_tiles_to_data_stream(
+    tiles: List[Dict],
+    session_start: str,
+    session_end: str,
+    chamber_immersion: dict,
+    sample_immersion: Optional[dict],
+    device_name: str,
+    software: list,
+) -> List[Dict]:
+    """Convert V1 tiles to V2 data streams"""
+
+    if not tiles:
+        return []
+
+    # Add code to build up list of channels from tiles
+    channels = extract_channels_from_tiles(tiles)
+
+    # Extract stream timing
+    stream_start, stream_end = extract_stream_times_from_tiles(tiles, session_start, session_end)
+
+    # Determine modality and devices
+    modalities = [extract_modality_from_tiles(tiles)]
+    active_devices = determine_active_devices_from_tiles(tiles)
+
+    chamber_config = SampleChamberConfig(
+        device_name=device_name,
+        chamber_immersion=upgrade_immersion(chamber_immersion),
+        sample_immersion=upgrade_immersion(sample_immersion) if sample_immersion else None,
+    ).model_dump()
+
+    # Create basic imaging configuration
+    configurations = [
+        create_basic_imaging_config(channels),
+        chamber_config,
+    ]
+
+    # Combine notes from tiles
+    tile_notes = [tile.get("notes", "") for tile in tiles if tile.get("notes")]
+    tile_notes = set(tile_notes)  # Remove duplicates
+    combined_notes = "; ".join(filter(None, tile_notes)) if tile_notes else None
+
+    # Handle software
+    if software:
+        print(software)
+        raise NotImplementedError("Software handling is not implemented yet.")
+
+    # Create single data stream from all tiles
+    data_stream = {
+        "stream_start_time": stream_start,
+        "stream_end_time": stream_end,
+        "modalities": modalities,
+        "code": None,
+        "notes": combined_notes,
+        "active_devices": active_devices,
+        "configurations": configurations,
+        "connections": [],
+    }
+
+    return [DataStream(**data_stream).model_dump()]

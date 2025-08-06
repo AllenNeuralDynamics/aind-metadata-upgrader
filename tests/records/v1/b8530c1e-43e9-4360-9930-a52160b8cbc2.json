@@ -1,0 +1,2742 @@
+{
+    "_id": "b8530c1e-43e9-4360-9930-a52160b8cbc2",
+    "acquisition": null,
+    "created": "2024-06-01T00:09:29.058478",
+    "data_description": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "1.0.0",
+        "license": "CC-BY-4.0",
+        "platform": {
+            "name": "Electrophysiology platform",
+            "abbreviation": "ecephys"
+        },
+        "subject_id": "703880",
+        "creation_time": "2024-04-17T14:00:21-07:00",
+        "label": null,
+        "name": "ecephys_703880_2024-04-17_14-00-21",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": null
+            }
+        ],
+        "data_level": "raw",
+        "group": null,
+        "investigators": [
+            {
+                "name": "Corbett Bennett",
+                "abbreviation": null,
+                "registry": {
+                    "name": "Open Researcher and Contributor ID",
+                    "abbreviation": "ORCiD"
+                },
+                "registry_identifier": "https://orcid.org/0009-0001-2847-7754"
+            },
+            {
+                "name": "Shawn R Olsen",
+                "abbreviation": null,
+                "registry": {
+                    "name": "Open Researcher and Contributor ID",
+                    "abbreviation": "ORCiD"
+                },
+                "registry_identifier": "https://orcid.org/0000-0002-9568-7057"
+            }
+        ],
+        "project_name": "Dynamic Routing",
+        "restrictions": null,
+        "modality": [
+            {
+                "name": "Extracellular electrophysiology",
+                "abbreviation": "ecephys"
+            },
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            },
+            {
+                "name": "Behavior videos",
+                "abbreviation": "behavior-videos"
+            }
+        ],
+        "related_data": [],
+        "data_summary": null
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": {
+        "Code Ocean": [
+            "050a142c-fcd9-4c52-b5dc-69ff71abe320"
+        ]
+    },
+    "instrument": null,
+    "last_modified": "2025-01-07T01:10:01.981388",
+    "location": "s3://aind-private-data-prod-o5171v/ecephys_703880_2024-04-17_14-00-21",
+    "metadata_status": "Unknown",
+    "name": "ecephys_703880_2024-04-17_14-00-21",
+    "procedures": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "notes": null,
+        "schema_version": "0.11.5",
+        "specimen_procedures": [],
+        "subject_id": "703880",
+        "subject_procedures": [
+            {
+                "anaesthesia": null,
+                "animal_weight_post": null,
+                "animal_weight_prior": null,
+                "experimenter_full_name": "31342",
+                "iacuc_protocol": "2104",
+                "notes": null,
+                "procedure_type": "Surgery",
+                "procedures": [
+                    {
+                        "output_specimen_ids": [
+                            "703880"
+                        ],
+                        "procedure_type": "Perfusion"
+                    }
+                ],
+                "start_date": "2024-04-19",
+                "weight_unit": "gram",
+                "workstation_id": null
+            },
+            {
+                "anaesthesia": {
+                    "duration": null,
+                    "duration_unit": "minute",
+                    "level": null,
+                    "type": "isoflurane"
+                },
+                "animal_weight_post": null,
+                "animal_weight_prior": null,
+                "experimenter_full_name": "NSB-187",
+                "iacuc_protocol": "2104",
+                "notes": null,
+                "procedure_type": "Surgery",
+                "procedures": [
+                    {
+                        "bregma_to_lambda_distance": null,
+                        "bregma_to_lambda_unit": "millimeter",
+                        "craniotomy_coordinates_ap": null,
+                        "craniotomy_coordinates_ml": null,
+                        "craniotomy_coordinates_reference": null,
+                        "craniotomy_coordinates_unit": "millimeter",
+                        "craniotomy_hemisphere": null,
+                        "craniotomy_size": null,
+                        "craniotomy_size_unit": "millimeter",
+                        "craniotomy_type": "Whole hemisphere craniotomy",
+                        "dura_removed": null,
+                        "implant_part_number": "2005",
+                        "procedure_type": "Craniotomy",
+                        "protective_material": null,
+                        "recovery_time": null,
+                        "recovery_time_unit": "minute"
+                    },
+                    {
+                        "headframe_material": null,
+                        "headframe_part_number": null,
+                        "headframe_type": "WHC (Full ring)",
+                        "procedure_type": "Headframe",
+                        "well_part_number": "0160-055-08",
+                        "well_type": "WHC NP"
+                    }
+                ],
+                "start_date": "2023-12-04",
+                "weight_unit": "gram",
+                "workstation_id": "SWS 3"
+            }
+        ]
+    },
+    "processing": {
+        "analyses": [],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "notes": null,
+        "processing_pipeline": {
+            "data_processes": [
+                {
+                    "code_url": "https://github.com/AllenNeuralDynamics/aind-data-transfer",
+                    "code_version": null,
+                    "end_date_time": "2024-04-25T08:29:03.994081Z",
+                    "input_location": "//allen/programs/mindscope/workgroups/np-exp/codeocean/DRpilot_703880_20240417/ephys",
+                    "name": "Compression",
+                    "notes": null,
+                    "output_location": "s3://aind-private-data-prod-o5171v/ecephys_703880_2024-04-17_14-00-21",
+                    "outputs": {},
+                    "parameters": {
+                        "compress_raw_data": true,
+                        "extra_configs": null,
+                        "modality": {
+                            "abbreviation": "ecephys",
+                            "name": "Extracellular electrophysiology"
+                        },
+                        "skip_staging": false,
+                        "source": "//allen/programs/mindscope/workgroups/np-exp/codeocean/DRpilot_703880_20240417/ephys"
+                    },
+                    "software_version": "0.32.13",
+                    "start_date_time": "2024-04-24T23:54:28.207069Z"
+                }
+            ],
+            "note": null,
+            "pipeline_url": null,
+            "pipeline_version": null,
+            "processor_full_name": "service"
+        },
+        "schema_version": "0.4.3"
+    },
+    "rig": {
+        "additional_devices": [
+            {
+                "additional_settings": {},
+                "device_type": "Detector",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Dodotronic",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "MOM",
+                "name": "microphone",
+                "notes": "Data interface is unknown.",
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Additional Imaging Device",
+                "manufacturer": null,
+                "model": null,
+                "name": "Galvo x",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Additional Imaging Device",
+                "manufacturer": null,
+                "model": null,
+                "name": "Galvo y",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null
+            }
+        ],
+        "calibrations": [
+            {
+                "calibration_date": "2022-07-26T00:00:00-07:00",
+                "description": "sound_volume = log(1 - ((dB - c) / a)) / b;dB is sound pressure",
+                "device_name": "Speaker",
+                "input": {
+                    "a": 25.292813310355854,
+                    "b": -2.2134771248134277,
+                    "c": 53.86446274503573
+                },
+                "notes": "Calibration date is a placeholder. ",
+                "output": {}
+            },
+            {
+                "calibration_date": "2022-07-26T00:00:00-07:00",
+                "description": "solenoid open time (ms) = slope * expected water volume (mL) + intercept",
+                "device_name": "Reward delivery",
+                "input": {},
+                "notes": "Calibration date is a placeholder.",
+                "output": {
+                    "solenoid_open_time": 0.03
+                }
+            }
+        ],
+        "cameras": [
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "W10DTM714204",
+                    "cooling": "None",
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "Ethernet",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Allied",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_frame_rate": "102",
+                    "model": "G-032",
+                    "name": "Front camera",
+                    "notes": "Max frame rate is at maximum resolution.",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": {
+                        "name": "MVR",
+                        "parameters": {},
+                        "url": null,
+                        "version": "Not detected/provided."
+                    },
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 7400,
+                    "sensor_width": 7400,
+                    "serial_number": "50-0536905703",
+                    "size_unit": "nanometer"
+                },
+                "camera_target": "Face forward",
+                "filter": {
+                    "additional_settings": {},
+                    "center_wavelength": null,
+                    "cut_off_wavelength": null,
+                    "cut_on_wavelength": null,
+                    "description": null,
+                    "device_type": "Filter",
+                    "diameter": null,
+                    "filter_type": "Long pass",
+                    "filter_wheel_index": null,
+                    "height": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Semrock",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "FF01-715_LP-25",
+                    "name": "Front filter",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size_unit": "millimeter",
+                    "thickness": null,
+                    "thickness_unit": "millimeter",
+                    "wavelength_unit": "nanometer",
+                    "width": null
+                },
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "8.5",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Edmund Optics",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "max_aperture": null,
+                    "model": "86604",
+                    "name": "Front lens",
+                    "notes": null,
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "Front",
+                "position": {
+                    "device_axes": [
+                        {
+                            "direction": "Positive is from the center of the sensor towards the left of the assembly, from the subject's perspective.",
+                            "name": "X"
+                        },
+                        {
+                            "direction": "Positive is from the center of the sensor towards the bottom of the assembly.",
+                            "name": "Y"
+                        },
+                        {
+                            "direction": "Positive is from the sensor towards the subject.",
+                            "name": "Z"
+                        }
+                    ],
+                    "device_origin": "Located on the face of the lens mounting surface at its center, ie. just ahead of the camera sensor.",
+                    "device_position_transformations": [
+                        {
+                            "rotation": [
+                                "-0.17365",
+                                "0.98481",
+                                "0",
+                                "0.44709",
+                                "0.07883",
+                                "-0.89101",
+                                "-0.87747",
+                                "-0.15472",
+                                "-0.45399"
+                            ],
+                            "type": "rotation"
+                        },
+                        {
+                            "translation": [
+                                "0.154",
+                                "0.03078",
+                                "0.06346"
+                            ],
+                            "type": "translation"
+                        }
+                    ],
+                    "notes": "The rotation matrix is represented as: a,b,c,d,e,f,g,h,i. Wherein a, b, c correspond to the first row of the matrix. The translation matrix is represented as: x,y,z."
+                }
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "W10DTM714204",
+                    "cooling": "None",
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "Ethernet",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Allied",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_frame_rate": "102",
+                    "model": "G-032",
+                    "name": "Side camera",
+                    "notes": "Max frame rate is at maximum resolution.",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": {
+                        "name": "MVR",
+                        "parameters": {},
+                        "url": null,
+                        "version": "Not detected/provided."
+                    },
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 7400,
+                    "sensor_width": 7400,
+                    "serial_number": "50-0536876074",
+                    "size_unit": "nanometer"
+                },
+                "camera_target": "Body",
+                "filter": {
+                    "additional_settings": {},
+                    "center_wavelength": null,
+                    "cut_off_wavelength": null,
+                    "cut_on_wavelength": null,
+                    "description": null,
+                    "device_type": "Filter",
+                    "diameter": null,
+                    "filter_type": "Band pass",
+                    "filter_wheel_index": null,
+                    "height": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Semrock",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "FF01-747/33-25",
+                    "name": "Side filter",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size_unit": "millimeter",
+                    "thickness": null,
+                    "thickness_unit": "millimeter",
+                    "wavelength_unit": "nanometer",
+                    "width": null
+                },
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "6.0",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Navitar",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": null,
+                    "name": "Side lens",
+                    "notes": null,
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "Side",
+                "position": {
+                    "device_axes": [
+                        {
+                            "direction": "Positive is from the center of the sensor towards the left of the assembly, from the subject's perspective.",
+                            "name": "X"
+                        },
+                        {
+                            "direction": "Positive is from the center of the sensor towards the bottom of the assembly.",
+                            "name": "Y"
+                        },
+                        {
+                            "direction": "Positive is from the sensor towards the subject.",
+                            "name": "Z"
+                        }
+                    ],
+                    "device_origin": "Located on the face of the lens mounting surface at its center, ie. just ahead of the camera sensor.",
+                    "device_position_transformations": [
+                        {
+                            "rotation": [
+                                "-1",
+                                "0",
+                                "0",
+                                "0",
+                                "0",
+                                "-1",
+                                "0",
+                                "-1",
+                                "0"
+                            ],
+                            "type": "rotation"
+                        },
+                        {
+                            "translation": [
+                                "-0.03617",
+                                "0.23887",
+                                "-0.02535"
+                            ],
+                            "type": "translation"
+                        }
+                    ],
+                    "notes": "The rotation matrix is represented as: a,b,c,d,e,f,g,h,i. Wherein a, b, c correspond to the first row of the matrix. The translation matrix is represented as: x,y,z."
+                }
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "W10DTM714204",
+                    "cooling": "None",
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "Ethernet",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Allied",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_frame_rate": "102",
+                    "model": "G-032",
+                    "name": "Eye camera",
+                    "notes": "Max frame rate is at maximum resolution.",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": {
+                        "name": "MVR",
+                        "parameters": {},
+                        "url": null,
+                        "version": "Not detected/provided."
+                    },
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 7400,
+                    "sensor_width": 7400,
+                    "serial_number": "50-0536905703",
+                    "size_unit": "nanometer"
+                },
+                "camera_target": "Eye",
+                "filter": {
+                    "additional_settings": {},
+                    "center_wavelength": null,
+                    "cut_off_wavelength": null,
+                    "cut_on_wavelength": null,
+                    "description": null,
+                    "device_type": "Filter",
+                    "diameter": null,
+                    "filter_type": "Band pass",
+                    "filter_wheel_index": null,
+                    "height": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Semrock",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "FF01-850/10-25",
+                    "name": "Eye filter",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size_unit": "millimeter",
+                    "thickness": null,
+                    "thickness_unit": "millimeter",
+                    "wavelength_unit": "nanometer",
+                    "width": null
+                },
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "6.0",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Infinity Photo-Optical",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "213073",
+                    "name": "Eye lens",
+                    "notes": "Model number is SKU.",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "Eye",
+                "position": {
+                    "device_axes": [
+                        {
+                            "direction": "Positive is from the center of the sensor towards the left of the assembly, from the subject's perspective.",
+                            "name": "X"
+                        },
+                        {
+                            "direction": "Positive is from the center of the sensor towards the bottom of the assembly.",
+                            "name": "Y"
+                        },
+                        {
+                            "direction": "Positive is from the sensor towards the subject.",
+                            "name": "Z"
+                        }
+                    ],
+                    "device_origin": "Located on the face of the lens mounting surface at its center, ie. just ahead of the camera sensor.",
+                    "device_position_transformations": [
+                        {
+                            "rotation": [
+                                "-0.5",
+                                "-0.86603",
+                                "0",
+                                "-0.366",
+                                "0.21131",
+                                "-0.90631",
+                                "0.78489",
+                                "-0.45315",
+                                "-0.42262"
+                            ],
+                            "type": "rotation"
+                        },
+                        {
+                            "translation": [
+                                "-0.14259",
+                                "0.06209",
+                                "0.09576"
+                            ],
+                            "type": "translation"
+                        }
+                    ],
+                    "notes": "The rotation matrix is represented as: a,b,c,d,e,f,g,h,i. Wherein a, b, c correspond to the first row of the matrix. The translation matrix is represented as: x,y,z."
+                }
+            }
+        ],
+        "ccf_coordinate_transform": null,
+        "daqs": [
+            {
+                "additional_settings": {},
+                "channels": [
+                    {
+                        "channel_index": 0,
+                        "channel_name": "barcode_ephys",
+                        "channel_type": "Digital Input",
+                        "device_name": "Sync",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": "100000.0",
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 2,
+                        "channel_name": "vsync_stim",
+                        "channel_type": "Digital Input",
+                        "device_name": "Sync",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": "100000.0",
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 4,
+                        "channel_name": "stim_photodiode",
+                        "channel_type": "Digital Input",
+                        "device_name": "Sync",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": "100000.0",
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 5,
+                        "channel_name": "stim_running",
+                        "channel_type": "Digital Input",
+                        "device_name": "Sync",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": "100000.0",
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 8,
+                        "channel_name": "beh_frame_received",
+                        "channel_type": "Digital Input",
+                        "device_name": "Sync",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": "100000.0",
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 9,
+                        "channel_name": "eye_frame_received",
+                        "channel_type": "Digital Input",
+                        "device_name": "Sync",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": "100000.0",
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 10,
+                        "channel_name": "face_frame_received",
+                        "channel_type": "Digital Input",
+                        "device_name": "Sync",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": "100000.0",
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 17,
+                        "channel_name": "stim_running_opto",
+                        "channel_type": "Digital Input",
+                        "device_name": "Sync",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": "100000.0",
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 18,
+                        "channel_name": "stim_trial_opto",
+                        "channel_type": "Digital Input",
+                        "device_name": "Sync",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": "100000.0",
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 21,
+                        "channel_name": "beh_cam_frame_readout",
+                        "channel_type": "Digital Input",
+                        "device_name": "Sync",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": "100000.0",
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 22,
+                        "channel_name": "face_cam_frame_readout",
+                        "channel_type": "Digital Input",
+                        "device_name": "Sync",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": "100000.0",
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 25,
+                        "channel_name": "eye_cam_frame_readout",
+                        "channel_type": "Digital Input",
+                        "device_name": "Sync",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": "100000.0",
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 27,
+                        "channel_name": "beh_cam_exposing",
+                        "channel_type": "Digital Input",
+                        "device_name": "Sync",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": "100000.0",
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 28,
+                        "channel_name": "face_cam_exposing",
+                        "channel_type": "Digital Input",
+                        "device_name": "Sync",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": "100000.0",
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 29,
+                        "channel_name": "eye_cam_exposing",
+                        "channel_type": "Digital Input",
+                        "device_name": "Sync",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": "100000.0",
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 31,
+                        "channel_name": "lick_sensor",
+                        "channel_type": "Digital Input",
+                        "device_name": "Sync",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": "100000.0",
+                        "sample_rate_unit": "hertz"
+                    }
+                ],
+                "computer_name": "W10DTSM118309",
+                "data_interface": "PCIe",
+                "device_type": "DAQ Device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "National Instruments",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "026exqw73"
+                },
+                "model": "NI-6612",
+                "name": "Sync",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [
+                    {
+                        "channel_index": 7,
+                        "channel_name": "solenoid",
+                        "channel_type": "Digital Output",
+                        "device_name": "Behavior",
+                        "event_based_sampling": null,
+                        "port": 0,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 0,
+                        "channel_name": "reward_sound",
+                        "channel_type": "Digital Output",
+                        "device_name": "Behavior",
+                        "event_based_sampling": null,
+                        "port": 2,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 0,
+                        "channel_name": "lick",
+                        "channel_type": "Digital Input",
+                        "device_name": "Behavior",
+                        "event_based_sampling": null,
+                        "port": 0,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    }
+                ],
+                "computer_name": "W10DT713941",
+                "data_interface": "USB",
+                "device_type": "DAQ Device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "National Instruments",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "026exqw73"
+                },
+                "model": "NI-6323",
+                "name": "Behavior",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [
+                    {
+                        "channel_index": 4,
+                        "channel_name": "stim_frame",
+                        "channel_type": "Digital Output",
+                        "device_name": "BehaviorSync",
+                        "event_based_sampling": null,
+                        "port": 1,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 7,
+                        "channel_name": "stim_running",
+                        "channel_type": "Digital Output",
+                        "device_name": "BehaviorSync",
+                        "event_based_sampling": null,
+                        "port": 1,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    }
+                ],
+                "computer_name": "W10DT713941",
+                "data_interface": "PCIe",
+                "device_type": "DAQ Device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "National Instruments",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "026exqw73"
+                },
+                "model": "NI-6001",
+                "name": "BehaviorSync",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [
+                    {
+                        "channel_index": 2,
+                        "channel_name": "Opto laser_488 #0",
+                        "channel_type": "Analog Output",
+                        "device_name": "Opto",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 3,
+                        "channel_name": "Opto laser_488 #1",
+                        "channel_type": "Analog Output",
+                        "device_name": "Opto",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 0,
+                        "channel_name": "Opto galvo x",
+                        "channel_type": "Analog Output",
+                        "device_name": "Opto",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": "2000",
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": 1,
+                        "channel_name": "Opto galvo y",
+                        "channel_type": "Analog Output",
+                        "device_name": "Opto",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": "2000",
+                        "sample_rate_unit": "hertz"
+                    }
+                ],
+                "computer_name": "W10DT713941",
+                "data_interface": "Ethernet",
+                "device_type": "DAQ Device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "National Instruments",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "026exqw73"
+                },
+                "model": "NI-9264",
+                "name": "Opto",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/rig.py",
+        "detectors": [
+            {
+                "additional_settings": {},
+                "bin_height": null,
+                "bin_mode": "None",
+                "bin_unit": "pixel",
+                "bin_width": null,
+                "bit_depth": null,
+                "chroma": null,
+                "computer_name": null,
+                "cooling": "Air",
+                "crop_height": null,
+                "crop_unit": "pixel",
+                "crop_width": null,
+                "data_interface": "Other",
+                "detector_type": "Other",
+                "device_type": "Detector",
+                "driver": null,
+                "driver_version": null,
+                "frame_rate_unit": "hertz",
+                "gain": null,
+                "immersion": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "max_frame_rate": null,
+                "model": "PDA25K",
+                "name": "vsync photodiode",
+                "notes": "Data interface is unknown.",
+                "path_to_cad": null,
+                "port_index": null,
+                "recording_software": null,
+                "sensor_format": null,
+                "sensor_format_unit": null,
+                "sensor_height": null,
+                "sensor_width": null,
+                "serial_number": null,
+                "size_unit": "pixel"
+            }
+        ],
+        "digital_micromirror_devices": [],
+        "enclosure": null,
+        "ephys_assemblies": [
+            {
+                "manipulator": {
+                    "additional_settings": {},
+                    "device_type": "Manipulator",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "New Scale Technologies",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "06591-M-0004",
+                    "name": "Ephys Assembly A Manipulator",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": "SN40906"
+                },
+                "name": "Ephys Assembly A",
+                "probes": [
+                    {
+                        "additional_settings": {},
+                        "device_type": "Ephys probe",
+                        "headstage": null,
+                        "lasers": [],
+                        "manufacturer": {
+                            "abbreviation": "IMEC",
+                            "name": "Interuniversity Microelectronics Center",
+                            "registry": {
+                                "abbreviation": "ROR",
+                                "name": "Research Organization Registry"
+                            },
+                            "registry_identifier": "02kcbn207"
+                        },
+                        "model": "Neuropixels 1.0",
+                        "name": "ProbeA",
+                        "notes": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "probe_model": "Neuropixels 1.0",
+                        "serial_number": "19192715691"
+                    }
+                ]
+            },
+            {
+                "manipulator": {
+                    "additional_settings": {},
+                    "device_type": "Manipulator",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "New Scale Technologies",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "06591-M-0004",
+                    "name": "Ephys Assembly B Manipulator",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": "SN40908"
+                },
+                "name": "Ephys Assembly B",
+                "probes": [
+                    {
+                        "additional_settings": {},
+                        "device_type": "Ephys probe",
+                        "headstage": null,
+                        "lasers": [],
+                        "manufacturer": {
+                            "abbreviation": "IMEC",
+                            "name": "Interuniversity Microelectronics Center",
+                            "registry": {
+                                "abbreviation": "ROR",
+                                "name": "Research Organization Registry"
+                            },
+                            "registry_identifier": "02kcbn207"
+                        },
+                        "model": "Neuropixels 1.0",
+                        "name": "ProbeB",
+                        "notes": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "probe_model": "Neuropixels 1.0",
+                        "serial_number": "18005114151"
+                    }
+                ]
+            },
+            {
+                "manipulator": {
+                    "additional_settings": {},
+                    "device_type": "Manipulator",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "New Scale Technologies",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "06591-M-0004",
+                    "name": "Ephys Assembly C Manipulator",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": "SN40907"
+                },
+                "name": "Ephys Assembly C",
+                "probes": [
+                    {
+                        "additional_settings": {},
+                        "device_type": "Ephys probe",
+                        "headstage": null,
+                        "lasers": [],
+                        "manufacturer": {
+                            "abbreviation": "IMEC",
+                            "name": "Interuniversity Microelectronics Center",
+                            "registry": {
+                                "abbreviation": "ROR",
+                                "name": "Research Organization Registry"
+                            },
+                            "registry_identifier": "02kcbn207"
+                        },
+                        "model": "Neuropixels 1.0",
+                        "name": "ProbeC",
+                        "notes": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "probe_model": "Neuropixels 1.0",
+                        "serial_number": "18005102491"
+                    }
+                ]
+            },
+            {
+                "manipulator": {
+                    "additional_settings": {},
+                    "device_type": "Manipulator",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "New Scale Technologies",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "06591-M-0004",
+                    "name": "Ephys Assembly D Manipulator",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": "SN41084"
+                },
+                "name": "Ephys Assembly D",
+                "probes": [
+                    {
+                        "additional_settings": {},
+                        "device_type": "Ephys probe",
+                        "headstage": null,
+                        "lasers": [],
+                        "manufacturer": {
+                            "abbreviation": "IMEC",
+                            "name": "Interuniversity Microelectronics Center",
+                            "registry": {
+                                "abbreviation": "ROR",
+                                "name": "Research Organization Registry"
+                            },
+                            "registry_identifier": "02kcbn207"
+                        },
+                        "model": "Neuropixels 1.0",
+                        "name": "ProbeD",
+                        "notes": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "probe_model": "Neuropixels 1.0",
+                        "serial_number": "19192722691"
+                    }
+                ]
+            },
+            {
+                "manipulator": {
+                    "additional_settings": {},
+                    "device_type": "Manipulator",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "New Scale Technologies",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "06591-M-0004",
+                    "name": "Ephys Assembly E Manipulator",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": "SN40903"
+                },
+                "name": "Ephys Assembly E",
+                "probes": [
+                    {
+                        "additional_settings": {},
+                        "device_type": "Ephys probe",
+                        "headstage": null,
+                        "lasers": [],
+                        "manufacturer": {
+                            "abbreviation": "IMEC",
+                            "name": "Interuniversity Microelectronics Center",
+                            "registry": {
+                                "abbreviation": "ROR",
+                                "name": "Research Organization Registry"
+                            },
+                            "registry_identifier": "02kcbn207"
+                        },
+                        "model": "Neuropixels 1.0",
+                        "name": "ProbeE",
+                        "notes": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "probe_model": "Neuropixels 1.0",
+                        "serial_number": "19192715321"
+                    }
+                ]
+            },
+            {
+                "manipulator": {
+                    "additional_settings": {},
+                    "device_type": "Manipulator",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "New Scale Technologies",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "06591-M-0004",
+                    "name": "Ephys Assembly F Manipulator",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": "SN40902"
+                },
+                "name": "Ephys Assembly F",
+                "probes": [
+                    {
+                        "additional_settings": {},
+                        "device_type": "Ephys probe",
+                        "headstage": null,
+                        "lasers": [],
+                        "manufacturer": {
+                            "abbreviation": "IMEC",
+                            "name": "Interuniversity Microelectronics Center",
+                            "registry": {
+                                "abbreviation": "ROR",
+                                "name": "Research Organization Registry"
+                            },
+                            "registry_identifier": "02kcbn207"
+                        },
+                        "model": "Neuropixels 1.0",
+                        "name": "ProbeF",
+                        "notes": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "probe_model": "Neuropixels 1.0",
+                        "serial_number": "19192715251"
+                    }
+                ]
+            }
+        ],
+        "fiber_assemblies": [],
+        "filters": [],
+        "laser_assemblies": [],
+        "lenses": [],
+        "light_sources": [
+            {
+                "additional_settings": {},
+                "device_type": "Light emitting diode",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LZ4-40R308-0000",
+                "name": "Face forward LED",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "wavelength": 740,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Light emitting diode",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LZ4-40R308-0000",
+                "name": "Body LED",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "wavelength": 740,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Light emitting diode",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "ams OSRAM",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "045d0h266"
+                },
+                "model": "LZ4-40R608-0000",
+                "name": "Eye LED",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "wavelength": 850,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": {},
+                "coupling": null,
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "device_type": "Laser",
+                "item_number": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Vortran",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "maximum_power": null,
+                "model": "Stradus 488-50",
+                "name": "Laser #0",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "power_unit": "milliwatt",
+                "serial_number": null,
+                "wavelength": 488,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": {},
+                "coupling": null,
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "device_type": "Laser",
+                "item_number": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Vortran",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "maximum_power": null,
+                "model": "Stradus 633-80",
+                "name": "Laser #1",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "power_unit": "milliwatt",
+                "serial_number": null,
+                "wavelength": 633,
+                "wavelength_unit": "nanometer"
+            }
+        ],
+        "modalities": [
+            {
+                "abbreviation": "behavior",
+                "name": "Behavior"
+            },
+            {
+                "abbreviation": "ecephys",
+                "name": "Extracellular electrophysiology"
+            },
+            {
+                "abbreviation": "behavior-videos",
+                "name": "Behavior videos"
+            }
+        ],
+        "modification_date": "2024-04-17",
+        "mouse_platform": {
+            "additional_settings": {},
+            "date_surface_replaced": null,
+            "decoder": null,
+            "device_type": "Disc",
+            "encoder": null,
+            "encoder_firmware": null,
+            "manufacturer": null,
+            "model": null,
+            "name": "Mouse Platform",
+            "notes": "Radius is the distance from the center of the wheel to the mouse.",
+            "output": null,
+            "path_to_cad": null,
+            "port_index": null,
+            "radius": "4.69",
+            "radius_unit": "centimeter",
+            "serial_number": null,
+            "surface_material": null
+        },
+        "notes": null,
+        "objectives": [],
+        "origin": "Bregma",
+        "patch_cords": [
+            {
+                "additional_settings": {},
+                "core_diameter": "125.0",
+                "device_type": "Patch",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "SM450 Custom Length, FC/PC Ends",
+                "name": "Patch Cord #1",
+                "notes": "Numerical aperture is approximately between 0.10 and 0.14.",
+                "numerical_aperture": "0.1",
+                "path_to_cad": null,
+                "photobleaching_date": null,
+                "port_index": null,
+                "serial_number": null
+            }
+        ],
+        "pockels_cells": [],
+        "polygonal_scanners": [],
+        "rig_axes": [
+            {
+                "direction": "The world horizontal. Lays on the Mouse Sagittal Plane. Positive direction is towards the nose of the mouse. ",
+                "name": "X"
+            },
+            {
+                "direction": "Perpendicular to Y. Positive direction is away from the nose of the mouse. ",
+                "name": "Y"
+            },
+            {
+                "direction": "Positive pointing up.",
+                "name": "Z"
+            }
+        ],
+        "rig_id": "342_NP3_240417",
+        "schema_version": "0.3.2",
+        "stick_microscopes": [],
+        "stimulus_devices": [
+            {
+                "additional_settings": {},
+                "brightness": 43,
+                "contrast": 50,
+                "device_type": "Monitor",
+                "height": 1200,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "ASUS",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "00bxkz165"
+                },
+                "model": "PA248",
+                "name": "Stim",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "position": {
+                    "device_axes": [
+                        {
+                            "direction": "Positive is from the center towards the right of the screen, from the subject's perspective.",
+                            "name": "X"
+                        },
+                        {
+                            "direction": "Positive is from the center towards the top of the screen.",
+                            "name": "Y"
+                        },
+                        {
+                            "direction": "Positive is from the front of the screen towards the subject.",
+                            "name": "Z"
+                        }
+                    ],
+                    "device_origin": "Located at the center of the screen. Right and left conventions are relative to the screen side of the monitor, ie. from the subject's perspective.",
+                    "device_position_transformations": [
+                        {
+                            "rotation": [
+                                "-0.80914",
+                                "-0.58761",
+                                "0",
+                                "-0.12391",
+                                "0.17063",
+                                "0.97751",
+                                "0.08751",
+                                "-0.12079",
+                                "0.02298"
+                            ],
+                            "type": "rotation"
+                        },
+                        {
+                            "translation": [
+                                "0.08751",
+                                "-0.12079",
+                                "0.02298"
+                            ],
+                            "type": "translation"
+                        }
+                    ],
+                    "notes": "The rotation matrix is represented as: a,b,c,d,e,f,g,h,i. Wherein a, b, c correspond to the first row of the matrix. The translation matrix is represented as: x,y,z."
+                },
+                "refresh_rate": 60,
+                "serial_number": null,
+                "size_unit": "pixel",
+                "viewing_distance": "15.3",
+                "viewing_distance_unit": "centimeter",
+                "width": 1920
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Speaker",
+                "manufacturer": {
+                    "abbreviation": "ISL",
+                    "name": "ISL Products International",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "SPK-I-81345",
+                "name": "Speaker",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "position": {
+                    "device_axes": [
+                        {
+                            "direction": "Positive is from the center of the speaker towards the right of the speaker, from the subject's perspective.",
+                            "name": "X"
+                        },
+                        {
+                            "direction": "Positive is from the center towards the top of the speaker.",
+                            "name": "Y"
+                        },
+                        {
+                            "direction": "Positive is from the speaker towards the subject.",
+                            "name": "Z"
+                        }
+                    ],
+                    "device_origin": "Located on the front mounting flange face. Right and left conventions are relative to the front side of the speaker, ie. from the subject's perspective.",
+                    "device_position_transformations": [
+                        {
+                            "rotation": [
+                                "-0.82783",
+                                "-0.4837",
+                                "-0.28412",
+                                "-0.55894",
+                                "0.75426",
+                                "0.34449",
+                                "0.04767",
+                                "0.44399",
+                                "-0.89476"
+                            ],
+                            "type": "rotation"
+                        },
+                        {
+                            "translation": [
+                                "-0.00838",
+                                "-0.09787",
+                                "0.18228"
+                            ],
+                            "type": "translation"
+                        }
+                    ],
+                    "notes": "The rotation matrix is represented as: a,b,c,d,e,f,g,h,i. Wherein a, b, c correspond to the first row of the matrix. The translation matrix is represented as: x,y,z. Speaker to be mounted with the X axis pointing to the right when viewing the speaker along the Z axis"
+                },
+                "serial_number": null
+            },
+            {
+                "device_type": "Reward delivery",
+                "reward_spouts": [
+                    {
+                        "additional_settings": {},
+                        "device_type": "Reward spout",
+                        "lick_sensor": {
+                            "additional_settings": {},
+                            "device_type": "Lick Sensor",
+                            "manufacturer": {
+                                "abbreviation": null,
+                                "name": "Other",
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": null,
+                            "name": "Lick Sensor",
+                            "notes": null,
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "serial_number": null
+                        },
+                        "lick_sensor_type": "Piezoelectric",
+                        "manufacturer": {
+                            "abbreviation": null,
+                            "name": "Hamilton",
+                            "registry": null,
+                            "registry_identifier": null
+                        },
+                        "model": "8649-01 Custom",
+                        "name": "Reward Spout",
+                        "notes": "Spout diameter is for inner diameter. Outer diameter is 1.575mm. ",
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "serial_number": null,
+                        "side": "Center",
+                        "solenoid_valve": {
+                            "additional_settings": {},
+                            "device_type": "Solenoid Valve",
+                            "manufacturer": {
+                                "abbreviation": null,
+                                "name": "NResearch Inc",
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": "161K011",
+                            "name": "Solenoid Valve",
+                            "notes": "Model number is product number.",
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "serial_number": null
+                        },
+                        "spout_diameter": "0.672",
+                        "spout_diameter_unit": "millimeter",
+                        "spout_position": null
+                    }
+                ],
+                "stage_type": null
+            }
+        ]
+    },
+    "schema_version": "0.2.7",
+    "session": {
+        "active_mouse_platform": false,
+        "animal_weight_post": null,
+        "animal_weight_prior": null,
+        "calibrations": [],
+        "data_streams": [
+            {
+                "camera_names": [],
+                "daq_names": [
+                    "Sync"
+                ],
+                "detectors": [],
+                "ephys_modules": [],
+                "fiber_connections": [],
+                "fiber_modules": [],
+                "light_sources": [],
+                "manipulator_modules": [],
+                "notes": null,
+                "ophys_fovs": [],
+                "slap_fovs": null,
+                "stack_parameters": null,
+                "stick_microscopes": [],
+                "stream_end_time": "2024-04-17T16:03:36.319287-07:00",
+                "stream_modalities": [
+                    {
+                        "abbreviation": "behavior",
+                        "name": "Behavior"
+                    }
+                ],
+                "stream_start_time": "2024-04-17T14:00:21.319287-07:00"
+            },
+            {
+                "camera_names": [
+                    "Front camera",
+                    "Side camera",
+                    "Eye camera"
+                ],
+                "daq_names": [],
+                "detectors": [],
+                "ephys_modules": [],
+                "fiber_connections": [],
+                "fiber_modules": [],
+                "light_sources": [],
+                "manipulator_modules": [],
+                "notes": null,
+                "ophys_fovs": [],
+                "slap_fovs": null,
+                "stack_parameters": null,
+                "stick_microscopes": [],
+                "stream_end_time": "2024-04-17T16:03:35.998770-07:00",
+                "stream_modalities": [
+                    {
+                        "abbreviation": "behavior-videos",
+                        "name": "Behavior videos"
+                    }
+                ],
+                "stream_start_time": "2024-04-17T14:00:35.161490-07:00"
+            },
+            {
+                "camera_names": [],
+                "daq_names": [],
+                "detectors": [],
+                "ephys_modules": [
+                    {
+                        "angle_unit": "degrees",
+                        "arc_angle": "0.0",
+                        "assembly_name": "PROBEA",
+                        "calibration_date": null,
+                        "coordinate_transform": null,
+                        "ephys_probes": [
+                            {
+                                "name": "PROBEA",
+                                "other_targeted_structures": []
+                            }
+                        ],
+                        "implant_hole_number": null,
+                        "manipulator_coordinates": {
+                            "unit": "micrometer",
+                            "x": "0.0",
+                            "y": "0.0",
+                            "z": "0.0"
+                        },
+                        "module_angle": "0.0",
+                        "notes": null,
+                        "primary_targeted_structure": "none",
+                        "rotation_angle": "0.0",
+                        "targeted_ccf_coordinates": []
+                    },
+                    {
+                        "angle_unit": "degrees",
+                        "arc_angle": "0.0",
+                        "assembly_name": "PROBEB",
+                        "calibration_date": null,
+                        "coordinate_transform": null,
+                        "ephys_probes": [
+                            {
+                                "name": "PROBEB",
+                                "other_targeted_structures": []
+                            }
+                        ],
+                        "implant_hole_number": null,
+                        "manipulator_coordinates": {
+                            "unit": "micrometer",
+                            "x": "0.0",
+                            "y": "0.0",
+                            "z": "0.0"
+                        },
+                        "module_angle": "0.0",
+                        "notes": null,
+                        "primary_targeted_structure": "none",
+                        "rotation_angle": "0.0",
+                        "targeted_ccf_coordinates": []
+                    },
+                    {
+                        "angle_unit": "degrees",
+                        "arc_angle": "0.0",
+                        "assembly_name": "PROBEC",
+                        "calibration_date": null,
+                        "coordinate_transform": null,
+                        "ephys_probes": [
+                            {
+                                "name": "PROBEC",
+                                "other_targeted_structures": []
+                            }
+                        ],
+                        "implant_hole_number": null,
+                        "manipulator_coordinates": {
+                            "unit": "micrometer",
+                            "x": "0.0",
+                            "y": "0.0",
+                            "z": "0.0"
+                        },
+                        "module_angle": "0.0",
+                        "notes": null,
+                        "primary_targeted_structure": "none",
+                        "rotation_angle": "0.0",
+                        "targeted_ccf_coordinates": []
+                    },
+                    {
+                        "angle_unit": "degrees",
+                        "arc_angle": "0.0",
+                        "assembly_name": "PROBED",
+                        "calibration_date": null,
+                        "coordinate_transform": null,
+                        "ephys_probes": [
+                            {
+                                "name": "PROBED",
+                                "other_targeted_structures": []
+                            }
+                        ],
+                        "implant_hole_number": null,
+                        "manipulator_coordinates": {
+                            "unit": "micrometer",
+                            "x": "0.0",
+                            "y": "0.0",
+                            "z": "0.0"
+                        },
+                        "module_angle": "0.0",
+                        "notes": null,
+                        "primary_targeted_structure": "none",
+                        "rotation_angle": "0.0",
+                        "targeted_ccf_coordinates": []
+                    },
+                    {
+                        "angle_unit": "degrees",
+                        "arc_angle": "0.0",
+                        "assembly_name": "PROBEE",
+                        "calibration_date": null,
+                        "coordinate_transform": null,
+                        "ephys_probes": [
+                            {
+                                "name": "PROBEE",
+                                "other_targeted_structures": []
+                            }
+                        ],
+                        "implant_hole_number": null,
+                        "manipulator_coordinates": {
+                            "unit": "micrometer",
+                            "x": "0.0",
+                            "y": "0.0",
+                            "z": "0.0"
+                        },
+                        "module_angle": "0.0",
+                        "notes": null,
+                        "primary_targeted_structure": "none",
+                        "rotation_angle": "0.0",
+                        "targeted_ccf_coordinates": []
+                    },
+                    {
+                        "angle_unit": "degrees",
+                        "arc_angle": "0.0",
+                        "assembly_name": "PROBEF",
+                        "calibration_date": null,
+                        "coordinate_transform": null,
+                        "ephys_probes": [
+                            {
+                                "name": "PROBEF",
+                                "other_targeted_structures": []
+                            }
+                        ],
+                        "implant_hole_number": null,
+                        "manipulator_coordinates": {
+                            "unit": "micrometer",
+                            "x": "0.0",
+                            "y": "0.0",
+                            "z": "0.0"
+                        },
+                        "module_angle": "0.0",
+                        "notes": null,
+                        "primary_targeted_structure": "none",
+                        "rotation_angle": "0.0",
+                        "targeted_ccf_coordinates": []
+                    }
+                ],
+                "fiber_connections": [],
+                "fiber_modules": [],
+                "light_sources": [],
+                "manipulator_modules": [],
+                "notes": null,
+                "ophys_fovs": [],
+                "slap_fovs": null,
+                "stack_parameters": null,
+                "stick_microscopes": [
+                    {
+                        "angle_unit": "degrees",
+                        "arc_angle": "0.0",
+                        "assembly_name": "PROBEA",
+                        "calibration_date": null,
+                        "coordinate_transform": null,
+                        "module_angle": "0.0",
+                        "notes": null,
+                        "rotation_angle": "0.0"
+                    },
+                    {
+                        "angle_unit": "degrees",
+                        "arc_angle": "0.0",
+                        "assembly_name": "PROBEB",
+                        "calibration_date": null,
+                        "coordinate_transform": null,
+                        "module_angle": "0.0",
+                        "notes": null,
+                        "rotation_angle": "0.0"
+                    },
+                    {
+                        "angle_unit": "degrees",
+                        "arc_angle": "0.0",
+                        "assembly_name": "PROBEC",
+                        "calibration_date": null,
+                        "coordinate_transform": null,
+                        "module_angle": "0.0",
+                        "notes": null,
+                        "rotation_angle": "0.0"
+                    },
+                    {
+                        "angle_unit": "degrees",
+                        "arc_angle": "0.0",
+                        "assembly_name": "PROBED",
+                        "calibration_date": null,
+                        "coordinate_transform": null,
+                        "module_angle": "0.0",
+                        "notes": null,
+                        "rotation_angle": "0.0"
+                    },
+                    {
+                        "angle_unit": "degrees",
+                        "arc_angle": "0.0",
+                        "assembly_name": "PROBEE",
+                        "calibration_date": null,
+                        "coordinate_transform": null,
+                        "module_angle": "0.0",
+                        "notes": null,
+                        "rotation_angle": "0.0"
+                    },
+                    {
+                        "angle_unit": "degrees",
+                        "arc_angle": "0.0",
+                        "assembly_name": "PROBEF",
+                        "calibration_date": null,
+                        "coordinate_transform": null,
+                        "module_angle": "0.0",
+                        "notes": null,
+                        "rotation_angle": "0.0"
+                    }
+                ],
+                "stream_end_time": "2024-04-17T16:03:32.120075-07:00",
+                "stream_modalities": [
+                    {
+                        "abbreviation": "ecephys",
+                        "name": "Extracellular electrophysiology"
+                    }
+                ],
+                "stream_start_time": "2024-04-17T14:00:41.131313-07:00"
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/session.py",
+        "experimenter_full_name": [
+            "Vayle Lafehr"
+        ],
+        "iacuc_protocol": "2104",
+        "maintenance": [],
+        "mouse_platform_name": "Mouse Platform",
+        "notes": null,
+        "protocol_id": [],
+        "reward_consumed_total": "2.4899999999999998",
+        "reward_consumed_unit": "milliliter",
+        "reward_delivery": {
+            "notes": null,
+            "reward_solution": "Water",
+            "reward_spouts": [
+                {
+                    "side": "Center",
+                    "starting_position": {
+                        "device_axes": [
+                            {
+                                "direction": "Positive is from the centerline of the subject's mouth towards its right",
+                                "name": "X"
+                            },
+                            {
+                                "direction": "Positive is from the centerline of the subject's mouth towards the sky",
+                                "name": "Y"
+                            },
+                            {
+                                "direction": "Positive is from the anterior-most part of the subject's mouth towards its tail",
+                                "name": "Z"
+                            }
+                        ],
+                        "device_origin": "Located on the tip of the spout (which is also the lick sensor), centered in front of the subject's mouth",
+                        "device_position_transformations": [
+                            {
+                                "translation": [
+                                    "0.0",
+                                    "0.0",
+                                    "0.0"
+                                ],
+                                "type": "translation"
+                            }
+                        ],
+                        "notes": null
+                    },
+                    "variable_position": false
+                }
+            ]
+        },
+        "rig_id": "342_NP3_240401",
+        "schema_version": "0.2.2",
+        "session_end_time": "2024-04-17T16:03:36.319287-07:00",
+        "session_start_time": "2024-04-17T14:00:21-07:00",
+        "session_type": "ecephys session (day 3), with behavioral task data (day 60) and video recording of behavior",
+        "stimulus_epochs": [
+            {
+                "light_source_config": null,
+                "notes": "",
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "script": {
+                    "name": "RFMapping",
+                    "parameters": {},
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask/fb00976f5e743370568b2c1be6d3340fba1b27f1/RFMapping.py",
+                    "version": "fb00976f5e743370568b2c1be6d3340fba1b27f1"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "parameters": {},
+                        "url": "https://www.psychopy.org/",
+                        "version": "2022.1.2"
+                    }
+                ],
+                "speaker_config": {
+                    "name": "Speaker",
+                    "volume": "68.0",
+                    "volume_unit": "decibels"
+                },
+                "stimulus_device_names": [
+                    "Stim",
+                    "Speaker"
+                ],
+                "stimulus_end_time": "2024-04-17T14:15:46.663690-07:00",
+                "stimulus_modalities": [
+                    "Visual",
+                    "Auditory"
+                ],
+                "stimulus_name": "RFMapping",
+                "stimulus_parameters": [
+                    {
+                        "notes": null,
+                        "stimulus_name": "receptive-field mapping grating stimuli",
+                        "stimulus_parameters": {
+                            "duration_sec": 0.25,
+                            "orientations_deg": [
+                                0,
+                                45,
+                                90,
+                                135,
+                                180,
+                                225,
+                                270,
+                                315
+                            ],
+                            "position_x": [
+                                -798.722752847133,
+                                -479.2336517082798,
+                                -159.74455056942656,
+                                159.74455056942668,
+                                479.2336517082799,
+                                798.722752847133,
+                                null
+                            ],
+                            "position_y": [
+                                -438.7227528471331,
+                                -146.24091761571106,
+                                146.240917615711,
+                                438.7227528471331,
+                                null
+                            ],
+                            "size_deg": 20,
+                            "spatial_frequency_cycles_per_deg": 0.08,
+                            "temporal_frequency_cycles_per_sec": 4,
+                            "type": "sqr"
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    },
+                    {
+                        "notes": "-1.0: black | 0: mid-gray | 1.0: white",
+                        "stimulus_name": "full-field flash stimuli",
+                        "stimulus_parameters": {
+                            "duration_sec": 0.25,
+                            "gray_level": [
+                                -1,
+                                0,
+                                1
+                            ]
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    },
+                    {
+                        "amplitude_modulation_frequency": 12,
+                        "bandpass_filter_type": null,
+                        "bandpass_high_frequency": null,
+                        "bandpass_low_frequency": null,
+                        "bandpass_order": null,
+                        "frequency_unit": "hertz",
+                        "notes": null,
+                        "sample_frequency": "10000",
+                        "sitmulus_name": "receptive-field mapping amplitude-modulated noise stimulus 0",
+                        "stimulus_type": "Auditory Stimulation"
+                    },
+                    {
+                        "amplitude_modulation_frequency": 20,
+                        "bandpass_filter_type": null,
+                        "bandpass_high_frequency": null,
+                        "bandpass_low_frequency": null,
+                        "bandpass_order": null,
+                        "frequency_unit": "hertz",
+                        "notes": null,
+                        "sample_frequency": "10000",
+                        "sitmulus_name": "receptive-field mapping amplitude-modulated noise stimulus 1",
+                        "stimulus_type": "Auditory Stimulation"
+                    },
+                    {
+                        "amplitude_modulation_frequency": 40,
+                        "bandpass_filter_type": null,
+                        "bandpass_high_frequency": null,
+                        "bandpass_low_frequency": null,
+                        "bandpass_order": null,
+                        "frequency_unit": "hertz",
+                        "notes": null,
+                        "sample_frequency": "10000",
+                        "sitmulus_name": "receptive-field mapping amplitude-modulated noise stimulus 2",
+                        "stimulus_type": "Auditory Stimulation"
+                    },
+                    {
+                        "amplitude_modulation_frequency": 80,
+                        "bandpass_filter_type": null,
+                        "bandpass_high_frequency": null,
+                        "bandpass_low_frequency": null,
+                        "bandpass_order": null,
+                        "frequency_unit": "hertz",
+                        "notes": null,
+                        "sample_frequency": "10000",
+                        "sitmulus_name": "receptive-field mapping amplitude-modulated noise stimulus 3",
+                        "stimulus_type": "Auditory Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2024-04-17T14:01:15.951210-07:00",
+                "trials_finished": 0,
+                "trials_rewarded": null,
+                "trials_total": 0
+            },
+            {
+                "light_source_config": null,
+                "notes": "",
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "script": {
+                    "name": "OptoTagging",
+                    "parameters": {},
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask/fb00976f5e743370568b2c1be6d3340fba1b27f1/OptoTagging.py",
+                    "version": "fb00976f5e743370568b2c1be6d3340fba1b27f1"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "parameters": {},
+                        "url": "https://www.psychopy.org/",
+                        "version": "2022.1.2"
+                    }
+                ],
+                "speaker_config": null,
+                "stimulus_device_names": [
+                    "Laser #0"
+                ],
+                "stimulus_end_time": "2024-04-17T14:18:51.485220-07:00",
+                "stimulus_modalities": [
+                    "Optogenetics"
+                ],
+                "stimulus_name": "OptoTagging",
+                "stimulus_parameters": [
+                    {
+                        "baseline_duration": "0.2",
+                        "baseline_duration_unit": "second",
+                        "fixed_pulse_train_interval": false,
+                        "notes": null,
+                        "number_pulse_trains": [
+                            1
+                        ],
+                        "other_parameters": {},
+                        "pulse_frequency": [
+                            "100"
+                        ],
+                        "pulse_frequency_unit": "hertz",
+                        "pulse_shape": "Square",
+                        "pulse_train_duration": [
+                            "0.01"
+                        ],
+                        "pulse_train_duration_unit": "second",
+                        "pulse_train_interval": null,
+                        "pulse_train_interval_unit": "second",
+                        "pulse_width": [
+                            10
+                        ],
+                        "pulse_width_unit": "millisecond",
+                        "stimulus_name": "short optotagging stimulus",
+                        "stimulus_type": "Opto Stimulation"
+                    },
+                    {
+                        "baseline_duration": "0.2",
+                        "baseline_duration_unit": "second",
+                        "fixed_pulse_train_interval": false,
+                        "notes": null,
+                        "number_pulse_trains": [
+                            1
+                        ],
+                        "other_parameters": {},
+                        "pulse_frequency": [
+                            "5"
+                        ],
+                        "pulse_frequency_unit": "hertz",
+                        "pulse_shape": "Square",
+                        "pulse_train_duration": [
+                            "0.2"
+                        ],
+                        "pulse_train_duration_unit": "second",
+                        "pulse_train_interval": null,
+                        "pulse_train_interval_unit": "second",
+                        "pulse_width": [
+                            200
+                        ],
+                        "pulse_width_unit": "millisecond",
+                        "stimulus_name": "long optotagging stimulus",
+                        "stimulus_type": "Opto Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2024-04-17T14:15:57.389430-07:00",
+                "trials_finished": 300,
+                "trials_rewarded": null,
+                "trials_total": 300
+            },
+            {
+                "light_source_config": null,
+                "notes": "",
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "script": {
+                    "name": "TaskControl",
+                    "parameters": {},
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask/fb00976f5e743370568b2c1be6d3340fba1b27f1/TaskControl.py",
+                    "version": "fb00976f5e743370568b2c1be6d3340fba1b27f1"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "parameters": {},
+                        "url": "https://www.psychopy.org/",
+                        "version": "2022.1.2"
+                    }
+                ],
+                "speaker_config": null,
+                "stimulus_device_names": [
+                    "Stim"
+                ],
+                "stimulus_end_time": "2024-04-17T14:29:02.180090-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "Spontaneous",
+                "stimulus_parameters": [
+                    {
+                        "notes": "-1.0: black | 0: mid-gray | 1.0: white",
+                        "stimulus_name": "blank screen, constant luminance",
+                        "stimulus_parameters": {
+                            "gray_level": -0.95
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2024-04-17T14:19:00.926430-07:00",
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "trials_total": null
+            },
+            {
+                "light_source_config": null,
+                "notes": "",
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "script": {
+                    "name": "TaskControl",
+                    "parameters": {},
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask/fb00976f5e743370568b2c1be6d3340fba1b27f1/TaskControl.py",
+                    "version": "fb00976f5e743370568b2c1be6d3340fba1b27f1"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "parameters": {},
+                        "url": "https://www.psychopy.org/",
+                        "version": "2022.1.2"
+                    }
+                ],
+                "speaker_config": null,
+                "stimulus_device_names": [
+                    "Stim"
+                ],
+                "stimulus_end_time": "2024-04-17T14:39:14.843310-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "SpontaneousRewards",
+                "stimulus_parameters": [
+                    {
+                        "notes": "-1.0: black | 0: mid-gray | 1.0: white",
+                        "stimulus_name": "blank screen, constant luminance",
+                        "stimulus_parameters": {
+                            "gray_level": -0.95
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2024-04-17T14:29:13.322880-07:00",
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "trials_total": null
+            },
+            {
+                "light_source_config": null,
+                "notes": "",
+                "output_parameters": {},
+                "reward_consumed_during_epoch": "2.4899999999999998",
+                "reward_consumed_unit": "milliliter",
+                "script": {
+                    "name": "DynamicRouting1",
+                    "parameters": {},
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask/fb00976f5e743370568b2c1be6d3340fba1b27f1/DynamicRouting1.py",
+                    "version": "fb00976f5e743370568b2c1be6d3340fba1b27f1"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "parameters": {},
+                        "url": "https://www.psychopy.org/",
+                        "version": "2022.1.2"
+                    }
+                ],
+                "speaker_config": {
+                    "name": "Speaker",
+                    "volume": "68.0",
+                    "volume_unit": "decibels"
+                },
+                "stimulus_device_names": [
+                    "Stim",
+                    "Speaker"
+                ],
+                "stimulus_end_time": "2024-04-17T15:39:55.025840-07:00",
+                "stimulus_modalities": [
+                    "Visual",
+                    "Auditory"
+                ],
+                "stimulus_name": "DynamicRouting1",
+                "stimulus_parameters": [
+                    {
+                        "notes": null,
+                        "stimulus_name": "target and non-target visual grating stimuli",
+                        "stimulus_parameters": {
+                            "orientations_deg": [
+                                0,
+                                90
+                            ],
+                            "phase": [
+                                0,
+                                0.5
+                            ],
+                            "position_xy": [
+                                0,
+                                0
+                            ],
+                            "size_deg": 50,
+                            "spatial_frequency_cycles_per_deg": 0.04,
+                            "temporal_frequency_cycles_per_sec": 2,
+                            "type": "sqr"
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    },
+                    {
+                        "amplitude_modulation_frequency": 70,
+                        "bandpass_filter_type": null,
+                        "bandpass_high_frequency": null,
+                        "bandpass_low_frequency": null,
+                        "bandpass_order": null,
+                        "frequency_unit": "hertz",
+                        "notes": null,
+                        "sample_frequency": "10000",
+                        "sitmulus_name": "target amplitude-modulated noise stimulus",
+                        "stimulus_type": "Auditory Stimulation"
+                    },
+                    {
+                        "amplitude_modulation_frequency": 12,
+                        "bandpass_filter_type": null,
+                        "bandpass_high_frequency": null,
+                        "bandpass_low_frequency": null,
+                        "bandpass_order": null,
+                        "frequency_unit": "hertz",
+                        "notes": null,
+                        "sample_frequency": "10000",
+                        "sitmulus_name": "non-target amplitude-modulated noise stimulus",
+                        "stimulus_type": "Auditory Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2024-04-17T14:39:25.852650-07:00",
+                "trials_finished": 535,
+                "trials_rewarded": 83,
+                "trials_total": 535
+            },
+            {
+                "light_source_config": null,
+                "notes": "",
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "script": {
+                    "name": "TaskControl",
+                    "parameters": {},
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask/fb00976f5e743370568b2c1be6d3340fba1b27f1/TaskControl.py",
+                    "version": "fb00976f5e743370568b2c1be6d3340fba1b27f1"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "parameters": {},
+                        "url": "https://www.psychopy.org/",
+                        "version": "2022.1.2"
+                    }
+                ],
+                "speaker_config": null,
+                "stimulus_device_names": [
+                    "Stim"
+                ],
+                "stimulus_end_time": "2024-04-17T15:50:09.707330-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "SpontaneousRewards",
+                "stimulus_parameters": [
+                    {
+                        "notes": "-1.0: black | 0: mid-gray | 1.0: white",
+                        "stimulus_name": "blank screen, constant luminance",
+                        "stimulus_parameters": {
+                            "gray_level": -0.95
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2024-04-17T15:40:06.702310-07:00",
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "trials_total": null
+            },
+            {
+                "light_source_config": null,
+                "notes": "",
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "script": {
+                    "name": "TaskControl",
+                    "parameters": {},
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask/fb00976f5e743370568b2c1be6d3340fba1b27f1/TaskControl.py",
+                    "version": "fb00976f5e743370568b2c1be6d3340fba1b27f1"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "parameters": {},
+                        "url": "https://www.psychopy.org/",
+                        "version": "2022.1.2"
+                    }
+                ],
+                "speaker_config": null,
+                "stimulus_device_names": [
+                    "Stim"
+                ],
+                "stimulus_end_time": "2024-04-17T16:00:23.004370-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "Spontaneous",
+                "stimulus_parameters": [
+                    {
+                        "notes": "-1.0: black | 0: mid-gray | 1.0: white",
+                        "stimulus_name": "blank screen, constant luminance",
+                        "stimulus_parameters": {
+                            "gray_level": -0.95
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2024-04-17T15:50:20.166170-07:00",
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "trials_total": null
+            },
+            {
+                "light_source_config": null,
+                "notes": "",
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "milliliter",
+                "script": {
+                    "name": "OptoTagging",
+                    "parameters": {},
+                    "url": "https://raw.githubusercontent.com/samgale/DynamicRoutingTask/fb00976f5e743370568b2c1be6d3340fba1b27f1/OptoTagging.py",
+                    "version": "fb00976f5e743370568b2c1be6d3340fba1b27f1"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "PsychoPy",
+                        "parameters": {},
+                        "url": "https://www.psychopy.org/",
+                        "version": "2022.1.2"
+                    }
+                ],
+                "speaker_config": null,
+                "stimulus_device_names": [
+                    "Laser #0"
+                ],
+                "stimulus_end_time": "2024-04-17T16:03:30.377970-07:00",
+                "stimulus_modalities": [
+                    "Optogenetics"
+                ],
+                "stimulus_name": "OptoTagging",
+                "stimulus_parameters": [
+                    {
+                        "baseline_duration": "0.2",
+                        "baseline_duration_unit": "second",
+                        "fixed_pulse_train_interval": false,
+                        "notes": null,
+                        "number_pulse_trains": [
+                            1
+                        ],
+                        "other_parameters": {},
+                        "pulse_frequency": [
+                            "100"
+                        ],
+                        "pulse_frequency_unit": "hertz",
+                        "pulse_shape": "Square",
+                        "pulse_train_duration": [
+                            "0.01"
+                        ],
+                        "pulse_train_duration_unit": "second",
+                        "pulse_train_interval": null,
+                        "pulse_train_interval_unit": "second",
+                        "pulse_width": [
+                            10
+                        ],
+                        "pulse_width_unit": "millisecond",
+                        "stimulus_name": "short optotagging stimulus",
+                        "stimulus_type": "Opto Stimulation"
+                    },
+                    {
+                        "baseline_duration": "0.2",
+                        "baseline_duration_unit": "second",
+                        "fixed_pulse_train_interval": false,
+                        "notes": null,
+                        "number_pulse_trains": [
+                            1
+                        ],
+                        "other_parameters": {},
+                        "pulse_frequency": [
+                            "5"
+                        ],
+                        "pulse_frequency_unit": "hertz",
+                        "pulse_shape": "Square",
+                        "pulse_train_duration": [
+                            "0.2"
+                        ],
+                        "pulse_train_duration_unit": "second",
+                        "pulse_train_interval": null,
+                        "pulse_train_interval_unit": "second",
+                        "pulse_width": [
+                            200
+                        ],
+                        "pulse_width_unit": "millisecond",
+                        "stimulus_name": "long optotagging stimulus",
+                        "stimulus_type": "Opto Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2024-04-17T16:00:34.263760-07:00",
+                "trials_finished": 300,
+                "trials_rewarded": null,
+                "trials_total": 300
+            }
+        ],
+        "subject_id": "703880",
+        "weight_unit": "gram"
+    },
+    "subject": {
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": {
+            "breeding_group": "Sst-IRES-Cre;Ai32",
+            "maternal_genotype": "Ai32(RCL-ChR2(H134R)_EYFP)/Ai32(RCL-ChR2(H134R)_EYFP)",
+            "maternal_id": "685660",
+            "paternal_genotype": "Sst-IRES-Cre/wt",
+            "paternal_id": "687971"
+        },
+        "date_of_birth": "2023-09-20",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "genotype": "Sst-IRES-Cre/wt;Ai32(RCL-ChR2(H134R)_EYFP)/wt",
+        "housing": null,
+        "notes": null,
+        "restrictions": null,
+        "rrid": null,
+        "schema_version": "0.5.5",
+        "sex": "Male",
+        "source": {
+            "abbreviation": "AI",
+            "name": "Allen Institute",
+            "registry": {
+                "abbreviation": "ROR",
+                "name": "Research Organization Registry"
+            },
+            "registry_identifier": "03cpe7c52"
+        },
+        "species": {
+            "abbreviation": null,
+            "name": "Mus musculus",
+            "registry": {
+                "abbreviation": "NCBI",
+                "name": "National Center for Biotechnology Information"
+            },
+            "registry_identifier": "10090"
+        },
+        "subject_id": "703880",
+        "wellness_reports": []
+    }
+}

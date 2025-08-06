@@ -137,3 +137,7 @@ dmypy.json
 
 # MacOs
 **/.DS_Store
+aind-data-schema-dev/*
+
+
+tests/records/all/*.json
