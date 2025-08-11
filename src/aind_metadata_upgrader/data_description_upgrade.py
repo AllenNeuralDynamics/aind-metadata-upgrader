@@ -228,6 +228,7 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         old_name = self._get_or_default(self.old_model_dict, "name", kwargs)
 
         def _fix_z(dt_str):
+            """Fixes Zulu time strings to ISO format with UTC offset"""
             if isinstance(dt_str, str) and dt_str.endswith("Z"):
                 return dt_str[:-1] + "+00:00"
             return dt_str
