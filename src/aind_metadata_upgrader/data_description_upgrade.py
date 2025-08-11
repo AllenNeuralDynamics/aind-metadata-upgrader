@@ -1,3 +1,21 @@
+import sys
+
+# Compatibility helper for datetime.fromisoformat (Python >=3.7)
+def _fromisoformat(dt_str):
+    if sys.version_info >= (3, 7):
+        return datetime.fromisoformat(dt_str)
+    # Fallback for older Python: use strptime (limited, no timezone support)
+    try:
+        if 'T' in dt_str:
+            return datetime.strptime(dt_str, "%Y-%m-%dT%H:%M:%S")
+        else:
+            return datetime.strptime(dt_str, "%Y-%m-%d %H:%M:%S")
+    except Exception:
+        # Try date only
+        try:
+            return datetime.strptime(dt_str, "%Y-%m-%d")
+        except Exception:
+            raise ValueError(f"Invalid isoformat string: {dt_str}")
 """Module to contain code to upgrade old data description models"""
 
 from copy import deepcopy
@@ -16,7 +34,6 @@ from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.organizations import Organization
 from aind_data_schema_models.pid_names import PIDName
 from aind_data_schema_models.platforms import Platform
-from backports.datetime_fromisoformat import MonkeyPatch
 
 from aind_metadata_upgrader.base_upgrade import BaseModelUpgrade
 from aind_metadata_upgrader.utils import construct_new_model
@@ -195,7 +212,6 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         old_data_description_dict : DataDescription
         """
 
-        MonkeyPatch.patch_fromisoformat()
 
         model_class = DataDescription
         if isinstance(old_data_description_dict, dict):
@@ -231,9 +247,9 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         old_name = self._get_or_default(self.old_model_dict, "name", kwargs)
         if creation_time:
             if creation_date:
-                creation_time = datetime.fromisoformat(f"{creation_date}T{creation_time}")
+                creation_time = _fromisoformat(f"{creation_date}T{creation_time}")
             else:
-                creation_time = datetime.fromisoformat(creation_time)
+                creation_time = _fromisoformat(creation_time)
         elif old_name is not None:
             creation_time = DataDescription.parse_name(old_name).get("creation_time")
         return creation_time

@@ -19,7 +19,6 @@ dynamic = ["version"]
 dependencies = [
     'aind-data-schema>=1.0.0,<2.0',
     'pydantic>=2.7,<2.9',
-    'backports-datetime-fromisoformat==2.0.1'
 ]
 
 [project.optional-dependencies]
