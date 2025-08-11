@@ -703,37 +703,31 @@ class TestInvestigatorsUpgrade(unittest.TestCase):
             InvestigatorsUpgrade.upgrade_investigators([dict(name="John Doe")]), [PIDName(name="John Doe")]
         )
 
+
 class TestCreationTimeParsing(unittest.TestCase):
     def test_creation_time_with_z(self):
         # Simulate an old model dict with a Zulu time string
-        old_model = {
-            "creation_time": "2024-06-11T18:37:31.983373Z",
-            "data_level": "raw"
-        }
+        old_model = {"creation_time": "2024-06-11T18:37:31.983373Z", "data_level": "raw"}
+
         class DummyUpgrade(DataDescriptionUpgrade):
             def _get_or_default(self, d, key, kwargs):
                 return d.get(key)
+
         upgrader = DummyUpgrade(old_model)
         result = upgrader.get_creation_time()
-        self.assertEqual(
-            result,
-            datetime.datetime(2024, 6, 11, 18, 37, 31, 983373, tzinfo=datetime.timezone.utc)
-        )
+        self.assertEqual(result, datetime.datetime(2024, 6, 11, 18, 37, 31, 983373, tzinfo=datetime.timezone.utc))
 
     def test_creation_time_with_plus_utc(self):
-        old_model = {
-            "creation_time": "2024-06-11T18:37:31.983373+00:00",
-            "data_level": "raw"
-        }
+        old_model = {"creation_time": "2024-06-11T18:37:31.983373+00:00", "data_level": "raw"}
+
         class DummyUpgrade(DataDescriptionUpgrade):
             def _get_or_default(self, d, key, kwargs):
                 return d.get(key)
+
         upgrader = DummyUpgrade(old_model)
         result = upgrader.get_creation_time()
-        self.assertEqual(
-            result,
-            datetime.datetime(2024, 6, 11, 18, 37, 31, 983373, tzinfo=datetime.timezone.utc)
-        )
+        self.assertEqual(result, datetime.datetime(2024, 6, 11, 18, 37, 31, 983373, tzinfo=datetime.timezone.utc))
+
 
 if __name__ == "__main__":
     unittest.main()
