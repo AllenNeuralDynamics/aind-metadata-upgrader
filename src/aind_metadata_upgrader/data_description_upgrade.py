@@ -226,10 +226,12 @@ class DataDescriptionUpgrade(BaseModelUpgrade):
         creation_date = self._get_or_default(self.old_model_dict, "creation_date", kwargs)
         creation_time = self._get_or_default(self.old_model_dict, "creation_time", kwargs)
         old_name = self._get_or_default(self.old_model_dict, "name", kwargs)
+
         def _fix_z(dt_str):
             if isinstance(dt_str, str) and dt_str.endswith("Z"):
                 return dt_str[:-1] + "+00:00"
             return dt_str
+
         if creation_time:
             if creation_date:
                 iso_str = f"{creation_date}T{creation_time}"
