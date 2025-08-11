@@ -704,5 +704,37 @@ class TestInvestigatorsUpgrade(unittest.TestCase):
         )
 
 
+class TestCreationTimeParsing(unittest.TestCase):
+    """Tests creation time parsing from old data description formats."""
+    def test_creation_time_with_z(self):
+        """Tests that Zulu time strings are parsed correctly."""
+        # Simulate an old model dict with a Zulu time string
+        old_model = {"creation_time": "2024-06-11T18:37:31.983373Z", "data_level": "raw"}
+
+        class DummyUpgrade(DataDescriptionUpgrade):
+            """Dummy class to simulate the upgrade process."""
+            def _get_or_default(self, d, key, kwargs):
+                """Simulates the method that retrieves the creation time."""
+                return d.get(key)
+
+        upgrader = DummyUpgrade(old_model)
+        result = upgrader.get_creation_time()
+        self.assertEqual(result, datetime.datetime(2024, 6, 11, 18, 37, 31, 983373, tzinfo=datetime.timezone.utc))
+
+    def test_creation_time_with_plus_utc(self):
+        """Tests that UTC offset strings are parsed correctly."""
+        old_model = {"creation_time": "2024-06-11T18:37:31.983373+00:00", "data_level": "raw"}
+
+        class DummyUpgrade(DataDescriptionUpgrade):
+            """Dummy class to simulate the upgrade process."""
+            def _get_or_default(self, d, key, kwargs):
+                """Simulates the method that retrieves the creation time."""
+                return d.get(key)
+
+        upgrader = DummyUpgrade(old_model)
+        result = upgrader.get_creation_time()
+        self.assertEqual(result, datetime.datetime(2024, 6, 11, 18, 37, 31, 983373, tzinfo=datetime.timezone.utc))
+
+
 if __name__ == "__main__":
     unittest.main()
