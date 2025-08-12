@@ -16,7 +16,7 @@ class TestAcquisitionV1V2(unittest.TestCase):
     def test_upgrade_with_invalid_data_type(self):
         """Test upgrade method with non-dict data - covers line 67"""
         with self.assertRaises(ValueError) as context:
-            self.upgrader.upgrade("not a dict", "2.0.34")  # type: ignore
+            self.upgrader.upgrade("not a dict", "2.0.34", metadata={})  # type: ignore
         self.assertEqual(str(context.exception), "Data must be a dictionary")
 
     def test_determine_acquisition_type_with_session_type(self):
@@ -49,7 +49,7 @@ class TestAcquisitionV1V2(unittest.TestCase):
                     "maintenance": [],
                 }
 
-                result = self.upgrader.upgrade(data, "2.0.34")
+                result = self.upgrader.upgrade(data, "2.0.34", metadata={})
                 self.assertIsNotNone(result)
                 self.assertEqual(result["subject_id"], "test_subject")
 
@@ -61,7 +61,7 @@ class TestAcquisitionV1V2(unittest.TestCase):
         }
 
         with self.assertRaises(NotImplementedError):
-            self.upgrader.upgrade(data, "2.0.34")
+            self.upgrader.upgrade(data, "2.0.34", metadata={})
 
 
 if __name__ == "__main__":

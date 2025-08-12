@@ -193,6 +193,6 @@ class Upgrade:
             # Apply all upgraders (in order) that match the original schema version
             for specifier_set, upgrader in MAPPING[core_file]:
                 if original_schema_version in specifier_set:
-                    upgraded_data = upgrader().upgrade(upgraded_data, upgraded_schema_version, self.data)
+                    upgraded_data = upgrader().upgrade(upgraded_data, upgraded_schema_version, metadata=self.data)
 
         return self._try_validate(core_file, upgraded_data)
