@@ -1,6 +1,7 @@
 """Main entrypoint for upgrader"""
 
 import traceback
+import copy
 
 from aind_data_schema.core.acquisition import Acquisition
 from aind_data_schema.core.data_description import DataDescription
@@ -68,6 +69,7 @@ class Upgrade:
         """Initialize the upgrader"""
 
         self.data = record
+        self.raw_data = copy.deepcopy(record)  # Keep a copy of the original data
         self.skip_metadata_validation = skip_metadata_validation
 
         # Figure out what core files we have, and what outputs we expected
@@ -171,7 +173,7 @@ class Upgrade:
         if core_file not in self.data:
             raise ValueError(f"Core file '{core_file}' not found in record")
 
-        core_data = self.data[core_file]
+        core_data = self.data[core_file].copy()  # Make a copy to avoid modifying the original data
 
         if not core_data:
             print(f"No data found for {core_file}, skipping upgrade")
@@ -185,14 +187,12 @@ class Upgrade:
 
         print(f"Upgrading {core_file}:{original_schema_version} -> {upgraded_schema_version}")
 
-        upgraded_data = core_data
-
         if original_schema_version == upgraded_schema_version:
             print(f"No upgrade needed for {core_file} (version {original_schema_version})")
         else:
             # Apply all upgraders (in order) that match the original schema version
             for specifier_set, upgrader in MAPPING[core_file]:
                 if original_schema_version in specifier_set:
-                    upgraded_data = upgrader().upgrade(upgraded_data, upgraded_schema_version, metadata=self.data)
+                    upgraded_data = upgrader().upgrade(core_data, upgraded_schema_version, metadata=self.raw_data)
 
         return self._try_validate(core_file, upgraded_data)
