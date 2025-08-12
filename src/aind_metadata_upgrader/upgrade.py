@@ -64,6 +64,25 @@ CORE_MAPPING = {
 class Upgrade:
     """Main entrypoint to the metadata-upgrader"""
 
+    def __init__(self, record: dict, skip_metadata_validation: bool = False):
+        """Initialize the upgrader"""
+
+        self.data = record
+        self.skip_metadata_validation = skip_metadata_validation
+
+        # Figure out what core files we have, and what outputs we expected
+        expected_core_files = self._determine_expected_core_files()
+
+        core_files = self._process_core_files()
+
+        self._validate_required_files(core_files)
+
+        self.upgrade_metadata(core_files)
+
+        for expected_core_file in expected_core_files:
+            if not hasattr(self.metadata, expected_core_file) or getattr(self.metadata, expected_core_file) is None:
+                raise ValueError(f"Expected core file '{expected_core_file}' not found in upgraded metadata")
+
     def _determine_expected_core_files(self) -> list:
         """Determine what core files we have and what outputs we expect"""
         expected_core_files = []
@@ -104,25 +123,6 @@ class Upgrade:
                         raise ValueError(
                             f"All required core files {required_files} were not found. This asset cannot be upgraded."
                         )
-
-    def __init__(self, record: dict, skip_metadata_validation: bool = False):
-        """Initialize the upgrader"""
-
-        self.data = record
-        self.skip_metadata_validation = skip_metadata_validation
-
-        # Figure out what core files we have, and what outputs we expected
-        expected_core_files = self._determine_expected_core_files()
-
-        core_files = self._process_core_files()
-
-        self._validate_required_files(core_files)
-
-        self.upgrade_metadata(core_files)
-
-        for expected_core_file in expected_core_files:
-            if not hasattr(self.metadata, expected_core_file) or getattr(self.metadata, expected_core_file) is None:
-                raise ValueError(f"Expected core file '{expected_core_file}' not found in upgraded metadata")
 
     def save(self):
         """Save the upgraded metadata to a standard file"""
