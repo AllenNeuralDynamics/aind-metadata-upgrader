@@ -79,8 +79,18 @@ def extract_channels_from_tiles(tiles: list[dict], fluorescence_filters: list[di
 
         elif "excitation_wavelength" in channel_data:
             # In this case the light source exists, we just need to create the config
-            print(light_sources)
-            raise NotImplementedError("Todo: Handle excitation wavelength in channel data")
+            # Find the light source with corresponding excitation wavelength
+            excitation_wavelength = int(channel_data["excitation_wavelength"])
+
+            for i, light_source in enumerate(light_sources):
+                if light_source.get("wavelength") == excitation_wavelength:
+                    name = light_source.get("name", f"Laser {i}")
+                    if not name:
+                        name = f"Laser {i}"
+                    light_source_configs.append(LaserConfig(
+                        device_name=name,
+                        wavelength=excitation_wavelength,
+                    ))
 
         # Use the filter index to find the corresponding fluorescence filter
         filter_wheel_index = channel_data.get("filter_wheel_index")
@@ -91,7 +101,10 @@ def extract_channels_from_tiles(tiles: list[dict], fluorescence_filters: list[di
             if filter_config.get("filter_wheel_index") == filter_wheel_index:
                 if filter_config.get("model") in FILTER_MAPPING:
                     # Assume the name will be "Filter {i}" if not specified... this only works if all filters are missing names
-                    emission_filters.append(DeviceConfig(device_name=filter_config.get("name", f"Filter {i}")))
+                    name = filter_config.get("name", f"Filter {i}")
+                    if not name:
+                        name = f"Filter {i}"
+                    emission_filters.append(DeviceConfig(device_name=name))
 
                     if filter_config.get("model") in FILTER_MAPPING:
                         emission_wavelength = FILTER_MAPPING[filter_config["model"]]
