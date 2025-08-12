@@ -1,6 +1,7 @@
 """<=v1.4 to v2.0 procedures upgrade functions"""
 
 from datetime import date
+from typing import Optional
 
 from aind_data_schema.components.coordinates import CoordinateSystemLibrary
 from aind_data_schema.components.surgery_procedures import (
@@ -63,7 +64,7 @@ PROC_UPGRADE_MAP = {
 class ProceduresUpgraderV1V2(CoreUpgrader):
     """Upgrade procedures from v1.4 to v2.0"""
 
-    def upgrade(self, data: dict, schema_version: str) -> dict:
+    def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the procedures to v2.0"""
 
         # Extract the nested procedures dict if it exists

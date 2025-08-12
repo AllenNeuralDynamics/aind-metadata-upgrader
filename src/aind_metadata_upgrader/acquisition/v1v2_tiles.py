@@ -1,6 +1,6 @@
 """Tile upgrade functions for v1.4 to v2.0 acquisition upgrade"""
 
-from typing import Dict, List, Optional
+from typing import Optional
 
 from aind_data_schema.components.configs import (
     Channel,
@@ -9,6 +9,7 @@ from aind_data_schema.components.configs import (
     LaserConfig,
     SampleChamberConfig,
     TriggerType,
+    DeviceConfig,
 )
 from aind_data_schema.core.acquisition import DataStream
 from aind_data_schema_models.devices import ImmersionMedium
@@ -16,7 +17,17 @@ from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.units import PowerUnit, SizeUnit, TimeUnit
 
 
-def extract_channels_from_tiles(tiles: List[Dict]) -> List[Channel]:
+FILTER_MAPPING = {
+    "FF01-469/35-25": 469,
+    "FF01-525/50-25": 525,
+    "FF01-593/40-25": 593,
+    "FF01-640/30-25": 640,
+    "FF01-700/75-25": 700,
+    "FF01-750/50-25": 750,
+}
+
+
+def extract_channels_from_tiles(tiles: list[dict], fluorescence_filters: list[dict]) -> list[Channel]:
     """Extract and accumulate unique channels from tile data"""
     channels_dict = {}  # Use dict to avoid duplicates by channel name
 
@@ -66,9 +77,28 @@ def extract_channels_from_tiles(tiles: List[Dict]) -> List[Channel]:
             laser_config = LaserConfig(**laser_config_params)
             light_sources.append(laser_config)
 
+        # Use the filter index to find the corresponding fluorescence filter
+        filter_wheel_index = channel_data.get("filter_wheel_index")
+        emission_filters = []
+        emission_wavelength = None
+        for filter_config in fluorescence_filters:
+            if filter_config.get("filter_wheel_index") == filter_wheel_index:
+                if filter_config.get("model") in FILTER_MAPPING:
+                    if filter_config.get("name"):
+                        emission_filters.append(DeviceConfig(
+                            device_name=filter_config["name"],
+                        ))
+                    emission_wavelength = FILTER_MAPPING[filter_config["model"]]
+
         # Create the channel
         channel = Channel(
-            channel_name=channel_name, detector=detector_config, light_sources=light_sources, variable_power=False
+            channel_name=channel_name,
+            detector=detector_config,
+            light_sources=light_sources,
+            variable_power=False,
+            emission_filters=emission_filters,
+            emission_wavelength=emission_wavelength,
+            emission_wavelength_unit=SizeUnit.NM,
         )
 
         channels_dict[channel_name] = channel
@@ -76,14 +106,14 @@ def extract_channels_from_tiles(tiles: List[Dict]) -> List[Channel]:
     return list(channels_dict.values())
 
 
-def extract_modality_from_tiles(tiles: List[Dict]) -> Dict:
+def extract_modality_from_tiles(tiles: list[dict]) -> dict:
     """Extract modality from tile data - assume SPIM for imaging tiles"""
     # For now, assume SPIM since that's what the example data shows
     # In a more sophisticated implementation, you could analyze the tile structure
     return Modality.SPIM.model_dump()
 
 
-def create_basic_imaging_config(channels: List[Channel]) -> Dict:
+def create_basic_imaging_config(channels: list[Channel]) -> dict:
     """Create a basic imaging configuration placeholder"""
     # Since ImagingConfig has many required fields we don't have from tiles,
     # create a minimal configuration placeholder
@@ -95,7 +125,7 @@ def create_basic_imaging_config(channels: List[Channel]) -> Dict:
     }
 
 
-def determine_active_devices_from_tiles(tiles: List[Dict]) -> List[str]:
+def determine_active_devices_from_tiles(tiles: list[dict]) -> list[str]:
     """Extract active device names from tile data"""
     active_devices = set()
 
@@ -125,7 +155,7 @@ def determine_active_devices_from_tiles(tiles: List[Dict]) -> List[str]:
     return list(active_devices)
 
 
-def extract_stream_times_from_tiles(tiles: List[Dict], session_start: str, session_end: str) -> tuple[str, str]:
+def extract_stream_times_from_tiles(tiles: list[dict], session_start: str, session_end: str) -> tuple[str, str]:
     """Extract stream start/end times from tiles, falling back to session times"""
 
     # Look for acquisition times in tiles
@@ -176,21 +206,22 @@ def upgrade_immersion(data: dict) -> dict:
 
 
 def upgrade_tiles_to_data_stream(
-    tiles: List[Dict],
+    tiles: list[dict],
     session_start: str,
     session_end: str,
     chamber_immersion: dict,
     sample_immersion: Optional[dict],
     device_name: str,
     software: list,
-) -> List[Dict]:
+    fluorescence_filters: list[dict],
+) -> list[dict]:
     """Convert V1 tiles to V2 data streams"""
 
     if not tiles:
         return []
 
     # Add code to build up list of channels from tiles
-    channels = extract_channels_from_tiles(tiles)
+    channels = extract_channels_from_tiles(tiles, fluorescence_filters)
 
     # Extract stream timing
     stream_start, stream_end = extract_stream_times_from_tiles(tiles, session_start, session_end)

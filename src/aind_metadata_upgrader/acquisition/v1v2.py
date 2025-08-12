@@ -154,7 +154,7 @@ class AcquisitionV1V2(CoreUpgrader):
 
         return session_start_time, session_end_time
 
-    def upgrade(self, data: dict, schema_version: str) -> dict:
+    def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict]) -> dict:
         """Upgrade the acquisition data to v2.0"""
 
         if not isinstance(data, dict):
@@ -198,10 +198,15 @@ class AcquisitionV1V2(CoreUpgrader):
 
         # Upgrade tiles to data streams
         if session_start_time and session_end_time:
+
             start_str = (
                 session_start_time.isoformat() if hasattr(session_start_time, "isoformat") else str(session_start_time)
             )
             end_str = session_end_time.isoformat() if hasattr(session_end_time, "isoformat") else str(session_end_time)
+
+            # Get fluorescene filters to use for upgrading tiles -> channels
+            fluorescence_filters = metadata.get("instrument", {}).get("fluorescence_filters", [])
+
             data_streams = upgrade_tiles_to_data_stream(
                 tiles,
                 start_str,
@@ -210,6 +215,7 @@ class AcquisitionV1V2(CoreUpgrader):
                 sample_immersion=sample_immersion,
                 device_name=instrument_id or "",
                 software=software,
+                fluorescence_filters=fluorescence_filters,
             )
             if active_objectives:
                 data_streams[0]["active_devices"].extend(active_objectives)

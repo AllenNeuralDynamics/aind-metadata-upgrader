@@ -71,7 +71,7 @@ class SubjectUpgraderV1V2(CoreUpgrader):
 
         return species, background_strain
 
-    def upgrade(self, data: dict, schema_version: str) -> dict:
+    def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the subject core file data to v2.0"""
 
         if not isinstance(data, dict):

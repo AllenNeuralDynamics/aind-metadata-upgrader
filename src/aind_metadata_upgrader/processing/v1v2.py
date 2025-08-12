@@ -1,5 +1,6 @@
 """<=v1.4 to v2.0 processing upgrade functions"""
 
+from typing import Optional
 from aind_data_schema.components.identifiers import Code
 from aind_data_schema.core.processing import DataProcess
 
@@ -86,7 +87,7 @@ class ProcessingV1V2(CoreUpgrader):
                 v2_process["pipeline_name"] = "Processing Pipeline"
             v2_data["data_processes"].append(v2_process)
 
-    def upgrade(self, data: dict, schema_version: str) -> dict:
+    def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the processing to v2.0"""
 
         if not isinstance(data, dict):

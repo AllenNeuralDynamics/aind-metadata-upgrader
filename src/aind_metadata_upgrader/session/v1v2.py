@@ -909,7 +909,7 @@ class SessionV1V2(CoreUpgrader):
             notes=epoch.get("notes"),
         ).model_dump()
 
-    def upgrade(self, data: dict, schema_version: str) -> dict:
+    def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the session data to v2.0 acquisition"""
 
         if not isinstance(data, dict):

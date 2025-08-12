@@ -1,5 +1,6 @@
 """<=v1.4 to v2.0 quality control upgrade functions"""
 
+from typing import Optional
 from aind_data_schema.core.quality_control import CurationMetric, QCMetric
 
 from aind_metadata_upgrader.base import CoreUpgrader
@@ -53,7 +54,7 @@ def upgrade_curation_metric(data: dict, modality: dict, stage: str, tags: list) 
 class QCUpgraderV1V2(CoreUpgrader):
     """Upgrade quality control core file from v1.x to v2.0"""
 
-    def upgrade(self, data: dict, schema_version: str) -> dict:
+    def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the subject core file data to v2.0"""
 
         if not isinstance(data, dict):

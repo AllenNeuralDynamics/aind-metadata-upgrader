@@ -315,7 +315,7 @@ class RigUpgraderV1V2(CoreUpgrader):
         """Helper method to upgrade devices that don't return connections."""
         return [upgrade_func(device) for device in devices]
 
-    def upgrade(self, data: dict, schema_version: str) -> dict:
+    def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the rig core file data to a v2.0 instrument"""
 
         if not isinstance(data, dict):

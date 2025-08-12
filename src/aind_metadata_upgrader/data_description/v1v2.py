@@ -1,5 +1,6 @@
 """<=v1.4 to v2.0 data description upgrade functions"""
 
+from typing import Optional
 from aind_data_schema.components.identifiers import Person
 from aind_data_schema.core.data_description import Funding
 from aind_data_schema_models.licenses import License
@@ -151,10 +152,10 @@ class DataDescriptionV1V2(CoreUpgrader):
             investigators.append(Person(name="unknown"))
         return investigators
 
-    def _build_output_dict(self, data: dict, **kwargs) -> dict:
+    def _build_output_dict(self, data: dict, schema_version: str, **kwargs) -> dict:
         """Build the output dictionary with all upgraded fields"""
         return {
-            "schema_version": "2.0.0",
+            "schema_version": schema_version,
             "license": data.get("license", License.CC_BY_40),
             "subject_id": data.get("subject_id", None),
             "creation_time": kwargs.get("creation_time"),
@@ -172,7 +173,7 @@ class DataDescriptionV1V2(CoreUpgrader):
             "object_type": "Data description",
         }
 
-    def upgrade(self, data: dict, schema_version: str) -> dict:
+    def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the data description to v2.0"""
 
         if not isinstance(data, dict):
@@ -191,6 +192,7 @@ class DataDescriptionV1V2(CoreUpgrader):
         # Build and return the upgraded output
         return self._build_output_dict(
             data,
+            schema_version=schema_version,
             funding_source=funding_source,
             creation_time=creation_time,
             institution=institution,

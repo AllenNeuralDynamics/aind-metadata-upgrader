@@ -4,7 +4,7 @@ from aind_data_access_api.document_db import MetadataDbClient
 import json
 import os
 
-record_name = "ecephys_703880_2024-04-18_15-19-41_sorted_2024-04-25_01-48-15"
+record_name = "SmartSPIM_658208_2023-02-05_13-42-31_stitched_2023-02-07_19-40-25"
 
 # Database configuration
 API_GATEWAY_HOST = "api.allenneuraldynamics.org"
