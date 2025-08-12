@@ -27,7 +27,7 @@ FILTER_MAPPING = {
 }
 
 
-def extract_channels_from_tiles(tiles: list[dict], fluorescence_filters: list[dict]) -> list[Channel]:
+def extract_channels_from_tiles(tiles: list[dict], fluorescence_filters: list[dict], light_sources: list[dict]) -> list[Channel]:
     """Extract and accumulate unique channels from tile data"""
     channels_dict = {}  # Use dict to avoid duplicates by channel name
 
@@ -54,7 +54,7 @@ def extract_channels_from_tiles(tiles: list[dict], fluorescence_filters: list[di
         )
 
         # Create laser config from channel data
-        light_sources = []
+        light_source_configs = []
         if "laser_wavelength" in channel_data:
             laser_config_params = {
                 "device_name": f"laser_{channel_data['laser_wavelength']}nm",
@@ -75,20 +75,24 @@ def extract_channels_from_tiles(tiles: list[dict], fluorescence_filters: list[di
                     laser_config_params["power_unit"] = PowerUnit.MW
 
             laser_config = LaserConfig(**laser_config_params)
-            light_sources.append(laser_config)
+            light_source_configs.append(laser_config)
+
+        elif "excitation_wavelength" in channel_data:
+            # In this case the light source exists, we just need to create the config
+            print(light_sources)
+            raise NotImplementedError("Todo: Handle excitation wavelength in channel data")
 
         # Use the filter index to find the corresponding fluorescence filter
         filter_wheel_index = channel_data.get("filter_wheel_index")
         emission_filters = []
         emission_wavelength = None
 
-        for filter_config in fluorescence_filters:
+        for i, filter_config in enumerate(fluorescence_filters):
             if filter_config.get("filter_wheel_index") == filter_wheel_index:
                 if filter_config.get("model") in FILTER_MAPPING:
-                    if filter_config.get("name"):
-                        emission_filters.append(DeviceConfig(
-                            device_name=filter_config["name"],
-                        ))
+                    # Assume the name will be "Filter {i}" if not specified... this only works if all filters are missing names
+                    emission_filters.append(DeviceConfig(device_name=filter_config.get("name", f"Filter {i}")))
+
                     if filter_config.get("model") in FILTER_MAPPING:
                         emission_wavelength = FILTER_MAPPING[filter_config["model"]]
                     else:
@@ -98,7 +102,7 @@ def extract_channels_from_tiles(tiles: list[dict], fluorescence_filters: list[di
         channel = Channel(
             channel_name=channel_name,
             detector=detector_config,
-            light_sources=light_sources,
+            light_sources=light_source_configs,
             variable_power=False,
             emission_filters=emission_filters,
             emission_wavelength=emission_wavelength,
@@ -218,6 +222,7 @@ def upgrade_tiles_to_data_stream(
     device_name: str,
     software: list,
     fluorescence_filters: list[dict],
+    light_sources: list[dict],
 ) -> list[dict]:
     """Convert V1 tiles to V2 data streams"""
 
@@ -225,7 +230,7 @@ def upgrade_tiles_to_data_stream(
         return []
 
     # Add code to build up list of channels from tiles
-    channels = extract_channels_from_tiles(tiles, fluorescence_filters)
+    channels = extract_channels_from_tiles(tiles, fluorescence_filters, light_sources)
 
     # Extract stream timing
     stream_start, stream_end = extract_stream_times_from_tiles(tiles, session_start, session_end)

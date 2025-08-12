@@ -206,6 +206,7 @@ class AcquisitionV1V2(CoreUpgrader):
 
             # Get fluorescene filters to use for upgrading tiles -> channels
             fluorescence_filters = metadata.get("instrument", {}).get("fluorescence_filters", [])
+            light_sources = metadata.get("instrument", {}).get("light_sources", [])
 
             data_streams = upgrade_tiles_to_data_stream(
                 tiles,
@@ -216,6 +217,7 @@ class AcquisitionV1V2(CoreUpgrader):
                 device_name=instrument_id or "",
                 software=software,
                 fluorescence_filters=fluorescence_filters,
+                light_sources=light_sources,
             )
             if active_objectives:
                 data_streams[0]["active_devices"].extend(active_objectives)
