@@ -81,6 +81,7 @@ def extract_channels_from_tiles(tiles: list[dict], fluorescence_filters: list[di
         filter_wheel_index = channel_data.get("filter_wheel_index")
         emission_filters = []
         emission_wavelength = None
+
         for filter_config in fluorescence_filters:
             if filter_config.get("filter_wheel_index") == filter_wheel_index:
                 if filter_config.get("model") in FILTER_MAPPING:
@@ -88,7 +89,10 @@ def extract_channels_from_tiles(tiles: list[dict], fluorescence_filters: list[di
                         emission_filters.append(DeviceConfig(
                             device_name=filter_config["name"],
                         ))
-                    emission_wavelength = FILTER_MAPPING[filter_config["model"]]
+                    if filter_config.get("model") in FILTER_MAPPING:
+                        emission_wavelength = FILTER_MAPPING[filter_config["model"]]
+                    else:
+                        print(f"Unknown filter model: {filter_config.get('model')}")
 
         # Create the channel
         channel = Channel(
