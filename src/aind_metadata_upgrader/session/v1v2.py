@@ -23,7 +23,6 @@ from aind_data_schema.components.configs import (
     Plane,
     PowerFunction,
     ProbeConfig,
-    SampleChamberConfig,
     ScanType,
     SlapAcquisitionType,
     SlapPlane,
@@ -715,13 +714,6 @@ class SessionV1V2(CoreUpgrader):
             sampling_strategy=sampling_strategy,
         ).model_dump()
 
-    def _create_sample_chamber_config(self, device_name: str) -> Dict:
-        """Create a basic SampleChamberConfig"""
-        # Create basic immersion - will be overridden if chamber_immersion exists
-        basic_immersion = Immersion(medium=ImmersionMedium.AIR, refractive_index=1.0).model_dump()
-
-        return SampleChamberConfig(device_name=device_name, chamber_immersion=basic_immersion).model_dump()
-
     def _upgrade_data_stream(self, stream: Dict, rig_id: str) -> Dict:
         """Upgrade a single data stream from v1 to v2"""
         # Extract modalities
@@ -1040,10 +1032,6 @@ class SessionV1V2(CoreUpgrader):
         imaging_config = self._create_imaging_config(stream)
         if imaging_config:
             configurations.append(imaging_config)
-
-        # Sample chamber config (basic one for now)
-        if stream.get("ophys_fovs") or stream.get("slap_fovs"):
-            configurations.append(self._create_sample_chamber_config(rig_id))
 
         return configurations, connections
 
