@@ -166,7 +166,14 @@ class RigUpgraderV1V2(CoreUpgrader):
 
         ephys_assemblies = data.get("ephys_assemblies", [])
         ephys_assemblies = self._none_to_list(ephys_assemblies)
-        ephys_assemblies = [upgrade_ephys_assembly(assembly) for assembly in ephys_assemblies]
+        ephys_assemblies = []
+        opto_lasers = []
+        for assembly in ephys_assemblies:
+            upgraded_assembly, lasers, connections = upgrade_ephys_assembly(assembly)
+            ephys_assemblies.append(upgraded_assembly)
+            all_connections.extend(connections)
+            if lasers:
+                opto_lasers.extend(lasers)
 
         fiber_assemblies = data.get("fiber_assemblies", [])
         fiber_assemblies = self._none_to_list(fiber_assemblies)
@@ -248,6 +255,7 @@ class RigUpgraderV1V2(CoreUpgrader):
             *laser_assemblies,
             *patch_cords,
             *light_sources,
+            *opto_lasers,
             *detectors,
             *objectives,
             *filters,
