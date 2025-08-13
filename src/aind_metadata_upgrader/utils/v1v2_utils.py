@@ -836,7 +836,16 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
     raise ValueError(f"Unsupported calibration: {data}")
 
 
-CCF_MAPPING = {"ALM": CCFv3.MO, "Primary Motor Cortex": CCFv3.MO}
+CCF_MAPPING = {
+    "ALM": CCFv3.MO,
+    "Primary Motor Cortex": CCFv3.MO,
+    "striatum": CCFv3.CP,
+    "Striatum": CCFv3.CP,
+    "Striatum and GPe": CCFv3.GPE,
+    "Striatum and Gpe": CCFv3.GPE,
+    "Gpe and Striatum": CCFv3.GPE,
+    "PPN and MRN": CCFv3.MRN,
+}
 
 
 def upgrade_targeted_structure(data: dict | str) -> dict:
