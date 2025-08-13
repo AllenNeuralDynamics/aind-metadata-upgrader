@@ -96,6 +96,10 @@ def repair_organization(data: str) -> dict:
     organization = Organization.from_name(data)
     if organization:
         return organization.model_dump()
+
+    organization = Organization.from_abbreviation(data)
+    if organization:
+        return organization.model_dump()
     else:
         if data in ORG_MAP.keys():
             return ORG_MAP[data].model_dump()
