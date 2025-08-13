@@ -64,6 +64,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     remove,
     upgrade_calibration,
     upgrade_targeted_structure,
+    validate_angle_unit,
 )
 
 
@@ -152,7 +153,7 @@ class SessionV1V2(CoreUpgrader):
             arc_angle=ephys_module.get("arc_angle", 0.0),
             module_angle=ephys_module.get("module_angle", 0.0),
             rotation_angle=ephys_module.get("rotation_angle", 0.0),
-            angle_unit=ephys_module.get("angle_unit", "degrees"),
+            angle_unit=validate_angle_unit(ephys_module.get("angle_unit", "degrees")),
             notes=ephys_module.get("notes", None),
         )
 

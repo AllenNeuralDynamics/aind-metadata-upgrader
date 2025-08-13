@@ -42,11 +42,40 @@ from aind_data_schema_models.units import (
     VoltageUnit,
     VolumeUnit,
     SoundIntensityUnit,
+    FrequencyUnit,
+    AngleUnit,
 )
 
 MODALITY_MAP = {"SmartSPIM": Modality.SPIM, "FIP": Modality.FIB}
 
 counts = {}
+
+
+def validate_frequency_unit(frequency_unit: str) -> str:
+    """Validate a frequency unit and repair it if needed"""
+    if frequency_unit in [member.value for member in FrequencyUnit]:
+        return frequency_unit
+    elif frequency_unit.lower() in [member.value for member in FrequencyUnit]:
+        return frequency_unit.lower()
+    else:
+        print(f"Invalid frequency unit: {frequency_unit}.")
+        raise NotImplementedError()
+
+
+def validate_angle_unit(angle_unit: str) -> str:
+    """Validate an angle unit and repair it if needed"""
+    if angle_unit in [member.value for member in AngleUnit]:
+        return angle_unit
+    elif angle_unit.lower() in [member.value for member in AngleUnit]:
+        return angle_unit.lower()
+    else:
+        # before we give up, check if the unit is contained in one of the units, e.g. degree in degrees
+        for member in AngleUnit:
+            if angle_unit.lower() in member.value.lower():
+                return member.value
+
+        print(f"Invalid angle unit: {angle_unit}.")
+        raise NotImplementedError()
 
 
 def upgrade_v1_modalities(data: dict) -> list:

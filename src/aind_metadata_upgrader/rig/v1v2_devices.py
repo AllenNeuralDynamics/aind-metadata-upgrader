@@ -37,7 +37,6 @@ from aind_data_schema.components.connections import (
     Connection,
 )
 from aind_data_schema_models.coordinates import AnatomicalRelative
-from aind_data_schema_models.units import FrequencyUnit
 
 from aind_metadata_upgrader.utils.v1v2_utils import (
     add_name,
@@ -50,6 +49,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_light_source,
     upgrade_positioned_device,
     upgrade_software,
+    validate_frequency_unit,
 )
 
 
@@ -221,17 +221,6 @@ def upgrade_mouse_platform(data: dict) -> tuple[dict, list]:
         raise ValueError(f"Unsupported mouse platform type: {data['device_type']}")
 
 
-def validate_frequency_unit(frequency_unit: str) -> str:
-    """Validate a frequency unit and repair it if needed"""
-    if frequency_unit in [member.value for member in FrequencyUnit]:
-        return frequency_unit
-    elif frequency_unit.lower() in [member.value for member in FrequencyUnit]:
-        return frequency_unit.lower()
-    else:
-        print(f"Invalid frequency unit: {frequency_unit}.")
-        raise NotImplementedError()
-
-
 def upgrade_daq_channels(device_data: dict) -> tuple[list, list]:
     """Upgrade DAQ device channels and save connection information."""
     upgraded_channels = []
@@ -308,13 +297,15 @@ def upgrade_daq_devices(device: dict) -> tuple[dict, list]:
         daq_device = HarpDevice(**device_data)
     elif "Neuropixels basestation" == device_type or "bsc_firmware_version" in device_data:
         daq_device = NeuropixelsBasestation(**device_data)
-    elif device_type == "Open Ephys acquisition board" or "Open Ephys" in device_data.get("manufacturer", {}).get(
-        "name", ""
-    ):
-        print(device_data)
+    elif device_type == "Open Ephys acquisition board" or "acquisition board" in device_data["name"].lower():
         daq_device = OpenEphysAcquisitionBoard(**device_data)
     else:
-        daq_device = DAQDevice(**device_data)
+        try:
+            daq_device = DAQDevice(**device_data)
+        except Exception as e:
+            print(f"Error creating DAQDevice: {e}")
+            print(f"Device data: {device_data}")
+            raise
 
     return daq_device.model_dump(), connections
 
