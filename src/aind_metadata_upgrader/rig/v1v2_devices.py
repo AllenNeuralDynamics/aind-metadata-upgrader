@@ -37,6 +37,7 @@ from aind_data_schema.components.connections import (
     Connection,
 )
 from aind_data_schema_models.coordinates import AnatomicalRelative
+from aind_data_schema_models.units import FrequencyUnit
 
 from aind_metadata_upgrader.utils.v1v2_utils import (
     add_name,
@@ -199,6 +200,8 @@ def upgrade_mouse_platform(data: dict) -> tuple[dict, list]:
             data["device_type"] = "Tube"
         elif "encoder_firmware" in data:
             data["device_type"] = "Disc"
+        elif "radius" in data and "radius_unit" in data:
+            data["device_type"] = "Disc"
         else:
             print(data)
             raise ValueError("Cannot determine device type for mouse platform")
@@ -216,6 +219,17 @@ def upgrade_mouse_platform(data: dict) -> tuple[dict, list]:
         return upgrade_arena(data), []
     else:
         raise ValueError(f"Unsupported mouse platform type: {data['device_type']}")
+
+
+def validate_frequency_unit(frequency_unit: str) -> str:
+    """Validate a frequency unit and repair it if needed"""
+    if frequency_unit in [member.value for member in FrequencyUnit]:
+        return frequency_unit
+    elif frequency_unit.lower() in [member.value for member in FrequencyUnit]:
+        return frequency_unit.lower()
+    else:
+        print(f"Invalid frequency unit: {frequency_unit}.")
+        raise NotImplementedError()
 
 
 def upgrade_daq_channels(device_data: dict) -> tuple[list, list]:
@@ -239,7 +253,7 @@ def upgrade_daq_channels(device_data: dict) -> tuple[list, list]:
             if "sample_rate" in channel and channel["sample_rate"] is not None:
                 upgraded_channel["sample_rate"] = channel["sample_rate"]
             if "sample_rate_unit" in channel and channel["sample_rate_unit"] is not None:
-                upgraded_channel["sample_rate_unit"] = channel["sample_rate_unit"]
+                upgraded_channel["sample_rate_unit"] = validate_frequency_unit(channel["sample_rate_unit"])
             if "event_based_sampling" in channel and channel["event_based_sampling"] is not None:
                 upgraded_channel["event_based_sampling"] = channel["event_based_sampling"]
 
@@ -485,6 +499,10 @@ def upgrade_camera(data: dict) -> tuple[dict, list]:
     if "recording_software" in data and data["recording_software"]:
         data["recording_software"] = upgrade_software(data.get("recording_software", {}))
 
+    if "sensor_format" in data and data["sensor_format"]:
+        if "sensor_format_unit" not in data or not data["sensor_format_unit"]:
+            data["sensor_format_unit"] = "unknown"
+
     camera = Camera(
         **data,
     )
@@ -589,11 +607,12 @@ def upgrade_camera_assembly(data: dict) -> tuple[dict, list]:
     else:
         data["target"], relative_positions = parse_camera_target(data.get("camera_target", ""))
 
-    if data["target"] == CameraTarget.OTHER:
-        print(data)
-        raise NotImplementedError()
+    if "target" not in data:
+        data["target"] = CameraTarget.OTHER
+        relative_positions = []
 
     remove(data, "camera_target")
+    remove(data, "notes")
 
     data = upgrade_positioned_device(data, relative_positions)
 
@@ -614,18 +633,24 @@ def upgrade_manipulator(data: dict) -> dict:
     return manipulator.model_dump()
 
 
-def upgrade_ephys_probe(data: dict) -> dict:
+def upgrade_ephys_probe(data: dict) -> tuple[dict, list, list]:
     """Upgrade EphysProbe device data from v1.x to v2.0."""
 
     data = basic_device_checks(data, "EphysProbe")
 
+    lasers = []
+    connections = []
     if "lasers" in data and data["lasers"]:
-        # Store lasers as a connection
-        print(data)
-        raise NotImplementedError("Laser needs to be saved as connection")
-        # saved_connections.append(
+        # Create the lasers separately
+        lasers = [upgrade_light_source(laser) for laser in data["lasers"]]
+        # Also store the connections
+        connections = []
+        for laser in lasers:
+            connections.append(Connection(
+                source_device=laser["name"],
+                target_device=data["name"],
+            ))
 
-        # )
     remove(data, "lasers")
 
     # Handle headstage if present
@@ -634,10 +659,10 @@ def upgrade_ephys_probe(data: dict) -> dict:
 
     ephys_probe = EphysProbe(**data)
 
-    return ephys_probe.model_dump()
+    return ephys_probe.model_dump(), lasers, connections
 
 
-def upgrade_ephys_assembly(data: dict) -> dict:
+def upgrade_ephys_assembly(data: dict) -> tuple[dict, list, list]:
     """Upgrade EphysAssembly device data from v1.x to v2.0."""
 
     # Perform basic device checks
@@ -650,17 +675,23 @@ def upgrade_ephys_assembly(data: dict) -> dict:
     if "manipulator" in data:
         data["manipulator"] = upgrade_manipulator(data["manipulator"])
 
+    opto_lasers = []
+    opto_connections = []
+
     # Upgrade the probes array
     if "probes" in data:
         upgraded_probes = []
         for probe in data["probes"]:
-            upgraded_probes.append(upgrade_ephys_probe(probe))
+            upgraded_probe, lasers, connections = upgrade_ephys_probe(probe)
+            upgraded_probes.append(upgraded_probe)
+            opto_lasers.extend(lasers)
+            opto_connections.extend(connections)
         data["probes"] = upgraded_probes
 
     # Create EphysAssembly object
     ephys_assembly = EphysAssembly(**data)
 
-    return ephys_assembly.model_dump()
+    return ephys_assembly.model_dump(), opto_lasers, opto_connections
 
 
 def upgrade_fiber_assembly(data: dict) -> dict:
