@@ -164,6 +164,7 @@ def upgrade_tube(data: dict) -> dict:
 
     remove(data, "date_surface_replaced")
     remove(data, "surface_material")
+    remove(data, "platform_type")
 
     tube = Tube(
         **data,
