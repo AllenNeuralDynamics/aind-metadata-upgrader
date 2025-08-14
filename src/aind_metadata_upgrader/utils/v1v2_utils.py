@@ -493,7 +493,12 @@ def upgrade_light_source(data: dict) -> dict:
     # Old light sources have a 'type' field, which we will remove
     if "type" in data and not device_type:
         device_type = data["type"].lower()
-        del data["type"]
+    remove(data, "type")
+
+    # Some light sources have a lightsource_type field, which we will remove
+    if "lightsource_type" in data and not device_type:
+        device_type = data["lightsource_type"].lower()
+    remove(data, "lightsource_type")
 
     # Based on device_type, create the appropriate light source
     if (
