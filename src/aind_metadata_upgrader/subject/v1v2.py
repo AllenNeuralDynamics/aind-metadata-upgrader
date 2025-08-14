@@ -71,6 +71,20 @@ class SubjectUpgraderV1V2(CoreUpgrader):
 
         return species, background_strain
 
+    def _upgrade_housing(self, data: dict) -> dict:
+        """Upgrade housing information to the new format"""
+        data["object_type"] = "Housing"
+        if isinstance(data["cage_id"], int):
+            data["cage_id"] = str(data["cage_id"])
+        if isinstance(data["room_id"], int):
+            data["room_id"] = str(data["room_id"])
+        if not data.get("home_cage_enrichment", None):
+            data["home_cage_enrichment"] = []
+        if not data.get("cohoused_subjects", None):
+            data["cohoused_subjects"] = []
+
+        return data
+
     def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the subject core file data to v2.0"""
 
@@ -114,7 +128,7 @@ class SubjectUpgraderV1V2(CoreUpgrader):
         # Add object type
         housing = data.get("housing", None)
         if housing:
-            housing["object_type"] = "Housing"
+            housing = self._upgrade_housing(housing)
 
         # Package MouseSubject
         if species["name"] == "Mus musculus":
