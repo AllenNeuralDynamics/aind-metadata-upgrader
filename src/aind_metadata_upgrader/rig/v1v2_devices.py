@@ -781,7 +781,14 @@ def upgrade_fiber_patch_cord(data: dict) -> dict:
 def upgrade_laser_assembly(data: dict) -> dict:
     """Upgrade LaserAssembly device data from v1.x to v2.0."""
 
+    print(data)
+
     # Perform basic device checks
+    if "laser_assembly_name" in data:
+        data["name"] = data["laser_assembly_name"]
+        remove(data, "laser_assembly_name")
+
+    # Add a generic name if not present
     data = add_name(data, "LaserAssembly")
 
     # Upgrade the manipulator
@@ -798,10 +805,22 @@ def upgrade_laser_assembly(data: dict) -> dict:
     # Upgrade the collimator (it's just a generic Device in v2)
     if "collimator" in data and data["collimator"]:
         data["collimator"] = upgrade_generic_device(data["collimator"])
+    else:
+        # Collimator missing, create a generic one
+        data["collimator"] = Device(
+            name="unknown collimator",
+        )
 
     # Upgrade the fiber (mapped from "fiber" to "fiber" but using FiberPatchCord type)
     if "fiber" in data and data["fiber"]:
         data["fiber"] = upgrade_fiber_patch_cord(data["fiber"])
+    else:
+        # Fiber missing, create a generic one
+        data["fiber"] = FiberPatchCord(
+            name="unknown fiber",
+            core_diameter=0,
+            numerical_aperture=0,
+        )
 
     # Create LaserAssembly object
     laser_assembly = LaserAssembly(**data)
