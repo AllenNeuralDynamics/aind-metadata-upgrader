@@ -110,6 +110,14 @@ class AcquisitionV1V2(CoreUpgrader):
         ):
             return CoordinateSystemLibrary.SPIM_LPS.model_dump()
 
+        # Check for SPIM_LPS configuration - variant 2 (X=AP, Y=IS, Z=LR)
+        elif (
+            directions[0] == "Left_to_right"
+            and directions[1] == "Inferior_to_superior"
+            and directions[2] == "Anterior_to_posterior"
+        ):
+            return CoordinateSystemLibrary.SPIM_LPS.model_dump()
+
         else:
             print(axes)
             raise ValueError("Unsupported axes configuration for coordinate system creation, needs to be implemented")
