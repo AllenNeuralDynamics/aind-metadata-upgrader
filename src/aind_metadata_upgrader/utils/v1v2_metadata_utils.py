@@ -9,7 +9,7 @@ from aind_data_schema.components.devices import Device
 # List of acquisition IDs where the instrument_id needs to be copied from instrument to acquisition
 SHORT_ACQ_ID_LIST = ["5B", "4D", "MESO.1", "MESO.2", "5A", "4A", "4B", "4C"]
 # List of acquisition IDs where the instrument_id needs to be copied from acquisition to instrument
-LONG_ACQ_ID_LIST = ["323_EPHYS1_2024-06-11", "442_Bergamo_2p_photostim", "323_EPHYS3_2024-06-28"]
+LONG_ACQ_ID_LIST = ["442_Bergamo_2p_photostim"]
 # Instrument/Acquisition pairs where id copied from instrument -> acquisition
 PAIRED_INSTRUMENT_ACQUISITION_IDS = [
     ("342_NP3_240417", "342_NP3_240401"),
@@ -34,7 +34,10 @@ def _handle_spim_modality_mismatch(data: dict) -> dict:
 def _handle_general_id_mismatch(data: dict) -> dict:
     """Handle instrument ID mismatch for general cases"""
     if "acquisition" in data and data["acquisition"] and "instrument_id" in data["acquisition"]:
-        if data["acquisition"]["instrument_id"] in LONG_ACQ_ID_LIST:
+        if data["instrument"]["instrument_id"] in data["acquisition"]["instrument_id"]:
+            # If the instrument instrument_id is contained within the acquisition instrument_id, copy it
+            data["instrument"]["instrument_id"] = data["acquisition"]["instrument_id"]
+        elif data["acquisition"]["instrument_id"] in LONG_ACQ_ID_LIST:
             data["instrument"]["instrument_id"] = data["acquisition"]["instrument_id"]
         elif data["acquisition"]["instrument_id"] in SHORT_ACQ_ID_LIST:
             data["acquisition"]["instrument_id"] = data["instrument"]["instrument_id"]
