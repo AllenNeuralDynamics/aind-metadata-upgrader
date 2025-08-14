@@ -89,7 +89,7 @@ def upgrade_wheel(data: dict) -> tuple[dict, list]:
                 target_port=encoder_output["channel_name"],
             )
             connections.append(connection.model_dump())
-        del data["encoder_output"]
+    remove(data, "encoder_output")
 
     if "brake_output" in data and data["brake_output"]:
         brake_output = data["brake_output"]
@@ -101,7 +101,7 @@ def upgrade_wheel(data: dict) -> tuple[dict, list]:
                 target_port=brake_output["channel_name"],
             )
             connections.append(connection.model_dump())
-        del data["brake_output"]
+    remove(data, "brake_output")
 
     if "torque_output" in data and data["torque_output"]:
         torque_output = data["torque_output"]
@@ -113,7 +113,7 @@ def upgrade_wheel(data: dict) -> tuple[dict, list]:
                 target_port=torque_output["channel_name"],
             )
             connections.append(connection.model_dump())
-        del data["torque_output"]
+    remove(data, "torque_output")
 
     wheel = Wheel(
         **data,
