@@ -43,6 +43,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_objective,
     upgrade_v1_modalities,
 )
+from aind_data_schema.components.devices import CameraTarget
 from aind_data_schema.utils.validators import recursive_get_all_names
 
 BREGMA_ALS = CoordinateSystem(
@@ -341,6 +342,12 @@ class RigUpgraderV1V2(CoreUpgrader):
         calibrations = [cal for cal in calibrations if cal is not None]
 
         components, connections = self._get_components_connections(data)
+
+        # If any cameras are present with camera_target == Other we need to flag this in the notes
+        if notes is None:
+            for component in components:
+                if "target" in component and component["target"] == CameraTarget.OTHER:
+                    notes = notes if notes else "" + " (v1v2 upgrade) Some cameras have unknown targets."
 
         return {
             "object_type": "Instrument",

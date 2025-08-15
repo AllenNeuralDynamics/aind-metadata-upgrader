@@ -19,6 +19,7 @@ dynamic = ["version"]
 dependencies = [
     'aind-data-schema @ git+https://github.com/AllenNeuralDynamics/aind-data-schema.git@dev',
     'packaging',
+    'aind-data-access-api[docdb,rds]',
 ]
 
 [project.optional-dependencies]
@@ -31,7 +32,6 @@ dev = [
     'Sphinx',
     'tzlocal',
     'furo',
-    'aind-data-access-api',
 ]
 
 [tool.setuptools.packages.find]

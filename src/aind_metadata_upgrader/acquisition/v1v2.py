@@ -17,7 +17,6 @@ from aind_data_schema.components.coordinates import (
     Axis,
     AxisName,
     Direction,
-    CoordinateSystemLibrary,
 )
 
 
@@ -55,72 +54,39 @@ class AcquisitionV1V2(CoreUpgrader):
         # Sort axes by dimension to ensure consistent ordering
         sorted_axes = sorted(axes, key=lambda x: x["dimension"])
 
-        # Extract directions for each dimension (0, 1, 2)
-        directions = [axis["direction"] for axis in sorted_axes]
+        # Map V1 direction strings to V2 Direction enums and coordinate system letters
+        direction_mapping = {
+            "Left_to_right": (Direction.LR, "R"),
+            "Right_to_left": (Direction.RL, "L"),
+            "Anterior_to_posterior": (Direction.AP, "P"),
+            "Posterior_to_anterior": (Direction.PA, "A"),
+            "Superior_to_inferior": (Direction.SI, "I"),
+            "Inferior_to_superior": (Direction.IS, "S"),
+        }
 
-        # Check for SPIM_RAI configuration - variant 1 (X=LR, Y=AP, Z=SI)
-        if (
-            directions[0] == "Superior_to_inferior"
-            and directions[1] == "Anterior_to_posterior"
-            and directions[2] == "Left_to_right"
-        ):
-            coordinate_system = CoordinateSystem(
-                name="SPIM_RAI",
-                origin=Origin.ORIGIN,
-                axis_unit=axes[0]["unit"],
-                axes=[
-                    Axis(name=AxisName.X, direction=Direction.LR),
-                    Axis(name=AxisName.Y, direction=Direction.AP),
-                    Axis(name=AxisName.Z, direction=Direction.SI),
-                ],
-            )
-            return coordinate_system.model_dump()
+        # Extract direction enums and letters for each dimension (0, 1, 2)
+        try:
+            dim0_direction, dim0_letter = direction_mapping[sorted_axes[0]["direction"]]
+            dim1_direction, dim1_letter = direction_mapping[sorted_axes[1]["direction"]]
+            dim2_direction, dim2_letter = direction_mapping[sorted_axes[2]["direction"]]
+        except (KeyError, IndexError) as e:
+            print(f"Invalid axes configuration: {axes}")
+            raise ValueError(f"Invalid or incomplete axes configuration: {e}")
 
-        # Check for SPIM_RAI configuration - variant 2 (X=LR, Y=PA, Z=SI)
-        elif (
-            directions[0] == "Superior_to_inferior"
-            and directions[1] == "Posterior_to_anterior"
-            and directions[2] == "Left_to_right"
-        ):
-            coordinate_system = CoordinateSystem(
-                name="SPIM_RAI",
-                origin=Origin.ORIGIN,
-                axis_unit=axes[0]["unit"],
-                axes=[
-                    Axis(name=AxisName.X, direction=Direction.LR),
-                    Axis(name=AxisName.Y, direction=Direction.AP),
-                    Axis(name=AxisName.Z, direction=Direction.SI),
-                ],
-            )
-            return coordinate_system.model_dump()
+        coordinate_system_name = f"SPIM_{dim0_letter}{dim1_letter}{dim2_letter}"
 
-        # Check for SPIM_RPI configuration (X=RL, Y=PA, Z=IS)
-        elif (
-            directions[0] == "Inferior_to_superior"
-            and directions[1] == "Anterior_to_posterior"
-            and directions[2] == "Left_to_right"
-        ):
-            return CoordinateSystemLibrary.SPIM_RPI.model_dump()
-
-        # Check for SPIM_LPS configuration (X=PA, Y=IS, Z=RL)
-        elif (
-            directions[0] == "Right_to_left"
-            and directions[1] == "Inferior_to_superior"
-            and directions[2] == "Posterior_to_anterior"
-        ):
-            return CoordinateSystemLibrary.SPIM_LPS.model_dump()
-
-        # Check for SPIM_LPS configuration - variant 2 (X=AP, Y=IS, Z=LR)
-        elif (
-            directions[0] == "Left_to_right"
-            and directions[1] == "Inferior_to_superior"
-            and directions[2] == "Anterior_to_posterior"
-        ):
-            return CoordinateSystemLibrary.SPIM_LPS.model_dump()
-
-        else:
-            print(axes)
-            raise ValueError("Unsupported axes configuration for coordinate system creation, needs to be implemented")
+        # Create the coordinate system
+        coordinate_system = CoordinateSystem(
+            name=coordinate_system_name,
+            origin=Origin.ORIGIN,
+            axis_unit=sorted_axes[0]["unit"],
+            axes=[
+                Axis(name=AxisName.X, direction=dim0_direction),
+                Axis(name=AxisName.Y, direction=dim1_direction),
+                Axis(name=AxisName.Z, direction=dim2_direction),
+            ],
+        )
+        return coordinate_system.model_dump()
 
     def _determine_acquisition_type(self, data: Dict) -> str:
         """Determine acquisition type from V1 data"""
