@@ -19,7 +19,7 @@ dynamic = ["version"]
 dependencies = [
     'aind-data-schema @ git+https://github.com/AllenNeuralDynamics/aind-data-schema.git@dev',
     'packaging',
-    'aind-data-access-api[docdb,rds]',
+    'aind-data-access-api[docdb]',
 ]
 
 [project.optional-dependencies]
