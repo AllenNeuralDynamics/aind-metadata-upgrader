@@ -167,7 +167,6 @@ class RigUpgraderV1V2(CoreUpgrader):
 
         ephys_assemblies = data.get("ephys_assemblies", [])
         ephys_assemblies = self._none_to_list(ephys_assemblies)
-        ephys_assemblies = []
         opto_lasers = []
         for assembly in ephys_assemblies:
             upgraded_assembly, lasers, connections = upgrade_ephys_assembly(assembly)
@@ -287,6 +286,8 @@ class RigUpgraderV1V2(CoreUpgrader):
         # # Check that we're going to pass the connection validation
         # # Flatten the list of device names from all connections
         connection_names = [name for conn in connections for name in [conn["source_device"], conn["target_device"]]]
+        connection_names = list(set(connection_names))  # Unique names only
+
         component_names = []
         for component in components:
             component_names.extend(recursive_get_all_names(component))
