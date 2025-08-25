@@ -475,7 +475,6 @@ COUPLING_MAPPING = {
 
 def upgrade_light_source(data: dict) -> dict:
     """Upgrade light source data to the new model."""
-
     # Handle the device_type field to determine which specific light source type
     device_type = data.get("device_type", "").lower()
 
@@ -500,6 +499,9 @@ def upgrade_light_source(data: dict) -> dict:
         device_type = data["lightsource_type"].lower()
     remove(data, "lightsource_type")
 
+    # Remove calibration date
+    remove(data, "calibration_date")
+
     # Based on device_type, create the appropriate light source
     if (
         "laser" in device_type
@@ -507,10 +509,10 @@ def upgrade_light_source(data: dict) -> dict:
         or ("name" in data and data["name"] and "laser" in data["name"].lower())
     ):
         light_source = Laser(**data)
+    elif "lamp" in device_type or "wavelength_min" in data:
+        light_source = Lamp(**data)
     elif "led" in device_type or "light emitting diode" in device_type or "led" in data["name"].lower():
         light_source = LightEmittingDiode(**data)
-    elif "lamp" in device_type:
-        light_source = Lamp(**data)
     elif "Axon 920-2 TPC" in data.get("name", ""):
         light_source = Laser(**data)
     else:

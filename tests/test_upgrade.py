@@ -35,7 +35,7 @@ client = MetadataDbClient(
     collection=COLLECTION,
 )
 
-run_one = "002ab5b3-f731-44df-b205-341b675c68a5"
+run_one = None
 upsert = True
 
 

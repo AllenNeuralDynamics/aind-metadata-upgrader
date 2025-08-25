@@ -641,7 +641,7 @@ def upgrade_ephys_probe(data: dict) -> tuple[dict, list, list]:
             connections.append(Connection(
                 source_device=laser["name"],
                 target_device=data["name"],
-            ))
+            ).model_dump())
 
     remove(data, "lasers")
 
@@ -780,8 +780,6 @@ def upgrade_fiber_patch_cord(data: dict) -> dict:
 
 def upgrade_laser_assembly(data: dict) -> dict:
     """Upgrade LaserAssembly device data from v1.x to v2.0."""
-
-    print(data)
 
     # Perform basic device checks
     if "laser_assembly_name" in data:
