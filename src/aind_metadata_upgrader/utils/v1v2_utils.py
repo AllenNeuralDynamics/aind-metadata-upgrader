@@ -204,7 +204,7 @@ def basic_device_checks(data: dict, type: str) -> dict:
     return data
 
 
-def upgrade_generic_Device(data: dict) -> dict:
+def upgrade_generic_device(data: dict) -> dict:
     """Upgrade a generic Device object"""
 
     # Some Devices have a device_type field, which now specifies a real object type

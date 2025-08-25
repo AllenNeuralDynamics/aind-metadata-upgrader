@@ -37,7 +37,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_calibration,
     upgrade_enclosure,
     upgrade_filter,
-    upgrade_generic_Device,
+    upgrade_generic_device,
     upgrade_lens,
     upgrade_light_source,
     upgrade_objective,
@@ -168,9 +168,10 @@ class RigUpgraderV1V2(CoreUpgrader):
         ephys_assemblies = data.get("ephys_assemblies", [])
         ephys_assemblies = self._none_to_list(ephys_assemblies)
         opto_lasers = []
+        upgraded_ephys_assemblies = []
         for assembly in ephys_assemblies:
             upgraded_assembly, lasers, connections = upgrade_ephys_assembly(assembly)
-            ephys_assemblies.append(upgraded_assembly)
+            upgraded_ephys_assemblies.append(upgraded_assembly)
             all_connections.extend(connections)
             if lasers:
                 opto_lasers.extend(lasers)
@@ -234,7 +235,7 @@ class RigUpgraderV1V2(CoreUpgrader):
 
         additional_devices = data.get("additional_devices", [])
         additional_devices = self._none_to_list(additional_devices)
-        additional_devices = [upgrade_generic_Device(device) for device in additional_devices]
+        additional_devices = [upgrade_generic_device(device) for device in additional_devices]
 
         daqs = self._none_to_list(data.get("daqs", []))
 
@@ -249,7 +250,7 @@ class RigUpgraderV1V2(CoreUpgrader):
             *stimulus_devices,
             *camera_assemblies,
             *daqs,
-            *ephys_assemblies,
+            *upgraded_ephys_assemblies,
             *fiber_assemblies,
             *stick_microscopes,
             *laser_assemblies,

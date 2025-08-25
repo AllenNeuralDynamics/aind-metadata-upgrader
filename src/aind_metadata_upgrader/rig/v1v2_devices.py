@@ -53,10 +53,10 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
 )
 
 
-def upgrade_generic_device(data: dict) -> dict:
-    """Upgrade Encodder object from v1.x to v2.0."""
+def upgrade_generic_device_with_name(data: dict, name: str) -> dict:
+    """Upgrade a named object from v1.x to v2.0."""
 
-    data = basic_device_checks(data, "Encoder")
+    data = basic_device_checks(data, name)
 
     encoder = Device(
         **data,
@@ -74,9 +74,9 @@ def upgrade_wheel(data: dict) -> tuple[dict, list]:
     remove(data, "date_surface_replaced")
     remove(data, "surface_material")
 
-    data["encoder"] = upgrade_generic_device(data.get("encoder", {}))
-    data["magnetic_brake"] = upgrade_generic_device(data.get("magnetic_brake", {}))
-    data["torque_sensor"] = upgrade_generic_device(data.get("torque_sensor", {}))
+    data["encoder"] = upgrade_generic_device_with_name(data.get("encoder", {}), "Encoder")
+    data["magnetic_brake"] = upgrade_generic_device_with_name(data.get("magnetic_brake", {}), "Magnetic brake")
+    data["torque_sensor"] = upgrade_generic_device_with_name(data.get("torque_sensor", {}), "Torque sensor")
 
     # Convert encoder_output, brake_output, and torque_output to Connection objects
     if "encoder_output" in data and data["encoder_output"]:
@@ -148,7 +148,7 @@ def upgrade_treadmill(data: dict) -> dict:
     remove(data, "surface_material")
 
     if "encoder" in data and data["encoder"]:
-        data["encoder"] = upgrade_generic_device(data["encoder"])
+        data["encoder"] = upgrade_generic_device_with_name(data["encoder"], "Encoder")
 
     treadmill = Treadmill(
         **data,
@@ -355,10 +355,10 @@ def upgrade_lick_spout(data: dict) -> dict:
     data = basic_device_checks(data, "LickSpout")
 
     if "solenoid_valve" in data and data["solenoid_valve"]:
-        data["solenoid_valve"] = upgrade_generic_device(data.get("solenoid_valve", {}))
+        data["solenoid_valve"] = upgrade_generic_device_with_name(data.get("solenoid_valve", {}), "Solenoid valve")
 
     if "lick_sensor" in data and data["lick_sensor"]:
-        data["lick_sensor"] = upgrade_generic_device(data.get("lick_sensor", {}))
+        data["lick_sensor"] = upgrade_generic_device_with_name(data.get("lick_sensor", {}), "Lick sensor")
     else:
         # The lick sensor is missing... we will add a default one and clearly mark it as unknown
         data["lick_sensor"] = Device(
@@ -516,7 +516,7 @@ def upgrade_lens(data: dict) -> dict:
     remove(data, "size")
     remove(data, "wavelength_unit")
 
-    data = upgrade_generic_device(data)
+    data = upgrade_generic_device_with_name(data, "Lens")
 
     lens = Lens(
         **data,
@@ -647,7 +647,7 @@ def upgrade_ephys_probe(data: dict) -> tuple[dict, list, list]:
 
     # Handle headstage if present
     if "headstage" in data and data["headstage"]:
-        data["headstage"] = upgrade_generic_device(data["headstage"])
+        data["headstage"] = upgrade_generic_device_with_name(data["headstage"], "Headstage")
 
     ephys_probe = EphysProbe(**data)
 
@@ -804,7 +804,7 @@ def upgrade_laser_assembly(data: dict) -> dict:
 
     # Upgrade the collimator (it's just a generic Device in v2)
     if "collimator" in data and data["collimator"]:
-        data["collimator"] = upgrade_generic_device(data["collimator"])
+        data["collimator"] = upgrade_generic_device_with_name(data["collimator"], "Collimator")
     else:
         # Collimator missing, create a generic one
         data["collimator"] = Device(
