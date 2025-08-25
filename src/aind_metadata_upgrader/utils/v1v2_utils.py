@@ -856,6 +856,8 @@ CCF_MAPPING = {
     "Striatum and Gpe": CCFv3.GPE,
     "Gpe and Striatum": CCFv3.GPE,
     "PPN and MRN": CCFv3.MRN,
+    "V1 center": CCFv3.VISP,
+    "GenFacCran": CCFv3.GVIIN,
 }
 
 
