@@ -58,11 +58,11 @@ def upgrade_generic_device_with_name(data: dict, name: str) -> dict:
 
     data = basic_device_checks(data, name)
 
-    encoder = Device(
+    device = Device(
         **data,
     )
 
-    return encoder.model_dump()
+    return device.model_dump()
 
 
 def upgrade_wheel(data: dict) -> tuple[dict, list]:
@@ -647,6 +647,9 @@ def upgrade_ephys_probe(data: dict) -> tuple[dict, list, list]:
 
     # Handle headstage if present
     if "headstage" in data and data["headstage"]:
+        if "headstage_model" in data and data["headstage_model"]:
+            data["notes"] = (data.get("notes", "") + f" (v1v2 upgrade): headstage model was '{data['headstage_model']}'.").strip()
+        remove(data, "headstage_model")
         data["headstage"] = upgrade_generic_device_with_name(data["headstage"], "Headstage")
 
     ephys_probe = EphysProbe(**data)
