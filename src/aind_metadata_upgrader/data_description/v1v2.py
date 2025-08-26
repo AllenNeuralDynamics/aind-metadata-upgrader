@@ -10,6 +10,14 @@ from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.settings import FAKE_MISSING_DATA
 from aind_metadata_upgrader.utils.v1v2_utils import upgrade_v1_modalities, upgrade_registry
 
+from aind_data_access_api.document_db import MetadataDbClient
+
+
+client = MetadataDbClient(
+    host="api.allenneuraldynamics.org",
+    version="v1",
+)
+
 
 class DataDescriptionV1V2(CoreUpgrader):
     """Upgrade data description from v1.4 to v2.0"""
@@ -170,8 +178,49 @@ class DataDescriptionV1V2(CoreUpgrader):
             "restrictions": data.get("restrictions", None),
             "modalities": kwargs.get("modalities"),
             "data_summary": data.get("data_summary", None),
+            "source_data": kwargs.get("source_data"),
             "object_type": "Data description",
         }
+
+    def _upgrade_source_data(self, data: dict) -> Optional[list]:
+        """Upgrade the source_data field for v2.0"""
+
+        # If this is raw data, return None
+        if "raw" in data.get("data_level", "").lower():
+            return None
+
+        # Derived asset -- if we have input_data_name, use that
+        if "input_data_name" in data and data["input_data_name"]:
+            input_name = data["input_data_name"]
+            # Check if this name is derived (more than 4 parts)
+            if len(input_name.split("_")) > 4:
+                # Use the client to get the parent asset's input_data_name and chain up until we reach raw data
+                input_names = [input_name]
+                prev_data_description = client.retrieve_docdb_records(
+                    filter_query={"data_description.name": input_name},
+                    projection={"data_description": 1},
+                    limit=1,
+                )[0]
+                while "raw" not in prev_data_description.get("data_description", {}).get("data_level", "").lower():
+                    # Add to the start of the list the name and get the next parent
+                    next_input_name = prev_data_description.get("data_description", {}).get("input_data_name", None)
+                    input_names.insert(0, next_input_name)
+                    prev_data_description = client.retrieve_docdb_records(
+                        filter_query={"data_description.name": next_input_name},
+                        limit=1,
+                    )[0]
+
+                # Insert the raw data name at the start
+                raw_data_name = prev_data_description.get("data_description", {}).get("name", None)
+                input_names.insert(0, raw_data_name)
+                return input_names
+            else:
+                return [input_name]
+        else:
+            input_from_name = data.get("name").split("_")[:4]  # get the original name parts
+            input_name = "_".join(input_from_name)
+            print(f"Derived data without input_data_name, using name to infer input: {input_name}")
+            return [input_name]
 
     def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the data description to v2.0"""
@@ -189,6 +238,9 @@ class DataDescriptionV1V2(CoreUpgrader):
         investigators = self._ensure_investigators_exist(investigators)
         modalities = upgrade_v1_modalities(data)
 
+        # Upgrade the new source_data field for 2.0
+        source_data = self._upgrade_source_data(data)
+
         # Build and return the upgraded output
         return self._build_output_dict(
             data,
@@ -200,4 +252,5 @@ class DataDescriptionV1V2(CoreUpgrader):
             project_name=project_name,
             investigators=investigators,
             modalities=modalities,
+            source_data=source_data,
         )
