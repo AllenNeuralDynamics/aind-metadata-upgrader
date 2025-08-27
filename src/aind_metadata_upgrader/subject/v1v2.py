@@ -103,6 +103,8 @@ class SubjectUpgraderV1V2(CoreUpgrader):
         species, background_strain = self._process_species_and_strain(data)
 
         alleles = data.get("alleles", [])
+        
+        alleles = [upgrade_registry(allele) for allele in alleles]
 
         # Add object_type
         breeding_info = self._get_breeding_info(data)
