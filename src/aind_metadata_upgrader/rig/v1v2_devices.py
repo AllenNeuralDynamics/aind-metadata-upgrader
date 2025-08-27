@@ -641,17 +641,22 @@ def upgrade_ephys_probe(data: dict) -> tuple[dict, list, list]:
         # Also store the connections
         connections = []
         for laser in lasers:
-            connections.append(Connection(
-                source_device=laser["name"],
-                target_device=data["name"],
-            ).model_dump())
+            connections.append(
+                Connection(
+                    source_device=laser["name"],
+                    target_device=data["name"],
+                ).model_dump()
+            )
 
     remove(data, "lasers")
 
     # Handle headstage if present
     if "headstage" in data and data["headstage"]:
         if "headstage_model" in data["headstage"] and data["headstage"]["headstage_model"]:
-            data["headstage"]["notes"] = (data["headstage"].get("notes", "") + f" (v1v2 upgrade): headstage model was '{data["headstage"]['headstage_model']}'.").strip()
+            data["headstage"]["notes"] = (
+                data["headstage"].get("notes", "")
+                + f" (v1v2 upgrade): headstage model was '{data["headstage"]['headstage_model']}'."
+            ).strip()
         remove(data["headstage"], "headstage_model")
         data["headstage"] = upgrade_generic_device_with_name(data["headstage"], "Headstage")
 

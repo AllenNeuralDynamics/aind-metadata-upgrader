@@ -44,7 +44,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_v1_modalities,
 )
 from aind_data_schema.components.devices import CameraTarget
-from aind_data_schema.utils.validators import recursive_get_all_names
+from aind_metadata_upgrader.utils.validators import recursive_get_all_names
 
 BREGMA_ALS = CoordinateSystem(
     name="BREGMA_ALS",
@@ -304,7 +304,7 @@ class RigUpgraderV1V2(CoreUpgrader):
             device = Device(
                 name=name,
                 notes=(
-                    "(v1v2 upgrade) This device was not found in the components list, "
+                    "(v1v2 upgrade rig) This device was not found in the components list, "
                     "but is referenced in connections."
                 ),
             )

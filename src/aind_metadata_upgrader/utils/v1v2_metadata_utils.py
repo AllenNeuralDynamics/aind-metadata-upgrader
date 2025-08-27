@@ -108,7 +108,7 @@ def repair_missing_active_devices(data: dict) -> dict:
             new_device = Device(
                 name=device,
                 notes=(
-                    "(v1v2 upgrade) This device was not found in the components list, "
+                    "(v1v2 upgrade metadata) This device was not found in the components list, "
                     "but is referenced in Acquisition.active_devices."
                 ),
             )
@@ -164,7 +164,7 @@ def repair_connection_devices(data: dict) -> dict:
             new_device = Device(
                 name=device_name,
                 notes=(
-                    "(v1v2 upgrade) This device was not found in the components list, "
+                    "(v1v2 upgrade metadata) This device was not found in the components list, "
                     "but is referenced in connections."
                 ),
             )

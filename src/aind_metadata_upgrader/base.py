@@ -1,4 +1,5 @@
 """Base classes for the individual core file upgraders"""
+
 from typing import Optional
 
 

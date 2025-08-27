@@ -27,7 +27,9 @@ FILTER_MAPPING = {
 }
 
 
-def extract_channels_from_tiles(tiles: list[dict], fluorescence_filters: list[dict], light_sources: list[dict]) -> list[Channel]:
+def extract_channels_from_tiles(
+    tiles: list[dict], fluorescence_filters: list[dict], light_sources: list[dict]
+) -> list[Channel]:
     """Extract and accumulate unique channels from tile data"""
     channels_dict = {}  # Use dict to avoid duplicates by channel name
 
@@ -87,10 +89,12 @@ def extract_channels_from_tiles(tiles: list[dict], fluorescence_filters: list[di
                     name = light_source.get("name", f"Laser {i}")
                     if not name:
                         name = f"Laser {i}"
-                    light_source_configs.append(LaserConfig(
-                        device_name=name,
-                        wavelength=excitation_wavelength,
-                    ))
+                    light_source_configs.append(
+                        LaserConfig(
+                            device_name=name,
+                            wavelength=excitation_wavelength,
+                        )
+                    )
 
         # Use the filter index to find the corresponding fluorescence filter
         filter_wheel_index = channel_data.get("filter_wheel_index")

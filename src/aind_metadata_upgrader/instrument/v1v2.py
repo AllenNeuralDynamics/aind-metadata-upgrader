@@ -28,7 +28,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_light_source,
     upgrade_objective,
 )
-from aind_data_schema.utils.validators import recursive_get_all_names
+from aind_metadata_upgrader.utils.validators import recursive_get_all_names
 
 
 class InstrumentUpgraderV1V2(CoreUpgrader):
@@ -238,7 +238,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
             device = Device(
                 name=name,
                 notes=(
-                    "(v1v2 upgrade) This device was not found in the components list, "
+                    "(v1v2 upgrade instrument) This device was not found in the components list, "
                     "but is referenced in connections."
                 ),
             )
