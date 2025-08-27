@@ -47,10 +47,6 @@ class TestProcessingV1V2(unittest.TestCase):
 
     def test_upgrade_with_analyses_duplicate_names(self):
         """Test upgrade with analyses having duplicate names - covers lines 126-138"""
-        # Reset the global names dictionary for this test
-        from aind_metadata_upgrader.processing.v1v2 import names
-
-        names.clear()
 
         data = {
             "processing_pipeline": {
@@ -92,10 +88,6 @@ class TestProcessingV1V2(unittest.TestCase):
 
     def test_upgrade_with_analyses_complex_duplicate_names(self):
         """Test upgrade with analyses having complex duplicate names - covers lines 132-135"""
-        # Reset the global names dictionary for this test
-        from aind_metadata_upgrader.processing.v1v2 import names
-
-        names.clear()
 
         # Create a scenario where processing creates "Analysis_1", "Analysis_2",
         # and then analyses has "Analysis" which should become "Analysis_3"
