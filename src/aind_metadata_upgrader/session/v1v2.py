@@ -866,9 +866,13 @@ class SessionV1V2(CoreUpgrader):
         """Upgrade stimulus epoch from v1 to v2"""
         # Convert stimulus modalities
         stimulus_modalities = epoch.get("stimulus_modalities", [])
-        if not stimulus_modalities or stimulus_modalities == ["None"]:
-            if "spontaneous" in epoch.get("stimulus_name", "").lower():
+        if not stimulus_modalities or stimulus_modalities == ["None"] or stimulus_modalities == [None]:
+            stimulus_name = epoch.get("stimulus_name", "").lower()
+            if "spontaneous" in stimulus_name:
                 stimulus_modalities = [StimulusModality.NO_STIMULUS]
+            if "the random reward stimulus" in stimulus_name:
+                # This is the dynamic foraging task
+                stimulus_modalities = [StimulusModality.AUDITORY]
 
         performance_metrics = self._create_performance_metrics(epoch)
 
