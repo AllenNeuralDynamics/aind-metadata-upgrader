@@ -253,7 +253,7 @@ class SessionV1V2(CoreUpgrader):
         fiber_name = fiber_connection.get("fiber_name", "unknown")
         channel_data = fiber_connection.get("channel", {})
 
-        if channel_data["channel_name"] == "disconnected":
+        if not channel_data or channel_data["channel_name"] == "disconnected":
             return None, []
 
         # Deal with the detector
