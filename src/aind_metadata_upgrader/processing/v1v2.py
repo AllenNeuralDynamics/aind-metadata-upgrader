@@ -6,11 +6,13 @@ from aind_data_schema.core.processing import DataProcess
 
 from aind_metadata_upgrader.base import CoreUpgrader
 
-names = {}
-
 
 class ProcessingV1V2(CoreUpgrader):
     """Upgrade processing from v1.4 to v2.0"""
+
+    def __init__(self):
+        super().__init__()
+        self.names = {}
 
     def _create_code_object(self, process_data: dict, parameters=None) -> Code:
         """Create a Code object from V1 process data"""
@@ -28,11 +30,11 @@ class ProcessingV1V2(CoreUpgrader):
     def _get_process_name(self, name: str) -> str:
         """Get a name for this process, append 1/2/3 for duplicates"""
 
-        if name not in names:
-            names[name] = 1
+        if name not in self.names:
+            self.names[name] = 1
         else:
-            names[name] += 1
-        return f"{name}_{names[name]}"
+            self.names[name] += 1
+        return f"{name}_{self.names[name]}"
 
     def _convert_v1_process_to_v2(self, process_data: dict, stage: str) -> dict:
         """Convert a V1 process/analysis to V2 DataProcess format"""
