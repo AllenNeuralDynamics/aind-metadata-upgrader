@@ -168,7 +168,6 @@ class DataDescriptionV1V2(CoreUpgrader):
         **kwargs
         ) -> dict:
         """Build the output dictionary with all upgraded fields"""
-        print(source_data)
         return {
             "schema_version": schema_version,
             "license": data.get("license", License.CC_BY_40),
@@ -247,7 +246,6 @@ class DataDescriptionV1V2(CoreUpgrader):
 
         # Upgrade the new source_data field for 2.0
         source_data = self._upgrade_source_data(data)
-        print(source_data)
 
         # Build and return the upgraded output
         return self._build_output_dict(
