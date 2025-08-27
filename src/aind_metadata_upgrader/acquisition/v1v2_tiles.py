@@ -233,7 +233,6 @@ def upgrade_immersion(data: dict) -> dict:
         else:
             # Check if it's a correct enum value but with wrong capitalization
             medium_lower = data["medium"].lower()
-            print(medium_lower)
             # Try to match against all enum values (case-insensitive)
             for enum_member in ImmersionMedium:
                 print(enum_member.value.lower())

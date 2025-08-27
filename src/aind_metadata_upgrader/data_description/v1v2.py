@@ -160,8 +160,15 @@ class DataDescriptionV1V2(CoreUpgrader):
             investigators.append(Person(name="unknown"))
         return investigators
 
-    def _build_output_dict(self, data: dict, schema_version: str, **kwargs) -> dict:
+    def _build_output_dict(
+        self,
+        data: dict,
+        schema_version: str,
+        source_data: Optional[list] = None,
+        **kwargs
+        ) -> dict:
         """Build the output dictionary with all upgraded fields"""
+        print(source_data)
         return {
             "schema_version": schema_version,
             "license": data.get("license", License.CC_BY_40),
@@ -178,7 +185,7 @@ class DataDescriptionV1V2(CoreUpgrader):
             "restrictions": data.get("restrictions", None),
             "modalities": kwargs.get("modalities"),
             "data_summary": data.get("data_summary", None),
-            "source_data": kwargs.get("source_data"),
+            "source_data": source_data,
             "object_type": "Data description",
         }
 
@@ -240,10 +247,12 @@ class DataDescriptionV1V2(CoreUpgrader):
 
         # Upgrade the new source_data field for 2.0
         source_data = self._upgrade_source_data(data)
+        print(source_data)
 
         # Build and return the upgraded output
         return self._build_output_dict(
             data,
+            source_data=source_data,
             schema_version=schema_version,
             funding_source=funding_source,
             creation_time=creation_time,
@@ -252,5 +261,4 @@ class DataDescriptionV1V2(CoreUpgrader):
             project_name=project_name,
             investigators=investigators,
             modalities=modalities,
-            source_data=source_data,
         )
