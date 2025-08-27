@@ -215,18 +215,31 @@ MEDIUM_MAP = {
     "EasyIndex": ImmersionMedium.EASYINDEX,
     "0.05x SSC": ImmersionMedium.WATER,
     "ACB": ImmersionMedium.ACB,
+    "Ethyl cinnamate": ImmersionMedium.ECI,
 }
 
 
 def upgrade_immersion(data: dict) -> dict:
     """Upgrade an immersion dictionary to the new Immersion schema"""
 
-    if "medium" in data and any(key in data["medium"] for key in MEDIUM_MAP.keys()):
-        # Find the matching medium key and update it
-        for old_key, new_medium in MEDIUM_MAP.items():
-            if old_key in data["medium"]:
-                data["medium"] = new_medium
-                break
+    if "medium" in data:
+        # First check for old string mappings
+        if any(key in data["medium"] for key in MEDIUM_MAP.keys()):
+            # Find the matching medium key and update it
+            for old_key, new_medium in MEDIUM_MAP.items():
+                if old_key in data["medium"]:
+                    data["medium"] = new_medium
+                    break
+        else:
+            # Check if it's a correct enum value but with wrong capitalization
+            medium_lower = data["medium"].lower()
+            print(medium_lower)
+            # Try to match against all enum values (case-insensitive)
+            for enum_member in ImmersionMedium:
+                print(enum_member.value.lower())
+                if medium_lower in enum_member.value.lower():
+                    data["medium"] = enum_member.value
+                    break
 
     return Immersion(**data).model_dump()
 
