@@ -865,6 +865,7 @@ def upgrade_targeted_structure(data: dict | str) -> dict:
     """Upgrade targeted structure, especially convert strings to structure objects"""
 
     if isinstance(data, str):
+        data = data.strip()
         if hasattr(CCFv3, data.upper()):
             return getattr(CCFv3, data.upper()).model_dump()
         if "none" in data.lower():

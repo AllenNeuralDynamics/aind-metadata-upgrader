@@ -195,7 +195,10 @@ def upgrade_mouse_platform(data: dict) -> tuple[dict, list]:
 
     # Determine device type if not specified
     if "device_type" not in data:
-        if "encoder_output" in data:
+        if "platform_type" in data and data["platform_type"]:
+            data["device_type"] = data["platform_type"]
+            remove(data, "platform_type")
+        elif "encoder_output" in data:
             data["device_type"] = "Wheel"
         elif "diameter" in data:
             data["device_type"] = "Tube"
