@@ -93,7 +93,7 @@ class TestQCPortalMetricUpgrade(unittest.TestCase):
         self.assertEqual(result, {
             "type": "checkbox",
             "options": ["a", "b", "c"],
-            "value": []
+            "value": ["a"]
         })
 
 

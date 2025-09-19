@@ -28,8 +28,12 @@ def upgrade_qcportal_metric(data: Optional[dict]) -> Optional[dict]:
             data["value"] = value
 
         if not all(v in options for v in value):
-            print(f"(Warning) Invalid checkbox values found: {value}, options: {options}, replaced with empty list")
-            data["value"] = []
+            # Remove invalid values
+            new_values = []
+            for v in value:
+                if v in options:
+                    new_values.append(v)
+            data["value"] = new_values
 
     return data
 
