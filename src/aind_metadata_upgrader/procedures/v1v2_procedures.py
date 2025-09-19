@@ -50,11 +50,11 @@ from aind_metadata_upgrader.rig.v1v2_devices import upgrade_fiber_probe
 from aind_metadata_upgrader.utils.v1v2_utils import remove
 
 coordinate_system_required = False
-measured_coordinates = []
 
 
 def retrieve_bl_distance(data: dict) -> dict:
     """Pull out the Bregma/Lambda distance data"""
+    measured_coordinates = []
 
     if "bregma_to_lambda_distance" in data and data["bregma_to_lambda_distance"]:
         # Convert bregma/lambda distance into measured_coordinates
@@ -91,7 +91,7 @@ def retrieve_bl_distance(data: dict) -> dict:
     remove(data, "bregma_to_lambda_distance")
     remove(data, "bregma_to_lambda_unit")
 
-    return data
+    return data, measured_coordinates
 
 
 def upgrade_hemisphere_craniotomy(data: dict) -> dict:
@@ -209,7 +209,7 @@ def upgrade_craniotomy(data: dict) -> dict:
                 "Expected one of the CraniotomyType members."
             )
 
-    upgraded_data = retrieve_bl_distance(upgraded_data)
+    upgraded_data, measured_coordinates = retrieve_bl_distance(upgraded_data)
 
     if "craniotomy_coordinates_ml" in upgraded_data and upgraded_data["craniotomy_coordinates_ml"]:
         upgraded_data = upgrade_coordinate_craniotomy(upgraded_data)
@@ -226,7 +226,7 @@ def upgrade_craniotomy(data: dict) -> dict:
         upgraded_data["protocol_id"] = None
 
     try:
-        return Craniotomy(**upgraded_data).model_dump()
+        return Craniotomy(**upgraded_data).model_dump(), measured_coordinates
     except Exception as e:
         print(data)
         raise e

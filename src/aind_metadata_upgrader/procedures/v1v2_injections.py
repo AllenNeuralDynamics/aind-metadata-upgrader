@@ -23,6 +23,8 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_targeted_structure,
 )
 
+from aind_metadata_upgrader.procedures.v1v2_procedures import retrieve_bl_distance
+
 
 def upgrade_viral_material(data: dict) -> dict:
     """Upgrade viral material"""
@@ -177,10 +179,6 @@ def upgrade_generic_injection(data: dict) -> dict:
 
 def upgrade_nanoject_injection(data: dict) -> dict:
     """Upgrade NanojectInjection procedure from V1 to V2"""
-    # Import retrieve_bl_distance from the procedures module to avoid circular imports
-    from aind_metadata_upgrader.procedures.v1v2_procedures import (
-        retrieve_bl_distance,
-    )
 
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
@@ -198,7 +196,7 @@ def upgrade_nanoject_injection(data: dict) -> dict:
 
     data = upgrade_injection_coordinates(data)
 
-    data = retrieve_bl_distance(data)
+    data, measured_coordinates = retrieve_bl_distance(data)
 
     relative_position = []
     if "injection_hemisphere" in data and data["injection_hemisphere"] is not None:
@@ -230,13 +228,15 @@ def upgrade_nanoject_injection(data: dict) -> dict:
         coordinates=data.get("coordinates", []),
     )
 
-    return injection.model_dump()
+    return injection.model_dump(), measured_coordinates
 
 
 def upgrade_iontophoresis_injection(data: dict) -> dict:
     """Upgrade IontophoresisInjection procedure from V1 to V2"""
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
+    
+    raise NotImplementedError("Iontophoresis injection upgrade not implemented yet")
 
     return BrainInjection(**upgraded_data).model_dump()
 
@@ -245,6 +245,8 @@ def upgrade_icv_injection(data: dict) -> dict:
     """Upgrade IntraCerebellarVentricleInjection procedure from V1 to V2"""
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
+    
+    raise NotImplementedError("ICV injection upgrade not implemented yet")
 
     return BrainInjection(**upgraded_data).model_dump()
 
@@ -253,6 +255,8 @@ def upgrade_icm_injection(data: dict) -> dict:
     """Upgrade IntraCisternalMagnaInjection procedure from V1 to V2"""
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
+    
+    raise NotImplementedError("ICM injection upgrade not implemented yet")
 
     return BrainInjection(**upgraded_data).model_dump()
 

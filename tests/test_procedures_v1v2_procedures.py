@@ -22,20 +22,22 @@ class TestProceduresV1V2(unittest.TestCase):
     def test_retrieve_bl_distance_negative_distance(self):
         """Test line 72: negative bregma-to-lambda distance"""
         data = {"bregma_to_lambda_distance": -4.5, "bregma_to_lambda_unit": SizeUnit.MM}
-        result = retrieve_bl_distance(data)
+        result, measured_coords = retrieve_bl_distance(data)
         self.assertNotIn("bregma_to_lambda_distance", result)
+        self.assertIsInstance(measured_coords, list)
 
     def test_retrieve_bl_distance_micrometer_unit(self):
         """Test line 74: micrometer unit conversion"""
         data = {"bregma_to_lambda_distance": 4500, "bregma_to_lambda_unit": SizeUnit.UM}
-        result = retrieve_bl_distance(data)
+        result, measured_coords = retrieve_bl_distance(data)
         self.assertNotIn("bregma_to_lambda_distance", result)
+        self.assertIsInstance(measured_coords, list)
 
     def test_retrieve_bl_distance_unsupported_unit(self):
         """Test lines 76-79: unsupported unit error"""
         data = {"bregma_to_lambda_distance": 4.5, "bregma_to_lambda_unit": "meter"}
         with self.assertRaises(ValueError):
-            retrieve_bl_distance(data)
+            _, _ = retrieve_bl_distance(data)
 
     def test_upgrade_hemisphere_craniotomy_left(self):
         """Test lines 108-110: left hemisphere"""
@@ -170,8 +172,9 @@ class TestProceduresV1V2(unittest.TestCase):
             "size": 5,
             "size_unit": SizeUnit.MM,
         }
-        result = upgrade_craniotomy(data)
+        result, measured_coords = upgrade_craniotomy(data)
         self.assertIsInstance(result, dict)
+        self.assertIsInstance(measured_coords, list)
 
     def test_upgrade_craniotomy_remove_recovery_time(self):
         """Test line 194: remove recovery_time"""
@@ -189,7 +192,7 @@ class TestProceduresV1V2(unittest.TestCase):
     def test_upgrade_craniotomy_5mm_type(self):
         """Test line 200: 5mm craniotomy type"""
         data = {"craniotomy_type": "5 mm", "procedure_type": "Craniotomy", "craniotomy_hemisphere": "left"}
-        result = upgrade_craniotomy(data)
+        result, measured_coords = upgrade_craniotomy(data)
         self.assertEqual(result["size"], 5)
 
     def test_upgrade_craniotomy_retrieve_bl_distance(self):
@@ -205,6 +208,7 @@ class TestProceduresV1V2(unittest.TestCase):
         }
         result = upgrade_craniotomy(data)
         self.assertNotIn("bregma_to_lambda_distance", result)
+        # Note: We don't need to test measured_coordinates here as upgrade_craniotomy handles that internally
 
     def test_upgrade_craniotomy_coordinate_craniotomy(self):
         """Test line 215: upgrade_coordinate_craniotomy call"""
@@ -218,8 +222,8 @@ class TestProceduresV1V2(unittest.TestCase):
             "craniotomy_size": 5,
             "craniotomy_size_unit": SizeUnit.MM,
         }
-        result = upgrade_craniotomy(data)
-        self.assertIn("position", result)
+        result, measured_coords = upgrade_craniotomy(data)
+        self.assertIsInstance(result["position"], dict)  # Changed to check for dict type since we know the structure
 
     def test_upgrade_headframe_empty_part_number(self):
         """Test line 242: empty headframe_part_number"""

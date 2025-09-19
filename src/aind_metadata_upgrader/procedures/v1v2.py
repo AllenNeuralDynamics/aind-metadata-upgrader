@@ -128,7 +128,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         # Map V1 procedure types to their upgrade functions
 
         if procedure_type in PROC_UPGRADE_MAP:
-            return PROC_UPGRADE_MAP[procedure_type](data)
+            return PROC_UPGRADE_MAP[procedure_type](data)            
         else:
             raise ValueError(f"Unsupported procedure type: {procedure_type}")
 
@@ -147,6 +147,12 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             data["procedures"] = []
             for procedure in procedures:
                 upgraded = self._upgrade_procedure(procedure)
+                if isinstance(upgraded, tuple):
+                    upgraded, measured_coordinates = upgraded
+                    if measured_coordinates:
+                        if "measured_coordinates" not in data:
+                            data["measured_coordinates"] = []
+                        data["measured_coordinates"].extend(measured_coordinates)
                 if isinstance(upgraded, list):
                     data["procedures"].extend(upgraded)
                 else:
@@ -165,6 +171,13 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             if "start_date" not in data or not data["start_date"]:
                 # If start_date is not provided, set it to today's date
                 data["start_date"] = date(1970, 1, 1)
+
+            # Replace list of measured_coordinate dicts with a single dictionary
+            if "measured_coordinates" in data:
+                coord_list = data["measured_coordinates"]
+                data["measured_coordinates"] = {}
+                for coord in coord_list:
+                    data["measured_coordinates"].update(coord)
 
             surgery = Surgery(
                 **data,
