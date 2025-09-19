@@ -7,16 +7,45 @@ from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import remove
 
 
+def upgrade_qcportal_metric(data: Optional[dict]) -> Optional[dict]:
+    """Upgrade custom qcportal-schema metrics, fixing their values if needed"""
+
+    if not data or not isinstance(data, dict) or "type" not in data:
+        return data  # Not a qcportal metric, nothing to do
+
+    if data["type"] == "dropdown":
+        # Ensure value is contained in options
+        options = data.get("options", [])
+        value = data.get("value", None)
+        if value not in options:
+            data["value"] = None
+    elif data["type"] == "checkbox":
+        # Ensure value is a list and all values are in options
+        options = data.get("options", [])
+        value = data.get("value", [])
+        if not isinstance(value, list):
+            value = [value]
+            data["value"] = value
+
+        if not all(v in options for v in value):
+            print(f"(Warning) Invalid checkbox values found: {value}, options: {options}, replaced with empty list")
+            data["value"] = []
+
+    return data
+
+
 def upgrade_metric(data: dict, modality: dict, stage: str, tags: list) -> dict:
     """Upgrade a metric to the new format"""
     if not isinstance(data, dict):
         raise ValueError("Data must be a dictionary")
 
+    value = upgrade_qcportal_metric(data.get("value", None))
+
     metric = QCMetric(
         name=data.get("name", "unknown"),
         modality=modality,
         stage=stage,
-        value=data.get("value", None),
+        value=value,
         status_history=data.get("status_history", []),
         description=data.get("description", None),
         reference=data.get("reference", None),
