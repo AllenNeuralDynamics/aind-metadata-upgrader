@@ -1,7 +1,8 @@
 """<=v1.4 to v2.0 quality control upgrade functions"""
 
+from datetime import datetime
 from typing import Optional
-from aind_data_schema.core.quality_control import CurationMetric, QCMetric
+from aind_data_schema.core.quality_control import CurationMetric, QCMetric, CurationHistory
 
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import remove
@@ -62,11 +63,17 @@ def upgrade_metric(data: dict, modality: dict, stage: str, tags: list) -> dict:
 
 def upgrade_curation_metric(data: dict, modality: dict, stage: str, tags: list) -> dict:
     """Upgrade a curation metric to the new format"""
-    if not type == "curation":
-        raise ValueError(f"Expected type 'curation', got {data.get('type', 'unknown')}")
 
     curations = data["value"]["curations"]
     curation_history = data["value"].get("curation_history", [])
+
+    if len(curation_history) == 0:
+        curation_history.append(
+            CurationHistory(
+                curator="unknown",
+                timestamp=datetime.now().isoformat()
+            )
+        )
 
     metric = CurationMetric(
         name=data.get("name", "unknown"),
@@ -78,6 +85,7 @@ def upgrade_curation_metric(data: dict, modality: dict, stage: str, tags: list) 
         reference=data.get("reference", None),
         evaluated_assets=data.get("evaluated_assets", []),
         type="unknown",
+        status_history=data.get("status_history", []),
         curation_history=curation_history,
     )
 
@@ -107,7 +115,7 @@ class QCUpgraderV1V2(CoreUpgrader):
             default_grouping.append(evaluation["name"])  # Use original evaluations as default grouping
 
             for metric in evaluation.get("metrics", []):
-                if "type" in metric:
+                if isinstance(metric.get("value"), dict) and metric.get("value", {}).get("type", None) == "curation":
                     # CurationMetric, we'll deal with this in a second
                     metric_data = upgrade_curation_metric(
                         data=metric,
