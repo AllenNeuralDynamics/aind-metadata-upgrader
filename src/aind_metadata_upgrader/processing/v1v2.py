@@ -78,16 +78,29 @@ class ProcessingV1V2(CoreUpgrader):
 
         return v2_process.model_dump()
 
+    def _upgrade_data_process(self, process_data: dict, processor_name: str, v2_data: dict) -> dict:
+        """Upgrade a single data process from V1 to V2 format"""
+        v2_process = self._convert_v1_process_to_v2(process_data, "Processing")
+        # Set experimenter to processor from pipeline
+        v2_process["experimenters"] = [processor_name]
+        # Set pipeline name if pipeline exists
+        if v2_data["pipelines"]:
+            v2_process["pipeline_name"] = "Processing Pipeline"
+        
+        return v2_process
+
     def _convert_pipeline_processes(self, pipeline_processes: list, processor_name: str, v2_data: dict) -> None:
         """Convert processing pipeline processes to V2 format"""
         for process_data in pipeline_processes:
-            v2_process = self._convert_v1_process_to_v2(process_data, "Processing")
-            # Set experimenter to processor from pipeline
-            v2_process["experimenters"] = [processor_name]
-            # Set pipeline name if pipeline exists
-            if v2_data["pipelines"]:
-                v2_process["pipeline_name"] = "Processing Pipeline"
-            v2_data["data_processes"].append(v2_process)
+
+            if isinstance(process_data, list):
+                # Handle case where process_data is actually a list of processes
+                for sub_process in process_data:
+                    v2_process = self._upgrade_data_process(sub_process, processor_name, v2_data)
+                    v2_data["data_processes"].append(v2_process)
+            else:
+                v2_process = self._upgrade_data_process(process_data, processor_name, v2_data)
+                v2_data["data_processes"].append(v2_process)
 
     def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the processing to v2.0"""

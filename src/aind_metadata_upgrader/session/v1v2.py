@@ -862,9 +862,10 @@ class SessionV1V2(CoreUpgrader):
             )
         return code.model_dump() if code else None
 
-    def _upgrade_stimulus_epoch(self, epoch: Dict) -> Dict:
+    def _upgrade_stimulus_epoch(self, epoch: dict) -> dict:
         """Upgrade stimulus epoch from v1 to v2"""
         # Convert stimulus modalities
+        print(epoch)
         stimulus_modalities = epoch.get("stimulus_modalities", [])
         if not stimulus_modalities or stimulus_modalities == ["None"] or stimulus_modalities == [None]:
             stimulus_name = epoch.get("stimulus_name", "").lower()
@@ -902,10 +903,34 @@ class SessionV1V2(CoreUpgrader):
         # Create code object if script is present
         code = self._create_code_object(epoch)
 
+        stimulus_name = epoch.get("stimulus_name")
+        if not stimulus_name:
+            # Try to get from inside the stimulus itself
+            stimulus_name = epoch.get("stimulus", {}).get("stimulus_name", "Unknown Stimulus")
+
+        # If we have an old-style "stimulus" object, move this into code creating it if needed
+        if "stimulus" in epoch and epoch["stimulus"]:
+            stimulus_data = epoch["stimulus"]
+            if not code:
+                # Create a basic code object from this
+                code = Code(
+                    name="Code",
+                    version="unknown",
+                    url="unknown",
+                    parameters=stimulus_data,
+                ).model_dump()
+            else:
+                # Merge parameters if possible
+                if stimulus_data.get("parameters"):
+                    if code.get("parameters"):
+                        code["parameters"] = code["parameters"] | stimulus_data["parameters"]
+                    else:
+                        code["parameters"] = stimulus_data["parameters"]
+
         return StimulusEpoch(
             stimulus_start_time=epoch.get("stimulus_start_time"),
             stimulus_end_time=epoch.get("stimulus_end_time"),
-            stimulus_name=epoch.get("stimulus_name", "Unknown Stimulus"),
+            stimulus_name=stimulus_name,
             stimulus_modalities=stimulus_modalities,
             performance_metrics=performance_metrics,
             code=code,
@@ -1001,6 +1026,7 @@ class SessionV1V2(CoreUpgrader):
             data_streams=upgraded_data_streams,
             stimulus_epochs=upgraded_stimulus_epochs,
             subject_details=subject_details,
+            ethics_review_id=[session_data.get("iacuc_protocol")],
         )
 
         return acquisition.model_dump()

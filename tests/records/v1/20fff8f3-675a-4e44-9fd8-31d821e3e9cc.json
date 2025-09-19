@@ -1,0 +1,1762 @@
+{
+    "_id": "20fff8f3-675a-4e44-9fd8-31d821e3e9cc",
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "schema_version": "1.1.1",
+    "name": "ecephys_715339_2024-05-08_16-09-35_nwb_2025-07-16_15-27-40",
+    "created": "2025-07-16T22:30:45Z",
+    "last_modified": "2025-09-18T23:40:02.867Z",
+    "location": "s3://codeocean-s3datasetsbucket-1u41qdg42ur9/a11c1e74-9da1-4242-92ad-927f05bbe3fe",
+    "metadata_status": "Invalid",
+    "external_links": {
+        "Code Ocean": [
+            "a11c1e74-9da1-4242-92ad-927f05bbe3fe"
+        ]
+    },
+    "subject": {
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": {
+            "breeding_group": "Drd1a-Cre(ND)",
+            "maternal_genotype": "Drd1a-Cre/wt",
+            "maternal_id": "699586",
+            "paternal_genotype": "wt/wt",
+            "paternal_id": "704778"
+        },
+        "date_of_birth": "2023-12-04",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "genotype": "Drd1a-Cre/wt",
+        "housing": null,
+        "notes": null,
+        "restrictions": null,
+        "rrid": null,
+        "schema_version": "0.5.5",
+        "sex": "Female",
+        "source": {
+            "abbreviation": "AI",
+            "name": "Allen Institute",
+            "registry": {
+                "abbreviation": "ROR",
+                "name": "Research Organization Registry"
+            },
+            "registry_identifier": "03cpe7c52"
+        },
+        "species": {
+            "abbreviation": null,
+            "name": "Mus musculus",
+            "registry": {
+                "abbreviation": "NCBI",
+                "name": "National Center for Biotechnology Information"
+            },
+            "registry_identifier": "10090"
+        },
+        "subject_id": "715339",
+        "wellness_reports": []
+    },
+    "data_description": {
+        "creation_time": "2024-05-08T16:09:35-07:00",
+        "data_level": "raw",
+        "data_summary": "optotagging cell types for creation of ground truth data",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "funding_source": [
+            {
+                "fundee": "Josh Siegle",
+                "funder": {
+                    "abbreviation": "NINDS",
+                    "name": "National Institute of Neurological Disorders and Stroke",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "01s5ya894"
+                },
+                "grant_number": "U01NS133760"
+            }
+        ],
+        "group": "ephys",
+        "institution": {
+            "abbreviation": "AIND",
+            "name": "Allen Institute for Neural Dynamics",
+            "registry": {
+                "abbreviation": "ROR",
+                "name": "Research Organization Registry"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "investigators": [
+            {
+                "abbreviation": null,
+                "name": "Josh Siegle",
+                "registry": {
+                    "abbreviation": "ORCID",
+                    "name": "Open Researcher and Contributor ID"
+                },
+                "registry_identifier": "0000-0002-7736-4844"
+            },
+            {
+                "abbreviation": null,
+                "name": "Anna Lakunina",
+                "registry": {
+                    "abbreviation": "ORCID",
+                    "name": "Open Researcher and Contributor ID"
+                },
+                "registry_identifier": "0000-0003-2628-8834"
+            }
+        ],
+        "label": null,
+        "license": "CC-BY-4.0",
+        "modality": [
+            {
+                "abbreviation": "ecephys",
+                "name": "Extracellular electrophysiology"
+            },
+            {
+                "abbreviation": "behavior-videos",
+                "name": "Behavior videos"
+            }
+        ],
+        "name": "ecephys_715339_2024-05-08_16-09-35",
+        "platform": {
+            "abbreviation": "ecephys",
+            "name": "Electrophysiology platform"
+        },
+        "project_name": "Cell Type LUT",
+        "related_data": [],
+        "restrictions": null,
+        "schema_version": "1.0.0",
+        "subject_id": "715339"
+    },
+    "procedures": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "notes": null,
+        "schema_version": "0.13.3",
+        "specimen_procedures": [],
+        "subject_id": "715339",
+        "subject_procedures": [
+            {
+                "anaesthesia": null,
+                "animal_weight_post": null,
+                "animal_weight_prior": null,
+                "experimenter_full_name": "30251",
+                "iacuc_protocol": "2109",
+                "notes": null,
+                "procedure_type": "Surgery",
+                "procedures": [
+                    {
+                        "output_specimen_ids": [
+                            "715339"
+                        ],
+                        "procedure_type": "Perfusion",
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bg5vjy66"
+                    }
+                ],
+                "protocol_id": "dx.doi.org/10.17504/protocols.io.kqdg392o7g25/v1",
+                "start_date": "2024-05-10",
+                "weight_unit": "gram",
+                "workstation_id": null
+            }
+        ]
+    },
+    "session": {
+        "animal_weight_post": null,
+        "animal_weight_prior": null,
+        "calibrations": [],
+        "data_streams": [
+            {
+                "active_mouse_platform": false,
+                "camera_names": [
+                    "Face Camera Assembly"
+                ],
+                "daq_names": [
+                    "Harp Behavior",
+                    "NPopto Basestation"
+                ],
+                "detectors": [],
+                "ephys_modules": [
+                    {
+                        "angle_unit": "degrees",
+                        "arc_angle": "-15",
+                        "assembly_name": "Ephys assembly 1",
+                        "calibration_date": null,
+                        "coordinate_transform": null,
+                        "ephys_probes": [
+                            {
+                                "name": "Probe A",
+                                "other_targeted_structures": []
+                            }
+                        ],
+                        "implant_hole_number": null,
+                        "manipulator_coordinates": {
+                            "unit": "micrometer",
+                            "x": "8182.0",
+                            "y": "8785.0",
+                            "z": "10147.0"
+                        },
+                        "module_angle": "25",
+                        "notes": null,
+                        "primary_targeted_structure": "Striatum and Gpe",
+                        "rotation_angle": "0",
+                        "targeted_ccf_coordinates": []
+                    }
+                ],
+                "fiber_connections": [],
+                "fiber_modules": [],
+                "light_sources": [],
+                "manipulator_modules": [],
+                "mouse_platform_name": "Tube",
+                "notes": null,
+                "ophys_fovs": [],
+                "slap_fovs": null,
+                "stack_parameters": null,
+                "stick_microscopes": [
+                    {
+                        "angle_unit": "degrees",
+                        "arc_angle": "-180",
+                        "assembly_name": "Probe Camera 1",
+                        "calibration_date": null,
+                        "coordinate_transform": null,
+                        "module_angle": "-180",
+                        "notes": "did not record angles, did not calibrate.",
+                        "rotation_angle": "0"
+                    },
+                    {
+                        "angle_unit": "degrees",
+                        "arc_angle": "-180",
+                        "assembly_name": "Probe Camera 2",
+                        "calibration_date": null,
+                        "coordinate_transform": null,
+                        "module_angle": "-180",
+                        "notes": "Did not record angles, did not calibrate",
+                        "rotation_angle": "0"
+                    },
+                    {
+                        "angle_unit": "degrees",
+                        "arc_angle": "-180",
+                        "assembly_name": "Probe Camera 3",
+                        "calibration_date": null,
+                        "coordinate_transform": null,
+                        "module_angle": "-180",
+                        "notes": "Did not record angles, did not calibrate",
+                        "rotation_angle": "0"
+                    }
+                ],
+                "stimulus_device_names": [
+                    "Oxxius Blue Laser",
+                    "Oxxius Red Laser"
+                ],
+                "stream_end_time": "2024-05-08T16:37:43-07:00",
+                "stream_modalities": [
+                    {
+                        "abbreviation": "ecephys",
+                        "name": "Extracellular electrophysiology"
+                    },
+                    {
+                        "abbreviation": "behavior-videos",
+                        "name": "Behavior videos"
+                    }
+                ],
+                "stream_start_time": "2024-05-08T16:09:35-07:00"
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/session.py",
+        "experimenter_full_name": [
+            "Anna Lakunina",
+            "Meghan Olsen",
+            "Josh Siegle"
+        ],
+        "iacuc_protocol": "2109",
+        "maintenance": [],
+        "notes": "nan",
+        "protocol_id": [],
+        "reward_consumed_total": null,
+        "reward_consumed_unit": "microliter",
+        "reward_delivery": null,
+        "rig_id": "323_EPHYS1_OPTO_2024-03-19",
+        "schema_version": "0.1.11",
+        "session_end_time": "2024-05-08T16:37:43-07:00",
+        "session_start_time": "2024-05-08T16:09:35-07:00",
+        "session_type": "Optotagging",
+        "stimulus_epochs": [
+            {
+                "stimulus": {
+                    "baseline_duration": "1200",
+                    "baseline_duration_unit": "second",
+                    "fixed_pulse_train_interval": false,
+                    "notes": null,
+                    "number_pulse_trains": 5,
+                    "other_parameters": {},
+                    "pulse_frequency": 20,
+                    "pulse_frequency_unit": "hertz",
+                    "pulse_shape": "Ramp",
+                    "pulse_train_duration": "0.25",
+                    "pulse_train_duration_unit": "second",
+                    "pulse_train_interval": null,
+                    "pulse_train_interval_unit": "second",
+                    "pulse_width": 10,
+                    "pulse_width_unit": "millisecond",
+                    "stimulus_name": "Laser pulses",
+                    "stimulus_type": "Opto Stimulation"
+                },
+                "stimulus_end_time": "2024-05-08T16:37:32-07:00",
+                "stimulus_start_time": "2024-05-08T16:29:45"
+            }
+        ],
+        "subject_id": "715339",
+        "weight_unit": "gram"
+    },
+    "rig": {
+        "additional_devices": [],
+        "calibrations": [
+            {
+                "calibration_date": "2024-03-14T00:00:00",
+                "description": "Laser power calibration",
+                "device_name": "Red Oxxius Laser",
+                "input": {
+                    "voltage (V)": [
+                        0.108,
+                        0.175,
+                        0.243,
+                        0.311,
+                        0.376,
+                        0.447,
+                        0.506,
+                        0.579,
+                        0.639,
+                        0.706,
+                        1.021,
+                        1.34,
+                        1.66,
+                        1.99,
+                        2.62,
+                        3.21,
+                        4.24
+                    ]
+                },
+                "notes": null,
+                "output": {
+                    "power (mW)": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        15,
+                        20,
+                        25,
+                        30,
+                        40,
+                        50,
+                        60
+                    ]
+                }
+            },
+            {
+                "calibration_date": "2024-01-18T00:00:00",
+                "description": "Laser power calibration",
+                "device_name": "Blue Oxxius Laser",
+                "input": {
+                    "voltage (V)": [
+                        0.145,
+                        0.254,
+                        0.358,
+                        0.46,
+                        0.561,
+                        0.659,
+                        0.774,
+                        0.867,
+                        0.955,
+                        1.051,
+                        1.51,
+                        1.91,
+                        2.3,
+                        2.69,
+                        3.38,
+                        4,
+                        4.595
+                    ]
+                },
+                "notes": null,
+                "output": {
+                    "power (mW)": [
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8,
+                        9,
+                        10,
+                        15,
+                        20,
+                        25,
+                        30,
+                        40,
+                        50,
+                        60
+                    ]
+                }
+            },
+            {
+                "calibration_date": "2024-02-12T00:00:00",
+                "description": "Laser power calibration",
+                "device_name": "Red Coherent Laser",
+                "input": {
+                    "voltage (V)": [
+                        0.032,
+                        0.045,
+                        0.135,
+                        0.313,
+                        0.401,
+                        0.837,
+                        1.7,
+                        2.588,
+                        3.405,
+                        5
+                    ]
+                },
+                "notes": null,
+                "output": {
+                    "power (mW)": [
+                        0.4,
+                        1,
+                        2,
+                        4,
+                        5,
+                        10,
+                        20,
+                        30,
+                        40,
+                        58.27
+                    ]
+                }
+            }
+        ],
+        "cameras": [
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "W10DT713669",
+                    "cooling": "None",
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "max_frame_rate": "522",
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "name": "Face Camera",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inches",
+                    "sensor_height": 540,
+                    "sensor_width": 720,
+                    "serial_number": "23022709",
+                    "size_unit": "pixel"
+                },
+                "camera_assembly_name": "Face Camera Assembly",
+                "camera_target": "Face side",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "25",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Edmund Optics",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "max_aperture": "f/1.4",
+                    "model": "M2514-MP2",
+                    "name": "Camera lens",
+                    "notes": null,
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "position": null
+            }
+        ],
+        "ccf_coordinate_transform": null,
+        "daqs": [
+            {
+                "additional_settings": {},
+                "channels": [
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "Face Camera",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    }
+                ],
+                "computer_name": "W10DT713669",
+                "core_version": "2.1",
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Behavior",
+                    "whoami": 1216
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "OEPS",
+                    "name": "Open Ephys Production Site",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "007rkz355"
+                },
+                "model": null,
+                "name": "Harp Behavior",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "basestation_firmware_version": "2.0168",
+                "bsc_firmware_version": "1.02",
+                "channels": [],
+                "computer_name": "W10DT713668",
+                "data_interface": "PXI",
+                "device_type": "Neuropixels basestation",
+                "firmware_version": null,
+                "hardware_version": null,
+                "manufacturer": {
+                    "abbreviation": "IMEC",
+                    "name": "Interuniversity Microelectronics Center",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "02kcbn207"
+                },
+                "model": null,
+                "name": "NPopto Basestation",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "ports": [
+                    {
+                        "index": 1,
+                        "probes": [
+                            "Probe A"
+                        ]
+                    }
+                ],
+                "serial_number": null,
+                "slot": 5
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/rig.py",
+        "detectors": [],
+        "digital_micromirror_devices": [],
+        "enclosure": null,
+        "ephys_assemblies": [
+            {
+                "ephys_assembly_name": "Ephys assembly 1",
+                "manipulator": {
+                    "additional_settings": {},
+                    "device_type": "Manipulator",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "New Scale Technologies",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "name": "45880",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": "33738"
+                },
+                "probes": [
+                    {
+                        "additional_settings": {},
+                        "device_type": "Ephys probe",
+                        "headstage": null,
+                        "lasers": [
+                            {
+                                "additional_settings": {},
+                                "coupling": "Single-mode fiber",
+                                "coupling_efficiency": null,
+                                "coupling_efficiency_unit": "percent",
+                                "device_type": "Laser",
+                                "item_number": null,
+                                "manufacturer": {
+                                    "abbreviation": null,
+                                    "name": "Oxxius",
+                                    "registry": null,
+                                    "registry_identifier": null
+                                },
+                                "maximum_power": null,
+                                "model": null,
+                                "name": "Oxxius Blue Laser",
+                                "notes": null,
+                                "path_to_cad": null,
+                                "port_index": null,
+                                "power_unit": "milliwatt",
+                                "serial_number": "LAS-08787",
+                                "wavelength": 473,
+                                "wavelength_unit": "nanometer"
+                            },
+                            {
+                                "additional_settings": {},
+                                "coupling": "Single-mode fiber",
+                                "coupling_efficiency": null,
+                                "coupling_efficiency_unit": "percent",
+                                "device_type": "Laser",
+                                "item_number": null,
+                                "manufacturer": {
+                                    "abbreviation": null,
+                                    "name": "Oxxius",
+                                    "registry": null,
+                                    "registry_identifier": null
+                                },
+                                "maximum_power": null,
+                                "model": null,
+                                "name": "Oxxius Red Laser",
+                                "notes": null,
+                                "path_to_cad": null,
+                                "port_index": null,
+                                "power_unit": "milliwatt",
+                                "serial_number": "LAS-08677",
+                                "wavelength": 638,
+                                "wavelength_unit": "nanometer"
+                            }
+                        ],
+                        "manufacturer": null,
+                        "model": null,
+                        "name": "Probe A",
+                        "notes": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "probe_model": "Neuropixels Opto (Demonstrator)",
+                        "serial_number": "22112104261"
+                    }
+                ]
+            }
+        ],
+        "fiber_assemblies": [],
+        "filters": [],
+        "laser_assemblies": [
+            {
+                "laser_assembly_name": "External 640 laser",
+                "lasers": [
+                    {
+                        "additional_settings": {},
+                        "coupling": null,
+                        "coupling_efficiency": null,
+                        "coupling_efficiency_unit": "percent",
+                        "device_type": "Laser",
+                        "item_number": null,
+                        "manufacturer": {
+                            "abbreviation": null,
+                            "name": "Coherent Scientific",
+                            "registry": {
+                                "abbreviation": "ROR",
+                                "name": "Research Organization Registry"
+                            },
+                            "registry_identifier": "031tysd23"
+                        },
+                        "maximum_power": null,
+                        "model": null,
+                        "name": "Coherent Red Laser",
+                        "notes": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "power_unit": "milliwatt",
+                        "serial_number": "M171024016",
+                        "wavelength": 640,
+                        "wavelength_unit": "nanometer"
+                    }
+                ],
+                "manipulator": {
+                    "additional_settings": {},
+                    "device_type": "Manipulator",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "New Scale Technologies",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "name": "45879",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": "33711"
+                }
+            }
+        ],
+        "lenses": [],
+        "light_sources": [],
+        "modalities": [
+            {
+                "abbreviation": "behavior-videos",
+                "name": "Behavior videos"
+            },
+            {
+                "abbreviation": "ecephys",
+                "name": "Extracellular electrophysiology"
+            }
+        ],
+        "modification_date": "2024-03-19",
+        "mouse_platform": {
+            "additional_settings": {},
+            "date_surface_replaced": null,
+            "device_type": "Tube",
+            "diameter": "3.0",
+            "diameter_unit": "centimeter",
+            "manufacturer": null,
+            "model": null,
+            "name": "Tube",
+            "notes": null,
+            "path_to_cad": null,
+            "port_index": null,
+            "serial_number": null,
+            "surface_material": null
+        },
+        "notes": null,
+        "objectives": [],
+        "origin": null,
+        "patch_cords": [],
+        "pockels_cells": [],
+        "polygonal_scanners": [],
+        "rig_axes": null,
+        "rig_id": "323_EPHYS1_OPTO_2024-03-19",
+        "schema_version": "0.2.21",
+        "stick_microscopes": [
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Color",
+                    "computer_name": "W10DT713668",
+                    "cooling": "None",
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "max_frame_rate": "31",
+                    "model": "Blackfly S BFS-U3-120S4C",
+                    "name": "Probe Camera 1",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": "1/1.7",
+                    "sensor_format_unit": "inches",
+                    "sensor_height": 3000,
+                    "sensor_width": 4000,
+                    "serial_number": "22438385",
+                    "size_unit": "pixel"
+                },
+                "camera_assembly_name": "Stick_assembly_1",
+                "camera_target": "Brain surface",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": null,
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Edmund Optics",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "max_aperture": null,
+                    "model": "InfiniProbe S-25",
+                    "name": "Probe lens",
+                    "notes": null,
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Color",
+                    "computer_name": "W10DT713668",
+                    "cooling": "None",
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "max_frame_rate": "31",
+                    "model": "Blackfly S BFS-U3-120S4C",
+                    "name": "Probe Camera 2",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": "1/1.7",
+                    "sensor_format_unit": "inches",
+                    "sensor_height": 3000,
+                    "sensor_width": 4000,
+                    "serial_number": "20105611",
+                    "size_unit": "pixel"
+                },
+                "camera_assembly_name": "Stick_assembly_2",
+                "camera_target": "Brain surface",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": null,
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Edmund Optics",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "max_aperture": null,
+                    "model": "InfiniProbe S-25",
+                    "name": "Probe lens",
+                    "notes": null,
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Color",
+                    "computer_name": "W10DT713668",
+                    "cooling": "None",
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "max_frame_rate": "31",
+                    "model": "Blackfly S BFS-U3-120S4C",
+                    "name": "Probe Camera 3",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": "1/1.7",
+                    "sensor_format_unit": "inches",
+                    "sensor_height": 3000,
+                    "sensor_width": 4000,
+                    "serial_number": "22438379",
+                    "size_unit": "pixel"
+                },
+                "camera_assembly_name": "Stick_assembly_3",
+                "camera_target": "Brain surface",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": null,
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Edmund Optics",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "max_aperture": null,
+                    "model": "InfiniProbe S-25",
+                    "name": "Probe lens",
+                    "notes": null,
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "position": null
+            }
+        ],
+        "stimulus_devices": []
+    },
+    "processing": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "schema_version": "0.4.5",
+        "processing_pipeline": {
+            "data_processes": [
+                {
+                    "name": "Compression",
+                    "software_version": "0.35.0",
+                    "start_date_time": "2024-05-10T22:24:42.607645Z",
+                    "end_date_time": "2024-05-10T22:40:14.507365Z",
+                    "input_location": "/allen/aind/scratch/ephys/temp/715339_2024-05-08_16-09-35",
+                    "output_location": "s3://aind-private-data-prod-o5171v/ecephys_715339_2024-05-08_16-09-35",
+                    "code_url": "https://github.com/AllenNeuralDynamics/aind-data-transfer",
+                    "code_version": null,
+                    "parameters": {
+                        "modality": {
+                            "name": "Extracellular electrophysiology",
+                            "abbreviation": "ecephys"
+                        },
+                        "source": "/allen/aind/scratch/ephys/temp/715339_2024-05-08_16-09-35",
+                        "compress_raw_data": true,
+                        "extra_configs": null,
+                        "skip_staging": false
+                    },
+                    "outputs": {},
+                    "notes": null
+                },
+                [
+                    {
+                        "name": "Ephys preprocessing",
+                        "software_version": "1.0",
+                        "start_date_time": "2024-05-10T22:50:58.347325",
+                        "end_date_time": "2024-05-10T23:23:46.347325",
+                        "input_location": "../data",
+                        "output_location": "../results",
+                        "code_url": "https://github.com/AllenNeuralDynamics/aind-ephys-preprocessing",
+                        "code_version": null,
+                        "parameters": {
+                            "denoising_strategy": "cmr",
+                            "min_preprocessing_duration": 120,
+                            "highpass_filter": {
+                                "freq_min": 300,
+                                "margin_ms": 5
+                            },
+                            "phase_shift": {
+                                "margin_ms": 100
+                            },
+                            "detect_bad_channels": {
+                                "method": "coherence+psd",
+                                "dead_channel_threshold": -0.5,
+                                "noisy_channel_threshold": 1,
+                                "outside_channel_threshold": -0.3,
+                                "outside_channels_location": "top",
+                                "n_neighbors": 11,
+                                "seed": 0
+                            },
+                            "remove_out_channels": true,
+                            "remove_bad_channels": true,
+                            "max_bad_channel_fraction": 0.5,
+                            "common_reference": {
+                                "reference": "global",
+                                "operator": "median"
+                            },
+                            "highpass_spatial_filter": {
+                                "n_channel_pad": 60,
+                                "n_channel_taper": null,
+                                "direction": "y",
+                                "apply_agc": true,
+                                "agc_window_length_s": 0.01,
+                                "highpass_butter_order": 3,
+                                "highpass_butter_wn": 0.01
+                            },
+                            "recording_name": "experiment1_Record Node 104#Neuropix-PXI-100.ProbeA-AP_recording1"
+                        },
+                        "outputs": {
+                            "channel_labels": [
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "dead",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good",
+                                "good"
+                            ]
+                        },
+                        "notes": "\n- Removed 0 outside of the brain.\n- Removed 1 bad channels after preprocessing.\n"
+                    },
+                    {
+                        "name": "Spike sorting",
+                        "software_version": "1.0",
+                        "start_date_time": "2024-05-10T23:35:05.232013",
+                        "end_date_time": "2024-05-10T23:57:51.232013",
+                        "input_location": "../data",
+                        "output_location": "../results",
+                        "code_url": "https://github.com/AllenNeuralDynamics/aind-ephys-spikesort-kilosort25",
+                        "code_version": null,
+                        "parameters": {
+                            "sorter_name": "kilosort2_5",
+                            "sorter_params": {
+                                "detect_threshold": 6,
+                                "projection_threshold": [
+                                    10,
+                                    4
+                                ],
+                                "preclust_threshold": 8,
+                                "momentum": [
+                                    20,
+                                    400
+                                ],
+                                "car": true,
+                                "minFR": 0.1,
+                                "minfr_goodchannels": 0.1,
+                                "nblocks": 5,
+                                "sig": 20,
+                                "freq_min": 150,
+                                "sigmaMask": 30,
+                                "lam": 10,
+                                "nPCs": 3,
+                                "ntbuff": 64,
+                                "nfilt_factor": 4,
+                                "NT": 65600,
+                                "AUCsplit": 0.9,
+                                "do_correction": true,
+                                "wave_length": 61,
+                                "keep_good_only": false,
+                                "skip_kilosort_preprocessing": false,
+                                "scaleproc": null,
+                                "save_rez_to_mat": false,
+                                "delete_tmp_files": [
+                                    "matlab_files"
+                                ],
+                                "delete_recording_dat": false,
+                                "n_jobs": 16,
+                                "chunk_duration": "1s",
+                                "progress_bar": false,
+                                "mp_context": null,
+                                "max_threads_per_process": 1
+                            }
+                        },
+                        "outputs": {
+                            "empty_units": 0
+                        },
+                        "notes": "\n- KS2.5 found 315 units, 315 after removing empty templates.\n"
+                    },
+                    {
+                        "name": "Ephys postprocessing",
+                        "software_version": "1.0",
+                        "start_date_time": "2024-05-11T06:43:38.349342",
+                        "end_date_time": "2024-05-11T07:00:23.349342",
+                        "input_location": "../data",
+                        "output_location": "../results",
+                        "code_url": "https://github.com/AllenNeuralDynamics/aind-ephys-postprocessing",
+                        "code_version": null,
+                        "parameters": {
+                            "duplicate_threshold": 0.9,
+                            "waveforms_deduplicate": {
+                                "ms_before": 0.5,
+                                "ms_after": 1.5,
+                                "max_spikes_per_unit": 100,
+                                "return_scaled": false,
+                                "dtype": null,
+                                "sparse": false,
+                                "precompute_template": [
+                                    "average"
+                                ],
+                                "use_relative_path": true
+                            },
+                            "waveforms": {
+                                "ms_before": 3,
+                                "ms_after": 4,
+                                "max_spikes_per_unit": 500,
+                                "return_scaled": true,
+                                "dtype": null,
+                                "precompute_template": [
+                                    "average",
+                                    "std"
+                                ],
+                                "use_relative_path": true
+                            },
+                            "spike_amplitudes": {
+                                "peak_sign": "neg",
+                                "return_scaled": true,
+                                "outputs": "concatenated"
+                            },
+                            "similarity": {
+                                "method": "cosine_similarity"
+                            },
+                            "correlograms": {
+                                "window_ms": 50,
+                                "bin_ms": 1
+                            },
+                            "isis": {
+                                "window_ms": 100,
+                                "bin_ms": 5
+                            },
+                            "unit_locations": {
+                                "method": "monopolar_triangulation"
+                            },
+                            "spike_locations": {
+                                "method": "grid_convolution"
+                            },
+                            "template_metrics": {
+                                "upsampling_factor": 10,
+                                "sparsity": null,
+                                "include_multi_channel_metrics": true
+                            },
+                            "principal_components": {
+                                "n_components": 5,
+                                "mode": "by_channel_local",
+                                "whiten": true
+                            },
+                            "recording_name": "experiment1_Record Node 104#Neuropix-PXI-100.ProbeA-AP_recording1"
+                        },
+                        "outputs": {
+                            "duplicated_units": 1
+                        },
+                        "notes": "\n- Removed 1 duplicated units.\n"
+                    },
+                    {
+                        "name": "Ephys curation",
+                        "software_version": "1.0",
+                        "start_date_time": "2024-05-11T07:02:15.368868",
+                        "end_date_time": "2024-05-11T07:02:15.368868",
+                        "input_location": "../data",
+                        "output_location": "../results",
+                        "code_url": "https://github.com/AllenNeuralDynamics/aind-ephys-curation",
+                        "code_version": null,
+                        "parameters": {
+                            "isi_violations_ratio_threshold": 0.5,
+                            "presence_ratio_threshold": 0.8,
+                            "amplitude_cutoff_threshold": 0.1,
+                            "recording_name": "experiment1_Record Node 104#Neuropix-PXI-100.ProbeA-AP_recording1"
+                        },
+                        "outputs": {
+                            "total_units": 314,
+                            "passing_qc": 98,
+                            "failing_qc": 216
+                        },
+                        "notes": "Curation query: isi_violations_ratio < 0.5 and presence_ratio > 0.8 and amplitude_cutoff < 0.1\n98/314 passing default QC.\n"
+                    },
+                    {
+                        "name": "Ephys curation",
+                        "software_version": "1.0",
+                        "start_date_time": "2024-05-11T07:02:29.698352",
+                        "end_date_time": "2024-05-11T07:02:29.698352",
+                        "input_location": "../data",
+                        "output_location": "../results",
+                        "code_url": "https://github.com/AllenNeuralDynamics/aind-ephys-unit-classifier",
+                        "code_version": null,
+                        "parameters": {
+                            "unit_classifier_model": "unit_classifier_models_v1.0",
+                            "recording_name": "experiment1_Record Node 104#Neuropix-PXI-100.ProbeA-AP_recording1"
+                        },
+                        "outputs": {
+                            "total_units": 314,
+                            "noise_units": 32,
+                            "neuronal_units": 282,
+                            "sua_units": 70,
+                            "mua_units": 212
+                        },
+                        "notes": "NOISE: 32 / 314\nSUA: 70 / 314\nMUA: 212 / 314\n"
+                    },
+                    {
+                        "name": "Ephys visualization",
+                        "software_version": "1.0",
+                        "start_date_time": "2024-05-11T07:08:12.962882",
+                        "end_date_time": "2024-05-11T07:13:08.962882",
+                        "input_location": "../data",
+                        "output_location": "../results",
+                        "code_url": "https://github.com/AllenNeuralDynamics/aind-ephys-visualization",
+                        "code_version": null,
+                        "parameters": {
+                            "timeseries": {
+                                "n_snippets_per_segment": 2,
+                                "snippet_duration_s": 0.5,
+                                "skip": false
+                            },
+                            "drift": {
+                                "detection": {
+                                    "peak_sign": "neg",
+                                    "detect_threshold": 5,
+                                    "exclude_sweep_ms": 0.1
+                                },
+                                "localization": {
+                                    "ms_before": 0.1,
+                                    "ms_after": 0.3,
+                                    "radius_um": 100
+                                },
+                                "n_skip": 30,
+                                "alpha": 0.15,
+                                "vmin": -200,
+                                "vmax": 0,
+                                "cmap": "Greys_r",
+                                "figsize": [
+                                    10,
+                                    10
+                                ]
+                            },
+                            "motion": {
+                                "cmap": "Greys_r",
+                                "scatter_decimate": 15,
+                                "figsize": [
+                                    15,
+                                    10
+                                ]
+                            },
+                            "recording_name": "experiment1_Record Node 104#Neuropix-PXI-100.ProbeA-AP_recording1"
+                        },
+                        "outputs": {
+                            "timeseries": "https://figurl.org/f?v=npm://@fi-sci/figurl-sortingview@12/dist&d=sha1://ff325da85a66475fe2e32469238bd270ea8f4f06&label=ecephys_715339_2024-05-08_16-09-35%20-%20experiment1_Record%20Node%20104%23Neuropix-PXI-100.ProbeA-AP_recording1&zone=aind",
+                            "sorting_summary": "https://figurl.org/f?v=npm://@fi-sci/figurl-sortingview@12/dist&d=sha1://8ca450b158af36a09cf4cc19da043e75c579d0eb&s={\"sortingCuration\":\"gh://AllenNeuralDynamics/ephys-sorting-manual-curation/main/ecephys_715339_2024-05-08_16-09-35/experiment1_Record Node 104#Neuropix-PXI-100.ProbeA-AP_recording1/kilosort2_5/curation.json\"}&label=ecephys_715339_2024-05-08_16-09-35%20-%20experiment1_Record%20Node%20104%23Neuropix-PXI-100.ProbeA-AP_recording1%20-%20kilosort2_5%20-%20Sorting%20Summary&zone=aind"
+                        },
+                        "notes": "{\n    \"timeseries\": \"https://figurl.org/f?v=npm://@fi-sci/figurl-sortingview@12/dist&d=sha1://ff325da85a66475fe2e32469238bd270ea8f4f06&label=ecephys_715339_2024-05-08_16-09-35%20-%20experiment1_Record%20Node%20104%23Neuropix-PXI-100.ProbeA-AP_recording1&zone=aind\",\n    \"sorting_summary\": \"https://figurl.org/f?v=npm://@fi-sci/figurl-sortingview@12/dist&d=sha1://8ca450b158af36a09cf4cc19da043e75c579d0eb&s={%22sortingCuration%22:%22gh://AllenNeuralDynamics/ephys-sorting-manual-curation/main/ecephys_715339_2024-05-08_16-09-35/experiment1_Record Node 104%23Neuropix-PXI-100.ProbeA-AP_recording1/kilosort2_5/curation.json%22}&label=ecephys_715339_2024-05-08_16-09-35%20-%20experiment1_Record%20Node%20104%23Neuropix-PXI-100.ProbeA-AP_recording1%20-%20kilosort2_5%20-%20Sorting%20Summary&zone=aind\"\n}"
+                    }
+                ]
+            ],
+            "processor_full_name": "AIND Scientific Computing",
+            "pipeline_version": null,
+            "pipeline_url": null,
+            "note": null
+        },
+        "analyses": [
+            {
+                "name": "Analysis",
+                "software_version": null,
+                "start_date_time": "2025-07-16T15:27:40.102676-07:00",
+                "end_date_time": "2025-07-16T15:27:40.102676-07:00",
+                "input_location": "/root/capsule/data/",
+                "output_location": "/root/capsule/results/",
+                "code_url": "https://codeocean.allenneuraldynamics.org/capsule/1235411/",
+                "code_version": null,
+                "parameters": {},
+                "outputs": {},
+                "notes": null,
+                "resources": null,
+                "analyst_full_name": "Anna Lakunina",
+                "description": "calculating laser responsiveness for every unit, identifying tagged units"
+            },
+            {
+                "name": "Analysis",
+                "software_version": null,
+                "start_date_time": "2025-07-16T15:27:40.102676-07:00",
+                "end_date_time": "2025-07-16T15:27:40.102676-07:00",
+                "input_location": "/root/capsule/data/",
+                "output_location": "/root/capsule/results/",
+                "code_url": "https://codeocean.allenneuraldynamics.org/capsule/6984680/",
+                "code_version": null,
+                "parameters": {},
+                "outputs": {},
+                "notes": null,
+                "resources": null,
+                "analyst_full_name": "Anna Lakunina",
+                "description": "assigning and tracking keypoints to video data, calculating derived metrics e.g. pupil diameter"
+            }
+        ],
+        "notes": null,
+        "data_processes": [
+            {
+                "name": "Other",
+                "software_version": null,
+                "start_date_time": "2025-07-16T15:27:40.102676-07:00",
+                "end_date_time": "2025-07-16T15:27:40.102676-07:00",
+                "input_location": "/root/capsule/data/",
+                "output_location": "/root/capsule/results/",
+                "code_url": "https://codeocean.allenneuraldynamics.org/capsule/3358765/",
+                "code_version": null,
+                "parameters": {},
+                "outputs": {},
+                "notes": "packaging all processed ephys data into NWB format",
+                "resources": null
+            }
+        ]
+    },
+    "acquisition": null,
+    "instrument": null,
+    "quality_control": null
+}
