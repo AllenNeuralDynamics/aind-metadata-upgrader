@@ -865,7 +865,6 @@ class SessionV1V2(CoreUpgrader):
     def _upgrade_stimulus_epoch(self, epoch: dict) -> dict:
         """Upgrade stimulus epoch from v1 to v2"""
         # Convert stimulus modalities
-        print(epoch)
         stimulus_modalities = epoch.get("stimulus_modalities", [])
         if not stimulus_modalities or stimulus_modalities == ["None"] or stimulus_modalities == [None]:
             stimulus_name = epoch.get("stimulus_name", "").lower()
