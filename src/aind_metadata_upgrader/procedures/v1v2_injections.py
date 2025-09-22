@@ -177,7 +177,48 @@ def upgrade_generic_injection(data: dict) -> dict:
     return data
 
 
-def upgrade_nanoject_injection(data: dict) -> dict:
+def validate_injection_coordinate_reference(data: dict) -> None:
+    """Validate that injection coordinate reference is supported (Bregma only)"""
+    reference = data.get("injection_coordinate_reference", None)
+    if reference is not None and not reference == "Bregma":
+        raise ValueError(f"Unsupported injection_coordinate_reference value: {reference}. " "Expected 'Bregma'.")
+
+
+def build_relative_position_from_hemisphere(data: dict) -> list:
+    """Convert injection_hemisphere to relative_position list"""
+    relative_position = []
+    if "injection_hemisphere" in data and data["injection_hemisphere"] is not None:
+        if data["injection_hemisphere"] == "Left":
+            relative_position.append(AnatomicalRelative.LEFT)
+        elif data["injection_hemisphere"] == "Right":
+            relative_position.append(AnatomicalRelative.RIGHT)
+        elif data["injection_hemisphere"] == "Midline":
+            relative_position.append(AnatomicalRelative.ORIGIN)
+        else:
+            raise ValueError(f"Unsupported injection_hemisphere value: {data['injection_hemisphere']}")
+    return relative_position
+
+
+def ensure_injection_materials_with_default(injection_materials: list) -> list:
+    """Ensure injection materials list has at least one item, adding default if empty"""
+    if len(injection_materials) == 0:
+        injection_materials.append(
+            ViralMaterial(
+                name="(v1v2 upgrade) No injection material provided",
+            ).model_dump()
+        )
+    return injection_materials
+
+
+def get_targeted_structure_or_none(data: dict) -> dict | None:
+    """Get targeted structure, handling None case properly"""
+    targeted_structure_data = data.get("targeted_structure")
+    if targeted_structure_data:
+        return upgrade_targeted_structure(targeted_structure_data)
+    return None
+
+
+def upgrade_nanoject_injection(data: dict) -> tuple[dict, list]:
     """Upgrade NanojectInjection procedure from V1 to V2"""
 
     upgraded_data = data.copy()
@@ -231,14 +272,61 @@ def upgrade_nanoject_injection(data: dict) -> dict:
     return injection.model_dump(), measured_coordinates
 
 
-def upgrade_iontophoresis_injection(data: dict) -> dict:
+def upgrade_iontophoresis_injection(data: dict) -> tuple[dict, list]:
     """Upgrade IontophoresisInjection procedure from V1 to V2"""
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
-    
-    raise NotImplementedError("Iontophoresis injection upgrade not implemented yet")
 
-    return BrainInjection(**upgraded_data).model_dump()
+    upgraded_data = upgrade_generic_injection(upgraded_data)
+
+    # Build dynamics for current-based injection
+    dynamics = build_current_injection_dynamics(data)
+
+    # Check reference
+    reference = data.get("injection_coordinate_reference", None)
+    # Check to make sure someone doesn't give us lambda or something, that would be a big problem
+    if reference is not None and not reference == "Bregma":
+        raise ValueError(f"Unsupported injection_coordinate_reference value: {reference}. " "Expected 'Bregma'.")
+
+    data = upgrade_injection_coordinates(data)
+
+    data, measured_coordinates = retrieve_bl_distance(data)
+
+    relative_position = []
+    if "injection_hemisphere" in data and data["injection_hemisphere"] is not None:
+        if data["injection_hemisphere"] == "Left":
+            relative_position.append(AnatomicalRelative.LEFT)
+        elif data["injection_hemisphere"] == "Right":
+            relative_position.append(AnatomicalRelative.RIGHT)
+        elif data["injection_hemisphere"] == "Midline":
+            relative_position.append(AnatomicalRelative.ORIGIN)
+        else:
+            raise ValueError(f"Unsupported injection_hemisphere value: {data['injection_hemisphere']}")
+
+    injection_materials = upgrade_injection_materials(data.get("injection_materials", []))
+
+    if len(injection_materials) == 0:
+        injection_materials.append(
+            ViralMaterial(
+                name="(v1v2 upgrade) No injection material provided",
+            ).model_dump()
+        )
+
+    targeted_structure = None
+    if data.get("targeted_structure"):
+        targeted_structure = upgrade_targeted_structure(data.get("targeted_structure"))
+
+    injection = BrainInjection(
+        injection_materials=injection_materials,
+        targeted_structure=targeted_structure,
+        relative_position=relative_position,
+        dynamics=dynamics,
+        protocol_id=data.get("protocol_id", None),
+        coordinate_system_name=CoordinateSystemLibrary.BREGMA_ARID.name,
+        coordinates=data.get("coordinates", []),
+    )
+
+    return injection.model_dump(), measured_coordinates
 
 
 def upgrade_icv_injection(data: dict) -> dict:
