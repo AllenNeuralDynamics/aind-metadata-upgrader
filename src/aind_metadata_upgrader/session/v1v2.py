@@ -1009,6 +1009,11 @@ class SessionV1V2(CoreUpgrader):
             session_start_time, session_end_time, upgraded_data_streams, upgraded_stimulus_epochs, notes
         )
 
+        # Get the iacuc_protocl
+        ethics_review_id = session_data.get("iacuc_protocol")
+        if not isinstance(ethics_review_id, list):
+            ethics_review_id = [ethics_review_id] if ethics_review_id else []
+
         # Build V2 acquisition object
         acquisition = Acquisition(
             schema_version=schema_version,
@@ -1025,7 +1030,7 @@ class SessionV1V2(CoreUpgrader):
             data_streams=upgraded_data_streams,
             stimulus_epochs=upgraded_stimulus_epochs,
             subject_details=subject_details,
-            ethics_review_id=[session_data.get("iacuc_protocol")],
+            ethics_review_id=ethics_review_id,
         )
 
         return acquisition.model_dump()
