@@ -65,6 +65,8 @@ def upgrade_curation_metric(data: dict, modality: dict, stage: str, tags: list) 
     """Upgrade a curation metric to the new format"""
 
     curations = data["value"]["curations"]
+    if not isinstance(curations, list):
+        curations = [curations]
     curation_history = data["value"].get("curation_history", [])
 
     if len(curation_history) == 0:
@@ -84,7 +86,7 @@ def upgrade_curation_metric(data: dict, modality: dict, stage: str, tags: list) 
         description=data.get("description", None),
         reference=data.get("reference", None),
         evaluated_assets=data.get("evaluated_assets", []),
-        type="unknown",
+        type="(v1v2 upgrade) type did not exist in v1",
         status_history=data.get("status_history", []),
         curation_history=curation_history,
     )
