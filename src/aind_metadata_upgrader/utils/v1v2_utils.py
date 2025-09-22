@@ -890,7 +890,7 @@ def upgrade_reagent(data: dict) -> dict:
     """Upgrade reagents from V1 to V2"""
     upgraded_data = data.copy()
 
-    if "source" in upgraded_data:
+    if "source" in upgraded_data and upgraded_data["source"]:
         if upgraded_data["source"]:
             if isinstance(upgraded_data["source"], str):
                 # Convert source to organization
