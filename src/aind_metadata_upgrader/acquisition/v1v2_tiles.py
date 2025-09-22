@@ -235,7 +235,6 @@ def upgrade_immersion(data: dict) -> dict:
             medium_lower = data["medium"].lower()
             # Try to match against all enum values (case-insensitive)
             for enum_member in ImmersionMedium:
-                print(enum_member.value.lower())
                 if medium_lower in enum_member.value.lower():
                     data["medium"] = enum_member.value
                     break
