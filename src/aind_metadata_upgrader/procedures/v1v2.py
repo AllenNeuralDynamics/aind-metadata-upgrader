@@ -207,6 +207,8 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         protocol_id = data.get("protocol_id", None)
         if isinstance(protocol_id, str) and protocol_id.lower() == "none":
             protocol_id = None
+        if not isinstance(protocol_id, list):
+            protocol_id = [protocol_id] if protocol_id else []
 
         # Create procedure_details from reagents, antibodies, hcr_series, sectioning
         procedure_details = []

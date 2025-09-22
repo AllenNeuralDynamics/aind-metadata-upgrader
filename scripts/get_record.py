@@ -4,7 +4,7 @@ from aind_data_access_api.document_db import MetadataDbClient
 import json
 import os
 
-record_name = "SmartSPIM_799074_2025-07-17_18-37-17"
+record_name = "67137c28-f39e-4ba2-a625-64c68b691eff"
 
 # Database configuration
 API_GATEWAY_HOST = "api.allenneuraldynamics.org"
@@ -20,7 +20,7 @@ client = MetadataDbClient(
 
 # Retrieve the record
 records = client.retrieve_docdb_records(
-    filter_query={"name": record_name},
+    filter_query={"_id": record_name},
     limit=1,
 )
 
