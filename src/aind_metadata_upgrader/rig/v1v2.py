@@ -129,11 +129,11 @@ class RigUpgraderV1V2(CoreUpgrader):
 
         return devices
 
-    def _get_components_connections(self, data: dict) -> tuple[Optional[list], list]:
-        """Pull components from data"""
-        # Collect all connections from upgrade functions
+    def _upgrade_primary_devices(self, data: dict) -> tuple[dict, list, list]:
+        """Upgrade primary devices like mouse platform and stimulus devices"""
         all_connections = []
-
+        
+        # Mouse platform
         mouse_platform = data.get("mouse_platform", None)
         if mouse_platform:
             mouse_platform_data, mouse_platform_connections = upgrade_mouse_platform(mouse_platform)
@@ -142,6 +142,7 @@ class RigUpgraderV1V2(CoreUpgrader):
         else:
             mouse_platform = None
 
+        # Stimulus devices
         stimulus_devices = data.get("stimulus_devices", [])
         if isinstance(stimulus_devices, dict):
             stimulus_devices = [stimulus_devices]
@@ -150,23 +151,59 @@ class RigUpgraderV1V2(CoreUpgrader):
         upgraded_stimulus_devices, stimulus_connections = self._upgrade_devices_with_connections(
             stimulus_devices, upgrade_stimulus_device
         )
-        stimulus_devices = upgraded_stimulus_devices
         all_connections.extend(stimulus_connections)
 
-        camera_assemblies = data.get("cameras", [])
-        camera_assemblies = self._none_to_list(camera_assemblies)
+        return mouse_platform, upgraded_stimulus_devices, all_connections
 
+    def _upgrade_camera_and_imaging_devices(self, data: dict) -> tuple[list, list, list]:
+        """Upgrade camera assemblies and imaging-related devices"""
+        all_connections = []
+
+        # Camera assemblies
+        camera_assemblies = self._none_to_list(data.get("cameras", []))
         upgraded_camera_assemblies, camera_connections = self._upgrade_devices_with_connections(
             camera_assemblies, upgrade_camera_assembly
         )
-        camera_assemblies = upgraded_camera_assemblies
         all_connections.extend(camera_connections)
 
-        enclosure = data.get("enclosure", None)
-        enclosure = upgrade_enclosure(enclosure) if enclosure else None
+        # Stick microscopes
+        stick_microscopes = self._none_to_list(data.get("stick_microscopes", []))
+        upgraded_stick_microscopes = []
+        for scope in stick_microscopes:
+            scope_data, scope_connections = upgrade_camera_assembly(scope)
+            upgraded_stick_microscopes.append(scope_data)
+            all_connections.extend(scope_connections)
 
-        ephys_assemblies = data.get("ephys_assemblies", [])
-        ephys_assemblies = self._none_to_list(ephys_assemblies)
+        return upgraded_camera_assemblies, upgraded_stick_microscopes, all_connections
+
+    def _upgrade_optical_components(self, data: dict) -> tuple[list, list, list, list, list, list]:
+        """Upgrade optical components like objectives, filters, lenses"""
+        objectives = self._none_to_list(data.get("objectives", []))
+        objectives = [upgrade_objective(obj) for obj in objectives]
+
+        filters = self._none_to_list(data.get("filters", []))
+        filters = [upgrade_filter(filt) for filt in filters]
+
+        lenses = self._none_to_list(data.get("lenses", []))
+        lenses = [upgrade_lens(lens) for lens in lenses]
+
+        dmds = self._none_to_list(data.get("dmds", []))
+        dmds = [upgrade_dmd(dmd) for dmd in dmds]
+
+        polygonal_scanners = self._none_to_list(data.get("polygonal_scanners", []))
+        polygonal_scanners = [upgrade_polygonal_scanner(scanner) for scanner in polygonal_scanners]
+
+        pockels_cells = self._none_to_list(data.get("pockels_cells", []))
+        pockels_cells = [upgrade_pockels_cell(cell) for cell in pockels_cells]
+
+        return objectives, filters, lenses, dmds, polygonal_scanners, pockels_cells
+
+    def _upgrade_ephys_and_fiber_devices(self, data: dict) -> tuple[list, list, list, list, list, list]:
+        """Upgrade ephys assemblies and fiber-related devices"""
+        all_connections = []
+
+        # Ephys assemblies
+        ephys_assemblies = self._none_to_list(data.get("ephys_assemblies", []))
         opto_lasers = []
         upgraded_ephys_assemblies = []
         for assembly in ephys_assemblies:
@@ -176,73 +213,148 @@ class RigUpgraderV1V2(CoreUpgrader):
             if lasers:
                 opto_lasers.extend(lasers)
 
-        fiber_assemblies = data.get("fiber_assemblies", [])
-        fiber_assemblies = self._none_to_list(fiber_assemblies)
+        # Fiber assemblies
+        fiber_assemblies = self._none_to_list(data.get("fiber_assemblies", []))
         fiber_assemblies = [upgrade_fiber_assembly(assembly) for assembly in fiber_assemblies]
 
-        stick_microscopes = data.get("stick_microscopes", [])
-        stick_microscopes = self._none_to_list(stick_microscopes)
-
-        upgraded_stick_microscopes = []
-        for scope in stick_microscopes:
-            scope_data, scope_connections = upgrade_camera_assembly(scope)
-            upgraded_stick_microscopes.append(scope_data)
-            all_connections.extend(scope_connections)
-        stick_microscopes = upgraded_stick_microscopes
-
-        laser_assemblies = data.get("laser_assemblies", [])
-        laser_assemblies = self._none_to_list(laser_assemblies)
+        # Laser assemblies and patch cords
+        laser_assemblies = self._none_to_list(data.get("laser_assemblies", []))
         laser_assemblies = [upgrade_laser_assembly(assembly) for assembly in laser_assemblies]
 
-        patch_cords = data.get("patch_cords", [])
-        patch_cords = self._none_to_list(patch_cords)
+        patch_cords = self._none_to_list(data.get("patch_cords", []))
         patch_cords = [upgrade_fiber_patch_cord(cord) for cord in patch_cords]
 
-        light_sources = data.get("light_sources", [])
-        light_sources = self._none_to_list(light_sources)
+        return upgraded_ephys_assemblies, opto_lasers, fiber_assemblies, laser_assemblies, patch_cords, all_connections
+
+    def _create_components_list(self, mouse_platform, stimulus_devices, camera_assemblies, upgraded_daqs,
+                                upgraded_ephys_assemblies, fiber_assemblies, stick_microscopes,
+                                laser_assemblies, patch_cords, light_sources, opto_lasers,
+                                upgraded_detectors, objectives, filters, lenses, dmds,
+                                polygonal_scanners, pockels_cells, additional_devices, enclosure) -> list:
+        """Create the final components list"""
+        components = [
+            mouse_platform,
+            *stimulus_devices,
+            *camera_assemblies,
+            *upgraded_daqs,
+            *upgraded_ephys_assemblies,
+            *fiber_assemblies,
+            *stick_microscopes,
+            *laser_assemblies,
+            *patch_cords,
+            *light_sources,
+            *opto_lasers,
+            *upgraded_detectors,
+            *objectives,
+            *filters,
+            *lenses,
+            *dmds,
+            *polygonal_scanners,
+            *pockels_cells,
+            *additional_devices,
+        ]
+        if enclosure:
+            components.append(enclosure)
+        return components
+
+    def _validate_components_and_connections(self, components: list, all_connections: list) -> tuple[list, list]:
+        """Validate and create connections, add missing components if needed"""
+        # Handle connections
+        connections = []
+        for connection in all_connections:
+            # Check if this is just a model_dump of a Connection object
+            if "object_type" in connection:
+                connections.append(connection)
+            else:
+                connections.append(
+                    Connection(
+                        source_device=connection["send"],
+                        target_device=connection["receive"],
+                    ).model_dump()
+                )
+
+        # Check that we're going to pass the connection validation
+        # Flatten the list of device names from all connections
+        connection_names = [name for conn in connections for name in [conn["source_device"], conn["target_device"]]]
+        connection_names = list(set(connection_names))  # Unique names only
+
+        component_names = []
+        for component in components:
+            if component is not None:  # Skip None components
+                component_names.extend(recursive_get_all_names(component))
+        component_names = [name for name in component_names if name is not None]
+
+        missing_names = []
+        for name in connection_names:
+            if name not in component_names:
+                missing_names.append(name)
+
+        for name in set(missing_names):
+            # Create an empty Device with the name
+            device = Device(
+                name=name,
+                notes=(
+                    "(v1v2 upgrade rig) This device was not found in the components list, "
+                    "but is referenced in connections."
+                ),
+            )
+            components.append(device.model_dump())
+
+        return components, connections
+
+    def _get_components_connections(self, data: dict) -> tuple[list, list]:
+        """Pull components from data"""
+        all_connections = []
+
+        # Upgrade primary devices
+        mouse_platform, stimulus_devices, primary_connections = self._upgrade_primary_devices(data)
+        all_connections.extend(primary_connections)
+
+        # Upgrade camera and imaging devices
+        camera_assemblies, stick_microscopes, camera_connections = self._upgrade_camera_and_imaging_devices(data)
+        all_connections.extend(camera_connections)
+
+        # Upgrade enclosure
+        enclosure = data.get("enclosure", None)
+        enclosure = upgrade_enclosure(enclosure) if enclosure else None
+
+        # Upgrade ephys and fiber devices
+        (upgraded_ephys_assemblies, opto_lasers, fiber_assemblies,
+         laser_assemblies, patch_cords, ephys_connections) = self._upgrade_ephys_and_fiber_devices(data)
+        all_connections.extend(ephys_connections)
+
+        # Upgrade light sources and detectors
+        light_sources = self._none_to_list(data.get("light_sources", []))
         light_sources = [upgrade_light_source(source) for source in light_sources]
 
-        detectors = data.get("detectors", [])
-        detectors = self._none_to_list(detectors)
-
+        detectors = self._none_to_list(data.get("detectors", []))
         upgraded_detectors, detector_connections = self._upgrade_devices_with_connections(detectors, upgrade_detector)
-        detectors = upgraded_detectors
         all_connections.extend(detector_connections)
 
-        objectives = data.get("objectives", [])
-        objectives = self._none_to_list(objectives)
-        objectives = [upgrade_objective(obj) for obj in objectives]
+        # Upgrade optical components
+        (objectives, filters, lenses, dmds,
+         polygonal_scanners, pockels_cells) = self._upgrade_optical_components(data)
 
-        filters = data.get("filters", [])
-        filters = self._none_to_list(filters)
-        filters = [upgrade_filter(filt) for filt in filters]
-
-        lenses = data.get("lenses", [])
-        lenses = self._none_to_list(lenses)
-        lenses = [upgrade_lens(lens) for lens in lenses]
-
-        dmds = data.get("dmds", [])
-        dmds = self._none_to_list(dmds)
-        dmds = [upgrade_dmd(dmd) for dmd in dmds]
-
-        polygonal_scanners = data.get("polygonal_scanners", [])
-        polygonal_scanners = self._none_to_list(polygonal_scanners)
-        polygonal_scanners = [upgrade_polygonal_scanner(scanner) for scanner in polygonal_scanners]
-
-        pockels_cells = data.get("pockels_cells", [])
-        pockels_cells = self._none_to_list(pockels_cells)
-        pockels_cells = [upgrade_pockels_cell(cell) for cell in pockels_cells]
-
-        additional_devices = data.get("additional_devices", [])
-        additional_devices = self._none_to_list(additional_devices)
+        # Upgrade additional devices and DAQs
+        additional_devices = self._none_to_list(data.get("additional_devices", []))
         additional_devices = [upgrade_generic_device(device) for device in additional_devices]
 
         daqs = self._none_to_list(data.get("daqs", []))
-
         upgraded_daqs, daq_connections = self._upgrade_devices_with_connections(daqs, upgrade_daq_devices)
-        daqs = upgraded_daqs
         all_connections.extend(daq_connections)
         del data["daqs"]
+
+        # Create components list and validate connections
+        components = self._create_components_list(
+            mouse_platform, stimulus_devices, camera_assemblies, upgraded_daqs,
+            upgraded_ephys_assemblies, fiber_assemblies, stick_microscopes,
+            laser_assemblies, patch_cords, light_sources, opto_lasers,
+            upgraded_detectors, objectives, filters, lenses, dmds,
+            polygonal_scanners, pockels_cells, additional_devices, enclosure
+        )
+        
+        components, connections = self._validate_components_and_connections(components, all_connections)
+        return (components, connections)
 
         # Compile components list
         components = [
@@ -346,7 +458,7 @@ class RigUpgraderV1V2(CoreUpgrader):
         components, connections = self._get_components_connections(data)
 
         # If any cameras are present with camera_target == Other we need to flag this in the notes
-        if notes is None:
+        if notes is None and components:
             for component in components:
                 if "target" in component and component["target"] == CameraTarget.OTHER:
                     notes = notes if notes else "" + " (v1v2 upgrade) Some cameras have unknown targets."

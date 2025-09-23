@@ -118,6 +118,113 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         return devices
 
+    def _upgrade_device_collections(self, data: dict) -> tuple[list, list]:
+        """Upgrade device collections and collect connections"""
+        saved_connections = []
+        
+        # Upgrade detectors and collect connections
+        detectors = self._none_to_list(data.get("detectors", []))
+        upgraded_detectors = []
+        for detector in detectors:
+            detector, connections = upgrade_detector(detector)
+            upgraded_detectors.append(detector)
+            saved_connections.extend(connections)
+
+        # Upgrade other device types
+        objectives = self._none_to_list(data.get("objectives", []))
+        objectives = [upgrade_objective(objective) for objective in objectives]
+
+        light_sources = self._none_to_list(data.get("light_sources", []))
+        light_sources = [upgrade_light_source(light_source) for light_source in light_sources]
+
+        lenses = self._none_to_list(data.get("lenses", []))
+        lenses = [upgrade_lens(lens) for lens in lenses]
+
+        fluorescence_filters = self._none_to_list(data.get("fluorescence_filters", []))
+        fluorescence_filters = [upgrade_filter(filter_device) for filter_device in fluorescence_filters]
+
+        motorized_stages = self._none_to_list(data.get("motorized_stages", []))
+        motorized_stages = [upgrade_motorized_stages(stage) for stage in motorized_stages]
+
+        scanning_stages = self._none_to_list(data.get("scanning_stages", []))
+        scanning_stages = [upgrade_scanning_stages(stage) for stage in scanning_stages]
+
+        additional_devices = self._none_to_list(data.get("additional_devices", []))
+        additional_devices = [upgrade_additional_devices(device) for device in additional_devices]
+
+        return (objectives, upgraded_detectors, light_sources, lenses, fluorescence_filters,
+                motorized_stages, scanning_stages, additional_devices), saved_connections
+
+    def _process_connections_and_daqs(self, data: dict, microscope_name: str) -> tuple[list, list]:
+        """Process connections and DAQ devices"""
+        saved_connections = []
+        
+        # Handle com_ports connections
+        com_ports = data.get("com_ports", [])
+        for port in com_ports:
+            saved_connections.append({
+                "receive": port["hardware_name"],
+                "send": microscope_name,
+            })
+        del data["com_ports"]
+
+        # Handle DAQs
+        daqs = self._none_to_list(data.get("daqs", []))
+        upgraded_daqs = []
+        for daq in daqs:
+            daq, connections = upgrade_daq_devices(daq)
+            saved_connections.extend(connections)
+            upgraded_daqs.append(daq)
+        del data["daqs"]
+
+        return upgraded_daqs, saved_connections
+
+    def _create_component_connections(self, saved_connections: list) -> list:
+        """Create connection objects from saved connection data"""
+        connections = []
+        
+        for connection in saved_connections:
+            # Check if this is just a model_dump of a Connection object
+            if "object_type" in connection:
+                connections.append(connection)
+            else:
+                connections.append(
+                    Connection(
+                        source_device=connection["send"],
+                        target_device=connection["receive"],
+                    ).model_dump()
+                )
+        
+        return connections
+
+    def _validate_and_fix_connections(self, components: list, connections: list) -> list:
+        """Validate connections and add missing devices if needed"""
+        # Flatten the list of device names from all connections
+        connection_names = [name for conn in connections for name in [conn["source_device"], conn["target_device"]]]
+
+        component_names = []
+        for component in components:
+            component_names.extend(recursive_get_all_names(component))
+        component_names = [name for name in component_names if name is not None]
+
+        missing_names = []
+        for name in connection_names:
+            if name not in component_names:
+                missing_names.append(name)
+
+        for name in set(missing_names):
+            # Create an empty Device with the name
+            device = Device(
+                name=name,
+                notes=(
+                    "(v1v2 upgrade instrument) This device was not found in the components list, "
+                    "but is referenced in connections."
+                ),
+            )
+            components.append(device.model_dump())
+
+        return components
+
     def _get_components_connections(self, data: dict) -> tuple[Optional[list], list]:
         """Pull components from data"""
         saved_connections = []
@@ -126,65 +233,44 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         enclosure = data.get("enclosure", None)
         enclosure = upgrade_enclosure(enclosure) if enclosure else None
 
-        objectives = data.get("objectives", [])
-        objectives = self._none_to_list(objectives)
-        objectives = [upgrade_objective(objective) for objective in objectives]
-
-        detectors = data.get("detectors", [])
-        detectors = self._none_to_list(detectors)
-        upgraded_detectors = []
-        for detector in detectors:
-            detector, connections = upgrade_detector(detector)
-            upgraded_detectors.append(detector)
-            saved_connections.extend(connections)
-
-        light_sources = data.get("light_sources", [])
-        light_sources = self._none_to_list(light_sources)
-        light_sources = [upgrade_light_source(light_source) for light_source in light_sources]
-
-        lenses = data.get("lenses", [])
-        lenses = self._none_to_list(lenses)
-        lenses = [upgrade_lens(lens) for lens in lenses]
-
-        fluorescence_filters = data.get("fluorescence_filters", [])
-        fluorescence_filters = self._none_to_list(fluorescence_filters)
-        fluorescence_filters = [upgrade_filter(filter_device) for filter_device in fluorescence_filters]
-
-        motorized_stages = data.get("motorized_stages", [])
-        motorized_stages = self._none_to_list(motorized_stages)
-        motorized_stages = [upgrade_motorized_stages(stage) for stage in motorized_stages]
-
-        scanning_stages = data.get("scanning_stages", [])
-        scanning_stages = self._none_to_list(scanning_stages)
-        scanning_stages = [upgrade_scanning_stages(stage) for stage in scanning_stages]
-
-        additional_devices = data.get("additional_devices", [])
-        additional_devices = self._none_to_list(additional_devices)
-        additional_devices = [upgrade_additional_devices(device) for device in additional_devices]
+        # Upgrade device collections
+        device_collections, device_connections = self._upgrade_device_collections(data)
+        (objectives, upgraded_detectors, light_sources, lenses, fluorescence_filters,
+         motorized_stages, scanning_stages, additional_devices) = device_collections
+        saved_connections.extend(device_connections)
 
         # Create the new Microscope device
-        microscope = Microscope(
-            name=data.get("instrument_id", "Microscope"),
-        )
+        microscope = Microscope(name=data.get("instrument_id", "Microscope"))
         scope_name = microscope.name
 
-        com_ports = data.get("com_ports", [])
-        for port in com_ports:
-            saved_connections.append(
-                {
-                    "receive": port["hardware_name"],
-                    "send": scope_name,
-                }
-            )
-        del data["com_ports"]
+        # Process connections and DAQs
+        upgraded_daqs, connection_data = self._process_connections_and_daqs(data, scope_name)
+        saved_connections.extend(connection_data)
 
-        daqs = self._none_to_list(data.get("daqs", []))
-        upgraded_daqs = []
-        for daq in daqs:
-            daq, connections = upgrade_daq_devices(daq)
-            saved_connections.extend(connections)
-            upgraded_daqs.append
-        del data["daqs"]
+        # Compile components list
+        components = [
+            *objectives,
+            *upgraded_detectors,
+            *light_sources,
+            *lenses,
+            *fluorescence_filters,
+            *motorized_stages,
+            *scanning_stages,
+            *additional_devices,
+            *upgraded_daqs,
+            microscope.model_dump(),
+        ]
+        if enclosure:
+            components.append(enclosure)
+
+        # Handle connections
+        print(f"{len(saved_connections)} saved connections pending")
+        connections = self._create_component_connections(saved_connections)
+        
+        # Validate and fix connections
+        components = self._validate_and_fix_connections(components, connections)
+
+        return (components, connections)
 
         # Compile components list
         components = [

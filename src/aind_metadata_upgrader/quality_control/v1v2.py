@@ -8,6 +8,43 @@ from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import remove
 
 
+def _handle_dropdown_metric(data: dict) -> dict:
+    """Handle dropdown type metric validation"""
+    options = data.get("options", [])
+    value = data.get("value", None)
+    
+    # If someone gave us a list of values (which is wrong), take the first one
+    if isinstance(value, list):
+        value = value[0] if len(value) > 0 else None
+
+    if value in options:
+        data["value"] = value
+    if value not in options:
+        data["value"] = None
+    
+    return data
+
+
+def _handle_checkbox_metric(data: dict) -> dict:
+    """Handle checkbox type metric validation"""
+    options = data.get("options", [])
+    value = data.get("value", [])
+    
+    if not isinstance(value, list):
+        value = [value]
+        data["value"] = value
+
+    if not all(v in options for v in value):
+        # Remove invalid values
+        new_values = []
+        for v in value:
+            if v in options:
+                new_values.append(v)
+        data["value"] = new_values
+    
+    return data
+
+
 def upgrade_qcportal_metric_value(data: Optional[dict]) -> Optional[dict]:
     """Upgrade custom qcportal-schema metrics, fixing their values if needed"""
 
@@ -15,32 +52,9 @@ def upgrade_qcportal_metric_value(data: Optional[dict]) -> Optional[dict]:
         return data  # Not a qcportal metric, nothing to do
 
     if data["type"] == "dropdown":
-        # Ensure value is contained in options
-        options = data.get("options", [])
-        value = data.get("value", None)
-        # If someone gave us a list of values (which is wrong), take the first one
-        if isinstance(value, list):
-            value = value[0] if len(value) > 0 else None
-
-        if value in options:
-            data["value"] = value
-        if value not in options:
-            data["value"] = None
+        return _handle_dropdown_metric(data)
     elif data["type"] == "checkbox":
-        # Ensure value is a list and all values are in options
-        options = data.get("options", [])
-        value = data.get("value", [])
-        if not isinstance(value, list):
-            value = [value]
-            data["value"] = value
-
-        if not all(v in options for v in value):
-            # Remove invalid values
-            new_values = []
-            for v in value:
-                if v in options:
-                    new_values.append(v)
-            data["value"] = new_values
+        return _handle_checkbox_metric(data)
 
     return data
 

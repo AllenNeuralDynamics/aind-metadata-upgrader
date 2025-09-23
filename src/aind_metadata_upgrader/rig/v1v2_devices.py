@@ -188,41 +188,55 @@ def upgrade_arena(data: dict) -> dict:
     return arena.model_dump()
 
 
+def _determine_platform_device_type(data: dict) -> str:
+    """Determine the device type for mouse platform"""
+    if "device_type" in data:
+        return data["device_type"]
+    
+    if "platform_type" in data and data["platform_type"]:
+        data["device_type"] = data["platform_type"]
+        remove(data, "platform_type")
+        return data["device_type"]
+    elif "encoder_output" in data:
+        return "Wheel"
+    elif "diameter" in data:
+        return "Tube"
+    elif "encoder_firmware" in data:
+        return "Disc"
+    elif "radius" in data and "radius_unit" in data:
+        return "Disc"
+    else:
+        print(data)
+        raise ValueError("Cannot determine device type for mouse platform")
+
+
+def _upgrade_platform_by_type(data: dict, device_type: str) -> tuple[dict, list]:
+    """Upgrade platform based on its device type"""
+    if device_type == "Wheel":
+        return upgrade_wheel(data)
+    elif device_type == "Disc":
+        return upgrade_disc(data), []
+    elif device_type == "Treadmill":
+        return upgrade_treadmill(data), []
+    elif device_type == "Tube":
+        return upgrade_tube(data), []
+    elif device_type == "Arena":
+        return upgrade_arena(data), []
+    else:
+        raise ValueError(f"Unsupported mouse platform type: {device_type}")
+
+
 def upgrade_mouse_platform(data: dict) -> tuple[dict, list]:
     """Upgrade mouse platform data from v1.x to v2.0."""
 
     data = basic_device_checks(data, "Mouse platform")
 
     # Determine device type if not specified
-    if "device_type" not in data:
-        if "platform_type" in data and data["platform_type"]:
-            data["device_type"] = data["platform_type"]
-            remove(data, "platform_type")
-        elif "encoder_output" in data:
-            data["device_type"] = "Wheel"
-        elif "diameter" in data:
-            data["device_type"] = "Tube"
-        elif "encoder_firmware" in data:
-            data["device_type"] = "Disc"
-        elif "radius" in data and "radius_unit" in data:
-            data["device_type"] = "Disc"
-        else:
-            print(data)
-            raise ValueError("Cannot determine device type for mouse platform")
+    device_type = _determine_platform_device_type(data)
+    data["device_type"] = device_type
 
     # Delegate to appropriate upgrade function
-    if data["device_type"] == "Wheel":
-        return upgrade_wheel(data)
-    elif data["device_type"] == "Disc":
-        return upgrade_disc(data), []
-    elif data["device_type"] == "Treadmill":
-        return upgrade_treadmill(data), []
-    elif data["device_type"] == "Tube":
-        return upgrade_tube(data), []
-    elif data["device_type"] == "Arena":
-        return upgrade_arena(data), []
-    else:
-        raise ValueError(f"Unsupported mouse platform type: {data['device_type']}")
+    return _upgrade_platform_by_type(data, device_type)
 
 
 def upgrade_daq_channels(device_data: dict) -> tuple[list, list]:
@@ -455,32 +469,33 @@ def upgrade_stimulus_device(data: dict) -> tuple[dict, list]:
         raise ValueError(f"Unsupported stimulus device type: {device_type}")
 
 
-def upgrade_camera(data: dict) -> tuple[dict, list]:
-    """Upgrade Camera device data from v1.x to v2.0."""
-
-    data = basic_device_checks(data, "Camera")
+def _handle_camera_connections(data: dict) -> list:
+    """Handle camera connection data"""
     connections = []
-
     if "computer_name" in data:
         if data["computer_name"]:
-            connections.append(
-                {
-                    "send": data["name"],
-                    "receive": data["computer_name"],
-                }
-            )
+            connections.append({
+                "send": data["name"],
+                "receive": data["computer_name"],
+            })
         remove(data, "computer_name")
+    return connections
 
+
+def _normalize_camera_values(data: dict) -> None:
+    """Normalize camera-specific values"""
     if "cooling" in data and (not data["cooling"] or data["cooling"] == "None"):
-        # If someone put None it's ambiguous, but we can assume they meant no cooling
         data["cooling"] = "No cooling"
 
     if "bin_mode" in data and data["bin_mode"] == "None":
         data["bin_mode"] = "No binning"
 
-    remove(data, "max_frame_rate")  # no idea when that was in v1.x
-    remove(data, "format_unit")
+    if "frame_rate_unit" in data and data["frame_rate_unit"] == "Hertz":
+        data["frame_rate_unit"] = "hertz"
 
+
+def _handle_camera_dimensions(data: dict) -> None:
+    """Handle camera pixel dimensions"""
     if "pixel_width" in data:
         data["sensor_width"] = data["pixel_width"]
         remove(data, "pixel_width")
@@ -488,9 +503,9 @@ def upgrade_camera(data: dict) -> tuple[dict, list]:
         data["sensor_height"] = data["pixel_height"]
         remove(data, "pixel_height")
 
-    if "frame_rate_unit" in data and data["frame_rate_unit"] == "Hertz":
-        data["frame_rate_unit"] = "hertz"
 
+def _handle_camera_software_and_format(data: dict) -> None:
+    """Handle camera software and sensor format"""
     if "recording_software" in data and data["recording_software"]:
         data["recording_software"] = upgrade_software(data.get("recording_software", {}))
 
@@ -498,10 +513,29 @@ def upgrade_camera(data: dict) -> tuple[dict, list]:
         if "sensor_format_unit" not in data or not data["sensor_format_unit"]:
             data["sensor_format_unit"] = "unknown"
 
-    camera = Camera(
-        **data,
-    )
 
+def upgrade_camera(data: dict) -> tuple[dict, list]:
+    """Upgrade Camera device data from v1.x to v2.0."""
+
+    data = basic_device_checks(data, "Camera")
+    
+    # Handle connections
+    connections = _handle_camera_connections(data)
+    
+    # Normalize camera values
+    _normalize_camera_values(data)
+    
+    # Remove obsolete fields
+    remove(data, "max_frame_rate")  # no idea when that was in v1.x
+    remove(data, "format_unit")
+    
+    # Handle dimensions
+    _handle_camera_dimensions(data)
+    
+    # Handle software and format
+    _handle_camera_software_and_format(data)
+
+    camera = Camera(**data)
     return camera.model_dump(), connections
 
 

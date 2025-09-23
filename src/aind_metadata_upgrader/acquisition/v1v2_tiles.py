@@ -27,6 +27,79 @@ FILTER_MAPPING = {
 }
 
 
+def _create_detector_config() -> DetectorConfig:
+    """Create default detector config for tiles"""
+    return DetectorConfig(
+        device_name="unknown_detector",  # Will need to be filled in later
+        exposure_time=1.0,  # Default value
+        exposure_time_unit=TimeUnit.MS,
+        trigger_type=TriggerType.INTERNAL,  # Default value
+    )
+
+
+def _create_laser_config_from_channel(channel_data: dict) -> list:
+    """Create laser configurations from channel data"""
+    light_source_configs = []
+    
+    if "laser_wavelength" in channel_data:
+        laser_config_params = {
+            "device_name": f"laser_{channel_data['laser_wavelength']}nm",
+            "wavelength": channel_data["laser_wavelength"],
+            "wavelength_unit": SizeUnit.NM,
+        }
+
+        # Add power if available
+        if "laser_power" in channel_data:
+            laser_config_params["power"] = channel_data["laser_power"]
+            power_unit = channel_data.get("laser_power_unit", "milliwatt")
+            laser_config_params["power_unit"] = PowerUnit.MW if power_unit == "milliwatt" else PowerUnit.MW
+
+        laser_config = LaserConfig(**laser_config_params)
+        light_source_configs.append(laser_config)
+    
+    return light_source_configs
+
+
+def _create_laser_config_from_light_sources(channel_data: dict, light_sources: list[dict]) -> list:
+    """Create laser configurations from existing light sources"""
+    light_source_configs = []
+    
+    if "excitation_wavelength" in channel_data:
+        excitation_wavelength = int(channel_data["excitation_wavelength"])
+        
+        for i, light_source in enumerate(light_sources):
+            if light_source.get("wavelength") == excitation_wavelength:
+                name = light_source.get("name", f"Laser {i}") or f"Laser {i}"
+                light_source_configs.append(
+                    LaserConfig(
+                        device_name=name,
+                        wavelength=excitation_wavelength,
+                    )
+                )
+    
+    return light_source_configs
+
+
+def _create_emission_filters(channel_data: dict, fluorescence_filters: list[dict]) -> tuple[list, Optional[int]]:
+    """Create emission filters and wavelength from fluorescence filters"""
+    filter_wheel_index = channel_data.get("filter_wheel_index")
+    emission_filters = []
+    emission_wavelength = None
+
+    for i, filter_config in enumerate(fluorescence_filters):
+        if filter_config.get("filter_wheel_index") == filter_wheel_index:
+            if filter_config.get("model") in FILTER_MAPPING:
+                name = filter_config.get("name", f"Filter {i}") or f"Filter {i}"
+                emission_filters.append(DeviceConfig(device_name=name))
+
+                if filter_config.get("model") in FILTER_MAPPING:
+                    emission_wavelength = FILTER_MAPPING[filter_config["model"]]
+                else:
+                    print(f"Unknown filter model: {filter_config.get('model')}")
+    
+    return emission_filters, emission_wavelength
+
+
 def extract_channels_from_tiles(
     tiles: list[dict], fluorescence_filters: list[dict], light_sources: list[dict]
 ) -> list[Channel]:
@@ -39,81 +112,19 @@ def extract_channels_from_tiles(
             continue
 
         channel_name = channel_data.get("channel_name")
-        if not channel_name:
+        if not channel_name or channel_name in channels_dict:
             continue
 
-        # If we've already seen this channel name, skip it
-        # (assuming identical channel names have identical configurations)
-        if channel_name in channels_dict:
-            continue
+        # Create detector config
+        detector_config = _create_detector_config()
 
-        # Create detector config - using defaults since we don't have detector info in tiles
-        detector_config = DetectorConfig(
-            device_name="unknown_detector",  # Will need to be filled in later
-            exposure_time=1.0,  # Default value
-            exposure_time_unit=TimeUnit.MS,
-            trigger_type=TriggerType.INTERNAL,  # Default value
-        )
+        # Create laser configs
+        light_source_configs = _create_laser_config_from_channel(channel_data)
+        if not light_source_configs:
+            light_source_configs = _create_laser_config_from_light_sources(channel_data, light_sources)
 
-        # Create laser config from channel data
-        light_source_configs = []
-        if "laser_wavelength" in channel_data:
-            laser_config_params = {
-                "device_name": f"laser_{channel_data['laser_wavelength']}nm",
-                "wavelength": channel_data["laser_wavelength"],
-                "wavelength_unit": SizeUnit.NM,
-            }
-
-            # Add power if available
-            if "laser_power" in channel_data:
-                laser_config_params["power"] = channel_data["laser_power"]
-
-                # Map power unit from tile to schema
-                power_unit = channel_data.get("laser_power_unit", "milliwatt")
-                if power_unit == "milliwatt":
-                    laser_config_params["power_unit"] = PowerUnit.MW
-                else:
-                    # For unknown units, default to milliwatts
-                    laser_config_params["power_unit"] = PowerUnit.MW
-
-            laser_config = LaserConfig(**laser_config_params)
-            light_source_configs.append(laser_config)
-
-        elif "excitation_wavelength" in channel_data:
-            # In this case the light source exists, we just need to create the config
-            # Find the light source with corresponding excitation wavelength
-            excitation_wavelength = int(channel_data["excitation_wavelength"])
-
-            for i, light_source in enumerate(light_sources):
-                if light_source.get("wavelength") == excitation_wavelength:
-                    name = light_source.get("name", f"Laser {i}")
-                    if not name:
-                        name = f"Laser {i}"
-                    light_source_configs.append(
-                        LaserConfig(
-                            device_name=name,
-                            wavelength=excitation_wavelength,
-                        )
-                    )
-
-        # Use the filter index to find the corresponding fluorescence filter
-        filter_wheel_index = channel_data.get("filter_wheel_index")
-        emission_filters = []
-        emission_wavelength = None
-
-        for i, filter_config in enumerate(fluorescence_filters):
-            if filter_config.get("filter_wheel_index") == filter_wheel_index:
-                if filter_config.get("model") in FILTER_MAPPING:
-                    # Assume the name will be "Filter {i}" if not specified... this only works if all filters are missing names
-                    name = filter_config.get("name", f"Filter {i}")
-                    if not name:
-                        name = f"Filter {i}"
-                    emission_filters.append(DeviceConfig(device_name=name))
-
-                    if filter_config.get("model") in FILTER_MAPPING:
-                        emission_wavelength = FILTER_MAPPING[filter_config["model"]]
-                    else:
-                        print(f"Unknown filter model: {filter_config.get('model')}")
+        # Create emission filters
+        emission_filters, emission_wavelength = _create_emission_filters(channel_data, fluorescence_filters)
 
         # Create the channel
         channel = Channel(

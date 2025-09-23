@@ -10,7 +10,6 @@ from aind_data_schema.components.configs import (
     CoupledPlane,
     DetectorConfig,
     EphysAssemblyConfig,
-    Immersion,
     LaserConfig,
     LightEmittingDiodeConfig,
     ManipulatorConfig,
@@ -47,7 +46,6 @@ from aind_data_schema.core.acquisition import (
 from aind_data_schema.components.connections import (
     Connection,
 )
-from aind_data_schema_models.devices import ImmersionMedium
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.stimulus_modality import StimulusModality
 from aind_data_schema_models.units import (
@@ -862,9 +860,8 @@ class SessionV1V2(CoreUpgrader):
             )
         return code.model_dump() if code else None
 
-    def _upgrade_stimulus_epoch(self, epoch: dict) -> dict:
-        """Upgrade stimulus epoch from v1 to v2"""
-        # Convert stimulus modalities
+    def _determine_stimulus_modalities(self, epoch: dict) -> list:
+        """Determine stimulus modalities from epoch data"""
         stimulus_modalities = epoch.get("stimulus_modalities", [])
         if not stimulus_modalities or stimulus_modalities == ["None"] or stimulus_modalities == [None]:
             stimulus_name = epoch.get("stimulus_name", "").lower()
@@ -873,23 +870,23 @@ class SessionV1V2(CoreUpgrader):
             if "the random reward stimulus" in stimulus_name:
                 # This is the dynamic foraging task
                 stimulus_modalities = [StimulusModality.AUDITORY]
+        return stimulus_modalities
 
-        performance_metrics = self._create_performance_metrics(epoch)
+    def _create_speaker_config(self, epoch: dict) -> Optional[dict]:
+        """Create speaker configuration if present"""
+        if not epoch.get("speaker_config"):
+            return None
+            
+        speaker_data = epoch["speaker_config"]
+        return SpeakerConfig(
+            device_name=speaker_data.get("name", "Unknown Speaker"),
+            volume=float(speaker_data.get("volume", 0)) if speaker_data.get("volume") else None,
+            volume_unit=SoundIntensityUnit.DB,
+        ).model_dump()
 
-        # Create configurations
-        configurations = []
-
-        # Speaker config
-        if epoch.get("speaker_config"):
-            speaker_data = epoch["speaker_config"]
-            speaker_config = SpeakerConfig(
-                device_name=speaker_data.get("name", "Unknown Speaker"),
-                volume=float(speaker_data.get("volume", 0)) if speaker_data.get("volume") else None,
-                volume_unit=SoundIntensityUnit.DB,
-            ).model_dump()
-            configurations.append(speaker_config)
-
-        # Light source configs for stimulation
+    def _create_light_source_configs(self, epoch: dict) -> list:
+        """Create light source configurations if present"""
+        configs = []
         if epoch.get("light_source_config"):
             light_source_configs = epoch.get("light_source_config", [])
             if not isinstance(light_source_configs, list):
@@ -897,17 +894,19 @@ class SessionV1V2(CoreUpgrader):
             for light_source in light_source_configs:
                 config = self._upgrade_light_source_config(light_source)
                 if config:
-                    configurations.append(config)
+                    configs.append(config)
+        return configs
 
-        # Create code object if script is present
-        code = self._create_code_object(epoch)
-
+    def _determine_stimulus_name(self, epoch: dict) -> str:
+        """Determine stimulus name from epoch data"""
         stimulus_name = epoch.get("stimulus_name")
         if not stimulus_name:
             # Try to get from inside the stimulus itself
             stimulus_name = epoch.get("stimulus", {}).get("stimulus_name", "Unknown Stimulus")
+        return stimulus_name
 
-        # If we have an old-style "stimulus" object, move this into code creating it if needed
+    def _handle_legacy_stimulus_data(self, epoch: dict, code: Optional[dict]) -> Optional[dict]:
+        """Handle legacy stimulus data and merge with code object"""
         if "stimulus" in epoch and epoch["stimulus"]:
             stimulus_data = epoch["stimulus"]
             if not code:
@@ -925,6 +924,36 @@ class SessionV1V2(CoreUpgrader):
                         code["parameters"] = code["parameters"] | stimulus_data["parameters"]
                     else:
                         code["parameters"] = stimulus_data["parameters"]
+        return code
+
+    def _upgrade_stimulus_epoch(self, epoch: dict) -> dict:
+        """Upgrade stimulus epoch from v1 to v2"""
+        # Determine stimulus modalities
+        stimulus_modalities = self._determine_stimulus_modalities(epoch)
+        
+        # Create performance metrics
+        performance_metrics = self._create_performance_metrics(epoch)
+
+        # Create configurations
+        configurations = []
+        
+        # Add speaker config if present
+        speaker_config = self._create_speaker_config(epoch)
+        if speaker_config:
+            configurations.append(speaker_config)
+
+        # Add light source configs if present
+        light_configs = self._create_light_source_configs(epoch)
+        configurations.extend(light_configs)
+
+        # Create code object if script is present
+        code = self._create_code_object(epoch)
+        
+        # Determine stimulus name
+        stimulus_name = self._determine_stimulus_name(epoch)
+
+        # Handle legacy stimulus data
+        code = self._handle_legacy_stimulus_data(epoch, code)
 
         return StimulusEpoch(
             stimulus_start_time=epoch.get("stimulus_start_time"),

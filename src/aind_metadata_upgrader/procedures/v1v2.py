@@ -132,67 +132,76 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         else:
             raise ValueError(f"Unsupported procedure type: {procedure_type}")
 
+    def _process_surgery_procedures(self, data: dict) -> None:
+        """Process procedures for surgery upgrade"""
+        procedures = data.get("procedures", [])
+        data["procedures"] = []
+        
+        for procedure in procedures:
+            upgraded = self._upgrade_procedure(procedure)
+            if isinstance(upgraded, tuple):
+                upgraded, measured_coordinates = upgraded
+                if measured_coordinates:
+                    if "measured_coordinates" not in data:
+                        data["measured_coordinates"] = []
+                    data["measured_coordinates"].extend(measured_coordinates)
+            
+            if isinstance(upgraded, list):
+                data["procedures"].extend(upgraded)
+            else:
+                data["procedures"].append(upgraded)
+
+        # Add default procedure if none provided
+        if len(procedures) == 0:
+            data["procedures"].append(
+                GenericSurgeryProcedure(
+                    description="(v1v2 upgrader) No procedures provided for surgery",
+                ).model_dump()
+            )
+
+    def _finalize_surgery_data(self, data: dict) -> dict:
+        """Finalize surgery data and create Surgery object"""
+        # Handle anaesthesia
+        if "anaesthesia" in data and data["anaesthesia"]:
+            data["anaesthesia"] = upgrade_anaesthetic(data.get("anaesthesia", {}))
+
+        # Set default start_date if missing
+        if "start_date" not in data or not data["start_date"]:
+            data["start_date"] = date(1970, 1, 1)
+
+        # Replace list of measured_coordinate dicts with a single dictionary
+        if "measured_coordinates" in data:
+            coord_list = data["measured_coordinates"]
+            data["measured_coordinates"] = {}
+            for coord in coord_list:
+                data["measured_coordinates"].update(coord)
+
+        surgery = Surgery(**data)
+        return surgery.model_dump()
+
     def _upgrade_subject_procedure(self, data: dict):
         """Upgrade a single subject procedure from V1 to V2"""
-        # V1 has Surgery as subject procedure type, V2 uses Surgery directly
-        if data.get("procedure_type") == "Surgery":
+        procedure_type = data.get("procedure_type")
+        
+        if procedure_type == "Surgery":
             remove(data, "procedure_type")  # Remove procedure_type as it's not needed in V2
-
             data = self._replace_experimenter_full_name(data)
-
             data["ethics_review_id"] = data.get("iacuc_protocol", None)
             remove(data, "iacuc_protocol")
-
-            procedures = data.get("procedures", [])
-            data["procedures"] = []
-            for procedure in procedures:
-                upgraded = self._upgrade_procedure(procedure)
-                if isinstance(upgraded, tuple):
-                    upgraded, measured_coordinates = upgraded
-                    if measured_coordinates:
-                        if "measured_coordinates" not in data:
-                            data["measured_coordinates"] = []
-                        data["measured_coordinates"].extend(measured_coordinates)
-                if isinstance(upgraded, list):
-                    data["procedures"].extend(upgraded)
-                else:
-                    data["procedures"].append(upgraded)
-
-            if len(procedures) == 0:
-                data["procedures"].append(
-                    GenericSurgeryProcedure(
-                        description="(v1v2 upgrader) No procedures provided for surgery",
-                    ).model_dump()
-                )
-
-            if "anaesthesia" in data and data["anaesthesia"]:
-                data["anaesthesia"] = upgrade_anaesthetic(data.get("anaesthesia", {}))
-
-            if "start_date" not in data or not data["start_date"]:
-                # If start_date is not provided, set it to today's date
-                data["start_date"] = date(1970, 1, 1)
-
-            # Replace list of measured_coordinate dicts with a single dictionary
-            if "measured_coordinates" in data:
-                coord_list = data["measured_coordinates"]
-                data["measured_coordinates"] = {}
-                for coord in coord_list:
-                    data["measured_coordinates"].update(coord)
-
-            surgery = Surgery(
-                **data,
-            )
-            return surgery.model_dump()
-        elif data.get("procedure_type") == "Water restriction":
+            
+            self._process_surgery_procedures(data)
+            return self._finalize_surgery_data(data)
+            
+        elif procedure_type == "Water restriction":
             return upgrade_water_restriction(data)
-        elif data.get("procedure_type") == "Training protocol":
+        elif procedure_type == "Training protocol":
             return upgrade_training_protocol(data)
-        elif data.get("procedure_type") == "Generic Subject Procedure":
+        elif procedure_type == "Generic Subject Procedure":
             # Convert experimenter_full_name to experimenters list
             data = self._replace_experimenter_full_name(data)
             return upgrade_generic_subject_procedure(data)
 
-        raise ValueError("Unsupported subject procedure type: {}".format(data.get("procedure_type")))
+        raise ValueError("Unsupported subject procedure type: {}".format(procedure_type))
 
     def _upgrade_specimen_procedure(self, data: dict) -> dict:
         """Upgrade a single specimen procedure from V1 to V2"""
