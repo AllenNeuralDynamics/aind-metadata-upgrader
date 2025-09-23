@@ -8,7 +8,7 @@ from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import remove
 
 
-def upgrade_qcportal_metric(data: Optional[dict]) -> Optional[dict]:
+def upgrade_qcportal_metric_value(data: Optional[dict]) -> Optional[dict]:
     """Upgrade custom qcportal-schema metrics, fixing their values if needed"""
 
     if not data or not isinstance(data, dict) or "type" not in data:
@@ -18,6 +18,12 @@ def upgrade_qcportal_metric(data: Optional[dict]) -> Optional[dict]:
         # Ensure value is contained in options
         options = data.get("options", [])
         value = data.get("value", None)
+        # If someone gave us a list of values (which is wrong), take the first one
+        if isinstance(value, list):
+            value = value[0] if len(value) > 0 else None
+
+        if value in options:
+            data["value"] = value
         if value not in options:
             data["value"] = None
     elif data["type"] == "checkbox":
@@ -44,7 +50,7 @@ def upgrade_metric(data: dict, modality: dict, stage: str, tags: list) -> dict:
     if not isinstance(data, dict):
         raise ValueError("Data must be a dictionary")
 
-    value = upgrade_qcportal_metric(data.get("value", None))
+    value = upgrade_qcportal_metric_value(data.get("value", None))
 
     metric = QCMetric(
         name=data.get("name", "unknown"),

@@ -1,7 +1,7 @@
 """Tests for the QC Portal metric upgrade functions"""
 
 import unittest
-from aind_metadata_upgrader.quality_control.v1v2 import upgrade_qcportal_metric
+from aind_metadata_upgrader.quality_control.v1v2 import upgrade_qcportal_metric_value
 
 
 class TestQCPortalMetricUpgrade(unittest.TestCase):
@@ -9,16 +9,16 @@ class TestQCPortalMetricUpgrade(unittest.TestCase):
 
     def test_upgrade_qcportal_metric_none(self):
         """Test handling of None input"""
-        self.assertIsNone(upgrade_qcportal_metric(None))
+        self.assertIsNone(upgrade_qcportal_metric_value(None))
 
     def test_upgrade_qcportal_metric_empty(self):
         """Test handling of empty dict"""
-        self.assertEqual(upgrade_qcportal_metric({}), {})
+        self.assertEqual(upgrade_qcportal_metric_value({}), {})
 
     def test_upgrade_qcportal_metric_no_type(self):
         """Test handling of dict without type"""
         data = {"value": "test"}
-        self.assertEqual(upgrade_qcportal_metric(data), data)
+        self.assertEqual(upgrade_qcportal_metric_value(data), data)
 
     def test_upgrade_qcportal_metric_dropdown_valid(self):
         """Test upgrading a valid dropdown metric"""
@@ -27,7 +27,7 @@ class TestQCPortalMetricUpgrade(unittest.TestCase):
             "options": ["a", "b", "c"],
             "value": "b"
         }
-        result = upgrade_qcportal_metric(data)
+        result = upgrade_qcportal_metric_value(data)
         self.assertEqual(result, data)
 
     def test_upgrade_qcportal_metric_dropdown_invalid(self):
@@ -37,7 +37,7 @@ class TestQCPortalMetricUpgrade(unittest.TestCase):
             "options": ["a", "b", "c"],
             "value": "d"
         }
-        result = upgrade_qcportal_metric(data)
+        result = upgrade_qcportal_metric_value(data)
         self.assertEqual(result, {
             "type": "dropdown",
             "options": ["a", "b", "c"],
@@ -51,7 +51,7 @@ class TestQCPortalMetricUpgrade(unittest.TestCase):
             "options": ["a", "b", "c"],
             "value": ["a", "b"]
         }
-        result = upgrade_qcportal_metric(data)
+        result = upgrade_qcportal_metric_value(data)
         self.assertEqual(result, data)
 
     def test_upgrade_qcportal_metric_checkbox_single_to_list(self):
@@ -61,7 +61,7 @@ class TestQCPortalMetricUpgrade(unittest.TestCase):
             "options": ["a", "b", "c"],
             "value": "a"
         }
-        result = upgrade_qcportal_metric(data)
+        result = upgrade_qcportal_metric_value(data)
         self.assertEqual(result, {
             "type": "checkbox",
             "options": ["a", "b", "c"],
@@ -75,7 +75,7 @@ class TestQCPortalMetricUpgrade(unittest.TestCase):
             "options": ["a", "b", "c"],
             "value": ["d", "e"]
         }
-        result = upgrade_qcportal_metric(data)
+        result = upgrade_qcportal_metric_value(data)
         self.assertEqual(result, {
             "type": "checkbox",
             "options": ["a", "b", "c"],
@@ -89,7 +89,7 @@ class TestQCPortalMetricUpgrade(unittest.TestCase):
             "options": ["a", "b", "c"],
             "value": ["a", "d"]
         }
-        result = upgrade_qcportal_metric(data)
+        result = upgrade_qcportal_metric_value(data)
         self.assertEqual(result, {
             "type": "checkbox",
             "options": ["a", "b", "c"],
