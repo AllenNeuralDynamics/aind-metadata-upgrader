@@ -4,7 +4,7 @@ from aind_data_access_api.document_db import MetadataDbClient
 import json
 import os
 
-record_name = "27ae77c4-e9b4-4cb2-9428-5418e623c6d7"
+record_name = "behavior_789911_2025-07-11_19-47-52_processed_2025-09-23_17-06-54"
 
 # Database configuration
 API_GATEWAY_HOST = "api.allenneuraldynamics.org"
@@ -20,7 +20,7 @@ client = MetadataDbClient(
 
 # Retrieve the record
 records = client.retrieve_docdb_records(
-    filter_query={"_id": record_name},
+    filter_query={"name": record_name},
     limit=1,
 )
 
