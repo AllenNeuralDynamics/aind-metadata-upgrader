@@ -76,12 +76,7 @@ def upgrade_curation_metric(data: dict, modality: dict, stage: str, tags: list) 
     curation_history = data["value"].get("curation_history", [])
 
     if len(curation_history) == 0:
-        curation_history.append(
-            CurationHistory(
-                curator="unknown",
-                timestamp=datetime.now().isoformat()
-            )
-        )
+        curation_history.append(CurationHistory(curator="unknown", timestamp=datetime.now().isoformat()))
 
     metric = CurationMetric(
         name=data.get("name", "unknown"),

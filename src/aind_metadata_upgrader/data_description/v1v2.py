@@ -163,13 +163,7 @@ class DataDescriptionV1V2(CoreUpgrader):
             investigators.append(Person(name="unknown"))
         return investigators
 
-    def _build_output_dict(
-        self,
-        data: dict,
-        schema_version: str,
-        source_data: Optional[list] = None,
-        **kwargs
-        ) -> dict:
+    def _build_output_dict(self, data: dict, schema_version: str, source_data: Optional[list] = None, **kwargs) -> dict:
         """Build the output dictionary with all upgraded fields"""
         return {
             "schema_version": schema_version,

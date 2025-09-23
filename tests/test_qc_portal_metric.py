@@ -22,79 +22,39 @@ class TestQCPortalMetricUpgrade(unittest.TestCase):
 
     def test_upgrade_qcportal_metric_dropdown_valid(self):
         """Test upgrading a valid dropdown metric"""
-        data = {
-            "type": "dropdown",
-            "options": ["a", "b", "c"],
-            "value": "b"
-        }
+        data = {"type": "dropdown", "options": ["a", "b", "c"], "value": "b"}
         result = upgrade_qcportal_metric_value(data)
         self.assertEqual(result, data)
 
     def test_upgrade_qcportal_metric_dropdown_invalid(self):
         """Test upgrading a dropdown metric with invalid value"""
-        data = {
-            "type": "dropdown",
-            "options": ["a", "b", "c"],
-            "value": "d"
-        }
+        data = {"type": "dropdown", "options": ["a", "b", "c"], "value": "d"}
         result = upgrade_qcportal_metric_value(data)
-        self.assertEqual(result, {
-            "type": "dropdown",
-            "options": ["a", "b", "c"],
-            "value": None
-        })
+        self.assertEqual(result, {"type": "dropdown", "options": ["a", "b", "c"], "value": None})
 
     def test_upgrade_qcportal_metric_checkbox_valid_list(self):
         """Test upgrading a valid checkbox metric with list value"""
-        data = {
-            "type": "checkbox",
-            "options": ["a", "b", "c"],
-            "value": ["a", "b"]
-        }
+        data = {"type": "checkbox", "options": ["a", "b", "c"], "value": ["a", "b"]}
         result = upgrade_qcportal_metric_value(data)
         self.assertEqual(result, data)
 
     def test_upgrade_qcportal_metric_checkbox_single_to_list(self):
         """Test upgrading a checkbox metric with single value"""
-        data = {
-            "type": "checkbox",
-            "options": ["a", "b", "c"],
-            "value": "a"
-        }
+        data = {"type": "checkbox", "options": ["a", "b", "c"], "value": "a"}
         result = upgrade_qcportal_metric_value(data)
-        self.assertEqual(result, {
-            "type": "checkbox",
-            "options": ["a", "b", "c"],
-            "value": ["a"]
-        })
+        self.assertEqual(result, {"type": "checkbox", "options": ["a", "b", "c"], "value": ["a"]})
 
     def test_upgrade_qcportal_metric_checkbox_invalid(self):
         """Test upgrading a checkbox metric with invalid values"""
-        data = {
-            "type": "checkbox",
-            "options": ["a", "b", "c"],
-            "value": ["d", "e"]
-        }
+        data = {"type": "checkbox", "options": ["a", "b", "c"], "value": ["d", "e"]}
         result = upgrade_qcportal_metric_value(data)
-        self.assertEqual(result, {
-            "type": "checkbox",
-            "options": ["a", "b", "c"],
-            "value": []
-        })
+        self.assertEqual(result, {"type": "checkbox", "options": ["a", "b", "c"], "value": []})
 
     def test_upgrade_qcportal_metric_checkbox_mixed_invalid(self):
         """Test upgrading a checkbox metric with mix of valid and invalid values"""
-        data = {
-            "type": "checkbox",
-            "options": ["a", "b", "c"],
-            "value": ["a", "d"]
-        }
+        data = {"type": "checkbox", "options": ["a", "b", "c"], "value": ["a", "d"]}
         result = upgrade_qcportal_metric_value(data)
-        self.assertEqual(result, {
-            "type": "checkbox",
-            "options": ["a", "b", "c"],
-            "value": ["a"]
-        })
+        self.assertEqual(result, {"type": "checkbox", "options": ["a", "b", "c"], "value": ["a"]})
 
 
 if __name__ == "__main__":

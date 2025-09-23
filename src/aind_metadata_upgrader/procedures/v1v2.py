@@ -128,7 +128,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         # Map V1 procedure types to their upgrade functions
 
         if procedure_type in PROC_UPGRADE_MAP:
-            return PROC_UPGRADE_MAP[procedure_type](data)            
+            return PROC_UPGRADE_MAP[procedure_type](data)
         else:
             raise ValueError(f"Unsupported procedure type: {procedure_type}")
 

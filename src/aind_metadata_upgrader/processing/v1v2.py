@@ -86,7 +86,7 @@ class ProcessingV1V2(CoreUpgrader):
         # Set pipeline name if pipeline exists
         if v2_data["pipelines"]:
             v2_process["pipeline_name"] = "Processing Pipeline"
-        
+
         return v2_process
 
     def _convert_pipeline_processes(self, pipeline_processes: list, processor_name: str, v2_data: dict) -> None:

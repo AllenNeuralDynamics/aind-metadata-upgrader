@@ -333,7 +333,7 @@ def upgrade_icv_injection(data: dict) -> dict:
     """Upgrade IntraCerebellarVentricleInjection procedure from V1 to V2"""
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
-    
+
     raise NotImplementedError("ICV injection upgrade not implemented yet")
 
     return BrainInjection(**upgraded_data).model_dump()
@@ -343,7 +343,7 @@ def upgrade_icm_injection(data: dict) -> dict:
     """Upgrade IntraCisternalMagnaInjection procedure from V1 to V2"""
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
-    
+
     raise NotImplementedError("ICM injection upgrade not implemented yet")
 
     return BrainInjection(**upgraded_data).model_dump()
