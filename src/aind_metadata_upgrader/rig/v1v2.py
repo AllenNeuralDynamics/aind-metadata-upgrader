@@ -132,7 +132,7 @@ class RigUpgraderV1V2(CoreUpgrader):
     def _upgrade_primary_devices(self, data: dict) -> tuple[dict, list, list]:
         """Upgrade primary devices like mouse platform and stimulus devices"""
         all_connections = []
-        
+
         # Mouse platform
         mouse_platform = data.get("mouse_platform", None)
         if mouse_platform:
@@ -226,11 +226,29 @@ class RigUpgraderV1V2(CoreUpgrader):
 
         return upgraded_ephys_assemblies, opto_lasers, fiber_assemblies, laser_assemblies, patch_cords, all_connections
 
-    def _create_components_list(self, mouse_platform, stimulus_devices, camera_assemblies, upgraded_daqs,
-                                upgraded_ephys_assemblies, fiber_assemblies, stick_microscopes,
-                                laser_assemblies, patch_cords, light_sources, opto_lasers,
-                                upgraded_detectors, objectives, filters, lenses, dmds,
-                                polygonal_scanners, pockels_cells, additional_devices, enclosure) -> list:
+    def _create_components_list(
+        self,
+        mouse_platform,
+        stimulus_devices,
+        camera_assemblies,
+        upgraded_daqs,
+        upgraded_ephys_assemblies,
+        fiber_assemblies,
+        stick_microscopes,
+        laser_assemblies,
+        patch_cords,
+        light_sources,
+        opto_lasers,
+        upgraded_detectors,
+        objectives,
+        filters,
+        lenses,
+        dmds,
+        polygonal_scanners,
+        pockels_cells,
+        additional_devices,
+        enclosure,
+    ) -> list:
         """Create the final components list"""
         components = [
             mouse_platform,
@@ -319,8 +337,9 @@ class RigUpgraderV1V2(CoreUpgrader):
         enclosure = upgrade_enclosure(enclosure) if enclosure else None
 
         # Upgrade ephys and fiber devices
-        (upgraded_ephys_assemblies, opto_lasers, fiber_assemblies,
-         laser_assemblies, patch_cords, ephys_connections) = self._upgrade_ephys_and_fiber_devices(data)
+        (upgraded_ephys_assemblies, opto_lasers, fiber_assemblies, laser_assemblies, patch_cords, ephys_connections) = (
+            self._upgrade_ephys_and_fiber_devices(data)
+        )
         all_connections.extend(ephys_connections)
 
         # Upgrade light sources and detectors
@@ -332,8 +351,7 @@ class RigUpgraderV1V2(CoreUpgrader):
         all_connections.extend(detector_connections)
 
         # Upgrade optical components
-        (objectives, filters, lenses, dmds,
-         polygonal_scanners, pockels_cells) = self._upgrade_optical_components(data)
+        (objectives, filters, lenses, dmds, polygonal_scanners, pockels_cells) = self._upgrade_optical_components(data)
 
         # Upgrade additional devices and DAQs
         additional_devices = self._none_to_list(data.get("additional_devices", []))
@@ -346,13 +364,28 @@ class RigUpgraderV1V2(CoreUpgrader):
 
         # Create components list and validate connections
         components = self._create_components_list(
-            mouse_platform, stimulus_devices, camera_assemblies, upgraded_daqs,
-            upgraded_ephys_assemblies, fiber_assemblies, stick_microscopes,
-            laser_assemblies, patch_cords, light_sources, opto_lasers,
-            upgraded_detectors, objectives, filters, lenses, dmds,
-            polygonal_scanners, pockels_cells, additional_devices, enclosure
+            mouse_platform,
+            stimulus_devices,
+            camera_assemblies,
+            upgraded_daqs,
+            upgraded_ephys_assemblies,
+            fiber_assemblies,
+            stick_microscopes,
+            laser_assemblies,
+            patch_cords,
+            light_sources,
+            opto_lasers,
+            upgraded_detectors,
+            objectives,
+            filters,
+            lenses,
+            dmds,
+            polygonal_scanners,
+            pockels_cells,
+            additional_devices,
+            enclosure,
         )
-        
+
         components, connections = self._validate_components_and_connections(components, all_connections)
         return (components, connections)
 

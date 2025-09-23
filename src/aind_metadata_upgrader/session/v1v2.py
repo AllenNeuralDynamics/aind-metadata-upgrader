@@ -876,7 +876,7 @@ class SessionV1V2(CoreUpgrader):
         """Create speaker configuration if present"""
         if not epoch.get("speaker_config"):
             return None
-            
+
         speaker_data = epoch["speaker_config"]
         return SpeakerConfig(
             device_name=speaker_data.get("name", "Unknown Speaker"),
@@ -930,13 +930,13 @@ class SessionV1V2(CoreUpgrader):
         """Upgrade stimulus epoch from v1 to v2"""
         # Determine stimulus modalities
         stimulus_modalities = self._determine_stimulus_modalities(epoch)
-        
+
         # Create performance metrics
         performance_metrics = self._create_performance_metrics(epoch)
 
         # Create configurations
         configurations = []
-        
+
         # Add speaker config if present
         speaker_config = self._create_speaker_config(epoch)
         if speaker_config:
@@ -948,7 +948,7 @@ class SessionV1V2(CoreUpgrader):
 
         # Create code object if script is present
         code = self._create_code_object(epoch)
-        
+
         # Determine stimulus name
         stimulus_name = self._determine_stimulus_name(epoch)
 

@@ -12,7 +12,7 @@ def _handle_dropdown_metric(data: dict) -> dict:
     """Handle dropdown type metric validation"""
     options = data.get("options", [])
     value = data.get("value", None)
-    
+
     # If someone gave us a list of values (which is wrong), take the first one
     if isinstance(value, list):
         value = value[0] if len(value) > 0 else None
@@ -21,7 +21,7 @@ def _handle_dropdown_metric(data: dict) -> dict:
         data["value"] = value
     if value not in options:
         data["value"] = None
-    
+
     return data
 
 
@@ -29,7 +29,7 @@ def _handle_checkbox_metric(data: dict) -> dict:
     """Handle checkbox type metric validation"""
     options = data.get("options", [])
     value = data.get("value", [])
-    
+
     if not isinstance(value, list):
         value = [value]
         data["value"] = value
@@ -41,7 +41,7 @@ def _handle_checkbox_metric(data: dict) -> dict:
             if v in options:
                 new_values.append(v)
         data["value"] = new_values
-    
+
     return data
 
 

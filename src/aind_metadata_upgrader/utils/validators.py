@@ -1,7 +1,59 @@
 """Validator utility functions with fixed implementations"""
 
 from enum import Enum
-from typing import Any, List
+from typing import Any, List, Union
+
+
+def _extract_names_from_dict(obj: dict) -> List[str]:
+    """
+    Extract names from a dictionary object and its nested values.
+
+    Args:
+        obj: Dictionary to extract names from
+
+    Returns:
+        List of all string 'name' fields found in the dictionary and its nested structures
+    """
+    names = []
+    if "name" in obj and isinstance(obj["name"], str):  # Ensure name is a string
+        names.append(obj["name"])
+    for value in obj.values():
+        names.extend(recursive_get_all_names(value))
+    return names
+
+
+def _extract_names_from_sequence(obj: Union[List[Any], tuple]) -> List[str]:
+    """
+    Extract names from a list or tuple and its nested items.
+
+    Args:
+        obj: List or tuple to extract names from
+
+    Returns:
+        List of all string 'name' fields found in the sequence and its nested structures
+    """
+    names = []
+    for item in obj:
+        names.extend(recursive_get_all_names(item))
+    return names
+
+
+def _extract_names_from_object(obj: Any) -> List[str]:
+    """
+    Extract names from an object (including Pydantic models) and its nested fields.
+
+    Args:
+        obj: Object to extract names from
+
+    Returns:
+        List of all string 'name' fields found in the object and its nested structures
+    """
+    names = []
+    if hasattr(obj, "name") and isinstance(obj.name, str):  # Ensure name is a string
+        names.append(obj.name)
+    for field_value in vars(obj).values():  # Use vars() for robustness
+        names.extend(recursive_get_all_names(field_value))
+    return names
 
 
 def recursive_get_all_names(obj: Any) -> List[str]:
@@ -26,19 +78,12 @@ def recursive_get_all_names(obj: Any) -> List[str]:
         return names
 
     elif isinstance(obj, dict):  # Handle dictionaries
-        if "name" in obj and isinstance(obj["name"], str):  # Ensure name is a string
-            names.append(obj["name"])
-        for value in obj.values():
-            names.extend(recursive_get_all_names(value))
+        names.extend(_extract_names_from_dict(obj))
 
     elif isinstance(obj, (list, tuple)):  # Handle lists and tuples
-        for item in obj:
-            names.extend(recursive_get_all_names(item))
+        names.extend(_extract_names_from_sequence(obj))
 
     elif hasattr(obj, "__dict__"):  # Handle objects (including Pydantic models)
-        if hasattr(obj, "name") and isinstance(obj.name, str):  # Ensure name is a string
-            names.append(obj.name)
-        for field_value in vars(obj).values():  # Use vars() for robustness
-            names.extend(recursive_get_all_names(field_value))
+        names.extend(_extract_names_from_object(obj))
 
     return names

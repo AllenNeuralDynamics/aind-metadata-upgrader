@@ -136,7 +136,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         """Process procedures for surgery upgrade"""
         procedures = data.get("procedures", [])
         data["procedures"] = []
-        
+
         for procedure in procedures:
             upgraded = self._upgrade_procedure(procedure)
             if isinstance(upgraded, tuple):
@@ -145,7 +145,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                     if "measured_coordinates" not in data:
                         data["measured_coordinates"] = []
                     data["measured_coordinates"].extend(measured_coordinates)
-            
+
             if isinstance(upgraded, list):
                 data["procedures"].extend(upgraded)
             else:
@@ -182,16 +182,16 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
     def _upgrade_subject_procedure(self, data: dict):
         """Upgrade a single subject procedure from V1 to V2"""
         procedure_type = data.get("procedure_type")
-        
+
         if procedure_type == "Surgery":
             remove(data, "procedure_type")  # Remove procedure_type as it's not needed in V2
             data = self._replace_experimenter_full_name(data)
             data["ethics_review_id"] = data.get("iacuc_protocol", None)
             remove(data, "iacuc_protocol")
-            
+
             self._process_surgery_procedures(data)
             return self._finalize_surgery_data(data)
-            
+
         elif procedure_type == "Water restriction":
             return upgrade_water_restriction(data)
         elif procedure_type == "Training protocol":

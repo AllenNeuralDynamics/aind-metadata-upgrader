@@ -40,7 +40,7 @@ def _create_detector_config() -> DetectorConfig:
 def _create_laser_config_from_channel(channel_data: dict) -> list:
     """Create laser configurations from channel data"""
     light_source_configs = []
-    
+
     if "laser_wavelength" in channel_data:
         laser_config_params = {
             "device_name": f"laser_{channel_data['laser_wavelength']}nm",
@@ -56,17 +56,17 @@ def _create_laser_config_from_channel(channel_data: dict) -> list:
 
         laser_config = LaserConfig(**laser_config_params)
         light_source_configs.append(laser_config)
-    
+
     return light_source_configs
 
 
 def _create_laser_config_from_light_sources(channel_data: dict, light_sources: list[dict]) -> list:
     """Create laser configurations from existing light sources"""
     light_source_configs = []
-    
+
     if "excitation_wavelength" in channel_data:
         excitation_wavelength = int(channel_data["excitation_wavelength"])
-        
+
         for i, light_source in enumerate(light_sources):
             if light_source.get("wavelength") == excitation_wavelength:
                 name = light_source.get("name", f"Laser {i}") or f"Laser {i}"
@@ -76,7 +76,7 @@ def _create_laser_config_from_light_sources(channel_data: dict, light_sources: l
                         wavelength=excitation_wavelength,
                     )
                 )
-    
+
     return light_source_configs
 
 
@@ -96,7 +96,7 @@ def _create_emission_filters(channel_data: dict, fluorescence_filters: list[dict
                     emission_wavelength = FILTER_MAPPING[filter_config["model"]]
                 else:
                     print(f"Unknown filter model: {filter_config.get('model')}")
-    
+
     return emission_filters, emission_wavelength
 
 

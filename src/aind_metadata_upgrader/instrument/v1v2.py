@@ -121,7 +121,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
     def _upgrade_device_collections(self, data: dict) -> tuple[list, list]:
         """Upgrade device collections and collect connections"""
         saved_connections = []
-        
+
         # Upgrade detectors and collect connections
         detectors = self._none_to_list(data.get("detectors", []))
         upgraded_detectors = []
@@ -152,20 +152,30 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         additional_devices = self._none_to_list(data.get("additional_devices", []))
         additional_devices = [upgrade_additional_devices(device) for device in additional_devices]
 
-        return (objectives, upgraded_detectors, light_sources, lenses, fluorescence_filters,
-                motorized_stages, scanning_stages, additional_devices), saved_connections
+        return (
+            objectives,
+            upgraded_detectors,
+            light_sources,
+            lenses,
+            fluorescence_filters,
+            motorized_stages,
+            scanning_stages,
+            additional_devices,
+        ), saved_connections
 
     def _process_connections_and_daqs(self, data: dict, microscope_name: str) -> tuple[list, list]:
         """Process connections and DAQ devices"""
         saved_connections = []
-        
+
         # Handle com_ports connections
         com_ports = data.get("com_ports", [])
         for port in com_ports:
-            saved_connections.append({
-                "receive": port["hardware_name"],
-                "send": microscope_name,
-            })
+            saved_connections.append(
+                {
+                    "receive": port["hardware_name"],
+                    "send": microscope_name,
+                }
+            )
         del data["com_ports"]
 
         # Handle DAQs
@@ -182,7 +192,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
     def _create_component_connections(self, saved_connections: list) -> list:
         """Create connection objects from saved connection data"""
         connections = []
-        
+
         for connection in saved_connections:
             # Check if this is just a model_dump of a Connection object
             if "object_type" in connection:
@@ -194,7 +204,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
                         target_device=connection["receive"],
                     ).model_dump()
                 )
-        
+
         return connections
 
     def _validate_and_fix_connections(self, components: list, connections: list) -> list:
@@ -235,8 +245,16 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         # Upgrade device collections
         device_collections, device_connections = self._upgrade_device_collections(data)
-        (objectives, upgraded_detectors, light_sources, lenses, fluorescence_filters,
-         motorized_stages, scanning_stages, additional_devices) = device_collections
+        (
+            objectives,
+            upgraded_detectors,
+            light_sources,
+            lenses,
+            fluorescence_filters,
+            motorized_stages,
+            scanning_stages,
+            additional_devices,
+        ) = device_collections
         saved_connections.extend(device_connections)
 
         # Create the new Microscope device
@@ -266,7 +284,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         # Handle connections
         print(f"{len(saved_connections)} saved connections pending")
         connections = self._create_component_connections(saved_connections)
-        
+
         # Validate and fix connections
         components = self._validate_and_fix_connections(components, connections)
 

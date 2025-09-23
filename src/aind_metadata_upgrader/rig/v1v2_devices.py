@@ -192,7 +192,7 @@ def _determine_platform_device_type(data: dict) -> str:
     """Determine the device type for mouse platform"""
     if "device_type" in data:
         return data["device_type"]
-    
+
     if "platform_type" in data and data["platform_type"]:
         data["device_type"] = data["platform_type"]
         remove(data, "platform_type")
@@ -474,10 +474,12 @@ def _handle_camera_connections(data: dict) -> list:
     connections = []
     if "computer_name" in data:
         if data["computer_name"]:
-            connections.append({
-                "send": data["name"],
-                "receive": data["computer_name"],
-            })
+            connections.append(
+                {
+                    "send": data["name"],
+                    "receive": data["computer_name"],
+                }
+            )
         remove(data, "computer_name")
     return connections
 
@@ -518,20 +520,20 @@ def upgrade_camera(data: dict) -> tuple[dict, list]:
     """Upgrade Camera device data from v1.x to v2.0."""
 
     data = basic_device_checks(data, "Camera")
-    
+
     # Handle connections
     connections = _handle_camera_connections(data)
-    
+
     # Normalize camera values
     _normalize_camera_values(data)
-    
+
     # Remove obsolete fields
     remove(data, "max_frame_rate")  # no idea when that was in v1.x
     remove(data, "format_unit")
-    
+
     # Handle dimensions
     _handle_camera_dimensions(data)
-    
+
     # Handle software and format
     _handle_camera_software_and_format(data)
 
