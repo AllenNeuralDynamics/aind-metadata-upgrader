@@ -17,7 +17,7 @@ class SimpleTestObject:
 
     def __init__(self, name=None, value=None):
         """Initialize a SimpleTestObject.
-        
+
         Args:
             name: Optional name attribute for the object
             value: Optional value attribute for the object
@@ -31,7 +31,7 @@ class ComplexTestObject:
 
     def __init__(self, name=None, child=None, children=None, data=None):
         """Initialize a ComplexTestObject.
-        
+
         Args:
             name: Optional name attribute for the object
             child: Optional child object attribute
