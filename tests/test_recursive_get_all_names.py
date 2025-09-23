@@ -16,6 +16,12 @@ class SimpleTestObject:
     """Simple test object with name attribute"""
 
     def __init__(self, name=None, value=None):
+        """Initialize a SimpleTestObject.
+        
+        Args:
+            name: Optional name attribute for the object
+            value: Optional value attribute for the object
+        """
         self.name = name
         self.value = value
 
@@ -24,6 +30,14 @@ class ComplexTestObject:
     """Complex test object with nested attributes"""
 
     def __init__(self, name=None, child=None, children=None, data=None):
+        """Initialize a ComplexTestObject.
+        
+        Args:
+            name: Optional name attribute for the object
+            child: Optional child object attribute
+            children: Optional list of child objects (defaults to empty list)
+            data: Optional data attribute for additional storage
+        """
         self.name = name
         self.child = child
         self.children = children or []

@@ -11,6 +11,8 @@ class ProcessingV1V2(CoreUpgrader):
     """Upgrade processing from v1.4 to v2.0"""
 
     def __init__(self):
+        """Initialize the ProcessingV1V2 upgrader.
+        """
         super().__init__()
         self.names = {}
 
