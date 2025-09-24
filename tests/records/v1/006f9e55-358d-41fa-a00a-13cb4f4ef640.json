@@ -1,0 +1,1286 @@
+{
+    "_id": "006f9e55-358d-41fa-a00a-13cb4f4ef640",
+    "acquisition": null,
+    "created": "2025-06-21T04:14:44.069696",
+    "data_description": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "1.0.4",
+        "license": "CC-BY-4.0",
+        "platform": {
+            "name": "Behavior platform",
+            "abbreviation": "behavior"
+        },
+        "subject_id": "766562",
+        "creation_time": "2025-06-21T04:11:28.980508Z",
+        "label": null,
+        "name": "behavior_766562_2025-06-19_21-47-35_processed_2025-06-21_04-11-28",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": null
+            }
+        ],
+        "data_level": "derived",
+        "group": null,
+        "investigators": [
+            {
+                "name": "Cindy Poo",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "name": "Jeremiah Cohen",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            }
+        ],
+        "project_name": "Behavior Platform",
+        "restrictions": null,
+        "modality": [
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            }
+        ],
+        "related_data": [],
+        "data_summary": null,
+        "input_data_name": "behavior_766562_2025-06-19_21-47-35",
+        "process_name": "processed"
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": {
+        "Code Ocean": [
+            "bb80e615-e435-405e-a29d-235dc51025bc"
+        ]
+    },
+    "instrument": null,
+    "last_modified": "2025-06-21T04:14:46.693Z",
+    "location": "s3://codeocean-s3datasetsbucket-1u41qdg42ur9/bb80e615-e435-405e-a29d-235dc51025bc",
+    "metadata_status": "Invalid",
+    "name": "behavior_766562_2025-06-19_21-47-35_processed_2025-06-21_04-11-28",
+    "procedures": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "schema_version": "1.1.3",
+        "subject_id": "766562",
+        "subject_procedures": [
+            {
+                "procedure_type": "Water restriction",
+                "target_fraction_weight": 85,
+                "target_fraction_weight_unit": "percent",
+                "minimum_water_per_day": "1.0",
+                "minimum_water_per_day_unit": "milliliter",
+                "baseline_weight": "29.41",
+                "weight_unit": "gram",
+                "start_date": "2025-06-13",
+                "end_date": null
+            }
+        ],
+        "specimen_procedures": [],
+        "notes": null
+    },
+    "processing": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "schema_version": "1.1.4",
+        "processing_pipeline": {
+            "data_processes": [],
+            "processor_full_name": "AIND Scientific Computing",
+            "pipeline_version": "10.0",
+            "pipeline_url": "https://github.com/AllenNeuralDynamics/aind-fiber-photometry-pipeline",
+            "note": null
+        },
+        "analyses": [],
+        "notes": null
+    },
+    "quality_control": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/quality_control.py",
+        "schema_version": "1.2.2",
+        "evaluations": [
+            {
+                "modality": {
+                    "name": "Behavior videos",
+                    "abbreviation": "behavior-videos"
+                },
+                "stage": "Raw data",
+                "name": "dropped frames check",
+                "description": "pass when there are no dropped frames",
+                "metrics": [
+                    {
+                        "name": "dropped frames",
+                        "value": 0,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2025-06-20T21:09:37.473626-07:00"
+                            }
+                        ],
+                        "description": null,
+                        "reference": null,
+                        "evaluated_assets": null
+                    }
+                ],
+                "tags": null,
+                "notes": null,
+                "allow_failed_metrics": false,
+                "latest_status": "Pass",
+                "created": "2025-06-21T04:09:37.474050Z"
+            },
+            {
+                "modality": {
+                    "name": "Behavior",
+                    "abbreviation": "behavior"
+                },
+                "stage": "Raw data",
+                "name": "Basic Configuration",
+                "description": "pass when researcher name is not default name, and code repo is clean",
+                "metrics": [
+                    {
+                        "name": "researcher name",
+                        "value": "Bowen Tan",
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2025-06-20T21:09:37.475130-07:00"
+                            }
+                        ],
+                        "description": "Experimenter name should not be set to the default value of \"the ghost in the shell\"",
+                        "reference": null,
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "untracked local changes",
+                        "value": "bonsai/Bonsai.config",
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Fail",
+                                "timestamp": "2025-06-20T21:09:37.475218-07:00"
+                            }
+                        ],
+                        "description": "Whether the code base had untracked changes, and if so, which files",
+                        "reference": null,
+                        "evaluated_assets": null
+                    }
+                ],
+                "tags": null,
+                "notes": null,
+                "allow_failed_metrics": false,
+                "latest_status": "Fail",
+                "created": "2025-06-21T04:09:37.475387Z"
+            },
+            {
+                "modality": {
+                    "name": "Behavior",
+                    "abbreviation": "behavior"
+                },
+                "stage": "Raw data",
+                "name": "Side bias",
+                "description": "pass when average side bias is less than 0.5",
+                "metrics": [
+                    {
+                        "name": "average side bias",
+                        "value": 0,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2025-06-20T21:09:37.476120-07:00"
+                            }
+                        ],
+                        "description": "average side bias should be less than 0.5",
+                        "reference": "dynamic-foraging-qc/side_bias.png",
+                        "evaluated_assets": null
+                    }
+                ],
+                "tags": null,
+                "notes": null,
+                "allow_failed_metrics": false,
+                "latest_status": "Pass",
+                "created": "2025-06-21T04:09:37.476252Z"
+            },
+            {
+                "modality": {
+                    "name": "Behavior",
+                    "abbreviation": "behavior"
+                },
+                "stage": "Raw data",
+                "name": "Lick Intervals",
+                "description": "pass when lick intervals <100ms are less than 10 percent of licks",
+                "metrics": [
+                    {
+                        "name": "Left Lick Interval (%)",
+                        "value": 0,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2025-06-20T21:09:37.484103-07:00"
+                            }
+                        ],
+                        "description": "% of lick intervals < 50ms. These indicate grooming bouts",
+                        "reference": "dynamic-foraging-qc/lick_intervals.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "Right Lick Interval (%)",
+                        "value": 0,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2025-06-20T21:09:37.484292-07:00"
+                            }
+                        ],
+                        "description": "% of lick intervals < 50ms. These indicate grooming bouts",
+                        "reference": "dynamic-foraging-qc/lick_intervals.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "Cross Side Lick Interval (%)",
+                        "value": 0,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2025-06-20T21:09:37.484335-07:00"
+                            }
+                        ],
+                        "description": "% of lick intervals < 50ms. These indicate grooming bouts",
+                        "reference": "dynamic-foraging-qc/lick_intervals.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "Artifact Percent (%)",
+                        "value": 0,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2025-06-20T21:09:37.484380-07:00"
+                            }
+                        ],
+                        "description": "% of lick intervals less than 0.5ms. These indicate electical artifacts",
+                        "reference": "dynamic-foraging-qc/lick_intervals.png",
+                        "evaluated_assets": null
+                    }
+                ],
+                "tags": null,
+                "notes": null,
+                "allow_failed_metrics": false,
+                "latest_status": "Pass",
+                "created": "2025-06-21T04:09:37.484461Z"
+            },
+            {
+                "modality": {
+                    "name": "Behavior",
+                    "abbreviation": "behavior"
+                },
+                "stage": "Raw data",
+                "name": "Session Length Check",
+                "description": "pass when at least 50 trials were performed, and stimulus epoch was at least 10 minutes",
+                "metrics": [
+                    {
+                        "name": "Number of completed trials",
+                        "value": 2,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Fail",
+                                "timestamp": "2025-06-20T21:09:37.484991-07:00"
+                            }
+                        ],
+                        "description": "Must complete at least 50 trials to pass",
+                        "reference": null,
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "Length of stimulus epoch",
+                        "value": 6.901058,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Fail",
+                                "timestamp": "2025-06-20T21:09:37.485035-07:00"
+                            }
+                        ],
+                        "description": "Must be at least 10 minutes",
+                        "reference": null,
+                        "evaluated_assets": null
+                    }
+                ],
+                "tags": null,
+                "notes": null,
+                "allow_failed_metrics": false,
+                "latest_status": "Fail",
+                "created": "2025-06-21T04:09:37.485081Z"
+            }
+        ],
+        "notes": null
+    },
+    "rig": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/rig.py",
+        "schema_version": "1.0.1",
+        "rig_id": "446_8B_20250617",
+        "modification_date": "2025-06-17",
+        "mouse_platform": {
+            "device_type": "Tube",
+            "name": "mouse_tube_foraging",
+            "serial_number": null,
+            "manufacturer": {
+                "name": "Custom",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            },
+            "model": null,
+            "path_to_cad": null,
+            "port_index": null,
+            "additional_settings": {},
+            "notes": null,
+            "surface_material": null,
+            "date_surface_replaced": null,
+            "diameter": "3.0",
+            "diameter_unit": "centimeter"
+        },
+        "stimulus_devices": [
+            {
+                "device_type": "Reward delivery",
+                "stage_type": {
+                    "device_type": "Motorized stage",
+                    "name": "AIND lick spout stage",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Allen Institute for Neural Dynamics",
+                        "abbreviation": "AIND",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "04szwah67"
+                    },
+                    "model": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": "https://allenneuraldynamics.github.io/Bonsai.AllenNeuralDynamics/articles/aind-manipulator.html",
+                    "travel": "30",
+                    "travel_unit": "millimeter",
+                    "firmware": null
+                },
+                "reward_spouts": [
+                    {
+                        "device_type": "Reward spout",
+                        "name": "Left lick spout",
+                        "serial_number": null,
+                        "manufacturer": null,
+                        "model": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "additional_settings": {},
+                        "notes": null,
+                        "side": "Left",
+                        "spout_diameter": "1.2",
+                        "spout_diameter_unit": "millimeter",
+                        "spout_position": null,
+                        "solenoid_valve": {
+                            "device_type": "Solenoid",
+                            "name": "Solenoid Left",
+                            "serial_number": null,
+                            "manufacturer": {
+                                "name": "The Lee Company",
+                                "abbreviation": null,
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": "LHDA1233415H",
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "additional_settings": {},
+                            "notes": null
+                        },
+                        "lick_sensor": {
+                            "device_type": "Lick Sensor",
+                            "name": "Lick Sensor Left",
+                            "serial_number": null,
+                            "manufacturer": {
+                                "name": "Janelia Research Campus",
+                                "abbreviation": "Janelia",
+                                "registry": {
+                                    "name": "Research Organization Registry",
+                                    "abbreviation": "ROR"
+                                },
+                                "registry_identifier": "013sk6x84"
+                            },
+                            "model": null,
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "additional_settings": {},
+                            "notes": null
+                        },
+                        "lick_sensor_type": "Capacitive"
+                    },
+                    {
+                        "device_type": "Reward spout",
+                        "name": "Right lick spout",
+                        "serial_number": null,
+                        "manufacturer": null,
+                        "model": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "additional_settings": {},
+                        "notes": null,
+                        "side": "Right",
+                        "spout_diameter": "1.2",
+                        "spout_diameter_unit": "millimeter",
+                        "spout_position": null,
+                        "solenoid_valve": {
+                            "device_type": "Solenoid",
+                            "name": "Solenoid Right",
+                            "serial_number": null,
+                            "manufacturer": {
+                                "name": "The Lee Company",
+                                "abbreviation": null,
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": "LHDA1233415H",
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "additional_settings": {},
+                            "notes": null
+                        },
+                        "lick_sensor": {
+                            "device_type": "Lick Sensor",
+                            "name": "Lick Sensor Right",
+                            "serial_number": null,
+                            "manufacturer": {
+                                "name": "Janelia Research Campus",
+                                "abbreviation": "Janelia",
+                                "registry": {
+                                    "name": "Research Organization Registry",
+                                    "abbreviation": "ROR"
+                                },
+                                "registry_identifier": "013sk6x84"
+                            },
+                            "model": null,
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "additional_settings": {},
+                            "notes": null
+                        },
+                        "lick_sensor_type": "Capacitive"
+                    }
+                ]
+            },
+            {
+                "device_type": "Speaker",
+                "name": "Stimulus Speaker",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Tymphany",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "XT25SC90-04",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "position": null
+            }
+        ],
+        "cameras": [
+            {
+                "name": "Right Camera assembly",
+                "camera_target": "Face side right",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "Right size of face camera",
+                    "serial_number": "23349428",
+                    "manufacturer": {
+                        "name": "Teledyne FLIR",
+                        "abbreviation": "FLIR",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "Air",
+                    "computer_name": "W10DT714686",
+                    "frame_rate": null,
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Monochrome",
+                    "sensor_width": 720,
+                    "sensor_height": 540,
+                    "size_unit": "pixel",
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inch",
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": null,
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Behavior Video Lens Right Side",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Fujinon",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "CF16ZA-1S",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "focal_length": "16",
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": null,
+                "position": null
+            },
+            {
+                "name": "Bottom Camera assembly",
+                "camera_target": "Face bottom",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "bottom of face camera",
+                    "serial_number": "23347800",
+                    "manufacturer": {
+                        "name": "Teledyne FLIR",
+                        "abbreviation": "FLIR",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "Air",
+                    "computer_name": "W10DT714686",
+                    "frame_rate": null,
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Monochrome",
+                    "sensor_width": 720,
+                    "sensor_height": 540,
+                    "size_unit": "pixel",
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inch",
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": null,
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Behavior Video Lens Bottom of face",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Other",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "LM25HC",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": "Manufacturer is Kowa",
+                    "focal_length": "25",
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": null,
+                "position": null
+            }
+        ],
+        "enclosure": {
+            "device_type": "Enclosure",
+            "name": "Behavior enclosure",
+            "serial_number": null,
+            "manufacturer": {
+                "name": "Allen Institute for Neural Dynamics",
+                "abbreviation": "AIND",
+                "registry": {
+                    "name": "Research Organization Registry",
+                    "abbreviation": "ROR"
+                },
+                "registry_identifier": "04szwah67"
+            },
+            "model": null,
+            "path_to_cad": null,
+            "port_index": null,
+            "additional_settings": {},
+            "notes": null,
+            "size": {
+                "width": 54,
+                "length": 54,
+                "height": 54,
+                "unit": "centimeter"
+            },
+            "internal_material": "",
+            "external_material": "",
+            "grounded": false,
+            "laser_interlock": false,
+            "air_filtration": false
+        },
+        "ephys_assemblies": [],
+        "fiber_assemblies": [],
+        "stick_microscopes": [],
+        "laser_assemblies": [],
+        "patch_cords": [],
+        "light_sources": [
+            {
+                "device_type": "Light emitting diode",
+                "name": "IR LED",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M810L5",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "wavelength": 810,
+                "wavelength_unit": "nanometer",
+                "bandwidth": null,
+                "bandwidth_unit": "nanometer"
+            }
+        ],
+        "detectors": [],
+        "objectives": [],
+        "filters": [],
+        "lenses": [],
+        "digital_micromirror_devices": [],
+        "polygonal_scanners": [],
+        "pockels_cells": [],
+        "additional_devices": [],
+        "daqs": [
+            {
+                "device_type": "Harp device",
+                "name": "harp behavior board",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": "Champalimaud",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": "Left lick spout and Right lick spout, as well as reward delivery solenoids are connected via ethernet cables",
+                "data_interface": "Ethernet",
+                "computer_name": "W10DT714686",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Behavior",
+                    "whoami": 1216
+                },
+                "core_version": "1.11",
+                "tag_version": null,
+                "is_clock_generator": false
+            },
+            {
+                "device_type": "Harp device",
+                "name": "harp sound card",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": "Champalimaud",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DT714686",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Sound Card",
+                    "whoami": 1280
+                },
+                "core_version": "1.4",
+                "tag_version": null,
+                "is_clock_generator": false
+            },
+            {
+                "device_type": "Harp device",
+                "name": "harp clock synchronization board",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": "Champalimaud",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DT714686",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Clock Synchronizer",
+                    "whoami": 1152
+                },
+                "core_version": "",
+                "tag_version": null,
+                "is_clock_generator": true
+            },
+            {
+                "device_type": "Harp device",
+                "name": "harp sound amplifier",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": "Champalimaud",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DT714686",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Input Expander",
+                    "whoami": 1106
+                },
+                "core_version": "",
+                "tag_version": null,
+                "is_clock_generator": false
+            }
+        ],
+        "calibrations": [
+            {
+                "calibration_date": "2025-06-17T00:00:00-07:00",
+                "device_name": "Lick spout Left",
+                "description": "Spot check of water calibration for Lick spout Left. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.0244
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        1.855
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2025-06-10T00:00:00-07:00",
+                "device_name": "Lick spout Left",
+                "description": "Spot check of water calibration for Lick spout Left. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.0244
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        1.895
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2025-06-03T00:00:00-07:00",
+                "device_name": "Lick spout Left",
+                "description": "Spot check of water calibration for Lick spout Left. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.0244
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        1.84
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2025-05-28T00:00:00-07:00",
+                "device_name": "Lick spout Left",
+                "description": "Spot check of water calibration for Lick spout Left. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.0244
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        1.975
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2025-05-20T00:00:00-07:00",
+                "device_name": "Lick spout Left",
+                "description": "Spot check of water calibration for Lick spout Left. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.0244
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        1.95
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2025-05-13T00:00:00-07:00",
+                "device_name": "Lick spout Left",
+                "description": "Water calibration for Lick spout Left. The input is the valve open time in seconds and the output is the volume of water delivered in microliters.",
+                "input": {
+                    "valve open time (s):": [
+                        0.02,
+                        0.03
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        1.618,
+                        2.491
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2025-06-17T00:00:00-07:00",
+                "device_name": "Lick spout Right",
+                "description": "Spot check of water calibration for Lick spout Right. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.0243
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        2.135
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2025-06-10T00:00:00-07:00",
+                "device_name": "Lick spout Right",
+                "description": "Spot check of water calibration for Lick spout Right. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.0243
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        2.17
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2025-06-03T00:00:00-07:00",
+                "device_name": "Lick spout Right",
+                "description": "Spot check of water calibration for Lick spout Right. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.0243
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        2.09
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2025-05-28T00:00:00-07:00",
+                "device_name": "Lick spout Right",
+                "description": "Spot check of water calibration for Lick spout Right. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.0243
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        2.01
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2025-05-20T00:00:00-07:00",
+                "device_name": "Lick spout Right",
+                "description": "Spot check of water calibration for Lick spout Right. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.0243
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        2.24
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2025-05-13T00:00:00-07:00",
+                "device_name": "Lick spout Right",
+                "description": "Spot check of water calibration for Lick spout Right. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.0243
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        2.28
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2025-05-06T00:00:00-07:00",
+                "device_name": "Lick spout Right",
+                "description": "Water calibration for Lick spout Right. The input is the valve open time in seconds and the output is the volume of water delivered in microliters.",
+                "input": {
+                    "valve open time (s):": [
+                        0.02,
+                        0.03
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        1.588,
+                        2.555
+                    ]
+                },
+                "notes": null
+            }
+        ],
+        "ccf_coordinate_transform": null,
+        "origin": null,
+        "rig_axes": null,
+        "modalities": [
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            },
+            {
+                "name": "Behavior videos",
+                "abbreviation": "behavior-videos"
+            }
+        ],
+        "notes": null
+    },
+    "schema_version": "1.1.1",
+    "session": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/session.py",
+        "schema_version": "1.0.1",
+        "protocol_id": [
+            ""
+        ],
+        "experimenter_full_name": [
+            "Bowen Tan"
+        ],
+        "session_start_time": "2025-06-19T21:47:35.757150-07:00",
+        "session_end_time": "2025-06-19T21:47:42.658208-07:00",
+        "session_type": "Coupled Baiting",
+        "iacuc_protocol": "2109",
+        "rig_id": "446_8B_20250617",
+        "calibrations": [],
+        "maintenance": [],
+        "subject_id": "766562",
+        "animal_weight_prior": "29.4",
+        "animal_weight_post": "24.9",
+        "weight_unit": "gram",
+        "anaesthesia": null,
+        "data_streams": [],
+        "stimulus_epochs": [
+            {
+                "stimulus_start_time": "2025-06-19T21:47:35.757150-07:00",
+                "stimulus_end_time": "2025-06-19T21:47:42.658208-07:00",
+                "stimulus_name": "The behavior auditory go cue",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "dynamic-foraging-task",
+                        "version": "behavior branch:random-reward   commit ID:e9bdb4f1c4d1d2e50e6321bdb5c21e94efe92e4e    version:1.6.28; metadata branch: random-reward   commit ID:e9bdb4f1c4d1d2e50e6321bdb5c21e94efe92e4e   version:1.6.28",
+                        "url": "https://github.com/AllenNeuralDynamics/dynamic-foraging-task.git",
+                        "parameters": {}
+                    }
+                ],
+                "script": null,
+                "stimulus_modalities": [
+                    "Auditory"
+                ],
+                "stimulus_parameters": [
+                    {
+                        "stimulus_type": "Auditory Stimulation",
+                        "sitmulus_name": "auditory go cue",
+                        "sample_frequency": "96000",
+                        "amplitude_modulation_frequency": 7500,
+                        "frequency_unit": "hertz",
+                        "bandpass_low_frequency": null,
+                        "bandpass_high_frequency": null,
+                        "bandpass_filter_type": null,
+                        "bandpass_order": null,
+                        "notes": null
+                    }
+                ],
+                "stimulus_device_names": [
+                    "Stimulus Speaker"
+                ],
+                "speaker_config": {
+                    "name": "Stimulus Speaker",
+                    "volume": "75",
+                    "volume_unit": "decibels"
+                },
+                "light_source_config": [],
+                "output_parameters": {
+                    "meta": {
+                        "box": "446-8-B",
+                        "session_run_time_in_min": 0
+                    },
+                    "water": {
+                        "water_in_session_foraging": 4,
+                        "water_in_session_manual": -3.246,
+                        "water_in_session_total": 0.754,
+                        "water_after_session": 0.246,
+                        "water_day_total": 1
+                    },
+                    "performance": {
+                        "foraging_efficiency": 1.25,
+                        "foraging_efficiency_with_actual_random_seed": 1
+                    },
+                    "task_parameters": {
+                        "ITIMin": "1.0",
+                        "DelayMin": "0.1",
+                        "DelayBeta": "0.0",
+                        "DelayMax": "0.1",
+                        "Task": "Coupled Baiting",
+                        "BlockMax": "30",
+                        "ITIMax": "7.0",
+                        "ITIBeta": "3.0",
+                        "BlockBeta": "10",
+                        "BlockMin": "10",
+                        "RightValue_volume": "2.00",
+                        "LeftValue_volume": "2.00",
+                        "reward_probability": "[[0.8, 0.0]]"
+                    }
+                },
+                "reward_consumed_during_epoch": "4.750000000000001",
+                "reward_consumed_unit": "microliter",
+                "trials_total": 2,
+                "trials_finished": 2,
+                "trials_rewarded": 2,
+                "notes": "The duration of go cue is 100 ms. The frequency is 7500 Hz. Amplitude is 75dB. The total reward consumed in the session is 4.750000000000001 microliters. The total reward including consumed in the session and supplementary water is 1.0 milliliters."
+            },
+            {
+                "stimulus_start_time": "2025-06-19T21:47:49.295707-07:00",
+                "stimulus_end_time": "2025-06-19T22:08:04.909210-07:00",
+                "stimulus_name": "The random reward stimulus",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "dynamic-foraging-task",
+                        "version": "behavior branch:random-reward   commit ID:e9bdb4f1c4d1d2e50e6321bdb5c21e94efe92e4e    version:1.6.28; metadata branch: random-reward   commit ID:e9bdb4f1c4d1d2e50e6321bdb5c21e94efe92e4e   version:1.6.28",
+                        "url": "https://github.com/AllenNeuralDynamics/dynamic-foraging-task.git",
+                        "parameters": {}
+                    }
+                ],
+                "script": null,
+                "stimulus_modalities": [
+                    "None"
+                ],
+                "stimulus_parameters": null,
+                "stimulus_device_names": [
+                    "Reward lick spout"
+                ],
+                "speaker_config": null,
+                "light_source_config": [],
+                "output_parameters": {
+                    "spout": "Both",
+                    "left_reward_volume": "2,5,8",
+                    "right_reward_volume": "2,5,8",
+                    "reward_number_each_condition": "25",
+                    "interval_distribution": "Exponential",
+                    "interval_beta": "4",
+                    "interval_min": "4",
+                    "interval_max": "30"
+                },
+                "reward_consumed_during_epoch": "0.7500000000000006",
+                "reward_consumed_unit": "microliter",
+                "trials_total": 149,
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "notes": null
+            }
+        ],
+        "mouse_platform_name": "mouse_tube_foraging",
+        "active_mouse_platform": false,
+        "headframe_registration": null,
+        "reward_delivery": null,
+        "reward_consumed_total": "4.750000000000001",
+        "reward_consumed_unit": "microliter",
+        "notes": ""
+    },
+    "subject": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "schema_version": "1.0.2",
+        "subject_id": "766562",
+        "sex": "Female",
+        "date_of_birth": "2024-09-15",
+        "genotype": "Fos2A-iCreER/wt;Ai75(RCL-nT)/wt",
+        "species": {
+            "name": "Mus musculus",
+            "registry": {
+                "name": "National Center for Biotechnology Information",
+                "abbreviation": "NCBI"
+            },
+            "registry_identifier": "NCBI:txid10090"
+        },
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": {
+            "breeding_group": "Fos2A-iCreER;Ai75(ND)",
+            "maternal_id": "735182",
+            "maternal_genotype": "Fos2A-iCreER/wt",
+            "paternal_id": "731861",
+            "paternal_genotype": "Ai75(RCL-nT)/Ai75(RCL-nT)"
+        },
+        "source": {
+            "name": "Allen Institute",
+            "abbreviation": "AI",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "03cpe7c52"
+        },
+        "rrid": null,
+        "restrictions": null,
+        "wellness_reports": [],
+        "housing": {
+            "cage_id": "8281012",
+            "room_id": "221",
+            "light_cycle": null,
+            "home_cage_enrichment": [],
+            "cohoused_subjects": []
+        },
+        "notes": null
+    }
+}

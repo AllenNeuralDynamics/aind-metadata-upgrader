@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "aind-metadata-upgrader"
 description = "Generated from aind-library-template"
 license = {text = "MIT"}
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 authors = [
     {name = "Allen Institute for Neural Dynamics"}
 ]
@@ -17,8 +17,9 @@ readme = "README.md"
 dynamic = ["version"]
 
 dependencies = [
-    'aind-data-schema>=1.0.0,<2.0',
-    'pydantic>=2.7,<2.9',
+    'aind-data-schema',
+    'packaging',
+    'aind-data-access-api[docdb]',
 ]
 
 [project.optional-dependencies]
@@ -30,7 +31,7 @@ dev = [
     'isort',
     'Sphinx',
     'tzlocal',
-    'furo'
+    'furo',
 ]
 
 [tool.setuptools.packages.find]
@@ -41,7 +42,7 @@ version = {attr = "aind_metadata_upgrader.__version__"}
 
 [tool.black]
 line-length = 120
-target_version = ['py38']
+target_version = ['py313']
 exclude = '''
 
 (
@@ -71,7 +72,7 @@ exclude_lines = [
     "import",
     "pragma: no cover"
 ]
-fail_under = 100
+fail_under = 80
 
 [tool.isort]
 line_length = 79

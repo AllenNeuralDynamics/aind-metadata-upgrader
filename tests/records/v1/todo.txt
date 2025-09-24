@@ -1,0 +1,16 @@
+name	project_name	modality	subject_id
+ecephys_703880_2024-04-18_15-19-41_sorted_2024-04-25_01-48-15	null	ecephys	703880	 
+behavior_751153_2024-10-09_15-59-12_processed_2025-02-23_03-49-18	behaviour platform	behavior	751153	 
+SmartSPIM_683185_2023-08-22_20-06-18_stitched_2023-08-30_23-36-42	null	SmartSPIM	683185	 
+SmartSPIM_714635_2024-02-12_18-29-10	null	SmartSPIM	714635	 
+multiplane-ophys_746540_2024-09-30_14-52-23_processed_2025-02-12_05-48-24	Learning mFISH-V1omFISH	multiplane-ophys	746540	 
+ecephys_713379_2024-06-03_11-58-45_sorted_2024-10-07_18-57-56	Ephys Platform	ecephys	713379	 
+SmartSPIM_684429_2023-10-18_13-03-44_stitched_2023-11-01_01-26-05	null	SmartSPIM	684429	 
+single-plane-ophys_708792_2024-02-20_14-40-40	Brain Computer Interface	single-plane-ophys	708792	 
+multiplane-ophys_749013_2024-11-25_11-57-12_processed_2024-11-26_15-25-37'	OpenScope	multiplane-ophys	749013	 
+behavior_717531_2024-08-30_08-53-36_processed_2024-09-13_01-18-58	null	behavior	717531	 
+ecephys_644866_2023-02-09_15-47-03_GammaEncoding_2024-12-10_05-54-18	null	ecephys	644866	 
+FIP_632105_2022-11-21_14-16-51	null	FIP	632105	 
+behavior_757214_2024-12-03_16-28-15	behaviour platform	behavior	757214	 
+exaSPIM_686955_2024-03-28_16-52-26_alignment_2024-05-03_18-38-41	null	exaSPIM	686955	 
+ecephys_749926_2025-01-22_13-45-40	"Cell Type LUT"	ecephys	749926	
