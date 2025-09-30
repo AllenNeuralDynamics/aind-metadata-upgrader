@@ -32,6 +32,7 @@ dev = [
     'Sphinx',
     'tzlocal',
     'furo',
+    'aind-metadata-upgrader[sync]',
 ]
 sync = [
     'aind-data-access-api[rds]',
