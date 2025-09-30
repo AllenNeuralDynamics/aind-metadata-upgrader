@@ -65,7 +65,8 @@ def run():
 
         for data_dict in cached_records:
 
-            print(f"\n\nTesting upgrade for record ID: {data_dict["_id"]}")
+            record_id = data_dict["_id"]
+            print(f"\n\nTesting upgrade for record ID: {record_id}")
 
             # Skip assets that have already been successfully upgraded with this version
             v1_id = data_dict["_id"]
