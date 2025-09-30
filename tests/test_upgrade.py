@@ -35,7 +35,7 @@ client = MetadataDbClient(
 )
 
 run_one = None
-upsert = True
+upsert = False
 
 
 class TestUpgrade(unittest.TestCase):
