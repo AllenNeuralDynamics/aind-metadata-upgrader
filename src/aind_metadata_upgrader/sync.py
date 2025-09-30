@@ -126,7 +126,7 @@ def upload_to_rds(df: pd.DataFrame):
 def run():
     """Test the upgrade process"""
     # Get list of all record IDs from v1 database
-    records_list = client_v1.retrieve_docdb_records(filter_query={}, projection={"_id": 1}, limit=10)
+    records_list = client_v1.retrieve_docdb_records(filter_query={}, projection={"_id": 1})
 
     num_records = len(records_list)
     cached_records = []
