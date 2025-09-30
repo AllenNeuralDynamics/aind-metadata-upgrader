@@ -1,8 +1,6 @@
 """<=v1.4 to v2.0 session upgrade functions"""
 
-from datetime import datetime
 from typing import Dict, List, Optional, Union
-from zoneinfo import ZoneInfo
 
 from aind_data_schema.base import GenericModel
 from aind_data_schema.components.configs import (

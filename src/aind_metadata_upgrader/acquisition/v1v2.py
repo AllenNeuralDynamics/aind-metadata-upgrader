@@ -1,8 +1,6 @@
 """<=v1.4 to v2.0 acquisition upgrade functions"""
 
-from datetime import datetime
 from typing import Dict, List, Optional
-from zoneinfo import ZoneInfo
 
 from aind_data_schema.core.acquisition import AcquisitionSubjectDetails
 
