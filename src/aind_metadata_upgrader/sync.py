@@ -159,8 +159,7 @@ def run():
 
             try:
                 record, result = upgrade_record(data_dict)
-                if record is not None:
-                    upgraded_records.append(record)
+                upgraded_records.append(record)
                 upgrade_results.append(result)
             except Exception as e:
                 upgrade_results.append(
@@ -174,17 +173,21 @@ def run():
                 record_id = data_dict["_id"]
                 print(f"Upgrade failed for record ID {record_id}: {e}")
 
-        if len(upgraded_records) >= BATCH_SIZE:
-            print(f"Batch upserting {len(upgraded_records)} records to DocumentDB")
-            client_v2.upsert_list_of_docdb_records(
-                records=upgraded_records,
-            )
+        valid_records = [r for r in upgraded_records if r is not None]
+        if len(valid_records) >= BATCH_SIZE:
+            print(f"Batch upserting {len(valid_records)} records to DocumentDB")
+            client_v2.upsert_list_of_docdb_records(records=valid_records)
             upgraded_records.clear()
 
     # Process any remaining records at the end
-    if upgraded_records:
-        print(f"Final batch upserting {len(upgraded_records)} records to DocumentDB")
-        client_v2.upsert_list_of_docdb_records(records=upgraded_records)
+    valid_records = [r for r in upgraded_records if r is not None]
+    if valid_records:
+        print(f"Final batch upserting {len(valid_records)} records to DocumentDB")
+        client_v2.upsert_list_of_docdb_records(records=valid_records)
+
+    if not upgrade_results:
+        logging.info("(METADATA VALIDATOR) No upgrade results to write to RDS")
+        return
 
     final_df = pd.DataFrame(upgrade_results)
     upload_to_rds(final_df)
