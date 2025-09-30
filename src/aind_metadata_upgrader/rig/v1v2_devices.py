@@ -691,8 +691,7 @@ def upgrade_ephys_probe(data: dict) -> tuple[dict, list, list]:
         if "headstage_model" in data["headstage"] and data["headstage"]["headstage_model"]:
             headstage_model = data["headstage"]["headstage_model"]
             data["headstage"]["notes"] = (
-                data["headstage"].get("notes", "")
-                + f" (v1v2 upgrade): headstage model was '{headstage_model}'."
+                data["headstage"].get("notes", "") + f" (v1v2 upgrade): headstage model was '{headstage_model}'."
             ).strip()
         remove(data["headstage"], "headstage_model")
         data["headstage"] = upgrade_generic_device_with_name(data["headstage"], "Headstage")

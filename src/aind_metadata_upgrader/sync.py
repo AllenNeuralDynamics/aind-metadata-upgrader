@@ -76,10 +76,7 @@ def run():
             v1_id = data_dict["_id"]
             if original_df is not None:
                 existing = original_df[original_df["v1_id"] == str(v1_id)]
-                if (
-                    len(existing) > 0
-                    and existing.iloc[0]["upgrader_version"] == upgrader_version
-                ):
+                if len(existing) > 0 and existing.iloc[0]["upgrader_version"] == upgrader_version:
                     print(f"Skipping already successfully upgraded record ID {v1_id}")
                     continue
 

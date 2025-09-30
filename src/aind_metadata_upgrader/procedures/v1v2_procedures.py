@@ -196,7 +196,7 @@ def upgrade_craniotomy(data: dict) -> tuple[dict, list]:
 
     # Check if the craniotomy_type string is a valid enum value
     valid_enum_values = [e.value for e in CraniotomyType]
-    
+
     if upgraded_data["craniotomy_type"] not in valid_enum_values:
         # Need to convert craniotomy type
         if upgraded_data["craniotomy_type"] in CRANIO_TYPES.keys():
