@@ -33,6 +33,10 @@ dev = [
     'tzlocal',
     'furo',
 ]
+sync = [
+    'pandas',
+    'aind-data-access-api[rds]',
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
