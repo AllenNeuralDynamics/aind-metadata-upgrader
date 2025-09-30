@@ -79,7 +79,6 @@ def run():
                 if (
                     len(existing) > 0
                     and existing.iloc[0]["upgrader_version"] == upgrader_version
-                    and existing.iloc[0]["status"] == "success"
                 ):
                     print(f"Skipping already successfully upgraded record ID {v1_id}")
                     continue
