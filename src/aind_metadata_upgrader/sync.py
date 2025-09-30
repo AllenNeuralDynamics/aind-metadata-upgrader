@@ -69,24 +69,24 @@ def upgrade_record(data_dict: dict) -> tuple[dict, dict]:
             print(f"Batch updating existing record in DocumentDB: {upgraded.metadata.name}")
 
         return (
-                new_record,
-                {
-                    "v1_id": str(data_dict["_id"]),
-                    "v2_id": str(v2_id),
-                    "upgrader_version": upgrader_version,
-                    "status": "success",
-                }
-            )
+            new_record,
+            {
+                "v1_id": str(data_dict["_id"]),
+                "v2_id": str(v2_id),
+                "upgrader_version": upgrader_version,
+                "status": "success",
+            },
+        )
     else:
         return (
-                None,
-                {
-                    "v1_id": str(data_dict["_id"]),
-                    "v2_id": None,
-                    "upgrader_version": upgrader_version,
-                    "status": "failed",
-                }
-            )
+            None,
+            {
+                "v1_id": str(data_dict["_id"]),
+                "v2_id": None,
+                "upgrader_version": upgrader_version,
+                "status": "failed",
+            },
+        )
 
 
 def get_rds_data() -> Optional[pd.DataFrame]:
@@ -105,7 +105,7 @@ def get_rds_data() -> Optional[pd.DataFrame]:
 
 
 def upload_to_rds(df: pd.DataFrame):
-    """ Upload upgrade results to RDS, chunking if necessary """
+    """Upload upgrade results to RDS, chunking if necessary"""
 
     if len(df) <= CHUNK_SIZE:
         rds_client.overwrite_table_with_df(df, RDS_TABLE_NAME)
@@ -139,7 +139,7 @@ def run():
     # Cache 10 records at a time to reduce API calls
     for i in range(0, num_records, BATCH_SIZE):
         print(f"Records: {i}/{num_records}")
-        batch = records_list[i: i + BATCH_SIZE]
+        batch = records_list[i : i + BATCH_SIZE]
         cached_records = client_v1.retrieve_docdb_records(
             filter_query={"_id": {"$in": [record["_id"] for record in batch]}},
         )
