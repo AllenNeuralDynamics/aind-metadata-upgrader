@@ -139,7 +139,7 @@ def run():
     # Cache 10 records at a time to reduce API calls
     for i in range(0, num_records, BATCH_SIZE):
         print(f"Records: {i}/{num_records}")
-        batch = records_list[i : i + BATCH_SIZE]
+        batch = records_list[i: i + BATCH_SIZE]
         cached_records = client_v1.retrieve_docdb_records(
             filter_query={"_id": {"$in": [record["_id"] for record in batch]}},
         )
