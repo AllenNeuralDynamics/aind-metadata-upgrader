@@ -1,3 +1,5 @@
+"""Sync code to upgrade metadata from v1 to v2 and store results in RDS"""
+
 import logging
 from typing import Optional
 from aind_metadata_upgrader.upgrade import Upgrade
