@@ -4,7 +4,6 @@ import json
 import os
 import traceback
 import unittest
-import time
 
 from aind_data_access_api.document_db import MetadataDbClient
 
