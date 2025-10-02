@@ -881,7 +881,7 @@ def upgrade_registry(data: dict) -> dict:
     """
 
     if "registry" in data and data["registry"]:
-        data["registry"] = getattr(Registry, data["registry"]["abbreviation"].upper())
+        data["registry"] = getattr(Registry, data["abbreviation"].upper())
 
     return data
 
