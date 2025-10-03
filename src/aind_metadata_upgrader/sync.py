@@ -123,6 +123,25 @@ def upload_to_rds(df: pd.DataFrame):
             rds_client.append_df_to_table(chunk, RDS_TABLE_NAME)
 
 
+def check_skip_conditions(data_dict: dict, original_df: Optional[pd.DataFrame]) -> bool:
+    """Check if a record should be skipped based on existing RDS data"""
+    v1_id = data_dict["_id"]
+    if original_df is not None:
+        existing = original_df[original_df["v1_id"] == str(v1_id)]
+        if len(existing) > 0:
+            row = existing.iloc[0]
+
+            existing_upgrader_version = row.get("upgrader_version", "")
+            existing_last_modified = row.get("last_modified", "")
+
+            if existing_upgrader_version == upgrader_version and existing_last_modified == data_dict.get(
+                "last_modified"
+            ):
+                print(f"Skipping already successfully upgraded record ID {v1_id}")
+                return True
+    return False
+
+
 def run():
     """Test the upgrade process"""
     # Get list of all record IDs from v1 database
@@ -139,7 +158,7 @@ def run():
     # Cache 10 records at a time to reduce API calls
     for i in range(0, num_records, BATCH_SIZE):
         print(f"Records: {i}/{num_records}")
-        batch = records_list[i: i + BATCH_SIZE]
+        batch = records_list[i: i + BATCH_SIZE]  # fmt: skip
         cached_records = client_v1.retrieve_docdb_records(
             filter_query={"_id": {"$in": [record["_id"] for record in batch]}},
         )
@@ -152,16 +171,8 @@ def run():
             # Skip assets that have already been successfully upgraded with this version
             v1_id = data_dict["_id"]
             if original_df is not None:
-                existing = original_df[original_df["v1_id"] == str(v1_id)]
-                if len(existing) > 0:
-                    row = existing.iloc[0]
-
-                    existing_upgrader_version = row.get("upgrader_version", "")
-                    existing_last_modified = row.get("last_modified", "")
-
-                    if existing_upgrader_version == upgrader_version and existing_last_modified == data_dict.get("last_modified"):
-                        print(f"Skipping already successfully upgraded record ID {v1_id}")
-                        continue
+                if check_skip_conditions(data_dict, original_df):
+                    continue
 
             try:
                 record, result = upgrade_record(data_dict)
