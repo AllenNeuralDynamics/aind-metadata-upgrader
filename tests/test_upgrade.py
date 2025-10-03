@@ -4,7 +4,6 @@ import json
 import os
 import traceback
 import unittest
-import time
 
 from aind_data_access_api.document_db import MetadataDbClient
 
@@ -36,7 +35,7 @@ client = MetadataDbClient(
 )
 
 run_one = None
-upsert = True
+upsert = False
 
 
 class TestUpgrade(unittest.TestCase):
@@ -97,12 +96,9 @@ class TestUpgrade(unittest.TestCase):
                                 record_data = upgraded.metadata.model_dump(mode="json")
                                 record_data["_id"] = id
                                 print(f"Updating existing record in DocumentDB: {upgraded.metadata.name}")
-                                start = time.time()
                                 client.upsert_one_docdb_record(
                                     record=record_data,
                                 )
-                                end = time.time()
-                                print(f"Upsert took {end - start:.2f} seconds")
 
                     except Exception as e:
                         print(f"Upgrade failed for {file_path}: {e}")

@@ -1,8 +1,6 @@
 """<=v1.4 to v2.0 acquisition upgrade functions"""
 
-from datetime import datetime
 from typing import Dict, List, Optional
-from zoneinfo import ZoneInfo
 
 from aind_data_schema.core.acquisition import AcquisitionSubjectDetails
 
@@ -10,7 +8,7 @@ from aind_metadata_upgrader.acquisition.v1v2_tiles import (
     upgrade_tiles_to_data_stream,
 )
 from aind_metadata_upgrader.base import CoreUpgrader
-from aind_metadata_upgrader.utils.v1v2_utils import upgrade_calibration, upgrade_reagent
+from aind_metadata_upgrader.utils.v1v2_utils import upgrade_calibration, upgrade_reagent, ensure_pacific_timezone
 from aind_data_schema.components.coordinates import (
     CoordinateSystem,
     Origin,
@@ -104,19 +102,6 @@ class AcquisitionV1V2(CoreUpgrader):
 
     def _process_session_times(self, session_start_time, session_end_time):
         """Process and validate session start and end times with Pacific timezone"""
-        # Pacific timezone - automatically handles PST/PDT transitions
-        pacific_tz = ZoneInfo("America/Los_Angeles")
-
-        # Helper function to ensure datetime has Pacific timezone
-        def ensure_pacific_timezone(dt):
-            """Ensure datetime is in Pacific timezone"""
-            if dt is None:
-                return None
-            if isinstance(dt, str):
-                dt = datetime.fromisoformat(dt)
-            if dt.tzinfo is None:
-                dt = dt.replace(tzinfo=pacific_tz)
-            return dt
 
         # Convert start and end times to datetime objects and ensure Pacific timezone
         session_start_time = ensure_pacific_timezone(session_start_time)

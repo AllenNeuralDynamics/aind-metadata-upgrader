@@ -21,3 +21,10 @@ upgraded_record.save()
 ## I want to develop new upgraders
 
 Add a new `CoreUpgrader` class, then include it in the `MAPPINGS` object.
+
+## I want to run the upgrader in sync mode, i.e. to upgrade all assets to DocDB
+
+```python
+from aind_metadata_upgrader.sync import run
+run()
+```
