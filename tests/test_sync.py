@@ -20,9 +20,9 @@ class TestSync(unittest.TestCase):
         self.sample_v1_records = [{"_id": "record1"}, {"_id": "record2"}, {"_id": "record3"}]
 
         self.sample_cached_records = [
-            {"_id": "record1", "name": "test1", "location": "loc1"},
-            {"_id": "record2", "name": "test2", "location": "loc2"},
-            {"_id": "record3", "name": "test3", "location": "loc3"},
+            {"_id": "record1", "name": "test1", "location": "loc1", "last_modified": "2023-01-01"},
+            {"_id": "record2", "name": "test2", "location": "loc2", "last_modified": "2023-01-02"},
+            {"_id": "record3", "name": "test3", "location": "loc3", "last_modified": "2023-01-03"},
         ]
 
         self.sample_upgrade_results = [
@@ -79,14 +79,20 @@ class TestSync(unittest.TestCase):
     ):
         """Test that already successfully upgraded records are skipped."""
         # Setup existing RDS data with successful upgrade
-        existing_df = pd.DataFrame(
-            [{"v1_id": "record1", "v2_id": "v2_record1", "upgrader_version": "1.0.0", "status": "success"}]
-        )
+        existing_df = pd.DataFrame([
+            {
+                "v1_id": "record1",
+                "v2_id": "v2_record1",
+                "upgrader_version": "1.0.0",
+                "status": "success",
+                "last_modified": "2023-01-01"
+            }
+        ])
         mock_rds_client.read_table.return_value = existing_df
 
         mock_v1_client.retrieve_docdb_records.side_effect = [
             [{"_id": "record1"}],  # Record IDs
-            [{"_id": "record1", "location": "loc1"}],  # Cached records
+            [{"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}],  # Cached records
         ]
 
         # Run the function
@@ -106,7 +112,7 @@ class TestSync(unittest.TestCase):
         """Test handling of upgrade failures."""
         mock_v1_client.retrieve_docdb_records.side_effect = [
             [{"_id": "record1"}],  # Record IDs
-            [{"_id": "record1", "location": "loc1"}],  # Cached records
+            [{"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}],  # Cached records
         ]
 
         mock_rds_client.read_table.side_effect = Exception("Table not found")
@@ -134,7 +140,7 @@ class TestSync(unittest.TestCase):
         """Test handling when upgrade returns None."""
         mock_v1_client.retrieve_docdb_records.side_effect = [
             [{"_id": "record1"}],  # Record IDs
-            [{"_id": "record1", "location": "loc1"}],  # Cached records
+            [{"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}],  # Cached records
         ]
 
         mock_rds_client.read_table.side_effect = Exception("Table not found")
@@ -162,7 +168,7 @@ class TestSync(unittest.TestCase):
         """Test handling when v2 record already exists."""
         mock_v1_client.retrieve_docdb_records.side_effect = [
             [{"_id": "record1"}],  # Record IDs
-            [{"_id": "record1", "location": "loc1"}],  # Cached records
+            [{"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}],  # Cached records
         ]
 
         mock_rds_client.read_table.side_effect = Exception("Table not found")
@@ -195,8 +201,11 @@ class TestSync(unittest.TestCase):
         """Test that batch processing works correctly."""
         # Setup multiple records
         records = [{"_id": f"record{i}"} for i in range(1, 4)]
-        cached_records_batch1 = [{"_id": f"record{i}", "location": f"loc{i}"} for i in range(1, 3)]
-        cached_records_batch2 = [{"_id": "record3", "location": "loc3"}]
+        cached_records_batch1 = [
+            {"_id": f"record{i}", "location": f"loc{i}", "last_modified": f"2023-01-0{i}"}
+            for i in range(1, 3)
+        ]
+        cached_records_batch2 = [{"_id": "record3", "location": "loc3", "last_modified": "2023-01-03"}]
 
         mock_v1_client.retrieve_docdb_records.side_effect = [
             records,  # Record IDs
@@ -235,7 +244,10 @@ class TestSync(unittest.TestCase):
         """Test that RDS chunking works correctly."""
         # Setup multiple records to exceed chunk size
         records = [{"_id": f"record{i}"} for i in range(1, 4)]
-        cached_records = [{"_id": f"record{i}", "location": f"loc{i}"} for i in range(1, 4)]
+        cached_records = [
+            {"_id": f"record{i}", "location": f"loc{i}", "last_modified": f"2023-01-0{i}"}
+            for i in range(1, 4)
+        ]
 
         mock_v1_client.retrieve_docdb_records.side_effect = [
             records,  # Record IDs
