@@ -153,14 +153,15 @@ def run():
             v1_id = data_dict["_id"]
             if original_df is not None:
                 existing = original_df[original_df["v1_id"] == str(v1_id)]
-                # Skip if already attempted upgrade with this version and last_modified has not changed
-                if (
-                    len(existing) > 0
-                    and existing.iloc[0]["upgrader_version"] == upgrader_version
-                    and existing.iloc[0]["last_modified"] == data_dict.get("last_modified")
-                ):
-                    print(f"Skipping already successfully upgraded record ID {v1_id}")
-                    continue
+                if len(existing) > 0:
+                    row = existing.iloc[0]
+
+                    existing_upgrader_version = row.get("upgrader_version", "")
+                    existing_last_modified = row.get("last_modified", "")
+
+                    if existing_upgrader_version == upgrader_version and existing_last_modified == data_dict.get("last_modified"):
+                        print(f"Skipping already successfully upgraded record ID {v1_id}")
+                        continue
 
             try:
                 record, result = upgrade_record(data_dict)
