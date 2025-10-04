@@ -1,8 +1,6 @@
 """<=v1.4 to v2.0 session upgrade functions"""
 
-from datetime import datetime
 from typing import Dict, List, Optional, Union
-from zoneinfo import ZoneInfo
 
 from aind_data_schema.base import GenericModel
 from aind_data_schema.components.configs import (
@@ -59,6 +57,7 @@ from aind_data_schema_models.units import (
 
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import (
+    ensure_pacific_timezone,
     remove,
     upgrade_calibration,
     upgrade_targeted_structure,
@@ -1112,20 +1111,6 @@ class SessionV1V2(CoreUpgrader):
         for epoch in upgraded_stimulus_epochs:
             start_times.append(epoch.get("stimulus_start_time"))
             end_times.append(epoch.get("stimulus_end_time"))
-
-        # Pacific timezone - automatically handles PST/PDT transitions
-        pacific_tz = ZoneInfo("America/Los_Angeles")
-
-        # Helper function to ensure datetime has Pacific timezone
-        def ensure_pacific_timezone(dt):
-            """Convert a datetime to Pacific timezone if not already set."""
-            if dt is None:
-                return None
-            if isinstance(dt, str):
-                dt = datetime.fromisoformat(dt)
-            if dt.tzinfo is None:
-                dt = dt.replace(tzinfo=pacific_tz)
-            return dt
 
         # Convert start and end times to datetime objects and ensure Pacific timezone
         session_start_time = ensure_pacific_timezone(session_start_time)

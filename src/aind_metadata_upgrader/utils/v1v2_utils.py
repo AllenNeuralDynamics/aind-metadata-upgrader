@@ -1,6 +1,8 @@
 """Shared utility functions for the AIND Metadata Upgrader."""
 
+from datetime import datetime
 from typing import Optional
+from zoneinfo import ZoneInfo
 
 from aind_data_schema.components.coordinates import (
     Affine,
@@ -49,6 +51,19 @@ from aind_data_schema_models.units import (
 MODALITY_MAP = {"SmartSPIM": Modality.SPIM, "smartspim": Modality.SPIM, "FIP": Modality.FIB}
 
 counts = {}
+
+
+def ensure_pacific_timezone(dt: Optional[str]) -> Optional[datetime]:
+    """Ensure datetime is in Pacific timezone"""
+    pacific_tz = ZoneInfo("America/Los_Angeles")
+    if dt is None:
+        return None
+    if isinstance(dt, str):
+        dt = dt.replace("Z", "+00:00")
+        dt = datetime.fromisoformat(dt)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=pacific_tz)
+    return dt
 
 
 def validate_frequency_unit(frequency_unit: str) -> str:

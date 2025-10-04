@@ -141,3 +141,4 @@ aind-data-schema-dev/*
 
 
 tests/records/all/*.json
+.github/copilot-instructions.md

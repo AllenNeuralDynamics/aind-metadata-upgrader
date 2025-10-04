@@ -185,7 +185,7 @@ CRANIO_TYPES = {
 }
 
 
-def upgrade_craniotomy(data: dict) -> dict:
+def upgrade_craniotomy(data: dict) -> tuple[dict, list]:
     """Upgrade Craniotomy procedure from V1 to V2"""
     # V1 uses craniotomy_coordinates_*, V2 uses coordinate system
     upgraded_data = data.copy()
@@ -194,8 +194,11 @@ def upgrade_craniotomy(data: dict) -> dict:
     remove(upgraded_data, "recovery_time")
     remove(upgraded_data, "recovery_time_unit")
 
-    if upgraded_data["craniotomy_type"] not in CraniotomyType:
-        # Need to conver craniotomy type
+    # Check if the craniotomy_type string is a valid enum value
+    valid_enum_values = [e.value for e in CraniotomyType]
+
+    if upgraded_data["craniotomy_type"] not in valid_enum_values:
+        # Need to convert craniotomy type
         if upgraded_data["craniotomy_type"] in CRANIO_TYPES.keys():
             if "5" in upgraded_data["craniotomy_type"]:
                 upgraded_data["size"] = 5
@@ -206,7 +209,7 @@ def upgrade_craniotomy(data: dict) -> dict:
         else:
             raise ValueError(
                 f"Unsupported craniotomy_type: {upgraded_data['craniotomy_type']}. "
-                "Expected one of the CraniotomyType members."
+                f"Expected one of {valid_enum_values}."
             )
 
     upgraded_data, measured_coordinates = retrieve_bl_distance(upgraded_data)
