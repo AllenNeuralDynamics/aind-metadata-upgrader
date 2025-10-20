@@ -106,8 +106,10 @@ def get_rds_data() -> Optional[pd.DataFrame]:
 
 def upload_to_rds(df: pd.DataFrame):
     """Upload upgrade results to RDS, chunking if necessary"""
+    logging.info(f"(METADATA VALIDATOR) Uploading {len(df)} records to RDS")
 
     if len(df) <= CHUNK_SIZE:
+        logging.info("(METADATA VALIDATOR) No chunking required for RDS")
         rds_client.overwrite_table_with_df(df, RDS_TABLE_NAME)
     else:
         # chunk into CHUNK_SIZE row chunks
@@ -197,18 +199,49 @@ def run():
             client_v2.upsert_list_of_docdb_records(records=valid_records)
             upgraded_records.clear()
 
+        # Also upload tracking data in batches to avoid losing progress
+        if len(upgrade_results) >= BATCH_SIZE:
+            print(f"Uploading batch of {len(upgrade_results)} tracking records to RDS")
+            batch_df = pd.DataFrame(upgrade_results)
+            try:
+                if original_df is not None:
+                    # Merge with existing data
+                    combined_df = pd.concat([original_df, batch_df], ignore_index=True)
+                    # Remove duplicates, keeping the latest entry for each v1_id
+                    combined_df = combined_df.drop_duplicates(subset=['v1_id'], keep='last')
+                    upload_to_rds(combined_df)
+                    original_df = combined_df  # Update our local copy
+                else:
+                    upload_to_rds(batch_df)
+                    original_df = batch_df
+                upgrade_results.clear()
+            except Exception as e:
+                print(f"Warning: Failed to upload tracking data to RDS: {e}")
+                # Continue processing even if RDS upload fails
+
     # Process any remaining records at the end
     valid_records = [r for r in upgraded_records if r is not None]
     if valid_records:
         print(f"Final batch upserting {len(valid_records)} records to DocumentDB")
         client_v2.upsert_list_of_docdb_records(records=valid_records)
 
-    if not upgrade_results:
+    # Upload any remaining tracking data
+    if upgrade_results:
+        print(f"Uploading final batch of {len(upgrade_results)} tracking records to RDS")
+        batch_df = pd.DataFrame(upgrade_results)
+        try:
+            if original_df is not None:
+                # Merge with existing data
+                combined_df = pd.concat([original_df, batch_df], ignore_index=True)
+                # Remove duplicates, keeping the latest entry for each v1_id
+                combined_df = combined_df.drop_duplicates(subset=['v1_id'], keep='last')
+                upload_to_rds(combined_df)
+            else:
+                upload_to_rds(batch_df)
+        except Exception as e:
+            print(f"Warning: Failed to upload final tracking data to RDS: {e}")
+    else:
         logging.info("(METADATA VALIDATOR) No upgrade results to write to RDS")
-        return
-
-    final_df = pd.DataFrame(upgrade_results)
-    upload_to_rds(final_df)
 
 
 if __name__ == "__main__":
