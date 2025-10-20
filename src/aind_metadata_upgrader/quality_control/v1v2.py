@@ -59,12 +59,22 @@ def upgrade_qcportal_metric_value(data: Optional[dict]) -> Optional[dict]:
     return data
 
 
+def upgrade_reference(data: Optional[str]) -> Optional[str]:
+    """Upgrade references"""
+
+    # Remove __empty__# strings when you see them
+    if data and data.startswith("__empty__"):
+        return None
+    return None
+
+
 def upgrade_metric(data: dict, modality: dict, stage: str, tags: list) -> dict:
     """Upgrade a metric to the new format"""
     if not isinstance(data, dict):
         raise ValueError("Data must be a dictionary")
 
     value = upgrade_qcportal_metric_value(data.get("value", None))
+    reference = upgrade_reference(data.get("reference", None))
 
     metric = QCMetric(
         name=data.get("name", "unknown"),
@@ -73,7 +83,7 @@ def upgrade_metric(data: dict, modality: dict, stage: str, tags: list) -> dict:
         value=value,
         status_history=data.get("status_history", []),
         description=data.get("description", None),
-        reference=data.get("reference", None),
+        reference=reference,
         tags=tags,
         evaluated_assets=data.get("evaluated_assets", []),
     )
