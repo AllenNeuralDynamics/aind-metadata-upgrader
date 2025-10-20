@@ -145,7 +145,7 @@ def check_skip_conditions(data_dict: dict, original_df: Optional[pd.DataFrame]) 
 
 
 def upload_to_rds(original_df: Optional[pd.DataFrame], upgrade_results: list[dict]):
-
+    """Upload upgrade results to RDS"""
     # Upload any remaining tracking data
     if upgrade_results:
         print(f"Uploading final batch of {len(upgrade_results)} tracking records to RDS")
