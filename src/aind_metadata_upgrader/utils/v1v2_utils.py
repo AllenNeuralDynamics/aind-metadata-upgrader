@@ -883,14 +883,8 @@ def upgrade_targeted_structure(data: dict | str) -> dict:
             return CCFv3.ROOT.model_dump()
         if data in CCF_MAPPING.keys():
             return CCF_MAPPING[data].model_dump()
-        elif "atlas" in data.lower():
-            # We're dealing with a broken dict dumped as a string
-            # example: "atlas='CCFv3' name='Primary visual area' acronym='VISp' id='385'"
-            acronym = data.split("acronym='")[1].split("'")[0]
-            return getattr(CCFv3, acronym.upper()).model_dump()
         else:
-            print(data)
-            raise ValueError("Unsupported targeted structure, expected one of the CCF structures.")
+            raise ValueError(f"Unsupported targeted structure: {data}. " "Expected one of the CCF structures.")
 
     return data
 
