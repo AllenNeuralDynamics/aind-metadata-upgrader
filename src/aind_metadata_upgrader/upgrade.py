@@ -187,6 +187,7 @@ class Upgrade:
 
         print(f"Upgrading {core_file}:{original_schema_version} -> {upgraded_schema_version}")
 
+        upgraded_data = core_data.copy()
         if original_schema_version == upgraded_schema_version:
             print(f"No upgrade needed for {core_file} (version {original_schema_version})")
         else:
