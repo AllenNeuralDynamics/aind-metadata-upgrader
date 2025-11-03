@@ -5,6 +5,7 @@ from aind_data_schema.components.identifiers import Person
 from aind_data_schema.core.data_description import Funding
 from aind_data_schema_models.licenses import License
 from aind_data_schema_models.organizations import Organization
+from aind_data_schema_models.data_name_patterns import Group
 
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.settings import FAKE_MISSING_DATA
@@ -109,17 +110,31 @@ class DataDescriptionV1V2(CoreUpgrader):
         """Build investigators list"""
         investigators = data.get("investigators", [])
         for i, investigator in enumerate(investigators):
-            # Convert from PIDName to Person
-            if not isinstance(investigator, Person):
+            if isinstance(investigator, str):
                 investigators[i] = Person(
-                    name=investigator["name"],
+                    name=investigator,
                 )
+            # Convert from dict to Person
+            elif isinstance(investigator, dict):
+                # Convert from PIDName to Person
+                if not isinstance(investigator, Person):
+                    print(investigator)
+                    investigators[i] = Person(
+                        name=investigator["name"],
+                    )
+                else:
+                    investigators[i] = investigator
+            else:
+                raise ValueError(f"Unsupported investigator type: {investigator}")
         return investigators
 
     def _get_creation_time(self, data: dict) -> str | None:
         """Handle old records that have both creation_date and creation_time"""
         # If only creation_time exists, return that
         if "creation_time" in data and "creation_date" not in data:
+            if ',' in data["creation_time"]:
+                # Remove anything after the comma
+                return data["creation_time"].replace(',', 'T')
             return data["creation_time"]
         elif "creation_date" in data and "creation_time" in data:
             creation_datetime = data["creation_date"] + "T" + data["creation_time"]
@@ -175,7 +190,7 @@ class DataDescriptionV1V2(CoreUpgrader):
             "institution": kwargs.get("institution"),
             "funding_source": kwargs.get("funding_source"),
             "data_level": kwargs.get("data_level"),
-            "group": data.get("group", None),
+            "group": kwargs.get("group"),
             "investigators": kwargs.get("investigators"),
             "project_name": kwargs.get("project_name"),
             "restrictions": data.get("restrictions", None),
@@ -225,6 +240,14 @@ class DataDescriptionV1V2(CoreUpgrader):
             print(f"Derived data without input_data_name, using name to infer input: {input_name}")
             return [input_name]
 
+    def _upgrade_group(self, data: dict) -> str:
+        """Upgrade group string if needed"""
+        # No changes needed for now
+        if "group" in data and data["group"]:
+            if data["group"] == "Molecular Anatomy":
+                return Group.MSMA
+        return data["group"]
+
     def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the data description to v2.0"""
 
@@ -240,6 +263,7 @@ class DataDescriptionV1V2(CoreUpgrader):
         investigators = self._get_investigators(data)
         investigators = self._ensure_investigators_exist(investigators)
         modalities = upgrade_v1_modalities(data)
+        group = self._upgrade_group(data)
 
         # Upgrade the new source_data field for 2.0
         source_data = self._upgrade_source_data(data)
@@ -247,6 +271,7 @@ class DataDescriptionV1V2(CoreUpgrader):
         # Build and return the upgraded output
         return self._build_output_dict(
             data,
+            group=group,
             source_data=source_data,
             schema_version=schema_version,
             funding_source=funding_source,
