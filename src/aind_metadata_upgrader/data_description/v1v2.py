@@ -132,10 +132,14 @@ class DataDescriptionV1V2(CoreUpgrader):
         """Handle old records that have institution as a string"""
         institution = data.get("institution", None)
         if isinstance(institution, str):
+            if "." in institution:
+                # They may have literally passed the object name, like Institution.AIND instead of the string value, pull just the last part
+                institution = institution.split(".")[-1]
             try:
                 return Organization.from_abbreviation(institution)
             except ValueError:
                 raise ValueError(f"Unsupported institution abbreviation: {institution}")
+
         if institution:
             institution = upgrade_registry(institution)
         return institution
