@@ -118,7 +118,6 @@ class DataDescriptionV1V2(CoreUpgrader):
             elif isinstance(investigator, dict):
                 # Convert from PIDName to Person
                 if not isinstance(investigator, Person):
-                    print(investigator)
                     investigators[i] = Person(
                         name=investigator["name"],
                     )
