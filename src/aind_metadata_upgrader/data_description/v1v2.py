@@ -131,9 +131,9 @@ class DataDescriptionV1V2(CoreUpgrader):
         """Handle old records that have both creation_date and creation_time"""
         # If only creation_time exists, return that
         if "creation_time" in data and "creation_date" not in data:
-            if ',' in data["creation_time"]:
+            if "," in data["creation_time"]:
                 # Remove anything after the comma
-                return data["creation_time"].replace(',', 'T')
+                return data["creation_time"].replace(",", "T")
             return data["creation_time"]
         elif "creation_date" in data and "creation_time" in data:
             creation_datetime = data["creation_date"] + "T" + data["creation_time"]

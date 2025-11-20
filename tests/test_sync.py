@@ -79,15 +79,17 @@ class TestSync(unittest.TestCase):
     ):
         """Test that already successfully upgraded records are skipped."""
         # Setup existing RDS data with successful upgrade
-        existing_df = pd.DataFrame([
-            {
-                "v1_id": "record1",
-                "v2_id": "v2_record1",
-                "upgrader_version": "1.0.0",
-                "status": "success",
-                "last_modified": "2023-01-01"
-            }
-        ])
+        existing_df = pd.DataFrame(
+            [
+                {
+                    "v1_id": "record1",
+                    "v2_id": "v2_record1",
+                    "upgrader_version": "1.0.0",
+                    "status": "success",
+                    "last_modified": "2023-01-01",
+                }
+            ]
+        )
         mock_rds_client.read_table.return_value = existing_df
 
         mock_v1_client.retrieve_docdb_records.side_effect = [
@@ -202,8 +204,7 @@ class TestSync(unittest.TestCase):
         # Setup multiple records
         records = [{"_id": f"record{i}"} for i in range(1, 4)]
         cached_records_batch1 = [
-            {"_id": f"record{i}", "location": f"loc{i}", "last_modified": f"2023-01-0{i}"}
-            for i in range(1, 3)
+            {"_id": f"record{i}", "location": f"loc{i}", "last_modified": f"2023-01-0{i}"} for i in range(1, 3)
         ]
         cached_records_batch2 = [{"_id": "record3", "location": "loc3", "last_modified": "2023-01-03"}]
 
@@ -245,8 +246,7 @@ class TestSync(unittest.TestCase):
         # Setup multiple records to exceed chunk size
         records = [{"_id": f"record{i}"} for i in range(1, 4)]
         cached_records = [
-            {"_id": f"record{i}", "location": f"loc{i}", "last_modified": f"2023-01-0{i}"}
-            for i in range(1, 4)
+            {"_id": f"record{i}", "location": f"loc{i}", "last_modified": f"2023-01-0{i}"} for i in range(1, 4)
         ]
 
         mock_v1_client.retrieve_docdb_records.side_effect = [
