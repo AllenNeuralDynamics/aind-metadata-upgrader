@@ -2,7 +2,52 @@
 
 import unittest
 
-from aind_metadata_upgrader.quality_control.v1v2 import QCUpgraderV1V2, upgrade_metric, upgrade_curation_metric
+from aind_metadata_upgrader.quality_control.v1v2 import (
+    QCUpgraderV1V2,
+    upgrade_metric,
+    upgrade_curation_metric,
+    upgrade_reference,
+)
+
+
+class TestUpgradeReference(unittest.TestCase):
+    """Test the upgrade_reference function"""
+
+    def test_upgrade_reference_with_valid_string(self):
+        """Test that valid reference strings are preserved"""
+        test_cases = [
+            "https://example.com/reference",
+            "DOI:10.1234/example",
+            "Some reference text",
+            "Reference with spaces and numbers 123",
+        ]
+        for reference in test_cases:
+            with self.subTest(reference=reference):
+                result = upgrade_reference(reference)
+                self.assertEqual(result, reference, f"Valid reference '{reference}' should be preserved")
+
+    def test_upgrade_reference_with_empty_placeholder(self):
+        """Test that __empty__ placeholder strings are removed"""
+        test_cases = [
+            "__empty__",
+            "__empty__1",
+            "__empty__abc",
+            "__empty__#",
+        ]
+        for reference in test_cases:
+            with self.subTest(reference=reference):
+                result = upgrade_reference(reference)
+                self.assertIsNone(result, f"Empty placeholder '{reference}' should be converted to None")
+
+    def test_upgrade_reference_with_none(self):
+        """Test that None input returns None"""
+        result = upgrade_reference(None)
+        self.assertIsNone(result, "None input should return None")
+
+    def test_upgrade_reference_with_empty_string(self):
+        """Test that empty string returns empty string (not None)"""
+        result = upgrade_reference("")
+        self.assertEqual(result, "", "Empty string should be preserved")
 
 
 class TestQualityControlV1V2(unittest.TestCase):
@@ -50,6 +95,34 @@ class TestQualityControlV1V2(unittest.TestCase):
         self.assertEqual(result["modality"], modality)
         self.assertEqual(result["stage"], "Raw data")
         self.assertEqual(result["tags"], ["tag1"])
+
+    def test_upgrade_metric_preserves_valid_reference(self):
+        """Test that upgrade_metric preserves valid references"""
+        data = {
+            "name": "test_metric",
+            "value": 1.5,
+            "reference": "https://example.com/reference",
+            "status_history": [],
+            "evaluated_assets": None,
+        }
+        modality = {"name": "Extracellular electrophysiology", "abbreviation": "ecephys"}
+        result = upgrade_metric(data, modality, "Raw data", ["tag1"])
+
+        self.assertEqual(result["reference"], "https://example.com/reference", "Valid reference should be preserved")
+
+    def test_upgrade_metric_removes_empty_reference(self):
+        """Test that upgrade_metric removes __empty__ references"""
+        data = {
+            "name": "test_metric",
+            "value": 1.5,
+            "reference": "__empty__1",
+            "status_history": [],
+            "evaluated_assets": None,
+        }
+        modality = {"name": "Extracellular electrophysiology", "abbreviation": "ecephys"}
+        result = upgrade_metric(data, modality, "Raw data", ["tag1"])
+
+        self.assertIsNone(result["reference"], "__empty__ reference should be removed")
 
     def test_upgrade_with_evaluations_and_metrics(self):
         """Test upgrade with evaluations containing metrics - covers lines 66-92"""
