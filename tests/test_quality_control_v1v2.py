@@ -102,7 +102,7 @@ class TestQualityControlV1V2(unittest.TestCase):
             "name": "test_metric",
             "value": 1.5,
             "reference": "https://example.com/reference",
-            "status_history": [],
+            "status_history": [{"status": "Pass", "timestamp": "2024-01-01T10:00:00Z", "evaluator": "test_evaluator"}],
             "evaluated_assets": None,
         }
         modality = {"name": "Extracellular electrophysiology", "abbreviation": "ecephys"}
@@ -116,7 +116,7 @@ class TestQualityControlV1V2(unittest.TestCase):
             "name": "test_metric",
             "value": 1.5,
             "reference": "__empty__1",
-            "status_history": [],
+            "status_history": [{"status": "Pass", "timestamp": "2024-01-01T10:00:00Z", "evaluator": "test_evaluator"}],
             "evaluated_assets": None,
         }
         modality = {"name": "Extracellular electrophysiology", "abbreviation": "ecephys"}
