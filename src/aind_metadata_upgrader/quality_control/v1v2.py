@@ -65,7 +65,7 @@ def upgrade_reference(data: Optional[str]) -> Optional[str]:
     # Remove __empty__# strings when you see them
     if data and data.startswith("__empty__"):
         return None
-    return None
+    return data
 
 
 def upgrade_metric(data: dict, modality: dict, stage: str, tags: list) -> dict:
