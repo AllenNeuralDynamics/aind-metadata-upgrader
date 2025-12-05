@@ -311,6 +311,88 @@ class TestSync(unittest.TestCase):
 
         # Should treat as no existing table and continue
 
+    @patch("aind_metadata_upgrader.sync.rds_client")
+    @patch("aind_metadata_upgrader.sync.client_v2")
+    @patch("aind_metadata_upgrader.sync.client_v1")
+    @patch("aind_metadata_upgrader.sync.Upgrade")
+    @patch("aind_metadata_upgrader.sync.upgrader_version", "1.0.0")
+    def test_run_one_successful(self, mock_upgrade_class, mock_v1_client, mock_v2_client, mock_rds_client):
+        """Test run_one with successful upgrade and existing v2 record."""
+        mock_v1_client.retrieve_docdb_records.return_value = [
+            {"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}
+        ]
+        mock_rds_client.read_table.side_effect = Exception("Table not found")
+
+        mock_upgrade_instance = MagicMock()
+        mock_upgrade_instance.metadata.location = "test_location"
+        mock_upgrade_instance.metadata.name = "test_name"
+        mock_upgrade_instance.metadata.model_dump.return_value = {"test": "data"}
+        mock_upgrade_class.return_value = mock_upgrade_instance
+
+        # Mock existing v2 record so upgrade_record returns a record to upsert
+        mock_v2_client.retrieve_docdb_records.return_value = [{"_id": "existing_v2_id"}]
+
+        sync.run_one("record1")
+
+        mock_v2_client.upsert_one_docdb_record.assert_called_once()
+        mock_rds_client.overwrite_table_with_df.assert_called_once()
+
+    @patch("aind_metadata_upgrader.sync.rds_client")
+    @patch("aind_metadata_upgrader.sync.client_v2")
+    @patch("aind_metadata_upgrader.sync.client_v1")
+    def test_run_one_record_not_found(self, mock_v1_client, mock_v2_client, mock_rds_client):
+        """Test run_one when record doesn't exist."""
+        mock_v1_client.retrieve_docdb_records.return_value = []
+
+        with self.assertRaises(ValueError):
+            sync.run_one("nonexistent")
+
+    @patch("aind_metadata_upgrader.sync.rds_client")
+    @patch("aind_metadata_upgrader.sync.client_v2")
+    @patch("aind_metadata_upgrader.sync.client_v1")
+    @patch("aind_metadata_upgrader.sync.upgrader_version", "1.0.0")
+    def test_run_one_skip_condition(self, mock_v1_client, mock_v2_client, mock_rds_client):
+        """Test run_one skips already upgraded records."""
+        mock_v1_client.retrieve_docdb_records.return_value = [
+            {"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}
+        ]
+        existing_df = pd.DataFrame(
+            [
+                {
+                    "v1_id": "record1",
+                    "v2_id": "v2_record1",
+                    "upgrader_version": "1.0.0",
+                    "status": "success",
+                    "last_modified": "2023-01-01",
+                }
+            ]
+        )
+        mock_rds_client.read_table.return_value = existing_df
+
+        sync.run_one("record1")
+
+        mock_v2_client.upsert_one_docdb_record.assert_not_called()
+
+    @patch("aind_metadata_upgrader.sync.rds_client")
+    @patch("aind_metadata_upgrader.sync.client_v2")
+    @patch("aind_metadata_upgrader.sync.client_v1")
+    @patch("aind_metadata_upgrader.sync.Upgrade")
+    @patch("aind_metadata_upgrader.sync.upgrader_version", "1.0.0")
+    def test_run_one_upgrade_failure(self, mock_upgrade_class, mock_v1_client, mock_v2_client, mock_rds_client):
+        """Test run_one handles upgrade failures."""
+        mock_v1_client.retrieve_docdb_records.return_value = [
+            {"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}
+        ]
+        mock_rds_client.read_table.side_effect = Exception("Table not found")
+        mock_upgrade_class.side_effect = Exception("Upgrade failed")
+
+        sync.run_one("record1")
+
+        mock_rds_client.overwrite_table_with_df.assert_called_once()
+        call_args = mock_rds_client.overwrite_table_with_df.call_args[0]
+        df = call_args[0]
+        self.assertEqual(df.iloc[0]["status"], "failed")
+
 
 if __name__ == "__main__":
     unittest.main()
