@@ -165,8 +165,58 @@ def upload_to_rds(original_df: Optional[pd.DataFrame], upgrade_results: list[dic
         logging.info("(METADATA VALIDATOR) No upgrade results to write to RDS")
 
 
+def run_one(record_id: str):
+    """
+    Upgrade a single record and update RDS tracking data
+
+    Args:
+        record_id: The v1 record ID to upgrade
+    """
+    print(f"Processing single record ID: {record_id}")
+
+    # Retrieve the v1 record
+    records = client_v1.retrieve_docdb_records(filter_query={"_id": record_id})
+    if not records:
+        raise ValueError(f"Record ID {record_id} not found in v1 database")
+
+    data_dict = records[0]
+
+    # Get existing RDS data
+    original_df = get_rds_data()
+
+    # Check if we should skip this record
+    if original_df is not None and check_skip_conditions(data_dict, original_df):
+        print(f"Record {record_id} already up-to-date, skipping")
+        return
+
+    # Upgrade the record
+    try:
+        record, result = upgrade_record(data_dict)
+
+        # Update DocumentDB if we have a valid record
+        if record is not None:
+            print(f"Upserting record to DocumentDB: {record_id}")
+            client_v2.upsert_one_docdb_record(record=record)
+
+        # Update RDS with the result
+        upload_to_rds(original_df, [result])
+        print(f"Successfully processed record {record_id}")
+
+    except Exception as e:
+        print(f"Upgrade failed for record ID {record_id}: {e}")
+        # Still track the failure in RDS
+        failure_result = {
+            "v1_id": str(record_id),
+            "v2_id": None,
+            "upgrader_version": upgrader_version,
+            "last_modified": data_dict.get("last_modified"),
+            "status": "failed",
+        }
+        upload_to_rds(original_df, [failure_result])
+
+
 def run():
-    """Test the upgrade process"""
+    """Run all records through the upgrader and store results in RDS"""
     # Get list of all record IDs from v1 database
     records_list = client_v1.retrieve_docdb_records(filter_query={}, projection={"_id": 1})
 
