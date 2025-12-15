@@ -31,6 +31,24 @@ def _handle_spim_modality_mismatch(data: dict) -> dict:
     return data
 
 
+def _handle_ecephys_id_mismatch(data: dict) -> dict:
+    """Handle instrument ID mismatch for ecephys modality"""
+    # In this situation Instrument ID in acquisition 323_EPHYS2_RF_2025-04-09_01 does not match the instrument's 323_EPHYS2_RF_20250409_01.
+    # We want to keep the instrument_id that has the date in YYYY-MM-DD format
+    acquisition_id = data["acquisition"]["instrument_id"]
+    instrument_id = data["instrument"]["instrument_id"]
+
+    if acquisition_id and instrument_id:
+        if acquisition_id != instrument_id:
+            # Check for date format difference
+            if (
+                len(acquisition_id) == len(instrument_id) + 2
+            ):
+                data["instrument"]["instrument_id"] = acquisition_id
+
+    return data
+
+
 def _handle_general_id_mismatch(data: dict) -> dict:
     """Handle instrument ID mismatch for general cases"""
     if "acquisition" in data and data["acquisition"] and "instrument_id" in data["acquisition"]:
@@ -59,6 +77,8 @@ def repair_instrument_id_mismatch(data: dict) -> dict:
     modalities = data.get("data_description", {}).get("modalities", [])
     if any(modality["abbreviation"] == "SPIM" for modality in modalities):
         return _handle_spim_modality_mismatch(data)
+    if any(modality["abbreviation"] == "ecephys" for modality in modalities):
+        return _handle_ecephys_id_mismatch(data)
     else:
         return _handle_general_id_mismatch(data)
 
