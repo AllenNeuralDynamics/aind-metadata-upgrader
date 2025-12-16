@@ -94,7 +94,7 @@ class TestQualityControlV1V2(unittest.TestCase):
         self.assertEqual(result["value"], 1.5)
         self.assertEqual(result["modality"], modality)
         self.assertEqual(result["stage"], "Raw data")
-        self.assertEqual(result["tags"], ["tag1"])
+        self.assertEqual(result["tags"], {"tag_1": "tag1"})
 
     def test_upgrade_metric_preserves_valid_reference(self):
         """Test that upgrade_metric preserves valid references"""
