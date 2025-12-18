@@ -42,7 +42,9 @@ def _handle_ecephys_id_mismatch(data: dict) -> dict:
     if acquisition_id and instrument_id:
         if acquisition_id != instrument_id:
             # Check for date format difference
-            if len(acquisition_id) == len(instrument_id) + 2:
+            acquisition_id_no_dash = acquisition_id.replace("-", "")
+            instrument_id_no_dash = instrument_id.replace("-", "")
+            if acquisition_id_no_dash == instrument_id_no_dash:
                 data["instrument"]["instrument_id"] = acquisition_id
 
     return data
