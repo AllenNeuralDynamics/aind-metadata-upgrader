@@ -1,6 +1,7 @@
 """Sync code to upgrade metadata from v1 to v2 and store results in RDS"""
 
 import logging
+import os
 from typing import Optional
 from aind_metadata_upgrader.upgrade import Upgrade
 from aind_data_access_api.document_db import MetadataDbClient
@@ -10,31 +11,31 @@ import pandas as pd
 from aind_metadata_upgrader import __version__ as upgrader_version
 
 
-API_GATEWAY_HOST = "api.allenneuraldynamics.org"
+DOCDB_HOST = os.getenv("DOCDB_HOST", "api.allenneuraldynamics.org")
 BATCH_SIZE = 100
 CHUNK_SIZE = 1000
 
 
 # docdb
 client_v1 = MetadataDbClient(
-    host=API_GATEWAY_HOST,
+    host=DOCDB_HOST,
     version="v1",
 )
 
 client_v2 = MetadataDbClient(
-    host=API_GATEWAY_HOST,
+    host=DOCDB_HOST,
     version="v2",
 )
 
 
 # redshift settings
 # we'll store v1_id, v2_id, upgrade_version, status
-REDSHIFT_SECRETS = "/aind/prod/redshift/credentials/readwrite"
-RDS_TABLE_NAME = "metadata_upgrade_status_prod"
+REDSHIFT_AWS_SECRET_NAME = os.getenv("REDSHIFT_AWS_SECRET_NAME", "/aind/prod/redshift/credentials/readwrite")
+REDSHIFT_TABLE_NAME = os.getenv("REDSHIFT_TABLE_NAME", "metadata_upgrade_status_prod")
 
 try:
     rds_client = Client(
-        credentials=RDSCredentials(aws_secrets_name=REDSHIFT_SECRETS),
+        credentials=RDSCredentials(aws_secrets_name=REDSHIFT_AWS_SECRET_NAME),
     )
 except Exception:
     # For testing purposes, allow this to fail silently
@@ -92,9 +93,9 @@ def upgrade_record(data_dict: dict) -> tuple[Optional[dict], dict]:
 def get_rds_data() -> Optional[pd.DataFrame]:
     """Retrieve existing upgrade status data from RDS"""
     try:
-        df = rds_client.read_table(RDS_TABLE_NAME)
+        df = rds_client.read_table(REDSHIFT_TABLE_NAME)
     except Exception as e:
-        logging.error(f"(METADATA VALIDATOR): Error reading from RDS table {RDS_TABLE_NAME}: {e}")
+        logging.error(f"(METADATA VALIDATOR): Error reading from RDS table {REDSHIFT_TABLE_NAME}: {e}")
         df = None
 
     if df is not None and ("v1_id" not in df.columns or len(df) < 1):
@@ -110,19 +111,19 @@ def upload_to_rds_helper(df: pd.DataFrame):
 
     if len(df) <= CHUNK_SIZE:
         logging.info("(METADATA VALIDATOR) No chunking required for RDS")
-        rds_client.overwrite_table_with_df(df, RDS_TABLE_NAME)
+        rds_client.overwrite_table_with_df(df, REDSHIFT_TABLE_NAME)
     else:
         # chunk into CHUNK_SIZE row chunks
         logging.info("(METADATA VALIDATOR) Chunking required for RDS")
         # Process first chunk
         first_chunk = pd.DataFrame(df.iloc[:CHUNK_SIZE])
-        rds_client.overwrite_table_with_df(first_chunk, RDS_TABLE_NAME)
+        rds_client.overwrite_table_with_df(first_chunk, REDSHIFT_TABLE_NAME)
 
         # Process remaining chunks
         for i in range(CHUNK_SIZE, len(df), CHUNK_SIZE):
             end_idx = min(i + CHUNK_SIZE, len(df))
             chunk = pd.DataFrame(df.iloc[i:end_idx])
-            rds_client.append_df_to_table(chunk, RDS_TABLE_NAME)
+            rds_client.append_df_to_table(chunk, REDSHIFT_TABLE_NAME)
 
 
 def check_skip_conditions(data_dict: dict, original_df: Optional[pd.DataFrame]) -> bool:
