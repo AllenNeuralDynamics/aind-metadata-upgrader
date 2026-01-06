@@ -54,7 +54,7 @@ def upgrade_record(data_dict: dict) -> tuple[Optional[dict], dict]:
             limit=1,
         )
         if len(records) == 0:
-            print(f"Inserting new upgraded record to DocumentDB: {upgraded.metadata.name}")
+            logging.info(f"Inserting new upgraded record to DocumentDB: {upgraded.metadata.name}")
             response = client_v2.insert_one_docdb_record(
                 record=upgraded.metadata.model_dump(),
             )
@@ -64,7 +64,7 @@ def upgrade_record(data_dict: dict) -> tuple[Optional[dict], dict]:
             v2_id = records[0]["_id"]
             new_record = upgraded.metadata.model_dump()
             new_record["_id"] = v2_id
-            print(f"Batch updating existing record in DocumentDB: {upgraded.metadata.name}")
+            logging.info(f"Batch updating existing record in DocumentDB: {upgraded.metadata.name}")
 
         return (
             new_record,
@@ -139,7 +139,7 @@ def check_skip_conditions(data_dict: dict, original_df: Optional[pd.DataFrame]) 
             if existing_upgrader_version == upgrader_version and existing_last_modified == data_dict.get(
                 "last_modified"
             ):
-                print(f"Skipping already successfully upgraded record ID {v1_id}")
+                logging.info(f"Skipping already successfully upgraded record ID {v1_id}")
                 return True
     return False
 
@@ -148,7 +148,7 @@ def upload_to_rds(original_df: Optional[pd.DataFrame], upgrade_results: list[dic
     """Upload upgrade results to RDS"""
     # Upload any remaining tracking data
     if upgrade_results:
-        print(f"Uploading final batch of {len(upgrade_results)} tracking records to RDS")
+        logging.info(f"Uploading final batch of {len(upgrade_results)} tracking records to RDS")
         batch_df = pd.DataFrame(upgrade_results)
         try:
             if original_df is not None:
@@ -160,7 +160,7 @@ def upload_to_rds(original_df: Optional[pd.DataFrame], upgrade_results: list[dic
             else:
                 upload_to_rds_helper(batch_df)
         except Exception as e:
-            print(f"Warning: Failed to upload final tracking data to RDS: {e}")
+            logging.warning(f"Failed to upload final tracking data to RDS: {e}")
     else:
         logging.info("(METADATA VALIDATOR) No upgrade results to write to RDS")
 
@@ -172,7 +172,7 @@ def run_one(record_id: str):
     Args:
         record_id: The v1 record ID to upgrade
     """
-    print(f"Processing single record ID: {record_id}")
+    logging.info(f"Processing single record ID: {record_id}")
 
     # Retrieve the v1 record
     records = client_v1.retrieve_docdb_records(filter_query={"_id": record_id})
@@ -186,7 +186,7 @@ def run_one(record_id: str):
 
     # Check if we should skip this record
     if original_df is not None and check_skip_conditions(data_dict, original_df):
-        print(f"Record {record_id} already up-to-date, skipping")
+        logging.info(f"Record {record_id} already up-to-date, skipping")
         return
 
     # Upgrade the record
@@ -194,17 +194,17 @@ def run_one(record_id: str):
     try:
         record, result = upgrade_record(data_dict)
     except Exception as e:
-        print(f"Error upgrading record ID {record_id}: {e}")
+        logging.error(f"Error upgrading record ID {record_id}: {e}")
 
     if record is not None:
-        print(f"Upserting record to DocumentDB: {record_id}")
+        logging.info(f"Upserting record to DocumentDB: {record_id}")
         client_v2.upsert_one_docdb_record(record=record)
 
         # Update RDS with the result
         upload_to_rds(original_df, [result])
-        print(f"Successfully processed record {record_id}")
+        logging.info(f"Successfully processed record {record_id}")
     else:
-        print(f"Upgrade failed for record ID {record_id}")
+        logging.warning(f"Upgrade failed for record ID {record_id}")
         # Still track the failure in RDS
         failure_result = {
             "v1_id": str(record_id),
@@ -231,7 +231,7 @@ def run():
 
     # Cache 10 records at a time to reduce API calls
     for i in range(0, num_records, BATCH_SIZE):
-        print(f"Records: {i}/{num_records}")
+        logging.info(f"Records: {i}/{num_records}")
         batch = records_list[i: i + BATCH_SIZE]  # fmt: skip
         cached_records = client_v1.retrieve_docdb_records(
             filter_query={"_id": {"$in": [record["_id"] for record in batch]}},
@@ -240,7 +240,7 @@ def run():
         for data_dict in cached_records:
 
             record_id = data_dict["_id"]
-            print(f"\n\nTesting upgrade for record ID: {record_id}")
+            logging.info(f"Testing upgrade for record ID: {record_id}")
 
             # Skip assets that have already been successfully upgraded with this version
             v1_id = data_dict["_id"]
@@ -263,18 +263,18 @@ def run():
                     }
                 )
                 record_id = data_dict["_id"]
-                print(f"Upgrade failed for record ID {record_id}: {e}")
+                logging.error(f"Upgrade failed for record ID {record_id}: {e}")
 
         valid_records = [r for r in upgraded_records if r is not None]
         if len(valid_records) >= BATCH_SIZE:
-            print(f"Batch upserting {len(valid_records)} records to DocumentDB")
+            logging.info(f"Batch upserting {len(valid_records)} records to DocumentDB")
             client_v2.upsert_list_of_docdb_records(records=valid_records)
             upgraded_records.clear()
 
     # Process any remaining records at the end
     valid_records = [r for r in upgraded_records if r is not None]
     if valid_records:
-        print(f"Final batch upserting {len(valid_records)} records to DocumentDB")
+        logging.info(f"Final batch upserting {len(valid_records)} records to DocumentDB")
         client_v2.upsert_list_of_docdb_records(records=valid_records)
 
     upload_to_rds(original_df, upgrade_results)
