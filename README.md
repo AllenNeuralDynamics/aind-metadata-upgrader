@@ -7,7 +7,9 @@
 ![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen?logo=codecov)
 ![Python](https://img.shields.io/badge/python->=3.7-blue?logo=python)
 
-## I want to run the upgrader
+## I want to run the upgrader...
+
+### On my local data
 
 ```python
 from aind_metadata_upgrader.upgrade import Upgrade
@@ -18,13 +20,20 @@ upgraded_record = Upgrade(data)
 upgraded_record.save()
 ```
 
-## I want to develop new upgraders
+### On a single record in V1 DocDB
 
-Add a new `CoreUpgrader` class, then include it in the `MAPPINGS` object.
+```python
+from aind_metadata_upgrader.sync import run_one
+run_one(record_id="<docdb_id>")
+```
 
-## I want to run the upgrader in sync mode, i.e. to upgrade all assets to DocDB
+### On all records in V1 DocDB
 
 ```python
 from aind_metadata_upgrader.sync import run
 run()
 ```
+
+## I want to develop new upgraders
+
+Add a new `CoreUpgrader` class, then include it in the `MAPPINGS` object.

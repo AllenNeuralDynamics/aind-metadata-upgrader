@@ -1,6 +1,7 @@
 """Sync code to upgrade metadata from v1 to v2 and store results in RDS"""
 
 import logging
+import os
 from typing import Optional
 from aind_metadata_upgrader.upgrade import Upgrade
 from aind_data_access_api.document_db import MetadataDbClient
@@ -10,31 +11,31 @@ import pandas as pd
 from aind_metadata_upgrader import __version__ as upgrader_version
 
 
-API_GATEWAY_HOST = "api.allenneuraldynamics.org"
+DOCDB_HOST = os.getenv("DOCDB_HOST", "api.allenneuraldynamics.org")
 BATCH_SIZE = 100
 CHUNK_SIZE = 1000
 
 
 # docdb
 client_v1 = MetadataDbClient(
-    host=API_GATEWAY_HOST,
+    host=DOCDB_HOST,
     version="v1",
 )
 
 client_v2 = MetadataDbClient(
-    host=API_GATEWAY_HOST,
+    host=DOCDB_HOST,
     version="v2",
 )
 
 
 # redshift settings
 # we'll store v1_id, v2_id, upgrade_version, status
-REDSHIFT_SECRETS = "/aind/prod/redshift/credentials/readwrite"
-RDS_TABLE_NAME = "metadata_upgrade_status_prod"
+REDSHIFT_AWS_SECRET_NAME = os.getenv("REDSHIFT_AWS_SECRET_NAME", "/aind/prod/redshift/credentials/readwrite")
+REDSHIFT_TABLE_NAME = os.getenv("REDSHIFT_TABLE_NAME", "metadata_upgrade_status_prod")
 
 try:
     rds_client = Client(
-        credentials=RDSCredentials(aws_secrets_name=REDSHIFT_SECRETS),
+        credentials=RDSCredentials(aws_secrets_name=REDSHIFT_AWS_SECRET_NAME),
     )
 except Exception:
     # For testing purposes, allow this to fail silently
@@ -54,7 +55,7 @@ def upgrade_record(data_dict: dict) -> tuple[Optional[dict], dict]:
             limit=1,
         )
         if len(records) == 0:
-            print(f"Inserting new upgraded record to DocumentDB: {upgraded.metadata.name}")
+            logging.info(f"Inserting new upgraded record to DocumentDB: {upgraded.metadata.name}")
             response = client_v2.insert_one_docdb_record(
                 record=upgraded.metadata.model_dump(),
             )
@@ -64,7 +65,7 @@ def upgrade_record(data_dict: dict) -> tuple[Optional[dict], dict]:
             v2_id = records[0]["_id"]
             new_record = upgraded.metadata.model_dump()
             new_record["_id"] = v2_id
-            print(f"Batch updating existing record in DocumentDB: {upgraded.metadata.name}")
+            logging.info(f"Batch updating existing record in DocumentDB: {upgraded.metadata.name}")
 
         return (
             new_record,
@@ -92,9 +93,9 @@ def upgrade_record(data_dict: dict) -> tuple[Optional[dict], dict]:
 def get_rds_data() -> Optional[pd.DataFrame]:
     """Retrieve existing upgrade status data from RDS"""
     try:
-        df = rds_client.read_table(RDS_TABLE_NAME)
+        df = rds_client.read_table(REDSHIFT_TABLE_NAME)
     except Exception as e:
-        logging.error(f"(METADATA VALIDATOR): Error reading from RDS table {RDS_TABLE_NAME}: {e}")
+        logging.error(f"(METADATA VALIDATOR): Error reading from RDS table {REDSHIFT_TABLE_NAME}: {e}")
         df = None
 
     if df is not None and ("v1_id" not in df.columns or len(df) < 1):
@@ -110,19 +111,19 @@ def upload_to_rds_helper(df: pd.DataFrame):
 
     if len(df) <= CHUNK_SIZE:
         logging.info("(METADATA VALIDATOR) No chunking required for RDS")
-        rds_client.overwrite_table_with_df(df, RDS_TABLE_NAME)
+        rds_client.overwrite_table_with_df(df, REDSHIFT_TABLE_NAME)
     else:
         # chunk into CHUNK_SIZE row chunks
         logging.info("(METADATA VALIDATOR) Chunking required for RDS")
         # Process first chunk
         first_chunk = pd.DataFrame(df.iloc[:CHUNK_SIZE])
-        rds_client.overwrite_table_with_df(first_chunk, RDS_TABLE_NAME)
+        rds_client.overwrite_table_with_df(first_chunk, REDSHIFT_TABLE_NAME)
 
         # Process remaining chunks
         for i in range(CHUNK_SIZE, len(df), CHUNK_SIZE):
             end_idx = min(i + CHUNK_SIZE, len(df))
             chunk = pd.DataFrame(df.iloc[i:end_idx])
-            rds_client.append_df_to_table(chunk, RDS_TABLE_NAME)
+            rds_client.append_df_to_table(chunk, REDSHIFT_TABLE_NAME)
 
 
 def check_skip_conditions(data_dict: dict, original_df: Optional[pd.DataFrame]) -> bool:
@@ -139,7 +140,7 @@ def check_skip_conditions(data_dict: dict, original_df: Optional[pd.DataFrame]) 
             if existing_upgrader_version == upgrader_version and existing_last_modified == data_dict.get(
                 "last_modified"
             ):
-                print(f"Skipping already successfully upgraded record ID {v1_id}")
+                logging.info(f"Skipping already successfully upgraded record ID {v1_id}")
                 return True
     return False
 
@@ -148,7 +149,7 @@ def upload_to_rds(original_df: Optional[pd.DataFrame], upgrade_results: list[dic
     """Upload upgrade results to RDS"""
     # Upload any remaining tracking data
     if upgrade_results:
-        print(f"Uploading final batch of {len(upgrade_results)} tracking records to RDS")
+        logging.info(f"Uploading final batch of {len(upgrade_results)} tracking records to RDS")
         batch_df = pd.DataFrame(upgrade_results)
         try:
             if original_df is not None:
@@ -160,13 +161,64 @@ def upload_to_rds(original_df: Optional[pd.DataFrame], upgrade_results: list[dic
             else:
                 upload_to_rds_helper(batch_df)
         except Exception as e:
-            print(f"Warning: Failed to upload final tracking data to RDS: {e}")
+            logging.warning(f"Failed to upload final tracking data to RDS: {e}")
     else:
         logging.info("(METADATA VALIDATOR) No upgrade results to write to RDS")
 
 
+def run_one(record_id: str):
+    """
+    Upgrade a single record and update RDS tracking data
+
+    Args:
+        record_id: The v1 record ID to upgrade
+    """
+    logging.info(f"Processing single record ID: {record_id}")
+
+    # Retrieve the v1 record
+    records = client_v1.retrieve_docdb_records(filter_query={"_id": record_id})
+    if not records:
+        raise ValueError(f"Record ID {record_id} not found in v1 database")
+
+    data_dict = records[0]
+
+    # Get existing RDS data
+    original_df = get_rds_data()
+
+    # Check if we should skip this record
+    if original_df is not None and check_skip_conditions(data_dict, original_df):
+        logging.info(f"Record {record_id} already up-to-date, skipping")
+        return
+
+    # Upgrade the record
+    record = None
+    try:
+        record, result = upgrade_record(data_dict)
+    except Exception as e:
+        logging.error(f"Error upgrading record ID {record_id}: {e}")
+
+    if record is not None:
+        logging.info(f"Upserting record to DocumentDB: {record_id}")
+        client_v2.upsert_one_docdb_record(record=record)
+
+        # Update RDS with the result
+        upload_to_rds(original_df, [result])
+        logging.info(f"Successfully processed record {record_id}")
+    else:
+        logging.warning(f"Upgrade failed for record ID {record_id}")
+        # Still track the failure in RDS
+        failure_result = {
+            "v1_id": str(record_id),
+            "v2_id": None,
+            "upgrader_version": upgrader_version,
+            "last_modified": data_dict.get("last_modified"),
+            "status": "failed",
+        }
+        upload_to_rds(original_df, [failure_result])
+
+
 def run():
-    """Test the upgrade process"""
+    """Run all records through the upgrader and store results in RDS"""
     # Get list of all record IDs from v1 database
     records_list = client_v1.retrieve_docdb_records(filter_query={}, projection={"_id": 1})
 
@@ -180,7 +232,7 @@ def run():
 
     # Cache 10 records at a time to reduce API calls
     for i in range(0, num_records, BATCH_SIZE):
-        print(f"Records: {i}/{num_records}")
+        logging.info(f"Records: {i}/{num_records}")
         batch = records_list[i: i + BATCH_SIZE]  # fmt: skip
         cached_records = client_v1.retrieve_docdb_records(
             filter_query={"_id": {"$in": [record["_id"] for record in batch]}},
@@ -189,7 +241,7 @@ def run():
         for data_dict in cached_records:
 
             record_id = data_dict["_id"]
-            print(f"\n\nTesting upgrade for record ID: {record_id}")
+            logging.info(f"Testing upgrade for record ID: {record_id}")
 
             # Skip assets that have already been successfully upgraded with this version
             v1_id = data_dict["_id"]
@@ -212,18 +264,18 @@ def run():
                     }
                 )
                 record_id = data_dict["_id"]
-                print(f"Upgrade failed for record ID {record_id}: {e}")
+                logging.error(f"Upgrade failed for record ID {record_id}: {e}")
 
         valid_records = [r for r in upgraded_records if r is not None]
         if len(valid_records) >= BATCH_SIZE:
-            print(f"Batch upserting {len(valid_records)} records to DocumentDB")
+            logging.info(f"Batch upserting {len(valid_records)} records to DocumentDB")
             client_v2.upsert_list_of_docdb_records(records=valid_records)
             upgraded_records.clear()
 
     # Process any remaining records at the end
     valid_records = [r for r in upgraded_records if r is not None]
     if valid_records:
-        print(f"Final batch upserting {len(valid_records)} records to DocumentDB")
+        logging.info(f"Final batch upserting {len(valid_records)} records to DocumentDB")
         client_v2.upsert_list_of_docdb_records(records=valid_records)
 
     upload_to_rds(original_df, upgrade_results)

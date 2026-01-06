@@ -17,7 +17,7 @@ readme = "README.md"
 dynamic = ["version"]
 
 dependencies = [
-    'aind-data-schema>=2.3.0,<3',
+    'aind-data-schema>=2.4.0,<3',
     'packaging',
     'aind-data-access-api[docdb]',
 ]
