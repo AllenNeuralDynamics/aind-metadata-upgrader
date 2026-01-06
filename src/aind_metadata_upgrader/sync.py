@@ -190,20 +190,21 @@ def run_one(record_id: str):
         return
 
     # Upgrade the record
+    record = None
     try:
         record, result = upgrade_record(data_dict)
+    except Exception as e:
+        print(f"Error upgrading record ID {record_id}: {e}")
 
-        # Update DocumentDB if we have a valid record
-        if record is not None:
-            print(f"Upserting record to DocumentDB: {record_id}")
-            client_v2.upsert_one_docdb_record(record=record)
+    if record is not None:
+        print(f"Upserting record to DocumentDB: {record_id}")
+        client_v2.upsert_one_docdb_record(record=record)
 
         # Update RDS with the result
         upload_to_rds(original_df, [result])
         print(f"Successfully processed record {record_id}")
-
-    except Exception as e:
-        print(f"Upgrade failed for record ID {record_id}: {e}")
+    else:
+        print(f"Upgrade failed for record ID {record_id}")
         # Still track the failure in RDS
         failure_result = {
             "v1_id": str(record_id),
