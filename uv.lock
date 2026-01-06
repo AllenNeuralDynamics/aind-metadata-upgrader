@@ -47,30 +47,29 @@ rds = [
 
 [[package]]
 name = "aind-data-schema"
-version = "2.2.0"
+version = "2.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aind-data-schema-models" },
     { name = "pydantic" },
-    { name = "semver" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/80/1e/9e17fb42209ce92a95c4b3e5cafc399fc742255261fc21ddcc3195083d66/aind_data_schema-2.2.0.tar.gz", hash = "sha256:26e749d9b227378cd001dc4b1eff0f1cd0c626147484ddf89cdf18ed7c0c110c", size = 865576, upload-time = "2025-11-25T22:34:47.543Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/1f/cc/71f38df69f02e942d098f9310982082aac334de5c496bd3fc605bcd3b431/aind_data_schema-2.4.0.tar.gz", hash = "sha256:a239e38591113f445ca316bc4386c466718e8715a92d8bdbca891a82b9d7ff16", size = 873259, upload-time = "2026-01-06T18:00:34.875Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/83/e5/904b07d0d0dbac1900026d7cc53d63f280abe495f856c2d5251706c0ff21/aind_data_schema-2.2.0-py3-none-any.whl", hash = "sha256:1416a3c527651078a93251160cfe7d6a0b5cc6f52dbbdc799b19b378f1243138", size = 87890, upload-time = "2025-11-25T22:34:46.171Z" },
+    { url = "https://files.pythonhosted.org/packages/00/b0/9632026c77aa8c512e8e15ddec8c9fbfcf6ae272c0c28997e5f12f7a9433/aind_data_schema-2.4.0-py3-none-any.whl", hash = "sha256:1e8284b1e88928e77598ecae70025a2a5ca62b2cded594f62abf8a0aa17d8b34", size = 89429, upload-time = "2026-01-06T18:00:32.616Z" },
 ]
 
 [[package]]
 name = "aind-data-schema-models"
-version = "4.6.1"
+version = "5.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "importlib-resources" },
     { name = "pydantic" },
     { name = "requests" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7e/e1/e35ce9a4ae4c444c9eddc0b3e954772b2e26dfbecf56224a2e84249b6e9a/aind_data_schema_models-4.6.1.tar.gz", hash = "sha256:be088babb26b02c8c21af74a817128372dd8f336471dbce9d78b9ae1aba8328f", size = 338317, upload-time = "2025-12-03T23:52:15.487Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a8/5c/5a584a00b375cfe12fe677933ee5ab5243eb5e0afee1240001333383c757/aind_data_schema_models-5.0.0.tar.gz", hash = "sha256:8db24990a2f322086efcad0d1ea4d78855a8bb7cb0ec640052dd1f75ccf8d1c2", size = 338411, upload-time = "2026-01-02T22:45:41.754Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b3/96/0921530ae2ef435d2a42cbb32e4f2114e7562a2d30a791438f127b2e47b9/aind_data_schema_models-4.6.1-py3-none-any.whl", hash = "sha256:dfecb09b80fdb12b980309ebf591caa9a8b71f53e6ef564345d44be3d4a0dcd2", size = 307107, upload-time = "2025-12-03T23:52:14.044Z" },
+    { url = "https://files.pythonhosted.org/packages/70/cc/97c91973ea16ee746350423f6c1e00d120726f71de887f42ef859eeb3308/aind_data_schema_models-5.0.0-py3-none-any.whl", hash = "sha256:49571cebb6937ee10e7da0f559fcb1d8bc99dc5e4f7c565319197f2c8ac165b4", size = 307178, upload-time = "2026-01-02T22:45:40.38Z" },
 ]
 
 [[package]]
@@ -103,7 +102,7 @@ sync = [
 requires-dist = [
     { name = "aind-data-access-api", extras = ["docdb"] },
     { name = "aind-data-access-api", extras = ["rds"], marker = "extra == 'sync'" },
-    { name = "aind-data-schema" },
+    { name = "aind-data-schema", specifier = ">=2.4.0,<3" },
     { name = "aind-metadata-upgrader", extras = ["sync"], marker = "extra == 'dev'" },
     { name = "black", marker = "extra == 'dev'" },
     { name = "coverage", marker = "extra == 'dev'" },
@@ -1400,15 +1399,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/05/04/74127fc843314818edfa81b5540e26dd537353b123a4edc563109d8f17dd/s3transfer-0.16.0.tar.gz", hash = "sha256:8e990f13268025792229cd52fa10cb7163744bf56e719e0b9cb925ab79abf920", size = 153827, upload-time = "2025-12-01T02:30:59.114Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/fc/51/727abb13f44c1fcf6d145979e1535a35794db0f6e450a0cb46aa24732fe2/s3transfer-0.16.0-py3-none-any.whl", hash = "sha256:18e25d66fed509e3868dc1572b3f427ff947dd2c56f844a5bf09481ad3f3b2fe", size = 86830, upload-time = "2025-12-01T02:30:57.729Z" },
-]
-
-[[package]]
-name = "semver"
-version = "3.0.4"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/72/d1/d3159231aec234a59dd7d601e9dd9fe96f3afff15efd33c1070019b26132/semver-3.0.4.tar.gz", hash = "sha256:afc7d8c584a5ed0a11033af086e8af226a9c0b206f313e0301f8dd7b6b589602", size = 269730, upload-time = "2025-01-24T13:19:27.617Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/a6/24/4d91e05817e92e3a61c8a21e08fd0f390f5301f1c448b137c57c4bc6e543/semver-3.0.4-py3-none-any.whl", hash = "sha256:9c824d87ba7f7ab4a1890799cec8596f15c1241cb473404ea1cb0c55e4b04746", size = 17912, upload-time = "2025-01-24T13:19:24.949Z" },
 ]
 
 [[package]]
