@@ -68,7 +68,7 @@ def upgrade_reference(data: Optional[str]) -> Optional[str]:
     return data
 
 
-def upgrade_metric(data: dict, modality: dict, stage: str, tags: list) -> dict:
+def upgrade_metric(data: dict, modality: dict, stage: str, tags: dict) -> dict:
     """Upgrade a metric to the new format"""
     if not isinstance(data, dict):
         raise ValueError("Data must be a dictionary")
@@ -91,7 +91,7 @@ def upgrade_metric(data: dict, modality: dict, stage: str, tags: list) -> dict:
     return metric.model_dump()
 
 
-def upgrade_curation_metric(data: dict, modality: dict, stage: str, tags: list) -> dict:
+def upgrade_curation_metric(data: dict, modality: dict, stage: str, tags: dict) -> dict:
     """Upgrade a curation metric to the new format"""
 
     curations = data["value"]["curations"]
@@ -138,8 +138,8 @@ class QCUpgraderV1V2(CoreUpgrader):
 
             modality = evaluation.get("modality", {})
             stage = evaluation.get("stage", "unknown")
-            tags = [evaluation["name"]]
-            default_grouping.append(evaluation["name"])  # Use original evaluations as default grouping
+            tags = {"type": evaluation["name"]}
+            default_grouping.append(["type"])
 
             for metric in evaluation.get("metrics", []):
                 if isinstance(metric.get("value"), dict) and metric.get("value", {}).get("type", None) == "curation":
