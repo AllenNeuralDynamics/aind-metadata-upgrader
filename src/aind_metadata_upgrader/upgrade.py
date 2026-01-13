@@ -2,6 +2,7 @@
 
 import traceback
 import copy
+import logging
 
 from aind_data_schema.core.acquisition import Acquisition
 from aind_data_schema.core.data_description import DataDescription
@@ -13,6 +14,7 @@ from aind_data_schema.core.quality_control import QualityControl
 from aind_data_schema.core.subject import Subject
 from aind_data_schema.core.metadata import REQUIRED_FILE_SETS
 from packaging.version import Version
+from pydantic import ValidationError
 
 from aind_metadata_upgrader.upgrade_mapping import MAPPING
 from aind_metadata_upgrader.utils.v1v2_metadata_utils import repair_metadata
@@ -161,6 +163,14 @@ class Upgrade:
                 upgraded_data = upgrader().upgrade(upgraded_data, UPGRADE_VERSIONS["metadata"])
 
         metadata = repair_metadata(upgraded_data)
+
+        # Handle procedures specially - allow it to fail validation
+        if 'procedures' in metadata and metadata['procedures'] is not None:
+            try:
+                metadata['procedures'] = Procedures.model_validate(metadata['procedures'])
+            except ValidationError as e:
+                logging.warning(f"Procedures validation failed, using model_construct: {e}")
+                metadata['procedures'] = Procedures.model_construct(**metadata['procedures'])
 
         try:
             self.metadata = Metadata(**metadata)
