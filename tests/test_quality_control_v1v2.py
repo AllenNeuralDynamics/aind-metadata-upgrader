@@ -66,7 +66,7 @@ class TestQualityControlV1V2(unittest.TestCase):
     def test_upgrade_metric_with_invalid_data_type(self):
         """Test upgrade_metric function with non-dict data - covers line 12"""
         with self.assertRaises(ValueError) as context:
-            upgrade_metric("not a dict", {}, "test_stage", [])  # type: ignore
+            upgrade_metric("not a dict", {}, "test_stage", {})  # type: ignore
         self.assertEqual(str(context.exception), "Data must be a dictionary")
 
     def test_upgrade_curation_metric_invalid_type(self):
@@ -75,7 +75,7 @@ class TestQualityControlV1V2(unittest.TestCase):
         # This test covers the error case but the condition is always True due to the bug
         data = {"type": "not_curation", "name": "test_metric", "value": {"curations": [], "curation_history": []}}
         with self.assertRaises(ValueError):
-            upgrade_curation_metric(data, {}, "test_stage", [])
+            upgrade_curation_metric(data, {}, "test_stage", {})
 
     def test_upgrade_metric_basic(self):
         """Test upgrade_metric with basic data - covers lines 14-24"""
@@ -88,13 +88,13 @@ class TestQualityControlV1V2(unittest.TestCase):
             "evaluated_assets": None,  # Use None instead of empty list for single-asset metrics
         }
         modality = {"name": "Extracellular electrophysiology", "abbreviation": "ecephys"}
-        result = upgrade_metric(data, modality, "Raw data", ["tag1"])
+        result = upgrade_metric(data, modality, "Raw data", {"type": "tag1"})
 
         self.assertEqual(result["name"], "test_metric")
         self.assertEqual(result["value"], 1.5)
         self.assertEqual(result["modality"], modality)
         self.assertEqual(result["stage"], "Raw data")
-        self.assertEqual(result["tags"], {"tag_1": "tag1"})
+        self.assertEqual(result["tags"], {"type": "tag1"})
 
     def test_upgrade_metric_preserves_valid_reference(self):
         """Test that upgrade_metric preserves valid references"""
@@ -106,7 +106,7 @@ class TestQualityControlV1V2(unittest.TestCase):
             "evaluated_assets": None,
         }
         modality = {"name": "Extracellular electrophysiology", "abbreviation": "ecephys"}
-        result = upgrade_metric(data, modality, "Raw data", ["tag1"])
+        result = upgrade_metric(data, modality, "Raw data", {"type": "tag1"})
 
         self.assertEqual(result["reference"], "https://example.com/reference", "Valid reference should be preserved")
 
@@ -120,7 +120,7 @@ class TestQualityControlV1V2(unittest.TestCase):
             "evaluated_assets": None,
         }
         modality = {"name": "Extracellular electrophysiology", "abbreviation": "ecephys"}
-        result = upgrade_metric(data, modality, "Raw data", ["tag1"])
+        result = upgrade_metric(data, modality, "Raw data", {"type": "tag1"})
 
         self.assertIsNone(result["reference"], "__empty__ reference should be removed")
 
@@ -153,7 +153,7 @@ class TestQualityControlV1V2(unittest.TestCase):
         self.assertEqual(result["object_type"], "Quality control")
         self.assertEqual(len(result["metrics"]), 1)
         self.assertEqual(result["metrics"][0]["name"], "test_metric")
-        self.assertEqual(result["default_grouping"], ["test_evaluation"])
+        self.assertEqual(result["default_grouping"], [["type"]])
         self.assertEqual(result["notes"], "Test notes")
 
     def test_upgrade_curation_metric_basic(self):
@@ -172,7 +172,7 @@ class TestQualityControlV1V2(unittest.TestCase):
 
         # Due to the bug, this will likely raise an error, but it covers the function
         try:
-            result = upgrade_curation_metric(data, modality, "Raw data", ["curation_tag"])
+            result = upgrade_curation_metric(data, modality, "Raw data", {"type": "curation_tag"})
             # If the bug is fixed, these assertions would work:
             self.assertEqual(result["name"], "curation_metric")
             self.assertEqual(result["value"], ["curation1", "curation2"])
