@@ -59,7 +59,7 @@ def upgrade_record(data_dict: dict) -> tuple[Optional[dict], dict]:
             response = client_v2.insert_one_docdb_record(
                 record=upgraded.metadata.model_dump(),
             )
-            v2_id = response.json.get("insertedId", "")
+            v2_id = response.json().get("insertedId", "")
             new_record = None  # already inserted
         else:
             v2_id = records[0]["_id"]
