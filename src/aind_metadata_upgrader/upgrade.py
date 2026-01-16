@@ -145,12 +145,12 @@ class Upgrade:
 
     def _pre_validate_procedures(self, metadata: dict) -> dict:
         """Pre-validate procedures to avoid validation errors during metadata validation"""
-        if 'procedures' in metadata and metadata['procedures'] is not None:
+        if "procedures" in metadata and metadata["procedures"] is not None:
             try:
-                metadata['procedures'] = Procedures.model_validate(metadata['procedures']).model_dump()
+                metadata["procedures"] = Procedures.model_validate(metadata["procedures"]).model_dump()
             except ValidationError as e:
                 logging.warning(f"Procedures validation failed, using model_construct: {e}")
-                metadata['procedures'] = Procedures.model_construct(**metadata['procedures']).model_dump()
+                metadata["procedures"] = Procedures.model_construct(**metadata["procedures"]).model_dump()
         return metadata
 
     def upgrade_metadata(self, new_core_files: dict):
