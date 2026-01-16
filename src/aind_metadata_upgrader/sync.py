@@ -166,6 +166,87 @@ def upload_to_rds(original_df: Optional[pd.DataFrame], upgrade_results: list[dic
         logging.info("(METADATA VALIDATOR) No upgrade results to write to RDS")
 
 
+def query_rds_record(record_id: str) -> Optional[list]:
+    """Query RDS for a specific record by v1_id.
+
+    Args:
+        record_id: The v1 record ID to query
+
+    Returns:
+        List of matching rows (typically 0 or 1 row), or None if query fails
+    """
+    try:
+        query = (
+            f"SELECT v1_id, v2_id, upgrader_version, last_modified, status FROM "
+            f"{REDSHIFT_TABLE_NAME} WHERE v1_id = '{record_id}'"
+        )
+        return rds_client.execute_query(query)
+    except Exception as e:
+        logging.warning(f"Error querying RDS for record {record_id}: {e}")
+        return None
+
+
+def should_skip_record(existing_row: Optional[list], data_dict: dict) -> bool:
+    """Check if a record should be skipped based on existing RDS data.
+
+    Args:
+        existing_row: Row(s) from RDS query result
+        data_dict: The v1 record data dictionary
+
+    Returns:
+        True if record should be skipped, False otherwise
+    """
+    if existing_row and len(existing_row) > 0:
+        row = existing_row[0]
+        existing_upgrader_version = row.get("upgrader_version", "")
+        existing_last_modified = row.get("last_modified", "")
+
+        if existing_upgrader_version == upgrader_version and existing_last_modified == data_dict.get("last_modified"):
+            return True
+    return False
+
+
+def update_rds_tracking(record_id: str, result: dict, existing_row: Optional[list]) -> None:
+    """Update RDS tracking data for a record using SQL INSERT or UPDATE.
+
+    Args:
+        record_id: The v1 record ID
+        result: Dictionary containing tracking data (v1_id, v2_id, upgrader_version, last_modified, status)
+        existing_row: Row(s) from RDS query result, used to determine INSERT vs UPDATE
+    """
+    try:
+        v1_id = result["v1_id"]
+        v2_id = result.get("v2_id")
+        status = result["status"]
+        last_modified = result.get("last_modified", "")
+
+        # Check if row exists
+        if existing_row and len(existing_row) > 0:
+            # Update existing row
+            set_command = (
+                "v2_id = '{v2_id}', upgrader_version = '{upgrader_version}',"
+                "last_modified = '{last_modified}', status = '{status}'"
+            )
+
+            update_query = f"""
+            UPDATE {REDSHIFT_TABLE_NAME}
+            SET {set_command}
+            WHERE v1_id = '{v1_id}'
+            """
+            rds_client.execute_query(update_query)
+            logging.info(f"Updated RDS tracking for record {record_id}")
+        else:
+            # Insert new row
+            insert_query = f"""
+            INSERT INTO {REDSHIFT_TABLE_NAME} (v1_id, v2_id, upgrader_version, last_modified, status)
+            VALUES ('{v1_id}', '{v2_id}', '{upgrader_version}', '{last_modified}', '{status}')
+            """
+            rds_client.execute_query(insert_query)
+            logging.info(f"Inserted RDS tracking for record {record_id}")
+    except Exception as e:
+        logging.error(f"Failed to update RDS tracking for record {record_id}: {e}")
+
+
 def run_one(record_id: str):
     """
     Upgrade a single record and update RDS tracking data
@@ -182,22 +263,11 @@ def run_one(record_id: str):
 
     data_dict = records[0]
 
-    # Check if we should skip this record by querying RDS for this specific row
-    try:
-        query = f"SELECT v1_id, v2_id, upgrader_version, last_modified, status FROM {REDSHIFT_TABLE_NAME} WHERE v1_id = '{record_id}'"
-        existing_row = rds_client.execute_query(query)
-        
-        if existing_row and len(existing_row) > 0:
-            row = existing_row[0]
-            existing_upgrader_version = row.get("upgrader_version", "")
-            existing_last_modified = row.get("last_modified", "")
-            
-            if existing_upgrader_version == upgrader_version and existing_last_modified == data_dict.get("last_modified"):
-                logging.info(f"Record {record_id} already up-to-date, skipping")
-                return
-    except Exception as e:
-        logging.warning(f"Error querying RDS for record {record_id}: {e}")
-        existing_row = None
+    # Check if we should skip this record
+    existing_row = query_rds_record(record_id)
+    if should_skip_record(existing_row, data_dict):
+        logging.info(f"Record {record_id} already up-to-date, skipping")
+        return
 
     # Upgrade the record
     record = None
@@ -214,6 +284,7 @@ def run_one(record_id: str):
             "status": "failed",
         }
 
+    # Upsert to DocumentDB if upgrade succeeded
     if record is not None:
         logging.info(f"Upserting record to DocumentDB: {record_id}")
         client_v2.upsert_one_docdb_record(record=record)
@@ -221,34 +292,9 @@ def run_one(record_id: str):
     else:
         logging.warning(f"Upgrade failed for record ID {record_id}")
 
-    # Update RDS with the result using SQL
+    # Update RDS tracking data
     if result:
-        try:
-            v1_id = result["v1_id"]
-            v2_id = result.get("v2_id")
-            status = result["status"]
-            last_modified = result.get("last_modified", "")
-            
-            # Check if row exists
-            if existing_row and len(existing_row) > 0:
-                # Update existing row
-                update_query = f"""
-                UPDATE {REDSHIFT_TABLE_NAME}
-                SET v2_id = '{v2_id}', upgrader_version = '{upgrader_version}', last_modified = '{last_modified}', status = '{status}'
-                WHERE v1_id = '{v1_id}'
-                """
-                rds_client.execute_query(update_query)
-                logging.info(f"Updated RDS tracking for record {record_id}")
-            else:
-                # Insert new row
-                insert_query = f"""
-                INSERT INTO {REDSHIFT_TABLE_NAME} (v1_id, v2_id, upgrader_version, last_modified, status)
-                VALUES ('{v1_id}', '{v2_id}', '{upgrader_version}', '{last_modified}', '{status}')
-                """
-                rds_client.execute_query(insert_query)
-                logging.info(f"Inserted RDS tracking for record {record_id}")
-        except Exception as e:
-            logging.error(f"Failed to update RDS tracking for record {record_id}: {e}")
+        update_rds_tracking(record_id, result, existing_row)
 
 
 def run():
