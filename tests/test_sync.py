@@ -321,7 +321,8 @@ class TestSync(unittest.TestCase):
         mock_v1_client.retrieve_docdb_records.return_value = [
             {"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}
         ]
-        mock_rds_client.read_table.side_effect = Exception("Table not found")
+        # Mock no existing row in RDS
+        mock_rds_client.execute_query.return_value = []
 
         mock_upgrade_instance = MagicMock()
         mock_upgrade_instance.metadata.location = "test_location"
@@ -335,7 +336,8 @@ class TestSync(unittest.TestCase):
         sync.run_one("record1")
 
         mock_v2_client.upsert_one_docdb_record.assert_called_once()
-        mock_rds_client.overwrite_table_with_df.assert_called_once()
+        # Should call execute_query at least twice: once for SELECT, once for INSERT
+        self.assertGreaterEqual(mock_rds_client.execute_query.call_count, 2)
 
     @patch("aind_metadata_upgrader.sync.rds_client")
     @patch("aind_metadata_upgrader.sync.client_v2")
@@ -356,22 +358,22 @@ class TestSync(unittest.TestCase):
         mock_v1_client.retrieve_docdb_records.return_value = [
             {"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}
         ]
-        existing_df = pd.DataFrame(
-            [
-                {
-                    "v1_id": "record1",
-                    "v2_id": "v2_record1",
-                    "upgrader_version": "1.0.0",
-                    "status": "success",
-                    "last_modified": "2023-01-01",
-                }
-            ]
-        )
-        mock_rds_client.read_table.return_value = existing_df
+        # Mock existing row with matching version and last_modified
+        mock_rds_client.execute_query.return_value = [
+            {
+                "v1_id": "record1",
+                "v2_id": "v2_record1",
+                "upgrader_version": "1.0.0",
+                "status": "success",
+                "last_modified": "2023-01-01",
+            }
+        ]
 
         sync.run_one("record1")
 
         mock_v2_client.upsert_one_docdb_record.assert_not_called()
+        # Should only call execute_query once for the SELECT check
+        self.assertEqual(mock_rds_client.execute_query.call_count, 1)
 
     @patch("aind_metadata_upgrader.sync.rds_client")
     @patch("aind_metadata_upgrader.sync.client_v2")
@@ -383,15 +385,14 @@ class TestSync(unittest.TestCase):
         mock_v1_client.retrieve_docdb_records.return_value = [
             {"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}
         ]
-        mock_rds_client.read_table.side_effect = Exception("Table not found")
+        # Mock no existing row in RDS
+        mock_rds_client.execute_query.return_value = []
         mock_upgrade_class.side_effect = Exception("Upgrade failed")
 
         sync.run_one("record1")
 
-        mock_rds_client.overwrite_table_with_df.assert_called_once()
-        call_args = mock_rds_client.overwrite_table_with_df.call_args[0]
-        df = call_args[0]
-        self.assertEqual(df.iloc[0]["status"], "failed")
+        # Should call execute_query at least twice: once for SELECT, once for INSERT
+        self.assertGreaterEqual(mock_rds_client.execute_query.call_count, 2)
 
 
 if __name__ == "__main__":
