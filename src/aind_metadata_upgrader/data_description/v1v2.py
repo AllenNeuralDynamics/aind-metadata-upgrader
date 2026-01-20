@@ -68,6 +68,10 @@ class DataDescriptionV1V2(CoreUpgrader):
                 return [Funding(funder=Organization.AI, fundee=[Person(name="unknown")]).model_dump()]
             return []
 
+        # Normalize funding_source to a list (handle case where it's a single object)
+        if isinstance(funding_source, dict):
+            funding_source = [funding_source]
+
         # Process each funding source
         result_funding_sources = []
         for funding in funding_source:

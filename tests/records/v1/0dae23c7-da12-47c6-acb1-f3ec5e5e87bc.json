@@ -1,0 +1,1838 @@
+{
+    "_id": "0dae23c7-da12-47c6-acb1-f3ec5e5e87bc",
+    "acquisition": null,
+    "created": "2024-11-21T05:08:11Z",
+    "data_description": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "1.0.4",
+        "license": "CC-BY-4.0",
+        "platform": {
+            "name": "Behavior platform",
+            "abbreviation": "behavior"
+        },
+        "subject_id": "728568",
+        "creation_time": "2024-11-21 05:08:10-08:00",
+        "label": null,
+        "name": "behavior_728568_2024-11-18_15-36-50_processed_2024-11-21_05-08-10",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": {
+            "funder": {
+                "name": "Allen Institute",
+                "abbreviation": "AI",
+                "registry": {
+                    "name": "Research Organization Registry",
+                    "abbreviation": "ROR"
+                },
+                "registry_identifier": "03cpe7c52"
+            },
+            "grant_number": null,
+            "fundee": "Bowen Tan"
+        },
+        "data_level": "derived",
+        "group": null,
+        "investigators": [
+            {
+                "name": "Bowen Tan",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            }
+        ],
+        "project_name": "Genetic Perturbation Platform",
+        "restrictions": null,
+        "modality": [
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            },
+            {
+                "name": "Behavior videos",
+                "abbreviation": "behavior-videos"
+            }
+        ],
+        "related_data": [],
+        "data_summary": null,
+        "input_data_name": "behavior_728568_2024-11-18_15-36-50",
+        "process_name": "processed"
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": {
+        "Code Ocean": [
+            "310df5d9-9cb0-429d-9f81-9014626e4f32"
+        ]
+    },
+    "instrument": null,
+    "last_modified": "2025-11-10T19:13:08.065Z",
+    "location": "s3://codeocean-s3datasetsbucket-1u41qdg42ur9/310df5d9-9cb0-429d-9f81-9014626e4f32",
+    "metadata_status": "Unknown",
+    "name": "behavior_728568_2024-11-18_15-36-50_processed_2024-11-21_05-08-10",
+    "procedures": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "schema_version": "1.1.1",
+        "subject_id": "728568",
+        "subject_procedures": [
+            {
+                "procedure_type": "Surgery",
+                "start_date": "2024-05-21",
+                "experimenter_full_name": "NSB-8878",
+                "iacuc_protocol": "2109",
+                "animal_weight_prior": "23.0",
+                "animal_weight_post": "26.5",
+                "weight_unit": "gram",
+                "anaesthesia": {
+                    "type": "isoflurane",
+                    "duration": "120.0",
+                    "duration_unit": "minute",
+                    "level": "1.5"
+                },
+                "workstation_id": "SWS 2",
+                "procedures": [
+                    {
+                        "procedure_type": "Craniotomy",
+                        "craniotomy_type": "Whole hemisphere craniotomy",
+                        "craniotomy_hemisphere": null,
+                        "bregma_to_lambda_distance": "4.766",
+                        "bregma_to_lambda_unit": "millimeter",
+                        "implant_part_number": "3005",
+                        "dura_removed": null,
+                        "protective_material": null,
+                        "recovery_time": "10.0",
+                        "recovery_time_unit": "minute",
+                        "protocol_id": null
+                    },
+                    {
+                        "procedure_type": "Headframe",
+                        "headframe_type": "WHC (Full ring)",
+                        "headframe_part_number": null,
+                        "headframe_material": null,
+                        "well_part_number": "0160-055-08",
+                        "well_type": "WHC NP",
+                        "protocol_id": null
+                    }
+                ],
+                "notes": null,
+                "protocol_id": "dx.doi.org/10.17504/protocols.io.kqdg392o7g25/v2"
+            }
+        ],
+        "specimen_procedures": [],
+        "notes": null
+    },
+    "processing": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "schema_version": "1.1.1",
+        "processing_pipeline": {
+            "data_processes": [],
+            "processor_full_name": "AIND Scientific Computing",
+            "pipeline_version": null,
+            "pipeline_url": null,
+            "note": null
+        },
+        "analyses": [],
+        "notes": null
+    },
+    "quality_control": null,
+    "rig": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/rig.py",
+        "schema_version": "0.3.8",
+        "rig_id": "323_EPHYS1_2024-06-17",
+        "modification_date": "2024-06-17",
+        "mouse_platform": {
+            "device_type": "Tube",
+            "name": "Tube",
+            "serial_number": null,
+            "manufacturer": null,
+            "model": null,
+            "path_to_cad": null,
+            "port_index": null,
+            "additional_settings": {},
+            "notes": null,
+            "surface_material": null,
+            "date_surface_replaced": null,
+            "diameter": "3.0",
+            "diameter_unit": "centimeter"
+        },
+        "stimulus_devices": [
+            {
+                "device_type": "Speaker",
+                "name": "Speaker",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Other",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "Speaker",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "position": null
+            },
+            {
+                "device_type": "Reward delivery",
+                "stage_type": {
+                    "device_type": "Motorized stage",
+                    "name": "Newscale stage",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "New Scale Technologies",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "travel": "15",
+                    "travel_unit": "millimeter",
+                    "firmware": null
+                },
+                "reward_spouts": [
+                    {
+                        "device_type": "Reward spout",
+                        "name": "Lick spout Left",
+                        "serial_number": null,
+                        "manufacturer": null,
+                        "model": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "additional_settings": {},
+                        "notes": null,
+                        "side": "Left",
+                        "spout_diameter": "1.2",
+                        "spout_diameter_unit": "millimeter",
+                        "spout_position": {
+                            "device_position_transformations": [
+                                {
+                                    "type": "translation",
+                                    "translation": [
+                                        "0",
+                                        "0",
+                                        "0"
+                                    ]
+                                },
+                                {
+                                    "type": "rotation",
+                                    "rotation": [
+                                        "1",
+                                        "0",
+                                        "0",
+                                        "0",
+                                        "1",
+                                        "0",
+                                        "0",
+                                        "0",
+                                        "1"
+                                    ]
+                                }
+                            ],
+                            "device_origin": "None",
+                            "device_axes": [
+                                {
+                                    "name": "X",
+                                    "direction": "Left"
+                                },
+                                {
+                                    "name": "Y",
+                                    "direction": "Forward"
+                                },
+                                {
+                                    "name": "Z",
+                                    "direction": "Down"
+                                }
+                            ],
+                            "notes": null
+                        },
+                        "solenoid_valve": {
+                            "device_type": "Solenoid Valve",
+                            "name": "Solenoid Valve",
+                            "serial_number": null,
+                            "manufacturer": {
+                                "name": "Other",
+                                "abbreviation": null,
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": null,
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "additional_settings": {},
+                            "notes": null
+                        },
+                        "lick_sensor": null,
+                        "lick_sensor_type": null
+                    },
+                    {
+                        "device_type": "Reward spout",
+                        "name": "Lick spout Right",
+                        "serial_number": null,
+                        "manufacturer": null,
+                        "model": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "additional_settings": {},
+                        "notes": null,
+                        "side": "Right",
+                        "spout_diameter": "1.2",
+                        "spout_diameter_unit": "millimeter",
+                        "spout_position": {
+                            "device_position_transformations": [
+                                {
+                                    "type": "translation",
+                                    "translation": [
+                                        "0",
+                                        "0",
+                                        "0"
+                                    ]
+                                },
+                                {
+                                    "type": "rotation",
+                                    "rotation": [
+                                        "1",
+                                        "0",
+                                        "0",
+                                        "0",
+                                        "1",
+                                        "0",
+                                        "0",
+                                        "0",
+                                        "1"
+                                    ]
+                                }
+                            ],
+                            "device_origin": "None",
+                            "device_axes": [
+                                {
+                                    "name": "X",
+                                    "direction": "Left"
+                                },
+                                {
+                                    "name": "Y",
+                                    "direction": "Forward"
+                                },
+                                {
+                                    "name": "Z",
+                                    "direction": "Down"
+                                }
+                            ],
+                            "notes": null
+                        },
+                        "solenoid_valve": {
+                            "device_type": "Solenoid Valve",
+                            "name": "Solenoid Valve",
+                            "serial_number": null,
+                            "manufacturer": {
+                                "name": "Other",
+                                "abbreviation": null,
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": null,
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "additional_settings": {},
+                            "notes": null
+                        },
+                        "lick_sensor": null,
+                        "lick_sensor_type": null
+                    }
+                ]
+            }
+        ],
+        "cameras": [
+            {
+                "name": "Face Bottom",
+                "camera_target": "Face bottom",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "Face Bottom",
+                    "serial_number": "23045805",
+                    "manufacturer": {
+                        "name": "Teledyne FLIR",
+                        "abbreviation": "FLIR",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "None",
+                    "computer_name": "W10DT713669",
+                    "max_frame_rate": "522",
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Monochrome",
+                    "sensor_width": 720,
+                    "sensor_height": 540,
+                    "size_unit": "pixel",
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inches",
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": null,
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Kowa LM25HC C-Mount 25mm Fixed Lens",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Other",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "LM25HC",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "focal_length": "25",
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": {
+                    "device_type": "Filter",
+                    "name": "IR (UV/VIS Cut) M35.5 x 0.50 High Performance Machine Vision Filter",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Edmund Optics",
+                        "abbreviation": null,
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "filter_type": "Multiband",
+                    "diameter": "35.5",
+                    "width": null,
+                    "height": null,
+                    "size_unit": "millimeter",
+                    "thickness": null,
+                    "thickness_unit": "millimeter",
+                    "filter_wheel_index": null,
+                    "cut_off_wavelength": null,
+                    "cut_on_wavelength": null,
+                    "center_wavelength": null,
+                    "wavelength_unit": "nanometer",
+                    "description": "Blocking Wavelength Range (nm):200-750, 1000-1200"
+                },
+                "position": null
+            },
+            {
+                "name": "Face Side Right",
+                "camera_target": "Face side right",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "Face Side Right",
+                    "serial_number": "23033710",
+                    "manufacturer": {
+                        "name": "Teledyne FLIR",
+                        "abbreviation": "FLIR",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "None",
+                    "computer_name": "W10DT713669",
+                    "max_frame_rate": "522",
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Monochrome",
+                    "sensor_width": 720,
+                    "sensor_height": 540,
+                    "size_unit": "pixel",
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inches",
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": null,
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Fujinon CF16ZA-1S 16mm 23MP 1.1\" f/1.8 - f/16 C-Mount Lens",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Fujinon",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "CF16ZA-1S",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "focal_length": "16",
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": {
+                    "device_type": "Filter",
+                    "name": "LP715-37.5",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Other",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "filter_type": "Long pass",
+                    "diameter": "37.5",
+                    "width": null,
+                    "height": null,
+                    "size_unit": "millimeter",
+                    "thickness": null,
+                    "thickness_unit": "millimeter",
+                    "filter_wheel_index": null,
+                    "cut_off_wavelength": null,
+                    "cut_on_wavelength": 715,
+                    "center_wavelength": null,
+                    "wavelength_unit": "nanometer",
+                    "description": "manufacturer: Midwest Optical Systems. Inc."
+                },
+                "position": null
+            }
+        ],
+        "enclosure": null,
+        "ephys_assemblies": [
+            {
+                "name": "Probe Assembly 1",
+                "manipulator": {
+                    "device_type": "Manipulator",
+                    "name": "ProbeA Manipulator",
+                    "serial_number": "45881",
+                    "manufacturer": {
+                        "name": "New Scale Technologies",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null
+                },
+                "probes": [
+                    {
+                        "device_type": "Ephys probe",
+                        "name": "ProbeA",
+                        "serial_number": "20403319624c",
+                        "manufacturer": {
+                            "name": "Interuniversity Microelectronics Center",
+                            "abbreviation": "IMEC",
+                            "registry": {
+                                "name": "Research Organization Registry",
+                                "abbreviation": "ROR"
+                            },
+                            "registry_identifier": "02kcbn207"
+                        },
+                        "model": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "additional_settings": {},
+                        "notes": null,
+                        "probe_model": "Neuropixels 2.0 (Single Shank)",
+                        "lasers": [],
+                        "headstage": null
+                    }
+                ]
+            }
+        ],
+        "fiber_assemblies": [],
+        "stick_microscopes": [
+            {
+                "name": "Probe Camera 1",
+                "camera_target": "Brain surface",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "Probe Camera 1",
+                    "serial_number": "22438385",
+                    "manufacturer": {
+                        "name": "Teledyne FLIR",
+                        "abbreviation": "FLIR",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-120S4C",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "None",
+                    "computer_name": "W10DT713668",
+                    "max_frame_rate": "31",
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Color",
+                    "sensor_width": 4000,
+                    "sensor_height": 3000,
+                    "size_unit": "pixel",
+                    "sensor_format": "1/1.7",
+                    "sensor_format_unit": "inches",
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": null,
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Probe Lens",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Edmund Optics",
+                        "abbreviation": null,
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "InfiniProbe S-25",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "focal_length": null,
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": null,
+                "position": null
+            },
+            {
+                "name": "Probe Camera 2",
+                "camera_target": "Brain surface",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "Probe Camera 2",
+                    "serial_number": "20105611",
+                    "manufacturer": {
+                        "name": "Teledyne FLIR",
+                        "abbreviation": "FLIR",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-120S4C",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "None",
+                    "computer_name": "W10DT713668",
+                    "max_frame_rate": "31",
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Color",
+                    "sensor_width": 4000,
+                    "sensor_height": 3000,
+                    "size_unit": "pixel",
+                    "sensor_format": "1/1.7",
+                    "sensor_format_unit": "inches",
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": null,
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Probe Lens",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Edmund Optics",
+                        "abbreviation": null,
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "InfiniProbe S-25",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "focal_length": null,
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": null,
+                "position": null
+            },
+            {
+                "name": "Probe Camera 3",
+                "camera_target": "Brain surface",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "Probe Camera 3",
+                    "serial_number": "22438379",
+                    "manufacturer": {
+                        "name": "Teledyne FLIR",
+                        "abbreviation": "FLIR",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-120S4C",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "None",
+                    "computer_name": "W10DT713668",
+                    "max_frame_rate": "31",
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Color",
+                    "sensor_width": 4000,
+                    "sensor_height": 3000,
+                    "size_unit": "pixel",
+                    "sensor_format": "1/1.7",
+                    "sensor_format_unit": "inches",
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": null,
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Probe Lens",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Edmund Optics",
+                        "abbreviation": null,
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "InfiniProbe S-25",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "focal_length": null,
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": null,
+                "position": null
+            }
+        ],
+        "laser_assemblies": [],
+        "patch_cords": [],
+        "light_sources": [
+            {
+                "device_type": "Laser",
+                "name": "Coherent red",
+                "serial_number": "M171024016",
+                "manufacturer": {
+                    "name": "Coherent Scientific",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "031tysd23"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "wavelength": 640,
+                "wavelength_unit": "nanometer",
+                "maximum_power": null,
+                "power_unit": "milliwatt",
+                "coupling": "Single-mode fiber",
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "item_number": null
+            },
+            {
+                "device_type": "Light emitting diode",
+                "name": "IR LED 850 Left",
+                "serial_number": "TBD",
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M850L3",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": "This LED is used for camera illumination",
+                "wavelength": 850,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "device_type": "Light emitting diode",
+                "name": "IR LED 850 Right",
+                "serial_number": "TBD",
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M850L3",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": "This LED is used for camera illumination",
+                "wavelength": 850,
+                "wavelength_unit": "nanometer"
+            }
+        ],
+        "detectors": [],
+        "objectives": [],
+        "filters": [],
+        "lenses": [],
+        "digital_micromirror_devices": [],
+        "polygonal_scanners": [],
+        "pockels_cells": [],
+        "additional_devices": [],
+        "daqs": [
+            {
+                "device_type": "Harp device",
+                "name": "harp behavior board",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DT713669",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Behavior",
+                    "whoami": 1216
+                },
+                "core_version": null,
+                "tag_version": null,
+                "is_clock_generator": false
+            },
+            {
+                "device_type": "Harp device",
+                "name": "harp sound card",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DT713669",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Sound Card",
+                    "whoami": 1280
+                },
+                "core_version": null,
+                "tag_version": null,
+                "is_clock_generator": false
+            },
+            {
+                "device_type": "Harp device",
+                "name": "harp clock synchronization board",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DT713669",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Clock Synchronizer",
+                    "whoami": 1152
+                },
+                "core_version": null,
+                "tag_version": null,
+                "is_clock_generator": true
+            },
+            {
+                "device_type": "Harp device",
+                "name": "harp lickety split left",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DT713669",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Lickety Split",
+                    "whoami": 1400
+                },
+                "core_version": null,
+                "tag_version": null,
+                "is_clock_generator": false
+            },
+            {
+                "device_type": "Harp device",
+                "name": "harp lickety split right",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DT713669",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Lickety Split",
+                    "whoami": 1400
+                },
+                "core_version": null,
+                "tag_version": null,
+                "is_clock_generator": false
+            },
+            {
+                "device_type": "Neuropixels basestation",
+                "name": "neuropixel basestation",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Interuniversity Microelectronics Center",
+                    "abbreviation": "IMEC",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "02kcbn207"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "PXI",
+                "computer_name": "W10DT713668",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "basestation_firmware_version": "2.0168",
+                "bsc_firmware_version": "1.02",
+                "slot": 5,
+                "ports": [
+                    {
+                        "index": 4,
+                        "probes": [
+                            "ProbeA"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "calibrations": [
+            {
+                "calibration_date": "2024-04-25T00:00:00-07:00",
+                "device_name": "Lick spout Left",
+                "description": "Water calibration for Lick spout Left. The input is the valve open time in second and the output is the volume of water delivered in microliters.",
+                "input": {
+                    "valve open time (s)": [
+                        0.005,
+                        0.01,
+                        0.015,
+                        0.02,
+                        0.025,
+                        0.03,
+                        0.035,
+                        0.04,
+                        0.045,
+                        0.05,
+                        0.055,
+                        0.06,
+                        0.065,
+                        0.07
+                    ]
+                },
+                "output": {
+                    "water volume (ul)": [
+                        0.3499999999999992,
+                        0.6000000000000005,
+                        0.8000000000000007,
+                        1.3999999999999968,
+                        1.4500000000000002,
+                        1.9500000000000028,
+                        2.1499999999999986,
+                        2.400000000000002,
+                        2.7,
+                        3.1499999999999995,
+                        3.2000000000000006,
+                        3.5999999999999988,
+                        3.700000000000001,
+                        3.9999999999999987
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2024-04-25T00:00:00-07:00",
+                "device_name": "Lick spout Right",
+                "description": "Water calibration for Lick spout Right. The input is the valve open time in second and the output is the volume of water delivered in microliters.",
+                "input": {
+                    "valve open time (s)": [
+                        0.005,
+                        0.01,
+                        0.015,
+                        0.02,
+                        0.025,
+                        0.03,
+                        0.035,
+                        0.04,
+                        0.045,
+                        0.05,
+                        0.055,
+                        0.06,
+                        0.065,
+                        0.07
+                    ]
+                },
+                "output": {
+                    "water volume (ul)": [
+                        0.3500000000000014,
+                        0.6999999999999984,
+                        0.9499999999999974,
+                        1.3500000000000023,
+                        1.6500000000000004,
+                        2.0499999999999985,
+                        2.200000000000002,
+                        2.549999999999999,
+                        2.7999999999999985,
+                        3.3499999999999996,
+                        3.350000000000004,
+                        3.5999999999999988,
+                        3.95,
+                        4.199999999999999
+                    ]
+                },
+                "notes": null
+            }
+        ],
+        "ccf_coordinate_transform": null,
+        "origin": null,
+        "rig_axes": null,
+        "modalities": [
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            },
+            {
+                "name": "Behavior videos",
+                "abbreviation": "behavior-videos"
+            },
+            {
+                "name": "Extracellular electrophysiology",
+                "abbreviation": "ecephys"
+            }
+        ],
+        "notes": "None"
+    },
+    "schema_version": "1.0.0",
+    "session": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/session.py",
+        "schema_version": "1.0.1",
+        "protocol_id": [
+            ""
+        ],
+        "experimenter_full_name": [
+            "Meghan Olsen"
+        ],
+        "session_start_time": "2024-11-18T15:36:50.308967-08:00",
+        "session_end_time": "2024-11-18T16:26:04.538191-08:00",
+        "session_type": "Uncoupled Baiting",
+        "iacuc_protocol": "2109",
+        "rig_id": "323_EPHYS1_2024-06-17",
+        "calibrations": [],
+        "maintenance": [],
+        "subject_id": "728568",
+        "animal_weight_prior": "26.77",
+        "animal_weight_post": "23.94",
+        "weight_unit": "gram",
+        "anaesthesia": null,
+        "data_streams": [
+            {
+                "stream_start_time": "2024-11-18T15:36:50.308967-08:00",
+                "stream_end_time": "2024-11-18T16:26:04.538191-08:00",
+                "daq_names": [
+                    "Harp Behavior",
+                    "Harp Sound",
+                    "Harp clock synchronization board",
+                    "Harp sound amplifier",
+                    "Lick Sensor Left",
+                    "Lick Sensor Right"
+                ],
+                "camera_names": [],
+                "light_sources": [],
+                "ephys_modules": [],
+                "stick_microscopes": [],
+                "manipulator_modules": [],
+                "detectors": [],
+                "fiber_connections": [],
+                "fiber_modules": [],
+                "ophys_fovs": [],
+                "slap_fovs": [],
+                "stack_parameters": null,
+                "mri_scans": [],
+                "stream_modalities": [
+                    {
+                        "name": "Behavior",
+                        "abbreviation": "behavior"
+                    }
+                ],
+                "software": [
+                    {
+                        "name": "dynamic-foraging-task",
+                        "version": "behavior branch:add_running_wheel_2   commit ID:8db63acfe80778856c6615620d9b967daef4564c    version:1.6.9; metadata branch: add_running_wheel_2   commit ID:8db63acfe80778856c6615620d9b967daef4564c   version:1.6.9",
+                        "url": "https://github.com/AllenNeuralDynamics/dynamic-foraging-task.git",
+                        "parameters": {}
+                    }
+                ],
+                "notes": null
+            },
+            {
+                "stream_start_time": "2024-11-18T14:02:57.966307-08:00",
+                "stream_end_time": "2024-11-18T15:19:10.413209-08:00",
+                "daq_names": [],
+                "camera_names": [
+                    "Face side right",
+                    "Bottom",
+                    "Body"
+                ],
+                "light_sources": [],
+                "ephys_modules": [],
+                "stick_microscopes": [],
+                "manipulator_modules": [],
+                "detectors": [],
+                "fiber_connections": [],
+                "fiber_modules": [],
+                "ophys_fovs": [],
+                "slap_fovs": [],
+                "stack_parameters": null,
+                "mri_scans": [],
+                "stream_modalities": [
+                    {
+                        "name": "Behavior videos",
+                        "abbreviation": "behavior-videos"
+                    }
+                ],
+                "software": [],
+                "notes": null
+            }
+        ],
+        "stimulus_epochs": [
+            {
+                "stimulus_start_time": "2024-11-18T15:36:50.308967-08:00",
+                "stimulus_end_time": "2024-11-18T16:26:04.538191-08:00",
+                "stimulus_name": "auditory go cue",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "dynamic-foraging-task",
+                        "version": "behavior branch:add_running_wheel_2   commit ID:8db63acfe80778856c6615620d9b967daef4564c    version:1.6.9; metadata branch: add_running_wheel_2   commit ID:8db63acfe80778856c6615620d9b967daef4564c   version:1.6.9",
+                        "url": "https://github.com/AllenNeuralDynamics/dynamic-foraging-task.git",
+                        "parameters": {}
+                    }
+                ],
+                "script": null,
+                "stimulus_modalities": [
+                    "Auditory"
+                ],
+                "stimulus_parameters": [
+                    {
+                        "stimulus_type": "Auditory Stimulation",
+                        "sitmulus_name": "auditory go cue",
+                        "sample_frequency": "96000",
+                        "amplitude_modulation_frequency": 7500,
+                        "frequency_unit": "hertz",
+                        "bandpass_low_frequency": null,
+                        "bandpass_high_frequency": null,
+                        "bandpass_filter_type": null,
+                        "bandpass_order": null,
+                        "notes": null
+                    }
+                ],
+                "stimulus_device_names": [],
+                "speaker_config": {
+                    "name": "Stimulus Speaker",
+                    "volume": "60",
+                    "volume_unit": "decibels"
+                },
+                "light_source_config": [],
+                "output_parameters": {
+                    "meta": {
+                        "box": "323_EPHYS1",
+                        "session_end_time": "2024-11-18 16:26:04.538191",
+                        "session_run_time_in_min": 49
+                    },
+                    "water": {
+                        "water_in_session_foraging": 0.332,
+                        "water_in_session_manual": -5.551115123125783e-17,
+                        "water_in_session_total": 0.33199999999999996,
+                        "water_after_session": 0.668,
+                        "water_day_total": 1
+                    },
+                    "weight": {
+                        "base_weight": 26.77,
+                        "target_weight": 22.754,
+                        "target_weight_ratio": 0.85,
+                        "weight_after": 23.94
+                    },
+                    "performance": {
+                        "foraging_efficiency": 0.7494465900693447,
+                        "foraging_efficiency_with_actual_random_seed": 0.8137254901960784
+                    },
+                    "task_parameters": {
+                        "SessionlistSpin": "1",
+                        "qt_spinbox_lineedit": "2.00",
+                        "Load": false,
+                        "NewSession": false,
+                        "Clear": false,
+                        "Start": false,
+                        "Save": true,
+                        "Sessionlist": "",
+                        "ID": "728568",
+                        "Experimenter": "Meghan Olsen",
+                        "AutoTrain": false,
+                        "pushButton_streamlit": false,
+                        "StartFIP": false,
+                        "StartExcitation": false,
+                        "StartBleaching": false,
+                        "FIPMode": "Normal",
+                        "baselinetime": "10",
+                        "PhotometryB": "off",
+                        "OptogeneticsB": "off",
+                        "StartEphysRecording": false,
+                        "OpenEphysRecordingType": "Behavior",
+                        "ITIMin": "1.0",
+                        "DelayMin": "1.0",
+                        "InitiallyInactiveN": "2",
+                        "DelayBeta": "0.0",
+                        "DelayMax": "1.0",
+                        "BlockMinReward": "0",
+                        "AutoReward": false,
+                        "ITIIncrease": "0",
+                        "AutoWaterType": "Natural",
+                        "Task": "Uncoupled Baiting",
+                        "BlockMax": "35",
+                        "RewardDelay": "0.0",
+                        "SwitchThr": "0.5",
+                        "ITIMax": "30.0",
+                        "ITIBeta": "3.0",
+                        "ResponseTime": "1.0",
+                        "PointsInARow": "5",
+                        "AdvancedBlockAuto": "off",
+                        "Ignored": "10",
+                        "BlockBeta": "20",
+                        "BlockMin": "20",
+                        "StopIgnores": "25",
+                        "RewardPairsN": "1",
+                        "MaxTime": "75",
+                        "RewardConsumeTime": "3.0",
+                        "NextBlock": false,
+                        "IncludeAutoReward": "no",
+                        "Multiplier": "0.5",
+                        "RewardFamily": "1",
+                        "RightValue_volume": "2.00",
+                        "UncoupledReward": "0.1, 0.4, 0.7",
+                        "RightValue": "0.024",
+                        "BaseRewardSum": "0.8",
+                        "LeftValue": "0.028",
+                        "MaxTrial": "1000",
+                        "Unrewarded": "10",
+                        "LeftValue_volume": "2.00",
+                        "warm_windowsize": "20",
+                        "warm_max_choice_ratio_bias": "0.1",
+                        "warmup": "off",
+                        "warm_min_finish_ratio": "0.8",
+                        "warm_min_trial": "60",
+                        "Randomness": "Exponential",
+                        "AddOneTrialForNoresponse": "Yes",
+                        "GiveRight": false,
+                        "GiveWaterL": "0.028",
+                        "GiveWaterR": "0.024",
+                        "GiveWaterL_volume": "2.00",
+                        "GiveWaterR_volume": "2.00",
+                        "GiveLeft": false,
+                        "AlignToGoCue": "yes",
+                        "MoveXP_2": false,
+                        "MoveXN_2": false,
+                        "MoveYN": false,
+                        "MoveZN": false,
+                        "StageStop": false,
+                        "MoveYP": false,
+                        "MoveZP": false,
+                        "MoveXN": false,
+                        "MoveXP": false,
+                        "PositionZ": "7127.5",
+                        "PositionY": "11629.0",
+                        "PositionX": "6945.5",
+                        "Step": "50",
+                        "SetReference": false,
+                        "GetPositions": false,
+                        "TargetRatio": "0.85",
+                        "TotalWater": "1.0",
+                        "SuggestedWater": "0.668",
+                        "BaseWeight": "26.77",
+                        "TargetWeight": "22.754",
+                        "WeightAfter": "23.94",
+                        "ShowNotes": "",
+                        "LaserCalibration_dialog": {
+                            "Frequency_1": "40",
+                            "Protocol_1": "Sine",
+                            "Location_1": "Both",
+                            "Duration_1": "10",
+                            "RD_1": "1",
+                            "LaserColor_1": "Blue",
+                            "PulseDur_1": "0.002",
+                            "KeepOpen": false,
+                            "SampleFrequency": "5000",
+                            "CopyFromOpto": false,
+                            "LaserPowerMeasured": "",
+                            "Save": false,
+                            "voltage": "0.1",
+                            "Capture": false,
+                            "Flush_DO0": false,
+                            "Flush_DO1": false,
+                            "Flush_DO2": false,
+                            "Flush_DO3": false,
+                            "Flush_Port2": false,
+                            "showrecentlaser": "",
+                            "qt_spinbox_lineedit": "",
+                            "showspecificcalilaser": "NA",
+                            "CopyToSession": false,
+                            "CopyCondition": "Condition_1",
+                            "CopyLaser": "Laser_1",
+                            "Open": false
+                        },
+                        "Opto_dialog": {
+                            "MinOptoInterval": "0",
+                            "SessionWideControl": "off",
+                            "FractionOfSession": "0.5",
+                            "SessionStartWith": "on",
+                            "SessionAlternating": "on",
+                            "SampleFrequency": "5000",
+                            "LatestCalibrationDate": "2024-06-17",
+                            "Laser_calibration": "Blue",
+                            "laser_1_target": "",
+                            "laser_2_target": "",
+                            "laser_2_calibration_voltage": "",
+                            "laser_1_calibration_power": "",
+                            "laser_1_calibration_voltage": "",
+                            "laser_2_calibration_power": "",
+                            "OffsetStart_2": "0",
+                            "Probability_2": "0.25",
+                            "OffsetEnd_2": "0",
+                            "Duration_2": "5",
+                            "LaserEnd_2": "Trial start",
+                            "RD_2": "1",
+                            "LaserColor_2": "NA",
+                            "Location_2": "Both",
+                            "Frequency_2": "40",
+                            "": "40",
+                            "Laser2_power_2": "0 mw",
+                            "Laser1_power_2": "0 mw",
+                            "LaserStart_2": "Trial start",
+                            "Protocol_2": "Sine",
+                            "Condition_2": "NA",
+                            "Laser2_power_3": "0 mw",
+                            "Location_3": "Both",
+                            "LaserStart_3": "Trial start",
+                            "LaserEnd_3": "Trial start",
+                            "OffsetEnd_3": "0",
+                            "Condition_3": "NA",
+                            "OffsetStart_3": "0",
+                            "LaserColor_3": "NA",
+                            "Protocol_3": "Sine",
+                            "Laser1_power_3": "0 mw",
+                            "Duration_3": "5",
+                            "Probability_3": "0.25",
+                            "Frequency_3": "40",
+                            "RD_3": "1",
+                            "LaserStart_4": "Trial start",
+                            "Laser1_power_4": "0 mw",
+                            "Duration_4": "5",
+                            "LaserColor_4": "NA",
+                            "OffsetStart_4": "0",
+                            "Laser2_power_4": "0 mw",
+                            "LaserEnd_4": "Trial start",
+                            "OffsetEnd_4": "0",
+                            "Location_4": "Both",
+                            "Probability_4": "0.25",
+                            "Condition_4": "NA",
+                            "Frequency_4": "40",
+                            "Protocol_4": "Sine",
+                            "RD_4": "1",
+                            "LaserStart_5": "Trial start",
+                            "LaserColor_5": "NA",
+                            "Probability_1": "0.25",
+                            "Laser1_power_1": "0 mw",
+                            "LaserColor_1": "NA",
+                            "Location_1": "Both",
+                            "Laser2_power_1": "0 mw",
+                            "RD_1": "1",
+                            "Frequency_1": "40",
+                            "OffsetEnd_1": "0",
+                            "LaserEnd_1": "Trial start",
+                            "Duration_1": "5",
+                            "Condition_1": "NA",
+                            "LaserStart_1": "Trial start",
+                            "OffsetStart_1": "0",
+                            "Protocol_1": "Sine",
+                            "OffsetEnd_5": "0",
+                            "PulseDur_2": "0.002",
+                            "Laser2_power_5": "0 mw",
+                            "LaserEnd_5": "Trial start",
+                            "Probability_5": "0.25",
+                            "Frequency_5": "40",
+                            "Duration_5": "5",
+                            "Protocol_5": "Sine",
+                            "ConditionP_5": "1",
+                            "PulseDur_4": "0.002",
+                            "Condition_5": "NA",
+                            "RD_5": "1",
+                            "PulseDur_1": "0.002",
+                            "PulseDur_3": "0.002",
+                            "ConditionP_4": "1",
+                            "ConditionP_2": "1",
+                            "PulseDur_5": "0.002",
+                            "ConditionP_3": "1",
+                            "OffsetStart_5": "0",
+                            "Laser1_power_5": "0 mw",
+                            "Location_5": "Both",
+                            "ConditionP_1": "1",
+                            "LaserColor_6": "NA",
+                            "LaserStart_6": "Trial start",
+                            "Location_6": "Both",
+                            "OffsetStart_6": "0",
+                            "Laser1_power_6": "0 mw",
+                            "LaserEnd_6": "Trial start",
+                            "Laser2_power_6": "0 mw",
+                            "OffsetEnd_6": "0",
+                            "Probability_6": "0.25",
+                            "Protocol_6": "Sine",
+                            "Duration_6": "5",
+                            "Frequency_6": "40",
+                            "Condition_6": "NA",
+                            "RD_6": "1",
+                            "ConditionP_6": "1",
+                            "PulseDur_6": "0.002"
+                        },
+                        "Camera_dialog": {
+                            "StartRecording": false,
+                            "AutoControl": "No",
+                            "FrameRate": "500",
+                            "qt_spinbox_lineedit": "500",
+                            "OpenSaveFolder": false,
+                            "StartPreview": true,
+                            "camera_start_time": "2024-11-18 14:02:57.966307",
+                            "camera_stop_time": "2024-11-18 15:19:10.413209"
+                        },
+                        "Metadata_dialog": {
+                            "RotationAngle": "",
+                            "EphysProbes": "ProbeA",
+                            "ModuleAngle": "",
+                            "ArcAngle": "",
+                            "ManipulatorX": "",
+                            "ManipulatorZ": "",
+                            "ManipulatorY": "",
+                            "ProbeTarget": "",
+                            "ExperimentDescription": "",
+                            "SaveMeta": false,
+                            "IACUCProtocol": "2109",
+                            "ProtocolID": "",
+                            "RigMetadataFile": "rig_323_EPHYS1_2024-06-17.json",
+                            "SelectRigMetadata": false,
+                            "ClearMetadata": false,
+                            "StickMicroscopes": "Probe Camera 1",
+                            "Stick_ModuleAngle": "",
+                            "Stick_ArcAngle": "",
+                            "Stick_RotationAngle": "",
+                            "DataSummary": "",
+                            "FundingSource": "Allen Institute",
+                            "Investigators": "Cindy Poo, Jeremiah Cohen",
+                            "ProjectName": "Behavior Platform",
+                            "GrantNumber": "nan",
+                            "Fundee": "nan",
+                            "LoadMeta": false,
+                            "GoCueDecibel": "60",
+                            "LickSpoutReferenceZ": "",
+                            "LickSpoutReferenceY": "",
+                            "LickSpoutReferenceX": "",
+                            "LickSpoutReferenceArea": "",
+                            "LickSpoutDistance": ""
+                        },
+                        "Other_CurrentTime": "2024-11-18 16:26:04.538191",
+                        "Other_RunningTime": 49,
+                        "Other_SessionStartTime": "2024-11-18 15:36:50.308967",
+                        "Other_current_box": "323_EPHYS1",
+                        "Other_go_cue_decibel": "60",
+                        "Other_lick_spout_distance": 5000,
+                        "Other_manual_water_left_time": [
+                            28.360995850622402
+                        ],
+                        "Other_manual_water_left_volume": [
+                            2
+                        ],
+                        "Other_manual_water_right_time": [
+                            23.945147679324887,
+                            23.945147679324887
+                        ],
+                        "Other_manual_water_right_volume": [
+                            2,
+                            2
+                        ],
+                        "info_performance_essential_1": "Current trial: 336\nResponded trial: 336/336 (1.00)\nReward Trial: 166/336 (0.49)\nEarned Reward: 0.332 mL\nWater in session: 0.338 mL",
+                        "info_performance_essential_2": "Foraging eff: 0.75\nForaging eff (r.s.): 0.82\n\nBias: -0.08 (left)",
+                        "info_performance_others": "Left choice rewarded: 110/252 (0.44)\nRight choice rewarded: 56/84 (0.67)\n\nEarly licking (EL)\n  Frac of EL trial start_goCue: 175/335 (0.52)\n  Frac of EL trial start_delay: 165/335 (0.49)\n  Frac of EL trial delay_goCue: 29/335 (0.09)\n  Left/Right early licks start_goCue: 389/163 (2.39)\n\nDouble dipping (DD)\n  Frac of DD trial start_goCue: 11/335 (0.03)\n  Frac of DD trial start_delay: 6/335 (0.02)\n  Frac of DD trial delay_goCue: 2/335 (0.01)\n  Frac of DD trial goCue_goCue1: 18/335 (0.05)\n  DD per finish trial start_goCue: 0.04\n  DD per finish trial goCue_goCue1: 0.06\n\n  Frac of DD trial goCue_nextStart: 21/334 (0.06)\n  DD per finish trial goCue_nextStart: 0.09\n",
+                        "info_task": "Session started: 15:36\nCurrent time: 16:26\nRun time: 49 mins\n\nCurrent left block: 12/23\nCurrent right block: 12/14",
+                        "Ot_log_folder": "D:\\dynamic-foraging\\323_EPHYS1\\728568\\behavior_728568_2024-11-18_15-36-50\\behavior\\raw.harp",
+                        "box": "323_EPHYS1",
+                        "settings": {
+                            "default_saveFolder": "D:\\dynamic-foraging\\",
+                            "current_box": "323_EPHYS1",
+                            "Teensy_COM_box1": "",
+                            "Teensy_COM_box2": "",
+                            "Teensy_COM_box3": "",
+                            "Teensy_COM_box4": "",
+                            "Teensy_COM": "",
+                            "bonsai_path": "C:\\Users\\svc_aind_ephys\\Documents\\Github\\dynamic-foraging-task\\bonsai\\Bonsai.exe",
+                            "bonsaiworkflow_path": "C:\\Users\\svc_aind_ephys\\Documents\\Github\\dynamic-foraging-task\\src\\workflows\\foraging.bonsai",
+                            "temporary_video_folder": "D:\\dynamic-foraging\\temporaryvideo",
+                            "show_log_info_in_console": false,
+                            "newscale_serial_num_box1": "46809",
+                            "newscale_serial_num_box2": "",
+                            "newscale_serial_num_box3": "",
+                            "newscale_serial_num_box4": "",
+                            "default_ui": "ForagingGUI.ui",
+                            "create_rig_metadata": false,
+                            "open_ephys_machine_ip_address": "10.128.132.14",
+                            "FIP_workflow_path": "",
+                            "FIP_settings": "C:\\Users\\svc_aind_ephys\\Documents\\FIPSettings",
+                            "bonsai_config_path": "C:\\Users\\svc_aind_ephys\\Documents\\GitHub\\dynamic-foraging-task\\bonsai\\Bonsai.config",
+                            "metadata_dialog_folder": "C:\\Users\\svc_aind_ephys\\Documents\\ForagingSettings\\metadata_dialog\\",
+                            "rig_metadata_folder": "C:\\Users\\svc_aind_ephys\\Documents\\ForagingSettings\\rig_metadata\\",
+                            "project_info_file": "C:\\Users\\svc_aind_ephys\\Documents\\ForagingSettings\\Project Name and Funding Source v2.csv",
+                            "schedule_path": "Z:\\dynamic_foraging\\DynamicForagingSchedule.csv",
+                            "go_cue_decibel_box1": 60,
+                            "go_cue_decibel_box2": 60,
+                            "go_cue_decibel_box3": 60,
+                            "go_cue_decibel_box4": 60,
+                            "lick_spout_distance_box1": 5000,
+                            "lick_spout_distance_box2": 5000,
+                            "lick_spout_distance_box3": 5000,
+                            "lick_spout_distance_box4": 5000,
+                            "name_mapper_file": "C:\\Users\\svc_aind_ephys\\Documents\\ForagingSettings\\name_mapper.json",
+                            "save_each_trial": true,
+                            "AutomaticUpload": true,
+                            "manifest_flag_dir": "C:\\Users\\svc_aind_ephys\\Documents\\aind_watchdog_service\\manifest",
+                            "auto_engage": true,
+                            "clear_figure_after_save": true,
+                            "add_default_project_name": true,
+                            "default_openFolder": "D:\\dynamic-foraging\\"
+                        },
+                        "settings_box": {
+                            "Behavior": "COM5",
+                            "Soundcard": "COM4",
+                            "TimestampGeneratorGen3": "COM7",
+                            "BonsaiOsc1": "4002",
+                            "BonsaiOsc2": "4003",
+                            "BonsaiOsc3": "4004",
+                            "BonsaiOsc4": "4005",
+                            "AINDLickDetector": "1",
+                            "LeftLickDetector": "COM9",
+                            "RightLickDetector": "COM10",
+                            "HighSpeedCamera": "1",
+                            "SideCameraLeft": "0",
+                            "BottomCamera": "23022724",
+                            "SideCameraRight": "23022709",
+                            "BodyCamera": "23347792",
+                            "HasSideCameraLeft": "0",
+                            "HasBottomCamera": "1",
+                            "HasSideCameraRight": "1",
+                            "HasBodyCamera": "1",
+                            "codec": "-vcodec h264_nvenc -crf 23 -preset fast -b:v 50M",
+                            "AttenuationLeft": "125",
+                            "AttenuationRight": "125",
+                            "current_box": "323-ephys1",
+                            "RunningWheel": "1"
+                        },
+                        "commit_ID": "8db63acfe80778856c6615620d9b967daef4564c",
+                        "repo_url": "https://github.com/AllenNeuralDynamics/dynamic-foraging-task.git",
+                        "current_branch": "add_running_wheel_2",
+                        "repo_dirty_flag": false,
+                        "dirty_files": "",
+                        "version": "1.6.9",
+                        "open_ephys": [],
+                        "ManualWaterVolume": [
+                            0,
+                            0
+                        ],
+                        "saving_type_label": "force saving",
+                        "SessionFolder": "D:\\dynamic-foraging\\323_EPHYS1\\728568\\behavior_728568_2024-11-18_15-36-50",
+                        "TrainingFolder": "D:\\dynamic-foraging\\323_EPHYS1\\728568\\behavior_728568_2024-11-18_15-36-50\\behavior",
+                        "HarpFolder": "D:\\dynamic-foraging\\323_EPHYS1\\728568\\behavior_728568_2024-11-18_15-36-50\\behavior\\raw.harp",
+                        "VideoFolder": "D:\\dynamic-foraging\\323_EPHYS1\\728568\\behavior_728568_2024-11-18_15-36-50\\behavior-videos",
+                        "PhotometryFolder": "D:\\dynamic-foraging\\323_EPHYS1\\728568\\behavior_728568_2024-11-18_15-36-50\\fib",
+                        "MetadataFolder": "D:\\dynamic-foraging\\323_EPHYS1\\728568\\behavior_728568_2024-11-18_15-36-50\\metadata-dir",
+                        "SaveFile": "D:\\dynamic-foraging\\323_EPHYS1\\728568\\behavior_728568_2024-11-18_15-36-50\\behavior\\728568_2024-11-18_15-36-50.json",
+                        "fiber_photometry_start_time": "",
+                        "fiber_photometry_end_time": "",
+                        "fiber_mode": "Normal",
+                        "session_metadata": {},
+                        "generate_session_metadata_success": true,
+                        "generate_rig_metadata_success": true,
+                        "drop_frames_tag": 0,
+                        "trigger_length": 1480555,
+                        "drop_frames_warning_text": "",
+                        "frame_num": {},
+                        "curriculum_in_use": "Uncoupled Baiting (v2.3@1.0)",
+                        "stage_in_use": "GRADUATED"
+                    }
+                },
+                "reward_consumed_during_epoch": "332.0",
+                "reward_consumed_unit": "microliter",
+                "trials_total": 337,
+                "trials_finished": 337,
+                "trials_rewarded": 166,
+                "notes": "The duration of go cue is 100ms. The frequency is 7500Hz. Decibel is 60dB. The total reward consumed in the session is 332.0 microliter. The total reward indcluding consumed in the session and supplementary water is 1.0 millimeters."
+            }
+        ],
+        "mouse_platform_name": "Tube",
+        "active_mouse_platform": false,
+        "headframe_registration": null,
+        "reward_delivery": null,
+        "reward_consumed_total": "332.0",
+        "reward_consumed_unit": "microliter",
+        "notes": ""
+    },
+    "subject": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "schema_version": "1.0.0",
+        "subject_id": "728568",
+        "sex": "Female",
+        "date_of_birth": "2024-02-29",
+        "genotype": "Oi8(H11-CAG-Cas9)/Oi8(H11-CAG-Cas9)",
+        "species": {
+            "name": "Mus musculus",
+            "registry": {
+                "name": "National Center for Biotechnology Information",
+                "abbreviation": "NCBI"
+            },
+            "registry_identifier": "NCBI:txid10090"
+        },
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": {
+            "breeding_group": "Oi8(H11-CAG-Cas9)(ND)",
+            "maternal_id": "720871",
+            "maternal_genotype": "Oi8(H11-CAG-Cas9)/Oi8(H11-CAG-Cas9)",
+            "paternal_id": "720869",
+            "paternal_genotype": "Oi8(H11-CAG-Cas9)/Oi8(H11-CAG-Cas9)"
+        },
+        "source": {
+            "name": "Allen Institute",
+            "abbreviation": "AI",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "03cpe7c52"
+        },
+        "rrid": null,
+        "restrictions": null,
+        "wellness_reports": [],
+        "housing": {
+            "cage_id": "8264323",
+            "room_id": "217",
+            "light_cycle": null,
+            "home_cage_enrichment": [],
+            "cohoused_subjects": []
+        },
+        "notes": null
+    }
+}
