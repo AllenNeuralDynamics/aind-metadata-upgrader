@@ -10,6 +10,7 @@ class TestDataDescriptionV1V2FundingSource(unittest.TestCase):
     """Test the DataDescriptionV1V2 funding source upgrade"""
 
     def setUp(self):
+        """Set up the upgrader instance for testing"""
         self.upgrader = DataDescriptionV1V2()
 
     def test_funding_source_as_list(self):
