@@ -180,7 +180,11 @@ def query_rds_record(record_id: str) -> Optional[list]:
             f"SELECT v1_id, v2_id, upgrader_version, last_modified, status FROM "
             f"{REDSHIFT_TABLE_NAME} WHERE v1_id = '{record_id}'"
         )
-        return rds_client.execute_query(query)
+        result = rds_client.execute_query(query)
+        if result:
+            # Convert SQLAlchemy Row objects to dictionaries
+            return [dict(row._mapping) for row in result.fetchall()]
+        return None
     except Exception as e:
         logging.warning(f"Error querying RDS for record {record_id}: {e}")
         return None
