@@ -359,15 +359,17 @@ class TestSync(unittest.TestCase):
             {"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}
         ]
         # Mock existing row with matching version and last_modified
-        mock_rds_client.execute_query.return_value = [
-            {
+        mock_result = MagicMock()
+        mock_result.fetchall.return_value = [
+            MagicMock(_mapping={
                 "v1_id": "record1",
                 "v2_id": "v2_record1",
                 "upgrader_version": "1.0.0",
                 "status": "success",
                 "last_modified": "2023-01-01",
-            }
+            })
         ]
+        mock_rds_client.execute_query.return_value = mock_result
 
         sync.run_one("record1")
 
@@ -393,6 +395,118 @@ class TestSync(unittest.TestCase):
 
         # Should call execute_query at least twice: once for SELECT, once for INSERT
         self.assertGreaterEqual(mock_rds_client.execute_query.call_count, 2)
+
+    @patch("aind_metadata_upgrader.sync.rds_client")
+    @patch("aind_metadata_upgrader.sync.upgrader_version", "2.5.0")
+    @patch("aind_metadata_upgrader.sync.REDSHIFT_TABLE_NAME", "test_table")
+    def test_update_rds_tracking_insert_new_record(self, mock_rds_client):
+        """Test that update_rds_tracking correctly inserts a new record with all field values."""
+        # Mock no existing row
+        existing_row = None
+
+        result = {
+            "v1_id": "test_v1_id_123",
+            "v2_id": "test_v2_id_456",
+            "upgrader_version": "2.5.0",
+            "last_modified": "2024-12-15T10:30:00",
+            "status": "success",
+        }
+
+        sync.update_rds_tracking("test_v1_id_123", result, existing_row)
+
+        # Verify execute_query was called once
+        mock_rds_client.execute_query.assert_called_once()
+
+        # Get the actual SQL query that was executed
+        actual_query = mock_rds_client.execute_query.call_args[0][0]
+
+        # Verify the query structure and content
+        self.assertIn("INSERT INTO test_table", actual_query)
+        self.assertIn("(v1_id, v2_id, upgrader_version, last_modified, status)", actual_query)
+        self.assertIn("VALUES", actual_query)
+
+        # Verify all values are correctly inserted
+        self.assertIn("'test_v1_id_123'", actual_query)
+        self.assertIn("'test_v2_id_456'", actual_query)
+        self.assertIn("'2.5.0'", actual_query)
+        self.assertIn("'2024-12-15T10:30:00'", actual_query)
+        self.assertIn("'success'", actual_query)
+
+    @patch("aind_metadata_upgrader.sync.rds_client")
+    @patch("aind_metadata_upgrader.sync.upgrader_version", "3.1.4")
+    @patch("aind_metadata_upgrader.sync.REDSHIFT_TABLE_NAME", "test_table")
+    def test_update_rds_tracking_update_existing_record(self, mock_rds_client):
+        """Test that update_rds_tracking correctly updates an existing record with all field values."""
+        # Mock existing row
+        existing_row = [
+            {
+                "v1_id": "old_v1_id_789",
+                "v2_id": "old_v2_id",
+                "upgrader_version": "1.0.0",
+                "last_modified": "2023-01-01",
+                "status": "success",
+            }
+        ]
+
+        result = {
+            "v1_id": "old_v1_id_789",
+            "v2_id": "new_v2_id_999",
+            "upgrader_version": "3.1.4",
+            "last_modified": "2025-06-20T14:45:30",
+            "status": "success",
+        }
+
+        sync.update_rds_tracking("old_v1_id_789", result, existing_row)
+
+        # Verify execute_query was called once
+        mock_rds_client.execute_query.assert_called_once()
+
+        # Get the actual SQL query that was executed
+        actual_query = mock_rds_client.execute_query.call_args[0][0]
+
+        # Verify the query structure
+        self.assertIn("UPDATE test_table", actual_query)
+        self.assertIn("SET", actual_query)
+        self.assertIn("WHERE v1_id = 'old_v1_id_789'", actual_query)
+
+        # Verify all updated values are present in the SET clause
+        self.assertIn("v2_id = 'new_v2_id_999'", actual_query)
+        self.assertIn("upgrader_version = '3.1.4'", actual_query)
+        self.assertIn("last_modified = '2025-06-20T14:45:30'", actual_query)
+        self.assertIn("status = 'success'", actual_query)
+
+    @patch("aind_metadata_upgrader.sync.rds_client")
+    @patch("aind_metadata_upgrader.sync.upgrader_version", "1.2.3")
+    @patch("aind_metadata_upgrader.sync.REDSHIFT_TABLE_NAME", "test_table")
+    def test_update_rds_tracking_failed_status(self, mock_rds_client):
+        """Test that update_rds_tracking correctly handles failed upgrades with None v2_id."""
+        existing_row = None
+
+        result = {
+            "v1_id": "failed_v1_id_555",
+            "v2_id": None,
+            "upgrader_version": "1.2.3",
+            "last_modified": "2024-03-10T08:00:00",
+            "status": "failed",
+        }
+
+        sync.update_rds_tracking("failed_v1_id_555", result, existing_row)
+
+        # Verify execute_query was called
+        mock_rds_client.execute_query.assert_called_once()
+
+        # Get the actual SQL query
+        actual_query = mock_rds_client.execute_query.call_args[0][0]
+
+        # Verify INSERT structure
+        self.assertIn("INSERT INTO test_table", actual_query)
+
+        # Verify all values including None for v2_id and 'failed' status
+        self.assertIn("'failed_v1_id_555'", actual_query)
+        self.assertIn("'None'", actual_query)  # v2_id should be 'None' as string
+        self.assertIn("'1.2.3'", actual_query)
+        self.assertIn("'2024-03-10T08:00:00'", actual_query)
+        self.assertIn("'failed'", actual_query)
 
 
 if __name__ == "__main__":

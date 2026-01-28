@@ -228,8 +228,8 @@ def update_rds_tracking(record_id: str, result: dict, existing_row: Optional[lis
         if existing_row and len(existing_row) > 0:
             # Update existing row
             set_command = (
-                "v2_id = '{v2_id}', upgrader_version = '{upgrader_version}',"
-                "last_modified = '{last_modified}', status = '{status}'"
+                f"v2_id = '{v2_id}', upgrader_version = '{upgrader_version}',"
+                f"last_modified = '{last_modified}', status = '{status}'"
             )
 
             update_query = f"""
