@@ -1,5 +1,6 @@
 """<=v1.4 to v2.0 procedures upgrade functions"""
 
+import copy
 from datetime import date
 from typing import Optional
 
@@ -64,6 +65,141 @@ PROC_UPGRADE_MAP = {
 class ProceduresUpgraderV1V2(CoreUpgrader):
     """Upgrade procedures from v1.4 to v2.0"""
 
+    def _is_old_separated_format(self, data: dict) -> bool:
+        """Check if data is in the old format with separated procedure arrays"""
+        has_separated_arrays = any(key in data for key in ["craniotomies", "headframes", "injections"])
+        has_new_format = "subject_procedures" in data or "specimen_procedures" in data
+        return has_separated_arrays and not has_new_format
+
+    def _convert_old_procedure_to_intermediate(self, procedure: dict, array_type: str) -> dict:
+        """Convert a procedure from the old separated format to intermediate format"""
+        # Make a deep copy of the procedure data to avoid modifying nested structures
+        converted = copy.deepcopy(procedure)
+
+        # Handle the 'type' field from old format
+        old_type = procedure.get("type", "")
+
+        # Map array type to procedure_type and convert type field to appropriate field name
+        if array_type == "craniotomies":
+            converted["procedure_type"] = "Craniotomy"
+            # Map old 'type' to 'craniotomy_type'
+            if old_type:
+                converted["craniotomy_type"] = old_type
+            # Add missing fields with defaults if not present
+            if "craniotomy_coordinates_unit" not in converted:
+                converted["craniotomy_coordinates_unit"] = "millimeter"
+            if "craniotomy_coordinates_reference" not in converted:
+                converted["craniotomy_coordinates_reference"] = "Bregma"
+            if "craniotomy_size_unit" not in converted:
+                converted["craniotomy_size_unit"] = "millimeter"
+        elif array_type == "headframes":
+            converted["procedure_type"] = "Headframe"
+            # Map old 'type' to 'headframe_type'
+            if old_type:
+                converted["headframe_type"] = old_type
+        elif array_type == "injections":
+            # Normalize fields that should be lists
+            if "injection_volume" in converted and not isinstance(converted["injection_volume"], list):
+                converted["injection_volume"] = [converted["injection_volume"]]
+            if "injection_coordinate_depth" in converted and not isinstance(
+                converted["injection_coordinate_depth"], list
+            ):
+                converted["injection_coordinate_depth"] = [converted["injection_coordinate_depth"]]
+
+            # Normalize unit fields
+            if converted.get("injection_angle_unit") == "degree":
+                converted["injection_angle_unit"] = "degrees"
+
+            # Normalize injection materials - add material_type if missing and map old fields
+            if "injection_materials" in converted and isinstance(converted["injection_materials"], list):
+                for material in converted["injection_materials"]:
+                    if "material_type" not in material:
+                        # If it has viral genome info, it's a virus
+                        material["material_type"] = "Virus"
+                    # Map full_genome_name to name field for ViralMaterial
+                    if "full_genome_name" in material:
+                        if "name" not in material or not material["name"]:
+                            material["name"] = material["full_genome_name"]
+                        del material["full_genome_name"]
+                    # Remove deprecated prep_type field
+                    if "prep_type" in material:
+                        del material["prep_type"]
+
+            # Map injection_type to procedure_type
+            injection_type = procedure.get("injection_type", "")
+            if injection_type == "Nanoject":
+                converted["procedure_type"] = "Nanoject injection"
+            elif injection_type == "Iontophoresis":
+                converted["procedure_type"] = "Iontophoresis injection"
+            elif injection_type == "ICV":
+                converted["procedure_type"] = "ICV injection"
+            elif injection_type == "ICM":
+                converted["procedure_type"] = "ICM injection"
+            elif injection_type == "Retro-orbital":
+                converted["procedure_type"] = "Retro-orbital injection"
+            elif injection_type == "Intraperitoneal":
+                converted["procedure_type"] = "Intraperitoneal injection"
+            else:
+                # Default to Nanoject if unknown
+                converted["procedure_type"] = "Nanoject injection"
+
+        # Remove the 'type' field if it exists (from old format)
+        if "type" in converted:
+            del converted["type"]
+
+        return converted
+
+    def _group_procedures_by_date(self, procedures: list) -> dict:
+        """Group procedures by their start_date and end_date into surgeries"""
+        # Group procedures by (start_date, end_date) tuple
+        surgery_groups = {}
+
+        for proc in procedures:
+            start_date = proc.get("start_date")
+            end_date = proc.get("end_date")
+            key = (start_date, end_date)
+
+            if key not in surgery_groups:
+                surgery_groups[key] = []
+            surgery_groups[key].append(proc)
+
+        # Convert groups into Surgery objects
+        surgeries = []
+        for (start_date, end_date), procs in surgery_groups.items():
+            # Use common fields from first procedure
+            first_proc = procs[0]
+
+            surgery_data = {
+                "procedure_type": "Surgery",
+                "start_date": start_date,
+                "end_date": end_date,
+                "experimenter_full_name": first_proc.get("experimenter_full_name"),
+                "iacuc_protocol": first_proc.get("iacuc_protocol"),
+                "protocol_id": first_proc.get("protocol_id"),
+                "anaesthesia": first_proc.get("anaesthesia"),
+                "procedures": procs,
+            }
+
+            surgeries.append(surgery_data)
+
+        return surgeries
+
+    def _convert_old_format_to_subject_procedures(self, data: dict) -> list:
+        """Convert old separated format to subject_procedures format"""
+        all_procedures = []
+
+        # Process each array type
+        for array_type in ["craniotomies", "headframes", "injections"]:
+            if array_type in data and data[array_type]:
+                for proc in data[array_type]:
+                    converted = self._convert_old_procedure_to_intermediate(proc, array_type)
+                    all_procedures.append(converted)
+
+        # Group procedures by date into surgeries
+        surgeries = self._group_procedures_by_date(all_procedures)
+
+        return surgeries
+
     def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the procedures to v2.0"""
 
@@ -74,6 +210,16 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             procedures_data = data
 
         self.subject_id = procedures_data.get("subject_id")
+
+        # Check if we have the old separated format and convert it
+        if self._is_old_separated_format(procedures_data):
+            subject_procedures = self._convert_old_format_to_subject_procedures(procedures_data)
+            procedures_data["subject_procedures"] = subject_procedures
+
+        # Check if we have the old separated format and convert it
+        if self._is_old_separated_format(procedures_data):
+            subject_procedures = self._convert_old_format_to_subject_procedures(procedures_data)
+            procedures_data["subject_procedures"] = subject_procedures
 
         # Create the V2 structure
         v2_procedures = {
@@ -120,10 +266,19 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         procedure_type = data.get("procedure_type")
 
-        if "iacuc_protocol" in data:
-            # Replace iacuc_protocol with ethics_review_id
-            data["ethics_review_id"] = data.get("iacuc_protocol", None)
-            remove(data, "iacuc_protocol")
+        # Remove surgery-level fields that shouldn't be in individual procedures
+        # These are handled at the Surgery level
+        surgery_level_fields = [
+            "iacuc_protocol",
+            "ethics_review_id",
+            "start_date",
+            "end_date",
+            "experimenter_full_name",
+            "anaesthesia",
+            "protocol_id",
+        ]
+        for field in surgery_level_fields:
+            remove(data, field)
 
         # Map V1 procedure types to their upgrade functions
 
@@ -168,6 +323,9 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         # Set default start_date if missing
         if "start_date" not in data or not data["start_date"]:
             data["start_date"] = date(1970, 1, 1)
+
+        # Remove end_date - Surgery doesn't have this field
+        remove(data, "end_date")
 
         # Replace list of measured_coordinate dicts with a single dictionary
         if "measured_coordinates" in data:

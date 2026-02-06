@@ -1,5 +1,7 @@
 """Unit tests for procedures v1v2_procedures module to improve code coverage"""
 
+import json
+import os
 import unittest
 from aind_data_schema_models.units import SizeUnit
 from aind_data_schema.components.surgery_procedures import CraniotomyType
@@ -14,6 +16,7 @@ from aind_metadata_upgrader.procedures.v1v2_procedures import (
     upgrade_perfusion,
     retrieve_probe_config,
 )
+from aind_metadata_upgrader.procedures.v1v2 import ProceduresUpgraderV1V2
 
 
 class TestProceduresV1V2(unittest.TestCase):
@@ -405,6 +408,165 @@ class TestProceduresV1V2(unittest.TestCase):
         }
         with self.assertRaises(ValueError):
             retrieve_probe_config(data)
+
+
+class TestProceduresUpgraderV1V2OldFormat(unittest.TestCase):
+    """Test cases for ProceduresUpgraderV1V2 with old separated format"""
+
+    def setUp(self):
+        """Set up test fixtures"""
+        self.upgrader = ProceduresUpgraderV1V2()
+
+    def test_is_old_separated_format_true(self):
+        """Test detection of old separated format"""
+        data = {
+            "craniotomies": [{"type": "Dual hemisphere"}],
+            "headframes": [{"type": "Dual hemisphere"}],
+            "injections": [],
+            "subject_id": "655565",
+        }
+        self.assertTrue(self.upgrader._is_old_separated_format(data))
+
+    def test_is_old_separated_format_false_with_new_format(self):
+        """Test rejection of new format"""
+        data = {
+            "subject_procedures": [],
+            "specimen_procedures": [],
+            "subject_id": "655565",
+        }
+        self.assertFalse(self.upgrader._is_old_separated_format(data))
+
+    def test_is_old_separated_format_false_empty(self):
+        """Test rejection of empty data"""
+        data = {"subject_id": "655565"}
+        self.assertFalse(self.upgrader._is_old_separated_format(data))
+
+    def test_convert_old_procedure_craniotomy(self):
+        """Test conversion of old craniotomy format"""
+        procedure = {
+            "type": "Dual hemisphere craniotomy",
+            "craniotomy_coordinates_ap": 0,
+            "craniotomy_coordinates_ml": 0,
+            "craniotomy_size": 8,
+        }
+        result = self.upgrader._convert_old_procedure_to_intermediate(procedure, "craniotomies")
+        
+        self.assertEqual(result["procedure_type"], "Craniotomy")
+        self.assertEqual(result["craniotomy_type"], "Dual hemisphere craniotomy")
+        self.assertNotIn("type", result)
+        self.assertEqual(result["craniotomy_coordinates_unit"], "millimeter")
+        self.assertEqual(result["craniotomy_coordinates_reference"], "Bregma")
+        self.assertEqual(result["craniotomy_size_unit"], "millimeter")
+
+    def test_convert_old_procedure_headframe(self):
+        """Test conversion of old headframe format"""
+        procedure = {
+            "type": "Dual hemisphere",
+            "headframe_material": "Titanium",
+        }
+        result = self.upgrader._convert_old_procedure_to_intermediate(procedure, "headframes")
+        
+        self.assertEqual(result["procedure_type"], "Headframe")
+        self.assertEqual(result["headframe_type"], "Dual hemisphere")
+        self.assertNotIn("type", result)
+
+    def test_convert_old_procedure_injection(self):
+        """Test conversion of old injection format"""
+        procedure = {
+            "injection_type": "Nanoject",
+            "injection_volume": 300,
+            "injection_coordinate_depth": -2.5,
+            "injection_angle_unit": "degree",
+            "injection_materials": [
+                {
+                    "full_genome_name": "rAAV-test",
+                    "name": "Test virus",
+                    "prep_type": "Purified",
+                    "titer": 1e13,
+                }
+            ],
+        }
+        result = self.upgrader._convert_old_procedure_to_intermediate(procedure, "injections")
+        
+        self.assertEqual(result["procedure_type"], "Nanoject injection")
+        self.assertEqual(result["injection_volume"], [300])
+        self.assertEqual(result["injection_coordinate_depth"], [-2.5])
+        self.assertEqual(result["injection_angle_unit"], "degrees")
+        self.assertEqual(result["injection_materials"][0]["material_type"], "Virus")
+        # When name already exists, we keep it and remove full_genome_name
+        self.assertEqual(result["injection_materials"][0]["name"], "Test virus")
+        self.assertNotIn("full_genome_name", result["injection_materials"][0])
+        self.assertNotIn("prep_type", result["injection_materials"][0])
+
+    def test_group_procedures_by_date(self):
+        """Test grouping procedures by date"""
+        procedures = [
+            {"procedure_type": "Craniotomy", "start_date": "2023-02-28", "end_date": "2023-02-28", "protocol_id": "N/A"},
+            {"procedure_type": "Headframe", "start_date": "2023-02-28", "end_date": "2023-02-28", "protocol_id": "N/A"},
+            {"procedure_type": "Nanoject injection", "start_date": "2023-02-28", "end_date": "2023-02-28", "protocol_id": "N/A"},
+            {"procedure_type": "Nanoject injection", "start_date": "2023-03-01", "end_date": "2023-03-01", "protocol_id": "N/A"},
+        ]
+        
+        surgeries = self.upgrader._group_procedures_by_date(procedures)
+        
+        self.assertEqual(len(surgeries), 2)
+        # First surgery should have 3 procedures
+        first_surgery = next(s for s in surgeries if s["start_date"] == "2023-02-28")
+        self.assertEqual(len(first_surgery["procedures"]), 3)
+        # Second surgery should have 1 procedure
+        second_surgery = next(s for s in surgeries if s["start_date"] == "2023-03-01")
+        self.assertEqual(len(second_surgery["procedures"]), 1)
+
+    def test_upgrade_v1_2_json(self):
+        """Test full upgrade of v1_2.json file"""
+        # Load the v1_2.json test file
+        test_dir = os.path.dirname(__file__)
+        v1_2_path = os.path.join(test_dir, "records", "procedures", "v1_2.json")
+        
+        with open(v1_2_path, "r") as f:
+            v1_2_data = json.load(f)
+        
+        # Upgrade the data
+        upgraded = self.upgrader.upgrade(v1_2_data, schema_version="2.0.0")
+        
+        # Verify the upgrade
+        self.assertEqual(upgraded["schema_version"], "2.0.0")
+        self.assertEqual(upgraded["subject_id"], "655565")
+        self.assertIn("subject_procedures", upgraded)
+        self.assertEqual(len(upgraded["subject_procedures"]), 1)
+        
+        # Verify the surgery
+        surgery = upgraded["subject_procedures"][0]
+        self.assertEqual(surgery["experimenters"], ["Anna Lakunina"])
+        # start_date is a date object after upgrade
+        from datetime import date
+        self.assertEqual(surgery["start_date"], date(2023, 2, 28))
+        self.assertEqual(surgery["ethics_review_id"], "2109")
+        
+        # Verify procedures within surgery
+        # Should have 1 craniotomy, 1 headframe, and 5 injections = 7 total
+        self.assertEqual(len(surgery["procedures"]), 7)
+        
+        # Verify craniotomy
+        craniotomy = next((p for p in surgery["procedures"] if p.get("object_type") == "Craniotomy"), None)
+        self.assertIsNotNone(craniotomy)
+        self.assertEqual(craniotomy["size"], 8.0)
+        
+        # Verify headframe
+        headframe = next((p for p in surgery["procedures"] if p.get("object_type") == "Headframe"), None)
+        self.assertIsNotNone(headframe)
+        self.assertEqual(headframe["headframe_type"], "Dual hemisphere")
+        
+        # Verify injections
+        injections = [p for p in surgery["procedures"] if p.get("object_type") == "Brain injection"]
+        self.assertEqual(len(injections), 5)
+        
+        # Verify injection materials have correct names
+        for injection in injections:
+            for material in injection["injection_materials"]:
+                self.assertIn("name", material)
+                self.assertNotIn("full_genome_name", material)
+                self.assertNotIn("prep_type", material)
 
 
 if __name__ == "__main__":

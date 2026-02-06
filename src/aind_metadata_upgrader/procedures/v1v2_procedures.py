@@ -214,7 +214,7 @@ def upgrade_craniotomy(data: dict) -> tuple[dict, list]:
 
     upgraded_data, measured_coordinates = retrieve_bl_distance(upgraded_data)
 
-    if "craniotomy_coordinates_ml" in upgraded_data and upgraded_data["craniotomy_coordinates_ml"]:
+    if "craniotomy_coordinates_ml" in upgraded_data and upgraded_data["craniotomy_coordinates_ml"] is not None:
         upgraded_data = upgrade_coordinate_craniotomy(upgraded_data)
     elif "craniotomy_hemisphere" in upgraded_data:
         upgraded_data = upgrade_hemisphere_craniotomy(upgraded_data)
