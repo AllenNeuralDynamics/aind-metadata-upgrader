@@ -71,6 +71,67 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         has_new_format = "subject_procedures" in data or "specimen_procedures" in data
         return has_separated_arrays and not has_new_format
 
+    def _normalize_injection_materials(self, materials: list) -> None:
+        """Normalize injection materials in place"""
+        for material in materials:
+            if "material_type" not in material:
+                material["material_type"] = "Virus"
+            # Map full_genome_name to name field for ViralMaterial
+            if "full_genome_name" in material:
+                if "name" not in material or not material["name"]:
+                    material["name"] = material["full_genome_name"]
+                del material["full_genome_name"]
+            # Remove deprecated prep_type field
+            if "prep_type" in material:
+                del material["prep_type"]
+
+    def _convert_craniotomy_procedure(self, converted: dict, old_type: str) -> None:
+        """Convert craniotomy-specific fields"""
+        converted["procedure_type"] = "Craniotomy"
+        if old_type:
+            converted["craniotomy_type"] = old_type
+        # Add missing fields with defaults if not present
+        if "craniotomy_coordinates_unit" not in converted:
+            converted["craniotomy_coordinates_unit"] = "millimeter"
+        if "craniotomy_coordinates_reference" not in converted:
+            converted["craniotomy_coordinates_reference"] = "Bregma"
+        if "craniotomy_size_unit" not in converted:
+            converted["craniotomy_size_unit"] = "millimeter"
+
+    def _convert_headframe_procedure(self, converted: dict, old_type: str) -> None:
+        """Convert headframe-specific fields"""
+        converted["procedure_type"] = "Headframe"
+        if old_type:
+            converted["headframe_type"] = old_type
+
+    def _convert_injection_procedure(self, converted: dict) -> None:
+        """Convert injection-specific fields"""
+        # Normalize fields that should be lists
+        if "injection_volume" in converted and not isinstance(converted["injection_volume"], list):
+            converted["injection_volume"] = [converted["injection_volume"]]
+        if "injection_coordinate_depth" in converted and not isinstance(converted["injection_coordinate_depth"], list):
+            converted["injection_coordinate_depth"] = [converted["injection_coordinate_depth"]]
+
+        # Normalize unit fields
+        if converted.get("injection_angle_unit") == "degree":
+            converted["injection_angle_unit"] = "degrees"
+
+        # Normalize injection materials
+        if "injection_materials" in converted and isinstance(converted["injection_materials"], list):
+            self._normalize_injection_materials(converted["injection_materials"])
+
+        # Map injection_type to procedure_type
+        injection_type = converted.get("injection_type", "")
+        injection_type_map = {
+            "Nanoject": "Nanoject injection",
+            "Iontophoresis": "Iontophoresis injection",
+            "ICV": "ICV injection",
+            "ICM": "ICM injection",
+            "Retro-orbital": "Retro-orbital injection",
+            "Intraperitoneal": "Intraperitoneal injection",
+        }
+        converted["procedure_type"] = injection_type_map.get(injection_type, "Nanoject injection")
+
     def _convert_old_procedure_to_intermediate(self, procedure: dict, array_type: str) -> dict:
         """Convert a procedure from the old separated format to intermediate format"""
         # Make a deep copy of the procedure data to avoid modifying nested structures
@@ -81,67 +142,11 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         # Map array type to procedure_type and convert type field to appropriate field name
         if array_type == "craniotomies":
-            converted["procedure_type"] = "Craniotomy"
-            # Map old 'type' to 'craniotomy_type'
-            if old_type:
-                converted["craniotomy_type"] = old_type
-            # Add missing fields with defaults if not present
-            if "craniotomy_coordinates_unit" not in converted:
-                converted["craniotomy_coordinates_unit"] = "millimeter"
-            if "craniotomy_coordinates_reference" not in converted:
-                converted["craniotomy_coordinates_reference"] = "Bregma"
-            if "craniotomy_size_unit" not in converted:
-                converted["craniotomy_size_unit"] = "millimeter"
+            self._convert_craniotomy_procedure(converted, old_type)
         elif array_type == "headframes":
-            converted["procedure_type"] = "Headframe"
-            # Map old 'type' to 'headframe_type'
-            if old_type:
-                converted["headframe_type"] = old_type
+            self._convert_headframe_procedure(converted, old_type)
         elif array_type == "injections":
-            # Normalize fields that should be lists
-            if "injection_volume" in converted and not isinstance(converted["injection_volume"], list):
-                converted["injection_volume"] = [converted["injection_volume"]]
-            if "injection_coordinate_depth" in converted and not isinstance(
-                converted["injection_coordinate_depth"], list
-            ):
-                converted["injection_coordinate_depth"] = [converted["injection_coordinate_depth"]]
-
-            # Normalize unit fields
-            if converted.get("injection_angle_unit") == "degree":
-                converted["injection_angle_unit"] = "degrees"
-
-            # Normalize injection materials - add material_type if missing and map old fields
-            if "injection_materials" in converted and isinstance(converted["injection_materials"], list):
-                for material in converted["injection_materials"]:
-                    if "material_type" not in material:
-                        # If it has viral genome info, it's a virus
-                        material["material_type"] = "Virus"
-                    # Map full_genome_name to name field for ViralMaterial
-                    if "full_genome_name" in material:
-                        if "name" not in material or not material["name"]:
-                            material["name"] = material["full_genome_name"]
-                        del material["full_genome_name"]
-                    # Remove deprecated prep_type field
-                    if "prep_type" in material:
-                        del material["prep_type"]
-
-            # Map injection_type to procedure_type
-            injection_type = procedure.get("injection_type", "")
-            if injection_type == "Nanoject":
-                converted["procedure_type"] = "Nanoject injection"
-            elif injection_type == "Iontophoresis":
-                converted["procedure_type"] = "Iontophoresis injection"
-            elif injection_type == "ICV":
-                converted["procedure_type"] = "ICV injection"
-            elif injection_type == "ICM":
-                converted["procedure_type"] = "ICM injection"
-            elif injection_type == "Retro-orbital":
-                converted["procedure_type"] = "Retro-orbital injection"
-            elif injection_type == "Intraperitoneal":
-                converted["procedure_type"] = "Intraperitoneal injection"
-            else:
-                # Default to Nanoject if unknown
-                converted["procedure_type"] = "Nanoject injection"
+            self._convert_injection_procedure(converted)
 
         # Remove the 'type' field if it exists (from old format)
         if "type" in converted:
@@ -200,6 +205,25 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         return surgeries
 
+    def _upgrade_subject_procedures_block(self, procedures_data: dict, v2_procedures: dict) -> None:
+        """Upgrade all subject procedures from procedures_data and populate v2_procedures"""
+        if "subject_procedures" in procedures_data and procedures_data["subject_procedures"]:
+            for subj_proc in procedures_data["subject_procedures"]:
+                upgraded_proc = self._upgrade_subject_procedure(subj_proc)
+                if upgraded_proc:
+                    if isinstance(upgraded_proc, list):
+                        v2_procedures["subject_procedures"].extend(upgraded_proc)
+                    else:
+                        v2_procedures["subject_procedures"].append(upgraded_proc)
+
+    def _upgrade_specimen_procedures_block(self, procedures_data: dict, v2_procedures: dict) -> None:
+        """Upgrade all specimen procedures from procedures_data and populate v2_procedures"""
+        if "specimen_procedures" in procedures_data and procedures_data["specimen_procedures"]:
+            for spec_proc in procedures_data["specimen_procedures"]:
+                upgraded_proc = self._upgrade_specimen_procedure(spec_proc)
+                if upgraded_proc:
+                    v2_procedures["specimen_procedures"].append(upgraded_proc)
+
     def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the procedures to v2.0"""
 
@@ -216,11 +240,6 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             subject_procedures = self._convert_old_format_to_subject_procedures(procedures_data)
             procedures_data["subject_procedures"] = subject_procedures
 
-        # Check if we have the old separated format and convert it
-        if self._is_old_separated_format(procedures_data):
-            subject_procedures = self._convert_old_format_to_subject_procedures(procedures_data)
-            procedures_data["subject_procedures"] = subject_procedures
-
         # Create the V2 structure
         v2_procedures = {
             "schema_version": schema_version,
@@ -230,22 +249,9 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             "notes": procedures_data.get("notes"),
         }
 
-        # Upgrade subject procedures
-        if "subject_procedures" in procedures_data and procedures_data["subject_procedures"]:
-            for subj_proc in procedures_data["subject_procedures"]:
-                upgraded_proc = self._upgrade_subject_procedure(subj_proc)
-                if upgraded_proc:
-                    if isinstance(upgraded_proc, list):
-                        v2_procedures["subject_procedures"].extend(upgraded_proc)
-                    else:
-                        v2_procedures["subject_procedures"].append(upgraded_proc)
-
-        # Upgrade specimen procedures
-        if "specimen_procedures" in procedures_data and procedures_data["specimen_procedures"]:
-            for spec_proc in procedures_data["specimen_procedures"]:
-                upgraded_proc = self._upgrade_specimen_procedure(spec_proc)
-                if upgraded_proc:
-                    v2_procedures["specimen_procedures"].append(upgraded_proc)
+        # Upgrade subject and specimen procedures
+        self._upgrade_subject_procedures_block(procedures_data, v2_procedures)
+        self._upgrade_specimen_procedures_block(procedures_data, v2_procedures)
 
         # Add coordinate system if required
         v2_procedures["coordinate_system"] = CoordinateSystemLibrary.BREGMA_ARID.model_dump()
