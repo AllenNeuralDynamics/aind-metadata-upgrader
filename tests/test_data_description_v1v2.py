@@ -66,7 +66,7 @@ class TestDataDescriptionV1V2FundingSource(unittest.TestCase):
     def test_funding_source_empty_list(self):
         """Test when funding_source is an empty list"""
         data = {"funding_source": []}
-        with patch('aind_metadata_upgrader.data_description.v1v2.FAKE_MISSING_DATA', False):
+        with patch("aind_metadata_upgrader.data_description.v1v2.FAKE_MISSING_DATA", False):
             result = self.upgrader._get_funding_source(data)
             self.assertIsInstance(result, list)
             self.assertEqual(len(result), 0)
