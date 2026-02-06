@@ -450,7 +450,7 @@ class TestProceduresUpgraderV1V2OldFormat(unittest.TestCase):
             "craniotomy_size": 8,
         }
         result = self.upgrader._convert_old_procedure_to_intermediate(procedure, "craniotomies")
-        
+
         self.assertEqual(result["procedure_type"], "Craniotomy")
         self.assertEqual(result["craniotomy_type"], "Dual hemisphere craniotomy")
         self.assertNotIn("type", result)
@@ -465,7 +465,7 @@ class TestProceduresUpgraderV1V2OldFormat(unittest.TestCase):
             "headframe_material": "Titanium",
         }
         result = self.upgrader._convert_old_procedure_to_intermediate(procedure, "headframes")
-        
+
         self.assertEqual(result["procedure_type"], "Headframe")
         self.assertEqual(result["headframe_type"], "Dual hemisphere")
         self.assertNotIn("type", result)
@@ -487,7 +487,7 @@ class TestProceduresUpgraderV1V2OldFormat(unittest.TestCase):
             ],
         }
         result = self.upgrader._convert_old_procedure_to_intermediate(procedure, "injections")
-        
+
         self.assertEqual(result["procedure_type"], "Nanoject injection")
         self.assertEqual(result["injection_volume"], [300])
         self.assertEqual(result["injection_coordinate_depth"], [-2.5])
@@ -501,14 +501,29 @@ class TestProceduresUpgraderV1V2OldFormat(unittest.TestCase):
     def test_group_procedures_by_date(self):
         """Test grouping procedures by date"""
         procedures = [
-            {"procedure_type": "Craniotomy", "start_date": "2023-02-28", "end_date": "2023-02-28", "protocol_id": "N/A"},
+            {
+                "procedure_type": "Craniotomy",
+                "start_date": "2023-02-28",
+                "end_date": "2023-02-28",
+                "protocol_id": "N/A",
+            },
             {"procedure_type": "Headframe", "start_date": "2023-02-28", "end_date": "2023-02-28", "protocol_id": "N/A"},
-            {"procedure_type": "Nanoject injection", "start_date": "2023-02-28", "end_date": "2023-02-28", "protocol_id": "N/A"},
-            {"procedure_type": "Nanoject injection", "start_date": "2023-03-01", "end_date": "2023-03-01", "protocol_id": "N/A"},
+            {
+                "procedure_type": "Nanoject injection",
+                "start_date": "2023-02-28",
+                "end_date": "2023-02-28",
+                "protocol_id": "N/A",
+            },
+            {
+                "procedure_type": "Nanoject injection",
+                "start_date": "2023-03-01",
+                "end_date": "2023-03-01",
+                "protocol_id": "N/A",
+            },
         ]
-        
+
         surgeries = self.upgrader._group_procedures_by_date(procedures)
-        
+
         self.assertEqual(len(surgeries), 2)
         # First surgery should have 3 procedures
         first_surgery = next(s for s in surgeries if s["start_date"] == "2023-02-28")
@@ -522,45 +537,46 @@ class TestProceduresUpgraderV1V2OldFormat(unittest.TestCase):
         # Load the v1_2.json test file
         test_dir = os.path.dirname(__file__)
         v1_2_path = os.path.join(test_dir, "records", "procedures", "v1_2.json")
-        
+
         with open(v1_2_path, "r") as f:
             v1_2_data = json.load(f)
-        
+
         # Upgrade the data
         upgraded = self.upgrader.upgrade(v1_2_data, schema_version="2.0.0")
-        
+
         # Verify the upgrade
         self.assertEqual(upgraded["schema_version"], "2.0.0")
         self.assertEqual(upgraded["subject_id"], "655565")
         self.assertIn("subject_procedures", upgraded)
         self.assertEqual(len(upgraded["subject_procedures"]), 1)
-        
+
         # Verify the surgery
         surgery = upgraded["subject_procedures"][0]
         self.assertEqual(surgery["experimenters"], ["Anna Lakunina"])
         # start_date is a date object after upgrade
         from datetime import date
+
         self.assertEqual(surgery["start_date"], date(2023, 2, 28))
         self.assertEqual(surgery["ethics_review_id"], "2109")
-        
+
         # Verify procedures within surgery
         # Should have 1 craniotomy, 1 headframe, and 5 injections = 7 total
         self.assertEqual(len(surgery["procedures"]), 7)
-        
+
         # Verify craniotomy
         craniotomy = next((p for p in surgery["procedures"] if p.get("object_type") == "Craniotomy"), None)
         self.assertIsNotNone(craniotomy)
         self.assertEqual(craniotomy["size"], 8.0)
-        
+
         # Verify headframe
         headframe = next((p for p in surgery["procedures"] if p.get("object_type") == "Headframe"), None)
         self.assertIsNotNone(headframe)
         self.assertEqual(headframe["headframe_type"], "Dual hemisphere")
-        
+
         # Verify injections
         injections = [p for p in surgery["procedures"] if p.get("object_type") == "Brain injection"]
         self.assertEqual(len(injections), 5)
-        
+
         # Verify injection materials have correct names
         for injection in injections:
             for material in injection["injection_materials"]:
