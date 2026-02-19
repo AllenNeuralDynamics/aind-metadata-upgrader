@@ -78,8 +78,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                 material["material_type"] = "Virus"
             # Map full_genome_name to name field for ViralMaterial
             if "full_genome_name" in material:
-                if "name" not in material or not material["name"]:
-                    material["name"] = material["full_genome_name"]
+                material["name"] = material["full_genome_name"]
                 del material["full_genome_name"]
             # Remove deprecated prep_type field
             if "prep_type" in material:
