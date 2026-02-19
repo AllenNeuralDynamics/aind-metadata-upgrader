@@ -139,6 +139,14 @@ class Upgrade:
                 raise ValueError(f"Core file '{core_file}' is not recognized for validation")
 
             return TYPE_MAPPING[core_file].model_validate(data).model_dump()
+        except ValidationError as e:
+            # Allow procedures to fail validation - use model_construct instead
+            if core_file == "procedures":
+                logging.warning(f"Procedures validation failed, using model_construct: {e}")
+                return TYPE_MAPPING[core_file].model_construct(**data).model_dump()
+            else:
+                traceback.print_exc()
+                raise ValueError(f"Failed to validate {core_file}: {e}")
         except Exception as e:
             traceback.print_exc()
             raise ValueError(f"Failed to validate {core_file}: {e}")
