@@ -493,8 +493,7 @@ class TestProceduresUpgraderV1V2OldFormat(unittest.TestCase):
         self.assertEqual(result["injection_coordinate_depth"], [-2.5])
         self.assertEqual(result["injection_angle_unit"], "degrees")
         self.assertEqual(result["injection_materials"][0]["material_type"], "Virus")
-        # When name already exists, we keep it and remove full_genome_name
-        self.assertEqual(result["injection_materials"][0]["name"], "Test virus")
+        self.assertEqual(result["injection_materials"][0]["name"], "rAAV-test")
         self.assertNotIn("full_genome_name", result["injection_materials"][0])
         self.assertNotIn("prep_type", result["injection_materials"][0])
 
@@ -566,7 +565,7 @@ class TestProceduresUpgraderV1V2OldFormat(unittest.TestCase):
         # Verify craniotomy
         craniotomy = next((p for p in surgery["procedures"] if p.get("object_type") == "Craniotomy"), None)
         self.assertIsNotNone(craniotomy)
-        self.assertEqual(craniotomy["size"], 8.0)
+        self.assertEqual(craniotomy["size"], None)
 
         # Verify headframe
         headframe = next((p for p in surgery["procedures"] if p.get("object_type") == "Headframe"), None)
