@@ -13,14 +13,14 @@ from aind_data_schema.components.configs import (
     ManipulatorConfig,
     MISModuleConfig,
     MRIScan,
-    MriScanSequence,
     PatchCordConfig,
     PlanarImage,
     PlanarImageStack,
     Plane,
     PowerFunction,
     ProbeConfig,
-    ScanType,
+    PulseSequenceType,
+    MRAcquisitionType,
     SlapAcquisitionType,
     SlapPlane,
     SpeakerConfig,
@@ -433,20 +433,20 @@ class SessionV1V2(CoreUpgrader):
 
         mri_scan = MRIScan(
             device_name=scan.get("mri_scanner", {}).get("name", "Unknown Scanner"),
-            scan_index=scan.get("scan_index", 0),
-            scan_type=(ScanType.SCAN_3D if scan.get("scan_type") == "3D Scan" else ScanType.SETUP),
-            primary_scan=scan.get("primary_scan", True),
-            scan_sequence_type=(
-                MriScanSequence.RARE if scan.get("scan_sequence_type") == "RARE" else MriScanSequence.OTHER
+            index=scan.get("scan_index", 0),
+            mr_acquisition_type=(ScanType.SCAN_3D if scan.get("scan_type") == "3D Scan" else ScanType.SETUP),
+            setup=scan.get("primary_scan", False),
+            pulse_sequence_type=(
+                PulseSequenceType.RARE if scan.get("scan_sequence_type") == "RARE" else PulseSequenceType.OTHER
             ),
-            echo_time=scan.get("echo_time", 1.0),
-            echo_time_unit=TimeUnit.MS,
-            repetition_time=scan.get("repetition_time", 100.0),
-            repetition_time_unit=TimeUnit.MS,
+            echo_time=scan.get("echo_time", 0.001),
+            echo_time_unit=TimeUnit.S,
+            repetition_time=scan.get("repetition_time", 0.1),
+            repetition_time_unit=TimeUnit.S,
             subject_position=scan.get("subject_position", "unknown"),
             additional_scan_parameters=scan.get("additional_scan_parameters", {}),
-            scan_coordinate_system=coordinate_system,
-            scan_affine_transform=transform,
+            scanner_coordinate_system=coordinate_system,
+            affine_transform=transform,
             resolution=resolution,
             resolution_unit=SizeUnit.MM,
         )
