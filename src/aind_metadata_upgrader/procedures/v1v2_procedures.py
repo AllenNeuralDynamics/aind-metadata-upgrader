@@ -118,6 +118,10 @@ def upgrade_hemisphere_craniotomy(data: dict) -> dict:
         # If craniotomy type is circle, we don't know where it is unfortunately, so we put it at the origin
         data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
         data["position"] = [AnatomicalRelative.ORIGIN]
+    elif "dual hemisphere" in str(data.get("craniotomy_type", "")).lower():
+        # Dual hemisphere craniotomy - position is both left and right
+        data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
+        data["position"] = [AnatomicalRelative.LEFT, AnatomicalRelative.RIGHT]
     else:
         # We don't know the hemisphere, so we put position at origin unfortunately
         data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
@@ -130,11 +134,14 @@ def upgrade_hemisphere_craniotomy(data: dict) -> dict:
 def upgrade_coordinate_craniotomy(data: dict) -> dict:
     """Upgrade old-style craniotomy"""
     global coordinate_system_required
-    coordinate_system_required = True
 
     # Move ml/ap position into Translation object, check units
     ml = float(data["craniotomy_coordinates_ml"])
     ap = float(data["craniotomy_coordinates_ap"])
+
+    if ml != 0 or ap != 0:
+        coordinate_system_required = True
+
     unit = data["craniotomy_coordinates_unit"]
     reference = data["craniotomy_coordinates_reference"]
     size = data["craniotomy_size"]
@@ -185,6 +192,28 @@ CRANIO_TYPES = {
 }
 
 
+def _determine_craniotomy_upgrade_path(upgraded_data: dict) -> dict:
+    """Determine which upgrade path to use based on coordinate data"""
+    # Check if coordinates are present AND meaningful (non-zero)
+    has_coordinates = (
+        "craniotomy_coordinates_ml" in upgraded_data and upgraded_data["craniotomy_coordinates_ml"] is not None
+    )
+    if has_coordinates:
+        ml = float(upgraded_data.get("craniotomy_coordinates_ml", 0))
+        ap = float(upgraded_data.get("craniotomy_coordinates_ap", 0))
+        # Only use coordinate-based upgrade if coordinates are non-zero (real data)
+        if ml != 0 or ap != 0:
+            return upgrade_coordinate_craniotomy(upgraded_data)
+        else:
+            # Coordinates are zeros (fake/placeholder), treat as hemisphere-style
+            return upgrade_hemisphere_craniotomy(upgraded_data)
+    elif "craniotomy_hemisphere" in upgraded_data:
+        return upgrade_hemisphere_craniotomy(upgraded_data)
+    else:
+        # No coordinates or hemisphere info, use hemisphere-style upgrade as fallback
+        return upgrade_hemisphere_craniotomy(upgraded_data)
+
+
 def upgrade_craniotomy(data: dict) -> tuple[dict, list]:
     """Upgrade Craniotomy procedure from V1 to V2"""
     # V1 uses craniotomy_coordinates_*, V2 uses coordinate system
@@ -214,12 +243,7 @@ def upgrade_craniotomy(data: dict) -> tuple[dict, list]:
 
     upgraded_data, measured_coordinates = retrieve_bl_distance(upgraded_data)
 
-    if "craniotomy_coordinates_ml" in upgraded_data and upgraded_data["craniotomy_coordinates_ml"] is not None:
-        upgraded_data = upgrade_coordinate_craniotomy(upgraded_data)
-    elif "craniotomy_hemisphere" in upgraded_data:
-        upgraded_data = upgrade_hemisphere_craniotomy(upgraded_data)
-    else:
-        raise ValueError("Unknown craniotomy type, unclear how to upgrade coordinate/hemisphere data")
+    upgraded_data = _determine_craniotomy_upgrade_path(upgraded_data)
 
     if (
         "protocol_id" in upgraded_data
