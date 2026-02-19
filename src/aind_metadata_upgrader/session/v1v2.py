@@ -408,7 +408,7 @@ class SessionV1V2(CoreUpgrader):
                 vc_position = scan.get("vc_position", None)
                 if not vc_orientation or not vc_position:
                     raise ValueError("Primary MRI scan must have 'vc_orientation' and 'vc_position' for primary scans")
-                
+
                 rotation = vc_orientation["rotation"]
                 rotation = Affine(
                     affine_transform=[
@@ -419,15 +419,15 @@ class SessionV1V2(CoreUpgrader):
                 )
                 translation = Translation(translation=vc_position["translation"])
                 transform = [rotation, translation]
-                
+
                 # Get voxel size
                 voxel_size = scan.get("voxel_sizes", {})
                 resolution = Scale(
                     scale=voxel_size["scale"],
                 )
-                
+
                 return transform, resolution
-        
+
         return None, None
 
     def _upgrade_mri_scan_to_config(self, scan: Dict, primary_transform=None, primary_resolution=None) -> Dict:
@@ -465,7 +465,9 @@ class SessionV1V2(CoreUpgrader):
         mri_scan = MRIScan(
             device_name=scan.get("mri_scanner", {}).get("name", "Unknown Scanner"),
             index=scan.get("scan_index", 0),
-            mr_acquisition_type=(MRAcquisitionType.SCAN_3D if "3d" in scan.get("scan_type", "").lower() else MRAcquisitionType.SCAN_2D),
+            mr_acquisition_type=(
+                MRAcquisitionType.SCAN_3D if "3d" in scan.get("scan_type", "").lower() else MRAcquisitionType.SCAN_2D
+            ),
             setup=scan.get("primary_scan", False),
             pulse_sequence_type=(
                 PulseSequenceType.RARE if scan.get("scan_sequence_type") == "RARE" else PulseSequenceType.OTHER
