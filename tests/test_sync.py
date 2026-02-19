@@ -361,13 +361,15 @@ class TestSync(unittest.TestCase):
         # Mock existing row with matching version and last_modified
         mock_result = MagicMock()
         mock_result.fetchall.return_value = [
-            MagicMock(_mapping={
-                "v1_id": "record1",
-                "v2_id": "v2_record1",
-                "upgrader_version": "1.0.0",
-                "status": "success",
-                "last_modified": "2023-01-01",
-            })
+            MagicMock(
+                _mapping={
+                    "v1_id": "record1",
+                    "v2_id": "v2_record1",
+                    "upgrader_version": "1.0.0",
+                    "status": "success",
+                    "last_modified": "2023-01-01",
+                }
+            )
         ]
         mock_rds_client.execute_query.return_value = mock_result
 
