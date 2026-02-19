@@ -434,7 +434,7 @@ class SessionV1V2(CoreUpgrader):
         mri_scan = MRIScan(
             device_name=scan.get("mri_scanner", {}).get("name", "Unknown Scanner"),
             index=scan.get("scan_index", 0),
-            mr_acquisition_type=(ScanType.SCAN_3D if scan.get("scan_type") == "3D Scan" else ScanType.SETUP),
+            mr_acquisition_type=(MRAcquisitionType.SCAN_3D if "3d" in scan.get("scan_type", "").lower() else MRAcquisitionType.SCAN_2D),
             setup=scan.get("primary_scan", False),
             pulse_sequence_type=(
                 PulseSequenceType.RARE if scan.get("scan_sequence_type") == "RARE" else PulseSequenceType.OTHER
