@@ -63,6 +63,11 @@ def ensure_pacific_timezone(dt: Optional[str]) -> Optional[datetime]:
         dt = datetime.fromisoformat(dt)
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=pacific_tz)
+    else:
+        # Convert to Pacific timezone if it has any timezone info
+        # This ensures we use a named timezone (e.g., America/Los_Angeles)
+        # instead of a fixed offset (e.g., UTC-08:00)
+        dt = dt.astimezone(pacific_tz)
     return dt
 
 
