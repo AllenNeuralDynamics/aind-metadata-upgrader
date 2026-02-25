@@ -63,7 +63,7 @@ PROC_UPGRADE_MAP = {
 
 
 class ProceduresUpgraderV1V2(CoreUpgrader):
-    """Upgrade procedures from v1.4 to v2.0"""
+    """Upgrade procedures from v0.X to v2"""
 
     def _is_old_separated_format(self, data: dict) -> bool:
         """Check if data is in the old format with separated procedure arrays"""
@@ -224,7 +224,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                     v2_procedures["specimen_procedures"].append(upgraded_proc)
 
     def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
-        """Upgrade the procedures to v2.0"""
+        """Upgrade the procedures to v2"""
 
         # Extract the nested procedures dict if it exists
         if "procedures" in data:
