@@ -4,6 +4,7 @@ from datetime import datetime
 from aind_data_schema.core.procedures import Procedures
 from aind_data_schema.core.instrument import Instrument
 from aind_data_schema.components.devices import Device
+from pydantic import ValidationError
 
 
 # List of acquisition IDs where the instrument_id needs to be copied from instrument to acquisition
@@ -130,7 +131,11 @@ def repair_missing_active_devices(data: dict) -> dict:
         instrument = Instrument.model_validate(data.get("instrument"))
         device_names.extend(instrument.get_component_names())
     if data.get("procedures"):
-        procedures = Procedures.model_validate(data["procedures"])
+        try:
+            procedures = Procedures.model_validate(data["procedures"])
+        except ValidationError:
+            # Allow procedures to fail validation - use model_construct instead
+            procedures = Procedures.model_construct(**data["procedures"])
         device_names.extend(procedures.get_device_names())
 
     # Check if all active devices are in the available devices
@@ -187,7 +192,11 @@ def repair_connection_devices(data: dict) -> dict:
         instrument = Instrument.model_validate(data.get("instrument"))
         device_names.extend(instrument.get_component_names())
     if data.get("procedures"):
-        procedures = Procedures.model_validate(data["procedures"])
+        try:
+            procedures = Procedures.model_validate(data["procedures"])
+        except ValidationError:
+            # Allow procedures to fail validation - use model_construct instead
+            procedures = Procedures.model_construct(**data["procedures"])
         device_names.extend(procedures.get_device_names())
 
     # Check if all connection devices are in the available devices

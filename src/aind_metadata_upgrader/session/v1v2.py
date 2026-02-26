@@ -13,14 +13,14 @@ from aind_data_schema.components.configs import (
     ManipulatorConfig,
     MISModuleConfig,
     MRIScan,
-    MriScanSequence,
     PatchCordConfig,
     PlanarImage,
     PlanarImageStack,
     Plane,
     PowerFunction,
     ProbeConfig,
-    ScanType,
+    PulseSequenceType,
+    MRAcquisitionType,
     SlapAcquisitionType,
     SlapPlane,
     SpeakerConfig,
@@ -400,7 +400,37 @@ class SessionV1V2(CoreUpgrader):
             path_to_array_of_frame_rates=slap_fov.get("path_to_array_of_frame_rates", ""),
         ).model_dump()
 
-    def _upgrade_mri_scan_to_config(self, scan: Dict) -> Dict:
+    def _extract_primary_scan_transform(self, mri_scans: List[Dict]) -> tuple:
+        """Extract affine transform and resolution from primary MRI scan"""
+        for scan in mri_scans:
+            if scan.get("primary_scan", False):
+                vc_orientation = scan.get("vc_orientation", None)
+                vc_position = scan.get("vc_position", None)
+                if not vc_orientation or not vc_position:
+                    raise ValueError("Primary MRI scan must have 'vc_orientation' and 'vc_position' for primary scans")
+
+                rotation = vc_orientation["rotation"]
+                rotation = Affine(
+                    affine_transform=[
+                        [float(rotation[0]), float(rotation[1]), float(rotation[2])],
+                        [float(rotation[3]), float(rotation[4]), float(rotation[5])],
+                        [float(rotation[6]), float(rotation[7]), float(rotation[8])],
+                    ]
+                )
+                translation = Translation(translation=vc_position["translation"])
+                transform = [rotation, translation]
+
+                # Get voxel size
+                voxel_size = scan.get("voxel_sizes", {})
+                resolution = Scale(
+                    scale=voxel_size["scale"],
+                )
+
+                return transform, resolution
+
+        return None, None
+
+    def _upgrade_mri_scan_to_config(self, scan: Dict, primary_transform=None, primary_resolution=None) -> Dict:
         """Convert MRI scan to MRIScan config"""
         primary = scan.get("primary_scan", False)
         if primary:
@@ -427,26 +457,29 @@ class SessionV1V2(CoreUpgrader):
                 scale=voxel_size["scale"],
             )
         else:
-            coordinate_system = None
-            transform = None
-            resolution = None
+            # For non-primary/non-setup scans, use the provided primary transform and resolution
+            transform = primary_transform
+            resolution = primary_resolution
+            coordinate_system = CoordinateSystemLibrary.MRI_LPS if primary_transform else None
 
         mri_scan = MRIScan(
             device_name=scan.get("mri_scanner", {}).get("name", "Unknown Scanner"),
-            scan_index=scan.get("scan_index", 0),
-            scan_type=(ScanType.SCAN_3D if scan.get("scan_type") == "3D Scan" else ScanType.SETUP),
-            primary_scan=scan.get("primary_scan", True),
-            scan_sequence_type=(
-                MriScanSequence.RARE if scan.get("scan_sequence_type") == "RARE" else MriScanSequence.OTHER
+            index=scan.get("scan_index", 0),
+            mr_acquisition_type=(
+                MRAcquisitionType.SCAN_3D if "3d" in scan.get("scan_type", "").lower() else MRAcquisitionType.SCAN_2D
             ),
-            echo_time=scan.get("echo_time", 1.0),
-            echo_time_unit=TimeUnit.MS,
-            repetition_time=scan.get("repetition_time", 100.0),
-            repetition_time_unit=TimeUnit.MS,
+            setup=scan.get("primary_scan", False),
+            pulse_sequence_type=(
+                PulseSequenceType.RARE if scan.get("scan_sequence_type") == "RARE" else PulseSequenceType.OTHER
+            ),
+            echo_time=scan.get("echo_time", 0.001),
+            echo_time_unit=TimeUnit.S,
+            repetition_time=scan.get("repetition_time", 0.1),
+            repetition_time_unit=TimeUnit.S,
             subject_position=scan.get("subject_position", "unknown"),
             additional_scan_parameters=scan.get("additional_scan_parameters", {}),
-            scan_coordinate_system=coordinate_system,
-            scan_affine_transform=transform,
+            scanner_coordinate_system=coordinate_system,
+            affine_transform=transform,
             resolution=resolution,
             resolution_unit=SizeUnit.MM,
         )
@@ -1088,8 +1121,11 @@ class SessionV1V2(CoreUpgrader):
         connections.extend(fiber_connections)
 
         # MRI configs
-        for mri_scan in stream.get("mri_scans", []):
-            configurations.append(self._upgrade_mri_scan_to_config(mri_scan))
+        mri_scans = stream.get("mri_scans", [])
+        if mri_scans:
+            primary_transform, primary_resolution = self._extract_primary_scan_transform(mri_scans)
+            for mri_scan in mri_scans:
+                configurations.append(self._upgrade_mri_scan_to_config(mri_scan, primary_transform, primary_resolution))
 
         # Imaging config
         imaging_config = self._create_imaging_config(stream)
