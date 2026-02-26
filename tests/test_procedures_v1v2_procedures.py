@@ -417,39 +417,39 @@ class TestProceduresUpgraderV1V2OldFormat(unittest.TestCase):
         """Set up test fixtures"""
         self.upgrader = ProceduresUpgraderV1V2()
 
-    def test_is_old_separated_format_true(self):
-        """Test detection of old separated format"""
+    def test_legacy_is_old_separated_format_true(self):
+        """Test detection of pre-v1.0 separated format"""
         data = {
             "craniotomies": [{"type": "Dual hemisphere"}],
             "headframes": [{"type": "Dual hemisphere"}],
             "injections": [],
             "subject_id": "655565",
         }
-        self.assertTrue(self.upgrader._is_old_separated_format(data))
+        self.assertTrue(self.upgrader._legacy_is_old_separated_format(data))
 
-    def test_is_old_separated_format_false_with_new_format(self):
+    def test_legacy_is_old_separated_format_false_with_new_format(self):
         """Test rejection of new format"""
         data = {
             "subject_procedures": [],
             "specimen_procedures": [],
             "subject_id": "655565",
         }
-        self.assertFalse(self.upgrader._is_old_separated_format(data))
+        self.assertFalse(self.upgrader._legacy_is_old_separated_format(data))
 
-    def test_is_old_separated_format_false_empty(self):
+    def test_legacy_is_old_separated_format_false_empty(self):
         """Test rejection of empty data"""
         data = {"subject_id": "655565"}
-        self.assertFalse(self.upgrader._is_old_separated_format(data))
+        self.assertFalse(self.upgrader._legacy_is_old_separated_format(data))
 
-    def test_convert_old_procedure_craniotomy(self):
-        """Test conversion of old craniotomy format"""
+    def test_legacy_convert_procedure_craniotomy(self):
+        """Test conversion of pre-v1.0 craniotomy format"""
         procedure = {
             "type": "Dual hemisphere craniotomy",
             "craniotomy_coordinates_ap": 0,
             "craniotomy_coordinates_ml": 0,
             "craniotomy_size": 8,
         }
-        result = self.upgrader._convert_old_procedure_to_intermediate(procedure, "craniotomies")
+        result = self.upgrader._legacy_convert_procedure_to_intermediate(procedure, "craniotomies")
 
         self.assertEqual(result["procedure_type"], "Craniotomy")
         self.assertEqual(result["craniotomy_type"], "Dual hemisphere craniotomy")
@@ -458,20 +458,20 @@ class TestProceduresUpgraderV1V2OldFormat(unittest.TestCase):
         self.assertEqual(result["craniotomy_coordinates_reference"], "Bregma")
         self.assertEqual(result["craniotomy_size_unit"], "millimeter")
 
-    def test_convert_old_procedure_headframe(self):
-        """Test conversion of old headframe format"""
+    def test_legacy_convert_procedure_headframe(self):
+        """Test conversion of pre-v1.0 headframe format"""
         procedure = {
             "type": "Dual hemisphere",
             "headframe_material": "Titanium",
         }
-        result = self.upgrader._convert_old_procedure_to_intermediate(procedure, "headframes")
+        result = self.upgrader._legacy_convert_procedure_to_intermediate(procedure, "headframes")
 
         self.assertEqual(result["procedure_type"], "Headframe")
         self.assertEqual(result["headframe_type"], "Dual hemisphere")
         self.assertNotIn("type", result)
 
-    def test_convert_old_procedure_injection(self):
-        """Test conversion of old injection format"""
+    def test_legacy_convert_procedure_injection(self):
+        """Test conversion of pre-v1.0 injection format"""
         procedure = {
             "injection_type": "Nanoject",
             "injection_volume": 300,
@@ -486,7 +486,7 @@ class TestProceduresUpgraderV1V2OldFormat(unittest.TestCase):
                 }
             ],
         }
-        result = self.upgrader._convert_old_procedure_to_intermediate(procedure, "injections")
+        result = self.upgrader._legacy_convert_procedure_to_intermediate(procedure, "injections")
 
         self.assertEqual(result["procedure_type"], "Nanoject injection")
         self.assertEqual(result["injection_volume"], [300])
@@ -497,8 +497,8 @@ class TestProceduresUpgraderV1V2OldFormat(unittest.TestCase):
         self.assertNotIn("full_genome_name", result["injection_materials"][0])
         self.assertNotIn("prep_type", result["injection_materials"][0])
 
-    def test_group_procedures_by_date(self):
-        """Test grouping procedures by date"""
+    def test_legacy_group_procedures_by_date(self):
+        """Test grouping pre-v1.0 procedures by date"""
         procedures = [
             {
                 "procedure_type": "Craniotomy",
@@ -521,7 +521,7 @@ class TestProceduresUpgraderV1V2OldFormat(unittest.TestCase):
             },
         ]
 
-        surgeries = self.upgrader._group_procedures_by_date(procedures)
+        surgeries = self.upgrader._legacy_group_procedures_by_date(procedures)
 
         self.assertEqual(len(surgeries), 2)
         # First surgery should have 3 procedures

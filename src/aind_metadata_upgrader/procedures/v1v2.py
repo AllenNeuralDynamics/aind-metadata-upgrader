@@ -65,14 +65,22 @@ PROC_UPGRADE_MAP = {
 class ProceduresUpgraderV1V2(CoreUpgrader):
     """Upgrade procedures from v0.X to v2"""
 
-    def _is_old_separated_format(self, data: dict) -> bool:
-        """Check if data is in the old format with separated procedure arrays"""
+    # -------------------------------------------------------------------------
+    # Legacy format helpers (pre-v1.0 separated-arrays format)
+    #
+    # These methods handle records that store procedures in separate top-level
+    # arrays ("craniotomies", "headframes", "injections") instead of the
+    # unified "subject_procedures" list introduced in v1.0.
+    # -------------------------------------------------------------------------
+
+    def _legacy_is_old_separated_format(self, data: dict) -> bool:
+        """Return True if data uses the pre-v1.0 separated procedure arrays format."""
         has_separated_arrays = any(key in data for key in ["craniotomies", "headframes", "injections"])
         has_new_format = "subject_procedures" in data or "specimen_procedures" in data
         return has_separated_arrays and not has_new_format
 
-    def _normalize_injection_materials(self, materials: list) -> None:
-        """Normalize injection materials in place"""
+    def _legacy_normalize_injection_materials(self, materials: list) -> None:
+        """Normalize injection material dicts from the pre-v1.0 format in place."""
         for material in materials:
             if "material_type" not in material:
                 material["material_type"] = "Virus"
@@ -84,8 +92,8 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             if "prep_type" in material:
                 del material["prep_type"]
 
-    def _convert_craniotomy_procedure(self, converted: dict, old_type: str) -> None:
-        """Convert craniotomy-specific fields"""
+    def _legacy_convert_craniotomy_fields(self, converted: dict, old_type: str) -> None:
+        """Populate craniotomy fields from the pre-v1.0 separated-arrays format."""
         converted["procedure_type"] = "Craniotomy"
         if old_type:
             converted["craniotomy_type"] = old_type
@@ -97,14 +105,14 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         if "craniotomy_size_unit" not in converted:
             converted["craniotomy_size_unit"] = "millimeter"
 
-    def _convert_headframe_procedure(self, converted: dict, old_type: str) -> None:
-        """Convert headframe-specific fields"""
+    def _legacy_convert_headframe_fields(self, converted: dict, old_type: str) -> None:
+        """Populate headframe fields from the pre-v1.0 separated-arrays format."""
         converted["procedure_type"] = "Headframe"
         if old_type:
             converted["headframe_type"] = old_type
 
-    def _convert_injection_procedure(self, converted: dict) -> None:
-        """Convert injection-specific fields"""
+    def _legacy_convert_injection_fields(self, converted: dict) -> None:
+        """Populate injection fields from the pre-v1.0 separated-arrays format."""
         # Normalize fields that should be lists
         if "injection_volume" in converted and not isinstance(converted["injection_volume"], list):
             converted["injection_volume"] = [converted["injection_volume"]]
@@ -117,7 +125,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         # Normalize injection materials
         if "injection_materials" in converted and isinstance(converted["injection_materials"], list):
-            self._normalize_injection_materials(converted["injection_materials"])
+            self._legacy_normalize_injection_materials(converted["injection_materials"])
 
         # Map injection_type to procedure_type
         injection_type = converted.get("injection_type", "")
@@ -131,8 +139,9 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         }
         converted["procedure_type"] = injection_type_map.get(injection_type, "Nanoject injection")
 
-    def _convert_old_procedure_to_intermediate(self, procedure: dict, array_type: str) -> dict:
-        """Convert a procedure from the old separated format to intermediate format"""
+    def _legacy_convert_procedure_to_intermediate(self, procedure: dict, array_type: str) -> dict:
+        """Convert a single procedure dict from the pre-v1.0 separated-arrays format
+        into the intermediate dict shape expected by _upgrade_subject_procedure."""
         # Make a deep copy of the procedure data to avoid modifying nested structures
         converted = copy.deepcopy(procedure)
 
@@ -141,11 +150,11 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         # Map array type to procedure_type and convert type field to appropriate field name
         if array_type == "craniotomies":
-            self._convert_craniotomy_procedure(converted, old_type)
+            self._legacy_convert_craniotomy_fields(converted, old_type)
         elif array_type == "headframes":
-            self._convert_headframe_procedure(converted, old_type)
+            self._legacy_convert_headframe_fields(converted, old_type)
         elif array_type == "injections":
-            self._convert_injection_procedure(converted)
+            self._legacy_convert_injection_fields(converted)
 
         # Remove the 'type' field if it exists (from old format)
         if "type" in converted:
@@ -153,8 +162,8 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         return converted
 
-    def _group_procedures_by_date(self, procedures: list) -> dict:
-        """Group procedures by their start_date and end_date into surgeries"""
+    def _legacy_group_procedures_by_date(self, procedures: list) -> dict:
+        """Group pre-v1.0 procedure dicts by (start_date, end_date) into Surgery dicts."""
         # Group procedures by (start_date, end_date) tuple
         surgery_groups = {}
 
@@ -171,16 +180,11 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         surgeries = []
         for (start_date, end_date), procs in surgery_groups.items():
             # Use common fields from first procedure
-            first_proc = procs[0]
 
             surgery_data = {
                 "procedure_type": "Surgery",
                 "start_date": start_date,
                 "end_date": end_date,
-                "experimenter_full_name": first_proc.get("experimenter_full_name"),
-                "iacuc_protocol": first_proc.get("iacuc_protocol"),
-                "protocol_id": first_proc.get("protocol_id"),
-                "anaesthesia": first_proc.get("anaesthesia"),
                 "procedures": procs,
             }
 
@@ -188,21 +192,25 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         return surgeries
 
-    def _convert_old_format_to_subject_procedures(self, data: dict) -> list:
-        """Convert old separated format to subject_procedures format"""
+    def _legacy_convert_old_format_to_subject_procedures(self, data: dict) -> list:
+        """Convert a pre-v1.0 record (separated arrays) into a subject_procedures list."""
         all_procedures = []
 
         # Process each array type
         for array_type in ["craniotomies", "headframes", "injections"]:
             if array_type in data and data[array_type]:
                 for proc in data[array_type]:
-                    converted = self._convert_old_procedure_to_intermediate(proc, array_type)
+                    converted = self._legacy_convert_procedure_to_intermediate(proc, array_type)
                     all_procedures.append(converted)
 
         # Group procedures by date into surgeries
-        surgeries = self._group_procedures_by_date(all_procedures)
+        surgeries = self._legacy_group_procedures_by_date(all_procedures)
 
         return surgeries
+
+    # -------------------------------------------------------------------------
+    # Current upgrade logic (v1.0+ subject_procedures / specimen_procedures)
+    # -------------------------------------------------------------------------
 
     def _upgrade_subject_procedures_block(self, procedures_data: dict, v2_procedures: dict) -> None:
         """Upgrade all subject procedures from procedures_data and populate v2_procedures"""
@@ -234,9 +242,9 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         self.subject_id = procedures_data.get("subject_id")
 
-        # Check if we have the old separated format and convert it
-        if self._is_old_separated_format(procedures_data):
-            subject_procedures = self._convert_old_format_to_subject_procedures(procedures_data)
+        # Check if we have the pre-v1.0 separated format and normalise it first
+        if self._legacy_is_old_separated_format(procedures_data):
+            subject_procedures = self._legacy_convert_old_format_to_subject_procedures(procedures_data)
             procedures_data["subject_procedures"] = subject_procedures
 
         # Create the V2 structure
