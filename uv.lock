@@ -47,15 +47,16 @@ rds = [
 
 [[package]]
 name = "aind-data-schema"
-version = "2.4.0"
+version = "2.5.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aind-data-schema-models" },
     { name = "pydantic" },
+    { name = "pydantic-extra-types" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/1f/cc/71f38df69f02e942d098f9310982082aac334de5c496bd3fc605bcd3b431/aind_data_schema-2.4.0.tar.gz", hash = "sha256:a239e38591113f445ca316bc4386c466718e8715a92d8bdbca891a82b9d7ff16", size = 873259, upload-time = "2026-01-06T18:00:34.875Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/43/9d/ed3b5aa33997dabe5c7071ce1ef95c45fd5180d9fdebe180556bcf7e6729/aind_data_schema-2.5.1.tar.gz", hash = "sha256:ed2dde28b1a508ecd7bfb30216d19c4763969c7bd548b944fd65f6a775012fda", size = 893577, upload-time = "2026-02-28T00:10:41.622Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/00/b0/9632026c77aa8c512e8e15ddec8c9fbfcf6ae272c0c28997e5f12f7a9433/aind_data_schema-2.4.0-py3-none-any.whl", hash = "sha256:1e8284b1e88928e77598ecae70025a2a5ca62b2cded594f62abf8a0aa17d8b34", size = 89429, upload-time = "2026-01-06T18:00:32.616Z" },
+    { url = "https://files.pythonhosted.org/packages/df/3b/e3949d1ba795f2d7c419038cc62d6b17b60e851bdd4c38d44a0569d8ac37/aind_data_schema-2.5.1-py3-none-any.whl", hash = "sha256:b1abf739e5f18c034440cd3717fde7041ef8d6729cd8cb97742eb504b31d5132", size = 91625, upload-time = "2026-02-28T00:10:40.224Z" },
 ]
 
 [[package]]
@@ -102,7 +103,7 @@ sync = [
 requires-dist = [
     { name = "aind-data-access-api", extras = ["docdb"] },
     { name = "aind-data-access-api", extras = ["rds"], marker = "extra == 'sync'" },
-    { name = "aind-data-schema", specifier = ">=2.4.0,<3" },
+    { name = "aind-data-schema", specifier = ">=2.5.1,<3" },
     { name = "aind-metadata-upgrader", extras = ["sync"], marker = "extra == 'dev'" },
     { name = "black", marker = "extra == 'dev'" },
     { name = "coverage", marker = "extra == 'dev'" },
@@ -1222,6 +1223,19 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/b8/e9/1f7efbe20d0b2b10f6718944b5d8ece9152390904f29a78e68d4e7961159/pydantic_core-2.33.2-pp311-pypy311_pp73-musllinux_1_1_armv7l.whl", hash = "sha256:de4b83bb311557e439b9e186f733f6c645b9417c84e2eb8203f3f820a4b988bf", size = 2239013, upload-time = "2025-04-23T18:33:26.621Z" },
     { url = "https://files.pythonhosted.org/packages/3c/b2/5309c905a93811524a49b4e031e9851a6b00ff0fb668794472ea7746b448/pydantic_core-2.33.2-pp311-pypy311_pp73-musllinux_1_1_x86_64.whl", hash = "sha256:82f68293f055f51b51ea42fafc74b6aad03e70e191799430b90c13d643059ebb", size = 2238715, upload-time = "2025-04-23T18:33:28.656Z" },
     { url = "https://files.pythonhosted.org/packages/32/56/8a7ca5d2cd2cda1d245d34b1c9a942920a718082ae8e54e5f3e5a58b7add/pydantic_core-2.33.2-pp311-pypy311_pp73-win_amd64.whl", hash = "sha256:329467cecfb529c925cf2bbd4d60d2c509bc2fb52a20c1045bf09bb70971a9c1", size = 2066757, upload-time = "2025-04-23T18:33:30.645Z" },
+]
+
+[[package]]
+name = "pydantic-extra-types"
+version = "2.11.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "pydantic" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/fd/35/2fee58b1316a73e025728583d3b1447218a97e621933fc776fb8c0f2ebdd/pydantic_extra_types-2.11.0.tar.gz", hash = "sha256:4e9991959d045b75feb775683437a97991d02c138e00b59176571db9ce634f0e", size = 157226, upload-time = "2025-12-31T16:18:27.944Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fe/17/fabd56da47096d240dd45ba627bead0333b0cf0ee8ada9bec579287dadf3/pydantic_extra_types-2.11.0-py3-none-any.whl", hash = "sha256:84b864d250a0fc62535b7ec591e36f2c5b4d1325fa0017eb8cda9aeb63b374a6", size = 74296, upload-time = "2025-12-31T16:18:26.38Z" },
 ]
 
 [[package]]
