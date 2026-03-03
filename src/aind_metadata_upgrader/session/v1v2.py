@@ -12,18 +12,19 @@ from aind_data_schema.components.configs import (
     LightEmittingDiodeConfig,
     ManipulatorConfig,
     MISModuleConfig,
+    MRAcquisitionType,
     MRIScan,
-    MriScanSequence,
     PatchCordConfig,
     PlanarImage,
     PlanarImageStack,
     Plane,
     PowerFunction,
     ProbeConfig,
-    ScanType,
+    PulseSequenceType,
     SlapAcquisitionType,
     SlapPlane,
     SpeakerConfig,
+    SubjectPosition,
     TriggerType,
     ImagingConfig,
 )
@@ -431,22 +432,41 @@ class SessionV1V2(CoreUpgrader):
             transform = None
             resolution = None
 
+        # Map scan_type to setup flag and mr_acquisition_type
+        scan_type_str = scan.get("scan_type", "")
+        is_setup = scan_type_str != "3D Scan"
+        mr_acquisition_type = MRAcquisitionType.SCAN_3D
+
+        # Map scan_sequence_type to PulseSequenceType
+        scan_sequence = scan.get("scan_sequence_type", "")
+        pulse_sequence_type = (
+            PulseSequenceType.RARE if scan_sequence == "RARE" else PulseSequenceType.OTHER
+        )
+
+        # Map subject_position string to SubjectPosition enum
+        subject_position_str = scan.get("subject_position", "")
+        subject_position_map = {
+            "Prone": SubjectPosition.PRONE,
+            "prone": SubjectPosition.PRONE,
+            "Supine": SubjectPosition.SUPINE,
+            "supine": SubjectPosition.SUPINE,
+        }
+        subject_position = subject_position_map.get(subject_position_str, SubjectPosition.PRONE)
+
         mri_scan = MRIScan(
             device_name=scan.get("mri_scanner", {}).get("name", "Unknown Scanner"),
-            scan_index=scan.get("scan_index", 0),
-            scan_type=(ScanType.SCAN_3D if scan.get("scan_type") == "3D Scan" else ScanType.SETUP),
-            primary_scan=scan.get("primary_scan", True),
-            scan_sequence_type=(
-                MriScanSequence.RARE if scan.get("scan_sequence_type") == "RARE" else MriScanSequence.OTHER
-            ),
+            index=scan.get("scan_index", 1),
+            setup=is_setup,
+            pulse_sequence_type=pulse_sequence_type,
+            mr_acquisition_type=mr_acquisition_type,
             echo_time=scan.get("echo_time", 1.0),
             echo_time_unit=TimeUnit.MS,
             repetition_time=scan.get("repetition_time", 100.0),
             repetition_time_unit=TimeUnit.MS,
-            subject_position=scan.get("subject_position", "unknown"),
+            subject_position=subject_position,
             additional_scan_parameters=scan.get("additional_scan_parameters", {}),
-            scan_coordinate_system=coordinate_system,
-            scan_affine_transform=transform,
+            scanner_coordinate_system=coordinate_system,
+            affine_transform=transform,
             resolution=resolution,
             resolution_unit=SizeUnit.MM,
         )

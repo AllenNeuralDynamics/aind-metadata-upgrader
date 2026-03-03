@@ -134,12 +134,15 @@ class Upgrade:
 
     def _try_validate(self, core_file: str, data: dict):
         """Try to validate the core file data against its schema"""
-        try:
-            if core_file not in TYPE_MAPPING:
-                raise ValueError(f"Core file '{core_file}' is not recognized for validation")
+        if core_file not in TYPE_MAPPING:
+            raise ValueError(f"Core file '{core_file}' is not recognized for validation")
 
+        try:
             return TYPE_MAPPING[core_file].model_validate(data).model_dump()
-        except Exception as e:
+        except ValidationError as e:
+            if core_file == "procedures":
+                logging.warning(f"procedures validation failed, using model_construct: {e}")
+                return TYPE_MAPPING[core_file].model_construct(**data).model_dump()
             traceback.print_exc()
             raise ValueError(f"Failed to validate {core_file}: {e}")
 

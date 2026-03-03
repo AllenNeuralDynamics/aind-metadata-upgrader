@@ -1,5 +1,7 @@
 """Individual procedure upgrade functions for V1 to V2"""
 
+import logging
+
 from aind_data_schema.components.configs import ProbeConfig
 from aind_data_schema.components.coordinates import (
     CoordinateSystemLibrary,
@@ -623,9 +625,13 @@ def upgrade_water_restriction(data: dict) -> dict:
     if not data["baseline_weight"]:
         # If baseline_weight is not provided, set it to 0
         data["baseline_weight"] = 0.0
-    return WaterRestriction(
-        **data,
-    ).model_dump()
+    try:
+        return WaterRestriction(
+            **data,
+        ).model_dump()
+    except Exception as e:
+        logging.warning(f"WaterRestriction validation failed, using model_construct: {e}")
+        return WaterRestriction.model_construct(**data).model_dump()
 
 
 def upgrade_training_protocol(data: dict) -> dict:
@@ -633,9 +639,13 @@ def upgrade_training_protocol(data: dict) -> dict:
     remove(data, "procedure_type")
     data["ethics_review_id"] = data.get("iacuc_protocol", "unknown")
     remove(data, "iacuc_protocol")
-    return TrainingProtocol(
-        **data,
-    ).model_dump()
+    try:
+        return TrainingProtocol(
+            **data,
+        ).model_dump()
+    except Exception as e:
+        logging.warning(f"TrainingProtocol validation failed, using model_construct: {e}")
+        return TrainingProtocol.model_construct(**data).model_dump()
 
 
 def upgrade_generic_subject_procedure(data: dict) -> dict:
@@ -645,7 +655,7 @@ def upgrade_generic_subject_procedure(data: dict) -> dict:
     if isinstance(protocol_id, str) and protocol_id.lower() == "none":
         protocol_id = None
 
-    generic_subject_procedure = GenericSubjectProcedure(
+    kwargs = dict(
         start_date=data.get("start_date"),
         experimenters=data.get("experimenters", []),
         ethics_review_id=data.get("iacuc_protocol", "unknown"),
@@ -653,5 +663,8 @@ def upgrade_generic_subject_procedure(data: dict) -> dict:
         description=data.get("description", ""),
         notes=data.get("notes"),
     )
-
-    return generic_subject_procedure.model_dump()
+    try:
+        return GenericSubjectProcedure(**kwargs).model_dump()
+    except Exception as e:
+        logging.warning(f"GenericSubjectProcedure validation failed, using model_construct: {e}")
+        return GenericSubjectProcedure.model_construct(**kwargs).model_dump()

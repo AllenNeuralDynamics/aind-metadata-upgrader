@@ -1,0 +1,1139 @@
+{
+    "_id": "8c792eb9-5100-4f3b-a732-1fca4bcdb9c7",
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "schema_version": "1.2.1",
+    "name": "ecephys_786867_2025-09-25_12-43-56",
+    "created": "2025-12-23T22:46:56.704870Z",
+    "last_modified": "2025-12-23T22:47:05.008Z",
+    "location": "s3://aind-open-data/ecephys_786867_2025-09-25_12-43-56",
+    "metadata_status": "Invalid",
+    "external_links": {
+        "Code Ocean": [
+            "86ddabd9-f0eb-4c11-be03-a574aaf12f73"
+        ]
+    },
+    "subject": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "schema_version": "1.0.3",
+        "subject_id": "786867",
+        "sex": "Male",
+        "date_of_birth": "2024-11-26",
+        "genotype": "wt/wt",
+        "species": {
+            "name": "Mus musculus",
+            "registry": {
+                "name": "National Center for Biotechnology Information",
+                "abbreviation": "NCBI"
+            },
+            "registry_identifier": "NCBI:txid10090"
+        },
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": {
+            "breeding_group": "Exp-ND-01-001-2414",
+            "maternal_id": null,
+            "maternal_genotype": null,
+            "paternal_id": null,
+            "paternal_genotype": null
+        },
+        "source": {
+            "name": "Allen Institute",
+            "abbreviation": "AI",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "03cpe7c52"
+        },
+        "rrid": null,
+        "restrictions": null,
+        "wellness_reports": [],
+        "housing": null,
+        "notes": null
+    },
+    "data_description": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/data_description.py",
+        "schema_version": "0.10.1",
+        "license": "CC-BY-4.0",
+        "creation_time": "2025-09-25T12:43:56",
+        "name": "ecephys_786867_2025-09-25_12-43-56",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "funder": {
+                    "name": "Allen Institute for Neural Dynamics",
+                    "abbreviation": "AIND",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04szwah67"
+                },
+                "grant_number": null,
+                "fundee": null
+            }
+        ],
+        "data_level": "raw",
+        "group": "ephys",
+        "investigators": [
+            "Yoni Browning",
+            "Galen Lynch",
+            "Sasha Burckhardt",
+            "Josh Siegle"
+        ],
+        "platform": {
+            "name": "Electrophysiology platform",
+            "abbreviation": "ecephys"
+        },
+        "project_name": "MRI-Guided Electrophysiology",
+        "restrictions": null,
+        "modality": [
+            {
+                "name": "Extracellular electrophysiology",
+                "abbreviation": "ecephys"
+            }
+        ],
+        "subject_id": "786867",
+        "related_data": [
+            {
+                "related_data_path": "Y:/ephys/persist/data/MRI/processed/786867",
+                "relation": "Contains MRI and processing used to choose insertion locations."
+            }
+        ],
+        "data_summary": "This dataset was collected to evaluate the accuracy and feasibility of the AIND MRI-guided insertion pipeline. One probe targets the retinotopic center of LGN, with drifting grating for receptive field mapping to evaluate targeting. Other targets can be evaluated in histology."
+    },
+    "procedures": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "schema_version": "1.2.1",
+        "subject_id": "786867",
+        "subject_procedures": [
+            {
+                "procedure_type": "Surgery",
+                "start_date": "2025-10-03",
+                "experimenter_full_name": "30241",
+                "iacuc_protocol": "2414",
+                "animal_weight_prior": null,
+                "animal_weight_post": null,
+                "weight_unit": "gram",
+                "anaesthesia": null,
+                "workstation_id": null,
+                "procedures": [
+                    {
+                        "procedure_type": "Perfusion",
+                        "output_specimen_ids": [
+                            "786867"
+                        ],
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.8epv51bejl1b/v6"
+                    }
+                ],
+                "notes": null
+            },
+            {
+                "procedure_type": "Surgery",
+                "start_date": "2025-02-27",
+                "experimenter_full_name": "NSB-3302",
+                "iacuc_protocol": "2414",
+                "animal_weight_prior": "25.5",
+                "animal_weight_post": "27.8",
+                "weight_unit": "gram",
+                "anaesthesia": {
+                    "type": "isoflurane",
+                    "duration": "150.0",
+                    "duration_unit": "minute",
+                    "level": "1.5"
+                },
+                "workstation_id": "SWS 3",
+                "procedures": [
+                    {
+                        "procedure_type": "Craniotomy",
+                        "craniotomy_type": "Whole hemisphere craniotomy",
+                        "craniotomy_hemisphere": null,
+                        "bregma_to_lambda_distance": "3.929",
+                        "bregma_to_lambda_unit": "millimeter",
+                        "implant_part_number": "3004 (25% puralube/systane)",
+                        "dura_removed": null,
+                        "protective_material": null,
+                        "recovery_time": "15.0",
+                        "recovery_time_unit": "minute"
+                    },
+                    {
+                        "procedure_type": "Headframe",
+                        "headframe_type": "WHC NP (Zirconia)",
+                        "headframe_part_number": null,
+                        "headframe_material": null,
+                        "well_part_number": "0160-055-08",
+                        "well_type": "WHC NP"
+                    }
+                ],
+                "notes": null,
+                "protocol_id": "dx.doi.org/10.17504/protocols.io.kqdg392o7g25/v2"
+            },
+            {
+                "procedure_type": "Water restriction",
+                "target_fraction_weight": 85,
+                "target_fraction_weight_unit": "percent",
+                "minimum_water_per_day": "1.0",
+                "minimum_water_per_day_unit": "milliliter",
+                "baseline_weight": "28.57",
+                "weight_unit": "gram",
+                "start_date": "2025-03-28",
+                "end_date": "2025-10-02"
+            }
+        ],
+        "specimen_procedures": [
+            {
+                "procedure_type": "Delipidation",
+                "procedure_name": "LifeCanvas Active Whole Mouse Brain Delipidation (UNPUBLISHED)",
+                "specimen_id": "786867",
+                "start_date": "2025-10-17",
+                "end_date": "2025-10-24",
+                "experimenter_full_name": "HollyM",
+                "protocol_id": "https://www.protocols.io/view/whole-mouse-brain-delipidation-lifecanvas-active-cttawnie",
+                "reagents": [
+                    {
+                        "name": "SH-ON",
+                        "source": null,
+                        "rrid": null,
+                        "lot_number": "on42",
+                        "expiration_date": null
+                    },
+                    {
+                        "name": "DB-500",
+                        "source": null,
+                        "rrid": null,
+                        "lot_number": "A07T103",
+                        "expiration_date": null
+                    },
+                    {
+                        "name": "DB-500",
+                        "source": null,
+                        "rrid": null,
+                        "lot_number": "A07T103",
+                        "expiration_date": null
+                    },
+                    {
+                        "name": "CB-450",
+                        "source": null,
+                        "rrid": null,
+                        "lot_number": "J24S108",
+                        "expiration_date": null
+                    }
+                ],
+                "hcr_series": null,
+                "antibodies": null,
+                "sectioning": null,
+                "notes": null
+            },
+            {
+                "procedure_type": "Immunolabeling",
+                "procedure_name": "SmartSPIM Labeling",
+                "specimen_id": "786867",
+                "start_date": null,
+                "end_date": null,
+                "experimenter_full_name": "HollyM",
+                "protocol_id": null,
+                "reagents": [],
+                "hcr_series": null,
+                "antibodies": {
+                    "rrid": null,
+                    "expiration_date": null,
+                    "immunolabel_class": "Primary",
+                    "fluorophore": null,
+                    "mass": null,
+                    "mass_unit": "microgram",
+                    "notes": null
+                },
+                "sectioning": null,
+                "notes": null
+            },
+            {
+                "procedure_type": "Immunolabeling",
+                "procedure_name": "SmartSPIM Labeling",
+                "specimen_id": "786867",
+                "start_date": null,
+                "end_date": null,
+                "experimenter_full_name": "HollyM",
+                "protocol_id": null,
+                "reagents": [],
+                "hcr_series": null,
+                "antibodies": {
+                    "rrid": null,
+                    "expiration_date": null,
+                    "immunolabel_class": "Secondary",
+                    "fluorophore": null,
+                    "mass": null,
+                    "mass_unit": "microgram",
+                    "notes": null
+                },
+                "sectioning": null,
+                "notes": null
+            },
+            {
+                "procedure_type": "Refractive index matching",
+                "procedure_name": "Refractive Index Matching - EasyIndex",
+                "specimen_id": "786867",
+                "start_date": "2025-10-24",
+                "end_date": "2025-10-30",
+                "experimenter_full_name": "HollyM",
+                "protocol_id": "https://dx.doi.org/10.17504/protocols.io.kxygx965kg8j/v1",
+                "reagents": [
+                    {
+                        "name": "EI-500-1.52",
+                        "source": null,
+                        "rrid": null,
+                        "lot_number": "EI81",
+                        "expiration_date": null
+                    }
+                ],
+                "hcr_series": null,
+                "antibodies": null,
+                "sectioning": null,
+                "notes": null
+            }
+        ],
+        "notes": null
+    },
+    "session": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/ephys/ephys_session.py",
+        "schema_version": "0.4.12",
+        "experimenter_full_name": [
+            "Yoni Browning",
+            "Galen Lynch",
+            "Sasha Burckhardt",
+            "Josh Siegle"
+        ],
+        "session_start_time": "2025-09-25T12:43:56+00:00",
+        "session_end_time": "2025-09-25T13:52:44+00:00",
+        "subject_id": "786867",
+        "session_type": "Uncoupled Without Baiting",
+        "session_description": "Dynamic Foraging",
+        "iacuc_protocol": "2109",
+        "rig_id": "323_EPHYS2_RF_2025-09-25_01",
+        "stick_microscopes": [
+            {
+                "assembly_name": "20516338.0",
+                "arc_angle": -180,
+                "module_angle": -180,
+                "angle_unit": "degrees",
+                "rotation_angle": null,
+                "coordinate_transform": null,
+                "calibration_date": null,
+                "notes": "Did not record arc or module angles, did not calibrate"
+            },
+            {
+                "assembly_name": "22437106.0",
+                "arc_angle": -180,
+                "module_angle": -180,
+                "angle_unit": "degrees",
+                "rotation_angle": null,
+                "coordinate_transform": null,
+                "calibration_date": null,
+                "notes": "Did not record arc or module angles, did not calibrate"
+            },
+            {
+                "assembly_name": "22437107.0",
+                "arc_angle": -180,
+                "module_angle": -180,
+                "angle_unit": "degrees",
+                "rotation_angle": null,
+                "coordinate_transform": null,
+                "calibration_date": null,
+                "notes": "Did not record arc or module angles, did not calibrate"
+            }
+        ],
+        "data_streams": [
+            {
+                "stream_start_time": "2025-09-25T12:44:11.035095-07:00",
+                "stream_end_time": "2025-09-25T14:09:44.929974-07:00",
+                "daq_names": [],
+                "camera_names": [
+                    "Face Side Left",
+                    "Face Side Right",
+                    "Face Bottom"
+                ],
+                "light_sources": [],
+                "ephys_modules": [],
+                "stick_microscopes": [],
+                "manipulator_modules": [],
+                "detectors": [],
+                "fiber_connections": [],
+                "fiber_modules": [],
+                "ophys_fovs": [],
+                "slap_fovs": [],
+                "stack_parameters": null,
+                "mri_scans": [],
+                "stream_modalities": [
+                    {
+                        "name": "Behavior videos",
+                        "abbreviation": "behavior-videos"
+                    }
+                ],
+                "software": [
+                    {
+                        "name": "dynamic-foraging-task",
+                        "version": "behavior branch:SaferEphysSaving   commit ID:5a58e7a68043ab1eba04b891762e5c758efda819    version:1.6.46; metadata branch: SaferEphysSaving   commit ID:5a58e7a68043ab1eba04b891762e5c758efda819   version:1.6.46",
+                        "url": "https://github.com/AllenNeuralDynamics/dynamic-foraging-task.git",
+                        "parameters": {}
+                    }
+                ],
+                "notes": null
+            }
+        ],
+        "animal_weight_prior": "28.57",
+        "animal_weight_post": "24.45",
+        "weight_unit": "gram",
+        "anaesthesia": null,
+        "stimulus_epochs": [
+            {
+                "stimulus_start_time": "2025-09-25T12:44:11.037110-07:00",
+                "stimulus_end_time": "2025-09-25T13:52:33.548610-07:00",
+                "stimulus_name": "The behavior auditory go cue",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "dynamic-foraging-task",
+                        "version": "behavior branch:SaferEphysSaving   commit ID:5a58e7a68043ab1eba04b891762e5c758efda819    version:1.6.46; metadata branch: SaferEphysSaving   commit ID:5a58e7a68043ab1eba04b891762e5c758efda819   version:1.6.46",
+                        "url": "https://github.com/AllenNeuralDynamics/dynamic-foraging-task.git",
+                        "parameters": {}
+                    }
+                ],
+                "script": null,
+                "stimulus_modalities": [
+                    "Auditory"
+                ],
+                "stimulus_parameters": [
+                    {
+                        "stimulus_type": "Auditory Stimulation",
+                        "sitmulus_name": "auditory go cue",
+                        "sample_frequency": "96000",
+                        "amplitude_modulation_frequency": 7500,
+                        "frequency_unit": "hertz",
+                        "bandpass_low_frequency": null,
+                        "bandpass_high_frequency": null,
+                        "bandpass_filter_type": null,
+                        "bandpass_order": null,
+                        "notes": null
+                    }
+                ],
+                "stimulus_device_names": [
+                    "Stimulus Speaker"
+                ],
+                "speaker_config": {
+                    "name": "Stimulus Speaker",
+                    "volume": "74",
+                    "volume_unit": "decibels"
+                },
+                "light_source_config": [],
+                "output_parameters": {
+                    "meta": {
+                        "box": null,
+                        "session_run_time_in_min": 68
+                    },
+                    "water": {
+                        "water_in_session_foraging": 0.4620000000000006,
+                        "water_in_session_manual": 0.009999999999999398,
+                        "water_in_session_total": 0.472,
+                        "water_after_session": 0.528,
+                        "water_day_total": 1
+                    },
+                    "performance": {
+                        "foraging_efficiency": 0.599828620394173,
+                        "foraging_efficiency_with_actual_random_seed": 0.6222222222222222
+                    },
+                    "task_parameters": {
+                        "ITIMin": "1.0",
+                        "DelayMin": "1.0",
+                        "DelayBeta": "0.0",
+                        "DelayMax": "1.0",
+                        "Task": "Uncoupled Without Baiting",
+                        "BlockMax": "35",
+                        "ITIMax": "30.0",
+                        "ITIBeta": "3.0",
+                        "BlockBeta": "20",
+                        "BlockMin": "20",
+                        "RightValue_volume": "3.30",
+                        "LeftValue_volume": "3.30",
+                        "stage_in_use": "unknown training stage",
+                        "curriculum_in_use": "off curriculum",
+                        "reward_probability": "0.1, 0.4, 0.7"
+                    }
+                },
+                "reward_consumed_during_epoch": "462.00000000000057",
+                "reward_consumed_unit": "microliter",
+                "trials_total": 450,
+                "trials_finished": 421,
+                "trials_rewarded": 140,
+                "notes": "The duration of go cue is 100 ms. The frequency is 7500 Hz. Amplitude is 74dB. The total reward consumed in the session is 462.00000000000057 microliters. The total reward including consumed in the session and supplementary water is 1.0 milliliters."
+            }
+        ],
+        "mouse_platform_name": "mouse_tube_foraging",
+        "active_mouse_platform": false,
+        "headframe_registration": null,
+        "reward_delivery": null,
+        "reward_consumed_total": "462.00000000000057",
+        "reward_consumed_unit": "microliter",
+        "ccf_coordinate_transform": null,
+        "notes": null
+    },
+    "rig": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/ephys/ephys_rig.py",
+        "schema_version": "0.7.15",
+        "rig_id": "323_EPHYS2_RF_20250925_01",
+        "ephys_assemblies": [],
+        "stick_microscopes": [],
+        "laser_assemblies": [],
+        "cameras": [
+            {
+                "name": "Right Camera assembly",
+                "camera_target": "Face side right",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "Right size of face camera",
+                    "serial_number": "23022730",
+                    "manufacturer": {
+                        "name": "Teledyne FLIR",
+                        "abbreviation": "FLIR",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "Air",
+                    "computer_name": "W10DTB6VBSD9",
+                    "max_frame_rate": "522",
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Monochrome",
+                    "sensor_width": 720,
+                    "sensor_height": 540,
+                    "size_unit": "pixel",
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inch",
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": null,
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Behavior Video Lens Right Side",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Fujinon",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "CF16ZA-1S",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "focal_length": "16",
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": null,
+                "position": null
+            },
+            {
+                "name": "Bottom Camera assembly",
+                "camera_target": "Face bottom",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "bottom of face camera",
+                    "serial_number": "23022721",
+                    "manufacturer": {
+                        "name": "Teledyne FLIR",
+                        "abbreviation": "FLIR",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "Air",
+                    "computer_name": "W10DTB6VBSD9",
+                    "max_frame_rate": "522",
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Monochrome",
+                    "sensor_width": 720,
+                    "sensor_height": 540,
+                    "size_unit": "pixel",
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inch",
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": null,
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Behavior Video Lens Bottom of face",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Other",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "LM25HC",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": "Manufacturer is Kowa",
+                    "focal_length": "25",
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": null,
+                "position": null
+            }
+        ],
+        "visual_monitors": [
+            {
+                "device_type": "Monitor",
+                "name": "RF monitor",
+                "serial_number": "PNP09FF",
+                "manufacturer": {
+                    "name": "LG",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "02b948n83"
+                },
+                "model": "LG LP097QX1",
+                "notes": null,
+                "refresh_rate": 60,
+                "width": 2048,
+                "height": 1536,
+                "size_unit": "pixel",
+                "viewing_distance": 7,
+                "viewing_distance_unit": "centimeter",
+                "position": null,
+                "contrast": 50,
+                "brightness": 100
+            }
+        ],
+        "mouse_platform": {
+            "device_type": "Tube",
+            "name": "mouse_tube_foraging",
+            "serial_number": null,
+            "manufacturer": {
+                "name": "Custom",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            },
+            "model": null,
+            "path_to_cad": null,
+            "port_index": null,
+            "additional_settings": {},
+            "notes": null,
+            "surface_material": null,
+            "date_surface_replaced": null,
+            "diameter": "3.0",
+            "diameter_unit": "centimeter"
+        },
+        "daqs": [
+            {
+                "device_type": "Harp device",
+                "name": "Harp Behavior",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": "Left lick spout and Right lick spout, as well as reward delivery solenoids are connected via ethernet cables",
+                "data_interface": "Ethernet",
+                "computer_name": "W10DTB6VBSD9",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Behavior",
+                    "whoami": 1216
+                },
+                "core_version": "1.11",
+                "tag_version": null,
+                "is_clock_generator": false
+            },
+            {
+                "device_type": "Harp device",
+                "name": "Harp Sound",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DTB6VBSD9",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Sound Card",
+                    "whoami": 1280
+                },
+                "core_version": "1.4",
+                "tag_version": null,
+                "is_clock_generator": false
+            },
+            {
+                "device_type": "Harp device",
+                "name": "Harp clock synchronization board",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DTB6VBSD9",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Clock Synchronizer",
+                    "whoami": 1152
+                },
+                "core_version": "",
+                "tag_version": null,
+                "is_clock_generator": true
+            },
+            {
+                "device_type": "Harp device",
+                "name": "Harp sound amplifier",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DTB6VBSD9",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Input Expander",
+                    "whoami": 1106
+                },
+                "core_version": "",
+                "tag_version": null,
+                "is_clock_generator": false
+            }
+        ],
+        "stimulus_devices": [
+            {
+                "device_type": "Reward delivery",
+                "stage_type": {
+                    "device_type": "Motorized stage",
+                    "name": "NewScaleMotor for LickSpouts",
+                    "serial_number": "46805",
+                    "manufacturer": {
+                        "name": "New Scale Technologies",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "XYZ Stage with M30LS-3.4-15 linear stages",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "travel": "15.0",
+                    "travel_unit": "millimeter",
+                    "firmware": "https://github.com/AllenNeuralDynamics/python-newscale, branch: axes-on-target, commit #7c17497"
+                },
+                "reward_spouts": [
+                    {
+                        "device_type": "Reward spout",
+                        "name": "Left lick spout",
+                        "serial_number": null,
+                        "manufacturer": null,
+                        "model": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "additional_settings": {},
+                        "notes": null,
+                        "side": "Left",
+                        "spout_diameter": "1.2",
+                        "spout_diameter_unit": "millimeter",
+                        "spout_position": null,
+                        "solenoid_valve": {
+                            "device_type": "Solenoid",
+                            "name": "Solenoid Left",
+                            "serial_number": null,
+                            "manufacturer": {
+                                "name": "The Lee Company",
+                                "abbreviation": null,
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": "LHDA1233415H",
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "additional_settings": {},
+                            "notes": null
+                        },
+                        "lick_sensor": {
+                            "device_type": "Lick Sensor",
+                            "name": "Lick Sensor Left",
+                            "serial_number": null,
+                            "manufacturer": {
+                                "name": "Allen Institute for Neural Dynamics",
+                                "abbreviation": "AIND",
+                                "registry": {
+                                    "name": "Research Organization Registry",
+                                    "abbreviation": "ROR"
+                                },
+                                "registry_identifier": "04szwah67"
+                            },
+                            "model": null,
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "additional_settings": {},
+                            "notes": null
+                        },
+                        "lick_sensor_type": "Capacitive"
+                    },
+                    {
+                        "device_type": "Reward spout",
+                        "name": "Right lick spout",
+                        "serial_number": null,
+                        "manufacturer": null,
+                        "model": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "additional_settings": {},
+                        "notes": null,
+                        "side": "Right",
+                        "spout_diameter": "1.2",
+                        "spout_diameter_unit": "millimeter",
+                        "spout_position": null,
+                        "solenoid_valve": {
+                            "device_type": "Solenoid",
+                            "name": "Solenoid Right",
+                            "serial_number": null,
+                            "manufacturer": {
+                                "name": "The Lee Company",
+                                "abbreviation": null,
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": "LHDA1233415H",
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "additional_settings": {},
+                            "notes": null
+                        },
+                        "lick_sensor": {
+                            "device_type": "Lick Sensor",
+                            "name": "Lick Sensor Right",
+                            "serial_number": null,
+                            "manufacturer": {
+                                "name": "Allen Institute for Neural Dynamics",
+                                "abbreviation": "AIND",
+                                "registry": {
+                                    "name": "Research Organization Registry",
+                                    "abbreviation": "ROR"
+                                },
+                                "registry_identifier": "04szwah67"
+                            },
+                            "model": null,
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "additional_settings": {},
+                            "notes": null
+                        },
+                        "lick_sensor_type": "Capacitive"
+                    }
+                ]
+            },
+            {
+                "device_type": "Speaker",
+                "name": "Stimulus Speaker",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Tymphany",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "XT25SC90-04",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "position": null
+            }
+        ],
+        "enclosure": {
+            "device_type": "Enclosure",
+            "name": "Behavior enclosure",
+            "serial_number": null,
+            "manufacturer": {
+                "name": "Allen Institute for Neural Dynamics",
+                "abbreviation": "AIND",
+                "registry": {
+                    "name": "Research Organization Registry",
+                    "abbreviation": "ROR"
+                },
+                "registry_identifier": "04szwah67"
+            },
+            "model": null,
+            "path_to_cad": null,
+            "port_index": null,
+            "additional_settings": {},
+            "notes": null,
+            "size": {
+                "width": 54,
+                "length": 54,
+                "height": 54,
+                "unit": "centimeter"
+            },
+            "internal_material": "",
+            "external_material": "",
+            "grounded": false,
+            "laser_interlock": false,
+            "air_filtration": false
+        },
+        "fiber_assemblies": [],
+        "patch_cords": [],
+        "light_sources": [
+            {
+                "device_type": "Light emitting diode",
+                "name": "IR LED",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M810L5",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "wavelength": 810,
+                "wavelength_unit": "nanometer"
+            }
+        ],
+        "detectors": [],
+        "objectives": [],
+        "filters": [],
+        "lenses": [],
+        "digital_micromirror_devices": [],
+        "polygonal_scanners": [],
+        "pockels_cells": [],
+        "additional_devices": null,
+        "calibrations": [
+            {
+                "calibration_date": "2024-11-27T00:00:00-08:00",
+                "device_name": "Lick spout Left",
+                "description": "Water calibration for Lick spout Left. The input is the valve open time in seconds and the output is the volume of water delivered in microliters.",
+                "input": {
+                    "valve open time (s):": [
+                        0.02,
+                        0.025,
+                        0.03,
+                        0.035,
+                        0.04,
+                        0.045,
+                        0.05
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        2.35,
+                        2.725,
+                        3.225,
+                        3.75,
+                        4.25,
+                        4.7,
+                        5.55
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2024-11-27T00:00:00-08:00",
+                "device_name": "Lick spout Right",
+                "description": "Water calibration for Lick spout Right. The input is the valve open time in seconds and the output is the volume of water delivered in microliters.",
+                "input": {
+                    "valve open time (s):": [
+                        0.02,
+                        0.025,
+                        0.03,
+                        0.035,
+                        0.04,
+                        0.045,
+                        0.05
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        1.9,
+                        2.65,
+                        3,
+                        3.7,
+                        4.3,
+                        4.75,
+                        5
+                    ]
+                },
+                "notes": null
+            }
+        ],
+        "ccf_coordinate_transform": null,
+        "origin": null,
+        "rig_axes": null,
+        "modalities": [
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            },
+            {
+                "name": "Behavior videos",
+                "abbreviation": "behavior-videos"
+            }
+        ],
+        "notes": null
+    },
+    "processing": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "schema_version": "1.1.3",
+        "processing_pipeline": {
+            "data_processes": [
+                {
+                    "name": "Other",
+                    "software_version": "0.2.8",
+                    "input_location": "/allen/aind/scratch/ephys/temp/786867_2025-09-25_12-43-56",
+                    "output_location": "/allen/aind/stage/svc_aind_airflow/prod/ecephys_786867_2025-09-25_12-43-56_abab1e0de6/ecephys",
+                    "code_url": "ghcr.io/allenneuraldynamics/aind-ephys-transformation",
+                    "parameters": {
+                        "output_directory": "/allen/aind/stage/svc_aind_airflow/prod/ecephys_786867_2025-09-25_12-43-56_abab1e0de6/ecephys",
+                        "input_source": "/allen/aind/scratch/ephys/temp/786867_2025-09-25_12-43-56"
+                    },
+                    "notes": null,
+                    "start_date_time": "2025-12-23 18:33:41+00:00",
+                    "end_date_time": "2025-12-23 22:32:39+00:00"
+                },
+                {
+                    "name": "Other",
+                    "software_version": "",
+                    "input_location": "/allen/aind/scratch/ephys/temp/Behavior/786867_2025-09-25_12-43-56",
+                    "output_location": "",
+                    "code_url": "",
+                    "parameters": {
+                        "input_source": "/allen/aind/scratch/ephys/temp/Behavior/786867_2025-09-25_12-43-56"
+                    },
+                    "notes": "Data was copied",
+                    "start_date_time": "2025-12-23 18:33:41+00:00",
+                    "end_date_time": "2025-12-23 18:33:42+00:00"
+                }
+            ],
+            "processor_full_name": "AIND Scientific Computing",
+            "pipeline_version": null,
+            "pipeline_url": null,
+            "note": null
+        },
+        "analyses": [],
+        "notes": null
+    },
+    "acquisition": null,
+    "instrument": null,
+    "quality_control": null
+}
