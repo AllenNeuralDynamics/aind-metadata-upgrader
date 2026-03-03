@@ -43,7 +43,9 @@ class TestSync(unittest.TestCase):
             self.sample_cached_records[:1],  # Second call for cached records
         ]
 
-        mock_custom.side_effect = lambda *a, **kw: (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        mock_custom.side_effect = lambda *a, **kw: (
+            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        )
 
         # Mock upgrade instance
         mock_upgrade_instance = MagicMock()
@@ -71,9 +73,7 @@ class TestSync(unittest.TestCase):
     @patch("aind_metadata_upgrader.sync.client_v1")
     @patch("aind_metadata_upgrader.sync.Upgrade")
     @patch("aind_metadata_upgrader.sync.upgrader_version", "1.0.0")
-    def test_run_with_existing_successful_record(
-        self, mock_upgrade_class, mock_v1_client, mock_v2_client, mock_custom
-    ):
+    def test_run_with_existing_successful_record(self, mock_upgrade_class, mock_v1_client, mock_v2_client, mock_custom):
         """Test that already successfully upgraded records are skipped."""
         existing_df = pd.DataFrame(
             [
@@ -110,7 +110,9 @@ class TestSync(unittest.TestCase):
             [{"_id": "record1"}],
             [{"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}],
         ]
-        mock_custom.side_effect = lambda *a, **kw: (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        mock_custom.side_effect = lambda *a, **kw: (
+            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        )
         mock_upgrade_class.side_effect = Exception("Upgrade failed")
 
         sync.run()
@@ -133,7 +135,9 @@ class TestSync(unittest.TestCase):
             [{"_id": "record1"}],
             [{"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}],
         ]
-        mock_custom.side_effect = lambda *a, **kw: (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        mock_custom.side_effect = lambda *a, **kw: (
+            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        )
         mock_upgrade_class.return_value = None
 
         sync.run()
@@ -156,7 +160,9 @@ class TestSync(unittest.TestCase):
             [{"_id": "record1"}],
             [{"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}],
         ]
-        mock_custom.side_effect = lambda *a, **kw: (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        mock_custom.side_effect = lambda *a, **kw: (
+            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        )
         mock_upgrade_instance = MagicMock()
         mock_upgrade_instance.metadata.location = "test_location"
         mock_upgrade_instance.metadata.name = "test_name"
@@ -187,7 +193,9 @@ class TestSync(unittest.TestCase):
             cached_records_batch1,
             cached_records_batch2,
         ]
-        mock_custom.side_effect = lambda *a, **kw: (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        mock_custom.side_effect = lambda *a, **kw: (
+            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        )
         mock_upgrade_instance = MagicMock()
         mock_upgrade_instance.metadata.location = "test_location"
         mock_upgrade_instance.metadata.name = "test_name"
@@ -209,12 +217,24 @@ class TestSync(unittest.TestCase):
         self, mock_upgrade_class, mock_v1_client, mock_v2_client, mock_custom
     ):
         """Test that rows whose v1_id no longer exists in the v1 DB are wiped."""
-        existing_df = pd.DataFrame([
-            {"v1_id": "record1", "v2_id": "v2_record1", "upgrader_version": "1.0.0",
-             "status": "success", "last_modified": "2023-01-01"},
-            {"v1_id": "stale_record", "v2_id": "v2_stale", "upgrader_version": "1.0.0",
-             "status": "success", "last_modified": "2022-01-01"},
-        ])
+        existing_df = pd.DataFrame(
+            [
+                {
+                    "v1_id": "record1",
+                    "v2_id": "v2_record1",
+                    "upgrader_version": "1.0.0",
+                    "status": "success",
+                    "last_modified": "2023-01-01",
+                },
+                {
+                    "v1_id": "stale_record",
+                    "v2_id": "v2_stale",
+                    "upgrader_version": "1.0.0",
+                    "status": "success",
+                    "last_modified": "2022-01-01",
+                },
+            ]
+        )
         mock_custom.return_value = existing_df
         # Only record1 exists in v1 DB; stale_record has been deleted
         mock_v1_client.retrieve_docdb_records.side_effect = [
@@ -234,7 +254,9 @@ class TestSync(unittest.TestCase):
     def test_run_no_records(self, mock_logging, mock_v1_client, mock_v2_client, mock_custom):
         """Test handling when no records are found."""
         mock_v1_client.retrieve_docdb_records.return_value = []
-        mock_custom.side_effect = lambda *a, **kw: (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        mock_custom.side_effect = lambda *a, **kw: (
+            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        )
 
         sync.run()
 
@@ -261,7 +283,9 @@ class TestSync(unittest.TestCase):
         mock_v1_client.retrieve_docdb_records.return_value = [
             {"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}
         ]
-        mock_custom.side_effect = lambda *a, **kw: (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        mock_custom.side_effect = lambda *a, **kw: (
+            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        )
         mock_upgrade_instance = MagicMock()
         mock_upgrade_instance.metadata.location = "test_location"
         mock_upgrade_instance.metadata.name = "test_name"
@@ -294,10 +318,17 @@ class TestSync(unittest.TestCase):
         mock_v1_client.retrieve_docdb_records.return_value = [
             {"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}
         ]
-        existing_df = pd.DataFrame([{
-            "v1_id": "record1", "v2_id": "v2_record1",
-            "upgrader_version": "1.0.0", "status": "success", "last_modified": "2023-01-01",
-        }])
+        existing_df = pd.DataFrame(
+            [
+                {
+                    "v1_id": "record1",
+                    "v2_id": "v2_record1",
+                    "upgrader_version": "1.0.0",
+                    "status": "success",
+                    "last_modified": "2023-01-01",
+                }
+            ]
+        )
         mock_custom.return_value = existing_df
 
         sync.run_one("record1")
@@ -316,7 +347,9 @@ class TestSync(unittest.TestCase):
         mock_v1_client.retrieve_docdb_records.return_value = [
             {"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}
         ]
-        mock_custom.side_effect = lambda *a, **kw: (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        mock_custom.side_effect = lambda *a, **kw: (
+            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        )
         mock_upgrade_class.side_effect = Exception("Upgrade failed")
 
         sync.run_one("record1")
@@ -329,7 +362,9 @@ class TestSync(unittest.TestCase):
     @patch("aind_metadata_upgrader.sync.REDSHIFT_TABLE_NAME", "test_table")
     def test_update_rds_tracking_insert_new_record(self, mock_custom):
         """Test that update_rds_tracking correctly inserts a new record."""
-        mock_custom.side_effect = lambda *a, **kw: (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        mock_custom.side_effect = lambda *a, **kw: (
+            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        )
 
         result = {
             "v1_id": "test_v1_id_123",
@@ -354,10 +389,17 @@ class TestSync(unittest.TestCase):
     @patch("aind_metadata_upgrader.sync.REDSHIFT_TABLE_NAME", "test_table")
     def test_update_rds_tracking_update_existing_record(self, mock_custom):
         """Test that update_rds_tracking correctly overwrites an existing record."""
-        existing_df = pd.DataFrame([{
-            "v1_id": "old_v1_id_789", "v2_id": "old_v2_id",
-            "upgrader_version": "1.0.0", "last_modified": "2023-01-01", "status": "success",
-        }])
+        existing_df = pd.DataFrame(
+            [
+                {
+                    "v1_id": "old_v1_id_789",
+                    "v2_id": "old_v2_id",
+                    "upgrader_version": "1.0.0",
+                    "last_modified": "2023-01-01",
+                    "status": "success",
+                }
+            ]
+        )
         mock_custom.side_effect = lambda *a, **kw: kw["df"] if kw.get("force_update") else existing_df
 
         result = {
@@ -384,7 +426,9 @@ class TestSync(unittest.TestCase):
     @patch("aind_metadata_upgrader.sync.REDSHIFT_TABLE_NAME", "test_table")
     def test_update_rds_tracking_failed_status(self, mock_custom):
         """Test that update_rds_tracking correctly handles failed upgrades with None v2_id."""
-        mock_custom.side_effect = lambda *a, **kw: (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        mock_custom.side_effect = lambda *a, **kw: (
+            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+        )
 
         result = {
             "v1_id": "failed_v1_id_555",
