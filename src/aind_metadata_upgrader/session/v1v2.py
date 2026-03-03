@@ -59,6 +59,7 @@ from aind_data_schema_models.units import (
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import (
     ensure_pacific_timezone,
+    ensure_timezone,
     remove,
     upgrade_calibration,
     upgrade_targeted_structure,
@@ -732,7 +733,7 @@ class SessionV1V2(CoreUpgrader):
             sampling_strategy=sampling_strategy,
         ).model_dump()
 
-    def _upgrade_data_stream(self, stream: Dict, rig_id: str) -> Dict:
+    def _upgrade_data_stream(self, stream: Dict, rig_id: str, fallback_tz=None) -> Dict:
         """Upgrade a single data stream from v1 to v2"""
         # Extract modalities
         modalities = []
@@ -773,8 +774,8 @@ class SessionV1V2(CoreUpgrader):
 
         # Create the data stream
         return DataStream(
-            stream_start_time=stream.get("stream_start_time"),
-            stream_end_time=stream.get("stream_end_time"),
+            stream_start_time=ensure_timezone(stream.get("stream_start_time"), fallback_tz),
+            stream_end_time=ensure_timezone(stream.get("stream_end_time"), fallback_tz),
             modalities=modalities,
             active_devices=active_devices,
             configurations=configurations,
@@ -945,7 +946,7 @@ class SessionV1V2(CoreUpgrader):
                         code["parameters"] = stimulus_data["parameters"]
         return code
 
-    def _upgrade_stimulus_epoch(self, epoch: dict) -> dict:
+    def _upgrade_stimulus_epoch(self, epoch: dict, fallback_tz=None) -> dict:
         """Upgrade stimulus epoch from v1 to v2"""
         # Determine stimulus modalities
         stimulus_modalities = self._determine_stimulus_modalities(epoch)
@@ -975,8 +976,8 @@ class SessionV1V2(CoreUpgrader):
         code = self._handle_legacy_stimulus_data(epoch, code)
 
         return StimulusEpoch(
-            stimulus_start_time=epoch.get("stimulus_start_time"),
-            stimulus_end_time=epoch.get("stimulus_end_time"),
+            stimulus_start_time=ensure_timezone(epoch.get("stimulus_start_time"), fallback_tz),
+            stimulus_end_time=ensure_timezone(epoch.get("stimulus_end_time"), fallback_tz),
             stimulus_name=stimulus_name,
             stimulus_modalities=stimulus_modalities,
             performance_metrics=performance_metrics,
@@ -1022,16 +1023,22 @@ class SessionV1V2(CoreUpgrader):
         # Upgrade experimenter names to Person objects
         experimenters = self._upgrade_experimenter_names(experimenter_full_name)
 
+        # Extract the timezone from session_start_time to use as fallback for naive sub-timestamps.
+        # This prevents Pydantic's _coerce_naive_datetime from attaching the server's local
+        # timezone (e.g. -08:00 PST) to times that should share the session's offset (e.g. -07:00).
+        _session_start_dt = ensure_pacific_timezone(session_start_time)
+        fallback_tz = _session_start_dt.tzinfo if _session_start_dt else None
+
         # Upgrade data streams
         upgraded_data_streams = []
         for stream in data_streams:
-            upgraded_stream = self._upgrade_data_stream(stream, rig_id)
+            upgraded_stream = self._upgrade_data_stream(stream, rig_id, fallback_tz=fallback_tz)
             upgraded_data_streams.append(upgraded_stream)
 
         # Upgrade stimulus epochs
         upgraded_stimulus_epochs = []
         for epoch in stimulus_epochs:
-            upgraded_epoch = self._upgrade_stimulus_epoch(epoch)
+            upgraded_epoch = self._upgrade_stimulus_epoch(epoch, fallback_tz=fallback_tz)
             upgraded_stimulus_epochs.append(upgraded_epoch)
 
         # Upgrade calibrations and maintenance
@@ -1054,7 +1061,8 @@ class SessionV1V2(CoreUpgrader):
 
         # Validate and adjust session start/end times
         session_start_time, session_end_time, notes = self._validate_and_adjust_session_times(
-            session_start_time, session_end_time, upgraded_data_streams, upgraded_stimulus_epochs, notes
+            session_start_time, session_end_time, upgraded_data_streams, upgraded_stimulus_epochs, notes,
+            fallback_tz=fallback_tz,
         )
 
         # Get the iacuc_protocl
@@ -1119,7 +1127,7 @@ class SessionV1V2(CoreUpgrader):
         return configurations, connections
 
     def _validate_and_adjust_session_times(
-        self, session_start_time, session_end_time, upgraded_data_streams, upgraded_stimulus_epochs, notes
+        self, session_start_time, session_end_time, upgraded_data_streams, upgraded_stimulus_epochs, notes, fallback_tz=None
     ):
         """Validate session times against data streams and epochs, adjusting if necessary"""
         # Validate that the start/end times are before all the data streams and epochs
@@ -1140,10 +1148,11 @@ class SessionV1V2(CoreUpgrader):
         if session_start_time and session_end_time and session_start_time > session_end_time:
             session_start_time, session_end_time = session_end_time, session_start_time
 
-        # Convert all times in lists to datetime objects with Pacific timezone, filter out None values
-        valid_start_times = [ensure_pacific_timezone(t) for t in start_times if t is not None]
+        # Convert all times in lists to datetime objects, using fallback_tz for any remaining naive datetimes,
+        # filter out None values
+        valid_start_times = [ensure_timezone(t, fallback_tz) for t in start_times if t is not None]
         valid_start_times = [t for t in valid_start_times if t is not None]
-        valid_end_times = [ensure_pacific_timezone(t) for t in end_times if t is not None]
+        valid_end_times = [ensure_timezone(t, fallback_tz) for t in end_times if t is not None]
         valid_end_times = [t for t in valid_end_times if t is not None]
 
         if valid_start_times and session_start_time and any(start >= session_start_time for start in valid_start_times):
