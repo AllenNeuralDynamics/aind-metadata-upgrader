@@ -440,9 +440,7 @@ class SessionV1V2(CoreUpgrader):
 
         # Map scan_sequence_type to PulseSequenceType
         scan_sequence = scan.get("scan_sequence_type", "")
-        pulse_sequence_type = (
-            PulseSequenceType.RARE if scan_sequence == "RARE" else PulseSequenceType.OTHER
-        )
+        pulse_sequence_type = PulseSequenceType.RARE if scan_sequence == "RARE" else PulseSequenceType.OTHER
 
         # Map subject_position string to SubjectPosition enum
         subject_position_str = scan.get("subject_position", "")
@@ -1061,7 +1059,11 @@ class SessionV1V2(CoreUpgrader):
 
         # Validate and adjust session start/end times
         session_start_time, session_end_time, notes = self._validate_and_adjust_session_times(
-            session_start_time, session_end_time, upgraded_data_streams, upgraded_stimulus_epochs, notes,
+            session_start_time,
+            session_end_time,
+            upgraded_data_streams,
+            upgraded_stimulus_epochs,
+            notes,
             fallback_tz=fallback_tz,
         )
 
@@ -1127,7 +1129,13 @@ class SessionV1V2(CoreUpgrader):
         return configurations, connections
 
     def _validate_and_adjust_session_times(
-        self, session_start_time, session_end_time, upgraded_data_streams, upgraded_stimulus_epochs, notes, fallback_tz=None
+        self,
+        session_start_time,
+        session_end_time,
+        upgraded_data_streams,
+        upgraded_stimulus_epochs,
+        notes,
+        fallback_tz=None,
     ):
         """Validate session times against data streams and epochs, adjusting if necessary"""
         # Validate that the start/end times are before all the data streams and epochs
