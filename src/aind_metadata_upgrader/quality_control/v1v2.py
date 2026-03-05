@@ -131,7 +131,10 @@ class QCUpgraderV1V2(CoreUpgrader):
         data["schema_version"] = schema_version
 
         metrics = []
-        default_grouping = []
+        
+        # We'll group at the top level using the new "type" tag
+        # which will be set to the name of the evaluation (e.g. "curation", "automated", etc.)
+        default_grouping = ["type"]
 
         # Add "object_type" to all the evaluations and metrics
         for ei, evaluation in enumerate(data.get("evaluations", [])):
@@ -139,7 +142,6 @@ class QCUpgraderV1V2(CoreUpgrader):
             modality = evaluation.get("modality", {})
             stage = evaluation.get("stage", "unknown")
             tags = {"type": evaluation["name"]}
-            default_grouping.append(["type"])
 
             for metric in evaluation.get("metrics", []):
                 if isinstance(metric.get("value"), dict) and metric.get("value", {}).get("type", None) == "curation":
