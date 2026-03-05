@@ -131,7 +131,7 @@ class QCUpgraderV1V2(CoreUpgrader):
         data["schema_version"] = schema_version
 
         metrics = []
-        
+
         # We'll group at the top level using the new "type" tag
         # which will be set to the name of the evaluation (e.g. "curation", "automated", etc.)
         default_grouping = ["type"]
