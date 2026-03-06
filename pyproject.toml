@@ -35,7 +35,7 @@ dev = [
     'aind-metadata-upgrader[sync]',
 ]
 sync = [
-    'aind-data-access-api[rds]',
+    'zombie-squirrel>=0.12,<1',
 ]
 
 [tool.setuptools.packages.find]
