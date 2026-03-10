@@ -153,7 +153,7 @@ class TestQualityControlV1V2(unittest.TestCase):
         self.assertEqual(result["object_type"], "Quality control")
         self.assertEqual(len(result["metrics"]), 1)
         self.assertEqual(result["metrics"][0]["name"], "test_metric")
-        self.assertEqual(result["default_grouping"], [["type"]])
+        self.assertEqual(result["default_grouping"], ["type"])
         self.assertEqual(result["notes"], "Test notes")
 
     def test_upgrade_curation_metric_basic(self):

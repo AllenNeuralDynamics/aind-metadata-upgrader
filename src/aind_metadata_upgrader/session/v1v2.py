@@ -12,6 +12,7 @@ from aind_data_schema.components.configs import (
     LightEmittingDiodeConfig,
     ManipulatorConfig,
     MISModuleConfig,
+    MRAcquisitionType,
     MRIScan,
     PatchCordConfig,
     PlanarImage,
@@ -20,10 +21,8 @@ from aind_data_schema.components.configs import (
     PowerFunction,
     ProbeConfig,
     PulseSequenceType,
-    MRAcquisitionType,
-    SlapAcquisitionType,
-    SlapPlane,
     SpeakerConfig,
+    SubjectPosition,
     TriggerType,
     ImagingConfig,
 )
@@ -58,6 +57,7 @@ from aind_data_schema_models.units import (
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import (
     ensure_pacific_timezone,
+    ensure_timezone,
     remove,
     upgrade_calibration,
     upgrade_targeted_structure,
@@ -373,64 +373,7 @@ class SessionV1V2(CoreUpgrader):
 
         return plane
 
-    def _upgrade_slap_fov_to_plane(self, slap_fov: Dict) -> Dict:
-        """Convert SLAP FOV to SlapPlane"""
-        # Determine the targeted structure
-        targeted_structure = slap_fov.get("targeted_structure")
-        if isinstance(targeted_structure, dict):
-            ccf_structure = targeted_structure
-        else:
-            ccf_structure = {"name": str(targeted_structure), "acronym": "Unknown", "id": "0"}
-
-        session_type = slap_fov.get("session_type")
-        acquisition_type = SlapAcquisitionType.PARENT if session_type == "Parent" else SlapAcquisitionType.BRANCH
-
-        return SlapPlane(
-            depth=float(slap_fov.get("imaging_depth", 0)),
-            depth_unit=SizeUnit.UM,
-            power=float(slap_fov.get("power", 0)) if slap_fov.get("power") else 0.0,
-            power_unit=PowerUnit.PERCENT,
-            targeted_structure=ccf_structure,
-            dmd_dilation_x=slap_fov.get("dmd_dilation_x", 0),
-            dmd_dilation_y=slap_fov.get("dmd_dilation_y", 0),
-            dilation_unit=SizeUnit.PX,
-            slap_acquisition_type=acquisition_type,
-            target_neuron=slap_fov.get("target_neuron"),
-            target_branch=slap_fov.get("target_branch"),
-            path_to_array_of_frame_rates=slap_fov.get("path_to_array_of_frame_rates", ""),
-        ).model_dump()
-
-    def _extract_primary_scan_transform(self, mri_scans: List[Dict]) -> tuple:
-        """Extract affine transform and resolution from primary MRI scan"""
-        for scan in mri_scans:
-            if scan.get("primary_scan", False):
-                vc_orientation = scan.get("vc_orientation", None)
-                vc_position = scan.get("vc_position", None)
-                if not vc_orientation or not vc_position:
-                    raise ValueError("Primary MRI scan must have 'vc_orientation' and 'vc_position' for primary scans")
-
-                rotation = vc_orientation["rotation"]
-                rotation = Affine(
-                    affine_transform=[
-                        [float(rotation[0]), float(rotation[1]), float(rotation[2])],
-                        [float(rotation[3]), float(rotation[4]), float(rotation[5])],
-                        [float(rotation[6]), float(rotation[7]), float(rotation[8])],
-                    ]
-                )
-                translation = Translation(translation=vc_position["translation"])
-                transform = [rotation, translation]
-
-                # Get voxel size
-                voxel_size = scan.get("voxel_sizes", {})
-                resolution = Scale(
-                    scale=voxel_size["scale"],
-                )
-
-                return transform, resolution
-
-        return None, None
-
-    def _upgrade_mri_scan_to_config(self, scan: Dict, primary_transform=None, primary_resolution=None) -> Dict:
+    def _upgrade_mri_scan_to_config(self, scan: Dict) -> Dict:
         """Convert MRI scan to MRIScan config"""
         primary = scan.get("primary_scan", False)
         if primary:
@@ -462,21 +405,36 @@ class SessionV1V2(CoreUpgrader):
             resolution = primary_resolution
             coordinate_system = CoordinateSystemLibrary.MRI_LPS if primary_transform else None
 
+        # Map scan_type to setup flag and mr_acquisition_type
+        scan_type_str = scan.get("scan_type", "")
+        is_setup = scan_type_str != "3D Scan"
+        mr_acquisition_type = MRAcquisitionType.SCAN_3D
+
+        # Map scan_sequence_type to PulseSequenceType
+        scan_sequence = scan.get("scan_sequence_type", "")
+        pulse_sequence_type = PulseSequenceType.RARE if scan_sequence == "RARE" else PulseSequenceType.OTHER
+
+        # Map subject_position string to SubjectPosition enum
+        subject_position_str = scan.get("subject_position", "")
+        subject_position_map = {
+            "Prone": SubjectPosition.PRONE,
+            "prone": SubjectPosition.PRONE,
+            "Supine": SubjectPosition.SUPINE,
+            "supine": SubjectPosition.SUPINE,
+        }
+        subject_position = subject_position_map.get(subject_position_str, SubjectPosition.PRONE)
+
         mri_scan = MRIScan(
             device_name=scan.get("mri_scanner", {}).get("name", "Unknown Scanner"),
-            index=scan.get("scan_index", 0),
-            mr_acquisition_type=(
-                MRAcquisitionType.SCAN_3D if "3d" in scan.get("scan_type", "").lower() else MRAcquisitionType.SCAN_2D
-            ),
-            setup=scan.get("primary_scan", False),
-            pulse_sequence_type=(
-                PulseSequenceType.RARE if scan.get("scan_sequence_type") == "RARE" else PulseSequenceType.OTHER
-            ),
-            echo_time=scan.get("echo_time", 0.001),
-            echo_time_unit=TimeUnit.S,
-            repetition_time=scan.get("repetition_time", 0.1),
-            repetition_time_unit=TimeUnit.S,
-            subject_position=scan.get("subject_position", "unknown"),
+            index=scan.get("scan_index", 1),
+            setup=is_setup,
+            pulse_sequence_type=pulse_sequence_type,
+            mr_acquisition_type=mr_acquisition_type,
+            echo_time=scan.get("echo_time", 1.0),
+            echo_time_unit=TimeUnit.MS,
+            repetition_time=scan.get("repetition_time", 100.0),
+            repetition_time_unit=TimeUnit.MS,
+            subject_position=subject_position,
             additional_scan_parameters=scan.get("additional_scan_parameters", {}),
             scanner_coordinate_system=coordinate_system,
             affine_transform=transform,
@@ -628,43 +586,6 @@ class SessionV1V2(CoreUpgrader):
 
         return channels, images
 
-    def _create_slap_components(self, stream: Dict, light_sources: List, detectors: List) -> tuple:
-        """Create channels and images for SLAP modality"""
-        channels = []
-        images = []
-
-        for i, slap_fov in enumerate(stream.get("slap_fovs", [])):
-            # Create channel for this SLAP FOV
-            channel = {
-                "object_type": "Channel config",
-                "channel_name": f"SLAP_Channel_{i}",
-                "detector": (
-                    self._upgrade_detector_config(detectors[0])
-                    if detectors
-                    else {
-                        "object_type": "Detector config",
-                        "device_name": "Unknown Detector",
-                        "exposure_time": 1.0,
-                        "exposure_time_unit": "millisecond",
-                        "trigger_type": "Internal",
-                    }
-                ),
-                "light_sources": [],
-            }
-            channels.append(channel)
-
-            # Create SLAP plane and image
-            plane = self._upgrade_slap_fov_to_plane(slap_fov)
-            image = {
-                "object_type": "Planar image",
-                "channel_name": f"SLAP_Channel_{i}",
-                "planes": [plane],
-                "image_to_acquisition_transform": {"type": "translation", "translation": [0, 0, 0]},
-            }
-            images.append(image)
-
-        return channels, images
-
     def _create_fiber_components(self, stream: Dict, light_sources: List, detectors: List) -> tuple:
         """Create channels and images for fiber photometry modality"""
         channels = []
@@ -700,8 +621,7 @@ class SessionV1V2(CoreUpgrader):
             fov = stream["ophys_fovs"][0]
             frame_rate = fov.get("frame_rate")
         elif modality == "slap" and stream.get("slap_fovs"):
-            slap_fov = stream["slap_fovs"][0]
-            frame_rate = slap_fov.get("frame_rate")
+            raise NotImplementedError("SLAP sampling strategy upgrade not yet implemented")
 
         if frame_rate:
             return {"object_type": "Sampling strategy", "frame_rate": float(frame_rate), "frame_rate_unit": "hertz"}
@@ -728,7 +648,7 @@ class SessionV1V2(CoreUpgrader):
         if modality in ["ophys", "pophys"]:
             channels, images = self._create_ophys_components(stream, light_sources, detectors)
         elif modality == "slap":
-            channels, images = self._create_slap_components(stream, light_sources, detectors)
+            raise NotImplementedError("SLAP imaging config upgrade not yet implemented")
 
         # Don't create config if no channels
         if not channels:
@@ -745,7 +665,7 @@ class SessionV1V2(CoreUpgrader):
             sampling_strategy=sampling_strategy,
         ).model_dump()
 
-    def _upgrade_data_stream(self, stream: Dict, rig_id: str) -> Dict:
+    def _upgrade_data_stream(self, stream: Dict, rig_id: str, fallback_tz=None) -> Dict:
         """Upgrade a single data stream from v1 to v2"""
         # Extract modalities
         modalities = []
@@ -786,8 +706,8 @@ class SessionV1V2(CoreUpgrader):
 
         # Create the data stream
         return DataStream(
-            stream_start_time=stream.get("stream_start_time"),
-            stream_end_time=stream.get("stream_end_time"),
+            stream_start_time=ensure_timezone(stream.get("stream_start_time"), fallback_tz),
+            stream_end_time=ensure_timezone(stream.get("stream_end_time"), fallback_tz),
             modalities=modalities,
             active_devices=active_devices,
             configurations=configurations,
@@ -958,7 +878,7 @@ class SessionV1V2(CoreUpgrader):
                         code["parameters"] = stimulus_data["parameters"]
         return code
 
-    def _upgrade_stimulus_epoch(self, epoch: dict) -> dict:
+    def _upgrade_stimulus_epoch(self, epoch: dict, fallback_tz=None) -> dict:
         """Upgrade stimulus epoch from v1 to v2"""
         # Determine stimulus modalities
         stimulus_modalities = self._determine_stimulus_modalities(epoch)
@@ -988,8 +908,8 @@ class SessionV1V2(CoreUpgrader):
         code = self._handle_legacy_stimulus_data(epoch, code)
 
         return StimulusEpoch(
-            stimulus_start_time=epoch.get("stimulus_start_time"),
-            stimulus_end_time=epoch.get("stimulus_end_time"),
+            stimulus_start_time=ensure_timezone(epoch.get("stimulus_start_time"), fallback_tz),
+            stimulus_end_time=ensure_timezone(epoch.get("stimulus_end_time"), fallback_tz),
             stimulus_name=stimulus_name,
             stimulus_modalities=stimulus_modalities,
             performance_metrics=performance_metrics,
@@ -1035,16 +955,22 @@ class SessionV1V2(CoreUpgrader):
         # Upgrade experimenter names to Person objects
         experimenters = self._upgrade_experimenter_names(experimenter_full_name)
 
+        # Extract the timezone from session_start_time to use as fallback for naive sub-timestamps.
+        # This prevents Pydantic's _coerce_naive_datetime from attaching the server's local
+        # timezone (e.g. -08:00 PST) to times that should share the session's offset (e.g. -07:00).
+        _session_start_dt = ensure_pacific_timezone(session_start_time)
+        fallback_tz = _session_start_dt.tzinfo if _session_start_dt else None
+
         # Upgrade data streams
         upgraded_data_streams = []
         for stream in data_streams:
-            upgraded_stream = self._upgrade_data_stream(stream, rig_id)
+            upgraded_stream = self._upgrade_data_stream(stream, rig_id, fallback_tz=fallback_tz)
             upgraded_data_streams.append(upgraded_stream)
 
         # Upgrade stimulus epochs
         upgraded_stimulus_epochs = []
         for epoch in stimulus_epochs:
-            upgraded_epoch = self._upgrade_stimulus_epoch(epoch)
+            upgraded_epoch = self._upgrade_stimulus_epoch(epoch, fallback_tz=fallback_tz)
             upgraded_stimulus_epochs.append(upgraded_epoch)
 
         # Upgrade calibrations and maintenance
@@ -1067,7 +993,12 @@ class SessionV1V2(CoreUpgrader):
 
         # Validate and adjust session start/end times
         session_start_time, session_end_time, notes = self._validate_and_adjust_session_times(
-            session_start_time, session_end_time, upgraded_data_streams, upgraded_stimulus_epochs, notes
+            session_start_time,
+            session_end_time,
+            upgraded_data_streams,
+            upgraded_stimulus_epochs,
+            notes,
+            fallback_tz=fallback_tz,
         )
 
         # Get the iacuc_protocl
@@ -1135,7 +1066,13 @@ class SessionV1V2(CoreUpgrader):
         return configurations, connections
 
     def _validate_and_adjust_session_times(
-        self, session_start_time, session_end_time, upgraded_data_streams, upgraded_stimulus_epochs, notes
+        self,
+        session_start_time,
+        session_end_time,
+        upgraded_data_streams,
+        upgraded_stimulus_epochs,
+        notes,
+        fallback_tz=None,
     ):
         """Validate session times against data streams and epochs, adjusting if necessary"""
         # Validate that the start/end times are before all the data streams and epochs
@@ -1156,10 +1093,11 @@ class SessionV1V2(CoreUpgrader):
         if session_start_time and session_end_time and session_start_time > session_end_time:
             session_start_time, session_end_time = session_end_time, session_start_time
 
-        # Convert all times in lists to datetime objects with Pacific timezone, filter out None values
-        valid_start_times = [ensure_pacific_timezone(t) for t in start_times if t is not None]
+        # Convert all times in lists to datetime objects, using fallback_tz for any remaining naive datetimes,
+        # filter out None values
+        valid_start_times = [ensure_timezone(t, fallback_tz) for t in start_times if t is not None]
         valid_start_times = [t for t in valid_start_times if t is not None]
-        valid_end_times = [ensure_pacific_timezone(t) for t in end_times if t is not None]
+        valid_end_times = [ensure_timezone(t, fallback_tz) for t in end_times if t is not None]
         valid_end_times = [t for t in valid_end_times if t is not None]
 
         if valid_start_times and session_start_time and any(start >= session_start_time for start in valid_start_times):

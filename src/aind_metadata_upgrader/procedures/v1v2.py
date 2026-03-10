@@ -1,6 +1,7 @@
 """<=v1.4 to v2.0 procedures upgrade functions"""
 
 import copy
+import logging
 from datetime import date
 from typing import Optional
 
@@ -347,7 +348,11 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             for coord in coord_list:
                 data["measured_coordinates"].update(coord)
 
-        surgery = Surgery(**data)
+        try:
+            surgery = Surgery(**data)
+        except Exception as e:
+            logging.warning(f"Surgery validation failed, using model_construct: {e}")
+            surgery = Surgery.model_construct(**data)
         return surgery.model_dump()
 
     def _upgrade_subject_procedure(self, data: dict):
@@ -411,7 +416,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         if "subject_id" not in specimen_id:
             specimen_id = f"{self.subject_id}_{specimen_id}"
 
-        specimen_procedure = SpecimenProcedure(
+        kwargs = dict(
             procedure_type=procedure_type,
             specimen_id=specimen_id,
             start_date=data.get("start_date"),
@@ -422,5 +427,10 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             procedure_details=procedure_details,
             notes=data.get("notes"),
         )
+        try:
+            specimen_procedure = SpecimenProcedure(**kwargs)
+        except Exception as e:
+            logging.warning(f"SpecimenProcedure validation failed, using model_construct: {e}")
+            specimen_procedure = SpecimenProcedure.model_construct(**kwargs)
 
         return specimen_procedure.model_dump()

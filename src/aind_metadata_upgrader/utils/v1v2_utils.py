@@ -53,22 +53,29 @@ MODALITY_MAP = {"SmartSPIM": Modality.SPIM, "smartspim": Modality.SPIM, "FIP": M
 counts = {}
 
 
-def ensure_pacific_timezone(dt: Optional[str]) -> Optional[datetime]:
-    """Ensure datetime is in Pacific timezone"""
+def ensure_timezone(dt: Optional[str], fallback_tz=None) -> Optional[datetime]:
+    """Ensure datetime has a timezone.
+
+    For naive datetimes, uses fallback_tz if provided, otherwise falls back to
+    America/Los_Angeles (Pacific). This avoids the bug where Python's
+    .astimezone() attaches the server's local timezone to naive datetimes
+    (which may differ from the offset already present in sibling timestamps).
+    """
     pacific_tz = ZoneInfo("America/Los_Angeles")
     if dt is None:
         return None
     if isinstance(dt, str):
         dt = dt.replace("Z", "+00:00")
         dt = datetime.fromisoformat(dt)
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=pacific_tz)
-    else:
-        # Convert to Pacific timezone if it has any timezone info
-        # This ensures we use a named timezone (e.g., America/Los_Angeles)
-        # instead of a fixed offset (e.g., UTC-08:00)
-        dt = dt.astimezone(pacific_tz)
+    if isinstance(dt, datetime) and dt.tzinfo is None:
+        tz = fallback_tz if fallback_tz is not None else pacific_tz
+        dt = dt.replace(tzinfo=tz)
     return dt
+
+
+def ensure_pacific_timezone(dt: Optional[str]) -> Optional[datetime]:
+    """Ensure datetime is in Pacific timezone (backward-compatible wrapper)."""
+    return ensure_timezone(dt, fallback_tz=None)
 
 
 def validate_frequency_unit(frequency_unit: str) -> str:
