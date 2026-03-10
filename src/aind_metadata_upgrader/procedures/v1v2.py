@@ -182,12 +182,23 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         # Convert groups into Surgery objects
         surgeries = []
         for (start_date, end_date), procs in surgery_groups.items():
-            # Use common fields from first procedure
+            # Carry surgery-level metadata from the first non-empty value in the group.
+            experimenter_full_name = next(
+                (p.get("experimenter_full_name") for p in procs if p.get("experimenter_full_name")),
+                None,
+            )
+            iacuc_protocol = next((p.get("iacuc_protocol") for p in procs if p.get("iacuc_protocol")), None)
+            protocol_id = next((p.get("protocol_id") for p in procs if p.get("protocol_id")), None)
+            anaesthesia = next((p.get("anaesthesia") for p in procs if p.get("anaesthesia")), None)
 
             surgery_data = {
                 "procedure_type": "Surgery",
                 "start_date": start_date,
                 "end_date": end_date,
+                "experimenter_full_name": experimenter_full_name,
+                "iacuc_protocol": iacuc_protocol,
+                "protocol_id": protocol_id,
+                "anaesthesia": anaesthesia,
                 "procedures": procs,
             }
 
