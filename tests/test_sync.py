@@ -359,7 +359,7 @@ class TestSync(unittest.TestCase):
 
     @patch("aind_metadata_upgrader.sync.custom")
     @patch("aind_metadata_upgrader.sync.upgrader_version", "2.5.0")
-    @patch("aind_metadata_upgrader.sync.REDSHIFT_TABLE_NAME", "test_table")
+    @patch("aind_metadata_upgrader.sync.TABLE_NAME", "test_table")
     def test_update_rds_tracking_insert_new_record(self, mock_custom):
         """Test that update_rds_tracking correctly inserts a new record."""
         mock_custom.side_effect = lambda *a, **kw: (
@@ -386,7 +386,7 @@ class TestSync(unittest.TestCase):
 
     @patch("aind_metadata_upgrader.sync.custom")
     @patch("aind_metadata_upgrader.sync.upgrader_version", "3.1.4")
-    @patch("aind_metadata_upgrader.sync.REDSHIFT_TABLE_NAME", "test_table")
+    @patch("aind_metadata_upgrader.sync.TABLE_NAME", "test_table")
     def test_update_rds_tracking_update_existing_record(self, mock_custom):
         """Test that update_rds_tracking correctly overwrites an existing record."""
         existing_df = pd.DataFrame(
@@ -423,7 +423,7 @@ class TestSync(unittest.TestCase):
 
     @patch("aind_metadata_upgrader.sync.custom")
     @patch("aind_metadata_upgrader.sync.upgrader_version", "1.2.3")
-    @patch("aind_metadata_upgrader.sync.REDSHIFT_TABLE_NAME", "test_table")
+    @patch("aind_metadata_upgrader.sync.TABLE_NAME", "test_table")
     def test_update_rds_tracking_failed_status(self, mock_custom):
         """Test that update_rds_tracking correctly handles failed upgrades with None v2_id."""
         mock_custom.side_effect = lambda *a, **kw: (

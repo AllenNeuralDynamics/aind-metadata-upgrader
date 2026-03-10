@@ -28,7 +28,7 @@ client_v2 = MetadataDbClient(
 
 # cache settings
 # we'll store v1_id, v2_id, upgrade_version, status
-REDSHIFT_TABLE_NAME = os.getenv("REDSHIFT_TABLE_NAME", "metadata_upgrade_status_prod")
+TABLE_NAME = os.getenv("TABLE_NAME", "metadata_upgrade_status_prod")
 
 
 def upgrade_record(data_dict: dict) -> tuple[Optional[dict], dict]:
@@ -82,7 +82,7 @@ def upgrade_record(data_dict: dict) -> tuple[Optional[dict], dict]:
 def get_rds_data() -> Optional[pd.DataFrame]:
     """Retrieve existing upgrade status data from cache"""
     try:
-        df = custom(REDSHIFT_TABLE_NAME)
+        df = custom(TABLE_NAME)
     except ValueError as e:
         logging.info(f"(METADATA VALIDATOR): No previous validation results found, starting fresh: {e}")
         df = None
@@ -97,7 +97,7 @@ def get_rds_data() -> Optional[pd.DataFrame]:
 def upload_to_rds_helper(df: pd.DataFrame):
     """Upload upgrade results to cache"""
     logging.info(f"(METADATA VALIDATOR) Uploading {len(df)} records to cache")
-    custom(REDSHIFT_TABLE_NAME, force_update=True, df=df)
+    custom(TABLE_NAME, force_update=True, df=df)
 
 
 def check_skip_conditions(data_dict: dict, original_df: Optional[pd.DataFrame]) -> bool:
@@ -150,7 +150,7 @@ def query_rds_record(record_id: str) -> Optional[list]:
         List of matching rows (typically 0 or 1 row), or None if query fails
     """
     try:
-        df = custom(REDSHIFT_TABLE_NAME)
+        df = custom(TABLE_NAME)
         matching = df[df["v1_id"] == str(record_id)]
         return matching.to_dict("records") if len(matching) > 0 else []
     except Exception as e:
@@ -188,7 +188,7 @@ def update_rds_tracking(record_id: str, result: dict, existing_row: Optional[lis
     """
     try:
         try:
-            df = custom(REDSHIFT_TABLE_NAME)
+            df = custom(TABLE_NAME)
         except ValueError:
             df = pd.DataFrame(columns=["v1_id", "v2_id", "upgrader_version", "last_modified", "status"])
 
@@ -204,7 +204,7 @@ def update_rds_tracking(record_id: str, result: dict, existing_row: Optional[lis
         df = df[df["v1_id"] != str(record_id)]
         df = pd.concat([df, new_row], ignore_index=True)
 
-        custom(REDSHIFT_TABLE_NAME, force_update=True, df=df)
+        custom(TABLE_NAME, force_update=True, df=df)
         logging.info(f"Updated cache tracking for record {record_id}")
     except Exception as e:
         logging.error(f"Failed to update cache tracking for record {record_id}: {e}")
