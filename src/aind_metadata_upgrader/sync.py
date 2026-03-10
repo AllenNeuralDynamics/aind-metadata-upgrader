@@ -5,15 +5,13 @@ import os
 from typing import Optional
 from aind_metadata_upgrader.upgrade import Upgrade
 from aind_data_access_api.document_db import MetadataDbClient
-from aind_data_access_api.rds_tables import RDSCredentials
-from aind_data_access_api.rds_tables import Client
+from zombie_squirrel import custom
 import pandas as pd
 from aind_metadata_upgrader import __version__ as upgrader_version
 
 
 DOCDB_HOST = os.getenv("DOCDB_HOST", "api.allenneuraldynamics.org")
 BATCH_SIZE = 100
-CHUNK_SIZE = 1000
 
 
 # docdb
@@ -28,18 +26,9 @@ client_v2 = MetadataDbClient(
 )
 
 
-# redshift settings
+# cache settings
 # we'll store v1_id, v2_id, upgrade_version, status
-REDSHIFT_AWS_SECRET_NAME = os.getenv("REDSHIFT_AWS_SECRET_NAME", "/aind/prod/redshift/credentials/readwrite")
-REDSHIFT_TABLE_NAME = os.getenv("REDSHIFT_TABLE_NAME", "metadata_upgrade_status_prod")
-
-try:
-    rds_client = Client(
-        credentials=RDSCredentials(aws_secrets_name=REDSHIFT_AWS_SECRET_NAME),
-    )
-except Exception:
-    # For testing purposes, allow this to fail silently
-    rds_client = None
+TABLE_NAME = os.getenv("TABLE_NAME", "metadata_upgrade_status_prod")
 
 
 def upgrade_record(data_dict: dict) -> tuple[Optional[dict], dict]:
@@ -91,11 +80,11 @@ def upgrade_record(data_dict: dict) -> tuple[Optional[dict], dict]:
 
 
 def get_rds_data() -> Optional[pd.DataFrame]:
-    """Retrieve existing upgrade status data from RDS"""
+    """Retrieve existing upgrade status data from cache"""
     try:
-        df = rds_client.read_table(REDSHIFT_TABLE_NAME)
-    except Exception as e:
-        logging.error(f"(METADATA VALIDATOR): Error reading from RDS table {REDSHIFT_TABLE_NAME}: {e}")
+        df = custom(TABLE_NAME)
+    except ValueError as e:
+        logging.info(f"(METADATA VALIDATOR): No previous validation results found, starting fresh: {e}")
         df = None
 
     if df is not None and ("v1_id" not in df.columns or len(df) < 1):
@@ -106,24 +95,9 @@ def get_rds_data() -> Optional[pd.DataFrame]:
 
 
 def upload_to_rds_helper(df: pd.DataFrame):
-    """Upload upgrade results to RDS, chunking if necessary"""
-    logging.info(f"(METADATA VALIDATOR) Uploading {len(df)} records to RDS")
-
-    if len(df) <= CHUNK_SIZE:
-        logging.info("(METADATA VALIDATOR) No chunking required for RDS")
-        rds_client.overwrite_table_with_df(df, REDSHIFT_TABLE_NAME)
-    else:
-        # chunk into CHUNK_SIZE row chunks
-        logging.info("(METADATA VALIDATOR) Chunking required for RDS")
-        # Process first chunk
-        first_chunk = pd.DataFrame(df.iloc[:CHUNK_SIZE])
-        rds_client.overwrite_table_with_df(first_chunk, REDSHIFT_TABLE_NAME)
-
-        # Process remaining chunks
-        for i in range(CHUNK_SIZE, len(df), CHUNK_SIZE):
-            end_idx = min(i + CHUNK_SIZE, len(df))
-            chunk = pd.DataFrame(df.iloc[i:end_idx])
-            rds_client.append_df_to_table(chunk, REDSHIFT_TABLE_NAME)
+    """Upload upgrade results to cache"""
+    logging.info(f"(METADATA VALIDATOR) Uploading {len(df)} records to cache")
+    custom(TABLE_NAME, force_update=True, df=df)
 
 
 def check_skip_conditions(data_dict: dict, original_df: Optional[pd.DataFrame]) -> bool:
@@ -167,7 +141,7 @@ def upload_to_rds(original_df: Optional[pd.DataFrame], upgrade_results: list[dic
 
 
 def query_rds_record(record_id: str) -> Optional[list]:
-    """Query RDS for a specific record by v1_id.
+    """Query cache for a specific record by v1_id.
 
     Args:
         record_id: The v1 record ID to query
@@ -176,17 +150,11 @@ def query_rds_record(record_id: str) -> Optional[list]:
         List of matching rows (typically 0 or 1 row), or None if query fails
     """
     try:
-        query = (
-            f"SELECT v1_id, v2_id, upgrader_version, last_modified, status FROM "
-            f"{REDSHIFT_TABLE_NAME} WHERE v1_id = '{record_id}'"
-        )
-        result = rds_client.execute_query(query)
-        if result:
-            # Convert SQLAlchemy Row objects to dictionaries
-            return [dict(row._mapping) for row in result.fetchall()]
-        return None
+        df = custom(TABLE_NAME)
+        matching = df[df["v1_id"] == str(record_id)]
+        return matching.to_dict("records") if len(matching) > 0 else []
     except Exception as e:
-        logging.warning(f"Error querying RDS for record {record_id}: {e}")
+        logging.warning(f"Error querying cache for record {record_id}: {e}")
         return None
 
 
@@ -211,44 +179,35 @@ def should_skip_record(existing_row: Optional[list], data_dict: dict) -> bool:
 
 
 def update_rds_tracking(record_id: str, result: dict, existing_row: Optional[list]) -> None:
-    """Update RDS tracking data for a record using SQL INSERT or UPDATE.
+    """Update cache tracking data for a record (upsert by v1_id).
 
     Args:
         record_id: The v1 record ID
         result: Dictionary containing tracking data (v1_id, v2_id, upgrader_version, last_modified, status)
-        existing_row: Row(s) from RDS query result, used to determine INSERT vs UPDATE
+        existing_row: Unused; kept for interface compatibility
     """
     try:
-        v1_id = result["v1_id"]
-        v2_id = result.get("v2_id")
-        status = result["status"]
-        last_modified = result.get("last_modified", "")
+        try:
+            df = custom(TABLE_NAME)
+        except ValueError:
+            df = pd.DataFrame(columns=["v1_id", "v2_id", "upgrader_version", "last_modified", "status"])
 
-        # Check if row exists
-        if existing_row and len(existing_row) > 0:
-            # Update existing row
-            set_command = (
-                f"v2_id = '{v2_id}', upgrader_version = '{upgrader_version}',"
-                f"last_modified = '{last_modified}', status = '{status}'"
-            )
+        new_row = pd.DataFrame([{
+            "v1_id": result["v1_id"],
+            "v2_id": result.get("v2_id"),
+            "upgrader_version": upgrader_version,
+            "last_modified": result.get("last_modified", ""),
+            "status": result["status"],
+        }])
 
-            update_query = f"""
-            UPDATE {REDSHIFT_TABLE_NAME}
-            SET {set_command}
-            WHERE v1_id = '{v1_id}'
-            """
-            rds_client.execute_query(update_query)
-            logging.info(f"Updated RDS tracking for record {record_id}")
-        else:
-            # Insert new row
-            insert_query = f"""
-            INSERT INTO {REDSHIFT_TABLE_NAME} (v1_id, v2_id, upgrader_version, last_modified, status)
-            VALUES ('{v1_id}', '{v2_id}', '{upgrader_version}', '{last_modified}', '{status}')
-            """
-            rds_client.execute_query(insert_query)
-            logging.info(f"Inserted RDS tracking for record {record_id}")
+        # Remove existing row if present, then append updated row
+        df = df[df["v1_id"] != str(record_id)]
+        df = pd.concat([df, new_row], ignore_index=True)
+
+        custom(TABLE_NAME, force_update=True, df=df)
+        logging.info(f"Updated cache tracking for record {record_id}")
     except Exception as e:
-        logging.error(f"Failed to update RDS tracking for record {record_id}: {e}")
+        logging.error(f"Failed to update cache tracking for record {record_id}: {e}")
 
 
 def run_one(record_id: str):
@@ -305,6 +264,8 @@ def run():
     """Run all records through the upgrader and store results in RDS"""
     # Get list of all record IDs from v1 database
     records_list = client_v1.retrieve_docdb_records(filter_query={}, projection={"_id": 1})
+    record_ids = [record["_id"] for record in records_list]
+    logging.info(f"Found {len(record_ids)} records to process")
 
     num_records = len(records_list)
     cached_records = []
@@ -312,14 +273,20 @@ def run():
 
     original_df = get_rds_data()
 
+    # Wipe rows whose v1_id no longer exists in the v1 database
+    if original_df is not None and len(record_ids) > 0:
+        record_ids_set = set(str(rid) for rid in record_ids)
+        original_df = original_df[original_df["v1_id"].isin(record_ids_set)]
+        logging.info(f"Filtered original_df to {len(original_df)} records that exist in v1 database")
+
     upgrade_results = []
 
     # Cache 10 records at a time to reduce API calls
     for i in range(0, num_records, BATCH_SIZE):
         logging.info(f"Records: {i}/{num_records}")
-        batch = records_list[i: i + BATCH_SIZE]  # fmt: skip
+        batch_ids = record_ids[i: i + BATCH_SIZE]
         cached_records = client_v1.retrieve_docdb_records(
-            filter_query={"_id": {"$in": [record["_id"] for record in batch]}},
+            filter_query={"_id": {"$in": batch_ids}},
         )
 
         for data_dict in cached_records:
