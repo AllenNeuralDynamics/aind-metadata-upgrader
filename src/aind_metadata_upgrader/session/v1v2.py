@@ -21,8 +21,6 @@ from aind_data_schema.components.configs import (
     PowerFunction,
     ProbeConfig,
     PulseSequenceType,
-    SlapAcquisitionType,
-    SlapPlane,
     SpeakerConfig,
     SubjectPosition,
     TriggerType,
@@ -55,6 +53,7 @@ from aind_data_schema_models.units import (
     TimeUnit,
     VolumeUnit,
 )
+from aind_data_schema_models.slap2_acquisition_type import Slap2AcquisitionType
 
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import (
@@ -374,33 +373,6 @@ class SessionV1V2(CoreUpgrader):
 
         return plane
 
-    def _upgrade_slap_fov_to_plane(self, slap_fov: Dict) -> Dict:
-        """Convert SLAP FOV to SlapPlane"""
-        # Determine the targeted structure
-        targeted_structure = slap_fov.get("targeted_structure")
-        if isinstance(targeted_structure, dict):
-            ccf_structure = targeted_structure
-        else:
-            ccf_structure = {"name": str(targeted_structure), "acronym": "Unknown", "id": "0"}
-
-        session_type = slap_fov.get("session_type")
-        acquisition_type = SlapAcquisitionType.PARENT if session_type == "Parent" else SlapAcquisitionType.BRANCH
-
-        return SlapPlane(
-            depth=float(slap_fov.get("imaging_depth", 0)),
-            depth_unit=SizeUnit.UM,
-            power=float(slap_fov.get("power", 0)) if slap_fov.get("power") else 0.0,
-            power_unit=PowerUnit.PERCENT,
-            targeted_structure=ccf_structure,
-            dmd_dilation_x=slap_fov.get("dmd_dilation_x", 0),
-            dmd_dilation_y=slap_fov.get("dmd_dilation_y", 0),
-            dilation_unit=SizeUnit.PX,
-            slap_acquisition_type=acquisition_type,
-            target_neuron=slap_fov.get("target_neuron"),
-            target_branch=slap_fov.get("target_branch"),
-            path_to_array_of_frame_rates=slap_fov.get("path_to_array_of_frame_rates", ""),
-        ).model_dump()
-
     def _upgrade_mri_scan_to_config(self, scan: Dict) -> Dict:
         """Convert MRI scan to MRIScan config"""
         primary = scan.get("primary_scan", False)
@@ -615,43 +587,6 @@ class SessionV1V2(CoreUpgrader):
 
         return channels, images
 
-    def _create_slap_components(self, stream: Dict, light_sources: List, detectors: List) -> tuple:
-        """Create channels and images for SLAP modality"""
-        channels = []
-        images = []
-
-        for i, slap_fov in enumerate(stream.get("slap_fovs", [])):
-            # Create channel for this SLAP FOV
-            channel = {
-                "object_type": "Channel config",
-                "channel_name": f"SLAP_Channel_{i}",
-                "detector": (
-                    self._upgrade_detector_config(detectors[0])
-                    if detectors
-                    else {
-                        "object_type": "Detector config",
-                        "device_name": "Unknown Detector",
-                        "exposure_time": 1.0,
-                        "exposure_time_unit": "millisecond",
-                        "trigger_type": "Internal",
-                    }
-                ),
-                "light_sources": [],
-            }
-            channels.append(channel)
-
-            # Create SLAP plane and image
-            plane = self._upgrade_slap_fov_to_plane(slap_fov)
-            image = {
-                "object_type": "Planar image",
-                "channel_name": f"SLAP_Channel_{i}",
-                "planes": [plane],
-                "image_to_acquisition_transform": {"type": "translation", "translation": [0, 0, 0]},
-            }
-            images.append(image)
-
-        return channels, images
-
     def _create_fiber_components(self, stream: Dict, light_sources: List, detectors: List) -> tuple:
         """Create channels and images for fiber photometry modality"""
         channels = []
@@ -687,8 +622,7 @@ class SessionV1V2(CoreUpgrader):
             fov = stream["ophys_fovs"][0]
             frame_rate = fov.get("frame_rate")
         elif modality == "slap" and stream.get("slap_fovs"):
-            slap_fov = stream["slap_fovs"][0]
-            frame_rate = slap_fov.get("frame_rate")
+            raise NotImplementedError("SLAP sampling strategy upgrade not yet implemented")
 
         if frame_rate:
             return {"object_type": "Sampling strategy", "frame_rate": float(frame_rate), "frame_rate_unit": "hertz"}
@@ -715,7 +649,7 @@ class SessionV1V2(CoreUpgrader):
         if modality in ["ophys", "pophys"]:
             channels, images = self._create_ophys_components(stream, light_sources, detectors)
         elif modality == "slap":
-            channels, images = self._create_slap_components(stream, light_sources, detectors)
+            raise NotImplementedError("SLAP imaging config upgrade not yet implemented")
 
         # Don't create config if no channels
         if not channels:
