@@ -83,8 +83,10 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
     def _legacy_normalize_injection_materials(self, materials: list) -> None:
         """Normalize injection material dicts from the pre-v1.0 format in place."""
         for material in materials:
-            if "material_type" not in material:
+            if "material_type" not in material and "AAV" in material.get("full_genome_name", ""):
                 material["material_type"] = "Virus"
+            else:
+                raise NotImplementedError("Unsupported injection material type in legacy format")
             # Map full_genome_name to name field for ViralMaterial
             if "full_genome_name" in material:
                 material["name"] = material["full_genome_name"]
