@@ -400,10 +400,9 @@ class SessionV1V2(CoreUpgrader):
                 scale=voxel_size["scale"],
             )
         else:
-            # For non-primary/non-setup scans, use the provided primary transform and resolution
-            transform = primary_transform
-            resolution = primary_resolution
-            coordinate_system = CoordinateSystemLibrary.MRI_LPS if primary_transform else None
+            coordinate_system = None
+            transform = None
+            resolution = None
 
         # Map scan_type to setup flag and mr_acquisition_type
         scan_type_str = scan.get("scan_type", "")
@@ -1052,11 +1051,8 @@ class SessionV1V2(CoreUpgrader):
         connections.extend(fiber_connections)
 
         # MRI configs
-        mri_scans = stream.get("mri_scans", [])
-        if mri_scans:
-            primary_transform, primary_resolution = self._extract_primary_scan_transform(mri_scans)
-            for mri_scan in mri_scans:
-                configurations.append(self._upgrade_mri_scan_to_config(mri_scan, primary_transform, primary_resolution))
+        for mri_scan in stream.get("mri_scans", []):
+            configurations.append(self._upgrade_mri_scan_to_config(mri_scan))
 
         # Imaging config
         imaging_config = self._create_imaging_config(stream)
