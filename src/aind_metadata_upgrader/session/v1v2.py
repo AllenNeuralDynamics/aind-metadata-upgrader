@@ -53,7 +53,6 @@ from aind_data_schema_models.units import (
     TimeUnit,
     VolumeUnit,
 )
-from aind_data_schema_models.slap2_acquisition_type import Slap2AcquisitionType
 
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import (
