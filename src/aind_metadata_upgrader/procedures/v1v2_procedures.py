@@ -121,9 +121,8 @@ def upgrade_hemisphere_craniotomy(data: dict) -> dict:
         data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
         data["position"] = [AnatomicalRelative.ORIGIN]
     elif "dual hemisphere" in str(data.get("craniotomy_type", "")).lower():
-        # Dual hemisphere craniotomy - position is both left and right
         data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
-        data["position"] = [AnatomicalRelative.LEFT, AnatomicalRelative.RIGHT]
+        data["position"] = []
     else:
         # We don't know the hemisphere, so we put position at origin unfortunately
         data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name

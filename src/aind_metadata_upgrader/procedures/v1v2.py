@@ -89,9 +89,9 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                 raise NotImplementedError("Unsupported injection material type in legacy format")
             # Map full_genome_name to name field for ViralMaterial
             if "full_genome_name" in material:
-                material["name"] = material["full_genome_name"]
+                material["name"] = f'{material.get("name","")}:{material["full_genome_name"]}'
                 del material["full_genome_name"]
-            # Remove deprecated prep_type field
+            # prep_type replaced by TARs IDs, not available
             if "prep_type" in material:
                 del material["prep_type"]
 
@@ -188,7 +188,6 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                 None,
             )
             iacuc_protocol = next((p.get("iacuc_protocol") for p in procs if p.get("iacuc_protocol")), None)
-            protocol_id = next((p.get("protocol_id") for p in procs if p.get("protocol_id")), None)
             anaesthesia = next((p.get("anaesthesia") for p in procs if p.get("anaesthesia")), None)
 
             surgery_data = {
@@ -197,7 +196,6 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                 "end_date": end_date,
                 "experimenter_full_name": experimenter_full_name,
                 "iacuc_protocol": iacuc_protocol,
-                "protocol_id": protocol_id,
                 "anaesthesia": anaesthesia,
                 "procedures": procs,
             }
