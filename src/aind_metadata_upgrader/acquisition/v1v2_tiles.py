@@ -12,6 +12,7 @@ from aind_data_schema.components.configs import (
     DeviceConfig,
 )
 from aind_data_schema.core.acquisition import DataStream
+from aind_data_schema.components.identifiers import Code
 from aind_data_schema_models.devices import ImmersionMedium
 from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.units import PowerUnit, SizeUnit, TimeUnit
@@ -297,16 +298,24 @@ def upgrade_tiles_to_data_stream(
     combined_notes = "; ".join(filter(None, tile_notes)) if tile_notes else None
 
     # Handle software
+    codes = None
     if software:
-        print(software)
-        raise NotImplementedError("Software handling is not implemented yet.")
+        codes = []
+        for sw in software:
+            code = Code(
+                url=sw["url"] if "url" in sw and sw["url"] else "(v1v2 upgrade) unknown",
+                name=sw.get("name"),
+                version=sw.get("version"),
+                parameters=sw.get("parameters"),
+            )
+            codes.append(code.model_dump())
 
     # Create single data stream from all tiles
     data_stream = {
         "stream_start_time": stream_start,
         "stream_end_time": stream_end,
         "modalities": modalities,
-        "code": None,
+        "code": codes,
         "notes": combined_notes,
         "active_devices": active_devices,
         "configurations": configurations,
