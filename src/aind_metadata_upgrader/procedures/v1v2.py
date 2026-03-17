@@ -205,7 +205,33 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             # Convert experimenter_full_name to experimenters list
             data = self._replace_experimenter_full_name(data)
             return upgrade_generic_subject_procedure(data)
+        elif procedure_type == "Perfusion":
+            # Some legacy records store perfusion as a top-level subject procedure,
+            # but v2 expects it as a surgery procedure inside a Surgery object.
+            perfusion_procedure = {
+                "procedure_type": "Perfusion",
+                "output_specimen_ids": data.get("output_specimen_ids", []),
+            }
+            if "protocol_id" in data:
+                perfusion_procedure["protocol_id"] = data.get("protocol_id")
 
+            surgery_data = {
+                "start_date": data.get("start_date"),
+                "end_date": data.get("end_date"),
+                "anaesthesia": data.get("anaesthesia"),
+                "notes": data.get("notes"),
+                "procedures": [perfusion_procedure],
+            }
+
+            if "experimenter_full_name" in data:
+                surgery_data["experimenter_full_name"] = data.get("experimenter_full_name")
+            surgery_data = self._replace_experimenter_full_name(surgery_data)
+            surgery_data["ethics_review_id"] = data.get("iacuc_protocol", None)
+
+            self._process_surgery_procedures(surgery_data)
+            return self._finalize_surgery_data(surgery_data)
+
+        print(data)
         raise ValueError("Unsupported subject procedure type: {}".format(procedure_type))
 
     def _upgrade_specimen_procedure(self, data: dict) -> dict:
