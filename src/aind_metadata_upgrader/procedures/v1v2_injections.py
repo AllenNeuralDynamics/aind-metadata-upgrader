@@ -199,6 +199,13 @@ def build_relative_position_from_hemisphere(data: dict) -> list:
     return relative_position
 
 
+def ensure_coordinates_match_dynamics(coordinates: list, dynamics: list) -> list:
+    """Ensure coordinates list has an entry for each dynamic, filling with empty translations if needed"""
+    if not coordinates:
+        coordinates = [[Translation(translation=[]).model_dump()] for _ in dynamics]
+    return coordinates
+
+
 def ensure_injection_materials_with_default(injection_materials: list) -> list:
     """Ensure injection materials list has at least one item, adding default if empty"""
     if len(injection_materials) == 0:
@@ -259,6 +266,8 @@ def upgrade_nanoject_injection(data: dict) -> tuple[dict, list]:
             ).model_dump()
         )
 
+    coordinates = ensure_coordinates_match_dynamics(data.get("coordinates", []), dynamics)
+
     injection = BrainInjection(
         injection_materials=injection_materials,
         targeted_structure=upgrade_targeted_structure(data.get("targeted_structure")),
@@ -266,7 +275,7 @@ def upgrade_nanoject_injection(data: dict) -> tuple[dict, list]:
         dynamics=dynamics,
         protocol_id=data.get("protocol_id", None),
         coordinate_system_name=CoordinateSystemLibrary.BREGMA_ARID.name,
-        coordinates=data.get("coordinates", []),
+        coordinates=coordinates,
     )
 
     return injection.model_dump(), measured_coordinates
@@ -323,7 +332,7 @@ def upgrade_iontophoresis_injection(data: dict) -> tuple[dict, list]:
         dynamics=dynamics,
         protocol_id=data.get("protocol_id", None),
         coordinate_system_name=CoordinateSystemLibrary.BREGMA_ARID.name,
-        coordinates=data.get("coordinates", []),
+        coordinates=ensure_coordinates_match_dynamics(data.get("coordinates", []), dynamics),
     )
 
     return injection.model_dump(), measured_coordinates
