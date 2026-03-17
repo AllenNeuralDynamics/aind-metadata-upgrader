@@ -164,6 +164,10 @@ class AcquisitionV1V2(CoreUpgrader):
             end_str = session_end_time.isoformat() if hasattr(session_end_time, "isoformat") else str(session_end_time)
 
             # Get fluorescene filters to use for upgrading tiles -> channels
+            # This only works if the instrument is present
+            if not metadata or "instrument" not in metadata:
+                raise ValueError("Instrument metadata is required to upgrade tiles to data streams")
+
             fluorescence_filters = metadata.get("instrument", {}).get("fluorescence_filters", [])
             light_sources = metadata.get("instrument", {}).get("light_sources", [])
 
