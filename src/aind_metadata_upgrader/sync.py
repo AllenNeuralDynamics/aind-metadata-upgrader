@@ -31,6 +31,21 @@ client_v2 = MetadataDbClient(
 TABLE_NAME = os.getenv("TABLE_NAME", "metadata_upgrade_status_prod")
 
 
+def _delete_v2_record(data_dict: dict) -> None:
+    """Delete the v2 record for a failed upgrade, if one exists."""
+    location = data_dict.get("location")
+    if location:
+        records = client_v2.retrieve_docdb_records(
+            filter_query={"location": location},
+            projection={"_id": 1},
+            limit=1,
+        )
+        if records:
+            v2_id = records[0]["_id"]
+            logging.info(f"Deleting v2 record due to failed upgrade: {v2_id}")
+            client_v2.delete_one_record(v2_id)
+
+
 def upgrade_record(data_dict: dict) -> tuple[Optional[dict], dict]:
     """Upgrade a single record"""
     upgraded = Upgrade(data_dict)
@@ -67,6 +82,7 @@ def upgrade_record(data_dict: dict) -> tuple[Optional[dict], dict]:
             },
         )
     else:
+        _delete_v2_record(data_dict)
         return (
             None,
             {
@@ -239,6 +255,7 @@ def run_one(record_id: str):
         record, result = upgrade_record(data_dict)
     except Exception as e:
         logging.error(f"Error upgrading record ID {record_id}: {e}")
+        _delete_v2_record(data_dict)
         result = {
             "v1_id": str(record_id),
             "v2_id": None,
@@ -305,6 +322,7 @@ def run():
                 upgraded_records.append(record)
                 upgrade_results.append(result)
             except Exception as e:
+                _delete_v2_record(data_dict)
                 upgrade_results.append(
                     {
                         "v1_id": str(v1_id),
