@@ -1,4 +1,4 @@
-"""Sync code to upgrade metadata from v1 to v2 and store results in RDS"""
+"""Sync code to upgrade metadata from v1 to v2 and store results in ZS"""
 
 import logging
 import os
@@ -95,7 +95,7 @@ def upgrade_record(data_dict: dict) -> tuple[Optional[dict], dict]:
         )
 
 
-def get_rds_data() -> Optional[pd.DataFrame]:
+def get_zs_data() -> Optional[pd.DataFrame]:
     """Retrieve existing upgrade status data from cache"""
     try:
         df = custom(TABLE_NAME)
@@ -110,14 +110,14 @@ def get_rds_data() -> Optional[pd.DataFrame]:
     return df
 
 
-def upload_to_rds_helper(df: pd.DataFrame):
+def upload_to_forest_helper(df: pd.DataFrame):
     """Upload upgrade results to cache"""
     logging.info(f"(METADATA VALIDATOR) Uploading {len(df)} records to cache")
     custom(TABLE_NAME, force_update=True, df=df)
 
 
 def check_skip_conditions(data_dict: dict, original_df: Optional[pd.DataFrame]) -> bool:
-    """Check if a record should be skipped based on existing RDS data"""
+    """Check if a record should be skipped based on existing ZS data"""
     v1_id = data_dict["_id"]
     if original_df is not None:
         existing = original_df[original_df["v1_id"] == str(v1_id)]
@@ -135,11 +135,11 @@ def check_skip_conditions(data_dict: dict, original_df: Optional[pd.DataFrame]) 
     return False
 
 
-def upload_to_rds(original_df: Optional[pd.DataFrame], upgrade_results: list[dict]):
-    """Upload upgrade results to RDS"""
+def upload_to_forest(original_df: Optional[pd.DataFrame], upgrade_results: list[dict]):
+    """Upload upgrade results to ZS"""
     # Upload any remaining tracking data
     if upgrade_results:
-        logging.info(f"Uploading final batch of {len(upgrade_results)} tracking records to RDS")
+        logging.info(f"Uploading final batch of {len(upgrade_results)} tracking records to ZS")
         batch_df = pd.DataFrame(upgrade_results)
         try:
             if original_df is not None:
@@ -147,16 +147,16 @@ def upload_to_rds(original_df: Optional[pd.DataFrame], upgrade_results: list[dic
                 combined_df = pd.concat([original_df, batch_df], ignore_index=True)
                 # Remove duplicates, keeping the latest entry for each v1_id
                 combined_df = combined_df.drop_duplicates(subset=["v1_id"], keep="last")
-                upload_to_rds_helper(combined_df)
+                upload_to_forest_helper(combined_df)
             else:
-                upload_to_rds_helper(batch_df)
+                upload_to_forest_helper(batch_df)
         except Exception as e:
-            logging.warning(f"Failed to upload final tracking data to RDS: {e}")
+            logging.warning(f"Failed to upload final tracking data to ZS: {e}")
     else:
-        logging.info("(METADATA VALIDATOR) No upgrade results to write to RDS")
+        logging.info("(METADATA VALIDATOR) No upgrade results to write to ZS")
 
 
-def query_rds_record(record_id: str) -> Optional[list]:
+def query_zs_record(record_id: str) -> Optional[list]:
     """Query cache for a specific record by v1_id.
 
     Args:
@@ -175,10 +175,10 @@ def query_rds_record(record_id: str) -> Optional[list]:
 
 
 def should_skip_record(existing_row: Optional[list], data_dict: dict) -> bool:
-    """Check if a record should be skipped based on existing RDS data.
+    """Check if a record should be skipped based on existing ZS data.
 
     Args:
-        existing_row: Row(s) from RDS query result
+        existing_row: Row(s) from ZS query result
         data_dict: The v1 record data dictionary
 
     Returns:
@@ -194,7 +194,7 @@ def should_skip_record(existing_row: Optional[list], data_dict: dict) -> bool:
     return False
 
 
-def update_rds_tracking(record_id: str, result: dict, existing_row: Optional[list]) -> None:
+def update_cache_tracking(record_id: str, result: dict, existing_row: Optional[list]) -> None:
     """Update cache tracking data for a record (upsert by v1_id).
 
     Args:
@@ -228,7 +228,7 @@ def update_rds_tracking(record_id: str, result: dict, existing_row: Optional[lis
 
 def run_one(record_id: str):
     """
-    Upgrade a single record and update RDS tracking data
+    Upgrade a single record and update ZS tracking data
 
     Args:
         record_id: The v1 record ID to upgrade
@@ -243,7 +243,7 @@ def run_one(record_id: str):
     data_dict = records[0]
 
     # Check if we should skip this record
-    existing_row = query_rds_record(record_id)
+    existing_row = query_zs_record(record_id)
     if should_skip_record(existing_row, data_dict):
         logging.info(f"Record {record_id} already up-to-date, skipping")
         return
@@ -272,13 +272,13 @@ def run_one(record_id: str):
     else:
         logging.warning(f"Upgrade failed for record ID {record_id}")
 
-    # Update RDS tracking data
+    # Update ZS tracking data
     if result:
-        update_rds_tracking(record_id, result, existing_row)
+        update_cache_tracking(record_id, result, existing_row)
 
 
 def run():
-    """Run all records through the upgrader and store results in RDS"""
+    """Run all records through the upgrader and store results in ZS"""
     # Get list of all record IDs from v1 database
     records_list = client_v1.retrieve_docdb_records(filter_query={}, projection={"_id": 1})
     record_ids = [record["_id"] for record in records_list]
@@ -288,7 +288,7 @@ def run():
     cached_records = []
     upgraded_records = []
 
-    original_df = get_rds_data()
+    original_df = get_zs_data()
 
     # Wipe rows whose v1_id no longer exists in the v1 database
     if original_df is not None and len(record_ids) > 0:
@@ -347,7 +347,7 @@ def run():
         logging.info(f"Final batch upserting {len(valid_records)} records to DocumentDB")
         client_v2.upsert_list_of_docdb_records(records=valid_records)
 
-    upload_to_rds(original_df, upgrade_results)
+    upload_to_forest(original_df, upgrade_results)
 
 
 if __name__ == "__main__":
