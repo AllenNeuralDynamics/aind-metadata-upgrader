@@ -110,7 +110,7 @@ def get_rds_data() -> Optional[pd.DataFrame]:
     return df
 
 
-def upload_to_rds_helper(df: pd.DataFrame):
+def upload_to_forest_helper(df: pd.DataFrame):
     """Upload upgrade results to cache"""
     logging.info(f"(METADATA VALIDATOR) Uploading {len(df)} records to cache")
     custom(TABLE_NAME, force_update=True, df=df)
@@ -135,7 +135,7 @@ def check_skip_conditions(data_dict: dict, original_df: Optional[pd.DataFrame]) 
     return False
 
 
-def upload_to_rds(original_df: Optional[pd.DataFrame], upgrade_results: list[dict]):
+def upload_to_forest(original_df: Optional[pd.DataFrame], upgrade_results: list[dict]):
     """Upload upgrade results to RDS"""
     # Upload any remaining tracking data
     if upgrade_results:
@@ -147,9 +147,9 @@ def upload_to_rds(original_df: Optional[pd.DataFrame], upgrade_results: list[dic
                 combined_df = pd.concat([original_df, batch_df], ignore_index=True)
                 # Remove duplicates, keeping the latest entry for each v1_id
                 combined_df = combined_df.drop_duplicates(subset=["v1_id"], keep="last")
-                upload_to_rds_helper(combined_df)
+                upload_to_forest_helper(combined_df)
             else:
-                upload_to_rds_helper(batch_df)
+                upload_to_forest_helper(batch_df)
         except Exception as e:
             logging.warning(f"Failed to upload final tracking data to RDS: {e}")
     else:
@@ -347,7 +347,7 @@ def run():
         logging.info(f"Final batch upserting {len(valid_records)} records to DocumentDB")
         client_v2.upsert_list_of_docdb_records(records=valid_records)
 
-    upload_to_rds(original_df, upgrade_results)
+    upload_to_forest(original_df, upgrade_results)
 
 
 if __name__ == "__main__":
