@@ -231,7 +231,6 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             self._process_surgery_procedures(surgery_data)
             return self._finalize_surgery_data(surgery_data)
 
-        print(data)
         raise ValueError("Unsupported subject procedure type: {}".format(procedure_type))
 
     def _upgrade_specimen_procedure(self, data: dict) -> dict:
