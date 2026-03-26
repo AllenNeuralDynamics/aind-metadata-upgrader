@@ -260,7 +260,7 @@ class TestSync(unittest.TestCase):
 
         sync.run()
 
-        mock_logging.info.assert_called_with("(METADATA VALIDATOR) No upgrade results to write to RDS")
+        mock_logging.info.assert_called_with("(METADATA VALIDATOR) No upgrade results to write to ZS")
 
     @patch("aind_metadata_upgrader.sync.custom")
     @patch("aind_metadata_upgrader.sync.client_v2")
