@@ -231,10 +231,14 @@ MEDIUM_MAP = {
 }
 
 
-def upgrade_immersion(data: dict) -> dict:
+def upgrade_immersion(data: dict, allow_none: bool = False) -> Optional[dict]:
     """Upgrade an immersion dictionary to the new Immersion schema"""
 
     if "medium" in data:
+        # If medium is "nan" we just return None
+        if data["medium"] == "nan":
+            return None
+
         # First check for old string mappings
         if any(key in data["medium"] for key in MEDIUM_MAP.keys()):
             # Find the matching medium key and update it

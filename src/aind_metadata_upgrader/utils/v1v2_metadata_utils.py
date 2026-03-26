@@ -130,8 +130,11 @@ def repair_missing_active_devices(data: dict) -> dict:
         instrument = Instrument.model_validate(data.get("instrument"))
         device_names.extend(instrument.get_component_names())
     if data.get("procedures"):
-        procedures = Procedures.model_validate(data["procedures"])
-        device_names.extend(procedures.get_device_names())
+        try:
+            procedures = Procedures.model_validate(data["procedures"])
+            device_names.extend(procedures.get_device_names())
+        except Exception as e:
+            print(f"Failed to validate procedures to capture procedure device names: {e}")
 
     # Check if all active devices are in the available devices
     if not all(device in device_names for device in active_devices):
