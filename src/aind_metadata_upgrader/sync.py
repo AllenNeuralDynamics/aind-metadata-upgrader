@@ -194,7 +194,7 @@ def should_skip_record(existing_row: Optional[list], data_dict: dict) -> bool:
     return False
 
 
-def update_rds_tracking(record_id: str, result: dict, existing_row: Optional[list]) -> None:
+def update_cache_tracking(record_id: str, result: dict, existing_row: Optional[list]) -> None:
     """Update cache tracking data for a record (upsert by v1_id).
 
     Args:
@@ -274,7 +274,7 @@ def run_one(record_id: str):
 
     # Update RDS tracking data
     if result:
-        update_rds_tracking(record_id, result, existing_row)
+        update_cache_tracking(record_id, result, existing_row)
 
 
 def run():

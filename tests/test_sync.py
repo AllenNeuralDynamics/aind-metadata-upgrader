@@ -374,7 +374,7 @@ class TestSync(unittest.TestCase):
             "status": "success",
         }
 
-        sync.update_rds_tracking("test_v1_id_123", result, None)
+        sync.update_cache_tracking("test_v1_id_123", result, None)
 
         store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("force_update")]
         self.assertEqual(len(store_calls), 1)
@@ -410,7 +410,7 @@ class TestSync(unittest.TestCase):
             "status": "success",
         }
 
-        sync.update_rds_tracking("old_v1_id_789", result, [{"existing": "row"}])
+        sync.update_cache_tracking("old_v1_id_789", result, [{"existing": "row"}])
 
         store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("force_update")]
         self.assertEqual(len(store_calls), 1)
@@ -438,7 +438,7 @@ class TestSync(unittest.TestCase):
             "status": "failed",
         }
 
-        sync.update_rds_tracking("failed_v1_id_555", result, None)
+        sync.update_cache_tracking("failed_v1_id_555", result, None)
 
         store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("force_update")]
         self.assertEqual(len(store_calls), 1)
