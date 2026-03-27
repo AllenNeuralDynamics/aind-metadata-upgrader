@@ -113,7 +113,7 @@ def get_zs_data() -> Optional[pd.DataFrame]:
 def upload_to_forest_helper(df: pd.DataFrame):
     """Upload upgrade results to cache"""
     logging.info(f"(METADATA VALIDATOR) Uploading {len(df)} records to cache")
-    custom(TABLE_NAME, force_update=True, df=df)
+    custom(TABLE_NAME, df=df)
 
 
 def check_skip_conditions(data_dict: dict, original_df: Optional[pd.DataFrame]) -> bool:
@@ -220,7 +220,7 @@ def update_cache_tracking(record_id: str, result: dict, existing_row: Optional[l
         df = df[df["v1_id"] != str(record_id)]
         df = pd.concat([df, new_row], ignore_index=True)
 
-        custom(TABLE_NAME, force_update=True, df=df)
+        custom(TABLE_NAME, df=df)
         logging.info(f"Updated cache tracking for record {record_id}")
     except Exception as e:
         logging.error(f"Failed to update cache tracking for record {record_id}: {e}")
