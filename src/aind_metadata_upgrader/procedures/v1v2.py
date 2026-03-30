@@ -100,6 +100,9 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         converted["procedure_type"] = "Craniotomy"
         if old_type:
             converted["craniotomy_type"] = old_type
+        # Dual hemisphere craniotomies don't use coordinate/size fields - skip defaults
+        if old_type and "dual hemisphere" in old_type.lower():
+            return
         # Add missing fields with defaults if not present
         if "craniotomy_coordinates_unit" not in converted:
             converted["craniotomy_coordinates_unit"] = "millimeter"

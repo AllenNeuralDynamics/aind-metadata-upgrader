@@ -454,9 +454,9 @@ class TestProceduresUpgraderV1V2OldFormat(unittest.TestCase):
         self.assertEqual(result["procedure_type"], "Craniotomy")
         self.assertEqual(result["craniotomy_type"], "Dual hemisphere craniotomy")
         self.assertNotIn("type", result)
-        self.assertEqual(result["craniotomy_coordinates_unit"], "millimeter")
-        self.assertEqual(result["craniotomy_coordinates_reference"], "Bregma")
-        self.assertEqual(result["craniotomy_size_unit"], "millimeter")
+        self.assertNotIn("craniotomy_coordinates_unit", result)
+        self.assertNotIn("craniotomy_coordinates_reference", result)
+        self.assertNotIn("craniotomy_size_unit", result)
 
     def test_legacy_convert_procedure_headframe(self):
         """Test conversion of pre-v1.0 headframe format"""

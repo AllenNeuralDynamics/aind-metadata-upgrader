@@ -122,7 +122,7 @@ def upgrade_hemisphere_craniotomy(data: dict) -> dict:
         data["position"] = [AnatomicalRelative.ORIGIN]
     elif "dual hemisphere" in str(data.get("craniotomy_type", "")).lower():
         data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
-        data["position"] = []
+        data["position"] = []  # note: dan disagrees with this choice, this should be both LEFT + RIGHT!!
     else:
         # We don't know the hemisphere, so we put position at origin unfortunately
         data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
@@ -195,6 +195,9 @@ CRANIO_TYPES = {
 
 def _determine_craniotomy_upgrade_path(upgraded_data: dict) -> dict:
     """Determine which upgrade path to use based on coordinate data"""
+    # Dual hemisphere craniotomies always use the hemisphere path (position=[])
+    if "dual hemisphere" in str(upgraded_data.get("craniotomy_type", "")).lower():
+        return upgrade_hemisphere_craniotomy(upgraded_data)
     # Check if coordinates are present AND meaningful (non-zero)
     has_coordinates = (
         "craniotomy_coordinates_ml" in upgraded_data and upgraded_data["craniotomy_coordinates_ml"] is not None
