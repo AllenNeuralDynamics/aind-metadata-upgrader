@@ -44,7 +44,7 @@ class TestSync(unittest.TestCase):
         ]
 
         mock_custom.side_effect = lambda *a, **kw: (
-            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+            (_ for _ in ()).throw(ValueError("empty")) if kw.get("df") is None else kw["df"]
         )
 
         # Mock upgrade instance
@@ -65,7 +65,7 @@ class TestSync(unittest.TestCase):
         mock_v1_client.retrieve_docdb_records.assert_any_call(filter_query={}, projection={"_id": 1})
         mock_upgrade_class.assert_called_once()
         mock_v2_client.insert_one_docdb_record.assert_called_once()
-        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("force_update")]
+        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("df") is not None]
         self.assertGreater(len(store_calls), 0)
 
     @patch("aind_metadata_upgrader.sync.custom")
@@ -96,7 +96,7 @@ class TestSync(unittest.TestCase):
         sync.run()
 
         mock_upgrade_class.assert_not_called()
-        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("force_update")]
+        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("df") is not None]
         self.assertEqual(len(store_calls), 0)
 
     @patch("aind_metadata_upgrader.sync.custom")
@@ -111,13 +111,13 @@ class TestSync(unittest.TestCase):
             [{"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}],
         ]
         mock_custom.side_effect = lambda *a, **kw: (
-            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+            (_ for _ in ()).throw(ValueError("empty")) if kw.get("df") is None else kw["df"]
         )
         mock_upgrade_class.side_effect = Exception("Upgrade failed")
 
         sync.run()
 
-        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("force_update")]
+        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("df") is not None]
         self.assertEqual(len(store_calls), 1)
         df = store_calls[0].kwargs["df"]
         self.assertEqual(df.iloc[0]["status"], "failed")
@@ -136,13 +136,13 @@ class TestSync(unittest.TestCase):
             [{"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}],
         ]
         mock_custom.side_effect = lambda *a, **kw: (
-            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+            (_ for _ in ()).throw(ValueError("empty")) if kw.get("df") is None else kw["df"]
         )
         mock_upgrade_class.return_value = None
 
         sync.run()
 
-        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("force_update")]
+        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("df") is not None]
         self.assertEqual(len(store_calls), 1)
         df = store_calls[0].kwargs["df"]
         self.assertEqual(df.iloc[0]["status"], "failed")
@@ -161,7 +161,7 @@ class TestSync(unittest.TestCase):
             [{"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}],
         ]
         mock_custom.side_effect = lambda *a, **kw: (
-            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+            (_ for _ in ()).throw(ValueError("empty")) if kw.get("df") is None else kw["df"]
         )
         mock_upgrade_instance = MagicMock()
         mock_upgrade_instance.metadata.location = "test_location"
@@ -194,7 +194,7 @@ class TestSync(unittest.TestCase):
             cached_records_batch2,
         ]
         mock_custom.side_effect = lambda *a, **kw: (
-            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+            (_ for _ in ()).throw(ValueError("empty")) if kw.get("df") is None else kw["df"]
         )
         mock_upgrade_instance = MagicMock()
         mock_upgrade_instance.metadata.location = "test_location"
@@ -255,12 +255,12 @@ class TestSync(unittest.TestCase):
         """Test handling when no records are found."""
         mock_v1_client.retrieve_docdb_records.return_value = []
         mock_custom.side_effect = lambda *a, **kw: (
-            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+            (_ for _ in ()).throw(ValueError("empty")) if kw.get("df") is None else kw["df"]
         )
 
         sync.run()
 
-        mock_logging.info.assert_called_with("(METADATA VALIDATOR) No upgrade results to write to RDS")
+        mock_logging.info.assert_called_with("(METADATA VALIDATOR) No upgrade results to write to ZS")
 
     @patch("aind_metadata_upgrader.sync.custom")
     @patch("aind_metadata_upgrader.sync.client_v2")
@@ -284,7 +284,7 @@ class TestSync(unittest.TestCase):
             {"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}
         ]
         mock_custom.side_effect = lambda *a, **kw: (
-            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+            (_ for _ in ()).throw(ValueError("empty")) if kw.get("df") is None else kw["df"]
         )
         mock_upgrade_instance = MagicMock()
         mock_upgrade_instance.metadata.location = "test_location"
@@ -296,7 +296,7 @@ class TestSync(unittest.TestCase):
         sync.run_one("record1")
 
         mock_v2_client.upsert_one_docdb_record.assert_called_once()
-        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("force_update")]
+        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("df") is not None]
         self.assertGreater(len(store_calls), 0)
 
     @patch("aind_metadata_upgrader.sync.custom")
@@ -334,7 +334,7 @@ class TestSync(unittest.TestCase):
         sync.run_one("record1")
 
         mock_v2_client.upsert_one_docdb_record.assert_not_called()
-        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("force_update")]
+        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("df") is not None]
         self.assertEqual(len(store_calls), 0)
 
     @patch("aind_metadata_upgrader.sync.custom")
@@ -348,13 +348,13 @@ class TestSync(unittest.TestCase):
             {"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}
         ]
         mock_custom.side_effect = lambda *a, **kw: (
-            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+            (_ for _ in ()).throw(ValueError("empty")) if kw.get("df") is None else kw["df"]
         )
         mock_upgrade_class.side_effect = Exception("Upgrade failed")
 
         sync.run_one("record1")
 
-        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("force_update")]
+        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("df") is not None]
         self.assertGreater(len(store_calls), 0)
 
     @patch("aind_metadata_upgrader.sync.custom")
@@ -363,7 +363,7 @@ class TestSync(unittest.TestCase):
     def test_update_rds_tracking_insert_new_record(self, mock_custom):
         """Test that update_rds_tracking correctly inserts a new record."""
         mock_custom.side_effect = lambda *a, **kw: (
-            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+            (_ for _ in ()).throw(ValueError("empty")) if kw.get("df") is None else kw["df"]
         )
 
         result = {
@@ -374,9 +374,9 @@ class TestSync(unittest.TestCase):
             "status": "success",
         }
 
-        sync.update_rds_tracking("test_v1_id_123", result, None)
+        sync.update_cache_tracking("test_v1_id_123", result, None)
 
-        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("force_update")]
+        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("df") is not None]
         self.assertEqual(len(store_calls), 1)
         df = store_calls[0].kwargs["df"]
         self.assertEqual(df.iloc[0]["v1_id"], "test_v1_id_123")
@@ -400,7 +400,7 @@ class TestSync(unittest.TestCase):
                 }
             ]
         )
-        mock_custom.side_effect = lambda *a, **kw: kw["df"] if kw.get("force_update") else existing_df
+        mock_custom.side_effect = lambda *a, **kw: kw["df"] if kw.get("df") is not None else existing_df
 
         result = {
             "v1_id": "old_v1_id_789",
@@ -410,9 +410,9 @@ class TestSync(unittest.TestCase):
             "status": "success",
         }
 
-        sync.update_rds_tracking("old_v1_id_789", result, [{"existing": "row"}])
+        sync.update_cache_tracking("old_v1_id_789", result, [{"existing": "row"}])
 
-        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("force_update")]
+        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("df") is not None]
         self.assertEqual(len(store_calls), 1)
         df = store_calls[0].kwargs["df"]
         row = df[df["v1_id"] == "old_v1_id_789"].iloc[0]
@@ -427,7 +427,7 @@ class TestSync(unittest.TestCase):
     def test_update_rds_tracking_failed_status(self, mock_custom):
         """Test that update_rds_tracking correctly handles failed upgrades with None v2_id."""
         mock_custom.side_effect = lambda *a, **kw: (
-            (_ for _ in ()).throw(ValueError("empty")) if not kw.get("force_update") else kw["df"]
+            (_ for _ in ()).throw(ValueError("empty")) if kw.get("df") is None else kw["df"]
         )
 
         result = {
@@ -438,9 +438,9 @@ class TestSync(unittest.TestCase):
             "status": "failed",
         }
 
-        sync.update_rds_tracking("failed_v1_id_555", result, None)
+        sync.update_cache_tracking("failed_v1_id_555", result, None)
 
-        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("force_update")]
+        store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("df") is not None]
         self.assertEqual(len(store_calls), 1)
         df = store_calls[0].kwargs["df"]
         self.assertEqual(df.iloc[0]["v1_id"], "failed_v1_id_555")
