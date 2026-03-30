@@ -320,6 +320,14 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         procedures = data.get("procedures", [])
         data["procedures"] = []
 
+        # If ethics_review_id was not set at the surgery level, fall back to the
+        # first iacuc_protocol found in any sub-procedure (before they are stripped).
+        if not data.get("ethics_review_id"):
+            for proc in procedures:
+                if proc.get("iacuc_protocol"):
+                    data["ethics_review_id"] = proc["iacuc_protocol"]
+                    break
+
         for procedure in procedures:
             upgraded = self._upgrade_procedure(procedure)
             if isinstance(upgraded, tuple):
