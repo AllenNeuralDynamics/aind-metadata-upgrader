@@ -493,7 +493,7 @@ class TestProceduresUpgraderV1V2OldFormat(unittest.TestCase):
         self.assertEqual(result["injection_coordinate_depth"], [-2.5])
         self.assertEqual(result["injection_angle_unit"], "degrees")
         self.assertEqual(result["injection_materials"][0]["material_type"], "Virus")
-        self.assertEqual(result["injection_materials"][0]["name"], "Test virus:rAAV-test")
+        self.assertEqual(result["injection_materials"][0]["name"], "rAAV-test")
         self.assertNotIn("full_genome_name", result["injection_materials"][0])
         self.assertNotIn("prep_type", result["injection_materials"][0])
 

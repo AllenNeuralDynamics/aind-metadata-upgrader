@@ -89,7 +89,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                 raise NotImplementedError("Unsupported injection material type in legacy format")
             # Map full_genome_name to name field for ViralMaterial
             if "full_genome_name" in material:
-                material["name"] = f'{material.get("name","")}:{material["full_genome_name"]}'
+                material["name"] = material["full_genome_name"]
                 del material["full_genome_name"]
             # prep_type replaced by TARs IDs, not available
             if "prep_type" in material:
