@@ -257,6 +257,11 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         self.subject_id = procedures_data.get("subject_id")
 
+        # Extract project_name from metadata for context-dependent upgrades
+        self.project_name = None
+        if metadata and isinstance(metadata.get("data_description"), dict):
+            self.project_name = metadata["data_description"].get("project_name")
+
         # Check if we have the pre-v1.0 separated format and normalise it first
         if self._legacy_is_old_separated_format(procedures_data):
             subject_procedures = self._legacy_convert_old_format_to_subject_procedures(procedures_data)
@@ -293,6 +298,14 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         data = repair_generic_surgery_procedure(data, self.subject_id)
 
         procedure_type = data.get("procedure_type")
+
+        # For Dynamic Routing data, a null craniotomy_type is a whole hemisphere craniotomy
+        if (
+            procedure_type == "Craniotomy"
+            and not data.get("craniotomy_type")
+            and self.project_name == "Dynamic Routing"
+        ):
+            data["craniotomy_type"] = "Whole hemisphere craniotomy"
 
         # Remove surgery-level fields that shouldn't be in individual procedures
         # These are handled at the Surgery level
