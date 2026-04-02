@@ -262,6 +262,9 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         if metadata and isinstance(metadata.get("data_description"), dict):
             self.project_name = metadata["data_description"].get("project_name")
 
+        # Per-surgery flag set in _process_surgery_procedures before iterating procedures
+        self._surgery_has_whc_headframe = False
+
         # Check if we have the pre-v1.0 separated format and normalise it first
         if self._legacy_is_old_separated_format(procedures_data):
             subject_procedures = self._legacy_convert_old_format_to_subject_procedures(procedures_data)
@@ -299,11 +302,13 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         procedure_type = data.get("procedure_type")
 
-        # For Dynamic Routing data, a null craniotomy_type is a whole hemisphere craniotomy
+        # For Dynamic Routing data, a null craniotomy_type is a whole hemisphere craniotomy,
+        # but only when the same surgery also has a headframe with "WHC" in its type.
         if (
             procedure_type == "Craniotomy"
             and not data.get("craniotomy_type")
             and self.project_name == "Dynamic Routing"
+            and self._surgery_has_whc_headframe
         ):
             data["craniotomy_type"] = "Whole hemisphere craniotomy"
 
@@ -332,6 +337,12 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         """Process procedures for surgery upgrade"""
         procedures = data.get("procedures", [])
         data["procedures"] = []
+
+        # Check if this surgery contains a WHC headframe (used to infer craniotomy type)
+        self._surgery_has_whc_headframe = any(
+            p.get("procedure_type") == "Headframe" and "WHC" in str(p.get("headframe_type", ""))
+            for p in procedures
+        )
 
         # If ethics_review_id was not set at the surgery level, fall back to the
         # first iacuc_protocol found in any sub-procedure (before they are stripped).
