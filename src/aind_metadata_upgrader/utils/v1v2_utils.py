@@ -566,6 +566,15 @@ def upgrade_light_source(data: dict) -> dict:
     elif "lamp" in device_type or "wavelength_min" in data:
         light_source = Lamp(**data)
     elif "led" in device_type or "light emitting diode" in device_type or "led" in data["name"].lower():
+        if "calibration_data" in data and data["calibration_data"]:
+            raise NotImplementedError("Upgrading LEDs with calibration data is not currently supported.")
+        remove(data, "calibration_data")
+        remove(data, "calibration_date")
+        if "coupling" in data and data["coupling"]:
+            raise NotImplementedError("Upgrading LEDs with coupling data is not currently supported.")
+        remove(data, "coupling")
+        remove(data, "coupling_efficiency")
+        remove(data, "coupling_efficiency_unit")
         light_source = LightEmittingDiode(**data)
     elif "Axon 920-2 TPC" in data.get("name", ""):
         light_source = Laser(**data)
