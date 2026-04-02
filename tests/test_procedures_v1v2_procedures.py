@@ -584,5 +584,102 @@ class TestProceduresUpgraderV1V2OldFormat(unittest.TestCase):
                 self.assertNotIn("prep_type", material)
 
 
+class TestDynamicRoutingCraniotomy(unittest.TestCase):
+    """Test that null craniotomy_type is set to whole hemisphere for Dynamic Routing records
+    only when a WHC headframe is present in the same surgery."""
+
+    _WHC_HEADFRAME = {
+        "procedure_type": "Headframe",
+        "headframe_type": "WHC NP",
+        "headframe_part_number": "0160-100-42",
+        "protocol_id": None,
+        "well_part_number": "0160-055-08",
+        "well_type": "WHC NP",
+    }
+
+    _CRANIOTOMY = {
+        "procedure_type": "Craniotomy",
+        "craniotomy_type": None,
+        "craniotomy_hemisphere": None,
+        "bregma_to_lambda_distance": "4.525",
+        "bregma_to_lambda_unit": "millimeter",
+        "implant_part_number": "2002",
+        "protective_material": None,
+        "protocol_id": None,
+        "recovery_time": "5.0",
+        "recovery_time_unit": "minute",
+    }
+
+    def _make_data(self, procedures):
+        """Helper function to create test data with given procedures list"""
+        return {
+            "subject_procedures": [
+                {
+                    "procedure_type": "Surgery",
+                    "start_date": "2023-06-08",
+                    "experimenter_full_name": "NSB-296",
+                    "iacuc_protocol": "2104",
+                    "procedures": procedures,
+                    "protocol_id": None,
+                    "notes": None,
+                }
+            ],
+            "specimen_procedures": [],
+            "subject_id": "676909",
+            "schema_version": "0.13.3",
+        }
+
+    def test_null_craniotomy_with_whc_headframe_becomes_whole_hemisphere(self):
+        """Null craniotomy_type + WHC headframe in Dynamic Routing → whole hemisphere."""
+        upgrader = ProceduresUpgraderV1V2()
+        data = self._make_data([dict(self._CRANIOTOMY), dict(self._WHC_HEADFRAME)])
+        metadata = {"data_description": {"project_name": "Dynamic Routing"}}
+        upgraded = upgrader.upgrade(data, schema_version="2.0.0", metadata=metadata)
+
+        craniotomy = next(
+            (
+                p
+                for sp in upgraded["subject_procedures"]
+                for p in sp["procedures"]
+                if p.get("object_type") == "Craniotomy"
+            ),
+            None,
+        )
+        self.assertIsNotNone(craniotomy)
+        self.assertEqual(craniotomy["craniotomy_type"], "Whole hemisphere craniotomy")
+
+    def test_null_craniotomy_without_whc_headframe_raises(self):
+        """Null craniotomy_type with no WHC headframe should raise, even in Dynamic Routing."""
+        upgrader = ProceduresUpgraderV1V2()
+        non_whc_headframe = {**self._WHC_HEADFRAME, "headframe_type": "Standard"}
+        data = self._make_data([dict(self._CRANIOTOMY), non_whc_headframe])
+        metadata = {"data_description": {"project_name": "Dynamic Routing"}}
+        with self.assertRaises(ValueError):
+            upgrader.upgrade(data, schema_version="2.0.0", metadata=metadata)
+
+    def test_null_craniotomy_no_headframe_raises(self):
+        """Null craniotomy_type with no headframe at all should raise."""
+        upgrader = ProceduresUpgraderV1V2()
+        data = self._make_data([dict(self._CRANIOTOMY)])
+        metadata = {"data_description": {"project_name": "Dynamic Routing"}}
+        with self.assertRaises(ValueError):
+            upgrader.upgrade(data, schema_version="2.0.0", metadata=metadata)
+
+    def test_null_craniotomy_type_non_dynamic_routing_raises(self):
+        """Null craniotomy_type in a non-Dynamic Routing record should raise even with WHC headframe."""
+        upgrader = ProceduresUpgraderV1V2()
+        data = self._make_data([dict(self._CRANIOTOMY), dict(self._WHC_HEADFRAME)])
+        metadata = {"data_description": {"project_name": "Some Other Project"}}
+        with self.assertRaises(ValueError):
+            upgrader.upgrade(data, schema_version="2.0.0", metadata=metadata)
+
+    def test_null_craniotomy_type_no_metadata_raises(self):
+        """Null craniotomy_type with no metadata should raise."""
+        upgrader = ProceduresUpgraderV1V2()
+        data = self._make_data([dict(self._CRANIOTOMY), dict(self._WHC_HEADFRAME)])
+        with self.assertRaises(ValueError):
+            upgrader.upgrade(data, schema_version="2.0.0", metadata=None)
+
+
 if __name__ == "__main__":
     unittest.main()
