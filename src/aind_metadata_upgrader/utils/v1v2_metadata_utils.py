@@ -1,5 +1,6 @@
 """Metadata level utilities"""
 
+import re
 from datetime import datetime
 from aind_data_schema.core.procedures import Procedures
 from aind_data_schema.core.instrument import Instrument
@@ -15,6 +16,35 @@ LONG_ACQ_ID_LIST = ["442_Bergamo_2p_photostim"]
 PAIRED_INSTRUMENT_ACQUISITION_IDS = [
     ("342_NP3_240417", "342_NP3_240401"),
 ]
+# Ecephys instrument IDs that should be overwritten with the acquisition ID
+ECEPHYS_BAD_INSTRUMENT_IDS = [
+    "322_EPHYS5_Ephys5",
+    "Ephys5_ND_Ephys.5",
+]
+
+# Date patterns tried in order: YYYY-MM-DD, YYYYMMDD (8-digit), YYMMDD (6-digit)
+_ECEPHYS_DATE_PATTERNS = [
+    (re.compile(r"(\d{4}-\d{2}-\d{2})"), "%Y-%m-%d"),
+    (re.compile(r"(?<!\d)(\d{8})(?!\d)"), "%Y%m%d"),
+    (re.compile(r"(?<!\d)(\d{6})(?!\d)"), "%y%m%d"),
+]
+
+
+def _parse_rig_id_parts(rig_id: str):
+    """Extract (prefix, date) from a rig ID string.
+
+    Returns (rig_id, None) if no recognisable date is found.
+    """
+    for pattern, fmt in _ECEPHYS_DATE_PATTERNS:
+        m = pattern.search(rig_id)
+        if m:
+            try:
+                date = datetime.strptime(m.group(1), fmt)
+                prefix = rig_id[: m.start()]
+                return prefix, date
+            except ValueError:
+                continue
+    return rig_id, None
 
 
 def _handle_spim_modality_mismatch(data: dict) -> dict:
@@ -33,20 +63,64 @@ def _handle_spim_modality_mismatch(data: dict) -> dict:
 
 
 def _handle_ecephys_id_mismatch(data: dict) -> dict:
-    """Handle instrument ID mismatch for ecephys modality"""
-    # In this situation Instrument ID in acquisition 323_EPHYS2_RF_2025-04-09_01 does
-    # not match the instrument's 323_EPHYS2_RF_20250409_01.
-    # We want to keep the instrument_id that has the date in YYYY-MM-DD format
-    acquisition_id = data["acquisition"]["instrument_id"]
-    instrument_id = data["instrument"]["instrument_id"]
+    """Handle instrument ID mismatch for ecephys modality.
 
-    if acquisition_id and instrument_id:
-        if acquisition_id != instrument_id:
-            # Check for date format difference
-            acquisition_id_no_dash = acquisition_id.replace("-", "")
-            instrument_id_no_dash = instrument_id.replace("-", "")
-            if acquisition_id_no_dash == instrument_id_no_dash:
-                data["instrument"]["instrument_id"] = acquisition_id
+    Rules applied in order:
+    1. Known-bad instrument IDs: overwrite instrument with acquisition value.
+    2. Same content, only date formatting differs (YYYYMMDD vs YYYY-MM-DD):
+       normalise by copying acquisition ID into instrument.
+    3. Same base rig (prefix matches after punctuation normalisation):
+       - If rig date is more recent, copy rig ID into acquisition.
+       - If session date is more recent, raise ValueError.
+       - If dates are equal (punctuation differs only), prefer rig.
+    4. Different base prefix: prefer rig, copy rig ID into acquisition.
+    """
+    instrument_id = data["instrument"]["instrument_id"]
+    acquisition_id = data["acquisition"]["instrument_id"]
+
+    if not instrument_id or not acquisition_id:
+        return data
+    if instrument_id == acquisition_id:
+        return data
+
+    # Rule 1: explicitly bad instrument IDs
+    if instrument_id in ECEPHYS_BAD_INSTRUMENT_IDS:
+        data["instrument"]["instrument_id"] = acquisition_id
+        return data
+
+    # Rule 2: same content, only date separators differ
+    if instrument_id.replace("-", "") == acquisition_id.replace("-", ""):
+        # Use the acquisition (session) value which carries YYYY-MM-DD format
+        data["instrument"]["instrument_id"] = acquisition_id
+        return data
+
+    # Rule 3/4: parse prefix and date from both sides
+    rig_prefix, rig_date = _parse_rig_id_parts(instrument_id)
+    session_prefix, session_date = _parse_rig_id_parts(acquisition_id)
+
+    # Normalise prefixes: remove dots so NP.3 == NP3
+    rig_prefix_norm = rig_prefix.replace(".", "") if rig_prefix else ""
+    session_prefix_norm = session_prefix.replace(".", "") if session_prefix else ""
+
+    if rig_prefix_norm == session_prefix_norm:
+        # Same base rig — resolve by date
+        if rig_date and session_date:
+            if rig_date > session_date:
+                data["acquisition"]["instrument_id"] = instrument_id
+            elif rig_date < session_date:
+                raise ValueError(
+                    f"Session rig ID '{acquisition_id}' has a more recent date than "
+                    f"instrument rig ID '{instrument_id}'. Cannot auto-resolve."
+                )
+            else:
+                # Equal dates, prefix differed only in punctuation — prefer rig
+                data["acquisition"]["instrument_id"] = instrument_id
+        else:
+            # Cannot parse dates; prefer rig
+            data["acquisition"]["instrument_id"] = instrument_id
+    else:
+        # Different base prefix (e.g. 342_ vs unknown_) — prefer rig
+        data["acquisition"]["instrument_id"] = instrument_id
 
     return data
 
