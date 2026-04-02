@@ -107,7 +107,7 @@ def validate_angle_unit(angle_unit: str) -> str:
 
 def _convert_modality_to_dict(modality) -> dict:
     """Convert a single modality (string, object string, or dict) to a Modality dict.
-    
+
     Handles multiple formats:
     - Dict: returned as-is
     - String in MODALITY_MAP: mapped to Modality object
@@ -116,12 +116,12 @@ def _convert_modality_to_dict(modality) -> dict:
     """
     if isinstance(modality, dict):
         return modality
-    
+
     if isinstance(modality, str):
         # Check MODALITY_MAP first (e.g., "SmartSPIM", "FIP")
         if modality in MODALITY_MAP:
             return MODALITY_MAP[modality].model_dump()
-        
+
         # Check if this looks like a string representation of an object
         # e.g., "name='Extracellular electrophysiology' abbreviation='ecephys'"
         if "abbreviation=" in modality:
@@ -132,13 +132,13 @@ def _convert_modality_to_dict(modality) -> dict:
                 return Modality.from_abbreviation(abbrev_value).model_dump()
             except Exception as e:
                 raise ValueError(f"Could not parse modality string: {modality}") from e
-        
+
         # Try direct abbreviation conversion
         try:
             return Modality.from_abbreviation(modality).model_dump()
         except Exception as e:
             raise ValueError(f"Unsupported modality abbreviation: {modality}") from e
-    
+
     # Fallback for other types (shouldn't normally happen)
     return modality
 
