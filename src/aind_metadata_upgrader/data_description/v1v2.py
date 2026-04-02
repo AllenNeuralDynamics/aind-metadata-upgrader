@@ -1,5 +1,6 @@
 """<=v1.4 to v2.0 data description upgrade functions"""
 
+import re
 from typing import Optional
 from aind_data_schema.components.identifiers import Person
 from aind_data_schema.core.data_description import Funding
@@ -135,10 +136,13 @@ class DataDescriptionV1V2(CoreUpgrader):
         """Handle old records that have both creation_date and creation_time"""
         # If only creation_time exists, return that
         if "creation_time" in data and "creation_date" not in data:
-            if "," in data["creation_time"]:
-                # Remove anything after the comma
-                return data["creation_time"].replace(",", "T")
-            return data["creation_time"]
+            ct = data["creation_time"]
+            if "," in ct:
+                return ct.replace(",", "T")
+            # Normalize hyphens used as time separators (e.g., "2023-05-11T19-29-48-07:00")
+            if re.search(r'T\d{2}-\d{2}-\d{2}', ct):
+                ct = re.sub(r'T(\d{2})-(\d{2})-(\d{2})', r'T\1:\2:\3', ct)
+            return ct
         elif "creation_date" in data and "creation_time" in data:
             creation_datetime = data["creation_date"] + "T" + data["creation_time"]
         else:

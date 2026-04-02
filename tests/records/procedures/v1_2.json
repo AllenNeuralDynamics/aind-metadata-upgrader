@@ -1,0 +1,252 @@
+{
+    "procedures": {
+        "craniotomies": [
+            {
+                "anaesthesia": {
+                    "duration": 4,
+                    "level": 2,
+                    "type": "Isoflurane"
+                },
+                "craniotomy_coordinates_ap": 0,
+                "craniotomy_coordinates_ml": 0,
+                "craniotomy_size": 8,
+                "dura_removed": true,
+                "end_date": "2023-02-28",
+                "experimenter_full_name": "Anna Lakunina",
+                "iacuc_protocol": "2109",
+                "implant_part_number": "0274-100-14",
+                "protective_material": "SORTA-clear",
+                "protocol_id": "N/A",
+                "start_date": "2023-02-28",
+                "type": "Dual hemisphere craniotomy"
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/procedures.py",
+        "headframes": [
+            {
+                "anaesthesia": {
+                    "duration": 4,
+                    "level": 2,
+                    "type": "Isoflurane"
+                },
+                "end_date": "2023-02-28",
+                "experimenter_full_name": "Anna Lakunina",
+                "headframe_material": "Titanium",
+                "headframe_part_number": "0160-100-49",
+                "headframe_type": "Dual hemisphere",
+                "iacuc_protocol": "2109",
+                "protocol_id": "N/A",
+                "start_date": "2023-02-28",
+                "type": "Dual hemisphere"
+            }
+        ],
+        "injections": [
+            {
+                "anaesthesia": {
+                    "duration": 4,
+                    "level": 2,
+                    "type": "Isoflurane"
+                },
+                "end_date": "2023-02-28",
+                "experimenter_full_name": "Anna Lakunina",
+                "iacuc_protocol": "2109",
+                "injection_angle": 0,
+                "injection_angle_unit": "degree",
+                "injection_coordinate_ap": 0.14,
+                "injection_coordinate_depth": -2.5,
+                "injection_coordinate_ml": -1.5,
+                "injection_coordinate_reference": "Bregma",
+                "injection_coordinate_unit": "millimeter",
+                "injection_hemisphere": "Left",
+                "injection_materials": [
+                    {
+                        "full_genome_name": "rAAV-3xcore2_eHGT_445h-minBG-CoChR-EGFP-WPRE3-BGHpA",
+                        "name": "D2 enhancer",
+                        "prep_type": "Purified",
+                        "titer": 33200000000000
+                    },
+                    {
+                        "full_genome_name": "pAAV-Ef1a-DIO-ChRmine-mScarlet-WPRE",
+                        "name": "DIO-ChRmine-mScarlet",
+                        "prep_type": "Purified",
+                        "titer": 21400000000000
+                    }
+                ],
+                "injection_type": "Nanoject",
+                "injection_volume": 300,
+                "injection_volume_unit": "nanoliter",
+                "protocol_id": "N/A",
+                "recovery_time": 5,
+                "start_date": "2023-02-28",
+                "targeted_structure": "STR",
+                "type": "virus injection"
+            },
+            {
+                "anaesthesia": {
+                    "duration": 4,
+                    "level": 2,
+                    "type": "Isoflurane"
+                },
+                "end_date": "2023-02-28",
+                "experimenter_full_name": "Anna Lakunina",
+                "iacuc_protocol": "2109",
+                "injection_angle": 0,
+                "injection_angle_unit": "degree",
+                "injection_coordinate_ap": 0.14,
+                "injection_coordinate_depth": -2.5,
+                "injection_coordinate_ml": 1.5,
+                "injection_coordinate_reference": "Bregma",
+                "injection_coordinate_unit": "millimeter",
+                "injection_hemisphere": "Right",
+                "injection_materials": [
+                    {
+                        "full_genome_name": "rAAV-3xcore2_eHGT_445h-minBG-CoChR-EGFP-WPRE3-BGHpA",
+                        "name": "D2 enhancer",
+                        "prep_type": "Purified",
+                        "titer": 33200000000000
+                    },
+                    {
+                        "full_genome_name": "pAAV-Ef1a-DIO-ChRmine-mScarlet-WPRE",
+                        "name": "DIO-ChRmine-mScarlet",
+                        "prep_type": "Purified",
+                        "titer": 21400000000000
+                    }
+                ],
+                "injection_type": "Nanoject",
+                "injection_volume": 300,
+                "injection_volume_unit": "nanoliter",
+                "protocol_id": "N/A",
+                "recovery_time": 5,
+                "recovery_time_unit": "minute",
+                "start_date": "2023-02-28",
+                "targeted_structure": "STR",
+                "type": "virus injection"
+            },
+            {
+                "anaesthesia": {
+                    "duration": 4,
+                    "level": 2,
+                    "type": "Isoflurane"
+                },
+                "end_date": "2023-02-28",
+                "experimenter_full_name": "Anna Lakunina",
+                "iacuc_protocol": "2109",
+                "injection_angle": 0,
+                "injection_angle_unit": "degree",
+                "injection_coordinate_ap": -0.7,
+                "injection_coordinate_depth": -2.6,
+                "injection_coordinate_ml": 2.45,
+                "injection_coordinate_reference": "Bregma",
+                "injection_coordinate_unit": "millimeter",
+                "injection_hemisphere": "Right",
+                "injection_materials": [
+                    {
+                        "full_genome_name": "rAAV-3xcore2_eHGT_445h-minBG-CoChR-EGFP-WPRE3-BGHpA",
+                        "name": "D2 enhancer",
+                        "prep_type": "Purified",
+                        "titer": 33200000000000
+                    },
+                    {
+                        "full_genome_name": "pAAV-Ef1a-DIO-ChRmine-mScarlet-WPRE",
+                        "name": "DIO-ChRmine-mScarlet",
+                        "prep_type": "Purified",
+                        "titer": 21400000000000
+                    }
+                ],
+                "injection_type": "Nanoject",
+                "injection_volume": 300,
+                "injection_volume_unit": "nanoliter",
+                "protocol_id": "N/A",
+                "recovery_time": 5,
+                "recovery_time_unit": "minute",
+                "start_date": "2023-02-28",
+                "targeted_structure": "STR",
+                "type": "virus injection"
+            },
+            {
+                "anaesthesia": {
+                    "duration": 4,
+                    "level": 2,
+                    "type": "Isoflurane"
+                },
+                "end_date": "2023-02-28",
+                "experimenter_full_name": "Anna Lakunina",
+                "iacuc_protocol": "2109",
+                "injection_angle": 0,
+                "injection_angle_unit": "degree",
+                "injection_coordinate_ap": -0.7,
+                "injection_coordinate_depth": -2.6,
+                "injection_coordinate_ml": -2.45,
+                "injection_coordinate_reference": "Bregma",
+                "injection_coordinate_unit": "millimeter",
+                "injection_hemisphere": "Left",
+                "injection_materials": [
+                    {
+                        "full_genome_name": "rAAV-3xcore2_eHGT_445h-minBG-CoChR-EGFP-WPRE3-BGHpA",
+                        "name": "D2 enhancer",
+                        "prep_type": "Purified",
+                        "titer": 33200000000000
+                    },
+                    {
+                        "full_genome_name": "pAAV-Ef1a-DIO-ChRmine-mScarlet-WPRE",
+                        "name": "DIO-ChRmine-mScarlet",
+                        "prep_type": "Purified",
+                        "titer": 21400000000000
+                    }
+                ],
+                "injection_type": "Nanoject",
+                "injection_volume": 300,
+                "injection_volume_unit": "nanoliter",
+                "protocol_id": "N/A",
+                "recovery_time": 5,
+                "recovery_time_unit": "minute",
+                "start_date": "2023-02-28",
+                "targeted_structure": "STR",
+                "type": "virus injection"
+            },
+            {
+                "anaesthesia": {
+                    "duration": 4,
+                    "level": 2,
+                    "type": "Isoflurane"
+                },
+                "end_date": "2023-02-28",
+                "experimenter_full_name": "Anna Lakunina",
+                "iacuc_protocol": "2109",
+                "injection_angle": 0,
+                "injection_angle_unit": "degree",
+                "injection_coordinate_ap": -1.35,
+                "injection_coordinate_depth": -2.6,
+                "injection_coordinate_ml": -3.1,
+                "injection_coordinate_reference": "Bregma",
+                "injection_coordinate_unit": "millimeter",
+                "injection_hemisphere": "Left",
+                "injection_materials": [
+                    {
+                        "full_genome_name": "rAAV-3xcore2_eHGT_445h-minBG-CoChR-EGFP-WPRE3-BGHpA",
+                        "name": "D2 enhancer",
+                        "prep_type": "Purified",
+                        "titer": 33200000000000
+                    },
+                    {
+                        "full_genome_name": "pAAV-Ef1a-DIO-ChRmine-mScarlet-WPRE",
+                        "name": "DIO-ChRmine-mScarlet",
+                        "prep_type": "Purified",
+                        "titer": 21400000000000
+                    }
+                ],
+                "injection_type": "Nanoject",
+                "injection_volume": 300,
+                "injection_volume_unit": "nanoliter",
+                "protocol_id": "N/A",
+                "recovery_time": 5,
+                "recovery_time_unit": "minute",
+                "start_date": "2023-02-28",
+                "targeted_structure": "STR",
+                "type": "virus injection"
+            }
+        ],
+        "schema_version": "0.5.1",
+        "subject_id": "655565"
+    }
+}

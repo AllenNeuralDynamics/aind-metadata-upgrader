@@ -105,24 +105,55 @@ def validate_angle_unit(angle_unit: str) -> str:
         raise NotImplementedError()
 
 
+def _convert_modality_to_dict(modality) -> dict:
+    """Convert a single modality (string, object string, or dict) to a Modality dict.
+
+    Handles multiple formats:
+    - Dict: returned as-is
+    - String in MODALITY_MAP: mapped to Modality object
+    - String with abbreviation=: parsed and converted
+    - String abbreviation: converted directly
+    """
+    if isinstance(modality, dict):
+        return modality
+
+    if isinstance(modality, str):
+        # Check MODALITY_MAP first (e.g., "SmartSPIM", "FIP")
+        if modality in MODALITY_MAP:
+            return MODALITY_MAP[modality].model_dump()
+
+        # Check if this looks like a string representation of an object
+        # e.g., "name='Extracellular electrophysiology' abbreviation='ecephys'"
+        if "abbreviation=" in modality:
+            try:
+                # Extract the abbreviation value
+                abbrev_start = modality.find("abbreviation=") + len("abbreviation=")
+                abbrev_value = modality[abbrev_start:].strip().strip("'\"")
+                return Modality.from_abbreviation(abbrev_value).model_dump()
+            except Exception as e:
+                raise ValueError(f"Could not parse modality string: {modality}") from e
+
+        # Try direct abbreviation conversion
+        try:
+            return Modality.from_abbreviation(modality).model_dump()
+        except Exception as e:
+            raise ValueError(f"Unsupported modality abbreviation: {modality}") from e
+
+    # Fallback for other types (shouldn't normally happen)
+    return modality
+
+
 def upgrade_v1_modalities(data: dict) -> list:
     """Upgrade v1.x modalities lists to the v2.0 format"""
 
     modalities = data.get("modality", [])
 
     if not isinstance(modalities, list):
-        if isinstance(modalities, str):
-            # Coerce single modality to it's object
-            if modalities in MODALITY_MAP:
-                modalities = [MODALITY_MAP[modalities].model_dump()]
-            else:
-                # Convert try to get a Modality object from abbreviation
-                try:
-                    modalities = [Modality.from_abbreviation(modalities).model_dump()]
-                except Exception as e:
-                    raise ValueError(f"Unsupported modality abbreviation: {modalities}") from e
-        else:
-            modalities = [modalities]
+        # Single modality (string or other type) - convert to list
+        modalities = [_convert_modality_to_dict(modalities)]
+    else:
+        # List of modalities - convert each item
+        modalities = [_convert_modality_to_dict(m) for m in modalities]
 
     return modalities
 

@@ -1,0 +1,3289 @@
+{
+    "_id": "9215a9e9-217b-46ef-b2ef-0de372322bb1",
+    "object_type": "Metadata",
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "schema_version": "2.2.2",
+    "name": "795133_2026-02-10_11-06-18",
+    "location": "s3://aind-open-data/795133_2026-02-10_11-06-18",
+    "other_identifiers": {
+        "Code Ocean": [
+            "85b94f39-56b6-4903-b41d-de5c72ee1a9a"
+        ]
+    },
+    "subject": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "notes": null,
+        "object_type": "Subject",
+        "schema_version": "2.0.13",
+        "subject_details": {
+            "alleles": [],
+            "breeding_info": {
+                "breeding_group": "",
+                "maternal_genotype": "wt/wt",
+                "maternal_id": "779288",
+                "object_type": "Breeding info",
+                "paternal_genotype": "wt/wt",
+                "paternal_id": "783671"
+            },
+            "date_of_birth": "2025-03-04",
+            "genotype": "wt/wt",
+            "housing": {
+                "cage_id": "8302178",
+                "cohoused_subjects": [],
+                "home_cage_enrichment": [],
+                "light_cycle": null,
+                "object_type": "Housing",
+                "room_id": "217"
+            },
+            "object_type": "Mouse subject",
+            "restrictions": null,
+            "rrid": null,
+            "sex": "Male",
+            "source": {
+                "abbreviation": "AI",
+                "name": "Allen Institute",
+                "registry": "Research Organization Registry (ROR)",
+                "registry_identifier": "03cpe7c52"
+            },
+            "species": {
+                "common_name": "House mouse",
+                "name": "Mus musculus",
+                "registry": "National Center for Biotechnology Information (NCBI)",
+                "registry_identifier": "NCBI:txid10090"
+            },
+            "strain": {
+                "name": "Unknown",
+                "registry": null,
+                "registry_identifier": null,
+                "species": "Mus musculus"
+            },
+            "wellness_reports": []
+        },
+        "subject_id": "795133"
+    },
+    "data_description": {
+        "creation_time": "2026-02-12T18:22:32.947870Z",
+        "data_level": "raw",
+        "data_summary": null,
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "funding_source": [
+            {
+                "fundee": [
+                    {
+                        "name": "Bruno Cruz",
+                        "object_type": "Person",
+                        "registry": "Open Researcher and Contributor ID (ORCID)",
+                        "registry_identifier": null
+                    },
+                    {
+                        "name": "Cindy Poo",
+                        "object_type": "Person",
+                        "registry": "Open Researcher and Contributor ID (ORCID)",
+                        "registry_identifier": null
+                    },
+                    {
+                        "name": "Tiffany Ona",
+                        "object_type": "Person",
+                        "registry": "Open Researcher and Contributor ID (ORCID)",
+                        "registry_identifier": null
+                    }
+                ],
+                "funder": {
+                    "abbreviation": "AI",
+                    "name": "Allen Institute",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "object_type": "Funding"
+            },
+            {
+                "fundee": [
+                    {
+                        "name": "Cindy Poo",
+                        "object_type": "Person",
+                        "registry": "Open Researcher and Contributor ID (ORCID)",
+                        "registry_identifier": null
+                    },
+                    {
+                        "name": "Tiffany Ona",
+                        "object_type": "Person",
+                        "registry": "Open Researcher and Contributor ID (ORCID)",
+                        "registry_identifier": null
+                    }
+                ],
+                "funder": {
+                    "abbreviation": null,
+                    "name": "Simons Foundation",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "01cmst727"
+                },
+                "grant_number": "Simons863738",
+                "object_type": "Funding"
+            }
+        ],
+        "group": null,
+        "institution": {
+            "abbreviation": "AIND",
+            "name": "Allen Institute for Neural Dynamics",
+            "registry": "Research Organization Registry (ROR)",
+            "registry_identifier": "04szwah67"
+        },
+        "investigators": [
+            {
+                "name": "Bruno Cruz",
+                "object_type": "Person",
+                "registry": "Open Researcher and Contributor ID (ORCID)",
+                "registry_identifier": null
+            },
+            {
+                "name": "Cindy Poo",
+                "object_type": "Person",
+                "registry": "Open Researcher and Contributor ID (ORCID)",
+                "registry_identifier": null
+            },
+            {
+                "name": "Tiffany Ona",
+                "object_type": "Person",
+                "registry": "Open Researcher and Contributor ID (ORCID)",
+                "registry_identifier": null
+            }
+        ],
+        "license": "CC-BY-4.0",
+        "modalities": [
+            {
+                "abbreviation": "behavior",
+                "name": "Behavior"
+            },
+            {
+                "abbreviation": "ecephys",
+                "name": "Extracellular electrophysiology"
+            },
+            {
+                "abbreviation": "behavior-videos",
+                "name": "Behavior videos"
+            }
+        ],
+        "name": "795133_2026-02-10_11-06-18",
+        "object_type": "Data description",
+        "project_name": "Cognitive flexibility in patch foraging",
+        "restrictions": null,
+        "schema_version": "2.3.0",
+        "source_data": null,
+        "subject_id": "795133",
+        "tags": null
+    },
+    "procedures": {
+        "coordinate_system": null,
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "notes": null,
+        "object_type": "Procedures",
+        "schema_version": "2.0.34",
+        "specimen_procedures": [],
+        "subject_id": "795133",
+        "subject_procedures": [
+            {
+                "anaesthesia": {
+                    "anaesthetic_type": "isoflurane",
+                    "duration": 135,
+                    "duration_unit": "minute",
+                    "level": 1.75,
+                    "object_type": "Anaesthetic"
+                },
+                "animal_weight_post": "34.6",
+                "animal_weight_prior": "31.3",
+                "coordinate_system": {
+                    "axes": [
+                        {
+                            "direction": "Posterior_to_anterior",
+                            "name": "AP",
+                            "object_type": "Axis"
+                        },
+                        {
+                            "direction": "Left_to_right",
+                            "name": "ML",
+                            "object_type": "Axis"
+                        },
+                        {
+                            "direction": "Superior_to_inferior",
+                            "name": "SI",
+                            "object_type": "Axis"
+                        }
+                    ],
+                    "axis_unit": "millimeter",
+                    "name": "BREGMA_ARI",
+                    "object_type": "Coordinate system",
+                    "origin": "Bregma"
+                },
+                "ethics_review_id": "2414",
+                "experimenters": [
+                    "NSB-43"
+                ],
+                "measured_coordinates": {
+                    "Lambda": {
+                        "object_type": "Translation",
+                        "translation": [
+                            -4.54,
+                            0,
+                            0
+                        ]
+                    }
+                },
+                "notes": null,
+                "object_type": "Surgery",
+                "procedures": [
+                    {
+                        "coordinate_system_name": "BREGMA_ARI",
+                        "craniotomy_type": "Whole hemisphere craniotomy",
+                        "dura_removed": null,
+                        "implant_part_number": "3003",
+                        "object_type": "Craniotomy",
+                        "position": null,
+                        "protective_material": null,
+                        "protocol_id": null,
+                        "size": null,
+                        "size_unit": null
+                    },
+                    {
+                        "headframe_material": null,
+                        "headframe_part_number": null,
+                        "headframe_type": "WHC (Full ring)",
+                        "object_type": "Headframe",
+                        "protocol_id": null,
+                        "well_part_number": "0160-055-08",
+                        "well_type": "WHC NP"
+                    }
+                ],
+                "protocol_id": "dx.doi.org/10.17504/protocols.io.kqdg392o7g25/v2",
+                "start_date": "2025-07-23",
+                "weight_unit": "gram",
+                "workstation_id": "SWS 6"
+            },
+            {
+                "baseline_weight": 33.17,
+                "end_date": null,
+                "minimum_water_per_day": 1,
+                "minimum_water_per_day_unit": "milliliter",
+                "object_type": "Water restriction",
+                "start_date": "2025-10-10",
+                "target_fraction_weight": 85,
+                "target_fraction_weight_unit": "percent",
+                "weight_unit": "gram"
+            }
+        ]
+    },
+    "instrument": {
+        "calibrations": null,
+        "components": [
+            {
+                "additional_settings": null,
+                "basestation_firmware_version": "3.0226",
+                "bsc_firmware_version": "4.0233",
+                "channels": [],
+                "data_interface": "PXI",
+                "firmware_version": null,
+                "hardware_version": null,
+                "manufacturer": {
+                    "abbreviation": "IMEC",
+                    "name": "Interuniversity Microelectronics Center",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "02kcbn207"
+                },
+                "model": "UNKNOWN",
+                "name": "Basestation",
+                "notes": null,
+                "object_type": "Neuropixels basestation",
+                "ports": [
+                    {
+                        "index": 2,
+                        "object_type": "Probe port",
+                        "probes": [
+                            "Ephys Assembly 46105"
+                        ]
+                    },
+                    {
+                        "index": 3,
+                        "object_type": "Probe port",
+                        "probes": [
+                            "Ephys Assembly 46811"
+                        ]
+                    },
+                    {
+                        "index": 2,
+                        "object_type": "Probe port",
+                        "probes": [
+                            "Ephys Assembly 46105"
+                        ]
+                    },
+                    {
+                        "index": 3,
+                        "object_type": "Probe port",
+                        "probes": [
+                            "Ephys Assembly 46811"
+                        ]
+                    }
+                ],
+                "serial_number": "23131203",
+                "slot": 2
+            },
+            {
+                "additional_settings": null,
+                "channels": [],
+                "data_interface": "PXI",
+                "firmware_version": null,
+                "hardware_version": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "National Instruments",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "026exqw73"
+                },
+                "model": "NI PXIe-6341",
+                "name": "NI PXIe-6341",
+                "notes": null,
+                "object_type": "DAQ device",
+                "serial_number": "02287EE6"
+            },
+            {
+                "additional_settings": null,
+                "channels": [],
+                "data_interface": "USB",
+                "firmware_version": null,
+                "hardware_version": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "National Instruments",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "026exqw73"
+                },
+                "model": "NI USB-6002",
+                "name": "NI USB-6002",
+                "notes": null,
+                "object_type": "DAQ device",
+                "serial_number": "0328C00D"
+            },
+            {
+                "additional_settings": null,
+                "channels": [],
+                "core_version": null,
+                "data_interface": "USB",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "WhiteRabbit",
+                    "whoami": 1404
+                },
+                "is_clock_generator": true,
+                "manufacturer": {
+                    "abbreviation": "OEPS",
+                    "name": "Open Ephys Production Site",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "007rkz355"
+                },
+                "model": null,
+                "name": "White Rabbit",
+                "notes": null,
+                "object_type": "Harp device",
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "manipulator": {
+                    "additional_settings": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "New Scale Technologies",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "m3-usb-3:1-EP",
+                    "name": "Manipulator 46105",
+                    "notes": null,
+                    "object_type": "Manipulator",
+                    "serial_number": "46105"
+                },
+                "name": "Ephys Assembly 46105",
+                "object_type": "Ephys assembly",
+                "probes": []
+            },
+            {
+                "manipulator": {
+                    "additional_settings": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "New Scale Technologies",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "m3-usb-3:1-EP",
+                    "name": "Manipulator 46811",
+                    "notes": null,
+                    "object_type": "Manipulator",
+                    "serial_number": "46811"
+                },
+                "name": "Ephys Assembly 46811",
+                "object_type": "Ephys assembly",
+                "probes": []
+            },
+            {
+                "camera": {
+                    "additional_settings": null,
+                    "bin_height": null,
+                    "bin_mode": "No binning",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Color",
+                    "cooling": "No cooling",
+                    "crop_height": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": null,
+                    "frame_rate_unit": null,
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": "Research Organization Registry (ROR)",
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-120S4C",
+                    "name": "22438384",
+                    "notes": "Did not record arc or module angles, did not calibrate",
+                    "object_type": "Camera",
+                    "recording_software": {
+                        "name": "Spinview",
+                        "object_type": "Software",
+                        "version": "2.6.0.160"
+                    },
+                    "sensor_format": "1/1.7",
+                    "sensor_format_unit": "Inches",
+                    "sensor_height": null,
+                    "sensor_width": null,
+                    "serial_number": "22438384.0",
+                    "size_unit": "pixel"
+                },
+                "coordinate_system": null,
+                "filter": null,
+                "lens": {
+                    "additional_settings": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Infinity Photo-Optical",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "name": "Stick Lens",
+                    "notes": null,
+                    "object_type": "Lens",
+                    "serial_number": null
+                },
+                "name": "22438384",
+                "object_type": "Camera assembly",
+                "relative_position": [
+                    "Superior"
+                ],
+                "target": "Brain",
+                "transform": null
+            },
+            {
+                "camera": {
+                    "additional_settings": null,
+                    "bin_height": null,
+                    "bin_mode": "No binning",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Color",
+                    "cooling": "No cooling",
+                    "crop_height": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": null,
+                    "frame_rate_unit": null,
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": "Research Organization Registry (ROR)",
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-120S4C",
+                    "name": "23195705",
+                    "notes": "Did not record arc or module angles, did not calibrate",
+                    "object_type": "Camera",
+                    "recording_software": {
+                        "name": "Spinview",
+                        "object_type": "Software",
+                        "version": "2.6.0.160"
+                    },
+                    "sensor_format": "1/1.7",
+                    "sensor_format_unit": "Inches",
+                    "sensor_height": null,
+                    "sensor_width": null,
+                    "serial_number": "23195705.0",
+                    "size_unit": "pixel"
+                },
+                "coordinate_system": null,
+                "filter": null,
+                "lens": {
+                    "additional_settings": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Infinity Photo-Optical",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "name": "Stick Lens",
+                    "notes": null,
+                    "object_type": "Lens",
+                    "serial_number": null
+                },
+                "name": "23195705",
+                "object_type": "Camera assembly",
+                "relative_position": [
+                    "Superior"
+                ],
+                "target": "Brain",
+                "transform": null
+            },
+            {
+                "camera": {
+                    "additional_settings": null,
+                    "bin_height": null,
+                    "bin_mode": "No binning",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Color",
+                    "cooling": "No cooling",
+                    "crop_height": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": null,
+                    "frame_rate_unit": null,
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": "Research Organization Registry (ROR)",
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-120S4C",
+                    "name": "23195700",
+                    "notes": "Did not record arc or module angles, did not calibrate",
+                    "object_type": "Camera",
+                    "recording_software": {
+                        "name": "Spinview",
+                        "object_type": "Software",
+                        "version": "2.6.0.160"
+                    },
+                    "sensor_format": "1/1.7",
+                    "sensor_format_unit": "Inches",
+                    "sensor_height": null,
+                    "sensor_width": null,
+                    "serial_number": "23195700.0",
+                    "size_unit": "pixel"
+                },
+                "coordinate_system": null,
+                "filter": null,
+                "lens": {
+                    "additional_settings": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Infinity Photo-Optical",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": null,
+                    "name": "Stick Lens",
+                    "notes": null,
+                    "object_type": "Lens",
+                    "serial_number": null
+                },
+                "name": "23195700",
+                "object_type": "Camera assembly",
+                "relative_position": [
+                    "Superior"
+                ],
+                "target": "Brain",
+                "transform": null
+            },
+            {
+                "additional_settings": null,
+                "manufacturer": {
+                    "abbreviation": "AIND",
+                    "name": "Allen Institute for Neural Dynamics",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "04szwah67"
+                },
+                "model": null,
+                "name": "computer",
+                "notes": null,
+                "object_type": "Computer",
+                "operating_system": "Windows-11-10.0.22631-SP0",
+                "serial_number": "DT714698"
+            },
+            {
+                "additional_settings": null,
+                "channels": [
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "event_based_sampling": null,
+                        "object_type": "DAQ channel",
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": null
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "event_based_sampling": null,
+                        "object_type": "DAQ channel",
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": null
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "event_based_sampling": null,
+                        "object_type": "DAQ channel",
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": null
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO2",
+                        "channel_type": "Digital Output",
+                        "event_based_sampling": null,
+                        "object_type": "DAQ channel",
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": null
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DIPort0",
+                        "channel_type": "Digital Input",
+                        "event_based_sampling": null,
+                        "object_type": "DAQ channel",
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": null
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "SupplyPort0",
+                        "channel_type": "Digital Output",
+                        "event_based_sampling": null,
+                        "object_type": "DAQ channel",
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": null
+                    }
+                ],
+                "core_version": null,
+                "data_interface": "USB",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Behavior",
+                    "whoami": 1216
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "OEPS",
+                    "name": "Open Ephys Production Site",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "007rkz355"
+                },
+                "model": null,
+                "name": "harp_behavior",
+                "notes": null,
+                "object_type": "Harp device",
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": null,
+                "coordinate_system": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Tymphany",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "XT25SC90-04",
+                "name": "speaker",
+                "notes": null,
+                "object_type": "Speaker",
+                "relative_position": [
+                    "Superior"
+                ],
+                "serial_number": null,
+                "transform": null
+            },
+            {
+                "additional_settings": null,
+                "manufacturer": {
+                    "abbreviation": "AIND",
+                    "name": "Allen Institute for Neural Dynamics",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "04szwah67"
+                },
+                "model": "",
+                "name": "photodiode",
+                "notes": null,
+                "object_type": "Device",
+                "serial_number": null
+            },
+            {
+                "additional_settings": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "The Lee Company",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LHDB1233518H",
+                "name": "water_valve_solenoid",
+                "notes": null,
+                "object_type": "Device",
+                "serial_number": null
+            },
+            {
+                "additional_settings": null,
+                "channels": [
+                    {
+                        "channel_index": null,
+                        "channel_name": "magnetic_brake",
+                        "channel_type": "Analog Output",
+                        "event_based_sampling": null,
+                        "object_type": "DAQ channel",
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": null
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "torque_sensor",
+                        "channel_type": "Analog Input",
+                        "event_based_sampling": null,
+                        "object_type": "DAQ channel",
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": null
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "rotary_encoder",
+                        "channel_type": "Digital Input",
+                        "event_based_sampling": null,
+                        "object_type": "DAQ channel",
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": null
+                    }
+                ],
+                "core_version": null,
+                "data_interface": "USB",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Treadmill",
+                    "whoami": 1402
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "AIND",
+                    "name": "Allen Institute for Neural Dynamics",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "04szwah67"
+                },
+                "model": null,
+                "name": "harp_treadmill",
+                "notes": null,
+                "object_type": "Harp device",
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Placid Industries",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "B1-2FM",
+                "name": "magnetic_brake",
+                "notes": null,
+                "object_type": "Device",
+                "serial_number": null
+            },
+            {
+                "additional_settings": null,
+                "manufacturer": {
+                    "abbreviation": "AIND",
+                    "name": "Allen Institute for Neural Dynamics",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "04szwah67"
+                },
+                "model": "AMT102-V",
+                "name": "rotary_encoder",
+                "notes": null,
+                "object_type": "Device",
+                "serial_number": null
+            },
+            {
+                "additional_settings": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Transducer Techniques",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "RTS-10",
+                "name": "torque_sensor",
+                "notes": null,
+                "object_type": "Device",
+                "serial_number": null
+            },
+            {
+                "additional_settings": null,
+                "channels": [
+                    {
+                        "channel_index": 0,
+                        "channel_type": "Odor",
+                        "flow_capacity": 100,
+                        "flow_unit": "mL/min",
+                        "object_type": "Olfactometer channel"
+                    },
+                    {
+                        "channel_index": 1,
+                        "channel_type": "Odor",
+                        "flow_capacity": 100,
+                        "flow_unit": "mL/min",
+                        "object_type": "Olfactometer channel"
+                    },
+                    {
+                        "channel_index": 2,
+                        "channel_type": "Odor",
+                        "flow_capacity": 100,
+                        "flow_unit": "mL/min",
+                        "object_type": "Olfactometer channel"
+                    },
+                    {
+                        "channel_index": 3,
+                        "channel_type": "Carrier",
+                        "flow_capacity": 1000,
+                        "flow_unit": "mL/min",
+                        "object_type": "Olfactometer channel"
+                    }
+                ],
+                "core_version": null,
+                "data_interface": "USB",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Olfactometer",
+                    "whoami": 1140
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "Champalimaud",
+                    "name": "Champalimaud Foundation",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "name": "harp_olfactometer",
+                "notes": null,
+                "object_type": "Olfactometer",
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": null,
+                "channels": [],
+                "core_version": null,
+                "data_interface": "USB",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "StepperDriver",
+                    "whoami": 1130
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "OEPS",
+                    "name": "Open Ephys Production Site",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "007rkz355"
+                },
+                "model": null,
+                "name": "manipulator",
+                "notes": null,
+                "object_type": "Harp device",
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": null,
+                "channels": [],
+                "core_version": null,
+                "data_interface": "USB",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "SniffDetector",
+                    "whoami": 1401
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "OEPS",
+                    "name": "Open Ephys Production Site",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "007rkz355"
+                },
+                "model": null,
+                "name": "harp_sniff_detector",
+                "notes": null,
+                "object_type": "Harp device",
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": null,
+                "channels": [],
+                "core_version": null,
+                "data_interface": "USB",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "EnvironmentSensor",
+                    "whoami": 1405
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "OEPS",
+                    "name": "Open Ephys Production Site",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "007rkz355"
+                },
+                "model": null,
+                "name": "harp_environment_sensor",
+                "notes": null,
+                "object_type": "Harp device",
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": null,
+                "channels": [
+                    {
+                        "channel_index": null,
+                        "channel_name": "ClkOut",
+                        "channel_type": "Digital Output",
+                        "event_based_sampling": null,
+                        "object_type": "DAQ channel",
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": null
+                    }
+                ],
+                "core_version": null,
+                "data_interface": "USB",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "WhiteRabbit",
+                    "whoami": 1404
+                },
+                "is_clock_generator": true,
+                "manufacturer": {
+                    "abbreviation": "AIND",
+                    "name": "Allen Institute for Neural Dynamics",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "04szwah67"
+                },
+                "model": null,
+                "name": "harp_clock_generator",
+                "notes": null,
+                "object_type": "Harp device",
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": null,
+                "encoder": {
+                    "additional_settings": null,
+                    "manufacturer": {
+                        "abbreviation": "AIND",
+                        "name": "Allen Institute for Neural Dynamics",
+                        "registry": "Research Organization Registry (ROR)",
+                        "registry_identifier": "04szwah67"
+                    },
+                    "model": "AMT102-V",
+                    "name": "rotary_encoder",
+                    "notes": null,
+                    "object_type": "Device",
+                    "serial_number": null
+                },
+                "magnetic_brake": {
+                    "additional_settings": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Placid Industries",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "B1-2FM",
+                    "name": "magnetic_brake",
+                    "notes": null,
+                    "object_type": "Device",
+                    "serial_number": null
+                },
+                "manufacturer": {
+                    "abbreviation": "AIND",
+                    "name": "Allen Institute for Neural Dynamics",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "04szwah67"
+                },
+                "model": null,
+                "name": "wheel",
+                "notes": "https://tinyurl.com/AI-RunningWheel",
+                "object_type": "Wheel",
+                "pulse_per_revolution": 8192,
+                "radius": "7.5",
+                "serial_number": null,
+                "size_unit": "centimeter",
+                "torque_sensor": {
+                    "additional_settings": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Transducer Techniques",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "RTS-10",
+                    "name": "torque_sensor",
+                    "notes": null,
+                    "object_type": "Device",
+                    "serial_number": null
+                },
+                "width": "3.5"
+            },
+            {
+                "additional_settings": null,
+                "brightness": 100,
+                "brightness_unit": "percent",
+                "contrast": null,
+                "contrast_unit": null,
+                "coordinate_system": {
+                    "axes": [
+                        {
+                            "direction": "Left_to_right",
+                            "name": "X",
+                            "object_type": "Axis"
+                        },
+                        {
+                            "direction": "Down_to_up",
+                            "name": "Y",
+                            "object_type": "Axis"
+                        },
+                        {
+                            "direction": "Back_to_front",
+                            "name": "Z",
+                            "object_type": "Axis"
+                        }
+                    ],
+                    "axis_unit": "millimeter",
+                    "name": "SIPE_MONITOR_RTF",
+                    "object_type": "Coordinate system",
+                    "origin": "Front_center"
+                },
+                "height": 15,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "LG",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "02b948n83"
+                },
+                "model": "LG LP097QX1",
+                "name": "screen_left",
+                "notes": null,
+                "object_type": "Monitor",
+                "refresh_rate": 60,
+                "relative_position": [
+                    "Anterior",
+                    "Left"
+                ],
+                "serial_number": null,
+                "size_unit": "pixel",
+                "transform": [
+                    {
+                        "object_type": "Translation",
+                        "translation": [
+                            -166.917756,
+                            13.09016,
+                            35.75264
+                        ]
+                    },
+                    {
+                        "angles": [
+                            0,
+                            1.0472,
+                            0
+                        ],
+                        "angles_unit": "radians",
+                        "object_type": "Rotation"
+                    }
+                ],
+                "viewing_distance": "17.120496728737383",
+                "viewing_distance_unit": "centimeter",
+                "width": 20
+            },
+            {
+                "additional_settings": null,
+                "brightness": 100,
+                "brightness_unit": "percent",
+                "contrast": null,
+                "contrast_unit": null,
+                "coordinate_system": {
+                    "axes": [
+                        {
+                            "direction": "Left_to_right",
+                            "name": "X",
+                            "object_type": "Axis"
+                        },
+                        {
+                            "direction": "Down_to_up",
+                            "name": "Y",
+                            "object_type": "Axis"
+                        },
+                        {
+                            "direction": "Back_to_front",
+                            "name": "Z",
+                            "object_type": "Axis"
+                        }
+                    ],
+                    "axis_unit": "millimeter",
+                    "name": "SIPE_MONITOR_RTF",
+                    "object_type": "Coordinate system",
+                    "origin": "Front_center"
+                },
+                "height": 15,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "LG",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "02b948n83"
+                },
+                "model": "LG LP097QX1",
+                "name": "screen_center",
+                "notes": null,
+                "object_type": "Monitor",
+                "refresh_rate": 60,
+                "relative_position": [
+                    "Anterior"
+                ],
+                "serial_number": null,
+                "size_unit": "pixel",
+                "transform": [
+                    {
+                        "object_type": "Translation",
+                        "translation": [
+                            0,
+                            13.09016,
+                            132.7
+                        ]
+                    },
+                    {
+                        "angles": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "angles_unit": "radians",
+                        "object_type": "Rotation"
+                    }
+                ],
+                "viewing_distance": "13.334407481708963",
+                "viewing_distance_unit": "centimeter",
+                "width": 20
+            },
+            {
+                "additional_settings": null,
+                "brightness": 100,
+                "brightness_unit": "percent",
+                "contrast": null,
+                "contrast_unit": null,
+                "coordinate_system": {
+                    "axes": [
+                        {
+                            "direction": "Left_to_right",
+                            "name": "X",
+                            "object_type": "Axis"
+                        },
+                        {
+                            "direction": "Down_to_up",
+                            "name": "Y",
+                            "object_type": "Axis"
+                        },
+                        {
+                            "direction": "Back_to_front",
+                            "name": "Z",
+                            "object_type": "Axis"
+                        }
+                    ],
+                    "axis_unit": "millimeter",
+                    "name": "SIPE_MONITOR_RTF",
+                    "object_type": "Coordinate system",
+                    "origin": "Front_center"
+                },
+                "height": 15,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "LG",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "02b948n83"
+                },
+                "model": "LG LP097QX1",
+                "name": "screen_right",
+                "notes": null,
+                "object_type": "Monitor",
+                "refresh_rate": 60,
+                "relative_position": [
+                    "Anterior",
+                    "Right"
+                ],
+                "serial_number": null,
+                "size_unit": "pixel",
+                "transform": [
+                    {
+                        "object_type": "Translation",
+                        "translation": [
+                            166.917756,
+                            13.09016,
+                            35.75264
+                        ]
+                    },
+                    {
+                        "angles": [
+                            0,
+                            -1.0472,
+                            0
+                        ],
+                        "angles_unit": "radians",
+                        "object_type": "Rotation"
+                    }
+                ],
+                "viewing_distance": "17.120496728737383",
+                "viewing_distance_unit": "centimeter",
+                "width": 20
+            },
+            {
+                "camera": {
+                    "additional_settings": {
+                        "adc_bit_depth": 0,
+                        "additional_settings": null,
+                        "binning": 1,
+                        "calibration": null,
+                        "color_processing": "Default",
+                        "device_type": "SpinnakerCamera",
+                        "exposure": 1000,
+                        "gain": 3,
+                        "gamma": null,
+                        "name": "SpinnakerCamera",
+                        "pixel_format": 0,
+                        "region_of_interest": {
+                            "height": 540,
+                            "width": 720,
+                            "x": 0,
+                            "y": 0
+                        },
+                        "serial_number": "23347809",
+                        "video_writer": {
+                            "container_extension": "mp4",
+                            "frame_rate": 240,
+                            "input_arguments": "-colorspace bt709 -color_primaries bt709 -color_range full -color_trc linear",
+                            "output_arguments": "-vf \"scale=out_color_matrix=bt709:out_range=full,format=bgr24,scale=out_range=full\" -c:v h264_nvenc -pix_fmt yuv420p -color_range full -colorspace bt709 -color_trc linear -tune hq -preset p4 -rc vbr -cq 12 -b:v 0M -metadata author=\"Allen Institute for Neural Dynamics\" -maxrate 700M -bufsize 350M",
+                            "video_writer_type": "FFMPEG"
+                        }
+                    },
+                    "bin_height": null,
+                    "bin_mode": "No binning",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "cooling": "No cooling",
+                    "crop_height": 540,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_unit": "pixel",
+                    "crop_width": 720,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "240.0",
+                    "frame_rate_unit": "hertz",
+                    "gain": "3.0",
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": "Research Organization Registry (ROR)",
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "name": "FaceCamera",
+                    "notes": null,
+                    "object_type": "Camera",
+                    "recording_software": null,
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inch",
+                    "sensor_height": 540,
+                    "sensor_width": 720,
+                    "serial_number": "23347809",
+                    "size_unit": "pixel"
+                },
+                "coordinate_system": null,
+                "filter": {
+                    "additional_settings": null,
+                    "center_wavelength": null,
+                    "cut_off_wavelength": null,
+                    "cut_on_wavelength": 810,
+                    "filter_type": "Long pass",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Thorlabs",
+                        "registry": "Research Organization Registry (ROR)",
+                        "registry_identifier": "04gsnvb07"
+                    },
+                    "model": null,
+                    "name": "long_pass_camera_filter",
+                    "notes": null,
+                    "object_type": "Filter",
+                    "serial_number": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "lens": {
+                    "additional_settings": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Tamron",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "M112FM16",
+                    "name": "face_camera_lens",
+                    "notes": null,
+                    "object_type": "Lens",
+                    "serial_number": null
+                },
+                "name": "FaceCamera_assembly",
+                "object_type": "Camera assembly",
+                "relative_position": [
+                    "Posterior",
+                    "Left"
+                ],
+                "target": "Face",
+                "transform": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {
+                        "adc_bit_depth": 0,
+                        "additional_settings": null,
+                        "binning": 1,
+                        "calibration": null,
+                        "color_processing": "Default",
+                        "device_type": "SpinnakerCamera",
+                        "exposure": 1000,
+                        "gain": 3,
+                        "gamma": null,
+                        "name": "SpinnakerCamera",
+                        "pixel_format": 0,
+                        "region_of_interest": {
+                            "height": 540,
+                            "width": 720,
+                            "x": 0,
+                            "y": 0
+                        },
+                        "serial_number": "23349431",
+                        "video_writer": {
+                            "container_extension": "mp4",
+                            "frame_rate": 240,
+                            "input_arguments": "-colorspace bt709 -color_primaries bt709 -color_range full -color_trc linear",
+                            "output_arguments": "-vf \"scale=out_color_matrix=bt709:out_range=full,format=bgr24,scale=out_range=full\" -c:v h264_nvenc -pix_fmt yuv420p -color_range full -colorspace bt709 -color_trc linear -tune hq -preset p4 -rc vbr -cq 12 -b:v 0M -metadata author=\"Allen Institute for Neural Dynamics\" -maxrate 700M -bufsize 350M",
+                            "video_writer_type": "FFMPEG"
+                        }
+                    },
+                    "bin_height": null,
+                    "bin_mode": "No binning",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "cooling": "No cooling",
+                    "crop_height": 540,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_unit": "pixel",
+                    "crop_width": 720,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "240.0",
+                    "frame_rate_unit": "hertz",
+                    "gain": "3.0",
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": "Research Organization Registry (ROR)",
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "name": "SideCamera",
+                    "notes": null,
+                    "object_type": "Camera",
+                    "recording_software": null,
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inch",
+                    "sensor_height": 540,
+                    "sensor_width": 720,
+                    "serial_number": "23349431",
+                    "size_unit": "pixel"
+                },
+                "coordinate_system": null,
+                "filter": {
+                    "additional_settings": null,
+                    "center_wavelength": null,
+                    "cut_off_wavelength": null,
+                    "cut_on_wavelength": 810,
+                    "filter_type": "Long pass",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Thorlabs",
+                        "registry": "Research Organization Registry (ROR)",
+                        "registry_identifier": "04gsnvb07"
+                    },
+                    "model": null,
+                    "name": "long_pass_camera_filter",
+                    "notes": null,
+                    "object_type": "Filter",
+                    "serial_number": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "lens": {
+                    "additional_settings": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "LM5JCM",
+                    "name": "side_camera_lens",
+                    "notes": "manufacturer=Kowa",
+                    "object_type": "Lens",
+                    "serial_number": null
+                },
+                "name": "SideCamera_assembly",
+                "object_type": "Camera assembly",
+                "relative_position": [
+                    "Lateral"
+                ],
+                "target": "Body",
+                "transform": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {
+                        "adc_bit_depth": 0,
+                        "additional_settings": null,
+                        "binning": 1,
+                        "calibration": null,
+                        "color_processing": "Default",
+                        "device_type": "SpinnakerCamera",
+                        "exposure": 1000,
+                        "gain": 0,
+                        "gamma": null,
+                        "name": "SpinnakerCamera",
+                        "pixel_format": 0,
+                        "region_of_interest": {
+                            "height": 540,
+                            "width": 720,
+                            "x": 0,
+                            "y": 0
+                        },
+                        "serial_number": "23347790",
+                        "video_writer": {
+                            "container_extension": "mp4",
+                            "frame_rate": 240,
+                            "input_arguments": "-colorspace bt709 -color_primaries bt709 -color_range full -color_trc linear",
+                            "output_arguments": "-vf \"scale=out_color_matrix=bt709:out_range=full,format=bgr24,scale=out_range=full\" -c:v h264_nvenc -pix_fmt yuv420p -color_range full -colorspace bt709 -color_trc linear -tune hq -preset p4 -rc vbr -cq 12 -b:v 0M -metadata author=\"Allen Institute for Neural Dynamics\" -maxrate 700M -bufsize 350M",
+                            "video_writer_type": "FFMPEG"
+                        }
+                    },
+                    "bin_height": null,
+                    "bin_mode": "No binning",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "cooling": "No cooling",
+                    "crop_height": 540,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_unit": "pixel",
+                    "crop_width": 720,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "240.0",
+                    "frame_rate_unit": "hertz",
+                    "gain": "0.0",
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": "Research Organization Registry (ROR)",
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "name": "FrontCamera",
+                    "notes": null,
+                    "object_type": "Camera",
+                    "recording_software": null,
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inch",
+                    "sensor_height": 540,
+                    "sensor_width": 720,
+                    "serial_number": "23347790",
+                    "size_unit": "pixel"
+                },
+                "coordinate_system": null,
+                "filter": {
+                    "additional_settings": null,
+                    "center_wavelength": null,
+                    "cut_off_wavelength": null,
+                    "cut_on_wavelength": 810,
+                    "filter_type": "Long pass",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Thorlabs",
+                        "registry": "Research Organization Registry (ROR)",
+                        "registry_identifier": "04gsnvb07"
+                    },
+                    "model": null,
+                    "name": "long_pass_camera_filter",
+                    "notes": null,
+                    "object_type": "Filter",
+                    "serial_number": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "lens": {
+                    "additional_settings": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "LM5JCM",
+                    "name": "front_camera_lens",
+                    "notes": "manufacturer=Kowa",
+                    "object_type": "Lens",
+                    "serial_number": null
+                },
+                "name": "FrontCamera_assembly",
+                "object_type": "Camera assembly",
+                "relative_position": [
+                    "Posterior",
+                    "Superior"
+                ],
+                "target": "Face",
+                "transform": null
+            },
+            {
+                "additional_settings": {
+                    "adc_bit_depth": 0,
+                    "additional_settings": null,
+                    "binning": 1,
+                    "calibration": null,
+                    "color_processing": "Default",
+                    "device_type": "SpinnakerCamera",
+                    "exposure": 1000,
+                    "gain": 3,
+                    "gamma": null,
+                    "name": "SpinnakerCamera",
+                    "pixel_format": 0,
+                    "region_of_interest": {
+                        "height": 540,
+                        "width": 720,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "serial_number": "23347809",
+                    "video_writer": {
+                        "container_extension": "mp4",
+                        "frame_rate": 240,
+                        "input_arguments": "-colorspace bt709 -color_primaries bt709 -color_range full -color_trc linear",
+                        "output_arguments": "-vf \"scale=out_color_matrix=bt709:out_range=full,format=bgr24,scale=out_range=full\" -c:v h264_nvenc -pix_fmt yuv420p -color_range full -colorspace bt709 -color_trc linear -tune hq -preset p4 -rc vbr -cq 12 -b:v 0M -metadata author=\"Allen Institute for Neural Dynamics\" -maxrate 700M -bufsize 350M",
+                        "video_writer_type": "FFMPEG"
+                    }
+                },
+                "bin_height": null,
+                "bin_mode": "No binning",
+                "bin_unit": "pixel",
+                "bin_width": null,
+                "bit_depth": null,
+                "chroma": "Monochrome",
+                "cooling": "No cooling",
+                "crop_height": 540,
+                "crop_offset_x": null,
+                "crop_offset_y": null,
+                "crop_unit": "pixel",
+                "crop_width": 720,
+                "data_interface": "USB",
+                "detector_type": "Camera",
+                "driver": null,
+                "driver_version": null,
+                "frame_rate": "240.0",
+                "frame_rate_unit": "hertz",
+                "gain": "3.0",
+                "immersion": null,
+                "manufacturer": {
+                    "abbreviation": "FLIR",
+                    "name": "Teledyne FLIR",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "01j1gwp17"
+                },
+                "model": "Blackfly S BFS-U3-04S2M",
+                "name": "FaceCamera",
+                "notes": null,
+                "object_type": "Camera",
+                "recording_software": null,
+                "sensor_format": "1/2.9",
+                "sensor_format_unit": "inch",
+                "sensor_height": 540,
+                "sensor_width": 720,
+                "serial_number": "23347809",
+                "size_unit": "pixel"
+            },
+            {
+                "additional_settings": {
+                    "adc_bit_depth": 0,
+                    "additional_settings": null,
+                    "binning": 1,
+                    "calibration": null,
+                    "color_processing": "Default",
+                    "device_type": "SpinnakerCamera",
+                    "exposure": 1000,
+                    "gain": 3,
+                    "gamma": null,
+                    "name": "SpinnakerCamera",
+                    "pixel_format": 0,
+                    "region_of_interest": {
+                        "height": 540,
+                        "width": 720,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "serial_number": "23349431",
+                    "video_writer": {
+                        "container_extension": "mp4",
+                        "frame_rate": 240,
+                        "input_arguments": "-colorspace bt709 -color_primaries bt709 -color_range full -color_trc linear",
+                        "output_arguments": "-vf \"scale=out_color_matrix=bt709:out_range=full,format=bgr24,scale=out_range=full\" -c:v h264_nvenc -pix_fmt yuv420p -color_range full -colorspace bt709 -color_trc linear -tune hq -preset p4 -rc vbr -cq 12 -b:v 0M -metadata author=\"Allen Institute for Neural Dynamics\" -maxrate 700M -bufsize 350M",
+                        "video_writer_type": "FFMPEG"
+                    }
+                },
+                "bin_height": null,
+                "bin_mode": "No binning",
+                "bin_unit": "pixel",
+                "bin_width": null,
+                "bit_depth": null,
+                "chroma": "Monochrome",
+                "cooling": "No cooling",
+                "crop_height": 540,
+                "crop_offset_x": null,
+                "crop_offset_y": null,
+                "crop_unit": "pixel",
+                "crop_width": 720,
+                "data_interface": "USB",
+                "detector_type": "Camera",
+                "driver": null,
+                "driver_version": null,
+                "frame_rate": "240.0",
+                "frame_rate_unit": "hertz",
+                "gain": "3.0",
+                "immersion": null,
+                "manufacturer": {
+                    "abbreviation": "FLIR",
+                    "name": "Teledyne FLIR",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "01j1gwp17"
+                },
+                "model": "Blackfly S BFS-U3-04S2M",
+                "name": "SideCamera",
+                "notes": null,
+                "object_type": "Camera",
+                "recording_software": null,
+                "sensor_format": "1/2.9",
+                "sensor_format_unit": "inch",
+                "sensor_height": 540,
+                "sensor_width": 720,
+                "serial_number": "23349431",
+                "size_unit": "pixel"
+            },
+            {
+                "additional_settings": {
+                    "adc_bit_depth": 0,
+                    "additional_settings": null,
+                    "binning": 1,
+                    "calibration": null,
+                    "color_processing": "Default",
+                    "device_type": "SpinnakerCamera",
+                    "exposure": 1000,
+                    "gain": 0,
+                    "gamma": null,
+                    "name": "SpinnakerCamera",
+                    "pixel_format": 0,
+                    "region_of_interest": {
+                        "height": 540,
+                        "width": 720,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "serial_number": "23347790",
+                    "video_writer": {
+                        "container_extension": "mp4",
+                        "frame_rate": 240,
+                        "input_arguments": "-colorspace bt709 -color_primaries bt709 -color_range full -color_trc linear",
+                        "output_arguments": "-vf \"scale=out_color_matrix=bt709:out_range=full,format=bgr24,scale=out_range=full\" -c:v h264_nvenc -pix_fmt yuv420p -color_range full -colorspace bt709 -color_trc linear -tune hq -preset p4 -rc vbr -cq 12 -b:v 0M -metadata author=\"Allen Institute for Neural Dynamics\" -maxrate 700M -bufsize 350M",
+                        "video_writer_type": "FFMPEG"
+                    }
+                },
+                "bin_height": null,
+                "bin_mode": "No binning",
+                "bin_unit": "pixel",
+                "bin_width": null,
+                "bit_depth": null,
+                "chroma": "Monochrome",
+                "cooling": "No cooling",
+                "crop_height": 540,
+                "crop_offset_x": null,
+                "crop_offset_y": null,
+                "crop_unit": "pixel",
+                "crop_width": 720,
+                "data_interface": "USB",
+                "detector_type": "Camera",
+                "driver": null,
+                "driver_version": null,
+                "frame_rate": "240.0",
+                "frame_rate_unit": "hertz",
+                "gain": "0.0",
+                "immersion": null,
+                "manufacturer": {
+                    "abbreviation": "FLIR",
+                    "name": "Teledyne FLIR",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "01j1gwp17"
+                },
+                "model": "Blackfly S BFS-U3-04S2M",
+                "name": "FrontCamera",
+                "notes": null,
+                "object_type": "Camera",
+                "recording_software": null,
+                "sensor_format": "1/2.9",
+                "sensor_format_unit": "inch",
+                "sensor_height": 540,
+                "sensor_width": 720,
+                "serial_number": "23347790",
+                "size_unit": "pixel"
+            },
+            {
+                "additional_settings": null,
+                "center_wavelength": null,
+                "cut_off_wavelength": 750,
+                "cut_on_wavelength": null,
+                "filter_type": "Dichroic",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "HM-VS-1150",
+                "name": "screen_hot_mirror",
+                "notes": "Dichroic filter to reflect visible light and pass infrared light; used to combine IR illumination with visible stimulus on the same screen.",
+                "object_type": "Filter",
+                "serial_number": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "bandwidth": null,
+                "bandwidth_unit": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M810L5",
+                "name": "face_ir_led",
+                "notes": null,
+                "object_type": "Light emitting diode",
+                "serial_number": null,
+                "wavelength": 810,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "bandwidth": null,
+                "bandwidth_unit": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M810L5",
+                "name": "side_ir_led",
+                "notes": null,
+                "object_type": "Light emitting diode",
+                "serial_number": null,
+                "wavelength": 810,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "LA1255-B",
+                "name": "face_ir_led_lens",
+                "notes": null,
+                "object_type": "Lens",
+                "serial_number": null
+            },
+            {
+                "additional_settings": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "LA1805-B",
+                "name": "side_ir_led_lens",
+                "notes": null,
+                "object_type": "Lens",
+                "serial_number": null
+            },
+            {
+                "lick_spouts": [
+                    {
+                        "additional_settings": null,
+                        "lick_sensor": {
+                            "additional_settings": null,
+                            "channels": [],
+                            "core_version": null,
+                            "data_interface": "USB",
+                            "firmware_version": null,
+                            "hardware_version": null,
+                            "harp_device_type": {
+                                "name": "LicketySplit",
+                                "whoami": 1400
+                            },
+                            "is_clock_generator": false,
+                            "manufacturer": {
+                                "abbreviation": "AIND",
+                                "name": "Allen Institute for Neural Dynamics",
+                                "registry": "Research Organization Registry (ROR)",
+                                "registry_identifier": "04szwah67"
+                            },
+                            "model": null,
+                            "name": "harp_lickometer",
+                            "notes": null,
+                            "object_type": "Harp device",
+                            "serial_number": null,
+                            "tag_version": null
+                        },
+                        "lick_sensor_type": "Capacitive",
+                        "manufacturer": {
+                            "abbreviation": null,
+                            "name": "Other",
+                            "registry": null,
+                            "registry_identifier": null
+                        },
+                        "model": "89875K27",
+                        "name": "lick_spout",
+                        "notes": "Lick spout for water delivery, the tube is ordered from McMaster, cut to size and shaped by AIND",
+                        "object_type": "Lick spout",
+                        "serial_number": null,
+                        "solenoid_valve": {
+                            "additional_settings": null,
+                            "manufacturer": {
+                                "abbreviation": null,
+                                "name": "The Lee Company",
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": "LHDB1233518H",
+                            "name": "water_valve_solenoid",
+                            "notes": null,
+                            "object_type": "Device",
+                            "serial_number": null
+                        },
+                        "spout_diameter": "1.2",
+                        "spout_diameter_unit": "millimeter"
+                    }
+                ],
+                "motorized_stage": {
+                    "additional_settings": null,
+                    "firmware": null,
+                    "manufacturer": {
+                        "abbreviation": "AIND",
+                        "name": "Allen Institute for Neural Dynamics",
+                        "registry": "Research Organization Registry (ROR)",
+                        "registry_identifier": "04szwah67"
+                    },
+                    "model": "328-300-00",
+                    "name": "motorized_stage",
+                    "notes": "This stage is driven by the manipulator device.",
+                    "object_type": "Motorized stage",
+                    "serial_number": null,
+                    "travel": "30",
+                    "travel_unit": "centimeter"
+                },
+                "name": "lick_spout_assembly",
+                "object_type": "Lick spout assembly"
+            }
+        ],
+        "connections": [
+            {
+                "object_type": "Connection",
+                "send_and_receive": false,
+                "source_device": "White Rabbit",
+                "source_port": "harp_clock",
+                "target_device": "NI PXIe-6341",
+                "target_port": "0"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": false,
+                "source_device": "White Rabbit",
+                "source_port": "harp_clock",
+                "target_device": "Basestation",
+                "target_port": "SYNC"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": false,
+                "source_device": "harp_behavior",
+                "source_port": "DO0",
+                "target_device": "FaceCamera",
+                "target_port": "OPTOIN"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": false,
+                "source_device": "harp_behavior",
+                "source_port": "DO0",
+                "target_device": "SideCamera",
+                "target_port": "OPTOIN"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": false,
+                "source_device": "harp_behavior",
+                "source_port": "DO0",
+                "target_device": "FrontCamera",
+                "target_port": "OPTOIN"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": false,
+                "source_device": "harp_behavior",
+                "source_port": "DO2",
+                "target_device": "speaker",
+                "target_port": null
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": false,
+                "source_device": "harp_behavior",
+                "source_port": "DIPort0",
+                "target_device": "photodiode",
+                "target_port": "0"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": false,
+                "source_device": "harp_behavior",
+                "source_port": "SupplyPort0",
+                "target_device": "water_valve_solenoid",
+                "target_port": null
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": true,
+                "source_device": "harp_treadmill",
+                "source_port": null,
+                "target_device": "magnetic_brake",
+                "target_port": null
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": true,
+                "source_device": "harp_treadmill",
+                "source_port": null,
+                "target_device": "torque_sensor",
+                "target_port": null
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": true,
+                "source_device": "harp_treadmill",
+                "source_port": null,
+                "target_device": "rotary_encoder",
+                "target_port": null
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": false,
+                "source_device": "harp_clock_generator",
+                "source_port": "ClkOut",
+                "target_device": "harp_behavior",
+                "target_port": "ClkIn"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": false,
+                "source_device": "harp_clock_generator",
+                "source_port": "ClkOut",
+                "target_device": "harp_treadmill",
+                "target_port": "ClkIn"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": false,
+                "source_device": "harp_clock_generator",
+                "source_port": "ClkOut",
+                "target_device": "harp_olfactometer",
+                "target_port": "ClkIn"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": false,
+                "source_device": "harp_clock_generator",
+                "source_port": "ClkOut",
+                "target_device": "manipulator",
+                "target_port": "ClkIn"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": false,
+                "source_device": "harp_clock_generator",
+                "source_port": "ClkOut",
+                "target_device": "harp_sniff_detector",
+                "target_port": "ClkIn"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": false,
+                "source_device": "harp_clock_generator",
+                "source_port": "ClkOut",
+                "target_device": "harp_environment_sensor",
+                "target_port": "ClkIn"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": true,
+                "source_device": "computer",
+                "source_port": "USB",
+                "target_device": "harp_behavior",
+                "target_port": "USB"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": true,
+                "source_device": "computer",
+                "source_port": "USB",
+                "target_device": "harp_treadmill",
+                "target_port": "USB"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": true,
+                "source_device": "computer",
+                "source_port": "USB",
+                "target_device": "harp_olfactometer",
+                "target_port": "USB"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": true,
+                "source_device": "computer",
+                "source_port": "USB",
+                "target_device": "manipulator",
+                "target_port": "USB"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": true,
+                "source_device": "computer",
+                "source_port": "USB",
+                "target_device": "harp_sniff_detector",
+                "target_port": "USB"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": true,
+                "source_device": "computer",
+                "source_port": "USB",
+                "target_device": "harp_environment_sensor",
+                "target_port": "USB"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": true,
+                "source_device": "computer",
+                "source_port": "USB",
+                "target_device": "harp_clock_generator",
+                "target_port": "USB"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": true,
+                "source_device": "computer",
+                "source_port": "USB",
+                "target_device": "FaceCamera",
+                "target_port": "USB"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": true,
+                "source_device": "computer",
+                "source_port": "USB",
+                "target_device": "SideCamera",
+                "target_port": "USB"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": true,
+                "source_device": "computer",
+                "source_port": "USB",
+                "target_device": "FrontCamera",
+                "target_port": "USB"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": false,
+                "source_device": "computer",
+                "source_port": "HDMI",
+                "target_device": "screen_left",
+                "target_port": "HDMI"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": false,
+                "source_device": "computer",
+                "source_port": "HDMI",
+                "target_device": "screen_center",
+                "target_port": "HDMI"
+            },
+            {
+                "object_type": "Connection",
+                "send_and_receive": false,
+                "source_device": "computer",
+                "source_port": "HDMI",
+                "target_device": "screen_right",
+                "target_port": "HDMI"
+            }
+        ],
+        "coordinate_system": {
+            "axes": [
+                {
+                    "direction": "Left_to_right",
+                    "name": "X",
+                    "object_type": "Axis"
+                },
+                {
+                    "direction": "Anterior_to_posterior",
+                    "name": "Y",
+                    "object_type": "Axis"
+                },
+                {
+                    "direction": "Inferior_to_superior",
+                    "name": "Z",
+                    "object_type": "Axis"
+                }
+            ],
+            "axis_unit": "millimeter",
+            "name": "origin",
+            "object_type": "Coordinate system",
+            "origin": "Bregma"
+        },
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/instrument.py",
+        "instrument_id": "ND_Ephys.5",
+        "location": null,
+        "modalities": [
+            {
+                "abbreviation": "behavior",
+                "name": "Behavior"
+            },
+            {
+                "abbreviation": "behavior-videos",
+                "name": "Behavior videos"
+            },
+            {
+                "abbreviation": "ecephys",
+                "name": "Extracellular electrophysiology"
+            }
+        ],
+        "modification_date": "2026-02-10",
+        "notes": null,
+        "object_type": "Instrument",
+        "schema_version": "2.2.0",
+        "temperature_control": null
+    },
+    "processing": {
+        "data_processes": [
+            {
+                "code": {
+                    "object_type": "Code",
+                    "parameters": {
+                        "input_source": "//allen/aind/scratch/tiffany.ona/ephys/sessions/795133_2026-02-10_11-06-18/behavior"
+                    },
+                    "url": "",
+                    "version": ""
+                },
+                "end_date_time": "2026-02-12T18:26:45Z",
+                "experimenters": [
+                    "AIND Scientific Computing"
+                ],
+                "name": "Other",
+                "notes": "Data was copied",
+                "object_type": "Data process",
+                "pipeline_name": "transform_and_upload_v2",
+                "process_type": "Other",
+                "stage": "Processing",
+                "start_date_time": "2026-02-12T18:26:43Z"
+            },
+            {
+                "code": {
+                    "object_type": "Code",
+                    "parameters": {
+                        "input_source": "//allen/aind/scratch/tiffany.ona/ephys/sessions/795133_2026-02-10_11-06-18/behavior-videos",
+                        "output_directory": "/allen/aind/stage/svc_aind_airflow/prod/795133_2026-02-10_11-06-18_c175d98814/behavior-videos"
+                    },
+                    "url": "ghcr.io/allenneuraldynamics/aind-behavior-video-transformation",
+                    "version": "0.2.1"
+                },
+                "end_date_time": "2026-02-13T03:49:04Z",
+                "experimenters": [
+                    "AIND Scientific Computing"
+                ],
+                "name": "Compression",
+                "object_type": "Data process",
+                "pipeline_name": "transform_and_upload_v2",
+                "process_type": "Compression",
+                "stage": "Processing",
+                "start_date_time": "2026-02-12T18:26:43Z"
+            },
+            {
+                "code": {
+                    "object_type": "Code",
+                    "parameters": {
+                        "check_timestamps": false,
+                        "input_source": "//allen/aind/scratch/tiffany.ona/ephys/sessions/795133_2026-02-10_11-06-18/ecephys",
+                        "output_directory": "/allen/aind/stage/svc_aind_airflow/prod/795133_2026-02-10_11-06-18_c175d98814/ecephys"
+                    },
+                    "url": "ghcr.io/allenneuraldynamics/aind-ephys-transformation",
+                    "version": "0.2.8"
+                },
+                "end_date_time": "2026-02-12T19:10:58Z",
+                "experimenters": [
+                    "AIND Scientific Computing"
+                ],
+                "name": "Compression",
+                "object_type": "Data process",
+                "pipeline_name": "transform_and_upload_v2",
+                "process_type": "Compression",
+                "stage": "Processing",
+                "start_date_time": "2026-02-12T18:26:43Z"
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "object_type": "Processing",
+        "pipelines": [
+            {
+                "language": "Python",
+                "language_version": "3.9.18",
+                "name": "transform_and_upload_v2",
+                "object_type": "Code",
+                "parameters": {
+                    "job_type": "vr_foraging_v2"
+                },
+                "url": "https://github.com/AllenNeuralDynamics/aind-airflow-dags",
+                "version": "0.37.0"
+            }
+        ],
+        "schema_version": "2.2.0"
+    },
+    "acquisition": {
+        "acquisition_end_time": "2026-02-10T20:07:34.928095Z",
+        "acquisition_start_time": "2026-02-10T11:06:18Z",
+        "acquisition_type": "AindVrForaging",
+        "calibrations": [
+            {
+                "calibration_date": "2025-07-26T00:00:00-07:00",
+                "description": "Volume measured for various solenoid opening times",
+                "device_name": "water_valve_solenoid",
+                "fit": {
+                    "fit_parameters": {
+                        "interval_average": {
+                            "0.025": 0.0019500000000000001,
+                            "0.05": 0.0034000000000000002,
+                            "0.075": 0.0048,
+                            "0.1": 0.00655,
+                            "0.125": 0.00795,
+                            "0.175": 0.0129,
+                            "0.225": 0.015600000000000001
+                        },
+                        "offset": -0.0002426646706586823,
+                        "r2": 0.9910471444932167,
+                        "slope": 0.07077245508982036,
+                        "valid_domain": [
+                            0.025,
+                            0.05,
+                            0.075,
+                            0.1,
+                            0.125,
+                            0.175,
+                            0.225
+                        ]
+                    },
+                    "fit_type": "linear",
+                    "object_type": "Calibration fit"
+                },
+                "input": [
+                    0.025,
+                    0.05,
+                    0.075,
+                    0.1,
+                    0.125,
+                    0.175,
+                    0.225
+                ],
+                "input_unit": "second",
+                "measured_at": null,
+                "notes": null,
+                "object_type": "Volume calibration",
+                "output": [
+                    0.0019500000000000001,
+                    0.0034000000000000002,
+                    0.0048,
+                    0.00655,
+                    0.00795,
+                    0.0129,
+                    0.015600000000000001
+                ],
+                "output_unit": "milliliter",
+                "protocol_id": null,
+                "repeats": null
+            }
+        ],
+        "coordinate_system": {
+            "axes": [
+                {
+                    "direction": "Left_to_right",
+                    "name": "ML",
+                    "object_type": "Axis"
+                },
+                {
+                    "direction": "Posterior_to_anterior",
+                    "name": "AP",
+                    "object_type": "Axis"
+                },
+                {
+                    "direction": "Inferior_to_superior",
+                    "name": "SI",
+                    "object_type": "Axis"
+                }
+            ],
+            "axis_unit": "millimeter",
+            "name": "BREGMA_RAS",
+            "object_type": "Coordinate system",
+            "origin": "Bregma"
+        },
+        "data_streams": [
+            {
+                "active_devices": [
+                    "46105",
+                    "46811"
+                ],
+                "code": null,
+                "configurations": [
+                    {
+                        "device_name": "Ephys Assembly 46105",
+                        "manipulator": {
+                            "coordinate_system": {
+                                "axes": [
+                                    {
+                                        "direction": "Positive",
+                                        "name": "X",
+                                        "object_type": "Axis"
+                                    },
+                                    {
+                                        "direction": "Positive",
+                                        "name": "Y",
+                                        "object_type": "Axis"
+                                    },
+                                    {
+                                        "direction": "Positive",
+                                        "name": "Z",
+                                        "object_type": "Axis"
+                                    }
+                                ],
+                                "axis_unit": "micrometer",
+                                "name": "MIS_MANIP_XYZ",
+                                "object_type": "Coordinate system",
+                                "origin": "Origin"
+                            },
+                            "device_name": "Manipulator 46105",
+                            "local_axis_positions": {
+                                "object_type": "Translation",
+                                "translation": [
+                                    9029,
+                                    6834,
+                                    9065
+                                ]
+                            },
+                            "object_type": "Manipulator config"
+                        },
+                        "modules": [
+                            {
+                                "angle_unit": "degrees",
+                                "arc_angle": -10,
+                                "module_angle": -10,
+                                "notes": null,
+                                "object_type": "MIS module config",
+                                "rotation_angle": null
+                            }
+                        ],
+                        "object_type": "Ephys assembly config",
+                        "probes": [
+                            {
+                                "atlas_coordinate": null,
+                                "coordinate_system": {
+                                    "axes": [
+                                        {
+                                            "direction": "Left_to_right",
+                                            "name": "X",
+                                            "object_type": "Axis"
+                                        },
+                                        {
+                                            "direction": "Down_to_up",
+                                            "name": "Y",
+                                            "object_type": "Axis"
+                                        },
+                                        {
+                                            "direction": "Back_to_front",
+                                            "name": "Z",
+                                            "object_type": "Axis"
+                                        },
+                                        {
+                                            "direction": "Up_to_down",
+                                            "name": "Depth",
+                                            "object_type": "Axis"
+                                        }
+                                    ],
+                                    "axis_unit": "micrometer",
+                                    "name": "PROBE_RUFD",
+                                    "object_type": "Coordinate system",
+                                    "origin": "Tip"
+                                },
+                                "device_name": "46105",
+                                "dye": null,
+                                "notes": null,
+                                "object_type": "Probe config",
+                                "other_targeted_structure": null,
+                                "primary_targeted_structure": {
+                                    "acronym": "VM",
+                                    "atlas": "CCFv3",
+                                    "id": "685",
+                                    "name": "Ventral medial nucleus of the thalamus"
+                                },
+                                "transform": [
+                                    {
+                                        "angles": [
+                                            90,
+                                            0,
+                                            -90
+                                        ],
+                                        "angles_unit": "degrees",
+                                        "object_type": "Rotation"
+                                    },
+                                    {
+                                        "angles": [
+                                            0,
+                                            0,
+                                            0
+                                        ],
+                                        "angles_unit": "degrees",
+                                        "object_type": "Rotation"
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            9.029,
+                                            6.834,
+                                            9.065,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "angles": [
+                                            9.975391038025894,
+                                            -4.0615015028120665,
+                                            -90
+                                        ],
+                                        "angles_unit": "degrees",
+                                        "object_type": "Rotation"
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            4.036684642791809,
+                                            -10.248889419494926,
+                                            -3.2786759159169296,
+                                            4.204
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "device_name": "Ephys Assembly 46811",
+                        "manipulator": {
+                            "coordinate_system": {
+                                "axes": [
+                                    {
+                                        "direction": "Positive",
+                                        "name": "X",
+                                        "object_type": "Axis"
+                                    },
+                                    {
+                                        "direction": "Positive",
+                                        "name": "Y",
+                                        "object_type": "Axis"
+                                    },
+                                    {
+                                        "direction": "Positive",
+                                        "name": "Z",
+                                        "object_type": "Axis"
+                                    }
+                                ],
+                                "axis_unit": "micrometer",
+                                "name": "MIS_MANIP_XYZ",
+                                "object_type": "Coordinate system",
+                                "origin": "Origin"
+                            },
+                            "device_name": "Manipulator 46811",
+                            "local_axis_positions": {
+                                "object_type": "Translation",
+                                "translation": [
+                                    8097,
+                                    214,
+                                    11002
+                                ]
+                            },
+                            "object_type": "Manipulator config"
+                        },
+                        "modules": [
+                            {
+                                "angle_unit": "degrees",
+                                "arc_angle": 15,
+                                "module_angle": 7,
+                                "notes": null,
+                                "object_type": "MIS module config",
+                                "rotation_angle": null
+                            }
+                        ],
+                        "object_type": "Ephys assembly config",
+                        "probes": [
+                            {
+                                "atlas_coordinate": null,
+                                "coordinate_system": {
+                                    "axes": [
+                                        {
+                                            "direction": "Left_to_right",
+                                            "name": "X",
+                                            "object_type": "Axis"
+                                        },
+                                        {
+                                            "direction": "Down_to_up",
+                                            "name": "Y",
+                                            "object_type": "Axis"
+                                        },
+                                        {
+                                            "direction": "Back_to_front",
+                                            "name": "Z",
+                                            "object_type": "Axis"
+                                        },
+                                        {
+                                            "direction": "Up_to_down",
+                                            "name": "Depth",
+                                            "object_type": "Axis"
+                                        }
+                                    ],
+                                    "axis_unit": "micrometer",
+                                    "name": "PROBE_RUFD",
+                                    "object_type": "Coordinate system",
+                                    "origin": "Tip"
+                                },
+                                "device_name": "46811",
+                                "dye": null,
+                                "notes": null,
+                                "object_type": "Probe config",
+                                "other_targeted_structure": null,
+                                "primary_targeted_structure": {
+                                    "acronym": "PIR",
+                                    "atlas": "CCFv3",
+                                    "id": "961",
+                                    "name": "Piriform area"
+                                },
+                                "transform": [
+                                    {
+                                        "angles": [
+                                            90,
+                                            0,
+                                            -90
+                                        ],
+                                        "angles_unit": "degrees",
+                                        "object_type": "Rotation"
+                                    },
+                                    {
+                                        "angles": [
+                                            0,
+                                            0,
+                                            0
+                                        ],
+                                        "angles_unit": "degrees",
+                                        "object_type": "Rotation"
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            8.097,
+                                            0.214,
+                                            11.002,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "angles": [
+                                            -6.118742362886407,
+                                            -29.182127530172504,
+                                            -90
+                                        ],
+                                        "angles_unit": "degrees",
+                                        "object_type": "Rotation"
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -0.7665031783614878,
+                                            -7.802059575749527,
+                                            -7.358970597442067,
+                                            2.903
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "connections": [],
+                "modalities": [
+                    {
+                        "abbreviation": "ecephys",
+                        "name": "Extracellular electrophysiology"
+                    }
+                ],
+                "notes": "Recording data stream",
+                "object_type": "Data stream",
+                "stream_end_time": "2026-02-10T12:07:53Z",
+                "stream_start_time": "2026-02-10T11:06:18Z"
+            },
+            {
+                "active_devices": [
+                    "46105",
+                    "46811"
+                ],
+                "code": null,
+                "configurations": [
+                    {
+                        "device_name": "Ephys Assembly 46105",
+                        "manipulator": {
+                            "coordinate_system": {
+                                "axes": [
+                                    {
+                                        "direction": "Positive",
+                                        "name": "X",
+                                        "object_type": "Axis"
+                                    },
+                                    {
+                                        "direction": "Positive",
+                                        "name": "Y",
+                                        "object_type": "Axis"
+                                    },
+                                    {
+                                        "direction": "Positive",
+                                        "name": "Z",
+                                        "object_type": "Axis"
+                                    }
+                                ],
+                                "axis_unit": "micrometer",
+                                "name": "MIS_MANIP_XYZ",
+                                "object_type": "Coordinate system",
+                                "origin": "Origin"
+                            },
+                            "device_name": "Manipulator 46105",
+                            "local_axis_positions": {
+                                "object_type": "Translation",
+                                "translation": [
+                                    9029,
+                                    6834,
+                                    9065
+                                ]
+                            },
+                            "object_type": "Manipulator config"
+                        },
+                        "modules": [
+                            {
+                                "angle_unit": "degrees",
+                                "arc_angle": -10,
+                                "module_angle": -10,
+                                "notes": null,
+                                "object_type": "MIS module config",
+                                "rotation_angle": null
+                            }
+                        ],
+                        "object_type": "Ephys assembly config",
+                        "probes": [
+                            {
+                                "atlas_coordinate": null,
+                                "coordinate_system": {
+                                    "axes": [
+                                        {
+                                            "direction": "Left_to_right",
+                                            "name": "X",
+                                            "object_type": "Axis"
+                                        },
+                                        {
+                                            "direction": "Down_to_up",
+                                            "name": "Y",
+                                            "object_type": "Axis"
+                                        },
+                                        {
+                                            "direction": "Back_to_front",
+                                            "name": "Z",
+                                            "object_type": "Axis"
+                                        },
+                                        {
+                                            "direction": "Up_to_down",
+                                            "name": "Depth",
+                                            "object_type": "Axis"
+                                        }
+                                    ],
+                                    "axis_unit": "micrometer",
+                                    "name": "PROBE_RUFD",
+                                    "object_type": "Coordinate system",
+                                    "origin": "Tip"
+                                },
+                                "device_name": "46105",
+                                "dye": null,
+                                "notes": null,
+                                "object_type": "Probe config",
+                                "other_targeted_structure": null,
+                                "primary_targeted_structure": {
+                                    "acronym": "VM",
+                                    "atlas": "CCFv3",
+                                    "id": "685",
+                                    "name": "Ventral medial nucleus of the thalamus"
+                                },
+                                "transform": [
+                                    {
+                                        "angles": [
+                                            90,
+                                            0,
+                                            -90
+                                        ],
+                                        "angles_unit": "degrees",
+                                        "object_type": "Rotation"
+                                    },
+                                    {
+                                        "angles": [
+                                            0,
+                                            0,
+                                            0
+                                        ],
+                                        "angles_unit": "degrees",
+                                        "object_type": "Rotation"
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            9.029,
+                                            6.834,
+                                            9.065,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "angles": [
+                                            9.975391038025894,
+                                            -4.0615015028120665,
+                                            -90
+                                        ],
+                                        "angles_unit": "degrees",
+                                        "object_type": "Rotation"
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            4.036684642791809,
+                                            -10.248889419494926,
+                                            -3.2786759159169296,
+                                            4.204
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "device_name": "Ephys Assembly 46811",
+                        "manipulator": {
+                            "coordinate_system": {
+                                "axes": [
+                                    {
+                                        "direction": "Positive",
+                                        "name": "X",
+                                        "object_type": "Axis"
+                                    },
+                                    {
+                                        "direction": "Positive",
+                                        "name": "Y",
+                                        "object_type": "Axis"
+                                    },
+                                    {
+                                        "direction": "Positive",
+                                        "name": "Z",
+                                        "object_type": "Axis"
+                                    }
+                                ],
+                                "axis_unit": "micrometer",
+                                "name": "MIS_MANIP_XYZ",
+                                "object_type": "Coordinate system",
+                                "origin": "Origin"
+                            },
+                            "device_name": "Manipulator 46811",
+                            "local_axis_positions": {
+                                "object_type": "Translation",
+                                "translation": [
+                                    8097,
+                                    214,
+                                    11002
+                                ]
+                            },
+                            "object_type": "Manipulator config"
+                        },
+                        "modules": [
+                            {
+                                "angle_unit": "degrees",
+                                "arc_angle": 15,
+                                "module_angle": 7,
+                                "notes": null,
+                                "object_type": "MIS module config",
+                                "rotation_angle": null
+                            }
+                        ],
+                        "object_type": "Ephys assembly config",
+                        "probes": [
+                            {
+                                "atlas_coordinate": null,
+                                "coordinate_system": {
+                                    "axes": [
+                                        {
+                                            "direction": "Left_to_right",
+                                            "name": "X",
+                                            "object_type": "Axis"
+                                        },
+                                        {
+                                            "direction": "Down_to_up",
+                                            "name": "Y",
+                                            "object_type": "Axis"
+                                        },
+                                        {
+                                            "direction": "Back_to_front",
+                                            "name": "Z",
+                                            "object_type": "Axis"
+                                        },
+                                        {
+                                            "direction": "Up_to_down",
+                                            "name": "Depth",
+                                            "object_type": "Axis"
+                                        }
+                                    ],
+                                    "axis_unit": "micrometer",
+                                    "name": "PROBE_RUFD",
+                                    "object_type": "Coordinate system",
+                                    "origin": "Tip"
+                                },
+                                "device_name": "46811",
+                                "dye": null,
+                                "notes": null,
+                                "object_type": "Probe config",
+                                "other_targeted_structure": null,
+                                "primary_targeted_structure": {
+                                    "acronym": "PIR",
+                                    "atlas": "CCFv3",
+                                    "id": "961",
+                                    "name": "Piriform area"
+                                },
+                                "transform": [
+                                    {
+                                        "angles": [
+                                            90,
+                                            0,
+                                            -90
+                                        ],
+                                        "angles_unit": "degrees",
+                                        "object_type": "Rotation"
+                                    },
+                                    {
+                                        "angles": [
+                                            0,
+                                            0,
+                                            0
+                                        ],
+                                        "angles_unit": "degrees",
+                                        "object_type": "Rotation"
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            8.097,
+                                            0.214,
+                                            11.002,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "angles": [
+                                            -6.118742362886407,
+                                            -29.182127530172504,
+                                            -90
+                                        ],
+                                        "angles_unit": "degrees",
+                                        "object_type": "Rotation"
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -0.7665031783614878,
+                                            -7.802059575749527,
+                                            -7.358970597442067,
+                                            2.903
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "connections": [],
+                "modalities": [
+                    {
+                        "abbreviation": "ecephys",
+                        "name": "Extracellular electrophysiology"
+                    }
+                ],
+                "notes": "Surface finding data stream",
+                "object_type": "Data stream",
+                "stream_end_time": "2026-02-10T12:11:27Z",
+                "stream_start_time": "2026-02-10T12:09:00Z"
+            },
+            {
+                "active_devices": [
+                    "FaceCamera",
+                    "SideCamera",
+                    "FrontCamera",
+                    "harp_behavior",
+                    "harp_olfactometer",
+                    "harp_lickometer",
+                    "harp_clock_generator",
+                    "harp_treadmill",
+                    "harp_sniff_detector",
+                    "harp_environment_sensor",
+                    "manipulator"
+                ],
+                "code": [
+                    {
+                        "container": null,
+                        "core_dependency": null,
+                        "input_data": null,
+                        "language": "Bonsai",
+                        "language_version": "2.9.0",
+                        "name": "Aind.Behavior.VrForaging",
+                        "object_type": "Code",
+                        "parameters": null,
+                        "run_script": "C:\\git\\Aind.Behavior.VrForaging\\src\\main.bonsai",
+                        "url": "https://github.com/AllenNeuralDynamics/Aind.Behavior.VrForaging.git",
+                        "version": "b44a8e1532138dbf2559e64a0444c2839b8882c3"
+                    },
+                    {
+                        "container": null,
+                        "core_dependency": null,
+                        "input_data": null,
+                        "language": "Python",
+                        "language_version": "3.13.1",
+                        "name": "aind-behavior-vr-foraging",
+                        "object_type": "Code",
+                        "parameters": null,
+                        "run_script": null,
+                        "url": "https://github.com/AllenNeuralDynamics/Aind.Behavior.VrForaging.git",
+                        "version": "b44a8e1532138dbf2559e64a0444c2839b8882c3"
+                    }
+                ],
+                "configurations": [
+                    {
+                        "compression": {
+                            "container": null,
+                            "core_dependency": null,
+                            "input_data": null,
+                            "language": null,
+                            "language_version": null,
+                            "name": "FFMPEG",
+                            "object_type": "Code",
+                            "parameters": {
+                                "container_extension": "mp4",
+                                "frame_rate": 240,
+                                "input_arguments": "-colorspace bt709 -color_primaries bt709 -color_range full -color_trc linear",
+                                "output_arguments": "-vf \"scale=out_color_matrix=bt709:out_range=full,format=bgr24,scale=out_range=full\" -c:v h264_nvenc -pix_fmt yuv420p -color_range full -colorspace bt709 -color_trc linear -tune hq -preset p4 -rc vbr -cq 12 -b:v 0M -metadata author=\"Allen Institute for Neural Dynamics\" -maxrate 700M -bufsize 350M",
+                                "video_writer_type": "FFMPEG"
+                            },
+                            "run_script": null,
+                            "url": "https://ffmpeg.org/",
+                            "version": null
+                        },
+                        "device_name": "FaceCamera",
+                        "exposure_time": 1000,
+                        "exposure_time_unit": "microsecond",
+                        "object_type": "Detector config",
+                        "trigger_type": "External"
+                    },
+                    {
+                        "compression": {
+                            "container": null,
+                            "core_dependency": null,
+                            "input_data": null,
+                            "language": null,
+                            "language_version": null,
+                            "name": "FFMPEG",
+                            "object_type": "Code",
+                            "parameters": {
+                                "container_extension": "mp4",
+                                "frame_rate": 240,
+                                "input_arguments": "-colorspace bt709 -color_primaries bt709 -color_range full -color_trc linear",
+                                "output_arguments": "-vf \"scale=out_color_matrix=bt709:out_range=full,format=bgr24,scale=out_range=full\" -c:v h264_nvenc -pix_fmt yuv420p -color_range full -colorspace bt709 -color_trc linear -tune hq -preset p4 -rc vbr -cq 12 -b:v 0M -metadata author=\"Allen Institute for Neural Dynamics\" -maxrate 700M -bufsize 350M",
+                                "video_writer_type": "FFMPEG"
+                            },
+                            "run_script": null,
+                            "url": "https://ffmpeg.org/",
+                            "version": null
+                        },
+                        "device_name": "SideCamera",
+                        "exposure_time": 1000,
+                        "exposure_time_unit": "microsecond",
+                        "object_type": "Detector config",
+                        "trigger_type": "External"
+                    },
+                    {
+                        "compression": {
+                            "container": null,
+                            "core_dependency": null,
+                            "input_data": null,
+                            "language": null,
+                            "language_version": null,
+                            "name": "FFMPEG",
+                            "object_type": "Code",
+                            "parameters": {
+                                "container_extension": "mp4",
+                                "frame_rate": 240,
+                                "input_arguments": "-colorspace bt709 -color_primaries bt709 -color_range full -color_trc linear",
+                                "output_arguments": "-vf \"scale=out_color_matrix=bt709:out_range=full,format=bgr24,scale=out_range=full\" -c:v h264_nvenc -pix_fmt yuv420p -color_range full -colorspace bt709 -color_trc linear -tune hq -preset p4 -rc vbr -cq 12 -b:v 0M -metadata author=\"Allen Institute for Neural Dynamics\" -maxrate 700M -bufsize 350M",
+                                "video_writer_type": "FFMPEG"
+                            },
+                            "run_script": null,
+                            "url": "https://ffmpeg.org/",
+                            "version": null
+                        },
+                        "device_name": "FrontCamera",
+                        "exposure_time": 1000,
+                        "exposure_time_unit": "microsecond",
+                        "object_type": "Detector config",
+                        "trigger_type": "External"
+                    }
+                ],
+                "connections": [],
+                "modalities": [
+                    {
+                        "abbreviation": "behavior",
+                        "name": "Behavior"
+                    },
+                    {
+                        "abbreviation": "behavior-videos",
+                        "name": "Behavior videos"
+                    }
+                ],
+                "notes": "",
+                "object_type": "Data stream",
+                "stream_end_time": "2026-02-10T20:07:34.506700Z",
+                "stream_start_time": "2026-02-10T18:23:54.485064Z"
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/acquisition.py",
+        "ethics_review_id": [
+            "2414"
+        ],
+        "experimenters": [
+            "Yoni Browning",
+            "Katrina Nguyen",
+            "Tiffany Ona",
+            "katrina.nguyen"
+        ],
+        "instrument_id": "ND_Ephys.5",
+        "maintenance": [],
+        "manipulations": [],
+        "notes": "Easy insertion. PIR may be at channels 110-116. Confusion about cortical surface vs. liquid surface. Measurements based on 2nd zero. 1st zero was 556 above (insert z 3459)",
+        "object_type": "Acquisition",
+        "protocol_id": null,
+        "schema_version": "2.2.3",
+        "specimen_id": null,
+        "stimulus_epochs": [
+            {
+                "active_devices": [
+                    "speaker"
+                ],
+                "code": {
+                    "container": null,
+                    "core_dependency": null,
+                    "input_data": null,
+                    "language": "Bonsai",
+                    "language_version": "2.9.0",
+                    "name": "Aind.Behavior.VrForaging",
+                    "object_type": "Code",
+                    "parameters": {
+                        "rig": "./Behavior/Logs/rig_input.json",
+                        "session": "./Behavior/Logs/session_input.json",
+                        "task_logic": "./Behavior/Logs/tasklogic_input.json"
+                    },
+                    "run_script": "C:\\git\\Aind.Behavior.VrForaging\\src\\main.bonsai",
+                    "url": "https://github.com/AllenNeuralDynamics/Aind.Behavior.VrForaging.git",
+                    "version": "b44a8e1532138dbf2559e64a0444c2839b8882c3"
+                },
+                "configurations": [
+                    {
+                        "device_name": "speaker",
+                        "object_type": "Speaker config",
+                        "volume": 60,
+                        "volume_unit": "decibels"
+                    },
+                    {
+                        "active_control": true,
+                        "device_name": "wheel",
+                        "object_type": "Mouse platform config",
+                        "objects_in_arena": null
+                    }
+                ],
+                "curriculum_status": "false",
+                "notes": null,
+                "object_type": "Stimulus epoch",
+                "performance_metrics": null,
+                "stimulus_end_time": "2026-02-10T20:07:34.506700Z",
+                "stimulus_modalities": [
+                    "Auditory",
+                    "Visual",
+                    "Virtual reality",
+                    "Wheel friction"
+                ],
+                "stimulus_name": "AindVrForaging",
+                "stimulus_start_time": "2026-02-10T18:23:54.485064Z",
+                "training_protocol_name": null
+            }
+        ],
+        "subject_details": {
+            "anaesthesia": null,
+            "animal_weight_post": null,
+            "animal_weight_prior": null,
+            "mouse_platform_name": "wheel",
+            "object_type": "Acquisition subject details",
+            "reward_consumed_total": "0.809",
+            "reward_consumed_unit": "milliliter",
+            "weight_unit": "gram"
+        },
+        "subject_id": "795133"
+    },
+    "quality_control": null,
+    "model": null,
+    "_created": "2026-02-13T03:55:06.275Z",
+    "_last_modified": "2026-02-13T03:55:06.275Z"
+}
