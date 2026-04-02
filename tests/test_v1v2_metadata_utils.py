@@ -6,6 +6,7 @@ from aind_metadata_upgrader.utils.v1v2_metadata_utils import _handle_ecephys_id_
 
 
 def _make_data(instrument_id, acquisition_id):
+    """Helper to create test data dicts with specified instrument and acquisition IDs"""
     return {
         "instrument": {"instrument_id": instrument_id},
         "acquisition": {"instrument_id": acquisition_id},
