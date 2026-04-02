@@ -611,6 +611,7 @@ class TestDynamicRoutingCraniotomy(unittest.TestCase):
     }
 
     def _make_data(self, procedures):
+        """Helper function to create test data with given procedures list"""
         return {
             "subject_procedures": [
                 {
