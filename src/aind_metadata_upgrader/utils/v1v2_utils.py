@@ -948,7 +948,11 @@ def upgrade_registry(data: dict) -> dict:
         # Handle V2 style registry data, which should already be upgraded
         if not isinstance(data["registry"], dict):
             return data
-        data["registry"] = getattr(Registry, data["registry"]["abbreviation"].upper())
+
+        if data["registry"]["abbreviation"]:
+            data["registry"] = getattr(Registry, data["registry"]["abbreviation"].upper())
+        else:
+            data["registry"] = None
 
     return data
 

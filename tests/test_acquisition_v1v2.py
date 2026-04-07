@@ -49,7 +49,7 @@ class TestAcquisitionV1V2(unittest.TestCase):
                     "maintenance": [],
                 }
 
-                result = self.upgrader.upgrade(data, "2.0.34", metadata={})
+                result = self.upgrader.upgrade(data, "2.0.34", metadata={"instrument": {}})
                 self.assertIsNotNone(result)
                 self.assertEqual(result["subject_id"], "test_subject")
 
