@@ -1102,11 +1102,15 @@ class SessionV1V2(CoreUpgrader):
                 f" (v1v2 upgrade) Session start time was adjusted from {session_start_time} " f"to {min_start}"
             )
             session_start_time = min_start
-        if valid_end_times and session_end_time and any(end <= session_end_time for end in valid_end_times):
+        if valid_end_times and session_end_time is None:
+            session_end_time = max(valid_end_times)
+        elif valid_end_times and session_end_time and any(end <= session_end_time for end in valid_end_times):
             max_end = max(valid_end_times)
             notes = (notes if notes else "") + (
                 f" (v1v2 upgrade) Session end time was adjusted from {session_end_time} " f"to {max_end}"
             )
             session_end_time = max_end
+        else:
+            raise NotImplementedError("Not sure how we got here")
 
         return session_start_time, session_end_time, notes
