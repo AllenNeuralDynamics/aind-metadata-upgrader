@@ -78,7 +78,7 @@ class Upgrade:
         expected_core_files = self._determine_expected_core_files()
 
         core_files = self._process_core_files()
-        
+
         core_files = self._repair_missing_procedures(core_files)
 
         self._validate_required_files(core_files)
@@ -95,7 +95,7 @@ class Upgrade:
             if "subject" in core_files and core_files["subject"] is not None:
                 logging.warning("Procedures core file is missing but subject is present. Adding empty Procedures.")
                 core_files["procedures"] = Procedures(subject_id=core_files["subject"]["subject_id"]).model_dump()
-        
+
         return core_files
 
     def _determine_expected_core_files(self) -> list:
