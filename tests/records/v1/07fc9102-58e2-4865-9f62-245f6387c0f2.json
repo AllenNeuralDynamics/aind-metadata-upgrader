@@ -1,0 +1,183 @@
+{
+    "_id": "07fc9102-58e2-4865-9f62-245f6387c0f2",
+    "acquisition": null,
+    "created": "2024-06-08T00:06:30.216636",
+    "data_description": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "1.0.4",
+        "license": "CC-BY-4.0",
+        "platform": null,
+        "subject_id": "662253",
+        "creation_time": "2023-03-29 09:13:00-07:00",
+        "label": null,
+        "name": "Other_662253_2023-03-29_09-13-00",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": null
+            }
+        ],
+        "data_level": "raw",
+        "group": null,
+        "investigators": [],
+        "project_name": null,
+        "restrictions": null,
+        "modality": [
+            {
+                "name": "Planar optical physiology",
+                "abbreviation": "pophys"
+            }
+        ],
+        "related_data": [],
+        "data_summary": null
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": {
+        "Code Ocean": [
+            "a4a8e69f-d8e5-4b20-9447-18112aa08542"
+        ]
+    },
+    "instrument": null,
+    "last_modified": "2025-02-12T22:34:17.569055Z",
+    "location": "s3://aind-ophys-data/Other_662253_2023-03-29_09-13-00",
+    "metadata_status": "Unknown",
+    "name": "Other_662253_2023-03-29_09-13-00",
+    "procedures": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/procedures.py",
+        "notes": null,
+        "schema_version": "0.8.1",
+        "specimen_procedures": [],
+        "subject_id": "662253",
+        "subject_procedures": [
+            {
+                "anaesthesia": null,
+                "animal_weight_post": null,
+                "animal_weight_prior": null,
+                "end_date": "2023-04-04",
+                "experimenter_full_name": 30086,
+                "iacuc_protocol": "2103",
+                "notes": null,
+                "output_specimen_ids": [
+                    662253
+                ],
+                "procedure_type": "Perfusion",
+                "start_date": "2023-04-04",
+                "weight_unit": "gram"
+            },
+            {
+                "anaesthesia": {
+                    "duration": 174,
+                    "duration_unit": "minute",
+                    "level": 1.5,
+                    "type": "isoflurane"
+                },
+                "animal_weight_post": 27.5,
+                "animal_weight_prior": 24.6,
+                "bregma_to_lambda_distance": 4.47,
+                "bregma_to_lambda_unit": "millimeter",
+                "craniotomy_coordinates_ap": null,
+                "craniotomy_coordinates_ml": null,
+                "craniotomy_coordinates_reference": "Lambda",
+                "craniotomy_coordinates_unit": "millimeter",
+                "craniotomy_hemisphere": null,
+                "craniotomy_size": 5,
+                "craniotomy_size_unit": "millimeter",
+                "craniotomy_type": "5 mm",
+                "dura_removed": null,
+                "end_date": "2023-02-01",
+                "experimenter_full_name": "NSB-187",
+                "iacuc_protocol": "2103",
+                "implant_part_number": null,
+                "notes": null,
+                "procedure_type": "Craniotomy",
+                "protective_material": null,
+                "recovery_time": 20,
+                "recovery_time_unit": "minute",
+                "start_date": "2023-02-01",
+                "weight_unit": "gram",
+                "workstation_id": "SWS 1"
+            }
+        ]
+    },
+    "processing": {
+        "data_processes": [
+            {
+                "code_url": "https://github.com/AllenNeuralDynamics/aind-data-transfer",
+                "code_version": null,
+                "end_date_time": "2023-08-04T02:49:30.428489+00:00",
+                "input_location": "\\\\allen\\programs\\mindscope\\production\\learning\\prod0\\specimen_1243805650\\ophys_session_1258020361\\ophys_experiment_1258265881",
+                "name": "Other",
+                "notes": null,
+                "output_location": "s3://aind-ophys-data/Other_662253_2023-03-29_09-13-00",
+                "outputs": null,
+                "parameters": {
+                    "compress_raw_data": false,
+                    "extra_configs": null,
+                    "modality": {
+                        "abbreviation": "pophys",
+                        "name": "Optical physiology"
+                    },
+                    "skip_staging": true,
+                    "source": "\\\\allen\\programs\\mindscope\\production\\learning\\prod0\\specimen_1243805650\\ophys_session_1258020361\\ophys_experiment_1258265881"
+                },
+                "start_date_time": "2023-08-04T02:28:12.371942+00:00",
+                "version": "0.22.0"
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/processing.py",
+        "pipeline_url": null,
+        "pipeline_version": null,
+        "schema_version": "0.2.1"
+    },
+    "rig": null,
+    "schema_version": "0.2.7",
+    "session": null,
+    "subject": {
+        "background_strain": null,
+        "breeding_group": "Gad2-IRES-Cre;Slc32a1-T2A-FlpO;Ai195-hyg",
+        "date_of_birth": "2022-12-18",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/subject.py",
+        "genotype": "Gad2-IRES-Cre/wt;Slc32a1-T2A-FlpO/wt;Ai195(TIT2L-GC7s-ICF-IRES-tTA2)-hyg/wt",
+        "housing": null,
+        "maternal_genotype": "Gad2-IRES-Cre/wt;Slc32a1-T2A-FlpO/wt",
+        "maternal_id": "636352",
+        "mgi_allele_ids": null,
+        "notes": null,
+        "paternal_genotype": "Ai195(TIT2L-GC7s-ICF-IRES-tTA2)-hyg/Ai195(TIT2L-GC7s-ICF-IRES-tTA2)-hyg",
+        "paternal_id": "636199",
+        "restrictions": null,
+        "rrid": null,
+        "schema_version": "0.4.1",
+        "sex": "Male",
+        "source": null,
+        "species": {
+            "abbreviation": null,
+            "name": "Mus musculus",
+            "registry": {
+                "abbreviation": "NCBI",
+                "name": "National Center for Biotechnology Information"
+            },
+            "registry_identifier": "10090"
+        },
+        "subject_id": "662253",
+        "wellness_reports": null
+    }
+}

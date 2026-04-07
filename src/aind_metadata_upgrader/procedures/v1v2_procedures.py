@@ -301,6 +301,15 @@ def upgrade_perfusion(data: dict) -> dict:
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
 
+    # Ensure "output_specimen_ids" is a list of strings
+    if "output_specimen_ids" in upgraded_data:
+        if isinstance(upgraded_data["output_specimen_ids"], str):
+            upgraded_data["output_specimen_ids"] = [upgraded_data["output_specimen_ids"]]
+        elif isinstance(upgraded_data["output_specimen_ids"], list):
+            upgraded_data["output_specimen_ids"] = [str(id) for id in upgraded_data["output_specimen_ids"]]
+        else:
+            raise ValueError("output_specimen_ids must be a string or a list of strings")
+
     return Perfusion(**upgraded_data).model_dump()
 
 
