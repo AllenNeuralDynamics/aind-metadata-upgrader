@@ -1,0 +1,2182 @@
+{
+    "_id": "ce1e7ff8-0d15-412d-a888-501dbff8fccd",
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "schema_version": "1.2.1",
+    "name": "behavior_794591_2025-09-17_19-29-49",
+    "created": "2025-10-26T04:31:23.569004Z",
+    "last_modified": "2025-10-26T04:31:30.897Z",
+    "location": "s3://aind-private-data-prod-o5171v/behavior_794591_2025-09-17_19-29-49",
+    "metadata_status": "Invalid",
+    "external_links": {
+        "Code Ocean": [
+            "f1e4bf9c-7b24-4bcc-9fa9-f01b204f1949"
+        ]
+    },
+    "subject": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "schema_version": "1.0.3",
+        "subject_id": "794591",
+        "sex": "Male",
+        "date_of_birth": "2025-02-28",
+        "genotype": "wt/wt",
+        "species": {
+            "name": "Mus musculus",
+            "registry": {
+                "name": "National Center for Biotechnology Information",
+                "abbreviation": "NCBI"
+            },
+            "registry_identifier": "NCBI:txid10090"
+        },
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": {
+            "breeding_group": "Exp-ND-01-001-2414",
+            "maternal_id": "762703",
+            "maternal_genotype": "wt/wt",
+            "paternal_id": "763228",
+            "paternal_genotype": "wt/wt"
+        },
+        "source": {
+            "name": "Allen Institute",
+            "abbreviation": "AI",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "03cpe7c52"
+        },
+        "rrid": null,
+        "restrictions": null,
+        "wellness_reports": [],
+        "housing": {
+            "cage_id": "8302171",
+            "room_id": "217",
+            "light_cycle": null,
+            "home_cage_enrichment": [],
+            "cohoused_subjects": []
+        },
+        "notes": null
+    },
+    "data_description": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "1.0.3",
+        "license": "CC-BY-4.0",
+        "platform": {
+            "name": "Behavior platform",
+            "abbreviation": "behavior"
+        },
+        "subject_id": "794591",
+        "creation_time": "2025-09-17T19:29:49-07:00",
+        "label": null,
+        "name": "behavior_794591_2025-09-17_19-29-49",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": "Bruno Cruz, Cindy Poo, Tiffany Ona"
+            },
+            {
+                "funder": {
+                    "name": "Simons Foundation",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "01cmst727"
+                },
+                "grant_number": "Simons863738",
+                "fundee": "Cindy Poo, Tiffany Ona"
+            }
+        ],
+        "data_level": "raw",
+        "group": null,
+        "investigators": [
+            {
+                "name": "Bruno Cruz",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "name": "Cindy Poo",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "name": "Tiffany Ona",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            }
+        ],
+        "project_name": "Cognitive flexibility in patch foraging",
+        "restrictions": null,
+        "modality": [
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            },
+            {
+                "name": "Behavior videos",
+                "abbreviation": "behavior-videos"
+            }
+        ],
+        "related_data": [],
+        "data_summary": null
+    },
+    "procedures": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "schema_version": "1.2.1",
+        "subject_id": "794591",
+        "subject_procedures": [
+            {
+                "procedure_type": "Surgery",
+                "start_date": "2025-07-23",
+                "experimenter_full_name": "NSB-1354",
+                "iacuc_protocol": "2414",
+                "animal_weight_prior": "30.6",
+                "animal_weight_post": "33.7",
+                "weight_unit": "gram",
+                "anaesthesia": {
+                    "type": "isoflurane",
+                    "duration": "192.0",
+                    "duration_unit": "minute",
+                    "level": "1.5"
+                },
+                "workstation_id": "SWS 1",
+                "procedures": [
+                    {
+                        "procedure_type": "Craniotomy",
+                        "craniotomy_type": "Whole hemisphere craniotomy",
+                        "craniotomy_hemisphere": null,
+                        "bregma_to_lambda_distance": "4.305",
+                        "bregma_to_lambda_unit": "millimeter",
+                        "implant_part_number": "3003",
+                        "dura_removed": null,
+                        "protective_material": null,
+                        "recovery_time": "47.0",
+                        "recovery_time_unit": "minute"
+                    },
+                    {
+                        "procedure_type": "Headframe",
+                        "headframe_type": "WHC (Full ring)",
+                        "headframe_part_number": null,
+                        "headframe_material": null,
+                        "well_part_number": "0160-055-08",
+                        "well_type": "WHC NP"
+                    }
+                ],
+                "notes": null,
+                "protocol_id": "dx.doi.org/10.17504/protocols.io.kqdg392o7g25/v2"
+            },
+            {
+                "procedure_type": "Water restriction",
+                "target_fraction_weight": 85,
+                "target_fraction_weight_unit": "percent",
+                "minimum_water_per_day": "1.0",
+                "minimum_water_per_day_unit": "milliliter",
+                "baseline_weight": "33.8",
+                "weight_unit": "gram",
+                "start_date": "2025-08-15",
+                "end_date": null
+            }
+        ],
+        "specimen_procedures": [],
+        "notes": null
+    },
+    "session": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/session.py",
+        "schema_version": "1.1.2",
+        "protocol_id": [],
+        "experimenter_full_name": [
+            "huy.nguyen"
+        ],
+        "session_start_time": "2025-09-17T19:29:49.046775Z",
+        "session_end_time": null,
+        "session_type": "AindVrForaging",
+        "iacuc_protocol": null,
+        "rig_id": "426_4A_20250902",
+        "calibrations": [
+            {
+                "calibration_date": "2025-05-23T00:00:00-07:00",
+                "device_name": "WaterValve",
+                "description": "Calibration of the water valve delivery system",
+                "input": {
+                    "measurements": [
+                        {
+                            "valve_open_interval": 0.5,
+                            "valve_open_time": 0.025,
+                            "water_weight": [
+                                0.36
+                            ],
+                            "repeat_count": 200
+                        },
+                        {
+                            "valve_open_interval": 0.5,
+                            "valve_open_time": 0.05,
+                            "water_weight": [
+                                0.7
+                            ],
+                            "repeat_count": 200
+                        },
+                        {
+                            "valve_open_interval": 0.5,
+                            "valve_open_time": 0.075,
+                            "water_weight": [
+                                0.84
+                            ],
+                            "repeat_count": 200
+                        },
+                        {
+                            "valve_open_interval": 0.5,
+                            "valve_open_time": 0.1,
+                            "water_weight": [
+                                1.06
+                            ],
+                            "repeat_count": 200
+                        },
+                        {
+                            "valve_open_interval": 0.5,
+                            "valve_open_time": 0.125,
+                            "water_weight": [
+                                1.38
+                            ],
+                            "repeat_count": 200
+                        },
+                        {
+                            "valve_open_interval": 0.5,
+                            "valve_open_time": 0.175,
+                            "water_weight": [
+                                2.02
+                            ],
+                            "repeat_count": 200
+                        },
+                        {
+                            "valve_open_interval": 0.5,
+                            "valve_open_time": 0.225,
+                            "water_weight": [
+                                2.68
+                            ],
+                            "repeat_count": 200
+                        }
+                    ]
+                },
+                "output": {
+                    "interval_average": {
+                        "0.025": 0.0018,
+                        "0.05": 0.0034999999999999996,
+                        "0.075": 0.0042,
+                        "0.1": 0.0053,
+                        "0.125": 0.0069,
+                        "0.175": 0.0101,
+                        "0.225": 0.0134
+                    },
+                    "slope": 0.057197604790419174,
+                    "offset": 0.00012455089820359068,
+                    "r2": 0.9901116347680422,
+                    "valid_domain": [
+                        0.025,
+                        0.05,
+                        0.075,
+                        0.1,
+                        0.125,
+                        0.175,
+                        0.225
+                    ]
+                },
+                "notes": null
+            }
+        ],
+        "maintenance": [],
+        "subject_id": "794591",
+        "animal_weight_prior": null,
+        "animal_weight_post": null,
+        "weight_unit": "gram",
+        "anaesthesia": null,
+        "data_streams": [
+            {
+                "stream_start_time": "2025-09-17T19:29:49.046775Z",
+                "stream_end_time": "2025-10-21T15:25:06.832985-07:00",
+                "daq_names": [
+                    "harp_behavior",
+                    "harp_olfactometer",
+                    "harp_lickometer",
+                    "harp_clock_generator",
+                    "harp_treadmill",
+                    "harp_sniff_detector",
+                    "harp_environment_sensor",
+                    "manipulator"
+                ],
+                "camera_names": [
+                    "FaceCamera",
+                    "SideCamera",
+                    "FrontCamera"
+                ],
+                "light_sources": [],
+                "ephys_modules": [],
+                "stick_microscopes": [],
+                "manipulator_modules": [],
+                "detectors": [],
+                "fiber_connections": [],
+                "fiber_modules": [],
+                "ophys_fovs": [],
+                "slap_fovs": [],
+                "stack_parameters": null,
+                "mri_scans": [],
+                "stream_modalities": [
+                    {
+                        "name": "Behavior videos",
+                        "abbreviation": "behavior-videos"
+                    },
+                    {
+                        "name": "Behavior",
+                        "abbreviation": "behavior"
+                    }
+                ],
+                "software": [],
+                "notes": null
+            }
+        ],
+        "stimulus_epochs": [
+            {
+                "stimulus_start_time": "2025-09-17T19:29:49.046775Z",
+                "stimulus_end_time": "2025-10-21T15:25:06.832985-07:00",
+                "stimulus_name": "AindVrForaging",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "Bonsai",
+                        "version": "https://github.com/AllenNeuralDynamics/Aind.Behavior.VrForaging.git/blob/b82e6535e125313005cfbde48fc42915de0070e0/bonsai/Bonsai.config",
+                        "url": "https://github.com/AllenNeuralDynamics/Aind.Behavior.VrForaging.git/blob/b82e6535e125313005cfbde48fc42915de0070e0/bonsai",
+                        "parameters": {
+                            "AForge": "2.2.5",
+                            "AForge.Video": "2.2.5",
+                            "AForge.Video.DirectShow": "2.2.5",
+                            "AllenNeuralDynamics.AindBehaviorServices": "0.12.0",
+                            "AllenNeuralDynamics.AindManipulator": "0.1.6",
+                            "AllenNeuralDynamics.Core": "0.4.1",
+                            "AllenNeuralDynamics.Core.Design": "0.3.0",
+                            "AllenNeuralDynamics.EnvironmentSensor": "0.3.0",
+                            "AllenNeuralDynamics.HarpUtils": "0.3.2",
+                            "AllenNeuralDynamics.LicketySplit": "0.2.0",
+                            "AllenNeuralDynamics.SniffDetector": "0.2.0",
+                            "AllenNeuralDynamics.Treadmill": "0.2.0",
+                            "AllenNeuralDynamics.VersionControl": "0.1.1",
+                            "AllenNeuralDynamics.WhiteRabbit": "0.2.0",
+                            "AssimpNet": "4.1.0",
+                            "Bonsai": "2.9.0",
+                            "Bonsai.Audio": "2.9.0",
+                            "Bonsai.Core": "2.9.0",
+                            "Bonsai.Design": "2.9.0",
+                            "Bonsai.Design.Visualizers": "2.9.0",
+                            "Bonsai.Dsp": "2.9.0",
+                            "Bonsai.Dsp.Design": "2.9.0",
+                            "Bonsai.Editor": "2.9.0",
+                            "Bonsai.Gui": "0.2.0",
+                            "Bonsai.Gui.ZedGraph": "0.2.0",
+                            "Bonsai.Harp": "3.6.1",
+                            "Bonsai.Harp.Design": "3.6.1",
+                            "Bonsai.Numerics": "0.10.0",
+                            "Bonsai.Player": "2.8.5",
+                            "Bonsai.Scripting.Expressions": "2.9.0",
+                            "Bonsai.Scripting.Expressions.Design": "2.9.0",
+                            "Bonsai.Shaders": "2.9.0",
+                            "Bonsai.Shaders.Design": "2.9.0",
+                            "Bonsai.Shaders.Rendering": "2.9.0",
+                            "Bonsai.Spinnaker": "0.7.1",
+                            "Bonsai.System": "2.9.0",
+                            "Bonsai.System.Design": "2.9.0",
+                            "Bonsai.Video": "2.5.0",
+                            "Bonsai.Video.Design": "2.5.0",
+                            "Bonsai.Vision": "2.9.0",
+                            "Bonsai.Vision.Design": "2.9.0",
+                            "Bonsai.VR": "0.6.0",
+                            "Bonsai.Windows.Input": "2.9.0",
+                            "BonVision": "0.12.0",
+                            "DockPanelSuite": "3.1.1",
+                            "DockPanelSuite.ThemeVS2015": "3.1.1",
+                            "Harp.AnalogInput": "0.2.0",
+                            "Harp.Behavior": "0.2.0",
+                            "Harp.LoadCells": "0.2.0",
+                            "Harp.Olfactometer": "0.2.0",
+                            "Harp.StepperDriver": "0.3.0",
+                            "Hexa.NET.ImGui": "2.2.8.5",
+                            "Hexa.NET.ImGui.Backends": "1.0.17.4",
+                            "Hexa.NET.ImPlot": "2.2.8.4",
+                            "HexaGen.Runtime": "1.1.21",
+                            "jacobslusser.ScintillaNET": "3.6.3",
+                            "LibGit2Sharp": "0.27.2",
+                            "LibGit2Sharp.NativeBinaries": "2.0.320",
+                            "Markdig": "0.41.1",
+                            "MathNet.Numerics": "4.15.0",
+                            "Microsoft.Web.WebView2": "1.0.2792.45",
+                            "Newtonsoft.Json": "13.0.3",
+                            "openal.redist": "2.0.7",
+                            "OpenCV.Net": "3.4.2",
+                            "OpenTK": "3.1.0",
+                            "OpenTK.GLControl": "3.1.0",
+                            "Rx-Core": "2.2.5",
+                            "Rx-Interfaces": "2.2.5",
+                            "Rx-Linq": "2.2.5",
+                            "Rx-PlatformServices": "2.2.5",
+                            "SvgNet": "3.5.0",
+                            "System.Buffers": "4.6.0",
+                            "System.Collections.Immutable": "8.0.0",
+                            "System.Linq.Dynamic": "1.0.7",
+                            "System.Memory": "4.6.0",
+                            "System.Numerics.Vectors": "4.6.0",
+                            "System.Resources.Extensions": "8.0.0",
+                            "System.Runtime.CompilerServices.Unsafe": "6.1.0",
+                            "YamlDotNet": "16.3.0",
+                            "ZedGraph": "5.1.7"
+                        }
+                    },
+                    {
+                        "name": "Python",
+                        "version": "https://github.com/AllenNeuralDynamics/Aind.Behavior.VrForaging.git/blob/b82e6535e125313005cfbde48fc42915de0070e0/pyproject.toml",
+                        "url": "https://github.com/AllenNeuralDynamics/Aind.Behavior.VrForaging.git/blob/b82e6535e125313005cfbde48fc42915de0070e0",
+                        "parameters": {
+                            "aind-behavior-curriculum": "0.0.34",
+                            "aind-behavior-services": "0.12.0",
+                            "aind-behavior-vr-foraging": "0.6.0rc1",
+                            "aind-clabe": "0.6.13",
+                            "aind-data-schema": "1.4.0",
+                            "aind-data-schema-models": "0.7.5",
+                            "aind-data-transfer-service": "1.18.0",
+                            "annotated-types": "0.7.0",
+                            "certifi": "2025.8.3",
+                            "cffi": "1.17.1",
+                            "charset-normalizer": "3.4.3",
+                            "codespell": "2.4.1",
+                            "contourpy": "1.3.3",
+                            "contraqctor": "0.4.7",
+                            "cryptography": "45.0.7",
+                            "cycler": "0.12.1",
+                            "dnspython": "2.8.0",
+                            "email-validator": "2.3.0",
+                            "fonttools": "4.59.2",
+                            "gitdb": "4.0.12",
+                            "GitPython": "3.1.45",
+                            "harp-python": "0.4.1",
+                            "idna": "3.10",
+                            "importlib_resources": "6.5.2",
+                            "Jinja2": "3.1.6",
+                            "joblib": "1.5.2",
+                            "kiwisolver": "1.4.9",
+                            "ldap3": "2.9.1",
+                            "markdown-it-py": "3.0.0",
+                            "MarkupSafe": "3.0.2",
+                            "matplotlib": "3.10.6",
+                            "mdurl": "0.1.2",
+                            "ms_active_directory": "1.14.1",
+                            "numpy": "2.3.2",
+                            "opencv-python": "4.11.0.86",
+                            "packaging": "25.0",
+                            "pandas": "2.3.2",
+                            "pillow": "11.3.0",
+                            "pyasn1": "0.6.1",
+                            "pycparser": "2.22",
+                            "pycryptodome": "3.23.0",
+                            "pydantic": "2.11.7",
+                            "pydantic_core": "2.33.2",
+                            "pydantic-settings": "2.10.1",
+                            "pydantic-yaml": "1.6.0",
+                            "Pygments": "2.19.2",
+                            "pyparsing": "3.2.3",
+                            "python-dateutil": "2.9.0.post0",
+                            "python-dotenv": "1.1.1",
+                            "pytz": "2025.2",
+                            "PyYAML": "6.0.2",
+                            "requests": "2.32.5",
+                            "rich": "14.1.0",
+                            "ruamel.yaml": "0.18.15",
+                            "ruamel.yaml.clib": "0.2.12",
+                            "ruff": "0.12.12",
+                            "scikit-learn": "1.7.1",
+                            "scipy": "1.16.1",
+                            "semver": "3.0.4",
+                            "six": "1.17.0",
+                            "smmap": "5.0.2",
+                            "threadpoolctl": "3.6.0",
+                            "typing_extensions": "4.15.0",
+                            "typing-inspection": "0.4.1",
+                            "tzdata": "2025.2",
+                            "urllib3": "2.5.0",
+                            "winkerberos": "0.12.2"
+                        }
+                    }
+                ],
+                "script": {
+                    "name": "main",
+                    "version": "c82f809e84b1c9cb45113e4f9051d8f3b8b905af",
+                    "url": "https://github.com/AllenNeuralDynamics/Aind.Behavior.VrForaging.git/blob/b82e6535e125313005cfbde48fc42915de0070e0/src\\main.bonsai",
+                    "parameters": {
+                        "name": "AindVrForaging",
+                        "description": "",
+                        "task_parameters": {
+                            "rng_seed": null,
+                            "aind_behavior_services_pkg_version": "0.12.0",
+                            "updaters": {
+                                "RewardDelayOffset": {
+                                    "operation": "Offset",
+                                    "parameters": {
+                                        "initial_value": 0.05,
+                                        "increment": 0.002,
+                                        "decrement": 0,
+                                        "minimum": 0.05,
+                                        "maximum": 0.25
+                                    }
+                                },
+                                "StopDurationOffset": {
+                                    "operation": "Offset",
+                                    "parameters": {
+                                        "initial_value": 0.1,
+                                        "increment": 0.003,
+                                        "decrement": 0,
+                                        "minimum": 0.1,
+                                        "maximum": 0.5
+                                    }
+                                },
+                                "StopVelocityThreshold": {
+                                    "operation": "OffsetPercentage",
+                                    "parameters": {
+                                        "initial_value": 40,
+                                        "increment": 0,
+                                        "decrement": -0.04,
+                                        "minimum": 10,
+                                        "maximum": 40
+                                    }
+                                }
+                            },
+                            "environment": {
+                                "blocks": [
+                                    {
+                                        "environment_statistics": {
+                                            "patches": [
+                                                {
+                                                    "label": "PatchZA",
+                                                    "state_index": 0,
+                                                    "odor_specification": {
+                                                        "index": 0,
+                                                        "concentration": 1
+                                                    },
+                                                    "reward_specification": {
+                                                        "operant_logic": {
+                                                            "is_operant": false,
+                                                            "stop_duration": 0,
+                                                            "time_to_collect_reward": 100000,
+                                                            "grace_distance_threshold": 10
+                                                        },
+                                                        "delay": {
+                                                            "family": "Normal",
+                                                            "distribution_parameters": {
+                                                                "family": "Normal",
+                                                                "mean": 0,
+                                                                "std": 0.15
+                                                            },
+                                                            "truncation_parameters": {
+                                                                "is_truncated": true,
+                                                                "min": 0,
+                                                                "max": 0.75
+                                                            },
+                                                            "scaling_parameters": {
+                                                                "scale": 1,
+                                                                "offset": 0
+                                                            }
+                                                        },
+                                                        "amount": {
+                                                            "family": "Scalar",
+                                                            "distribution_parameters": {
+                                                                "family": "Scalar",
+                                                                "value": 5
+                                                            },
+                                                            "truncation_parameters": null,
+                                                            "scaling_parameters": null
+                                                        },
+                                                        "probability": {
+                                                            "family": "Scalar",
+                                                            "distribution_parameters": {
+                                                                "family": "Scalar",
+                                                                "value": 0.9
+                                                            },
+                                                            "truncation_parameters": null,
+                                                            "scaling_parameters": null
+                                                        },
+                                                        "available": {
+                                                            "family": "Scalar",
+                                                            "distribution_parameters": {
+                                                                "family": "Scalar",
+                                                                "value": 2500
+                                                            },
+                                                            "truncation_parameters": null,
+                                                            "scaling_parameters": null
+                                                        },
+                                                        "reward_function": [
+                                                            {
+                                                                "function_type": "OnThisPatchEntryFunction",
+                                                                "amount": null,
+                                                                "probability": null,
+                                                                "available": {
+                                                                    "function_type": "SetValueFunction",
+                                                                    "value": {
+                                                                        "family": "Scalar",
+                                                                        "distribution_parameters": {
+                                                                            "family": "Scalar",
+                                                                            "value": 2500
+                                                                        },
+                                                                        "truncation_parameters": null,
+                                                                        "scaling_parameters": null
+                                                                    }
+                                                                },
+                                                                "rule": "OnThisPatchEntry"
+                                                            },
+                                                            {
+                                                                "function_type": "PatchRewardFunction",
+                                                                "amount": null,
+                                                                "probability": null,
+                                                                "available": {
+                                                                    "function_type": "ClampedRateFunction",
+                                                                    "minimum": 0,
+                                                                    "maximum": 2500,
+                                                                    "rate": {
+                                                                        "family": "Scalar",
+                                                                        "distribution_parameters": {
+                                                                            "family": "Scalar",
+                                                                            "value": -1
+                                                                        },
+                                                                        "truncation_parameters": null,
+                                                                        "scaling_parameters": null
+                                                                    }
+                                                                },
+                                                                "rule": "OnReward"
+                                                            }
+                                                        ]
+                                                    },
+                                                    "patch_virtual_sites_generator": {
+                                                        "inter_site": {
+                                                            "render_specification": {
+                                                                "contrast": 0.5
+                                                            },
+                                                            "label": "InterSite",
+                                                            "length_distribution": {
+                                                                "family": "Exponential",
+                                                                "distribution_parameters": {
+                                                                    "family": "Exponential",
+                                                                    "rate": 0.05
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "min": 20,
+                                                                    "max": 60
+                                                                },
+                                                                "scaling_parameters": {
+                                                                    "scale": 1,
+                                                                    "offset": 0
+                                                                }
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "family": "Scalar",
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "truncation_parameters": null,
+                                                                    "scaling_parameters": null
+                                                                }
+                                                            }
+                                                        },
+                                                        "inter_patch": {
+                                                            "render_specification": {
+                                                                "contrast": 1
+                                                            },
+                                                            "label": "InterPatch",
+                                                            "length_distribution": {
+                                                                "family": "Exponential",
+                                                                "distribution_parameters": {
+                                                                    "family": "Exponential",
+                                                                    "rate": 0.01
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "min": 100,
+                                                                    "max": 400
+                                                                },
+                                                                "scaling_parameters": {
+                                                                    "scale": 1,
+                                                                    "offset": 0
+                                                                }
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "family": "Scalar",
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "truncation_parameters": null,
+                                                                    "scaling_parameters": null
+                                                                }
+                                                            }
+                                                        },
+                                                        "post_patch": null,
+                                                        "reward_site": {
+                                                            "render_specification": {
+                                                                "contrast": 0.5
+                                                            },
+                                                            "label": "RewardSite",
+                                                            "length_distribution": {
+                                                                "family": "Uniform",
+                                                                "distribution_parameters": {
+                                                                    "family": "Uniform",
+                                                                    "min": 40,
+                                                                    "max": 40
+                                                                },
+                                                                "truncation_parameters": {
+                                                                    "is_truncated": true,
+                                                                    "min": 0,
+                                                                    "max": 10000
+                                                                },
+                                                                "scaling_parameters": {
+                                                                    "scale": 1,
+                                                                    "offset": 0
+                                                                }
+                                                            },
+                                                            "treadmill_specification": {
+                                                                "friction": {
+                                                                    "family": "Scalar",
+                                                                    "distribution_parameters": {
+                                                                        "family": "Scalar",
+                                                                        "value": 0
+                                                                    },
+                                                                    "truncation_parameters": null,
+                                                                    "scaling_parameters": null
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "patch_terminators": [
+                                                        {
+                                                            "terminator_type": "OnRejection",
+                                                            "count": {
+                                                                "family": "Scalar",
+                                                                "distribution_parameters": {
+                                                                    "family": "Scalar",
+                                                                    "value": 1
+                                                                },
+                                                                "truncation_parameters": null,
+                                                                "scaling_parameters": null
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "transition_matrix": [
+                                                [
+                                                    1
+                                                ]
+                                            ],
+                                            "first_state_occupancy": [
+                                                1
+                                            ]
+                                        },
+                                        "end_conditions": []
+                                    }
+                                ],
+                                "sampling_mode": "Random"
+                            },
+                            "operation_control": {
+                                "movable_spout_control": {
+                                    "enabled": false,
+                                    "time_to_collect_after_reward": 1,
+                                    "retracting_distance": 2000
+                                },
+                                "odor_control": {
+                                    "valve_max_open_time": 10,
+                                    "target_total_flow": 1000,
+                                    "use_channel_3_as_carrier": true,
+                                    "target_odor_flow": 100
+                                },
+                                "position_control": {
+                                    "gain": {
+                                        "x": 1,
+                                        "y": 1,
+                                        "z": 1
+                                    },
+                                    "initial_position": {
+                                        "x": 0,
+                                        "y": 2.56,
+                                        "z": 0
+                                    },
+                                    "frequency_filter_cutoff": 5,
+                                    "velocity_threshold": 8
+                                },
+                                "audio_control": {
+                                    "duration": 0.2,
+                                    "frequency": 9999
+                                }
+                            }
+                        },
+                        "version": "0.6.0-rc1",
+                        "stage_name": "shaping_stageA_distanceC_stopB_probB"
+                    }
+                },
+                "stimulus_modalities": [
+                    "Olfactory",
+                    "Auditory",
+                    "Visual",
+                    "Virtual reality",
+                    "Wheel friction"
+                ],
+                "stimulus_parameters": [
+                    {
+                        "stimulus_type": "Olfactory Stimulation",
+                        "stimulus_name": "Olfactory",
+                        "channels": [
+                            {
+                                "channel_index": 0,
+                                "odorant": "Dipropyl sulfide",
+                                "odorant_dilution": "10.0",
+                                "odorant_dilution_unit": "% v/v",
+                                "notes": null
+                            },
+                            {
+                                "channel_index": 1,
+                                "odorant": "Pentyl acetate",
+                                "odorant_dilution": "10.0",
+                                "odorant_dilution_unit": "% v/v",
+                                "notes": null
+                            },
+                            {
+                                "channel_index": 2,
+                                "odorant": "Hexanal",
+                                "odorant_dilution": "10.0",
+                                "odorant_dilution_unit": "% v/v",
+                                "notes": null
+                            }
+                        ],
+                        "notes": null
+                    },
+                    {
+                        "stimulus_type": "Auditory Stimulation",
+                        "stimulus_name": "Beep",
+                        "sample_frequency": "0",
+                        "amplitude_modulation_frequency": null,
+                        "frequency_unit": "hertz",
+                        "bandpass_low_frequency": null,
+                        "bandpass_high_frequency": null,
+                        "bandpass_filter_type": null,
+                        "bandpass_order": null,
+                        "notes": null
+                    },
+                    {
+                        "stimulus_type": "Visual Stimulation",
+                        "stimulus_name": "VrScreen",
+                        "stimulus_parameters": {},
+                        "stimulus_template_name": [],
+                        "notes": null
+                    }
+                ],
+                "stimulus_device_names": [
+                    "harp_olfactometer",
+                    "speaker",
+                    "screen"
+                ],
+                "speaker_config": {
+                    "name": "Speaker",
+                    "volume": "60.0",
+                    "volume_unit": "decibels"
+                },
+                "light_source_config": [],
+                "objects_in_arena": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "microliter",
+                "trials_total": null,
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "notes": null
+            }
+        ],
+        "mouse_platform_name": "wheel",
+        "active_mouse_platform": true,
+        "headframe_registration": null,
+        "reward_delivery": {
+            "reward_solution": "Water",
+            "reward_spouts": [
+                {
+                    "side": "Center",
+                    "starting_position": {
+                        "device_position_transformations": [
+                            {
+                                "type": "translation",
+                                "translation": [
+                                    "18.0",
+                                    "18.0",
+                                    "14.0"
+                                ]
+                            }
+                        ],
+                        "device_origin": "Manipulator home",
+                        "device_axes": [
+                            {
+                                "name": "X",
+                                "direction": "Left"
+                            },
+                            {
+                                "name": "Y",
+                                "direction": "Front"
+                            },
+                            {
+                                "name": "Z",
+                                "direction": "Top"
+                            }
+                        ],
+                        "notes": null
+                    },
+                    "variable_position": true
+                }
+            ],
+            "notes": null
+        },
+        "reward_consumed_total": null,
+        "reward_consumed_unit": "milliliter",
+        "notes": ""
+    },
+    "rig": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/rig.py",
+        "schema_version": "1.1.1",
+        "rig_id": "426_4A_20250902",
+        "modification_date": "2025-09-02",
+        "mouse_platform": {
+            "device_type": "Wheel",
+            "name": "VR Wheel",
+            "serial_number": null,
+            "manufacturer": {
+                "name": "Allen Institute for Neural Dynamics",
+                "abbreviation": "AIND",
+                "registry": {
+                    "name": "Research Organization Registry",
+                    "abbreviation": "ROR"
+                },
+                "registry_identifier": "04szwah67"
+            },
+            "model": null,
+            "path_to_cad": "https://tinyurl.com/AI-RunningWheel",
+            "port_index": null,
+            "additional_settings": {},
+            "notes": null,
+            "surface_material": "Rubber",
+            "date_surface_replaced": null,
+            "radius": "7.5",
+            "width": "3.5",
+            "size_unit": "centimeter",
+            "encoder": {
+                "device_type": "Encoder",
+                "name": "Encoder",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": "AMT102-V",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null
+            },
+            "encoder_output": {
+                "channel_name": "Encoder",
+                "device_name": "harp_treadmill",
+                "channel_type": "Analog Output",
+                "port": null,
+                "channel_index": null,
+                "sample_rate": null,
+                "sample_rate_unit": "hertz",
+                "event_based_sampling": null
+            },
+            "pulse_per_revolution": 8192,
+            "magnetic_brake": {
+                "device_type": "Magnetic brake",
+                "name": "Magnetic brake",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": "B1-2FM",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null
+            },
+            "brake_output": {
+                "channel_name": "Magnetic brake",
+                "device_name": "harp_treadmill",
+                "channel_type": "Analog Output",
+                "port": null,
+                "channel_index": null,
+                "sample_rate": null,
+                "sample_rate_unit": "hertz",
+                "event_based_sampling": null
+            },
+            "torque_sensor": {
+                "device_type": "Torque sensor",
+                "name": "Torque sensor",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Transducer Techniques",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "RTS-10",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null
+            },
+            "torque_output": {
+                "channel_name": "Torque sensor",
+                "device_name": "harp_treadmill",
+                "channel_type": "Analog Output",
+                "port": null,
+                "channel_index": null,
+                "sample_rate": null,
+                "sample_rate_unit": "hertz",
+                "event_based_sampling": null
+            }
+        },
+        "stimulus_devices": [
+            {
+                "device_type": "Reward delivery",
+                "stage_type": {
+                    "device_type": "Motorized stage",
+                    "name": "Motorized stage",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Allen Institute for Neural Dynamics",
+                        "abbreviation": "AIND",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "04szwah67"
+                    },
+                    "model": "328-300-00",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": "Motorized stage for positioning",
+                    "travel": "30",
+                    "travel_unit": "millimeter",
+                    "firmware": null
+                },
+                "reward_spouts": [
+                    {
+                        "device_type": "Reward spout",
+                        "name": "Lick spout",
+                        "serial_number": null,
+                        "manufacturer": {
+                            "name": "Other",
+                            "abbreviation": null,
+                            "registry": null,
+                            "registry_identifier": null
+                        },
+                        "model": "89875K27",
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "additional_settings": {},
+                        "notes": "Lick spout for water delivery, the tube is ordered from McMaster, cut to size and shaped by AIND",
+                        "side": "Center",
+                        "spout_diameter": "1.2",
+                        "spout_diameter_unit": "millimeter",
+                        "spout_position": null,
+                        "solenoid_valve": {
+                            "device_type": "Solenoid",
+                            "name": "Solenoid",
+                            "serial_number": null,
+                            "manufacturer": {
+                                "name": "The Lee Company",
+                                "abbreviation": null,
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": "LHDB1233518H",
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "additional_settings": {},
+                            "notes": null
+                        },
+                        "lick_sensor": {
+                            "device_type": "Harp device",
+                            "name": "harp_lickometer",
+                            "serial_number": null,
+                            "manufacturer": {
+                                "name": "Allen Institute for Neural Dynamics",
+                                "abbreviation": "AIND",
+                                "registry": {
+                                    "name": "Research Organization Registry",
+                                    "abbreviation": "ROR"
+                                },
+                                "registry_identifier": "04szwah67"
+                            },
+                            "model": null,
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "additional_settings": {},
+                            "notes": "Lick sensor with low noise artifacts; https://github.com/AllenNeuralDynamics/harp.device.lickety-split"
+                        },
+                        "lick_sensor_type": "Capacitive"
+                    }
+                ]
+            },
+            {
+                "device_type": "Speaker",
+                "name": "Speaker",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Tymphany",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "XT25SC90-04",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "position": null
+            },
+            {
+                "device_type": "Olfactometer",
+                "name": "Olfactometer",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": "Champalimaud",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DT714078",
+                "channels": [
+                    {
+                        "channel_index": 0,
+                        "channel_type": "Odor",
+                        "flow_capacity": 100,
+                        "flow_unit": "mL/min"
+                    },
+                    {
+                        "channel_index": 1,
+                        "channel_type": "Odor",
+                        "flow_capacity": 100,
+                        "flow_unit": "mL/min"
+                    },
+                    {
+                        "channel_index": 2,
+                        "channel_type": "Odor",
+                        "flow_capacity": 100,
+                        "flow_unit": "mL/min"
+                    },
+                    {
+                        "channel_index": 3,
+                        "channel_type": "Carrier",
+                        "flow_capacity": 1000,
+                        "flow_unit": "mL/min"
+                    },
+                    {
+                        "channel_index": 4,
+                        "channel_type": "Carrier",
+                        "flow_capacity": 1000,
+                        "flow_unit": "mL/min"
+                    }
+                ],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "whoami": 1140,
+                    "name": "Olfactometer"
+                },
+                "core_version": null,
+                "tag_version": null,
+                "is_clock_generator": false
+            },
+            {
+                "device_type": "Monitor",
+                "name": "Screen Left",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "LG",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "02b948n83"
+                },
+                "model": "LG LP097QX1",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "refresh_rate": 60,
+                "width": 2048,
+                "height": 1536,
+                "size_unit": "pixel",
+                "viewing_distance": "15.5",
+                "viewing_distance_unit": "centimeter",
+                "position": null,
+                "contrast": null,
+                "brightness": null
+            },
+            {
+                "device_type": "Monitor",
+                "name": "Screen Center",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "LG",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "02b948n83"
+                },
+                "model": "LG LP097QX1",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "refresh_rate": 60,
+                "width": 2048,
+                "height": 1536,
+                "size_unit": "pixel",
+                "viewing_distance": "17.5",
+                "viewing_distance_unit": "centimeter",
+                "position": null,
+                "contrast": null,
+                "brightness": null
+            },
+            {
+                "device_type": "Monitor",
+                "name": "Screen Right",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "LG",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "02b948n83"
+                },
+                "model": "LG LP097QX1",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "refresh_rate": 60,
+                "width": 2048,
+                "height": 1536,
+                "size_unit": "pixel",
+                "viewing_distance": "17.5",
+                "viewing_distance_unit": "centimeter",
+                "position": null,
+                "contrast": null,
+                "brightness": null
+            }
+        ],
+        "cameras": [
+            {
+                "name": "FaceCamera",
+                "camera_target": "Face side right",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "FaceCamera",
+                    "serial_number": "23349435",
+                    "manufacturer": {
+                        "name": "Teledyne FLIR",
+                        "abbreviation": "FLIR",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "Air",
+                    "computer_name": "W10DT714078",
+                    "frame_rate": "360",
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Monochrome",
+                    "sensor_width": 720,
+                    "sensor_height": 540,
+                    "size_unit": "pixel",
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inch",
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": "3.0",
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": null,
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Behavior Video Lens Face View",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Tamron",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "M112FM16",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "focal_length": "16",
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": {
+                    "device_type": "Filter",
+                    "name": "LP filter",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Thorlabs",
+                        "abbreviation": null,
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "04gsnvb07"
+                    },
+                    "model": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "filter_type": "Long pass",
+                    "diameter": null,
+                    "width": null,
+                    "height": null,
+                    "size_unit": "millimeter",
+                    "thickness": null,
+                    "thickness_unit": "millimeter",
+                    "filter_wheel_index": null,
+                    "cut_off_wavelength": null,
+                    "cut_on_wavelength": null,
+                    "center_wavelength": null,
+                    "wavelength_unit": "nanometer",
+                    "description": "810 nm longpass filter"
+                },
+                "position": null
+            },
+            {
+                "name": "SideCamera",
+                "camera_target": "Side",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "SideCamera",
+                    "serial_number": "23029767",
+                    "manufacturer": {
+                        "name": "Teledyne FLIR",
+                        "abbreviation": "FLIR",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "Air",
+                    "computer_name": "W10DT714078",
+                    "frame_rate": "360",
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Monochrome",
+                    "sensor_width": 720,
+                    "sensor_height": 540,
+                    "size_unit": "pixel",
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inch",
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": "3.0",
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": null,
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Behavior Video Lens Side View",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Other",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "LM5JCM",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": "Manufacturer is KOWA",
+                    "focal_length": "5",
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": null,
+                "position": null
+            },
+            {
+                "name": "USB_top_view",
+                "camera_target": "Body",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "Bottom face Camera",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Ailipu Technology Co",
+                        "abbreviation": "Ailipu",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "ELP-USBFHD05MT-KL170IR",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": "The targe is top of the body",
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "Air",
+                    "computer_name": "W10DT714078",
+                    "frame_rate": "30",
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Color",
+                    "sensor_width": 640,
+                    "sensor_height": 480,
+                    "size_unit": "pixel",
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "bit_depth": null,
+                    "bin_mode": "Additive",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": {
+                        "name": "Bonsai",
+                        "version": "2.5",
+                        "url": null,
+                        "parameters": {}
+                    },
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Xenocam 2",
+                    "serial_number": "unknown",
+                    "manufacturer": {
+                        "name": "Other",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "XC0922LENS",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": "Focal Length 9-22mm 1/3\" IR F1.4",
+                    "focal_length": null,
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": "f/1.4"
+                },
+                "filter": null,
+                "position": null
+            },
+            {
+                "name": "FrontCamera",
+                "camera_target": "Face side right",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "FrontCamera",
+                    "serial_number": "23029768",
+                    "manufacturer": {
+                        "name": "Teledyne FLIR",
+                        "abbreviation": "FLIR",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "Air",
+                    "computer_name": "W10DT714078",
+                    "frame_rate": "360",
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Monochrome",
+                    "sensor_width": 720,
+                    "sensor_height": 540,
+                    "size_unit": "pixel",
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inch",
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": "0.0",
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": null,
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Behavior Video Lens Front View",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Other",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "LM25HC",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": "Manufacturer is KOWA",
+                    "focal_length": "25",
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": null,
+                "position": null
+            }
+        ],
+        "enclosure": {
+            "device_type": "Enclosure",
+            "name": "Behavior enclosure",
+            "serial_number": null,
+            "manufacturer": {
+                "name": "Allen Institute for Neural Dynamics",
+                "abbreviation": "AIND",
+                "registry": {
+                    "name": "Research Organization Registry",
+                    "abbreviation": "ROR"
+                },
+                "registry_identifier": "04szwah67"
+            },
+            "model": null,
+            "path_to_cad": null,
+            "port_index": null,
+            "additional_settings": {},
+            "notes": null,
+            "size": {
+                "width": 568,
+                "length": 540,
+                "height": 506,
+                "unit": "millimeter"
+            },
+            "internal_material": "High density foam",
+            "external_material": "Wood and aluminium frame",
+            "grounded": true,
+            "laser_interlock": false,
+            "air_filtration": false
+        },
+        "ephys_assemblies": [],
+        "fiber_assemblies": [],
+        "stick_microscopes": [],
+        "laser_assemblies": [],
+        "patch_cords": [],
+        "light_sources": [
+            {
+                "device_type": "Light emitting diode",
+                "name": "IR LED - Face",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M810L5",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "wavelength": 810,
+                "wavelength_unit": "nanometer",
+                "bandwidth": null,
+                "bandwidth_unit": "nanometer"
+            },
+            {
+                "device_type": "Light emitting diode",
+                "name": "IR LED - Side",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M810L5",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "wavelength": 810,
+                "wavelength_unit": "nanometer",
+                "bandwidth": null,
+                "bandwidth_unit": "nanometer"
+            }
+        ],
+        "detectors": [],
+        "objectives": [],
+        "filters": [
+            {
+                "device_type": "Filter",
+                "name": "Hot Mirror Filter",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Other",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "HM-VS-1150",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "filter_type": "Dichroic",
+                "diameter": null,
+                "width": "8",
+                "height": "6",
+                "size_unit": "inch",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "filter_wheel_index": null,
+                "cut_off_wavelength": 750,
+                "cut_on_wavelength": null,
+                "center_wavelength": null,
+                "wavelength_unit": "nanometer",
+                "description": null
+            }
+        ],
+        "lenses": [
+            {
+                "device_type": "Lens",
+                "name": "IR LED - Face lens",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "LA1255-B",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "focal_length": "50",
+                "focal_length_unit": "millimeter",
+                "size": null,
+                "lens_size_unit": "inch",
+                "optimized_wavelength_range": null,
+                "wavelength_unit": "nanometer",
+                "max_aperture": null
+            },
+            {
+                "device_type": "Lens",
+                "name": "IR LED - Side lens",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "LA1805-B",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "focal_length": "30",
+                "focal_length_unit": "millimeter",
+                "size": null,
+                "lens_size_unit": "inch",
+                "optimized_wavelength_range": null,
+                "wavelength_unit": "nanometer",
+                "max_aperture": null
+            }
+        ],
+        "digital_micromirror_devices": [],
+        "polygonal_scanners": [],
+        "pockels_cells": [],
+        "additional_devices": [],
+        "daqs": [
+            {
+                "device_type": "Harp device",
+                "name": "harp_behavior",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Open Ephys Production Site",
+                    "abbreviation": "OEPS",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "007rkz355"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DT714078",
+                "channels": [
+                    {
+                        "channel_name": "DO0",
+                        "device_name": "FaceCamera",
+                        "channel_type": "Digital Output",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": null
+                    },
+                    {
+                        "channel_name": "DO0",
+                        "device_name": "SideCamera",
+                        "channel_type": "Digital Output",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": null
+                    },
+                    {
+                        "channel_name": "DO0",
+                        "device_name": "FrontCamera",
+                        "channel_type": "Digital Output",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": null
+                    },
+                    {
+                        "channel_name": "DO1",
+                        "device_name": "Speaker",
+                        "channel_type": "Digital Output",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": null
+                    },
+                    {
+                        "channel_name": "PWM0",
+                        "device_name": "Solenoid",
+                        "channel_type": "Digital Output",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": null
+                    }
+                ],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "whoami": 1216,
+                    "name": "Behavior"
+                },
+                "core_version": null,
+                "tag_version": null,
+                "is_clock_generator": false
+            },
+            {
+                "device_type": "Harp device",
+                "name": "harp_white_rabbit",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Allen Institute for Neural Dynamics",
+                    "abbreviation": "AIND",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04szwah67"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": "White Rabbit clock for synchronization: https://github.com/AllenNeuralDynamics/harp.device.white-rabbit",
+                "data_interface": "USB",
+                "computer_name": "W10DT714078",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "whoami": 1152,
+                    "name": "Clock Synchronizer"
+                },
+                "core_version": null,
+                "tag_version": null,
+                "is_clock_generator": true
+            },
+            {
+                "device_type": "Harp device",
+                "name": "harp_treadmill",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Allen Institute for Neural Dynamics",
+                    "abbreviation": "AIND",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04szwah67"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": "https://github.com/AllenNeuralDynamics/harp.device.treadmill-driver",
+                "data_interface": "USB",
+                "computer_name": "W10DT714078",
+                "channels": [
+                    {
+                        "channel_name": "Torque sensor",
+                        "device_name": "harp_treadmill",
+                        "channel_type": "Analog Output",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": null
+                    },
+                    {
+                        "channel_name": "Encoder",
+                        "device_name": "harp_treadmill",
+                        "channel_type": "Analog Output",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": null
+                    },
+                    {
+                        "channel_name": "Magnetic brake",
+                        "device_name": "harp_treadmill",
+                        "channel_type": "Analog Output",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": null
+                    }
+                ],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "whoami": 1402,
+                    "name": "Treadmill"
+                },
+                "core_version": null,
+                "tag_version": null,
+                "is_clock_generator": false
+            },
+            {
+                "device_type": "Harp device",
+                "name": "harp_lickometer",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Allen Institute for Neural Dynamics",
+                    "abbreviation": "AIND",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04szwah67"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": "Lick sensor with low noise artifacts; https://github.com/AllenNeuralDynamics/harp.device.lickety-split",
+                "data_interface": "USB",
+                "computer_name": "W10DT714078",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "whoami": 1400,
+                    "name": "Lickety Split"
+                },
+                "core_version": null,
+                "tag_version": null,
+                "is_clock_generator": false
+            },
+            {
+                "device_type": "Harp device",
+                "name": "Stepper driver",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Allen Institute for Neural Dynamics",
+                    "abbreviation": "AIND",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04szwah67"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": "Stepper driver for positioning the lick spout and the odor tubes; https://allenneuraldynamics.github.io/Bonsai.AllenNeuralDynamics/articles/aind-manipulator.html",
+                "data_interface": "USB",
+                "computer_name": "W10DT714078",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "whoami": 1130,
+                    "name": "Stepper Driver"
+                },
+                "core_version": null,
+                "tag_version": null,
+                "is_clock_generator": false
+            },
+            {
+                "device_type": "Harp device",
+                "name": "harp_olfactometer",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": "Champalimaud",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DT714078",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "whoami": 1140,
+                    "name": "Olfactometer"
+                },
+                "core_version": null,
+                "tag_version": null,
+                "is_clock_generator": false
+            }
+        ],
+        "calibrations": [
+            {
+                "calibration_date": "2025-05-23T00:00:00-07:00",
+                "device_name": "WaterValve",
+                "description": "Water calibration for Lick spout. The input is the valve open time in seconds and the output is the volume of water delivered in microliters.",
+                "input": {
+                    "valve open time (s):": [
+                        0.025,
+                        0.05,
+                        0.075,
+                        0.1,
+                        0.125,
+                        0.175,
+                        0.225
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        0.36,
+                        0.7,
+                        0.84,
+                        1.06,
+                        1.38,
+                        2.02,
+                        2.68
+                    ]
+                },
+                "notes": null
+            }
+        ],
+        "ccf_coordinate_transform": null,
+        "origin": null,
+        "rig_axes": null,
+        "modalities": [
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            },
+            {
+                "name": "Behavior videos",
+                "abbreviation": "behavior-videos"
+            }
+        ],
+        "notes": null
+    },
+    "processing": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "schema_version": "1.1.3",
+        "processing_pipeline": {
+            "data_processes": [
+                {
+                    "name": "Other",
+                    "software_version": "",
+                    "start_date_time": "2025-10-25 20:27:31.017109+00:00",
+                    "end_date_time": "2025-10-25 20:29:33.541577+00:00",
+                    "input_location": "/allen/aind/scratch/vr-foraging/data/794591/794591_2025-09-17T192949Z/behavior",
+                    "output_location": "",
+                    "code_url": "",
+                    "parameters": {
+                        "input_source": "/allen/aind/scratch/vr-foraging/data/794591/794591_2025-09-17T192949Z/behavior"
+                    },
+                    "notes": "Data was copied"
+                },
+                {
+                    "name": "Other",
+                    "software_version": "0.1.7",
+                    "start_date_time": "2025-10-25 20:27:31.817115+00:00",
+                    "end_date_time": "2025-10-26 04:24:17.580160+00:00",
+                    "input_location": "/allen/aind/scratch/vr-foraging/data/794591/794591_2025-09-17T192949Z/behavior-videos",
+                    "output_location": "/allen/aind/stage/svc_aind_airflow/prod/behavior_794591_2025-09-17_19-29-49_b91a923888/behavior-videos",
+                    "code_url": "ghcr.io/allenneuraldynamics/aind-behavior-video-transformation",
+                    "parameters": {
+                        "output_directory": "/allen/aind/stage/svc_aind_airflow/prod/behavior_794591_2025-09-17_19-29-49_b91a923888/behavior-videos",
+                        "input_source": "/allen/aind/scratch/vr-foraging/data/794591/794591_2025-09-17T192949Z/behavior-videos",
+                        "compression_requested": {
+                            "compression_enum": "gamma"
+                        }
+                    },
+                    "notes": null
+                }
+            ],
+            "processor_full_name": "AIND Scientific Computing",
+            "pipeline_version": null,
+            "pipeline_url": null,
+            "note": null
+        },
+        "analyses": [],
+        "notes": null
+    },
+    "acquisition": null,
+    "instrument": null,
+    "quality_control": null
+}
