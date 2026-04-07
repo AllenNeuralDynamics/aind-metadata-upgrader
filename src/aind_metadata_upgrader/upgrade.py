@@ -78,6 +78,8 @@ class Upgrade:
         expected_core_files = self._determine_expected_core_files()
 
         core_files = self._process_core_files()
+        
+        core_files = self._repair_missing_procedures(core_files)
 
         self._validate_required_files(core_files)
 
@@ -86,6 +88,15 @@ class Upgrade:
         for expected_core_file in expected_core_files:
             if not hasattr(self.metadata, expected_core_file) or getattr(self.metadata, expected_core_file) is None:
                 raise ValueError(f"Expected core file '{expected_core_file}' not found in upgraded metadata")
+
+    def _repair_missing_procedures(self, core_files: dict) -> dict:
+        """If the Procedures are missing but subject is present, create an empty Procedures"""
+        if "procedures" not in core_files or core_files["procedures"] is None:
+            if "subject" in core_files and core_files["subject"] is not None:
+                logging.warning("Procedures core file is missing but subject is present. Adding empty Procedures.")
+                core_files["procedures"] = Procedures(subject_id=core_files["subject"]["subject_id"]).model_dump()
+        
+        return core_files
 
     def _determine_expected_core_files(self) -> list:
         """Determine what core files we have and what outputs we expect"""
