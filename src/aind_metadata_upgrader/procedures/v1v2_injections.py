@@ -15,6 +15,7 @@ from aind_data_schema.components.injection_procedures import (
 from aind_data_schema.components.surgery_procedures import BrainInjection
 from aind_data_schema_models.coordinates import AnatomicalRelative
 from aind_data_schema_models.mouse_anatomy import InjectionTargets
+from aind_data_schema_models.organizations import Organization
 from aind_data_schema_models.units import AngleUnit
 
 from aind_metadata_upgrader.utils.v1v2_utils import (
@@ -57,7 +58,11 @@ def upgrade_injection_materials(data: list) -> list:
         if material["material_type"] == "Virus":
             materials.append(upgrade_viral_material(material))
         elif material["material_type"] == "Reagent":
-            materials.append(NonViralMaterial(**material).model_dump())
+            reagent = material.copy()
+            remove(reagent, "material_type")
+            if "source" not in reagent or not reagent["source"]:
+                reagent["source"] = Organization.UNKNOWN
+            materials.append(NonViralMaterial(**reagent).model_dump())
         else:
             raise ValueError(
                 f"Unsupported injection material type: {material['material_type']}. " "Expected 'Virus' or 'Reagent'."
@@ -400,5 +405,22 @@ def upgrade_intraperitoneal_injection(data: dict) -> dict:
     """Upgrade IntraperitonealInjection procedure from V1 to V2"""
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
+
+    upgraded_data = upgrade_generic_injection(upgraded_data)
+    injection_materials = upgrade_injection_materials(data.get("injection_materials", []))
+
+    injection_materials = ensure_injection_materials_with_default(injection_materials)
+
+    upgraded_data["injection_materials"] = injection_materials
+
+    upgraded_data["targeted_structure"] = InjectionTargets.INTRAPERITONEAL.model_dump()
+
+    dynamics = build_volume_injection_dynamics(data)
+    upgraded_data["dynamics"] = dynamics
+    remove(upgraded_data, "injection_volume")
+    remove(upgraded_data, "injection_volume_unit")
+    remove(upgraded_data, "injection_duration")
+    remove(upgraded_data, "injection_duration_unit")
+    remove(upgraded_data, "time")
 
     return Injection(**upgraded_data).model_dump()
