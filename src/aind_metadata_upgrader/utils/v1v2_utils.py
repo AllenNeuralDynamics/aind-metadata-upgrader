@@ -48,7 +48,17 @@ from aind_data_schema_models.units import (
     AngleUnit,
 )
 
-MODALITY_MAP = {"SmartSPIM": Modality.SPIM, "smartspim": Modality.SPIM, "FIP": Modality.FIB, "exaSPIM": Modality.SPIM}
+MODALITY_MAP = {
+    "SmartSPIM": Modality.SPIM,
+    "smartspim": Modality.SPIM,
+    "FIP": Modality.FIB,
+    "exaSPIM": Modality.SPIM,
+}
+
+MODALITY_ABBREV_MAP = {
+    "ophys": Modality.POPHYS,
+    "slap": Modality.SLAP2,
+}
 
 counts = {}
 
@@ -104,6 +114,17 @@ def validate_angle_unit(angle_unit: str) -> str:
         print(f"Invalid angle unit: {angle_unit}.")
         raise NotImplementedError()
 
+def _modality_abbreviation_wrapper(modality_str: str) -> dict:
+    """Wrapper to convert a modality string to a Modality dict using the abbreviation."""
+
+    if modality_str in MODALITY_ABBREV_MAP:
+        return MODALITY_ABBREV_MAP[modality_str].model_dump()
+
+    try:
+        return Modality.from_abbreviation(modality_str).model_dump()
+    except Exception as e:
+        raise ValueError(f"Unsupported modality abbreviation: {modality_str}") from e
+
 
 def _convert_modality_to_dict(modality) -> dict:
     """Convert a single modality (string, object string, or dict) to a Modality dict.
@@ -115,7 +136,10 @@ def _convert_modality_to_dict(modality) -> dict:
     - String abbreviation: converted directly
     """
     if isinstance(modality, dict):
-        return modality
+        abbreviation = modality.get("abbreviation", "")
+        if abbreviation in MODALITY_ABBREV_MAP:
+            return MODALITY_ABBREV_MAP[abbreviation].model_dump()
+        return _modality_abbreviation_wrapper(abbreviation) if abbreviation else modality
 
     if isinstance(modality, str):
         # Check MODALITY_MAP first (e.g., "SmartSPIM", "FIP")
@@ -129,13 +153,13 @@ def _convert_modality_to_dict(modality) -> dict:
                 # Extract the abbreviation value
                 abbrev_start = modality.find("abbreviation=") + len("abbreviation=")
                 abbrev_value = modality[abbrev_start:].strip().strip("'\"")
-                return Modality.from_abbreviation(abbrev_value).model_dump()
+                return _modality_abbreviation_wrapper(abbrev_value)
             except Exception as e:
                 raise ValueError(f"Could not parse modality string: {modality}") from e
 
         # Try direct abbreviation conversion
         try:
-            return Modality.from_abbreviation(modality).model_dump()
+            return _modality_abbreviation_wrapper(modality)
         except Exception as e:
             raise ValueError(f"Unsupported modality abbreviation: {modality}") from e
 
@@ -154,11 +178,6 @@ def upgrade_v1_modalities(data: dict) -> list:
     else:
         # List of modalities - convert each item
         modalities = [_convert_modality_to_dict(m) for m in modalities]
-
-    # If someone included "slap" replace it with the new slap2 modality
-    for i, modality in enumerate(modalities):
-        if modality.get("abbreviation", "").lower() == "slap":
-            modalities[i] = Modality.SLAP2.model_dump()
 
     return modalities
 
