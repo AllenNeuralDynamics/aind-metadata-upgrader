@@ -114,6 +114,7 @@ def validate_angle_unit(angle_unit: str) -> str:
         print(f"Invalid angle unit: {angle_unit}.")
         raise NotImplementedError()
 
+
 def _modality_abbreviation_wrapper(modality_str: str) -> dict:
     """Wrapper to convert a modality string to a Modality dict using the abbreviation."""
 
