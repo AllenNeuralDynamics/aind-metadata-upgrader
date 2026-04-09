@@ -647,6 +647,8 @@ class SessionV1V2(CoreUpgrader):
         if modality in ["ophys", "pophys"]:
             channels, images = self._create_ophys_components(stream, light_sources, detectors)
         elif modality == "slap":
+            if not stream.get("slap_fovs"):
+                return None
             raise NotImplementedError("SLAP imaging config upgrade not yet implemented")
 
         # Don't create config if no channels
@@ -1096,7 +1098,7 @@ class SessionV1V2(CoreUpgrader):
         valid_end_times = [ensure_timezone(t, fallback_tz) for t in end_times if t is not None]
         valid_end_times = [t for t in valid_end_times if t is not None]
 
-        if valid_start_times and session_start_time and any(start >= session_start_time for start in valid_start_times):
+        if valid_start_times and session_start_time and any(start < session_start_time for start in valid_start_times):
             min_start = min(valid_start_times)
             notes = (notes if notes else "") + (
                 f" (v1v2 upgrade) Session start time was adjusted from {session_start_time} " f"to {min_start}"
@@ -1104,7 +1106,7 @@ class SessionV1V2(CoreUpgrader):
             session_start_time = min_start
         if valid_end_times and session_end_time is None:
             session_end_time = max(valid_end_times)
-        elif valid_end_times and session_end_time and any(end <= session_end_time for end in valid_end_times):
+        elif valid_end_times and session_end_time and any(end > session_end_time for end in valid_end_times):
             max_end = max(valid_end_times)
             notes = (notes if notes else "") + (
                 f" (v1v2 upgrade) Session end time was adjusted from {session_end_time} " f"to {max_end}"

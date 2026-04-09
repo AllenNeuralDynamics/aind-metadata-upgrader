@@ -155,6 +155,11 @@ def upgrade_v1_modalities(data: dict) -> list:
         # List of modalities - convert each item
         modalities = [_convert_modality_to_dict(m) for m in modalities]
 
+    # If someone included "slap" replace it with the new slap2 modality
+    for i, modality in enumerate(modalities):
+        if modality.get("abbreviation", "").lower() == "slap":
+            modalities[i] = Modality.SLAP2.model_dump()
+
     return modalities
 
 
