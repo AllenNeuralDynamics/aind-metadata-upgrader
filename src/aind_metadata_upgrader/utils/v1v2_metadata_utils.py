@@ -7,27 +7,22 @@ from aind_data_schema.core.instrument import Instrument
 from aind_data_schema.components.devices import Device
 from pydantic import ValidationError
 
+from aind_metadata_upgrader.utils.v1v2_inst_id_repair import (
+    repair_instrument_id_mismatch,  # noqa: F401 – re-exported for callers
+)
+from aind_metadata_upgrader.utils.v1v2_inst_id_repair import (
+    BAD_INSTRUMENT_IDS as ECEPHYS_BAD_INSTRUMENT_IDS,
+    LONG_ACQ_ID_LIST,
+    PAIRED_INSTRUMENT_ACQUISITION_IDS,
+    SHORT_ACQ_ID_LIST,
+    _DATE_PATTERNS as _ECEPHYS_DATE_PATTERNS,
+    _parse_rig_id_parts,
+)
 
-# List of acquisition IDs where the instrument_id needs to be copied from instrument to acquisition
-SHORT_ACQ_ID_LIST = ["5B", "4D", "MESO.1", "MESO.2", "5A", "4A", "4B", "4C"]
-# List of acquisition IDs where the instrument_id needs to be copied from acquisition to instrument
-LONG_ACQ_ID_LIST = ["442_Bergamo_2p_photostim"]
-# Instrument/Acquisition pairs where id copied from instrument -> acquisition
-PAIRED_INSTRUMENT_ACQUISITION_IDS = [
-    ("342_NP3_240417", "342_NP3_240401"),
-]
-# Ecephys instrument IDs that should be overwritten with the acquisition ID
-ECEPHYS_BAD_INSTRUMENT_IDS = [
-    "322_EPHYS5_Ephys5",
-    "Ephys5_ND_Ephys.5",
-]
 
-# Date patterns tried in order: YYYY-MM-DD, YYYYMMDD (8-digit), YYMMDD (6-digit)
-_ECEPHYS_DATE_PATTERNS = [
-    (re.compile(r"(\d{4}-\d{2}-\d{2})"), "%Y-%m-%d"),
-    (re.compile(r"(?<!\d)(\d{8})(?!\d)"), "%Y%m%d"),
-    (re.compile(r"(?<!\d)(\d{6})(?!\d)"), "%y%m%d"),
-]
+# ---------------------------------------------------------------------------
+# Kept for backward compatibility – internal per-modality helpers
+# ---------------------------------------------------------------------------
 
 
 def _parse_rig_id_parts(rig_id: str):
@@ -156,19 +151,8 @@ def _handle_general_id_mismatch(data: dict) -> dict:
     return data
 
 
-def repair_instrument_id_mismatch(data: dict) -> dict:
-    """Repair mismatched instrument IDs between acquisition and instrument sections"""
-
-    if "instrument" not in data or "acquisition" not in data:
-        return data
-
-    modalities = data.get("data_description", {}).get("modalities", [])
-    if any(modality["abbreviation"] == "SPIM" for modality in modalities):
-        return _handle_spim_modality_mismatch(data)
-    if any(modality["abbreviation"] == "ecephys" for modality in modalities):
-        return _handle_ecephys_id_mismatch(data)
-
-    return _handle_general_id_mismatch(data)
+# repair_instrument_id_mismatch is imported from v1v2_inst_id_repair and
+# re-exported at the top of this module.
 
 
 def get_active_devices(data: dict) -> list:
