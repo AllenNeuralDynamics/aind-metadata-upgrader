@@ -79,7 +79,9 @@ class TestRepairInstrumentIdMismatch(unittest.TestCase):
         )
 
     def test_all_csv_mismatches_are_resolved(self):
-        """Every row in instrument_id_mismatches.csv must produce matching IDs."""
+        """Every row in instrument_id_mismatches.csv must either produce matching IDs
+        or raise a ValueError (same-prefix acquisition-newer case is an intentional
+        hard failure that requires manual review)."""
         pairs = _load_mismatch_pairs()
         self.assertGreater(len(pairs), 0, "No mismatch rows loaded from CSV")
 
@@ -87,6 +89,8 @@ class TestRepairInstrumentIdMismatch(unittest.TestCase):
         for instrument_id, acquisition_id, label, modalities in pairs:
             try:
                 self._assert_resolved(instrument_id, acquisition_id, modalities)
+            except ValueError:
+                pass  # expected for same-prefix acquisition-newer cases
             except AssertionError as exc:
                 failures.append(f"  [{label}] {exc}")
 
@@ -210,18 +214,18 @@ class TestRepairInstrumentIdMismatch(unittest.TestCase):
         self.assertEqual(result["instrument"]["instrument_id"], "327_NP2_240418")
         self.assertEqual(result["acquisition"]["instrument_id"], "327_NP2_240418")
 
-    def test_same_prefix_instrument_older_date_uses_acquisition(self):
-        # rig from Nov 2025, session from Dec 2025 → session is newer, use acquisition
+    def test_same_prefix_instrument_older_date_raises(self):
+        # rig from Nov 2025, session from Dec 2025 → session newer → ValueError
         data = _make_data("155_Chronic1_20251107", "155_Chronic1_20251201")
-        result = repair_instrument_id_mismatch(data)
-        self.assertEqual(result["instrument"]["instrument_id"], "155_Chronic1_20251201")
-        self.assertEqual(result["acquisition"]["instrument_id"], "155_Chronic1_20251201")
+        with self.assertRaises(ValueError) as ctx:
+            repair_instrument_id_mismatch(data)
+        self.assertIn("more recent date", str(ctx.exception))
 
-    def test_same_prefix_instrument_very_old_date_uses_acquisition(self):
-        # rig from Feb 2023, session from Apr 2024 → session newer → use acquisition
+    def test_same_prefix_instrument_very_old_date_raises(self):
+        # rig from Feb 2023, session from Apr 2024 → session newer → ValueError
         data = _make_data("342_NP3_230207", "342_NP3_240401")
-        result = repair_instrument_id_mismatch(data)
-        self.assertEqual(result["instrument"]["instrument_id"], "342_NP3_240401")
+        with self.assertRaises(ValueError):
+            repair_instrument_id_mismatch(data)
 
     def test_same_prefix_dated_instrument_undated_acquisition(self):
         data = _make_data("440_SmartSPIM1_20240710", "SmartSPIM1-7")

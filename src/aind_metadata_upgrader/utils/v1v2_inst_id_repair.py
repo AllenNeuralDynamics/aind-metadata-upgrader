@@ -17,12 +17,13 @@ Resolution rule order applied by _resolve_instrument_id_mismatch():
   8. Instrument ID is a substring of acquisition ID → use acquisition.
   9. Date-based resolution (prefix + date parsing):
        Same normalised prefix:
-         - Both parseable: prefer more recent; if acquisition newer, log warning
-           and use acquisition.
+         - Both parseable: if instrument newer or equal, use instrument;
+           if acquisition newer, raise ValueError.
          - Only one side has a date: prefer the dated side.
          - Neither has a date: prefer instrument.
        Different normalised prefix:
-         - Both have dates: prefer the one with the more recent date.
+         - Both have dates: prefer the one with the more recent date (log warning
+           if acquisition is newer and use it).
          - Only one side has a date: prefer the dated side.
          - Neither has a date: prefer instrument.
 """
@@ -165,13 +166,10 @@ def _resolve_instrument_id_mismatch(instrument_id: str, acquisition_id: str) -> 
             if instr_date >= acq_date:
                 return instrument_id, instrument_id
             else:
-                logging.warning(
-                    "Acquisition rig ID '%s' has a more recent date than instrument rig ID '%s'. "
-                    "Using acquisition ID.",
-                    acquisition_id,
-                    instrument_id,
+                raise ValueError(
+                    f"Acquisition rig ID '{acquisition_id}' has a more recent date than "
+                    f"instrument rig ID '{instrument_id}'. Cannot auto-resolve."
                 )
-                return acquisition_id, acquisition_id
         elif instr_date:
             return instrument_id, instrument_id
         elif acq_date:
@@ -209,9 +207,10 @@ def _resolve_instrument_id_mismatch(instrument_id: str, acquisition_id: str) -> 
 def repair_instrument_id_mismatch(data: dict) -> dict:
     """Repair mismatched instrument IDs between instrument and acquisition sections.
 
-    Applies the unified rule-set in _resolve_instrument_id_mismatch to any
-    combination of modalities.  No ValueError is raised; unresolvable cases are
-    logged as warnings so upgrades can proceed.
+    Applies the unified rule-set in _resolve_instrument_id_mismatch regardless of
+    modality.  A ValueError is raised when the same rig family (prefix) appears in
+    both IDs but the acquisition carries a more recent date — this indicates a data
+    entry error that needs manual review.
     """
     instrument = data.get("instrument") or {}
     acquisition = data.get("acquisition") or {}
