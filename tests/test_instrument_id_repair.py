@@ -62,6 +62,7 @@ class TestRepairInstrumentIdMismatch(unittest.TestCase):
     """Parametric tests: every mismatch row from the CSV must be resolved."""
 
     def _assert_resolved(self, instrument_id: str, acquisition_id: str, modalities: str):
+        """Assert that repair_instrument_id_mismatch produces matching IDs for the given pair."""
         data = _make_data(instrument_id, acquisition_id, modalities)
         result = repair_instrument_id_mismatch(data)
         result_instr = result["instrument"]["instrument_id"]
