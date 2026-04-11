@@ -2,6 +2,7 @@
 
 import logging
 import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Optional
 from aind_metadata_upgrader.upgrade import Upgrade
 from aind_data_access_api.document_db import MetadataDbClient
@@ -11,7 +12,8 @@ from aind_metadata_upgrader import __version__ as upgrader_version
 
 
 DOCDB_HOST = os.getenv("DOCDB_HOST", "api.allenneuraldynamics.org")
-BATCH_SIZE = 100
+BATCH_SIZE = 50
+MAX_WORKERS = int(os.getenv("UPGRADE_MAX_WORKERS", "4"))
 
 
 # docdb
@@ -277,6 +279,51 @@ def run_one(record_id: str):
         update_cache_tracking(record_id, result, existing_row)
 
 
+def process_batch(batch_ids: list, original_df: Optional[pd.DataFrame]) -> list[dict]:
+    """Fetch, upgrade, and upsert a single batch of records.
+
+    Returns a list of upgrade result dicts.
+    """
+    cached_records = client_v1.retrieve_docdb_records(
+        filter_query={"_id": {"$in": batch_ids}},
+    )
+
+    batch_records = []
+    batch_results = []
+
+    for data_dict in cached_records:
+        record_id = data_dict["_id"]
+        logging.info(f"Testing upgrade for record ID: {record_id}")
+
+        if original_df is not None and check_skip_conditions(data_dict, original_df):
+            continue
+
+        v1_id = data_dict["_id"]
+        try:
+            record, result = upgrade_record(data_dict)
+            batch_records.append(record)
+            batch_results.append(result)
+        except Exception as e:
+            _delete_v2_record(data_dict)
+            batch_results.append(
+                {
+                    "v1_id": str(v1_id),
+                    "v2_id": None,
+                    "upgrader_version": upgrader_version,
+                    "last_modified": data_dict.get("last_modified"),
+                    "status": "failed",
+                }
+            )
+            logging.error(f"Upgrade failed for record ID {record_id}: {e}")
+
+    valid_records = [r for r in batch_records if r is not None]
+    if valid_records:
+        logging.info(f"Upserting {len(valid_records)} records to DocumentDB")
+        client_v2.upsert_list_of_docdb_records(records=valid_records)
+
+    return batch_results
+
+
 def run():
     """Run all records through the upgrader and store results in ZS"""
     # Get list of all record IDs from v1 database
@@ -285,9 +332,6 @@ def run():
     logging.info(f"Found {len(record_ids)} records to process")
 
     num_records = len(records_list)
-    cached_records = []
-    upgraded_records = []
-
     original_df = get_zs_data()
 
     # Wipe rows whose v1_id no longer exists in the v1 database
@@ -296,58 +340,21 @@ def run():
         original_df = original_df[original_df["v1_id"].isin(record_ids_set)]
         logging.info(f"Filtered original_df to {len(original_df)} records that exist in v1 database")
 
-    upgrade_results = []
+    batches = [record_ids[i: i + BATCH_SIZE] for i in range(0, num_records, BATCH_SIZE)]
+    all_upgrade_results = []
 
-    # Cache 10 records at a time to reduce API calls
-    for i in range(0, num_records, BATCH_SIZE):
-        logging.info(f"Records: {i}/{num_records}")
-        batch_ids = record_ids[i: i + BATCH_SIZE]
-        cached_records = client_v1.retrieve_docdb_records(
-            filter_query={"_id": {"$in": batch_ids}},
-        )
-
-        for data_dict in cached_records:
-
-            record_id = data_dict["_id"]
-            logging.info(f"Testing upgrade for record ID: {record_id}")
-
-            # Skip assets that have already been successfully upgraded with this version
-            v1_id = data_dict["_id"]
-            if original_df is not None:
-                if check_skip_conditions(data_dict, original_df):
-                    continue
-
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = {executor.submit(process_batch, batch, original_df): i for i, batch in enumerate(batches)}
+        for future in as_completed(futures):
+            batch_index = futures[future]
             try:
-                record, result = upgrade_record(data_dict)
-                upgraded_records.append(record)
-                upgrade_results.append(result)
+                batch_results = future.result()
+                all_upgrade_results.extend(batch_results)
+                logging.info(f"Completed batch {batch_index + 1}/{len(batches)}")
             except Exception as e:
-                _delete_v2_record(data_dict)
-                upgrade_results.append(
-                    {
-                        "v1_id": str(v1_id),
-                        "v2_id": None,
-                        "upgrader_version": upgrader_version,
-                        "last_modified": data_dict.get("last_modified"),
-                        "status": "failed",
-                    }
-                )
-                record_id = data_dict["_id"]
-                logging.error(f"Upgrade failed for record ID {record_id}: {e}")
+                logging.error(f"Batch {batch_index} failed with unhandled exception: {e}")
 
-        valid_records = [r for r in upgraded_records if r is not None]
-        if len(valid_records) >= BATCH_SIZE:
-            logging.info(f"Batch upserting {len(valid_records)} records to DocumentDB")
-            client_v2.upsert_list_of_docdb_records(records=valid_records)
-            upgraded_records.clear()
-
-    # Process any remaining records at the end
-    valid_records = [r for r in upgraded_records if r is not None]
-    if valid_records:
-        logging.info(f"Final batch upserting {len(valid_records)} records to DocumentDB")
-        client_v2.upsert_list_of_docdb_records(records=valid_records)
-
-    upload_to_forest(original_df, upgrade_results)
+    upload_to_forest(original_df, all_upgrade_results)
 
 
 if __name__ == "__main__":
