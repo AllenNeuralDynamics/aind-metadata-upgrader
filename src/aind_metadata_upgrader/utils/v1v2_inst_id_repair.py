@@ -101,6 +101,104 @@ def _normalize_prefix(prefix: str) -> str:
 # ---------------------------------------------------------------------------
 
 
+def _apply_normalization_rules(
+    instrument_id: str, acquisition_id: str
+) -> Optional[tuple[str, str]]:
+    """Apply string-normalization rules (2–4) and long-form list check (5).
+
+    Returns a resolved pair, or None if no rule matched.
+    """
+    instr_underscored = instrument_id.replace(" ", "_")
+    acq_underscored = acquisition_id.replace(" ", "_")
+    if instr_underscored == acq_underscored:  # Rule 2
+        return instr_underscored, instr_underscored
+    if instrument_id.replace("-", "") == acquisition_id.replace("-", ""):  # Rule 3
+        return acquisition_id, acquisition_id
+    if instrument_id.replace(".", "") == acquisition_id.replace(".", ""):  # Rule 4
+        return acquisition_id, acquisition_id
+    # Rule 5 — also check underscore-normalised form so "442 Bergamo 2p photostim"
+    # matches the list entry "442_Bergamo_2p_photostim".
+    if acq_underscored in LONG_ACQ_ID_LIST:
+        return acq_underscored, acq_underscored
+    return None
+
+
+def _apply_id_list_rules(
+    instrument_id: str, acquisition_id: str
+) -> Optional[tuple[str, str]]:
+    """Apply ID-catalogue and substring rules (6–8).
+
+    Returns a resolved pair, or None if no rule matched.
+    """
+    if acquisition_id in SHORT_ACQ_ID_LIST:  # Rule 6
+        return instrument_id, instrument_id
+    if (instrument_id, acquisition_id) in PAIRED_INSTRUMENT_ACQUISITION_IDS:  # Rule 7
+        return instrument_id, instrument_id
+    if instrument_id in acquisition_id:  # Rule 8
+        return acquisition_id, acquisition_id
+    return None
+
+
+def _resolve_same_prefix_by_date(
+    instrument_id: str,
+    acquisition_id: str,
+    instr_date: Optional[datetime],
+    acq_date: Optional[datetime],
+) -> tuple[str, str]:
+    """Resolve a date mismatch when both IDs share the same normalised prefix."""
+    if instr_date and acq_date:
+        if instr_date >= acq_date:
+            return instrument_id, instrument_id
+        raise ValueError(
+            f"Acquisition rig ID '{acquisition_id}' has a more recent date than "
+            f"instrument rig ID '{instrument_id}'. Cannot auto-resolve."
+        )
+    if instr_date:
+        return instrument_id, instrument_id
+    if acq_date:
+        return acquisition_id, acquisition_id
+    # Neither has a parseable date; prefer instrument (rig file).
+    return instrument_id, instrument_id
+
+
+def _resolve_different_prefix_by_date(
+    instrument_id: str,
+    acquisition_id: str,
+    instr_date: Optional[datetime],
+    acq_date: Optional[datetime],
+) -> tuple[str, str]:
+    """Resolve a date mismatch when the two IDs have different normalised prefixes."""
+    if instr_date and acq_date:
+        if instr_date >= acq_date:
+            return instrument_id, instrument_id
+        logging.warning(
+            "Acquisition rig ID '%s' has a more recent date than instrument rig ID '%s'. "
+            "Using acquisition ID.",
+            acquisition_id,
+            instrument_id,
+        )
+        return acquisition_id, acquisition_id
+    if instr_date:
+        return instrument_id, instrument_id
+    if acq_date:
+        return acquisition_id, acquisition_id
+    # Neither has a date; prefer instrument.
+    return instrument_id, instrument_id
+
+
+def _resolve_by_date(instrument_id: str, acquisition_id: str) -> tuple[str, str]:
+    """Apply date-based resolution (Rule 9)."""
+    instr_prefix, instr_date = _parse_rig_id_parts(instrument_id)
+    acq_prefix, acq_date = _parse_rig_id_parts(acquisition_id)
+
+    instr_prefix_norm = _normalize_prefix(instr_prefix) if instr_prefix else ""
+    acq_prefix_norm = _normalize_prefix(acq_prefix) if acq_prefix else ""
+
+    if instr_prefix_norm == acq_prefix_norm:
+        return _resolve_same_prefix_by_date(instrument_id, acquisition_id, instr_date, acq_date)
+    return _resolve_different_prefix_by_date(instrument_id, acquisition_id, instr_date, acq_date)
+
+
 def _resolve_instrument_id_mismatch(instrument_id: str, acquisition_id: str) -> tuple[str, str]:
     """Apply all resolution rules and return (corrected_instrument_id, corrected_acquisition_id).
 
@@ -111,7 +209,6 @@ def _resolve_instrument_id_mismatch(instrument_id: str, acquisition_id: str) -> 
     # Rule 0 — strip whitespace; bail early if equal or empty.
     instrument_id = instrument_id.strip()
     acquisition_id = acquisition_id.strip()
-
     if not instrument_id or not acquisition_id:
         return instrument_id, acquisition_id
     if instrument_id == acquisition_id:
@@ -121,82 +218,18 @@ def _resolve_instrument_id_mismatch(instrument_id: str, acquisition_id: str) -> 
     if instrument_id in BAD_INSTRUMENT_IDS:
         return acquisition_id, acquisition_id
 
-    # Rule 2 — space / underscore normalization.
-    instr_underscored = instrument_id.replace(" ", "_")
-    acq_underscored = acquisition_id.replace(" ", "_")
-    if instr_underscored == acq_underscored:
-        return instr_underscored, instr_underscored
+    # Rules 2–5 — string normalisation and long-form list.
+    result = _apply_normalization_rules(instrument_id, acquisition_id)
+    if result is not None:
+        return result
 
-    # Rule 3 — date-separator difference only (YYYYMMDD vs YYYY-MM-DD).
-    if instrument_id.replace("-", "") == acquisition_id.replace("-", ""):
-        return acquisition_id, acquisition_id
-
-    # Rule 4 — dot difference only (NP.3 vs NP3).
-    if instrument_id.replace(".", "") == acquisition_id.replace(".", ""):
-        return acquisition_id, acquisition_id
-
-    # Rule 5 — acquisition ID is the canonical long-form name.
-    # Also check after space→underscore normalisation so "442 Bergamo 2p photostim"
-    # matches the list entry "442_Bergamo_2p_photostim".
-    if acq_underscored in LONG_ACQ_ID_LIST:
-        return acq_underscored, acq_underscored
-
-    # Rule 6 — acquisition ID is a known short alias; use the instrument ID.
-    if acquisition_id in SHORT_ACQ_ID_LIST:
-        return instrument_id, instrument_id
-
-    # Rule 7 — explicit paired overrides.
-    if (instrument_id, acquisition_id) in PAIRED_INSTRUMENT_ACQUISITION_IDS:
-        return instrument_id, instrument_id
-
-    # Rule 8 — instrument ID is a substring of the acquisition ID.
-    if instrument_id in acquisition_id:
-        return acquisition_id, acquisition_id
+    # Rules 6–8 — ID catalogue and substring checks.
+    result = _apply_id_list_rules(instrument_id, acquisition_id)
+    if result is not None:
+        return result
 
     # Rule 9 — date-based resolution.
-    instr_prefix, instr_date = _parse_rig_id_parts(instrument_id)
-    acq_prefix, acq_date = _parse_rig_id_parts(acquisition_id)
-
-    instr_prefix_norm = _normalize_prefix(instr_prefix) if instr_prefix else ""
-    acq_prefix_norm = _normalize_prefix(acq_prefix) if acq_prefix else ""
-
-    if instr_prefix_norm == acq_prefix_norm:
-        # Same rig family — resolve by date comparison.
-        if instr_date and acq_date:
-            if instr_date >= acq_date:
-                return instrument_id, instrument_id
-            else:
-                raise ValueError(
-                    f"Acquisition rig ID '{acquisition_id}' has a more recent date than "
-                    f"instrument rig ID '{instrument_id}'. Cannot auto-resolve."
-                )
-        elif instr_date:
-            return instrument_id, instrument_id
-        elif acq_date:
-            return acquisition_id, acquisition_id
-        else:
-            # Neither has a parseable date; prefer instrument (rig file).
-            return instrument_id, instrument_id
-    else:
-        # Different rig family prefix.
-        if instr_date and acq_date:
-            if instr_date >= acq_date:
-                return instrument_id, instrument_id
-            else:
-                logging.warning(
-                    "Acquisition rig ID '%s' has a more recent date than instrument rig ID '%s'. "
-                    "Using acquisition ID.",
-                    acquisition_id,
-                    instrument_id,
-                )
-                return acquisition_id, acquisition_id
-        elif instr_date:
-            return instrument_id, instrument_id
-        elif acq_date:
-            return acquisition_id, acquisition_id
-        else:
-            # Neither has a date; prefer instrument.
-            return instrument_id, instrument_id
+    return _resolve_by_date(instrument_id, acquisition_id)
 
 
 # ---------------------------------------------------------------------------
