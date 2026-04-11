@@ -28,11 +28,7 @@ _CSV_PATH = os.path.join(_RESOURCES_DIR, "instrument_id_mismatches.csv")
 
 def _make_data(instrument_id: str, acquisition_id: str, modalities: str = "") -> dict:
     """Build a minimal data dict suitable for repair_instrument_id_mismatch."""
-    modality_list = (
-        [{"abbreviation": m} for m in modalities.split("|") if m]
-        if modalities
-        else []
-    )
+    modality_list = [{"abbreviation": m} for m in modalities.split("|") if m] if modalities else []
     return {
         "instrument": {"instrument_id": instrument_id},
         "acquisition": {"instrument_id": acquisition_id},
@@ -209,7 +205,8 @@ class TestRepairInstrumentIdMismatch(unittest.TestCase):
 
     # Rule 7 — explicit paired overrides
     def test_paired_instrument_acquisition(self):
-        """Explicit paired override for instrument ID '342_NP3_240417' vs acquisition ID '342_NP3_240401' — prefer instrument"""
+        """Explicit paired override for instrument ID '342_NP3_240417'
+        vs acquisition ID '342_NP3_240401' — prefer instrument"""
         data = _make_data("342_NP3_240417", "342_NP3_240401")
         result = repair_instrument_id_mismatch(data)
         self.assertEqual(result["instrument"]["instrument_id"], "342_NP3_240417")
