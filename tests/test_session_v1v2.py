@@ -12,6 +12,7 @@ UTC = ZoneInfo("UTC")
 
 
 def dt(year, month, day, hour, minute, second=0, tz=PACIFIC):
+    """Helper to create datetimes with default Pacific tz and 0 seconds"""
     return datetime(year, month, day, hour, minute, second, tzinfo=tz)
 
 
@@ -19,9 +20,11 @@ class TestValidateAndAdjustSessionTimes(unittest.TestCase):
     """Tests for _validate_and_adjust_session_times"""
 
     def setUp(self):
+        """Set up a SessionV1V2 upgrader instance for testing"""
         self.upgrader = SessionV1V2()
 
     def _call(self, start, end, streams=None, epochs=None, notes=None, fallback_tz=None):
+        """Helper to call _validate_and_adjust_session_times with given inputs"""
         return self.upgrader._validate_and_adjust_session_times(
             start, end, streams or [], epochs or [], notes, fallback_tz=fallback_tz
         )
