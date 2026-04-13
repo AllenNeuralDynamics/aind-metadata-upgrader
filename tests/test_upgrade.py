@@ -44,6 +44,7 @@ class TestUpgrade(unittest.TestCase):
     def test_upgrade(self):
         """Test the upgrade process"""
         base_dir = os.path.join(os.path.dirname(__file__), "records")
+        failures = []
 
         # Get all the directories in tests/records/
         dirs = [name for name in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, name))]
@@ -67,7 +68,7 @@ class TestUpgrade(unittest.TestCase):
                     # Test the upgrade process - this will fail the subTest if upgrade fails
                     fake = False
                     if "name" not in data_dict:
-                        data_dict["name"] = "fake_name_for_testing"
+                        data_dict["name"] = "fakesubj_1000-01-01_00-00-00"
                         fake = True
                     if "location" not in data_dict:
                         data_dict["location"] = "fake_location_for_testing"
@@ -103,6 +104,10 @@ class TestUpgrade(unittest.TestCase):
                     except Exception as e:
                         print(f"Upgrade failed for {file_path}: {e}")
                         print(f"Stack trace:\n{traceback.format_exc()}")
+                        failures.append(f"{file_path}: {e}")
+
+        if failures:
+            self.fail("Upgrade failed for:\n" + "\n".join(failures))
 
 
 if __name__ == "__main__":
