@@ -267,7 +267,10 @@ class DataDescriptionV1V2(CoreUpgrader):
 
         data_name = data.get("name", None)
         if metadata_name != "unknown" and data_name != metadata_name:
-            print(f"WARNING: Metadata name '{metadata_name}' and data name '{data_name}' are different. Using metadata name.")
+            print(
+                f"WARNING: Metadata name '{metadata_name}' and data name '{data_name}' are different."
+                " Using metadata name."
+            )
             return metadata_name
         return data_name
 

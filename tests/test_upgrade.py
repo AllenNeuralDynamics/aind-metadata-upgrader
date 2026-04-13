@@ -41,6 +41,17 @@ upsert = False
 class TestUpgrade(unittest.TestCase):
     """Test the upgrade process"""
 
+    def _fake_metadata(self, data_dict):
+        """Add fake metadata fields if missing to allow upgrade to run, and return whether we had to add any"""
+        fake = False
+        if "name" not in data_dict:
+            data_dict["name"] = "fakesubj_1000-01-01_00-00-00"
+            fake = True
+        if "location" not in data_dict:
+            data_dict["location"] = "fake_location_for_testing"
+            fake = True
+        return fake
+
     def test_upgrade(self):
         """Test the upgrade process"""
         base_dir = os.path.join(os.path.dirname(__file__), "records")
@@ -65,14 +76,7 @@ class TestUpgrade(unittest.TestCase):
                     data = file.read()
                     data_dict = json.loads(data)
 
-                    # Test the upgrade process - this will fail the subTest if upgrade fails
-                    fake = False
-                    if "name" not in data_dict:
-                        data_dict["name"] = "fakesubj_1000-01-01_00-00-00"
-                        fake = True
-                    if "location" not in data_dict:
-                        data_dict["location"] = "fake_location_for_testing"
-                        fake = True
+                    fake = self._fake_metadata(data_dict)
 
                     try:
                         skip_metadata_validation = any(core_file_name in dir_path for core_file_name in ALL_CORE_FILES)
