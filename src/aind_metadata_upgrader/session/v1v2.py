@@ -43,7 +43,6 @@ from aind_data_schema.core.acquisition import (
 from aind_data_schema.components.connections import (
     Connection,
 )
-from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.stimulus_modality import StimulusModality
 from aind_data_schema_models.units import (
     MassUnit,
@@ -61,6 +60,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     remove,
     upgrade_calibration,
     upgrade_targeted_structure,
+    upgrade_v1_modalities,
     validate_angle_unit,
 )
 
@@ -647,10 +647,10 @@ class SessionV1V2(CoreUpgrader):
         if modality in ["ophys", "pophys"]:
             channels, images = self._create_ophys_components(stream, light_sources, detectors)
         elif modality == "slap":
-            raise NotImplementedError("SLAP imaging config upgrade not yet implemented")
+            pass  # channels/images remain empty; ImagingConfig still required for validation
 
-        # Don't create config if no channels
-        if not channels:
+        # Don't create config if no recognized imaging modality
+        if modality not in ["ophys", "pophys", "slap"]:
             return None
 
         # Create sampling strategy
@@ -666,19 +666,8 @@ class SessionV1V2(CoreUpgrader):
 
     def _upgrade_data_stream(self, stream: Dict, rig_id: str, fallback_tz=None) -> Dict:
         """Upgrade a single data stream from v1 to v2"""
-        # Extract modalities
-        modalities = []
-        for modality in stream.get("stream_modalities", []):
-            if isinstance(modality, dict):
-                abbreviation = modality.get("abbreviation", "")
-                try:
-                    modality_obj = Modality.from_abbreviation(abbreviation)
-                    modalities.append(modality_obj.model_dump())
-                except Exception:
-                    # Default to behavior if unknown
-                    modalities.append(Modality.BEHAVIOR.model_dump())
-            else:
-                modalities.append(Modality.BEHAVIOR.model_dump())
+        # Extract modalities — reuse the shared helper (handles slap->slap2, MODALITY_MAP, etc.)
+        modalities = upgrade_v1_modalities({"modality": stream.get("stream_modalities", [])})
 
         # Collect active devices
         active_devices = []
@@ -1096,7 +1085,7 @@ class SessionV1V2(CoreUpgrader):
         valid_end_times = [ensure_timezone(t, fallback_tz) for t in end_times if t is not None]
         valid_end_times = [t for t in valid_end_times if t is not None]
 
-        if valid_start_times and session_start_time and any(start >= session_start_time for start in valid_start_times):
+        if valid_start_times and session_start_time and any(start < session_start_time for start in valid_start_times):
             min_start = min(valid_start_times)
             notes = (notes if notes else "") + (
                 f" (v1v2 upgrade) Session start time was adjusted from {session_start_time} " f"to {min_start}"
@@ -1104,13 +1093,11 @@ class SessionV1V2(CoreUpgrader):
             session_start_time = min_start
         if valid_end_times and session_end_time is None:
             session_end_time = max(valid_end_times)
-        elif valid_end_times and session_end_time and any(end <= session_end_time for end in valid_end_times):
+        elif valid_end_times and session_end_time and any(end > session_end_time for end in valid_end_times):
             max_end = max(valid_end_times)
             notes = (notes if notes else "") + (
                 f" (v1v2 upgrade) Session end time was adjusted from {session_end_time} " f"to {max_end}"
             )
             session_end_time = max_end
-        else:
-            raise NotImplementedError("Not sure how we got here")
 
         return session_start_time, session_end_time, notes
