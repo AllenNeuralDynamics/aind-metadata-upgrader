@@ -742,7 +742,9 @@ class SessionV1V2(CoreUpgrader):
         software = epoch["software"]
 
         if isinstance(software, list):
-            if len(software) == 1:
+            if len(software) == 0:
+                software = None
+            elif len(software) == 1:
                 software = software[0]
             elif len(software) == 2:
                 names = [sw.get("name", "").lower() for sw in software]
@@ -750,9 +752,8 @@ class SessionV1V2(CoreUpgrader):
                     # If one is Python, take the other one
                     software = next((sw for sw in software if sw.get("name", "").lower() != "python"), None)
             else:
-                # If there's two softwares, take the one that isn't Python
                 print(software)
-                raise ValueError("More than two software entries found, cannot upgrade")
+                raise ValueError("More than two software entries found, not sure how to proceed")
 
         return software
 
