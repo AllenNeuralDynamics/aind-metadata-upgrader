@@ -163,6 +163,9 @@ class QCUpgraderV1V2(CoreUpgrader):
 
         remove(data, "evaluations")
 
+        if not metrics:
+            return None
+
         return {
             "object_type": "Quality control",
             "metrics": metrics,

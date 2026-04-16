@@ -1,0 +1,3296 @@
+{
+    "_id": "0ba3a237-f71a-463b-af7e-7a6157474d86",
+    "acquisition": {
+        "acquisition_end_time": "2025-09-04T12:42:53-07:00",
+        "acquisition_start_time": "2025-09-04T12:42:53-07:00",
+        "acquisition_type": "Z1 SPIM Acquisition",
+        "calibrations": [
+            {
+                "calibration_date": "2024-10-02T00:00:00-07:00",
+                "description": "Laser power measured for various percentage output strengths",
+                "device_name": "405_50",
+                "input": [
+                    50
+                ],
+                "input_unit": "milliwatt",
+                "notes": "Output power measeure after acousto-optic tuneable filter (AOTF)",
+                "object_type": "Laser calibration",
+                "output": [
+                    22
+                ],
+                "output_unit": "milliwatt"
+            },
+            {
+                "calibration_date": "2024-10-02T00:00:00-07:00",
+                "description": "Laser power measured for various percentage output strengths",
+                "device_name": "488_50",
+                "input": [
+                    50
+                ],
+                "input_unit": "milliwatt",
+                "notes": "Output power measeure after acousto-optic tuneable filter (AOTF)",
+                "object_type": "Laser calibration",
+                "output": [
+                    27.2
+                ],
+                "output_unit": "milliwatt"
+            },
+            {
+                "calibration_date": "2024-10-02T00:00:00-07:00",
+                "description": "Laser power measured for various percentage output strengths",
+                "device_name": "514_20",
+                "input": [
+                    20
+                ],
+                "input_unit": "milliwatt",
+                "notes": "Output power measeure after acousto-optic tuneable filter (AOTF)",
+                "object_type": "Laser calibration",
+                "output": [
+                    9.1
+                ],
+                "output_unit": "milliwatt"
+            },
+            {
+                "calibration_date": "2024-10-02T00:00:00-07:00",
+                "description": "Laser power measured for various percentage output strengths",
+                "device_name": "561_50",
+                "input": [
+                    50
+                ],
+                "input_unit": "milliwatt",
+                "notes": "Output power measeure after acousto-optic tuneable filter (AOTF)",
+                "object_type": "Laser calibration",
+                "output": [
+                    23.3
+                ],
+                "output_unit": "milliwatt"
+            },
+            {
+                "calibration_date": "2024-10-02T00:00:00-07:00",
+                "description": "Laser power measured for various percentage output strengths",
+                "device_name": "594_30",
+                "input": [
+                    30
+                ],
+                "input_unit": "milliwatt",
+                "notes": "Output power measeure after acousto-optic tuneable filter (AOTF)",
+                "object_type": "Laser calibration",
+                "output": [
+                    8.2
+                ],
+                "output_unit": "milliwatt"
+            },
+            {
+                "calibration_date": "2024-10-02T00:00:00-07:00",
+                "description": "Laser power measured for various percentage output strengths",
+                "device_name": "638_75",
+                "input": [
+                    75
+                ],
+                "input_unit": "milliwatt",
+                "notes": "Output power measeure after acousto-optic tuneable filter (AOTF)",
+                "object_type": "Laser calibration",
+                "output": [
+                    34.6
+                ],
+                "output_unit": "milliwatt"
+            }
+        ],
+        "coordinate_system": {
+            "axes": [
+                {
+                    "direction": "Left_to_right",
+                    "name": "X",
+                    "object_type": "Axis"
+                },
+                {
+                    "direction": "Anterior_to_posterior",
+                    "name": "Y",
+                    "object_type": "Axis"
+                },
+                {
+                    "direction": "Superior_to_inferior",
+                    "name": "Z",
+                    "object_type": "Axis"
+                }
+            ],
+            "axis_unit": "micrometer",
+            "name": "SPIM_RPI",
+            "object_type": "Coordinate system",
+            "origin": "Origin"
+        },
+        "data_streams": [
+            {
+                "active_devices": [],
+                "code": null,
+                "configurations": [
+                    {
+                        "channels": [
+                            {
+                                "additional_device_names": null,
+                                "channel_name": "561",
+                                "detector": {
+                                    "compression": null,
+                                    "device_name": "Detector:0:1, pco.edge 4.2, long Camera",
+                                    "exposure_time": 29.96011128,
+                                    "exposure_time_unit": "millisecond",
+                                    "object_type": "Detector config",
+                                    "trigger_type": "Internal"
+                                },
+                                "emission_filters": [
+                                    {
+                                        "device_name": "SBS LP 490",
+                                        "object_type": "Device config"
+                                    },
+                                    {
+                                        "device_name": "BP 575-615",
+                                        "object_type": "Device config"
+                                    }
+                                ],
+                                "emission_wavelength": 571,
+                                "emission_wavelength_unit": "nanometer",
+                                "excitation_filters": [
+                                    {
+                                        "device_name": "LBF 405/488/561/640",
+                                        "object_type": "Device config"
+                                    }
+                                ],
+                                "intended_measurement": "",
+                                "light_sources": [
+                                    {
+                                        "device_name": "Laser 561-50",
+                                        "object_type": "Laser config",
+                                        "power": 25,
+                                        "power_unit": "percent",
+                                        "wavelength": 561,
+                                        "wavelength_unit": "nanometer"
+                                    }
+                                ],
+                                "object_type": "Channel",
+                                "variable_power": false
+                            },
+                            {
+                                "additional_device_names": null,
+                                "channel_name": "594",
+                                "detector": {
+                                    "compression": null,
+                                    "device_name": "Detector:1:0, pco.edge 4.2, short Camera",
+                                    "exposure_time": 29.96011128,
+                                    "exposure_time_unit": "millisecond",
+                                    "object_type": "Detector config",
+                                    "trigger_type": "Internal"
+                                },
+                                "emission_filters": [
+                                    {
+                                        "device_name": "SBS LP 580",
+                                        "object_type": "Device config"
+                                    },
+                                    {
+                                        "device_name": "BP 605-700",
+                                        "object_type": "Device config"
+                                    }
+                                ],
+                                "emission_wavelength": 618,
+                                "emission_wavelength_unit": "nanometer",
+                                "excitation_filters": [
+                                    {
+                                        "device_name": "LBF 488/594",
+                                        "object_type": "Device config"
+                                    }
+                                ],
+                                "intended_measurement": "",
+                                "light_sources": [
+                                    {
+                                        "device_name": "Laser 594",
+                                        "object_type": "Laser config",
+                                        "power": 7.9999999999999964,
+                                        "power_unit": "percent",
+                                        "wavelength": 594,
+                                        "wavelength_unit": "nanometer"
+                                    }
+                                ],
+                                "object_type": "Channel",
+                                "variable_power": false
+                            },
+                            {
+                                "additional_device_names": null,
+                                "channel_name": "488",
+                                "detector": {
+                                    "compression": null,
+                                    "device_name": "Detector:2:0, pco.edge 4.2, short Camera",
+                                    "exposure_time": 29.96011128,
+                                    "exposure_time_unit": "millisecond",
+                                    "object_type": "Detector config",
+                                    "trigger_type": "Internal"
+                                },
+                                "emission_filters": [
+                                    {
+                                        "device_name": "SBS LP 580",
+                                        "object_type": "Device config"
+                                    },
+                                    {
+                                        "device_name": "BP 505-545",
+                                        "object_type": "Device config"
+                                    }
+                                ],
+                                "emission_wavelength": 518,
+                                "emission_wavelength_unit": "nanometer",
+                                "excitation_filters": [
+                                    {
+                                        "device_name": "LBF 488/594",
+                                        "object_type": "Device config"
+                                    }
+                                ],
+                                "intended_measurement": "",
+                                "light_sources": [
+                                    {
+                                        "device_name": "Laser 488-50",
+                                        "object_type": "Laser config",
+                                        "power": 4.0000000000000036,
+                                        "power_unit": "percent",
+                                        "wavelength": 488,
+                                        "wavelength_unit": "nanometer"
+                                    }
+                                ],
+                                "object_type": "Channel",
+                                "variable_power": false
+                            },
+                            {
+                                "additional_device_names": null,
+                                "channel_name": "405",
+                                "detector": {
+                                    "compression": null,
+                                    "device_name": "Detector:0:0, pco.edge 4.2, short Camera",
+                                    "exposure_time": 29.96011128,
+                                    "exposure_time_unit": "millisecond",
+                                    "object_type": "Detector config",
+                                    "trigger_type": "Internal"
+                                },
+                                "emission_filters": [
+                                    {
+                                        "device_name": "SBS LP 490",
+                                        "object_type": "Device config"
+                                    },
+                                    {
+                                        "device_name": "BP 420-470",
+                                        "object_type": "Device config"
+                                    }
+                                ],
+                                "emission_wavelength": 445,
+                                "emission_wavelength_unit": "nanometer",
+                                "excitation_filters": [
+                                    {
+                                        "device_name": "LBF 405/488/561/640",
+                                        "object_type": "Device config"
+                                    }
+                                ],
+                                "intended_measurement": "",
+                                "light_sources": [
+                                    {
+                                        "device_name": "Laser 405-50",
+                                        "object_type": "Laser config",
+                                        "power": 15.000000000000002,
+                                        "power_unit": "percent",
+                                        "wavelength": 405,
+                                        "wavelength_unit": "nanometer"
+                                    }
+                                ],
+                                "object_type": "Channel",
+                                "variable_power": false
+                            }
+                        ],
+                        "coordinate_system": {
+                            "axes": [
+                                {
+                                    "direction": "Other",
+                                    "name": "X",
+                                    "object_type": "Axis"
+                                },
+                                {
+                                    "direction": "Other",
+                                    "name": "Y",
+                                    "object_type": "Axis"
+                                },
+                                {
+                                    "direction": "Other",
+                                    "name": "Z",
+                                    "object_type": "Axis"
+                                }
+                            ],
+                            "axis_unit": "pixel",
+                            "name": "IMAGE_XYZ",
+                            "object_type": "Coordinate system",
+                            "origin": "Origin"
+                        },
+                        "device_name": "Zeiss Lightsheet 7, Microscope:0",
+                        "images": [
+                            {
+                                "channel_name": "561",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0000_Z_0000_ch_561.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            -1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "594",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0002_Y_0000_Z_0000_ch_594.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            670.0840612545537,
+                                            -1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "488",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0002_Y_0000_Z_0000_ch_488.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            670.0840612545537,
+                                            -1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "405",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0002_Y_0001_Z_0000_ch_405.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            670.0840612545537,
+                                            -670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "561",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0002_Y_0001_Z_0000_ch_561.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            670.0840612545537,
+                                            -670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "594",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0002_Y_0001_Z_0000_ch_594.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            670.0840612545537,
+                                            -670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "488",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0002_Y_0001_Z_0000_ch_488.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            670.0840612545537,
+                                            -670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "405",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0001_Z_0000_ch_405.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            -670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "561",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0001_Z_0000_ch_561.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            -670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "594",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0001_Z_0000_ch_594.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            -670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "488",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0001_Z_0000_ch_488.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            -670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "594",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0000_Z_0000_ch_594.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            -1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "405",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0001_Z_0000_ch_405.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            -670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "561",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0001_Z_0000_ch_561.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            -670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "594",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0001_Z_0000_ch_594.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            -670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "488",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0001_Z_0000_ch_488.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            -670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "405",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0002_Z_0000_ch_405.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            0,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "561",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0002_Z_0000_ch_561.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            0,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "594",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0002_Z_0000_ch_594.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            0,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "488",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0002_Z_0000_ch_488.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            0,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "405",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0002_Z_0000_ch_405.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            0,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "561",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0002_Z_0000_ch_561.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            0,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "488",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0000_Z_0000_ch_488.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            -1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "594",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0002_Z_0000_ch_594.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            0,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "488",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0002_Z_0000_ch_488.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            0,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "405",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0002_Y_0002_Z_0000_ch_405.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            670.0840612545537,
+                                            0,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "561",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0002_Y_0002_Z_0000_ch_561.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            670.0840612545537,
+                                            0,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "594",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0002_Y_0002_Z_0000_ch_594.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            670.0840612545537,
+                                            0,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "488",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0002_Y_0002_Z_0000_ch_488.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            670.0840612545537,
+                                            0,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "405",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0002_Y_0003_Z_0000_ch_405.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            670.0840612545537,
+                                            670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "561",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0002_Y_0003_Z_0000_ch_561.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            670.0840612545537,
+                                            670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "594",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0002_Y_0003_Z_0000_ch_594.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            670.0840612545537,
+                                            670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "488",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0002_Y_0003_Z_0000_ch_488.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            670.0840612545537,
+                                            670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "405",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0000_Z_0000_ch_405.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            -1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "405",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0003_Z_0000_ch_405.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "561",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0003_Z_0000_ch_561.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "594",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0003_Z_0000_ch_594.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "488",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0003_Z_0000_ch_488.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "405",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0003_Z_0000_ch_405.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "561",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0003_Z_0000_ch_561.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "594",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0003_Z_0000_ch_594.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "488",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0003_Z_0000_ch_488.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            670.0840612545537,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "405",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0004_Z_0000_ch_405.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "561",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0004_Z_0000_ch_561.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "561",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0000_Z_0000_ch_561.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            -1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "594",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0004_Z_0000_ch_594.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "488",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0004_Z_0000_ch_488.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "405",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0004_Z_0000_ch_405.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "561",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0004_Z_0000_ch_561.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "594",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0004_Z_0000_ch_594.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "488",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0004_Z_0000_ch_488.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "594",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0000_Z_0000_ch_594.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            -1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "488",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0001_Y_0000_Z_0000_ch_488.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            0,
+                                            -1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "405",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0002_Y_0000_Z_0000_ch_405.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            670.0840612545537,
+                                            -1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "561",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0002_Y_0000_Z_0000_ch_561.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            670.0840612545537,
+                                            -1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            },
+                            {
+                                "channel_name": "405",
+                                "dimensions": {
+                                    "object_type": "Scale",
+                                    "scale": [
+                                        1920,
+                                        1920,
+                                        757
+                                    ]
+                                },
+                                "dimensions_unit": "pixel",
+                                "file_name": "Tile_X_0000_Y_0000_Z_0000_ch_405.ome.zarr",
+                                "image_end_time": null,
+                                "image_start_time": null,
+                                "image_to_acquisition_transform": [
+                                    {
+                                        "object_type": "Scale",
+                                        "scale": [
+                                            0.3880046677791278,
+                                            0.3880046677791278,
+                                            1
+                                        ]
+                                    },
+                                    {
+                                        "object_type": "Translation",
+                                        "translation": [
+                                            -670.4720659223328,
+                                            -1340.9441318446657,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "imaging_angle": 0,
+                                "imaging_angle_unit": "degrees",
+                                "object_type": "Image spim"
+                            }
+                        ],
+                        "object_type": "Imaging config",
+                        "sampling_strategy": null
+                    },
+                    {
+                        "chamber_immersion": {
+                            "medium": "water",
+                            "object_type": "Immersion",
+                            "refractive_index": 1.333
+                        },
+                        "device_name": "Sample Chamber",
+                        "object_type": "Sample chamber config",
+                        "sample_immersion": null
+                    }
+                ],
+                "connections": [],
+                "modalities": [
+                    {
+                        "abbreviation": "SPIM",
+                        "name": "Selective plane illumination microscopy"
+                    }
+                ],
+                "notes": null,
+                "object_type": "Data stream",
+                "stream_end_time": "2025-09-04T12:42:53-07:00",
+                "stream_start_time": "2025-09-04T12:42:53-07:00"
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/acquisition.py",
+        "ethics_review_id": null,
+        "experimenters": [
+            {
+                "name": "Unknown Zeiss User",
+                "object_type": "Person",
+                "registry": {
+                    "abbreviation": "ORCID",
+                    "name": "Open Researcher and Contributor ID"
+                },
+                "registry_identifier": null
+            }
+        ],
+        "instrument_id": "Zeiss Lightsheet 7, Microscope:0",
+        "maintenance": [],
+        "notes": "Light sheet thickness: 5.89 \u00b5m\nIllumination mode: single\nPivot scan: on\nZ-Stack mode: Continuous Drive\nTiles overlap: 10.0 %\nTrack switch mode: Z-Stack\n\nLaser blocking filter:\nTrack1 FW1 : LBF 405/488/561/640\nTrack2 FW1 : LBF 488/594\nTrack4 FW1 : LBF 488/594\n\nEmission selection:\nTrack1 CAM BS : SBS LP 490\nTrack1 EF1 : BP 420-470\nTrack1 EF2 : BP 575-615\nTrack2 CAM BS : SBS LP 580\nTrack2 EF1 : BP 605-700\nTrack4 CAM BS : SBS LP 580\nTrack4 EF1 : BP 505-545",
+        "object_type": "Acquisition",
+        "protocol_id": null,
+        "schema_version": "2.0.25",
+        "specimen_id": "2025-09-04",
+        "stimulus_epochs": [],
+        "subject_details": null,
+        "subject_id": "2025-09-04"
+    },
+    "created": "2025-09-13T08:26:27.357025",
+    "data_description": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "1.0.4",
+        "license": "CC-BY-4.0",
+        "platform": {
+            "name": "Hybridization chain reaction platform",
+            "abbreviation": "HCR"
+        },
+        "subject_id": "813864",
+        "creation_time": "2025-09-12 23:06:45-07:00",
+        "label": null,
+        "name": "HCR_813864_2025-09-04_13-30-00_processed_2025-09-12_23-06-45",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": "Jayaram Chandrashekar"
+            },
+            {
+                "funder": {
+                    "name": "National Institute of Neurological Disorders and Stroke",
+                    "abbreviation": "NINDS",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "01s5ya894"
+                },
+                "grant_number": "1U19NS123714-01",
+                "fundee": "Jayaram Chandrashekar"
+            },
+            {
+                "funder": {
+                    "name": "National Institute of Neurological Disorders and Stroke",
+                    "abbreviation": "NINDS",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "01s5ya894"
+                },
+                "grant_number": "1RF1MH128841-01",
+                "fundee": "Jayaram Chandrashekar, Karel Svoboda"
+            }
+        ],
+        "data_level": "derived",
+        "group": null,
+        "investigators": [
+            {
+                "name": "Jayaram Chandrashekar",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            }
+        ],
+        "project_name": "MSMA Platform",
+        "restrictions": null,
+        "modality": [
+            {
+                "name": "Selective plane illumination microscopy",
+                "abbreviation": "SPIM"
+            }
+        ],
+        "related_data": [],
+        "data_summary": null,
+        "input_data_name": "HCR_813864_2025-09-04_13-30-00",
+        "process_name": "processed"
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": {
+        "Code Ocean": [
+            "8ab09fcc-3aae-4a26-9c54-10d9f7525827"
+        ]
+    },
+    "instrument": {
+        "calibrations": [
+            {
+                "calibration_date": "2024-10-02T00:00:00-07:00",
+                "description": "Laser power measured for various percentage output strengths",
+                "device_name": "405_50",
+                "input": [
+                    50
+                ],
+                "input_unit": "milliwatt",
+                "notes": "Output power measeure after acousto-optic tuneable filter (AOTF)",
+                "object_type": "Laser calibration",
+                "output": [
+                    22
+                ],
+                "output_unit": "milliwatt"
+            },
+            {
+                "calibration_date": "2024-10-02T00:00:00-07:00",
+                "description": "Laser power measured for various percentage output strengths",
+                "device_name": "488_50",
+                "input": [
+                    50
+                ],
+                "input_unit": "milliwatt",
+                "notes": "Output power measeure after acousto-optic tuneable filter (AOTF)",
+                "object_type": "Laser calibration",
+                "output": [
+                    27.2
+                ],
+                "output_unit": "milliwatt"
+            },
+            {
+                "calibration_date": "2024-10-02T00:00:00-07:00",
+                "description": "Laser power measured for various percentage output strengths",
+                "device_name": "514_20",
+                "input": [
+                    20
+                ],
+                "input_unit": "milliwatt",
+                "notes": "Output power measeure after acousto-optic tuneable filter (AOTF)",
+                "object_type": "Laser calibration",
+                "output": [
+                    9.1
+                ],
+                "output_unit": "milliwatt"
+            },
+            {
+                "calibration_date": "2024-10-02T00:00:00-07:00",
+                "description": "Laser power measured for various percentage output strengths",
+                "device_name": "561_50",
+                "input": [
+                    50
+                ],
+                "input_unit": "milliwatt",
+                "notes": "Output power measeure after acousto-optic tuneable filter (AOTF)",
+                "object_type": "Laser calibration",
+                "output": [
+                    23.3
+                ],
+                "output_unit": "milliwatt"
+            },
+            {
+                "calibration_date": "2024-10-02T00:00:00-07:00",
+                "description": "Laser power measured for various percentage output strengths",
+                "device_name": "594_30",
+                "input": [
+                    30
+                ],
+                "input_unit": "milliwatt",
+                "notes": "Output power measeure after acousto-optic tuneable filter (AOTF)",
+                "object_type": "Laser calibration",
+                "output": [
+                    8.2
+                ],
+                "output_unit": "milliwatt"
+            },
+            {
+                "calibration_date": "2024-10-02T00:00:00-07:00",
+                "description": "Laser power measured for various percentage output strengths",
+                "device_name": "638_75",
+                "input": [
+                    75
+                ],
+                "input_unit": "milliwatt",
+                "notes": "Output power measeure after acousto-optic tuneable filter (AOTF)",
+                "object_type": "Laser calibration",
+                "output": [
+                    34.6
+                ],
+                "output_unit": "milliwatt"
+            }
+        ],
+        "components": [
+            {
+                "additional_settings": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Carl Zeiss",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "01xk5xs43"
+                },
+                "model": "Lightsheet Z.1",
+                "name": "Zeiss Lightsheet 7 Zeiss Lightsheet 7, Microscope:0",
+                "notes": "This is a dual-camera lightsheet microscope with multiple laser lines and filter wheels.",
+                "object_type": "Microscope",
+                "serial_number": "2595000298"
+            },
+            {
+                "additional_settings": null,
+                "immersion": "water",
+                "magnification": "20.0",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Carl Zeiss",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "01xk5xs43"
+                },
+                "model": null,
+                "name": "Detection Objective",
+                "notes": "W Plan-Apochromat 20x/1.0 Corr_4909000329",
+                "numerical_aperture": "1.0",
+                "object_type": "Objective",
+                "objective_type": null,
+                "serial_number": null
+            },
+            {
+                "additional_settings": null,
+                "bin_height": null,
+                "bin_mode": "None",
+                "bin_unit": "pixel",
+                "bin_width": null,
+                "bit_depth": null,
+                "chroma": null,
+                "cooling": "Water",
+                "crop_height": null,
+                "crop_offset_x": null,
+                "crop_offset_y": null,
+                "crop_unit": "pixel",
+                "crop_width": null,
+                "data_interface": "USB",
+                "detector_type": "Camera",
+                "driver": null,
+                "driver_version": null,
+                "frame_rate": null,
+                "frame_rate_unit": null,
+                "gain": null,
+                "immersion": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "pco.edge 4.2",
+                "name": "Detector:0",
+                "notes": "Manufacturer: Excelitas Technologies",
+                "object_type": "Detector",
+                "recording_software": null,
+                "sensor_format": null,
+                "sensor_format_unit": null,
+                "sensor_height": null,
+                "sensor_width": null,
+                "serial_number": "61008897",
+                "size_unit": "pixel"
+            },
+            {
+                "additional_settings": null,
+                "bin_height": null,
+                "bin_mode": "None",
+                "bin_unit": "pixel",
+                "bin_width": null,
+                "bit_depth": null,
+                "chroma": null,
+                "cooling": "Water",
+                "crop_height": null,
+                "crop_offset_x": null,
+                "crop_offset_y": null,
+                "crop_unit": "pixel",
+                "crop_width": null,
+                "data_interface": "USB",
+                "detector_type": "Camera",
+                "driver": null,
+                "driver_version": null,
+                "frame_rate": null,
+                "frame_rate_unit": null,
+                "gain": null,
+                "immersion": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "pco.edge 4.2",
+                "name": "Detector:1",
+                "notes": "Manufacturer: Excelitas Technologies",
+                "object_type": "Detector",
+                "recording_software": null,
+                "sensor_format": null,
+                "sensor_format_unit": null,
+                "sensor_height": null,
+                "sensor_width": null,
+                "serial_number": "61008901",
+                "size_unit": "pixel"
+            },
+            {
+                "additional_settings": null,
+                "coupling": null,
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "Laser 405_50",
+                "notes": "Manufacturer: Lasos",
+                "object_type": "Laser",
+                "serial_number": null,
+                "wavelength": 405,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "coupling": null,
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "Laser 488_50",
+                "notes": "Manufacturer: Lasos",
+                "object_type": "Laser",
+                "serial_number": null,
+                "wavelength": 488,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "coupling": null,
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "Laser 514_20",
+                "notes": "Manufacturer: Lasos",
+                "object_type": "Laser",
+                "serial_number": null,
+                "wavelength": 514,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "coupling": null,
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "Laser 561_50",
+                "notes": "Manufacturer: Lasos",
+                "object_type": "Laser",
+                "serial_number": null,
+                "wavelength": 561,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "coupling": null,
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "Laser 594_30",
+                "notes": "Manufacturer: Lasos",
+                "object_type": "Laser",
+                "serial_number": null,
+                "wavelength": 594,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "coupling": null,
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "Laser 638_75",
+                "notes": "Manufacturer: Lasos",
+                "object_type": "Laser",
+                "serial_number": null,
+                "wavelength": 638,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "filter_type": "Notch",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "LBF 405/488/561/640",
+                "notes": "Filter Wheel 1",
+                "object_type": "Filter",
+                "serial_number": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "filter_type": "Notch",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "LBF 488/594",
+                "notes": "Filter Wheel 1",
+                "object_type": "Filter",
+                "serial_number": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "filter_type": "Notch",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "LBF 445/515/638",
+                "notes": "Filter Wheel 1",
+                "object_type": "Filter",
+                "serial_number": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "filter_type": "Dichroic",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "SBS LP 490",
+                "notes": "Filter Wheel 1",
+                "object_type": "Filter",
+                "serial_number": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "filter_type": "Dichroic",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "SBS LP 490",
+                "notes": "Filter Wheel 1",
+                "object_type": "Filter",
+                "serial_number": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "filter_type": "Dichroic",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "SBS LP 560",
+                "notes": "Filter Wheel 1",
+                "object_type": "Filter",
+                "serial_number": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "filter_type": "Dichroic",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "SBS LP 580",
+                "notes": "Filter Wheel 1",
+                "object_type": "Filter",
+                "serial_number": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "filter_type": "Band pass",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "BP 420-470",
+                "notes": "Filter Wheel 2",
+                "object_type": "Filter",
+                "serial_number": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "filter_type": "Band pass",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "BP 505-545",
+                "notes": "Filter Wheel 2",
+                "object_type": "Filter",
+                "serial_number": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "filter_type": "Band pass",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "BP 525-565",
+                "notes": "Filter Wheel 2",
+                "object_type": "Filter",
+                "serial_number": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "filter_type": "Band pass",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "BP 575-615",
+                "notes": "Filter Wheel 2",
+                "object_type": "Filter",
+                "serial_number": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "filter_type": "Band pass",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "BP 605-700",
+                "notes": "Filter Wheel 2",
+                "object_type": "Filter",
+                "serial_number": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "filter_type": "Long pass",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": null,
+                "name": "LP 585",
+                "notes": "Filter Wheel 2",
+                "object_type": "Filter",
+                "serial_number": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "firmware": null,
+                "manufacturer": null,
+                "model": null,
+                "name": "Zeiss Lightsheet 7 Scanning X Stage",
+                "notes": null,
+                "object_type": "Scanning stage",
+                "serial_number": null,
+                "stage_axis_direction": "Perpendicular axis",
+                "stage_axis_name": "X",
+                "travel": "100.0",
+                "travel_unit": "millimeter"
+            },
+            {
+                "additional_settings": null,
+                "firmware": null,
+                "manufacturer": null,
+                "model": null,
+                "name": "Zeiss Lightsheet 7 Scanning Y Stage",
+                "notes": null,
+                "object_type": "Scanning stage",
+                "serial_number": null,
+                "stage_axis_direction": "Perpendicular axis",
+                "stage_axis_name": "Y",
+                "travel": "100.0",
+                "travel_unit": "millimeter"
+            },
+            {
+                "additional_settings": null,
+                "firmware": null,
+                "manufacturer": null,
+                "model": null,
+                "name": "Zeiss Lightsheet 7 Scanning Z Stage",
+                "notes": null,
+                "object_type": "Scanning stage",
+                "serial_number": null,
+                "stage_axis_direction": "Detection axis",
+                "stage_axis_name": "Z",
+                "travel": "100.0",
+                "travel_unit": "millimeter"
+            }
+        ],
+        "connections": [],
+        "coordinate_system": {
+            "axes": [
+                {
+                    "direction": "Left_to_right",
+                    "name": "X",
+                    "object_type": "Axis"
+                },
+                {
+                    "direction": "Anterior_to_posterior",
+                    "name": "Y",
+                    "object_type": "Axis"
+                },
+                {
+                    "direction": "Superior_to_inferior",
+                    "name": "Z",
+                    "object_type": "Axis"
+                }
+            ],
+            "axis_unit": "micrometer",
+            "name": "SPIM_RPI",
+            "object_type": "Coordinate system",
+            "origin": "Origin"
+        },
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/instrument.py",
+        "instrument_id": "Zeiss Lightsheet 7, Microscope:0",
+        "location": "420",
+        "modalities": [
+            {
+                "abbreviation": "SPIM",
+                "name": "Selective plane illumination microscopy"
+            }
+        ],
+        "modification_date": "2025-06-06",
+        "notes": null,
+        "object_type": "Instrument",
+        "schema_version": "2.0.29",
+        "temperature_control": false
+    },
+    "last_modified": "2025-10-27T21:47:11.168Z",
+    "location": "s3://aind-open-data/HCR_813864_2025-09-04_13-30-00_processed_2025-09-12_23-06-45",
+    "metadata_status": "Invalid",
+    "name": "HCR_813864_2025-09-04_13-30-00_processed_2025-09-12_23-06-45",
+    "procedures": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "notes": null,
+        "schema_version": "1.2.1",
+        "specimen_procedures": [],
+        "subject_id": "813864",
+        "subject_procedures": [
+            {
+                "anaesthesia": null,
+                "animal_weight_post": null,
+                "animal_weight_prior": null,
+                "experimenter_full_name": "13040",
+                "iacuc_protocol": "2416",
+                "notes": null,
+                "procedure_type": "Surgery",
+                "procedures": [
+                    {
+                        "output_specimen_ids": [
+                            "813864"
+                        ],
+                        "procedure_type": "Perfusion",
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.8epv51bejl1b/v6"
+                    }
+                ],
+                "start_date": "2025-08-04",
+                "weight_unit": "gram",
+                "workstation_id": null
+            },
+            {
+                "anaesthesia": {
+                    "duration": "30.0",
+                    "duration_unit": "minute",
+                    "level": "1.75",
+                    "type": "isoflurane"
+                },
+                "animal_weight_post": "22.1",
+                "animal_weight_prior": "22.1",
+                "experimenter_full_name": "NSB-43",
+                "iacuc_protocol": "2416",
+                "notes": null,
+                "procedure_type": "Surgery",
+                "procedures": [
+                    {
+                        "bregma_to_lambda_distance": null,
+                        "bregma_to_lambda_unit": "millimeter",
+                        "injection_angle": null,
+                        "injection_angle_unit": "degrees",
+                        "injection_coordinate_ap": "-1.6",
+                        "injection_coordinate_depth": [
+                            "3.3"
+                        ],
+                        "injection_coordinate_ml": "-0.4",
+                        "injection_coordinate_reference": "Bregma",
+                        "injection_coordinate_unit": "millimeter",
+                        "injection_duration": null,
+                        "injection_duration_unit": "minute",
+                        "injection_hemisphere": "Left",
+                        "injection_materials": [],
+                        "injection_volume": [
+                            "100.0"
+                        ],
+                        "injection_volume_unit": "nanoliter",
+                        "instrument_id": null,
+                        "procedure_type": "Nanoject injection",
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+                        "recovery_time": "5.0",
+                        "recovery_time_unit": "minute",
+                        "targeted_structure": null
+                    }
+                ],
+                "protocol_id": "dx.doi.org/10.17504/protocols.io.kqdg392o7g25/v2",
+                "start_date": "2025-07-25",
+                "weight_unit": "gram",
+                "workstation_id": "SWS 6"
+            }
+        ]
+    },
+    "processing": {
+        "analyses": [],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "notes": null,
+        "processing_pipeline": {
+            "data_processes": [
+                {
+                    "code_url": "ghcr.io/allenneuraldynamics/aind-hcr-data-transformation",
+                    "end_date_time": "2025-09-12 23:00:29.068143+00:00",
+                    "input_location": "/allen/aind/scratch/kevin.cao/Z1_data/Rachel/Exp65_MDRetrograde/813864-0/813864_2025-09-04_13-30-00",
+                    "name": "Other",
+                    "notes": null,
+                    "output_location": "/allen/aind/stage/svc_aind_airflow/prod/HCR_813864_2025-09-04_13-30-00_eff09af431/SPIM",
+                    "parameters": {
+                        "input_source": "/allen/aind/scratch/kevin.cao/Z1_data/Rachel/Exp65_MDRetrograde/813864-0/813864_2025-09-04_13-30-00",
+                        "num_of_partitions": 32,
+                        "output_directory": "/allen/aind/stage/svc_aind_airflow/prod/HCR_813864_2025-09-04_13-30-00_eff09af431/SPIM",
+                        "s3_location": "s3://aind-open-data/HCR_813864_2025-09-04_13-30-00/SPIM"
+                    },
+                    "software_version": "dev-cf71aa2",
+                    "start_date_time": "2025-09-12 22:56:11.941417+00:00"
+                }
+            ],
+            "note": null,
+            "pipeline_url": null,
+            "pipeline_version": null,
+            "processor_full_name": "AIND Scientific Computing"
+        },
+        "schema_version": "1.1.3"
+    },
+    "quality_control": null,
+    "rig": null,
+    "schema_version": "1.1.1",
+    "session": null,
+    "subject": {
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": {
+            "breeding_group": "Exp-01-066-2416 AIND",
+            "maternal_genotype": "RCL-H2B-GFP/RCL-H2B-GFP",
+            "maternal_id": "784556",
+            "paternal_genotype": "RCL-H2B-GFP/RCL-H2B-GFP",
+            "paternal_id": "784554"
+        },
+        "date_of_birth": "2025-06-18",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "genotype": "RCL-H2B-GFP/RCL-H2B-GFP",
+        "housing": null,
+        "notes": null,
+        "restrictions": null,
+        "rrid": null,
+        "schema_version": "1.0.3",
+        "sex": "Male",
+        "source": {
+            "abbreviation": "AI",
+            "name": "Allen Institute",
+            "registry": {
+                "abbreviation": "ROR",
+                "name": "Research Organization Registry"
+            },
+            "registry_identifier": "03cpe7c52"
+        },
+        "species": {
+            "name": "Mus musculus",
+            "registry": {
+                "abbreviation": "NCBI",
+                "name": "National Center for Biotechnology Information"
+            },
+            "registry_identifier": "NCBI:txid10090"
+        },
+        "subject_id": "813864",
+        "wellness_reports": []
+    }
+}

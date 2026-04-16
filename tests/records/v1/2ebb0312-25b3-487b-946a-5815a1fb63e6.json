@@ -1,0 +1,611 @@
+{
+    "_id": "2ebb0312-25b3-487b-946a-5815a1fb63e6",
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "schema_version": "1.2.1",
+    "name": "SLAP2_801381_2025-10-02_15-23-18",
+    "created": "2025-10-08T22:48:46.506515Z",
+    "last_modified": "2025-10-08T22:48:54.550Z",
+    "location": "s3://aind-open-data/SLAP2_801381_2025-10-02_15-23-18",
+    "metadata_status": "Invalid",
+    "external_links": {
+        "Code Ocean": [
+            "ee3c678f-e8cd-4b14-887f-b70cc27262e3"
+        ]
+    },
+    "subject": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "schema_version": "1.0.3",
+        "subject_id": "801381",
+        "sex": "Male",
+        "date_of_birth": "2025-02-18",
+        "genotype": "wt/wt",
+        "species": {
+            "name": "Mus musculus",
+            "registry": {
+                "name": "National Center for Biotechnology Information",
+                "abbreviation": "NCBI"
+            },
+            "registry_identifier": "NCBI:txid10090"
+        },
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": {
+            "breeding_group": "Exp-ND-01-022-2415",
+            "maternal_id": null,
+            "maternal_genotype": null,
+            "paternal_id": null,
+            "paternal_genotype": null
+        },
+        "source": {
+            "name": "Allen Institute",
+            "abbreviation": "AI",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "03cpe7c52"
+        },
+        "rrid": null,
+        "restrictions": null,
+        "wellness_reports": [],
+        "housing": {
+            "cage_id": "8295097",
+            "room_id": "217",
+            "light_cycle": null,
+            "home_cage_enrichment": [],
+            "cohoused_subjects": []
+        },
+        "notes": null
+    },
+    "data_description": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "1.0.3",
+        "license": "CC-BY-4.0",
+        "platform": {
+            "name": "SLAP2 platform",
+            "abbreviation": "SLAP2"
+        },
+        "subject_id": "801381",
+        "creation_time": "2025-10-02T15:23:18-07:00",
+        "label": null,
+        "name": "SLAP2_801381_2025-10-02_15-23-18",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": "Kaspar Podgorski"
+            }
+        ],
+        "data_level": "raw",
+        "group": null,
+        "investigators": [
+            {
+                "name": "Kaspar Podgorski",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            }
+        ],
+        "project_name": "Ophys Platform - SLAP2",
+        "restrictions": null,
+        "modality": [
+            {
+                "name": "Scanned line projection imaging",
+                "abbreviation": "slap"
+            },
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            }
+        ],
+        "related_data": [],
+        "data_summary": null
+    },
+    "procedures": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "schema_version": "1.2.1",
+        "subject_id": "801381",
+        "subject_procedures": [
+            {
+                "procedure_type": "Surgery",
+                "start_date": "2025-04-29",
+                "experimenter_full_name": "NSB-1354",
+                "iacuc_protocol": "2415",
+                "animal_weight_prior": "26.7",
+                "animal_weight_post": "29.6",
+                "weight_unit": "gram",
+                "anaesthesia": {
+                    "type": "isoflurane",
+                    "duration": "138.0",
+                    "duration_unit": "minute",
+                    "level": "1.5"
+                },
+                "workstation_id": "SWS 1",
+                "procedures": [
+                    {
+                        "procedure_type": "Craniotomy",
+                        "craniotomy_type": "5 mm",
+                        "craniotomy_hemisphere": null,
+                        "bregma_to_lambda_distance": null,
+                        "bregma_to_lambda_unit": "millimeter",
+                        "implant_part_number": "5mm stacked coverslip",
+                        "dura_removed": null,
+                        "protective_material": null,
+                        "recovery_time": "18.0",
+                        "recovery_time_unit": "minute"
+                    },
+                    {
+                        "procedure_type": "Headframe",
+                        "headframe_type": "Visual Ctx",
+                        "headframe_part_number": "0160-100-10",
+                        "headframe_material": null,
+                        "well_part_number": null,
+                        "well_type": "Visual Ctx SLAP2 well"
+                    },
+                    {
+                        "injection_materials": [],
+                        "recovery_time": "18.0",
+                        "recovery_time_unit": "minute",
+                        "injection_duration": null,
+                        "injection_duration_unit": "minute",
+                        "instrument_id": null,
+                        "injection_coordinate_ml": "-3.1",
+                        "injection_coordinate_ap": "-3.1",
+                        "injection_coordinate_depth": [
+                            "0.45"
+                        ],
+                        "injection_coordinate_unit": "millimeter",
+                        "injection_coordinate_reference": "Bregma",
+                        "bregma_to_lambda_distance": null,
+                        "bregma_to_lambda_unit": "millimeter",
+                        "injection_angle": "0.0",
+                        "injection_angle_unit": "degrees",
+                        "targeted_structure": null,
+                        "injection_hemisphere": "Left",
+                        "procedure_type": "Nanoject injection",
+                        "injection_volume": [
+                            "200.0"
+                        ],
+                        "injection_volume_unit": "nanoliter",
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4"
+                    },
+                    {
+                        "injection_materials": [],
+                        "recovery_time": "18.0",
+                        "recovery_time_unit": "minute",
+                        "injection_duration": null,
+                        "injection_duration_unit": "minute",
+                        "instrument_id": null,
+                        "injection_coordinate_ml": "-3.1",
+                        "injection_coordinate_ap": "-3.9",
+                        "injection_coordinate_depth": [
+                            "0.45"
+                        ],
+                        "injection_coordinate_unit": "millimeter",
+                        "injection_coordinate_reference": "Bregma",
+                        "bregma_to_lambda_distance": null,
+                        "bregma_to_lambda_unit": "millimeter",
+                        "injection_angle": "0.0",
+                        "injection_angle_unit": "degrees",
+                        "targeted_structure": null,
+                        "injection_hemisphere": "Left",
+                        "procedure_type": "Nanoject injection",
+                        "injection_volume": [
+                            "250.0"
+                        ],
+                        "injection_volume_unit": "nanoliter",
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4"
+                    }
+                ],
+                "notes": null,
+                "protocol_id": "dx.doi.org/10.17504/protocols.io.kqdg392o7g25/v2"
+            }
+        ],
+        "specimen_procedures": [],
+        "notes": null
+    },
+    "session": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/session.py",
+        "schema_version": "1.1.2",
+        "protocol_id": [],
+        "experimenter_full_name": [],
+        "session_start_time": "2025-10-02T15:23:18-07:00",
+        "session_end_time": "2025-10-02T16:28:42.020992-07:00",
+        "session_type": "slap2",
+        "iacuc_protocol": "2117",
+        "rig_id": "SLAP2_1",
+        "calibrations": [],
+        "maintenance": [],
+        "subject_id": "801381",
+        "animal_weight_prior": null,
+        "animal_weight_post": null,
+        "weight_unit": "gram",
+        "anaesthesia": null,
+        "data_streams": [
+            {
+                "stream_start_time": "2025-10-02T15:22:47.369504-07:00",
+                "stream_end_time": "2025-10-02T16:28:43.011488-07:00",
+                "daq_names": [
+                    "AnalogInput0"
+                ],
+                "camera_names": [],
+                "light_sources": [],
+                "ephys_modules": [],
+                "stick_microscopes": [],
+                "manipulator_modules": [],
+                "detectors": [],
+                "fiber_connections": [],
+                "fiber_modules": [],
+                "ophys_fovs": [],
+                "slap_fovs": [],
+                "stack_parameters": null,
+                "mri_scans": [],
+                "stream_modalities": [
+                    {
+                        "name": "Behavior",
+                        "abbreviation": "behavior"
+                    }
+                ],
+                "software": [],
+                "notes": "HARP analog channel"
+            },
+            {
+                "stream_start_time": "2025-10-02T15:22:47.369504-07:00",
+                "stream_end_time": "2025-10-02T16:28:43.011488-07:00",
+                "daq_names": [
+                    "Encoder"
+                ],
+                "camera_names": [],
+                "light_sources": [],
+                "ephys_modules": [],
+                "stick_microscopes": [],
+                "manipulator_modules": [],
+                "detectors": [],
+                "fiber_connections": [],
+                "fiber_modules": [],
+                "ophys_fovs": [],
+                "slap_fovs": [],
+                "stack_parameters": null,
+                "mri_scans": [],
+                "stream_modalities": [
+                    {
+                        "name": "Behavior",
+                        "abbreviation": "behavior"
+                    }
+                ],
+                "software": [],
+                "notes": "HARP analog channel"
+            },
+            {
+                "stream_start_time": "2025-10-02T15:22:47.416000-07:00",
+                "stream_end_time": "2025-10-02T16:28:18.030016-07:00",
+                "daq_names": [
+                    "PulseDO0"
+                ],
+                "camera_names": [],
+                "light_sources": [],
+                "ephys_modules": [],
+                "stick_microscopes": [],
+                "manipulator_modules": [],
+                "detectors": [],
+                "fiber_connections": [],
+                "fiber_modules": [],
+                "ophys_fovs": [],
+                "slap_fovs": [],
+                "stack_parameters": null,
+                "mri_scans": [],
+                "stream_modalities": [
+                    {
+                        "name": "Scanned line projection imaging",
+                        "abbreviation": "slap"
+                    }
+                ],
+                "software": [],
+                "notes": "HARP digital channel"
+            },
+            {
+                "stream_start_time": "2025-10-02T15:22:47.418016-07:00",
+                "stream_end_time": "2025-10-02T16:28:42.020992-07:00",
+                "daq_names": [
+                    "PulseDO1"
+                ],
+                "camera_names": [],
+                "light_sources": [],
+                "ephys_modules": [],
+                "stick_microscopes": [],
+                "manipulator_modules": [],
+                "detectors": [],
+                "fiber_connections": [],
+                "fiber_modules": [],
+                "ophys_fovs": [],
+                "slap_fovs": [],
+                "stack_parameters": null,
+                "mri_scans": [],
+                "stream_modalities": [
+                    {
+                        "name": "Scanned line projection imaging",
+                        "abbreviation": "slap"
+                    }
+                ],
+                "software": [],
+                "notes": "HARP digital channel"
+            },
+            {
+                "stream_start_time": "2025-10-02T15:22:47.420000-07:00",
+                "stream_end_time": "2025-10-02T16:28:41.752992-07:00",
+                "daq_names": [
+                    "PulseDO2"
+                ],
+                "camera_names": [],
+                "light_sources": [],
+                "ephys_modules": [],
+                "stick_microscopes": [],
+                "manipulator_modules": [],
+                "detectors": [],
+                "fiber_connections": [],
+                "fiber_modules": [],
+                "ophys_fovs": [],
+                "slap_fovs": [],
+                "stack_parameters": null,
+                "mri_scans": [],
+                "stream_modalities": [
+                    {
+                        "name": "Behavior",
+                        "abbreviation": "behavior"
+                    }
+                ],
+                "software": [],
+                "notes": "HARP digital channel"
+            }
+        ],
+        "stimulus_epochs": [],
+        "mouse_platform_name": "Mouse Platform",
+        "active_mouse_platform": false,
+        "headframe_registration": null,
+        "reward_delivery": null,
+        "reward_consumed_total": null,
+        "reward_consumed_unit": "milliliter",
+        "notes": ""
+    },
+    "rig": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/instrument.py",
+        "schema_version": "1.0.3",
+        "instrument_id": "SLAP2_1",
+        "modification_date": "2025-06-16",
+        "instrument_type": "Two photon",
+        "manufacturer": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "temperature_control": true,
+        "humidity_control": null,
+        "optical_tables": [],
+        "enclosure": null,
+        "objectives": [
+            {
+                "device_type": "Objective",
+                "name": "Leica Objective",
+                "serial_number": "0119",
+                "manufacturer": {
+                    "name": "Leica",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "507704",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "numerical_aperture": "1",
+                "magnification": "20",
+                "immersion": "water",
+                "objective_type": null
+            }
+        ],
+        "detectors": [
+            {
+                "device_type": "Detector",
+                "name": "Hamamatsu Green Detector",
+                "serial_number": "16D-001",
+                "manufacturer": {
+                    "name": "Hamamatsu",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03natb733"
+                },
+                "model": "C13366-5286",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": "Type and data interface are 'other' per rigDescription.json.",
+                "detector_type": "Other",
+                "data_interface": "Other",
+                "cooling": "Air",
+                "computer_name": null,
+                "frame_rate": null,
+                "frame_rate_unit": "hertz",
+                "immersion": null,
+                "chroma": null,
+                "sensor_width": null,
+                "sensor_height": null,
+                "size_unit": "pixel",
+                "sensor_format": null,
+                "sensor_format_unit": null,
+                "bit_depth": null,
+                "bin_mode": "None",
+                "bin_width": null,
+                "bin_height": null,
+                "bin_unit": "pixel",
+                "gain": null,
+                "crop_offset_x": null,
+                "crop_offset_y": null,
+                "crop_width": null,
+                "crop_height": null,
+                "crop_unit": "pixel",
+                "recording_software": null,
+                "driver": null,
+                "driver_version": null
+            },
+            {
+                "device_type": "Detector",
+                "name": "Hamamatsu Red Detector",
+                "serial_number": "22C-002",
+                "manufacturer": {
+                    "name": "Hamamatsu",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03natb733"
+                },
+                "model": "C13366-1960",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": "Type and data interface are 'other' per rigDescription.json.",
+                "detector_type": "Other",
+                "data_interface": "Other",
+                "cooling": "Air",
+                "computer_name": null,
+                "frame_rate": null,
+                "frame_rate_unit": "hertz",
+                "immersion": null,
+                "chroma": null,
+                "sensor_width": null,
+                "sensor_height": null,
+                "size_unit": "pixel",
+                "sensor_format": null,
+                "sensor_format_unit": null,
+                "bit_depth": null,
+                "bin_mode": "None",
+                "bin_width": null,
+                "bin_height": null,
+                "bin_unit": "pixel",
+                "gain": null,
+                "crop_offset_x": null,
+                "crop_offset_y": null,
+                "crop_width": null,
+                "crop_height": null,
+                "crop_unit": "pixel",
+                "recording_software": null,
+                "driver": null,
+                "driver_version": null
+            }
+        ],
+        "light_sources": [
+            {
+                "device_type": "Laser",
+                "name": "Monaco150",
+                "serial_number": "S0124263226",
+                "manufacturer": {
+                    "name": "Coherent Scientific",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "031tysd23"
+                },
+                "model": "Monaco150",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "wavelength": 1035,
+                "wavelength_unit": "nanometer",
+                "maximum_power": "150000",
+                "power_unit": "milliwatt",
+                "coupling": "Free-space",
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "item_number": null
+            }
+        ],
+        "lenses": [],
+        "fluorescence_filters": [],
+        "motorized_stages": [],
+        "scanning_stages": [],
+        "additional_devices": [],
+        "calibration_date": "2023-01-04",
+        "calibration_data": "N/A",
+        "com_ports": [],
+        "daqs": [],
+        "notes": ""
+    },
+    "processing": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "schema_version": "1.1.3",
+        "processing_pipeline": {
+            "data_processes": [
+                {
+                    "name": "Other",
+                    "software_version": "",
+                    "start_date_time": "2025-10-08T20:31:19.536494Z",
+                    "end_date_time": "2025-10-08T20:33:20.697044Z",
+                    "input_location": "//allen/aind/scratch/OpenScope/Slap2/Data/801381/801381_20251002T152318/slap2",
+                    "output_location": "",
+                    "code_url": "",
+                    "code_version": null,
+                    "parameters": {
+                        "input_source": "//allen/aind/scratch/OpenScope/Slap2/Data/801381/801381_20251002T152318/slap2"
+                    },
+                    "outputs": {},
+                    "notes": "Data was copied",
+                    "resources": null
+                },
+                {
+                    "name": "Other",
+                    "software_version": "",
+                    "start_date_time": "2025-10-08T20:31:20.869867Z",
+                    "end_date_time": "2025-10-08T20:33:22.022530Z",
+                    "input_location": "//allen/aind/scratch/OpenScope/Slap2/Data/801381/801381_20251002T152318/behavior",
+                    "output_location": "",
+                    "code_url": "",
+                    "code_version": null,
+                    "parameters": {
+                        "input_source": "//allen/aind/scratch/OpenScope/Slap2/Data/801381/801381_20251002T152318/behavior"
+                    },
+                    "outputs": {},
+                    "notes": "Data was copied",
+                    "resources": null
+                }
+            ],
+            "processor_full_name": "AIND Scientific Computing",
+            "pipeline_version": null,
+            "pipeline_url": null,
+            "note": null
+        },
+        "analyses": [],
+        "notes": null
+    },
+    "acquisition": null,
+    "instrument": null,
+    "quality_control": null
+}

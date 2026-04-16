@@ -79,6 +79,9 @@ class Upgrade:
 
         core_files = self._process_core_files()
 
+        # Remove expected files that the upgrader intentionally dropped (returned None)
+        expected_core_files = [f for f in expected_core_files if core_files.get(f) is not None]
+
         core_files = self._repair_missing_procedures(core_files)
 
         self._validate_required_files(core_files)
@@ -240,5 +243,9 @@ class Upgrade:
             for specifier_set, upgrader in MAPPING[core_file]:
                 if original_schema_version in specifier_set:
                     upgraded_data = upgrader().upgrade(core_data, upgraded_schema_version, metadata=self.raw_data)
+
+        if upgraded_data is None:
+            logging.info(f"Upgrader for {core_file} returned None, dropping file")
+            return None
 
         return self._try_validate(core_file, upgraded_data)
