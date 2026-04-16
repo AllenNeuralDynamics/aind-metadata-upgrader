@@ -15,9 +15,127 @@ from aind_metadata_upgrader.acquisition.v1v2_tiles import (
     extract_channels_from_tiles,
 )
 
-REPO_ROOT = Path(__file__).parent.parent
-EXAMPLES_DIR = REPO_ROOT / "examples"
 RECORDS_DIR = Path(__file__).parent / "records"
+
+
+# ── Helpers to build V1 test data inline ────────────────────────────────
+
+EXASPIM_AXES = [
+    {"name": "X", "direction": "Inferior_to_superior", "dimension": 2, "unit": "micrometer"},
+    {"name": "Y", "direction": "Anterior_to_posterior", "dimension": 1, "unit": "micrometer"},
+    {"name": "Z", "direction": "Left_to_right", "dimension": 0, "unit": "micrometer"},
+]
+
+
+def _make_tile(file_name, channel_name, light_source_name, detector_name,
+               excitation_wavelength, excitation_power,
+               scale=("15.04", "15.04", "20.0"),
+               translation=("-59.1512", "12.3668", "-38.3913"),
+               additional_device_names=None):
+    """Build a minimal V1 tile dict."""
+    return {
+        "coordinate_transformations": [
+            {"type": "scale", "scale": list(scale)},
+            {"type": "translation", "translation": list(translation)},
+        ],
+        "file_name": file_name,
+        "channel": {
+            "channel_name": channel_name,
+            "light_source_name": light_source_name,
+            "filter_names": [],
+            "detector_name": detector_name,
+            "additional_device_names": additional_device_names or [],
+            "excitation_wavelength": excitation_wavelength,
+            "excitation_wavelength_unit": "nanometer",
+            "excitation_power": excitation_power,
+            "excitation_power_unit": "milliwatt",
+            "filter_wheel_index": 0,
+        },
+        "notes": None,
+        "imaging_angle": 0,
+        "imaging_angle_unit": "degrees",
+        "acquisition_start_time": None,
+        "acquisition_end_time": None,
+    }
+
+
+def _make_v1_acquisition(tiles, axes=None, subject_id="765830", specimen_id="765830",
+                          session_start="2025-11-21T12:01:47.108976-08:00",
+                          session_end="2025-11-21T12:19:53.806266-08:00",
+                          chamber_immersion=None):
+    """Build a minimal V1 acquisition dict."""
+    return {
+        "schema_version": "1.0.4",
+        "protocol_id": [],
+        "experimenter_full_name": ["adam glaser"],
+        "specimen_id": specimen_id,
+        "subject_id": subject_id,
+        "instrument_id": "",
+        "calibrations": [],
+        "maintenance": [],
+        "session_start_time": session_start,
+        "session_end_time": session_end,
+        "session_type": None,
+        "tiles": tiles,
+        "axes": axes if axes is not None else EXASPIM_AXES,
+        "chamber_immersion": chamber_immersion or {"medium": "other", "refractive_index": "1.33"},
+        "sample_immersion": None,
+        "active_objectives": None,
+        "software": [],
+        "notes": None,
+    }
+
+
+# Fixtures: pre-built V1 acquisition dicts ──────────────────────────────
+
+# Single-channel exaSPIM: 2 tiles, both ch 488
+SINGLE_CHANNEL_TILES = [
+    _make_tile("tile_000000_ch_488.ims", "488", "488 nm", "vnp-604mx", 488, 197.0,
+               additional_device_names=["camera", "left_right_flip_mount"]),
+    _make_tile("tile_000001_ch_488.ims", "488", "488 nm", "vnp-604mx", 488, 197.0,
+               additional_device_names=["camera", "left_right_flip_mount"]),
+]
+V1_SINGLE_CHANNEL = _make_v1_acquisition(SINGLE_CHANNEL_TILES)
+
+# Multi-channel exaSPIM: 4 tiles, 2×561 + 2×488
+MULTI_CHANNEL_TILES = [
+    _make_tile("tile_000000_ch_561.ims", "561", "561 nm", "vnp-604mx", 561, 220.0,
+               additional_device_names=["camera", "left_right_flip_mount"],
+               translation=("-41.5744", "13.1057", "-23.799")),
+    _make_tile("tile_000000_ch_488.ims", "488", "488 nm", "vnp-604mx", 488, 197.0,
+               additional_device_names=["camera", "left_right_flip_mount"],
+               scale=("30.08", "30.08", "40.0"),
+               translation=("-41.5744", "13.1057", "-23.799")),
+    _make_tile("tile_000001_ch_561.ims", "561", "561 nm", "vnp-604mx", 561, 220.0,
+               additional_device_names=["camera", "left_right_flip_mount"],
+               translation=("-41.5744", "13.1057", "-23.799")),
+    _make_tile("tile_000001_ch_488.ims", "488", "488 nm", "vnp-604mx", 488, 197.0,
+               additional_device_names=["camera", "left_right_flip_mount"],
+               scale=("30.08", "30.08", "40.0"),
+               translation=("-41.5744", "13.1057", "-23.799")),
+]
+V1_MULTI_CHANNEL = _make_v1_acquisition(
+    MULTI_CHANNEL_TILES,
+    subject_id="822178-1x", specimen_id="822178-1x",
+    session_start="2026-04-03T15:46:33.698599-07:00",
+    session_end="2026-04-03T16:19:57.552352-07:00",
+)
+
+# Duplicate-channel tiles (single channel, 2 tiles — tests deduplication)
+DEDUP_TILES = [
+    _make_tile("right_000000_ch_488.ims", "488", "488 nm", "vnp-604mx", 488, 197.0,
+               additional_device_names=["camera", "left_right_flip_mount"],
+               translation=("-43.6593", "10.7756", "-26.8994")),
+    _make_tile("left_000001_ch_488.ims", "488", "488 nm", "vnp-604mx", 488, 197.0,
+               additional_device_names=["camera", "left_right_flip_mount"],
+               translation=("-43.6593", "10.7756", "-26.8994")),
+]
+V1_DEDUP = _make_v1_acquisition(
+    DEDUP_TILES,
+    subject_id="669977", specimen_id="669977",
+    session_start="2026-03-02T16:48:27.843696-08:00",
+    session_end="2026-03-02T17:02:52.931553-08:00",
+)
 
 
 class TestAcquisitionV1V2(unittest.TestCase):
@@ -159,12 +277,7 @@ class TestCoordinateSystem(unittest.TestCase):
 
     def test_preserves_original_axis_names(self):
         """Axes should keep their original V1 names (X/Y/Z) with correct directions"""
-        axes = [
-            {"name": "X", "direction": "Inferior_to_superior", "dimension": 2, "unit": "micrometer"},
-            {"name": "Y", "direction": "Anterior_to_posterior", "dimension": 1, "unit": "micrometer"},
-            {"name": "Z", "direction": "Left_to_right", "dimension": 0, "unit": "micrometer"},
-        ]
-        result = self.upgrader._create_coordinate_system_from_axes(axes)
+        result = self.upgrader._create_coordinate_system_from_axes(EXASPIM_AXES)
 
         self.assertEqual(result["name"], "SPIM_RPS")
         # Axes are sorted by dimension: Z(dim0), Y(dim1), X(dim2)
@@ -200,18 +313,8 @@ class TestConvertTilesToImages(unittest.TestCase):
 
     def test_single_tile_produces_image(self):
         """A single V1 tile should produce one ImageSPIM"""
-        tile = {
-            "coordinate_transformations": [
-                {"type": "scale", "scale": ["15.04", "15.04", "20.0"]},
-                {"type": "translation", "translation": ["-59.15", "12.37", "-38.39"]},
-            ],
-            "file_name": "tile_000000_ch_488.ims",
-            "channel": {"channel_name": "488"},
-            "imaging_angle": 0,
-            "imaging_angle_unit": "degrees",
-            "acquisition_start_time": None,
-            "acquisition_end_time": None,
-        }
+        tile = _make_tile("tile_000000_ch_488.ims", "488", "488 nm", "vnp-604mx", 488, 197.0,
+                          translation=("-59.15", "12.37", "-38.39"))
         images = convert_tiles_to_images([tile])
         self.assertEqual(len(images), 1)
         img = images[0]
@@ -226,18 +329,8 @@ class TestConvertTilesToImages(unittest.TestCase):
     def test_multiple_tiles(self):
         """Multiple tiles each produce their own ImageSPIM"""
         tiles = [
-            {
-                "coordinate_transformations": [
-                    {"type": "scale", "scale": ["1", "1", "1"]},
-                    {"type": "translation", "translation": ["0", "0", "0"]},
-                ],
-                "file_name": f"tile_{i:06d}_ch_488.ims",
-                "channel": {"channel_name": "488"},
-                "imaging_angle": 0,
-                "imaging_angle_unit": "degrees",
-                "acquisition_start_time": None,
-                "acquisition_end_time": None,
-            }
+            _make_tile(f"tile_{i:06d}_ch_488.ims", "488", "488 nm", "det", 488, 100.0,
+                       scale=("1", "1", "1"), translation=("0", "0", "0"))
             for i in range(3)
         ]
         images = convert_tiles_to_images(tiles)
@@ -261,35 +354,26 @@ class TestInstrumentOptional(unittest.TestCase):
 
     def test_upgrade_without_instrument_metadata(self):
         """Upgrade should succeed with empty metadata (no instrument)"""
-        with open(EXAMPLES_DIR / "acquisition_v1_to_upgrade.json") as f:
-            v1_data = json.load(f)
-
-        result = self.upgrader.upgrade(v1_data, "2.6.0", metadata={})
+        result = self.upgrader.upgrade(V1_SINGLE_CHANNEL, "2.6.0", metadata={})
         channels = result["data_streams"][0]["configurations"][0]["channels"]
         self.assertTrue(len(channels) > 0)
         self.assertNotEqual(channels[0]["detector"]["device_name"], "unknown_detector")
 
     def test_upgrade_with_none_metadata(self):
         """Upgrade should succeed when metadata is None"""
-        with open(EXAMPLES_DIR / "acquisition_v1_to_upgrade.json") as f:
-            v1_data = json.load(f)
-
-        result = self.upgrader.upgrade(v1_data, "2.6.0", metadata=None)
+        result = self.upgrader.upgrade(V1_SINGLE_CHANNEL, "2.6.0", metadata=None)
         channels = result["data_streams"][0]["configurations"][0]["channels"]
         self.assertTrue(len(channels) > 0)
 
     def test_upgrade_with_instrument_light_sources(self):
         """When instrument has light_sources, channels still build correctly"""
-        with open(EXAMPLES_DIR / "acquisition_v1_to_upgrade.json") as f:
-            v1_data = json.load(f)
-
         instrument_metadata = {
             "instrument": {
                 "fluorescence_filters": [],
                 "light_sources": [{"name": "488 nm", "wavelength": 488}],
             }
         }
-        result = self.upgrader.upgrade(v1_data, "2.6.0", metadata=instrument_metadata)
+        result = self.upgrader.upgrade(V1_SINGLE_CHANNEL, "2.6.0", metadata=instrument_metadata)
         channels = result["data_streams"][0]["configurations"][0]["channels"]
         self.assertTrue(len(channels[0]["light_sources"]) > 0)
         self.assertEqual(channels[0]["light_sources"][0]["device_name"], "488 nm")
@@ -312,10 +396,7 @@ class TestEndToEndExaSPIM(unittest.TestCase):
 
     def test_exaspim_single_channel_upgrade(self):
         """End-to-end: exaSPIM V1 single-channel (2 identical tiles)"""
-        with open(EXAMPLES_DIR / "acquisition_v1_to_upgrade.json") as f:
-            v1_data = json.load(f)
-
-        output = self._upgrade_and_validate(v1_data)
+        output = self._upgrade_and_validate(V1_SINGLE_CHANNEL)
 
         self.assertEqual(output["subject_id"], "765830")
         self.assertEqual(output["acquisition_type"], "Imaging session")
@@ -354,10 +435,7 @@ class TestEndToEndExaSPIM(unittest.TestCase):
 
     def test_exaspim_2tile_multichannel_upgrade(self):
         """End-to-end: exaSPIM V1 with 2 channels (488, 561), 4 tiles total"""
-        with open(EXAMPLES_DIR / "acquisition_2tile_v1.json") as f:
-            v1_data = json.load(f)
-
-        output = self._upgrade_and_validate(v1_data)
+        output = self._upgrade_and_validate(V1_MULTI_CHANNEL)
 
         channels = output["data_streams"][0]["configurations"][0]["channels"]
         channel_names = sorted([ch["channel_name"] for ch in channels])
@@ -400,10 +478,7 @@ class TestEndToEndExaSPIM(unittest.TestCase):
 
     def test_single_tile_deduplication(self):
         """End-to-end: tiles with same channel are deduplicated into one Channel"""
-        with open(EXAMPLES_DIR / "acquisition_single_tile_v1.json") as f:
-            v1_data = json.load(f)
-
-        output = self._upgrade_and_validate(v1_data)
+        output = self._upgrade_and_validate(V1_DEDUP)
 
         channels = output["data_streams"][0]["configurations"][0]["channels"]
         self.assertEqual(len(channels), 1)
