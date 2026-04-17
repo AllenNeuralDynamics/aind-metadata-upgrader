@@ -173,9 +173,9 @@ class AcquisitionV1V2(CoreUpgrader):
             end_str = session_end_time.isoformat() if hasattr(session_end_time, "isoformat") else str(session_end_time)
 
             # Get fluorescence filters and light sources from instrument if available.
-            # When instrument metadata is absent, fall back to empty lists —
+            # When instrument metadata is absent or null, fall back to empty lists —
             # tile channel data will be used directly to build LaserConfig/DetectorConfig.
-            if metadata and "instrument" in metadata:
+            if metadata and metadata.get("instrument"):
                 fluorescence_filters = metadata["instrument"].get("fluorescence_filters", [])
                 light_sources = metadata["instrument"].get("light_sources", [])
             else:
