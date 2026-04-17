@@ -1,0 +1,2284 @@
+{
+    "_id": "7d1fea42-4b6e-4bc5-baf4-045b0cf5b6ad",
+    "acquisition": {
+        "active_objectives": null,
+        "axes": [
+            {
+                "dimension": 2,
+                "direction": "Posterior_to_anterior",
+                "name": "X",
+                "unit": "micrometer"
+            },
+            {
+                "dimension": 1,
+                "direction": "Right_to_left",
+                "name": "Y",
+                "unit": "micrometer"
+            },
+            {
+                "dimension": 0,
+                "direction": "Superior_to_inferior",
+                "name": "Z",
+                "unit": "micrometer"
+            }
+        ],
+        "calibrations": [],
+        "chamber_immersion": {
+            "medium": "other",
+            "refractive_index": "1.33"
+        },
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/acquisition.py",
+        "experimenter_full_name": [
+            "adam glaser"
+        ],
+        "external_storage_directory": "Z:\\stage\\exaSPIM\\exaSPIM_776241_2025-06-17_13-17-18",
+        "instrument_id": "",
+        "local_storage_directory": "D:\\exaSPIM_776241_2025-06-17_13-17-18",
+        "maintenance": [],
+        "notes": null,
+        "processing_steps": [],
+        "protocol_id": [],
+        "sample_immersion": null,
+        "schema_version": "1.0.4",
+        "session_end_time": "2025-06-20T14:24:53.666500-07:00",
+        "session_start_time": "2025-06-17T13:17:18.972295-07:00",
+        "session_type": null,
+        "software": [],
+        "specimen_id": "776241",
+        "subject_id": "776241",
+        "tiles": [
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "1.999891200000004",
+                            "-2.6999720000000007",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000000_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "1.999891200000004",
+                            "4.462876",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000001_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "1.999891200000004",
+                            "11.625724",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000002_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "1.999891200000004",
+                            "18.788572000000002",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000003_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "11.553945600000002",
+                            "-2.6999720000000007",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000004_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "11.553945600000002",
+                            "4.462876",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000005_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "11.553945600000002",
+                            "11.625724",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000006_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "11.553945600000002",
+                            "18.788572000000002",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000007_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "21.108",
+                            "-2.6999720000000007",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000008_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "21.108",
+                            "4.462876",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000009_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "21.108",
+                            "11.625724",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000010_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "21.108",
+                            "18.788572000000002",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000011_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "30.6620544",
+                            "-2.6999720000000007",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000012_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "30.6620544",
+                            "4.462876",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000013_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "30.6620544",
+                            "11.625724",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000014_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "30.6620544",
+                            "18.788572000000002",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000015_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "40.2161088",
+                            "-2.6999720000000007",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000016_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "40.2161088",
+                            "4.462876",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000017_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "40.2161088",
+                            "11.625724",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000018_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "0.748",
+                            "0.748",
+                            "1.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "40.2161088",
+                            "18.788572000000002",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000019_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "1.999891200000004",
+                            "-2.6999720000000007",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000000_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "1.999891200000004",
+                            "4.462876",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000001_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "1.999891200000004",
+                            "11.625724",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000002_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "1.999891200000004",
+                            "18.788572000000002",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000003_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "11.553945600000002",
+                            "-2.6999720000000007",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000004_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "11.553945600000002",
+                            "4.462876",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000005_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "11.553945600000002",
+                            "11.625724",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000006_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "11.553945600000002",
+                            "18.788572000000002",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000007_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "21.108",
+                            "-2.6999720000000007",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000008_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "21.108",
+                            "4.462876",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000009_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "21.108",
+                            "11.625724",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000010_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "21.108",
+                            "18.788572000000002",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000011_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "30.6620544",
+                            "-2.6999720000000007",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000012_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "30.6620544",
+                            "4.462876",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000013_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "30.6620544",
+                            "11.625724",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000014_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "30.6620544",
+                            "18.788572000000002",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000015_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "40.2161088",
+                            "-2.6999720000000007",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000016_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "40.2161088",
+                            "4.462876",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000017_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "40.2161088",
+                            "11.625724",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000018_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [
+                        "left",
+                        "right",
+                        "camera",
+                        "n_flip_mirror",
+                        "filter wheel"
+                    ],
+                    "channel_name": "488",
+                    "description": null,
+                    "detector_name": "vp-151mx",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 300,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 488,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "488 nm"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            "5.984",
+                            "5.984",
+                            "8.0"
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            "40.2161088",
+                            "18.788572000000002",
+                            "24.284"
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_000019_ch_488.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            }
+        ]
+    },
+    "created": "2025-07-14T08:32:12.955482",
+    "data_description": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "1.0.4",
+        "license": "CC-BY-4.0",
+        "platform": {
+            "name": "ExaSPIM platform",
+            "abbreviation": "exaSPIM"
+        },
+        "subject_id": "776241",
+        "creation_time": "2025-07-13 07:59:02-07:00",
+        "label": null,
+        "name": "exaSPIM_776241_2025-06-17_13-17-18_processed_2025-07-13_07-59-02",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": "Jayaram Chandrashekar"
+            },
+            {
+                "funder": {
+                    "name": "National Institute of Neurological Disorders and Stroke",
+                    "abbreviation": "NINDS",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "01s5ya894"
+                },
+                "grant_number": "1U19NS123714-01",
+                "fundee": "Jayaram Chandrashekar"
+            },
+            {
+                "funder": {
+                    "name": "National Institute of Neurological Disorders and Stroke",
+                    "abbreviation": "NINDS",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "01s5ya894"
+                },
+                "grant_number": "1RF1MH128841-01",
+                "fundee": "Jayaram Chandrashekar, Karel Svoboda"
+            }
+        ],
+        "data_level": "derived",
+        "group": null,
+        "investigators": [
+            {
+                "name": "Jayaram Chandrashekar",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            }
+        ],
+        "project_name": "MSMA Platform",
+        "restrictions": null,
+        "modality": [
+            {
+                "name": "Selective plane illumination microscopy",
+                "abbreviation": "SPIM"
+            }
+        ],
+        "related_data": [],
+        "data_summary": null,
+        "input_data_name": "exaSPIM_776241_2025-06-17_13-17-18",
+        "process_name": "processed"
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": {
+        "Code Ocean": [
+            "daef1665-6508-4b8a-9caf-aed7bf976e0d"
+        ]
+    },
+    "instrument": null,
+    "last_modified": "2025-10-27T21:50:39.373Z",
+    "location": "s3://aind-open-data/exaSPIM_776241_2025-06-17_13-17-18_processed_2025-07-13_07-59-02",
+    "metadata_status": "Missing",
+    "name": "exaSPIM_776241_2025-06-17_13-17-18_processed_2025-07-13_07-59-02",
+    "procedures": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "notes": null,
+        "schema_version": "1.1.3",
+        "specimen_procedures": [],
+        "subject_id": "776241",
+        "subject_procedures": [
+            {
+                "anaesthesia": null,
+                "animal_weight_post": null,
+                "animal_weight_prior": null,
+                "experimenter_full_name": "13040",
+                "iacuc_protocol": "2416",
+                "notes": null,
+                "procedure_type": "Surgery",
+                "procedures": [
+                    {
+                        "injection_duration": null,
+                        "injection_duration_unit": "minute",
+                        "injection_eye": null,
+                        "injection_volume": null,
+                        "injection_volume_unit": "microliter",
+                        "instrument_id": null,
+                        "procedure_type": "Retro-orbital injection",
+                        "recovery_time": null,
+                        "recovery_time_unit": "minute"
+                    }
+                ],
+                "start_date": "2024-12-18",
+                "weight_unit": "gram",
+                "workstation_id": null
+            },
+            {
+                "anaesthesia": null,
+                "animal_weight_post": null,
+                "animal_weight_prior": null,
+                "experimenter_full_name": "13040",
+                "iacuc_protocol": "2416",
+                "notes": null,
+                "procedure_type": "Surgery",
+                "procedures": [
+                    {
+                        "output_specimen_ids": [
+                            "776241"
+                        ],
+                        "procedure_type": "Perfusion",
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.8epv51bejl1b/v6"
+                    }
+                ],
+                "start_date": "2025-01-22",
+                "weight_unit": "gram",
+                "workstation_id": null
+            },
+            {
+                "anaesthesia": {
+                    "duration": "90.0",
+                    "duration_unit": "minute",
+                    "level": "1.5",
+                    "type": "isoflurane"
+                },
+                "animal_weight_post": null,
+                "animal_weight_prior": null,
+                "experimenter_full_name": "NSB",
+                "iacuc_protocol": "2416",
+                "notes": null,
+                "procedure_type": "Surgery",
+                "procedures": [
+                    {
+                        "bregma_to_lambda_distance": null,
+                        "bregma_to_lambda_unit": "millimeter",
+                        "injection_angle": "0.0",
+                        "injection_angle_unit": "degrees",
+                        "injection_coordinate_ap": "-1.6",
+                        "injection_coordinate_depth": [
+                            "3.3"
+                        ],
+                        "injection_coordinate_ml": "-0.4",
+                        "injection_coordinate_reference": "Bregma",
+                        "injection_coordinate_unit": "millimeter",
+                        "injection_duration": null,
+                        "injection_duration_unit": "minute",
+                        "injection_hemisphere": "Left",
+                        "injection_materials": [],
+                        "injection_volume": [
+                            "50.0"
+                        ],
+                        "injection_volume_unit": "nanoliter",
+                        "instrument_id": null,
+                        "procedure_type": "Nanoject injection",
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+                        "recovery_time": "15.0",
+                        "recovery_time_unit": "minute",
+                        "targeted_structure": null
+                    },
+                    {
+                        "bregma_to_lambda_distance": null,
+                        "bregma_to_lambda_unit": "millimeter",
+                        "injection_angle": "0.0",
+                        "injection_angle_unit": "degrees",
+                        "injection_coordinate_ap": "-1.6",
+                        "injection_coordinate_depth": [
+                            "3.3"
+                        ],
+                        "injection_coordinate_ml": "0.4",
+                        "injection_coordinate_reference": "Bregma",
+                        "injection_coordinate_unit": "millimeter",
+                        "injection_duration": null,
+                        "injection_duration_unit": "minute",
+                        "injection_hemisphere": "Right",
+                        "injection_materials": [],
+                        "injection_volume": [
+                            "50.0"
+                        ],
+                        "injection_volume_unit": "nanoliter",
+                        "instrument_id": null,
+                        "procedure_type": "Nanoject injection",
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4",
+                        "recovery_time": "15.0",
+                        "recovery_time_unit": "minute",
+                        "targeted_structure": null
+                    }
+                ],
+                "protocol_id": "dx.doi.org/10.17504/protocols.io.kqdg392o7g25/v2",
+                "start_date": "2024-12-13",
+                "weight_unit": "gram",
+                "workstation_id": "SWS 3"
+            },
+            {
+                "anaesthesia": null,
+                "animal_weight_post": null,
+                "animal_weight_prior": null,
+                "experimenter_full_name": "LAS-211",
+                "iacuc_protocol": null,
+                "notes": null,
+                "procedure_type": "Surgery",
+                "procedures": [
+                    {
+                        "injection_duration": null,
+                        "injection_duration_unit": "minute",
+                        "injection_materials": [
+                            {
+                                "concentration": "1000",
+                                "concentration_unit": "u/ml",
+                                "expiration_date": null,
+                                "material_type": "Reagent",
+                                "name": "Heparin",
+                                "rrid": null
+                            }
+                        ],
+                        "injection_volume": null,
+                        "injection_volume_unit": "microliter",
+                        "instrument_id": null,
+                        "procedure_type": "Intraperitoneal injection",
+                        "recovery_time": null,
+                        "recovery_time_unit": "minute"
+                    },
+                    {
+                        "injection_duration": null,
+                        "injection_duration_unit": "minute",
+                        "injection_eye": null,
+                        "injection_materials": [
+                            {
+                                "addgene_id": {
+                                    "abbreviation": null,
+                                    "name": "pAAV-7x-TRE-tDTomato",
+                                    "registry": {
+                                        "abbreviation": null,
+                                        "name": "Addgene_191207"
+                                    },
+                                    "registry_identifier": "191207"
+                                },
+                                "material_type": "Virus",
+                                "name": "pAAV-7x-TRE-tDTomato",
+                                "tars_identifiers": {
+                                    "plasmid_tars_alias": "ExP300001",
+                                    "prep_date": "2023-04-18",
+                                    "prep_lot_number": "VT5510G",
+                                    "prep_protocol": null,
+                                    "prep_type": null,
+                                    "virus_tars_id": "VIR300001_PHPeB"
+                                },
+                                "titer": null,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "injection_volume": "100",
+                        "injection_volume_unit": "microliter",
+                        "instrument_id": null,
+                        "procedure_type": "Retro-orbital injection",
+                        "recovery_time": null,
+                        "recovery_time_unit": "minute"
+                    }
+                ],
+                "start_date": "2024-12-18",
+                "weight_unit": "gram",
+                "workstation_id": null
+            }
+        ]
+    },
+    "processing": {
+        "analyses": [],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "notes": null,
+        "processing_pipeline": {
+            "data_processes": [],
+            "note": null,
+            "pipeline_url": null,
+            "pipeline_version": null,
+            "processor_full_name": "AIND Scientific Computing"
+        },
+        "schema_version": "1.1.4"
+    },
+    "quality_control": null,
+    "rig": null,
+    "schema_version": "1.1.1",
+    "session": null,
+    "subject": {
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": {
+            "breeding_group": "Syt17-Cre_NO14(ND)",
+            "maternal_genotype": "Syt17-Cre_NO14/wt",
+            "maternal_id": "756189",
+            "paternal_genotype": "wt/wt",
+            "paternal_id": "755350"
+        },
+        "date_of_birth": "2024-11-06",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "genotype": "Syt17-Cre_NO14/wt",
+        "housing": null,
+        "notes": null,
+        "restrictions": null,
+        "rrid": null,
+        "schema_version": "1.0.3",
+        "sex": "Female",
+        "source": {
+            "abbreviation": "AI",
+            "name": "Allen Institute",
+            "registry": {
+                "abbreviation": "ROR",
+                "name": "Research Organization Registry"
+            },
+            "registry_identifier": "03cpe7c52"
+        },
+        "species": {
+            "name": "Mus musculus",
+            "registry": {
+                "abbreviation": "NCBI",
+                "name": "National Center for Biotechnology Information"
+            },
+            "registry_identifier": "NCBI:txid10090"
+        },
+        "subject_id": "776241",
+        "wellness_reports": []
+    }
+}
