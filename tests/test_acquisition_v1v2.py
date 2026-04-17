@@ -12,7 +12,6 @@ from aind_metadata_upgrader.acquisition.v1v2_tiles import (
     _create_detector_config,
     _create_laser_config_from_channel,
     convert_tiles_to_images,
-    extract_channels_from_tiles,
 )
 
 RECORDS_DIR = Path(__file__).parent / "records"
@@ -59,10 +58,11 @@ def _make_tile(file_name, channel_name, light_source_name, detector_name,
     }
 
 
-def _make_v1_acquisition(tiles, axes=None, subject_id="765830", specimen_id="765830",
-                          session_start="2025-11-21T12:01:47.108976-08:00",
-                          session_end="2025-11-21T12:19:53.806266-08:00",
-                          chamber_immersion=None):
+def _make_v1_acquisition(tiles, axes=None, subject_id="765830",
+                         specimen_id="765830",
+                         session_start="2025-11-21T12:01:47.108976-08:00",
+                         session_end="2025-11-21T12:19:53.806266-08:00",
+                         chamber_immersion=None):
     """Build a minimal V1 acquisition dict."""
     return {
         "schema_version": "1.0.4",
@@ -273,6 +273,7 @@ class TestCoordinateSystem(unittest.TestCase):
     """Test coordinate system axis name preservation"""
 
     def setUp(self):
+        """Setup"""
         self.upgrader = AcquisitionV1V2()
 
     def test_preserves_original_axis_names(self):
@@ -350,6 +351,7 @@ class TestInstrumentOptional(unittest.TestCase):
     """Test that upgrade works without instrument metadata"""
 
     def setUp(self):
+        """Setup"""
         self.upgrader = AcquisitionV1V2()
 
     def test_upgrade_without_instrument_metadata(self):
@@ -386,6 +388,7 @@ class TestEndToEndExaSPIM(unittest.TestCase):
     """Integration tests: full V1 → V2 upgrade with Pydantic validation"""
 
     def setUp(self):
+        """Setup"""
         self.upgrader = AcquisitionV1V2()
 
     def _upgrade_and_validate(self, v1_data: dict) -> dict:
