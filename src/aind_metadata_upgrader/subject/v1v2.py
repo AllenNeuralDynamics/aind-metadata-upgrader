@@ -30,16 +30,32 @@ class SubjectUpgraderV1V2(CoreUpgrader):
         return background_strain.model_dump()
 
     def _get_breeding_info(self, data: dict) -> Optional[dict]:
-        """Handle breeding info upgrade logic"""
-        # Extract fields with defaults, convert to string
-        breeding_group = str(data.get("breeding_group", "unknown"))
-        maternal_genotype = str(data.get("maternal_genotype", "unknown"))
-        paternal_genotype = str(data.get("paternal_genotype", "unknown"))
-        maternal_id = str(data.get("maternal_id", "unknown"))
-        paternal_id = str(data.get("paternal_id", "unknown"))
+        """Handle breeding info upgrade logic
+        
+        Supports both nested structure (breeding_info object) and flat structure
+        (fields at top level) for backward compatibility.
+        """
+        # Check if we have a nested breeding_info object
+        breeding_info_data = data.get("breeding_info")
+        
+        if isinstance(breeding_info_data, dict) and breeding_info_data:
+            # Extract from nested structure
+            maternal_genotype = breeding_info_data.get("maternal_genotype", None)
+            paternal_genotype = breeding_info_data.get("paternal_genotype", None)
+            maternal_id = breeding_info_data.get("maternal_id", None)
+            paternal_id = breeding_info_data.get("paternal_id", None)
+        else:
+            # Fall back to flat structure for backward compatibility
+            maternal_genotype = data.get("maternal_genotype", None)
+            paternal_genotype = data.get("paternal_genotype", None)
+            maternal_id = data.get("maternal_id", None)
+            paternal_id = data.get("paternal_id", None)
+        
+        # Only create BreedingInfo if at least one field is present
+        if not any([maternal_genotype, paternal_genotype, maternal_id, paternal_id]):
+            return None
 
         breeding_info = BreedingInfo(
-            breeding_group=breeding_group,
             maternal_genotype=maternal_genotype,
             paternal_genotype=paternal_genotype,
             maternal_id=maternal_id,

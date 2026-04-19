@@ -321,7 +321,6 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             "end_date",
             "experimenter_full_name",
             "anaesthesia",
-            "protocol_id",
         ]
         for field in surgery_level_fields:
             remove(data, field)

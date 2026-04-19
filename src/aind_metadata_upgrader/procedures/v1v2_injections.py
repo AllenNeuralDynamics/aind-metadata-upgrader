@@ -12,6 +12,7 @@ from aind_data_schema.components.injection_procedures import (
     NonViralMaterial,
     ViralMaterial,
 )
+from aind_data_schema_models.registries import Registry
 from aind_data_schema.components.surgery_procedures import BrainInjection
 from aind_data_schema_models.coordinates import AnatomicalRelative
 from aind_data_schema_models.mouse_anatomy import InjectionTargets
@@ -46,6 +47,8 @@ def upgrade_viral_material(data: dict) -> dict:
 
     if "addgene_id" in data and data["addgene_id"]:
         data["addgene_id"] = upgrade_registry(data["addgene_id"])
+        if data["addgene_id"].get("registry") is None:
+            data["addgene_id"]["registry"] = Registry.ADDGENE
 
     return ViralMaterial(**data).model_dump()
 
