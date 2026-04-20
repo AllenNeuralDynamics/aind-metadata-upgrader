@@ -160,15 +160,27 @@ class Upgrade:
             traceback.print_exc()
             raise ValueError(f"Failed to validate {core_file}: {e}")
 
-    def _pre_validate_procedures(self, metadata: dict) -> dict:
-        """Pre-validate procedures to avoid validation errors during metadata validation"""
+    def _pre_validate_procedures(self, metadata: dict) -> tuple[dict, object]:
+        """Pre-validate procedures to avoid validation errors during metadata validation.
+
+        Returns (metadata_dict, invalid_procedures_or_None). If procedures couldn't be
+        validated, invalid_procedures_or_None holds the model_construct result so it can
+        be swapped back in after Metadata is built.
+        """
+        invalid_procedures = None
         if "procedures" in metadata and metadata["procedures"] is not None:
             try:
                 metadata["procedures"] = Procedures.model_validate(metadata["procedures"]).model_dump()
             except ValidationError as e:
                 logging.warning(f"Procedures validation failed, using model_construct: {e}")
-                metadata["procedures"] = Procedures.model_construct(**metadata["procedures"]).model_dump()
-        return metadata
+                invalid_procedures = Procedures.model_construct(**metadata["procedures"])
+                # Temporarily replace with an empty valid Procedures so Metadata(**metadata)
+                # can run its validators (e.g. coordinate_system_validator) on the rest
+                # of the metadata without crashing on the invalid procedures sub-tree.
+                metadata["procedures"] = Procedures(
+                    subject_id=metadata["procedures"].get("subject_id", "unknown")
+                ).model_dump()
+        return metadata, invalid_procedures
 
     def upgrade_metadata(self, new_core_files: dict):
         """Use the metadata upgrader to upgrade and validate the metadata"""
@@ -192,12 +204,16 @@ class Upgrade:
         metadata = repair_metadata(upgraded_data)
 
         # Handle procedures specially - allow it to fail validation
-        metadata = self._pre_validate_procedures(metadata)
+        metadata, invalid_procedures = self._pre_validate_procedures(metadata)
 
         try:
             self.metadata = Metadata(**metadata)
         except Exception as e:
             raise ValueError(f"Failed to validate Metadata: {e}")
+
+        # Swap the invalid procedures back in now that validation has passed
+        if invalid_procedures is not None:
+            self.metadata.procedures = invalid_procedures
 
     def upgrade_core_file(self, core_file: str):
         """Initialize one core file"""

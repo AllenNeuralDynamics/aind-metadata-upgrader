@@ -166,7 +166,7 @@ def upgrade_coordinate_craniotomy(data: dict) -> dict:
     elif unit != "millimeter":
         raise ValueError(f"Need to convert from an unsupported unit: {unit}")
 
-    if "craniotomy_hemisphere" in data:
+    if "craniotomy_hemisphere" in data and data["craniotomy_hemisphere"]:
         # If hemisphere is available, make sure ML matches the hemisphere
         if data["craniotomy_hemisphere"].lower() == "left":
             if ml > 0:
@@ -174,7 +174,7 @@ def upgrade_coordinate_craniotomy(data: dict) -> dict:
         elif data["craniotomy_hemisphere"].lower() == "right":
             if ml < 0:
                 ml = -ml
-        remove(data, "craniotomy_hemisphere")
+    remove(data, "craniotomy_hemisphere")
 
     # Build translation in BREGMA_ARID
     # Unfortunately there's no guarantee that they used anterior+, right+, but we have to hope for the best
@@ -190,6 +190,7 @@ def upgrade_coordinate_craniotomy(data: dict) -> dict:
 CRANIO_TYPES = {
     "5 mm": CraniotomyType.CIRCLE,
     "3 mm": CraniotomyType.CIRCLE,
+    "Visual cortex 5 mm": CraniotomyType.CIRCLE,
 }
 
 
