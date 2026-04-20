@@ -990,6 +990,24 @@ class SessionV1V2(CoreUpgrader):
             fallback_tz=fallback_tz,
         )
 
+        # Fix any data streams whose end time falls before the acquisition start — these have
+        # obviously-wrong timestamps (e.g. a typo in the year). Replace with the acquisition
+        # start/end times and record what was done in the stream's notes.
+        for stream in upgraded_data_streams:
+            stream_end = stream.get("stream_end_time")
+            if stream_end is not None and session_start_time is not None and stream_end < session_start_time:
+                original_start = stream.get("stream_start_time")
+                original_end = stream_end
+                stream["stream_start_time"] = session_start_time
+                stream["stream_end_time"] = session_end_time
+                fix_note = (
+                    f"(v1v2 upgrade) stream_end_time {original_end} was before acquisition "
+                    f"start {session_start_time}; stream times reset to acquisition "
+                    f"start={session_start_time} end={session_end_time} "
+                    f"(original start={original_start})."
+                )
+                stream["notes"] = (stream["notes"] + " " + fix_note) if stream.get("notes") else fix_note
+
         # Get the iacuc_protocl
         ethics_review_id = session_data.get("iacuc_protocol")
         if not isinstance(ethics_review_id, list):
@@ -1075,6 +1093,9 @@ class SessionV1V2(CoreUpgrader):
         session_start_time = ensure_pacific_timezone(session_start_time)
         session_end_time = ensure_pacific_timezone(session_end_time)
 
+        # Remember the original session timezone so we can normalize back to it after adjustments
+        session_tz = session_start_time.tzinfo if session_start_time else None
+
         # Invert start/end time if they are in the wrong order
         if session_start_time and session_end_time and session_start_time > session_end_time:
             session_start_time, session_end_time = session_end_time, session_start_time
@@ -1092,6 +1113,8 @@ class SessionV1V2(CoreUpgrader):
                 f" (v1v2 upgrade) Session start time was adjusted from {session_start_time} " f"to {min_start}"
             )
             session_start_time = min_start
+
+        # If session end time is before any stream/epoch end time, adjust it to be after the latest one
         if valid_end_times and session_end_time is None:
             session_end_time = max(valid_end_times)
         elif valid_end_times and session_end_time and any(end > session_end_time for end in valid_end_times):
@@ -1100,5 +1123,12 @@ class SessionV1V2(CoreUpgrader):
                 f" (v1v2 upgrade) Session end time was adjusted from {session_end_time} " f"to {max_end}"
             )
             session_end_time = max_end
+
+        # Re-normalize both times back to the original session timezone using astimezone (preserves absolute time)
+        if session_tz:
+            if session_start_time:
+                session_start_time = session_start_time.astimezone(session_tz)
+            if session_end_time:
+                session_end_time = session_end_time.astimezone(session_tz)
 
         return session_start_time, session_end_time, notes

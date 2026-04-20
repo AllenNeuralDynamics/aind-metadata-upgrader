@@ -238,6 +238,43 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                     else:
                         v2_procedures["subject_procedures"].append(upgraded_proc)
 
+    def _infer_specimen_procedure_dates(self, specimen_procedures: list) -> list:
+        """Fill in missing start/end dates for runs of null-date procedures.
+
+        If a consecutive run of procedures all have null start_date and end_date,
+        and the preceding procedure's end_date equals the following procedure's
+        start_date, then all procedures in that run get that shared date assigned.
+        """
+        procs = specimen_procedures
+        n = len(procs)
+        i = 0
+        while i < n:
+            if procs[i].get("start_date") is None and procs[i].get("end_date") is None:
+                # Find the extent of the null run
+                run_start = i
+                while i < n and procs[i].get("start_date") is None and procs[i].get("end_date") is None:
+                    i += 1
+                run_end = i  # exclusive
+
+                # Check bordering dates
+                prev_end = procs[run_start - 1].get("end_date") if run_start > 0 else None
+                next_start = procs[run_end].get("start_date") if run_end < n else None
+
+                if prev_end is not None and next_start is not None and prev_end == next_start:
+                    inferred_date = prev_end
+                    logging.warning(
+                        f"Inferring missing start_date/end_date as {inferred_date} for "
+                        f"{run_end - run_start} specimen procedure(s) at index(es) "
+                        f"{list(range(run_start, run_end))} "
+                        f"(bounded by preceding end_date == following start_date)"
+                    )
+                    for j in range(run_start, run_end):
+                        procs[j]["start_date"] = inferred_date
+                        procs[j]["end_date"] = inferred_date
+            else:
+                i += 1
+        return procs
+
     def _upgrade_specimen_procedures_block(self, procedures_data: dict, v2_procedures: dict) -> None:
         """Upgrade all specimen procedures from procedures_data and populate v2_procedures"""
         if "specimen_procedures" in procedures_data and procedures_data["specimen_procedures"]:
@@ -245,6 +282,9 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                 upgraded_proc = self._upgrade_specimen_procedure(spec_proc)
                 if upgraded_proc:
                     v2_procedures["specimen_procedures"].append(upgraded_proc)
+            v2_procedures["specimen_procedures"] = self._infer_specimen_procedure_dates(
+                v2_procedures["specimen_procedures"]
+            )
 
     def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the procedures to v2"""
@@ -321,6 +361,12 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             "end_date",
             "experimenter_full_name",
             "anaesthesia",
+            "animal_weight",
+            "animal_weight_post",
+            "animal_weight_prior",
+            "weight_unit",
+            "workstation_id",
+            "notes",
         ]
         for field in surgery_level_fields:
             remove(data, field)
@@ -400,6 +446,27 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             surgery = Surgery.model_construct(**data)
         return surgery.model_dump()
 
+    def _wrap_procedure_in_surgery(self, data: dict, procedure: dict) -> dict:
+        """Wrap a standalone procedure dict in a Surgery object.
+
+        Surgery-level fields (start_date, end_date, anaesthesia, notes,
+        experimenter_full_name, iacuc_protocol) are extracted from *data*;
+        *procedure* is placed as the single entry in the Surgery's procedures list.
+        """
+        surgery_data = {
+            "start_date": data.get("start_date"),
+            "end_date": data.get("end_date"),
+            "anaesthesia": data.get("anaesthesia"),
+            "notes": data.get("notes"),
+            "procedures": [procedure],
+        }
+        if "experimenter_full_name" in data:
+            surgery_data["experimenter_full_name"] = data.get("experimenter_full_name")
+        surgery_data = self._replace_experimenter_full_name(surgery_data)
+        surgery_data["ethics_review_id"] = data.get("iacuc_protocol", None)
+        self._process_surgery_procedures(surgery_data)
+        return self._finalize_surgery_data(surgery_data)
+
     def _upgrade_subject_procedure(self, data: dict):
         """Upgrade a single subject procedure from V1 to V2"""
         procedure_type = data.get("procedure_type")
@@ -430,22 +497,11 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             }
             if "protocol_id" in data:
                 perfusion_procedure["protocol_id"] = data.get("protocol_id")
-
-            surgery_data = {
-                "start_date": data.get("start_date"),
-                "end_date": data.get("end_date"),
-                "anaesthesia": data.get("anaesthesia"),
-                "notes": data.get("notes"),
-                "procedures": [perfusion_procedure],
-            }
-
-            if "experimenter_full_name" in data:
-                surgery_data["experimenter_full_name"] = data.get("experimenter_full_name")
-            surgery_data = self._replace_experimenter_full_name(surgery_data)
-            surgery_data["ethics_review_id"] = data.get("iacuc_protocol", None)
-
-            self._process_surgery_procedures(surgery_data)
-            return self._finalize_surgery_data(surgery_data)
+            return self._wrap_procedure_in_surgery(data, perfusion_procedure)
+        elif procedure_type == "Craniotomy":
+            # Some legacy records store a craniotomy directly as a top-level subject
+            # procedure instead of nesting it inside a Surgery object.
+            return self._wrap_procedure_in_surgery(data, data)
 
         raise ValueError("Unsupported subject procedure type: {}".format(procedure_type))
 
