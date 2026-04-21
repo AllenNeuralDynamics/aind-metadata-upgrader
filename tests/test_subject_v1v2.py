@@ -1,6 +1,5 @@
 """Tests for subject v1v2 upgrade functionality"""
 
-import json
 import unittest
 from pathlib import Path
 
@@ -22,27 +21,21 @@ class TestSubjectV1V2Upgrade(unittest.TestCase):
             "schema_version": "1.0.3",
             "species": {
                 "name": "Mus musculus",
-                "registry": {
-                    "name": "National Center for Biotechnology Information",
-                    "abbreviation": "NCBI"
-                },
-                "registry_identifier": "NCBI:txid10090"
+                "registry": {"name": "National Center for Biotechnology Information", "abbreviation": "NCBI"},
+                "registry_identifier": "NCBI:txid10090",
             },
             "breeding_info": {
                 "maternal_id": "756189",
                 "maternal_genotype": "Syt17-Cre_NO14/wt",
                 "paternal_id": "755350",
-                "paternal_genotype": "wt/wt"
+                "paternal_genotype": "wt/wt",
             },
             "source": {
                 "name": "Allen Institute",
                 "abbreviation": "AI",
-                "registry": {
-                    "name": "Research Organization Registry",
-                    "abbreviation": "ROR"
-                },
-                "registry_identifier": "03cpe7c52"
-            }
+                "registry": {"name": "Research Organization Registry", "abbreviation": "ROR"},
+                "registry_identifier": "03cpe7c52",
+            },
         }
 
         upgrader = SubjectUpgraderV1V2()
@@ -65,11 +58,8 @@ class TestSubjectV1V2Upgrade(unittest.TestCase):
             "schema_version": "1.0.3",
             "species": {
                 "name": "Mus musculus",
-                "registry": {
-                    "name": "National Center for Biotechnology Information",
-                    "abbreviation": "NCBI"
-                },
-                "registry_identifier": "NCBI:txid10090"
+                "registry": {"name": "National Center for Biotechnology Information", "abbreviation": "NCBI"},
+                "registry_identifier": "NCBI:txid10090",
             },
             "maternal_id": "546543",
             "maternal_genotype": "Emx1-IRES-Cre/wt; Camk2a-tTa/Camk2a-tTA",
@@ -78,12 +68,9 @@ class TestSubjectV1V2Upgrade(unittest.TestCase):
             "source": {
                 "name": "Allen Institute",
                 "abbreviation": "AI",
-                "registry": {
-                    "name": "Research Organization Registry",
-                    "abbreviation": "ROR"
-                },
-                "registry_identifier": "03cpe7c52"
-            }
+                "registry": {"name": "Research Organization Registry", "abbreviation": "ROR"},
+                "registry_identifier": "03cpe7c52",
+            },
         }
 
         upgrader = SubjectUpgraderV1V2()
@@ -92,7 +79,9 @@ class TestSubjectV1V2Upgrade(unittest.TestCase):
         # Verify breeding info fields are preserved
         self.assertIsNotNone(result["subject_details"]["breeding_info"])
         self.assertEqual(result["subject_details"]["breeding_info"]["maternal_id"], "546543")
-        self.assertEqual(result["subject_details"]["breeding_info"]["maternal_genotype"], "Emx1-IRES-Cre/wt; Camk2a-tTa/Camk2a-tTA")
+        self.assertEqual(
+            result["subject_details"]["breeding_info"]["maternal_genotype"], "Emx1-IRES-Cre/wt; Camk2a-tTa/Camk2a-tTA"
+        )
         self.assertEqual(result["subject_details"]["breeding_info"]["paternal_id"], "232323")
         self.assertEqual(result["subject_details"]["breeding_info"]["paternal_genotype"], "Ai93(TITL-GCaMP6f)/wt")
 
@@ -106,21 +95,15 @@ class TestSubjectV1V2Upgrade(unittest.TestCase):
             "schema_version": "1.0.3",
             "species": {
                 "name": "Mus musculus",
-                "registry": {
-                    "name": "National Center for Biotechnology Information",
-                    "abbreviation": "NCBI"
-                },
-                "registry_identifier": "NCBI:txid10090"
+                "registry": {"name": "National Center for Biotechnology Information", "abbreviation": "NCBI"},
+                "registry_identifier": "NCBI:txid10090",
             },
             "source": {
                 "name": "Allen Institute",
                 "abbreviation": "AI",
-                "registry": {
-                    "name": "Research Organization Registry",
-                    "abbreviation": "ROR"
-                },
-                "registry_identifier": "03cpe7c52"
-            }
+                "registry": {"name": "Research Organization Registry", "abbreviation": "ROR"},
+                "registry_identifier": "03cpe7c52",
+            },
         }
 
         upgrader = SubjectUpgraderV1V2()

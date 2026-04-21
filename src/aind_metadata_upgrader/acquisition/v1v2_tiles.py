@@ -17,7 +17,7 @@ from aind_data_schema.core.acquisition import DataStream
 from aind_data_schema.components.identifiers import Code
 from aind_data_schema_models.devices import ImmersionMedium
 from aind_data_schema_models.modalities import Modality
-from aind_data_schema_models.units import AngleUnit, PowerUnit, SizeUnit, TimeUnit
+from aind_data_schema_models.units import AngleUnit, SizeUnit, TimeUnit
 
 
 FILTER_MAPPING = {
@@ -187,13 +187,9 @@ def convert_tiles_to_images(tiles: list[dict]) -> list[dict]:
         transforms = []
         for ct in tile.get("coordinate_transformations", []):
             if ct["type"] == "scale":
-                transforms.append(
-                    Scale(scale=[float(x) for x in ct["scale"]])
-                )
+                transforms.append(Scale(scale=[float(x) for x in ct["scale"]]))
             elif ct["type"] == "translation":
-                transforms.append(
-                    Translation(translation=[float(x) for x in ct["translation"]])
-                )
+                transforms.append(Translation(translation=[float(x) for x in ct["translation"]]))
 
         # Map imaging_angle_unit string to enum
         angle_unit_str = tile.get("imaging_angle_unit", "degrees")

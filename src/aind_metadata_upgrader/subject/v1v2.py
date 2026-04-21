@@ -31,13 +31,13 @@ class SubjectUpgraderV1V2(CoreUpgrader):
 
     def _get_breeding_info(self, data: dict) -> Optional[dict]:
         """Handle breeding info upgrade logic
-        
+
         Supports both nested structure (breeding_info object) and flat structure
         (fields at top level) for backward compatibility.
         """
         # Check if we have a nested breeding_info object
         breeding_info_data = data.get("breeding_info")
-        
+
         if isinstance(breeding_info_data, dict) and breeding_info_data:
             # Extract from nested structure
             maternal_genotype = breeding_info_data.get("maternal_genotype", None)
@@ -50,7 +50,7 @@ class SubjectUpgraderV1V2(CoreUpgrader):
             paternal_genotype = data.get("paternal_genotype", None)
             maternal_id = data.get("maternal_id", None)
             paternal_id = data.get("paternal_id", None)
-        
+
         # Only create BreedingInfo if at least one field is present
         if not any([maternal_genotype, paternal_genotype, maternal_id, paternal_id]):
             return None
