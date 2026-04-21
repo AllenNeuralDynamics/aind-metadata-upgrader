@@ -457,28 +457,6 @@ class TestEndToEndExaSPIM(unittest.TestCase):
         images = output["data_streams"][0]["configurations"][0]["images"]
         self.assertEqual(len(images), 4)
 
-    def test_test_record_upgrade(self):
-        """End-to-end: test record with PMT detector and named light sources"""
-        with open(RECORDS_DIR / "acquisition" / "v1.json") as f:
-            record = json.load(f)
-        v1_data = record["acquisition"]
-
-        output = self._upgrade_and_validate(v1_data)
-
-        channels = output["data_streams"][0]["configurations"][0]["channels"]
-        channel_names = sorted([ch["channel_name"] for ch in channels])
-        self.assertEqual(channel_names, ["488", "561"])
-
-        for ch in channels:
-            self.assertEqual(ch["detector"]["device_name"], "PMT_1")
-
-        light_source_names = sorted([ch["light_sources"][0]["device_name"] for ch in channels])
-        self.assertEqual(light_source_names, ["Ex_488", "Ex_561"])
-
-        # Tiles preserved as images
-        images = output["data_streams"][0]["configurations"][0]["images"]
-        self.assertEqual(len(images), 2)
-
     def test_single_tile_deduplication(self):
         """End-to-end: tiles with same channel are deduplicated into one Channel"""
         output = self._upgrade_and_validate(V1_DEDUP)

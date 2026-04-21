@@ -56,10 +56,10 @@ class SubjectUpgraderV1V2(CoreUpgrader):
             return None
 
         breeding_info = BreedingInfo(
-            maternal_genotype=maternal_genotype,
-            paternal_genotype=paternal_genotype,
-            maternal_id=maternal_id,
-            paternal_id=paternal_id,
+            maternal_genotype=maternal_genotype or "unknown",
+            paternal_genotype=paternal_genotype or "unknown",
+            maternal_id=maternal_id or "unknown",
+            paternal_id=paternal_id or "unknown",
         )
 
         return breeding_info.model_dump()
