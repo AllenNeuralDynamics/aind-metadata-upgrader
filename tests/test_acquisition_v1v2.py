@@ -1,6 +1,5 @@
 """Tests for acquisition v1v2 upgrade functionality"""
 
-import json
 import unittest
 from pathlib import Path
 from unittest.mock import patch
