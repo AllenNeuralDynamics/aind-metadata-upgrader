@@ -2,6 +2,8 @@
 
 from typing import Optional
 
+from aind_data_schema.core.acquisition import AcquisitionSubjectDetails
+
 from aind_metadata_upgrader.base import CoreUpgrader
 
 
@@ -41,9 +43,18 @@ class AcquisitionUpgraderV2V2(CoreUpgrader):
         data["experimenters"] = upgraded
         return data
 
+    def _upgrade_subject_details(self, data: dict) -> dict:
+        """Create default subject_details if missing or null"""
+        if not data.get("subject_details"):
+            data["subject_details"] = AcquisitionSubjectDetails(
+                mouse_platform_name="unknown",
+            ).model_dump()
+        return data
+
     def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the acquisition data within the 2.x series"""
         data = self._upgrade_calibrations(data)
         data = self._upgrade_experimenters(data)
+        data = self._upgrade_subject_details(data)
         data["schema_version"] = schema_version
         return data

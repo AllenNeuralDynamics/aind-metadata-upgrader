@@ -937,7 +937,7 @@ class SessionV1V2(CoreUpgrader):
         animal_weight_post = session_data.get("animal_weight_post")
         weight_unit = session_data.get("weight_unit", "gram")
         anaesthesia = session_data.get("anaesthesia")
-        mouse_platform_name = session_data.get("mouse_platform_name", "Unknown Platform")
+        mouse_platform_name = session_data.get("mouse_platform_name") or "unknown"
         reward_consumed_total = session_data.get("reward_consumed_total")
         reward_consumed_unit = session_data.get("reward_consumed_unit", "milliliter")
 
