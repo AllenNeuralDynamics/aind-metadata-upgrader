@@ -5,17 +5,19 @@ from typing import Optional
 from aind_data_schema.components.configs import (
     Channel,
     DetectorConfig,
+    ImageSPIM,
     Immersion,
     LaserConfig,
     SampleChamberConfig,
     TriggerType,
     DeviceConfig,
 )
+from aind_data_schema.components.coordinates import Scale, Translation
 from aind_data_schema.core.acquisition import DataStream
 from aind_data_schema.components.identifiers import Code
 from aind_data_schema_models.devices import ImmersionMedium
 from aind_data_schema_models.modalities import Modality
-from aind_data_schema_models.units import PowerUnit, SizeUnit, TimeUnit
+from aind_data_schema_models.units import AngleUnit, SizeUnit, TimeUnit
 
 
 FILTER_MAPPING = {
@@ -28,20 +30,26 @@ FILTER_MAPPING = {
 }
 
 
-def _create_detector_config() -> DetectorConfig:
-    """Create default detector config for tiles"""
+def _create_detector_config(channel_data: dict) -> DetectorConfig:
+    """Create detector config from tile channel data"""
+    device_name = channel_data.get("detector_name", "unknown_detector")
     return DetectorConfig(
-        device_name="unknown_detector",  # Will need to be filled in later
-        exposure_time=1.0,  # Default value
+        device_name=device_name,
+        exposure_time=1.0,  # Default value — V1 tiles don't carry exposure_time
         exposure_time_unit=TimeUnit.MS,
         trigger_type=TriggerType.INTERNAL,  # Default value
     )
 
 
 def _create_laser_config_from_channel(channel_data: dict) -> list:
-    """Create laser configurations from channel data"""
+    """Create laser configurations from channel data.
+
+    Handles both legacy keys (``laser_wavelength`` / ``laser_power``) and
+    V1 exaSPIM-style keys (``excitation_wavelength`` / ``excitation_power``).
+    """
     light_source_configs = []
 
+    # Legacy path: explicit laser_wavelength key
     if "laser_wavelength" in channel_data:
         laser_config_params = {
             "device_name": f"laser_{channel_data['laser_wavelength']}nm",
@@ -49,14 +57,28 @@ def _create_laser_config_from_channel(channel_data: dict) -> list:
             "wavelength_unit": SizeUnit.NM,
         }
 
-        # Add power if available
         if "laser_power" in channel_data:
             laser_config_params["power"] = channel_data["laser_power"]
-            power_unit = channel_data.get("laser_power_unit", "milliwatt")
-            laser_config_params["power_unit"] = PowerUnit.MW if power_unit == "milliwatt" else PowerUnit.MW
+            laser_config_params["power_unit"] = channel_data.get("laser_power_unit", "milliwatt")
 
-        laser_config = LaserConfig(**laser_config_params)
-        light_source_configs.append(laser_config)
+        light_source_configs.append(LaserConfig(**laser_config_params))
+
+    # V1 tile path: excitation_wavelength (used by exaSPIM and similar)
+    elif "excitation_wavelength" in channel_data:
+        wavelength = int(channel_data["excitation_wavelength"])
+        device_name = channel_data.get("light_source_name", f"laser_{wavelength}nm")
+
+        laser_config_params = {
+            "device_name": device_name,
+            "wavelength": wavelength,
+            "wavelength_unit": SizeUnit.NM,
+        }
+
+        if "excitation_power" in channel_data and channel_data["excitation_power"] is not None:
+            laser_config_params["power"] = float(channel_data["excitation_power"])
+            laser_config_params["power_unit"] = channel_data.get("laser_power_unit", "milliwatt")
+
+        light_source_configs.append(LaserConfig(**laser_config_params))
 
     return light_source_configs
 
@@ -116,8 +138,8 @@ def extract_channels_from_tiles(
         if not channel_name or channel_name in channels_dict:
             continue
 
-        # Create detector config
-        detector_config = _create_detector_config()
+        # Create detector config from tile channel data
+        detector_config = _create_detector_config(channel_data)
 
         # Create laser configs
         light_source_configs = _create_laser_config_from_channel(channel_data)
@@ -150,16 +172,56 @@ def extract_modality_from_tiles(tiles: list[dict]) -> dict:
     return Modality.SPIM.model_dump()
 
 
-def create_basic_imaging_config(channels: list[Channel]) -> dict:
-    """Create a basic imaging configuration placeholder"""
-    # Since ImagingConfig has many required fields we don't have from tiles,
-    # create a minimal configuration placeholder
-    return {
+def convert_tiles_to_images(tiles: list[dict]) -> list[dict]:
+    """Convert V1 tiles to V2 ImageSPIM objects.
+
+    Each V1 tile carries per-tile spatial information (scale, translation,
+    file_name, imaging_angle) that maps directly to the V2 ImageSPIM model.
+    """
+    images = []
+    for tile in tiles:
+        channel_data = tile.get("channel", {})
+        channel_name = channel_data.get("channel_name", "unknown")
+
+        # Build coordinate transforms from V1 coordinate_transformations
+        transforms = []
+        for ct in tile.get("coordinate_transformations", []):
+            if ct["type"] == "scale":
+                transforms.append(Scale(scale=[float(x) for x in ct["scale"]]))
+            elif ct["type"] == "translation":
+                transforms.append(Translation(translation=[float(x) for x in ct["translation"]]))
+
+        # Map imaging_angle_unit string to enum
+        angle_unit_str = tile.get("imaging_angle_unit", "degrees")
+        angle_unit = AngleUnit.DEG if angle_unit_str == "degrees" else AngleUnit.RAD
+
+        image = ImageSPIM(
+            channel_name=channel_name,
+            file_name=tile.get("file_name", "unknown"),
+            image_to_acquisition_transform=transforms,
+            imaging_angle=tile.get("imaging_angle", 0),
+            imaging_angle_unit=angle_unit,
+            image_start_time=tile.get("acquisition_start_time"),
+            image_end_time=tile.get("acquisition_end_time"),
+        )
+        images.append(image.model_dump())
+    return images
+
+
+def create_basic_imaging_config(
+    channels: list[Channel], images: list[dict], coordinate_system: Optional[dict] = None
+) -> dict:
+    """Create an imaging configuration with channels, per-tile images,
+    and the coordinate system (required when images are ImageSPIM)."""
+    config = {
         "object_type": "Imaging config",
         "device_name": "unknown",
         "channels": [channel.model_dump() for channel in channels],
-        "images": [],
+        "images": images,
     }
+    if coordinate_system is not None:
+        config["coordinate_system"] = coordinate_system
+    return config
 
 
 def determine_active_devices_from_tiles(tiles: list[dict]) -> list[str]:
@@ -268,6 +330,7 @@ def upgrade_tiles_to_data_stream(
     software: list,
     fluorescence_filters: list[dict],
     light_sources: list[dict],
+    coordinate_system: Optional[dict] = None,
 ) -> list[dict]:
     """Convert V1 tiles to V2 data streams"""
 
@@ -290,9 +353,12 @@ def upgrade_tiles_to_data_stream(
         sample_immersion=upgrade_immersion(sample_immersion) if sample_immersion else None,
     ).model_dump()
 
-    # Create basic imaging configuration
+    # Convert tiles to ImageSPIM objects
+    images = convert_tiles_to_images(tiles)
+
+    # Create imaging configuration with channels, tile images, and coordinate system
     configurations = [
-        create_basic_imaging_config(channels),
+        create_basic_imaging_config(channels, images, coordinate_system),
         chamber_config,
     ]
 

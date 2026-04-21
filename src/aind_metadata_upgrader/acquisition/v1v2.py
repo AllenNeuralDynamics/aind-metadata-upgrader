@@ -73,16 +73,21 @@ class AcquisitionV1V2(CoreUpgrader):
 
         coordinate_system_name = f"SPIM_{dim0_letter}{dim1_letter}{dim2_letter}"
 
+        # Build axes preserving the original V1 axis names (X/Y/Z) with
+        # their recorded directions, ordered by dimension.
+        axis_name_map = {"X": AxisName.X, "Y": AxisName.Y, "Z": AxisName.Z}
+        axes_list = []
+        for ax in sorted_axes:
+            ax_name = axis_name_map.get(ax["name"], AxisName.X)
+            ax_direction = direction_mapping[ax["direction"]][0]
+            axes_list.append(Axis(name=ax_name, direction=ax_direction))
+
         # Create the coordinate system
         coordinate_system = CoordinateSystem(
             name=coordinate_system_name,
             origin=Origin.ORIGIN,
             axis_unit=sorted_axes[0]["unit"],
-            axes=[
-                Axis(name=AxisName.X, direction=dim0_direction),
-                Axis(name=AxisName.Y, direction=dim1_direction),
-                Axis(name=AxisName.Z, direction=dim2_direction),
-            ],
+            axes=axes_list,
         )
         return coordinate_system.model_dump()
 
@@ -155,6 +160,10 @@ class AcquisitionV1V2(CoreUpgrader):
         # Upgrade experimenter names to Person objects
         experimenters = self._upgrade_experimenter_names(experimenter_full_name)
 
+        # Create coordinate system from axes (needed both at the acquisition
+        # level and inside ImagingConfig when ImageSPIM tiles are present)
+        coordinate_system = self._create_coordinate_system_from_axes(axes)
+
         # Upgrade tiles to data streams
         if session_start_time and session_end_time:
 
@@ -163,13 +172,15 @@ class AcquisitionV1V2(CoreUpgrader):
             )
             end_str = session_end_time.isoformat() if hasattr(session_end_time, "isoformat") else str(session_end_time)
 
-            # Get fluorescene filters to use for upgrading tiles -> channels
-            # This only works if the instrument is present
-            if not metadata or "instrument" not in metadata:
-                raise ValueError("Instrument metadata is required to upgrade tiles to data streams")
-
-            fluorescence_filters = metadata.get("instrument", {}).get("fluorescence_filters", [])
-            light_sources = metadata.get("instrument", {}).get("light_sources", [])
+            # Get fluorescence filters and light sources from instrument if available.
+            # When instrument metadata is absent or null, fall back to empty lists —
+            # tile channel data will be used directly to build LaserConfig/DetectorConfig.
+            if metadata and metadata.get("instrument"):
+                fluorescence_filters = metadata["instrument"].get("fluorescence_filters", [])
+                light_sources = metadata["instrument"].get("light_sources", [])
+            else:
+                fluorescence_filters = []
+                light_sources = []
 
             data_streams = upgrade_tiles_to_data_stream(
                 tiles,
@@ -181,15 +192,13 @@ class AcquisitionV1V2(CoreUpgrader):
                 software=software,
                 fluorescence_filters=fluorescence_filters,
                 light_sources=light_sources,
+                coordinate_system=coordinate_system,
             )
             if active_objectives:
                 data_streams[0]["active_devices"].extend(active_objectives)
         else:
             # If no session times, create empty data streams
             raise NotImplementedError()
-
-        # Create coordinate system from axes
-        coordinate_system = self._create_coordinate_system_from_axes(axes)
 
         # Upgrade calibrations and maintenance
         upgraded_calibrations = [upgrade_calibration(cal) for cal in calibrations]

@@ -119,15 +119,14 @@ class DataDescriptionV1V2(CoreUpgrader):
                 investigators[i] = Person(
                     name=investigator,
                 )
+            # Already a Person object
+            elif isinstance(investigator, Person):
+                investigators[i] = investigator
             # Convert from dict to Person
             elif isinstance(investigator, dict):
-                # Convert from PIDName to Person
-                if not isinstance(investigator, Person):
-                    investigators[i] = Person(
-                        name=investigator["name"],
-                    )
-                else:
-                    investigators[i] = investigator
+                investigators[i] = Person(
+                    name=investigator["name"],
+                )
             else:
                 raise ValueError(f"Unsupported investigator type: {investigator}")
         return investigators
@@ -185,9 +184,11 @@ class DataDescriptionV1V2(CoreUpgrader):
         return project_name
 
     def _ensure_investigators_exist(self, investigators: list) -> list:
-        """Ensure at least one investigator exists"""
+        """Ensure at least one investigator exists and convert to dicts"""
         if len(investigators) == 0:
             investigators.append(Person(name="unknown"))
+        # Convert all Person objects to dicts
+        investigators = [inv.model_dump(mode="json") for inv in investigators]
         return investigators
 
     def _build_output_dict(self, data: dict, schema_version: str, source_data: Optional[list] = None, **kwargs) -> dict:

@@ -361,7 +361,6 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             "end_date",
             "experimenter_full_name",
             "anaesthesia",
-            "protocol_id",
             "animal_weight",
             "animal_weight_post",
             "animal_weight_prior",
