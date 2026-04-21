@@ -59,8 +59,7 @@ def _create_laser_config_from_channel(channel_data: dict) -> list:
 
         if "laser_power" in channel_data:
             laser_config_params["power"] = channel_data["laser_power"]
-            power_unit = channel_data.get("laser_power_unit", "milliwatt")
-            laser_config_params["power_unit"] = PowerUnit.MW if power_unit == "milliwatt" else PowerUnit.MW
+            laser_config_params["power_unit"] = channel_data.get("laser_power_unit", "milliwatt")
 
         light_source_configs.append(LaserConfig(**laser_config_params))
 
@@ -77,8 +76,7 @@ def _create_laser_config_from_channel(channel_data: dict) -> list:
 
         if "excitation_power" in channel_data and channel_data["excitation_power"] is not None:
             laser_config_params["power"] = float(channel_data["excitation_power"])
-            power_unit = channel_data.get("excitation_power_unit", "milliwatt")
-            laser_config_params["power_unit"] = PowerUnit.MW if power_unit == "milliwatt" else PowerUnit.MW
+            laser_config_params["power_unit"] = channel_data.get("laser_power_unit", "milliwatt")
 
         light_source_configs.append(LaserConfig(**laser_config_params))
 
