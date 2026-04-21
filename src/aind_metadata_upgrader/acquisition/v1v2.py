@@ -198,9 +198,13 @@ class AcquisitionV1V2(CoreUpgrader):
         # Determine acquisition type
         acquisition_type = self._determine_acquisition_type(data)
 
-        subject_details = AcquisitionSubjectDetails(
-            mouse_platform_name="N/A",
-        )
+        raw_subject_details = data.get("subject_details")
+        if raw_subject_details:
+            subject_details = raw_subject_details
+        else:
+            subject_details = AcquisitionSubjectDetails(
+                mouse_platform_name="unknown",
+            ).model_dump()
 
         # Build V2 acquisition object
         output = {
