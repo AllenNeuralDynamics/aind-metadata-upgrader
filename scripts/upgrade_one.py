@@ -11,6 +11,7 @@ RECORDS_DIR = os.path.join(os.path.dirname(__file__), "..", "tests", "records", 
 
 
 def load_record(record_id: str) -> dict:
+    """Load a record JSON by _id from the records directory."""
     file_path = os.path.join(RECORDS_DIR, f"{record_id}.json")
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"Record not found: {file_path}")
