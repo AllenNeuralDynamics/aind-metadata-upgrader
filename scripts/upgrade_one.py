@@ -9,7 +9,7 @@ import traceback
 # Add src to path so we can import the upgrader
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 
-from aind_metadata_upgrader.upgrade import Upgrade, CORE_FILES, CORE_MAPPING
+from aind_metadata_upgrader.upgrade import Upgrade, CORE_FILES, CORE_MAPPING  # noqa: E402
 
 RECORDS_DIR = os.path.join(os.path.dirname(__file__), "..", "tests", "records", "v1")
 
