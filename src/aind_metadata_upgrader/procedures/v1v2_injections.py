@@ -233,117 +233,49 @@ def get_targeted_structure_or_none(data: dict) -> dict | None:
     return None
 
 
-def upgrade_nanoject_injection(data: dict) -> tuple[dict, list]:
-    """Upgrade NanojectInjection procedure from V1 to V2"""
-
-    upgraded_data = data.copy()
-    upgraded_data.pop("procedure_type", None)
-
-    upgraded_data = upgrade_generic_injection(upgraded_data)
-
-    # full list of fields to handle
-    dynamics = build_volume_injection_dynamics(data)
-
-    # Check reference
-    reference = data.get("injection_coordinate_reference", None)
-    # Check to make sure someone doesn't give us lambda or something, that would be a big problem
-    if reference is not None and not reference == "Bregma":
-        raise ValueError(f"Unsupported injection_coordinate_reference value: {reference}. " "Expected 'Bregma'.")
-
+def upgrade_brain_injection(data: dict, dynamics: list) -> tuple[dict, list]:
+    """Shared upgrade logic for all V1 BrainInjection subclasses → V2 BrainInjection."""
+    validate_injection_coordinate_reference(data)
     data = upgrade_injection_coordinates(data)
-
     data, measured_coordinates = retrieve_bl_distance(data)
-
-    relative_position = []
-    if "injection_hemisphere" in data and data["injection_hemisphere"] is not None:
-        if data["injection_hemisphere"] == "Left":
-            relative_position.append(AnatomicalRelative.LEFT)
-        elif data["injection_hemisphere"] == "Right":
-            relative_position.append(AnatomicalRelative.RIGHT)
-        elif data["injection_hemisphere"] == "Midline":
-            relative_position.append(AnatomicalRelative.ORIGIN)
-        else:
-            raise ValueError(f"Unsupported injection_hemisphere value: {data['injection_hemisphere']}")
-
-    injection_materials = upgrade_injection_materials(data.get("injection_materials", []))
-
-    if len(injection_materials) == 0:
-        injection_materials.append(
-            ViralMaterial(
-                name="(v1v2 upgrade) No injection material provided",
-            ).model_dump()
-        )
-
-    coordinates = ensure_coordinates_match_dynamics(data.get("coordinates", []), dynamics)
-
     injection = BrainInjection(
-        injection_materials=injection_materials,
-        targeted_structure=upgrade_targeted_structure(data.get("targeted_structure")),
-        relative_position=relative_position,
-        dynamics=dynamics,
-        protocol_id=data.get("protocol_id", None),
-        coordinate_system_name=CoordinateSystemLibrary.BREGMA_ARID.name,
-        coordinates=coordinates,
-    )
-
-    return injection.model_dump(), measured_coordinates
-
-
-def upgrade_iontophoresis_injection(data: dict) -> tuple[dict, list]:
-    """Upgrade IontophoresisInjection procedure from V1 to V2"""
-    upgraded_data = data.copy()
-    upgraded_data.pop("procedure_type", None)
-
-    upgraded_data = upgrade_generic_injection(upgraded_data)
-
-    # Build dynamics for current-based injection
-    dynamics = build_current_injection_dynamics(data)
-
-    # Check reference
-    reference = data.get("injection_coordinate_reference", None)
-    # Check to make sure someone doesn't give us lambda or something, that would be a big problem
-    if reference is not None and not reference == "Bregma":
-        raise ValueError(f"Unsupported injection_coordinate_reference value: {reference}. " "Expected 'Bregma'.")
-
-    data = upgrade_injection_coordinates(data)
-
-    data, measured_coordinates = retrieve_bl_distance(data)
-
-    relative_position = []
-    if "injection_hemisphere" in data and data["injection_hemisphere"] is not None:
-        if data["injection_hemisphere"] == "Left":
-            relative_position.append(AnatomicalRelative.LEFT)
-        elif data["injection_hemisphere"] == "Right":
-            relative_position.append(AnatomicalRelative.RIGHT)
-        elif data["injection_hemisphere"] == "Midline":
-            relative_position.append(AnatomicalRelative.ORIGIN)
-        else:
-            raise ValueError(f"Unsupported injection_hemisphere value: {data['injection_hemisphere']}")
-
-    injection_materials = upgrade_injection_materials(data.get("injection_materials", []))
-
-    if len(injection_materials) == 0:
-        injection_materials.append(
-            ViralMaterial(
-                name="(v1v2 upgrade) No injection material provided",
-            ).model_dump()
-        )
-
-    targeted_structure = None
-    if data.get("targeted_structure"):
-        targeted_structure = upgrade_targeted_structure(data.get("targeted_structure"))
-
-    injection = BrainInjection(
-        injection_materials=injection_materials,
-        targeted_structure=targeted_structure,
-        relative_position=relative_position,
+        injection_materials=ensure_injection_materials_with_default(
+            upgrade_injection_materials(data.get("injection_materials", []))
+        ),
+        targeted_structure=get_targeted_structure_or_none(data),
+        relative_position=build_relative_position_from_hemisphere(data),
         dynamics=dynamics,
         protocol_id=data.get("protocol_id", None),
         coordinate_system_name=CoordinateSystemLibrary.BREGMA_ARID.name,
         coordinates=ensure_coordinates_match_dynamics(data.get("coordinates", []), dynamics),
     )
-
     return injection.model_dump(), measured_coordinates
+
+
+def upgrade_nanoject_injection(data: dict) -> tuple[dict, list]:
+    """Upgrade NanojectInjection (or typeless BrainInjection) procedure from V1 to V2"""
+    data = upgrade_generic_injection(data)
+    return upgrade_brain_injection(data, build_volume_injection_dynamics(data))
+
+
+def upgrade_iontophoresis_injection(data: dict) -> tuple[dict, list]:
+    """Upgrade IontophoresisInjection procedure from V1 to V2"""
+    data = upgrade_generic_injection(data)
+    return upgrade_brain_injection(data, build_current_injection_dynamics(data))
+
+
+def upgrade_typeless_base_injection(data: dict) -> dict:
+    """Upgrade a typeless base Injection (no brain coordinates) from V1 to V2."""
+    data = upgrade_generic_injection(data)
+    return Injection(
+        injection_materials=ensure_injection_materials_with_default(
+            upgrade_injection_materials(data.get("injection_materials", []))
+        ),
+        targeted_structure=get_targeted_structure_or_none(data),
+        relative_position=build_relative_position_from_hemisphere(data),
+        dynamics=build_volume_injection_dynamics(data),
+        protocol_id=data.get("protocol_id", None),
+    ).model_dump()
 
 
 def upgrade_icv_injection(data: dict) -> dict:

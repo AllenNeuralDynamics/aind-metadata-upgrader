@@ -22,6 +22,7 @@ from aind_metadata_upgrader.procedures.v1v2_injections import (
     upgrade_iontophoresis_injection,
     upgrade_nanoject_injection,
     upgrade_retro_orbital_injection,
+    upgrade_typeless_base_injection,
 )
 from aind_metadata_upgrader.procedures.v1v2_procedures import (
     repair_generic_surgery_procedure,
@@ -371,11 +372,21 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         for field in surgery_level_fields:
             remove(data, field)
 
+        # Handle typeless injection entries (base Injection class in pre-v1 records that
+        # lack a procedure_type field). Presence of injection_coordinate_ap key indicates
+        # a BrainInjection; absence indicates a base Injection.
+        if procedure_type is None:
+            if data.get("injection_coordinate_ap") is not None:
+                return upgrade_nanoject_injection(data)
+            else:
+                return upgrade_typeless_base_injection(data)
+
         # Map V1 procedure types to their upgrade functions
 
         if procedure_type in PROC_UPGRADE_MAP:
             return PROC_UPGRADE_MAP[procedure_type](data)
         else:
+            print(data)
             raise ValueError(f"Unsupported procedure type: {procedure_type}")
 
     def _process_surgery_procedures(self, data: dict) -> None:
