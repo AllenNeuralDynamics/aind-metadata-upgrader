@@ -51,6 +51,7 @@ def upgrade_core_files_individually(data_dict: dict) -> dict:
 
 
 def main():
+    """Main function to parse arguments, load record, attempt upgrade, and save output."""
     parser = argparse.ArgumentParser(description="Upgrade a single metadata record by _id.")
     parser.add_argument("record_id", help="The _id of the record, e.g. 00318acb-e8f9-4072-ad32-0c5f2ee9798f")
     parser.add_argument(
