@@ -225,14 +225,6 @@ def ensure_injection_materials_with_default(injection_materials: list) -> list:
     return injection_materials
 
 
-def get_targeted_structure_or_none(data: dict) -> dict | None:
-    """Get targeted structure, handling None case properly"""
-    targeted_structure_data = data.get("targeted_structure")
-    if targeted_structure_data:
-        return upgrade_targeted_structure(targeted_structure_data)
-    return None
-
-
 def upgrade_nanoject_injection(data: dict) -> tuple[dict, list]:
     """Upgrade NanojectInjection procedure from V1 to V2"""
 
