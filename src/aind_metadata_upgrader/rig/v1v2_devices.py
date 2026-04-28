@@ -357,7 +357,9 @@ def upgrade_daq_devices(device: dict) -> tuple[dict, list]:
             daq_device = NeuropixelsBasestation(**device_data)
         else:
             print(f"Device data: {device_data}")
-            raise ValueError(f"Interpreted device as NeuropixelsBasestation but manufacturer is wrong '{manufacturer_name}'.")
+            raise ValueError(
+                f"Interpreted device as NeuropixelsBasestation but manufacturer is wrong '{manufacturer_name}'."
+            )
     elif (
         device_type == "Open Ephys acquisition board"
         or "acquisition board" in device_data["name"].lower()
@@ -367,7 +369,9 @@ def upgrade_daq_devices(device: dict) -> tuple[dict, list]:
             daq_device = OpenEphysAcquisitionBoard(**device_data)
         else:
             print(f"Device data: {device_data}")
-            raise ValueError(f"Interpreted device as OpenEphysAcquisitionBoard but manufacturer is wrong '{manufacturer_name}'.")
+            raise ValueError(
+                f"Interpreted device as OpenEphysAcquisitionBoard but manufacturer is wrong '{manufacturer_name}'."
+            )
     else:
         try:
             daq_device = DAQDevice(**device_data)
