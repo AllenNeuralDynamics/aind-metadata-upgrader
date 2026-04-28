@@ -15,20 +15,12 @@ Resolution rule order applied by _resolve_instrument_id_mismatch():
   6. Acquisition ID is in SHORT_ACQ_ID_LIST → use instrument.
   7. Explicit (instrument, acquisition) pairs → use instrument.
   8. Instrument ID is a substring of acquisition ID → use acquisition.
-  9. Date-based resolution (prefix + date parsing):
-       Same normalised prefix:
-         - Both parseable: if instrument newer or equal, use instrument;
-           if acquisition newer, raise ValueError.
-         - Only one side has a date: prefer the dated side.
-         - Neither has a date: prefer instrument.
-       Different normalised prefix:
-         - Both have dates: prefer the one with the more recent date (log warning
-           if acquisition is newer and use it).
-         - Only one side has a date: prefer the dated side.
-         - Neither has a date: prefer instrument.
+  9. Date-based resolution:
+       Always use instrument_id, UNLESS the instrument's modification_date
+       matches the date embedded in the acquisition's instrument_id string,
+       in which case use the acquisition's instrument_id.
 """
 
-import logging
 import re
 from datetime import datetime
 from typing import Optional
@@ -87,15 +79,6 @@ def _parse_rig_id_parts(rig_id: str) -> tuple[str, Optional[datetime]]:
     return rig_id, None
 
 
-def _normalize_prefix(prefix: str) -> str:
-    """Normalise a rig-ID prefix for comparison.
-
-    Removes dots and whitespace and lowercases so that e.g. ``NP.3`` and
-    ``NP3`` are treated as the same rig family.
-    """
-    return re.sub(r"[.\s]", "", prefix).lower()
-
-
 # ---------------------------------------------------------------------------
 # Core resolution logic
 # ---------------------------------------------------------------------------
@@ -139,72 +122,32 @@ def _apply_id_list_rules(
     return None
 
 
-def _resolve_same_prefix_by_date(
+def _resolve_by_date(
     instrument_id: str,
     acquisition_id: str,
-    instr_date: Optional[datetime],
-    acq_date: Optional[datetime],
+    instrument_modification_date: Optional[datetime],
 ) -> tuple[str, str]:
-    """Resolve a date mismatch when both IDs share the same normalised prefix."""
-    if instr_date and acq_date:
-        if instr_date >= acq_date:
-            return instrument_id, instrument_id
-        raise ValueError(
-            f"Acquisition rig ID '{acquisition_id}' has a more recent date than "
-            f"instrument rig ID '{instrument_id}'. Cannot auto-resolve."
-        )
-    if instr_date:
-        return instrument_id, instrument_id
-    if acq_date:
-        return acquisition_id, acquisition_id
-    # Neither has a parseable date; prefer instrument (rig file).
+    """Apply date-based resolution (Rule 9).
+
+    Always use the instrument_id, unless the instrument's modification_date
+    matches the date embedded in the acquisition's instrument_id string, in
+    which case use the acquisition's instrument_id.
+    """
+    if instrument_modification_date is not None:
+        _, acq_date = _parse_rig_id_parts(acquisition_id)
+        if acq_date is not None and acq_date.date() == instrument_modification_date.date():
+            return acquisition_id, acquisition_id
     return instrument_id, instrument_id
 
 
-def _resolve_different_prefix_by_date(
+def _resolve_instrument_id_mismatch(
     instrument_id: str,
     acquisition_id: str,
-    instr_date: Optional[datetime],
-    acq_date: Optional[datetime],
+    instrument_modification_date: Optional[datetime] = None,
 ) -> tuple[str, str]:
-    """Resolve a date mismatch when the two IDs have different normalised prefixes."""
-    if instr_date and acq_date:
-        if instr_date >= acq_date:
-            return instrument_id, instrument_id
-        logging.warning(
-            "Acquisition rig ID '%s' has a more recent date than instrument rig ID '%s'. "
-            "Using acquisition ID.",
-            acquisition_id,
-            instrument_id,
-        )
-        return acquisition_id, acquisition_id
-    if instr_date:
-        return instrument_id, instrument_id
-    if acq_date:
-        return acquisition_id, acquisition_id
-    # Neither has a date; prefer instrument.
-    return instrument_id, instrument_id
-
-
-def _resolve_by_date(instrument_id: str, acquisition_id: str) -> tuple[str, str]:
-    """Apply date-based resolution (Rule 9)."""
-    instr_prefix, instr_date = _parse_rig_id_parts(instrument_id)
-    acq_prefix, acq_date = _parse_rig_id_parts(acquisition_id)
-
-    instr_prefix_norm = _normalize_prefix(instr_prefix) if instr_prefix else ""
-    acq_prefix_norm = _normalize_prefix(acq_prefix) if acq_prefix else ""
-
-    if instr_prefix_norm == acq_prefix_norm:
-        return _resolve_same_prefix_by_date(instrument_id, acquisition_id, instr_date, acq_date)
-    return _resolve_different_prefix_by_date(instrument_id, acquisition_id, instr_date, acq_date)
-
-
-def _resolve_instrument_id_mismatch(instrument_id: str, acquisition_id: str) -> tuple[str, str]:
     """Apply all resolution rules and return (corrected_instrument_id, corrected_acquisition_id).
 
-    Both returned values will be equal when the mismatch is resolved.  The
-    function never raises; ambiguous cases log a warning and prefer the
-    acquisition ID so the upgrade can proceed.
+    Both returned values will be equal when the mismatch is resolved.
     """
     # Rule 0 — strip whitespace; bail early if equal or empty.
     instrument_id = instrument_id.strip()
@@ -229,7 +172,7 @@ def _resolve_instrument_id_mismatch(instrument_id: str, acquisition_id: str) -> 
         return result
 
     # Rule 9 — date-based resolution.
-    return _resolve_by_date(instrument_id, acquisition_id)
+    return _resolve_by_date(instrument_id, acquisition_id, instrument_modification_date)
 
 
 # ---------------------------------------------------------------------------
@@ -237,13 +180,22 @@ def _resolve_instrument_id_mismatch(instrument_id: str, acquisition_id: str) -> 
 # ---------------------------------------------------------------------------
 
 
+def _parse_modification_date(date_str: Optional[str]) -> Optional[datetime]:
+    """Parse an ISO-format modification_date string into a datetime, or return None."""
+    if not date_str:
+        return None
+    try:
+        return datetime.fromisoformat(str(date_str))
+    except (ValueError, TypeError):
+        return None
+
+
 def repair_instrument_id_mismatch(data: dict) -> dict:
     """Repair mismatched instrument IDs between instrument and acquisition sections.
 
     Applies the unified rule-set in _resolve_instrument_id_mismatch regardless of
-    modality.  A ValueError is raised when the same rig family (prefix) appears in
-    both IDs but the acquisition carries a more recent date — this indicates a data
-    entry error that needs manual review.
+    modality.  The instrument's modification_date is used in Rule 9 to decide
+    whether the acquisition's instrument_id should be preferred.
     """
     instrument = data.get("instrument") or {}
     acquisition = data.get("acquisition") or {}
@@ -256,7 +208,22 @@ def repair_instrument_id_mismatch(data: dict) -> dict:
     if instrument_id == acquisition_id:
         return data
 
-    new_instrument_id, new_acquisition_id = _resolve_instrument_id_mismatch(instrument_id, acquisition_id)
+    instrument_modification_date = _parse_modification_date(instrument.get("modification_date"))
+    new_instrument_id, new_acquisition_id = _resolve_instrument_id_mismatch(
+        instrument_id, acquisition_id, instrument_modification_date
+    )
     data["instrument"]["instrument_id"] = new_instrument_id
     data["acquisition"]["instrument_id"] = new_acquisition_id
+
+    # Retain the removed ID in the notes of whichever object was changed.
+    if instrument_id != new_instrument_id:
+        existing = data["instrument"].get("notes") or ""
+        note = f"Original instrument_id before repair: {instrument_id}"
+        data["instrument"]["notes"] = f"{existing}; {note}" if existing else note
+
+    if acquisition_id != new_acquisition_id:
+        existing = data["acquisition"].get("notes") or ""
+        note = f"Original instrument_id before repair: {acquisition_id}"
+        data["acquisition"]["notes"] = f"{existing}; {note}" if existing else note
+
     return data

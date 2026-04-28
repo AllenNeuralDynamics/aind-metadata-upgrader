@@ -124,6 +124,7 @@ class TestRepairInstrumentIdMismatch(unittest.TestCase):
         result = repair_instrument_id_mismatch(data)
         self.assertEqual(result["instrument"]["instrument_id"], "ND_Ephys.5")
         self.assertEqual(result["acquisition"]["instrument_id"], "ND_Ephys.5")
+        self.assertIn("322_EPHYS5_Ephys5", result["instrument"].get("notes", ""))
 
     def test_bad_instrument_id_ephys5_nd(self):
         """Ephys5_ND_Ephys.5 is a known bad ID that should be repaired to ND_Ephys.5"""
@@ -190,6 +191,10 @@ class TestRepairInstrumentIdMismatch(unittest.TestCase):
         result = repair_instrument_id_mismatch(data)
         self.assertEqual(result["instrument"]["instrument_id"], "429_MESO1_20260122")
         self.assertEqual(result["acquisition"]["instrument_id"], "429_MESO1_20260122")
+        # acquisition ID was replaced — old value should appear in acquisition notes
+        self.assertIn("MESO.1", result["acquisition"].get("notes", ""))
+        # instrument ID was unchanged — no notes added
+        self.assertNotIn("notes", result["instrument"])
 
     def test_short_acq_id_5a_uses_instrument(self):
         """Short acquisition ID '5A' vs bad instrument ID '426_5A_20241126' — prefer acquisition"""
@@ -228,21 +233,24 @@ class TestRepairInstrumentIdMismatch(unittest.TestCase):
         result = repair_instrument_id_mismatch(data)
         self.assertEqual(result["instrument"]["instrument_id"], "327_NP2_240418")
         self.assertEqual(result["acquisition"]["instrument_id"], "327_NP2_240418")
+        # acquisition ID was replaced — old value should appear in acquisition notes
+        self.assertIn("327_NP2_240401", result["acquisition"].get("notes", ""))
+        # instrument ID was unchanged — no notes added
+        self.assertNotIn("notes", result["instrument"])
 
-    def test_same_prefix_instrument_older_date_raises(self):
-        """Same prefix, session has newer date — raise ValueError for manual review"""
-        # rig from Nov 2025, session from Dec 2025 → session newer → ValueError
+    def test_same_prefix_instrument_older_date_uses_instrument(self):
+        """Same prefix, acquisition has newer date — Rule 9 uses instrument (no modification_date match)"""
         data = _make_data("155_Chronic1_20251107", "155_Chronic1_20251201")
-        with self.assertRaises(ValueError) as ctx:
-            repair_instrument_id_mismatch(data)
-        self.assertIn("more recent date", str(ctx.exception))
+        result = repair_instrument_id_mismatch(data)
+        self.assertEqual(result["instrument"]["instrument_id"], "155_Chronic1_20251107")
+        self.assertEqual(result["acquisition"]["instrument_id"], "155_Chronic1_20251107")
 
-    def test_same_prefix_instrument_very_old_date_raises(self):
-        """Same prefix, session has much newer date — raise ValueError for manual review"""
-        # rig from Feb 2023, session from Apr 2024 → session newer → ValueError
+    def test_same_prefix_instrument_very_old_date_uses_instrument(self):
+        """Same prefix, acquisition much newer — Rule 9 uses instrument (no modification_date match)"""
         data = _make_data("342_NP3_230207", "342_NP3_240401")
-        with self.assertRaises(ValueError):
-            repair_instrument_id_mismatch(data)
+        result = repair_instrument_id_mismatch(data)
+        self.assertEqual(result["instrument"]["instrument_id"], "342_NP3_230207")
+        self.assertEqual(result["acquisition"]["instrument_id"], "342_NP3_230207")
 
     def test_same_prefix_dated_instrument_undated_acquisition(self):
         """Same prefix, instrument has date but acquisition doesn't — prefer instrument"""
@@ -253,12 +261,12 @@ class TestRepairInstrumentIdMismatch(unittest.TestCase):
         self.assertEqual(result["acquisition"]["instrument_id"], "440_SmartSPIM1_20240710")
 
     def test_same_prefix_undated_instrument_dated_acquisition(self):
-        """Same prefix, acquisition has date but instrument doesn't — prefer acquisition"""
+        """Same prefix, acquisition has date but instrument doesn't — Rule 9 uses instrument"""
         data = _make_data("SmartSPIM1-7", "440_SmartSPIM1_20240710")
         result = repair_instrument_id_mismatch(data)
-        # acquisition has date → prefer acquisition
-        self.assertEqual(result["instrument"]["instrument_id"], "440_SmartSPIM1_20240710")
-        self.assertEqual(result["acquisition"]["instrument_id"], "440_SmartSPIM1_20240710")
+        # no modification_date provided → prefer instrument
+        self.assertEqual(result["instrument"]["instrument_id"], "SmartSPIM1-7")
+        self.assertEqual(result["acquisition"]["instrument_id"], "SmartSPIM1-7")
 
     # Rule 9 — date-based, different prefix
     def test_different_prefix_prefer_instrument(self):
@@ -295,6 +303,30 @@ class TestRepairInstrumentIdMismatch(unittest.TestCase):
         data = {"instrument": {"instrument_id": "some_id"}}
         result = repair_instrument_id_mismatch(data)
         self.assertEqual(result["instrument"]["instrument_id"], "some_id")
+
+    # Rule 9 — modification_date-based exception
+    def test_modification_date_matches_acquisition_date_uses_acquisition(self):
+        """Instrument modification_date matches date in acquisition instrument_id — use acquisition"""
+        data = _make_data("342_NP3_230207", "342_NP3_240401")
+        data["instrument"]["modification_date"] = "2024-04-01"
+        result = repair_instrument_id_mismatch(data)
+        self.assertEqual(result["instrument"]["instrument_id"], "342_NP3_240401")
+        self.assertEqual(result["acquisition"]["instrument_id"], "342_NP3_240401")
+
+    def test_modification_date_does_not_match_acquisition_date_uses_instrument(self):
+        """Instrument modification_date does not match acquisition date — use instrument"""
+        data = _make_data("342_NP3_230207", "342_NP3_240401")
+        data["instrument"]["modification_date"] = "2023-02-07"
+        result = repair_instrument_id_mismatch(data)
+        self.assertEqual(result["instrument"]["instrument_id"], "342_NP3_230207")
+        self.assertEqual(result["acquisition"]["instrument_id"], "342_NP3_230207")
+
+    def test_no_modification_date_uses_instrument(self):
+        """No modification_date on instrument — Rule 9 always uses instrument"""
+        data = _make_data("342_NP3_230207", "342_NP3_240401")
+        result = repair_instrument_id_mismatch(data)
+        self.assertEqual(result["instrument"]["instrument_id"], "342_NP3_230207")
+        self.assertEqual(result["acquisition"]["instrument_id"], "342_NP3_230207")
 
 
 if __name__ == "__main__":
