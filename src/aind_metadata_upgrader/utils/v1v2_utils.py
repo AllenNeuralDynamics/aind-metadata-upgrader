@@ -952,6 +952,9 @@ CCF_MAPPING = {
 def upgrade_targeted_structure(data: dict | str) -> dict:
     """Upgrade targeted structure, especially convert strings to structure objects"""
 
+    if data is None or data == [] or data == {}:
+        return CCFv3.ROOT.model_dump()
+
     if isinstance(data, str):
         data = data.strip()
         if hasattr(CCFv3, data.upper()):
