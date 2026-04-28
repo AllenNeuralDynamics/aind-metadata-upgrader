@@ -218,12 +218,12 @@ def repair_instrument_id_mismatch(data: dict) -> dict:
     # Retain the removed ID in the notes of whichever object was changed.
     if instrument_id != new_instrument_id:
         existing = data["instrument"].get("notes") or ""
-        note = f"Original instrument_id before repair: {instrument_id}"
+        note = f"(v1v2 upgrade) Original instrument_id: {instrument_id}"
         data["instrument"]["notes"] = f"{existing}; {note}" if existing else note
 
     if acquisition_id != new_acquisition_id:
         existing = data["acquisition"].get("notes") or ""
-        note = f"Original instrument_id before repair: {acquisition_id}"
+        note = f"(v1v2 upgrade) Original instrument_id: {acquisition_id}"
         data["acquisition"]["notes"] = f"{existing}; {note}" if existing else note
 
     return data
