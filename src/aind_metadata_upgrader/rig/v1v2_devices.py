@@ -173,6 +173,25 @@ def upgrade_tube(data: dict) -> dict:
     return tube.model_dump()
 
 
+_DEVICE_FIELDS = {"name", "serial_number", "manufacturer", "model", "additional_settings", "notes"}
+
+
+def _upgrade_arena_object(obj: dict) -> dict:
+    """Upgrade a single arena object to a Device, moving unknown fields into additional_settings."""
+    extra = {k: v for k, v in obj.items() if k not in _DEVICE_FIELDS and v is not None}
+    base = {k: v for k, v in obj.items() if k in _DEVICE_FIELDS}
+
+    if extra:
+        existing = base.get("additional_settings") or {}
+        if isinstance(existing, dict):
+            existing.update(extra)
+        else:
+            existing = extra
+        base["additional_settings"] = existing
+
+    return Device(**base).model_dump()
+
+
 def upgrade_arena(data: dict) -> dict:
     """Upgrade an Arena object from v1.x to v2.0."""
 
@@ -180,6 +199,21 @@ def upgrade_arena(data: dict) -> dict:
 
     remove(data, "date_surface_replaced")
     remove(data, "surface_material")
+
+    # Convert size dict {length, width, height, unit} -> Scale + size_unit
+    size = data.pop("size", None)
+    if isinstance(size, dict):
+        length = size.get("length", 0)
+        width = size.get("width", 0)
+        height = size.get("height", 0)
+        data["size"] = {"scale": [length, width, height]}
+        if "size_unit" not in data:
+            data["size_unit"] = size.get("unit", "millimeter")
+
+    # Upgrade each arena object to a valid Device
+    data["objects_in_arena"] = [
+        _upgrade_arena_object(obj) if isinstance(obj, dict) else obj for obj in data.get("objects_in_arena", [])
+    ]
 
     arena = Arena(
         **data,
@@ -205,6 +239,8 @@ def _determine_platform_device_type(data: dict) -> str:
         return "Disc"
     elif "radius" in data and "radius_unit" in data:
         return "Disc"
+    elif "objects_in_arena" in data:
+        return "Arena"
     else:
         print(data)
         raise ValueError("Cannot determine device type for mouse platform")
@@ -306,6 +342,9 @@ def upgrade_daq_devices(device: dict) -> tuple[dict, list]:
     device_data["channels"], channel_connections = upgrade_daq_channels(device_data)
     connections.extend(channel_connections)
 
+    # Get manufacturer
+    manufacturer_name = device_data.get("manufacturer", "").get("name")
+
     # Create the DAQ device, or HarpDevice
     if device_type == "Harp device" or "harp_device_type" in device_data:
         name = device_data["harp_device_type"]["name"]
@@ -314,9 +353,25 @@ def upgrade_daq_devices(device: dict) -> tuple[dict, list]:
         device_data["harp_device_type"]["name"] = name
         daq_device = HarpDevice(**device_data)
     elif "Neuropixels basestation" == device_type or "bsc_firmware_version" in device_data:
-        daq_device = NeuropixelsBasestation(**device_data)
-    elif device_type == "Open Ephys acquisition board" or "acquisition board" in device_data["name"].lower():
-        daq_device = OpenEphysAcquisitionBoard(**device_data)
+        if manufacturer_name == "Interuniversity Microelectronics Center":
+            daq_device = NeuropixelsBasestation(**device_data)
+        else:
+            print(f"Device data: {device_data}")
+            raise ValueError(
+                f"Interpreted device as NeuropixelsBasestation but manufacturer is wrong '{manufacturer_name}'."
+            )
+    elif (
+        device_type == "Open Ephys acquisition board"
+        or "acquisition board" in device_data["name"].lower()
+        or "ports" in device_data
+    ):
+        if manufacturer_name == "Open Ephys Production Site":
+            daq_device = OpenEphysAcquisitionBoard(**device_data)
+        else:
+            print(f"Device data: {device_data}")
+            raise ValueError(
+                f"Interpreted device as OpenEphysAcquisitionBoard but manufacturer is wrong '{manufacturer_name}'."
+            )
     else:
         try:
             daq_device = DAQDevice(**device_data)
