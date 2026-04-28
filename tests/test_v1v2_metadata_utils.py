@@ -54,13 +54,13 @@ class TestHandleEcephysIdMismatch(unittest.TestCase):
         result = repair_instrument_id_mismatch(data)
         self.assertEqual(result["acquisition"]["instrument_id"], "342_NP3_20240408")
 
-    def test_session_date_more_recent_raises(self):
-        """Session has more recent date — raise ValueError"""
+    def test_session_date_more_recent_uses_instrument(self):
+        """Session has more recent date — use instrument ID (Rule 9 always prefers instrument)"""
         # Row: 155_Chronic1_20251107, 155_Chronic1_20251201
         data = _make_data("155_Chronic1_20251107", "155_Chronic1_20251201")
-        with self.assertRaises(ValueError) as ctx:
-            repair_instrument_id_mismatch(data)
-        self.assertIn("more recent date", str(ctx.exception))
+        result = repair_instrument_id_mismatch(data)
+        self.assertEqual(result["instrument"]["instrument_id"], "155_Chronic1_20251107")
+        self.assertEqual(result["acquisition"]["instrument_id"], "155_Chronic1_20251107")
 
     def test_punctuation_diff_same_date_prefer_rig(self):
         """NP.3 vs NP3 with equal date — dot normalisation uses acquisition form (Rule 4)"""
