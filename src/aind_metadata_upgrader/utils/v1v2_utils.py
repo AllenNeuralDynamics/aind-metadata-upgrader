@@ -813,6 +813,20 @@ def _upgrade_power_calibration_led(data: dict) -> Optional[PowerCalibration]:
     )
 
 
+def _upgrade_power_calibration_voltage_input(data: dict) -> Optional[PowerCalibration]:
+    """Handle laser power calibration with voltage (V) input and power (mW) output."""
+
+    return PowerCalibration(
+        calibration_date=data["calibration_date"],
+        device_name=data["device_name"],
+        input=data["input"]["voltage (V)"],
+        input_unit=VoltageUnit.V,
+        output=data["output"]["power (mW)"],
+        output_unit=PowerUnit.MW,
+        notes=data.get("notes"),
+    )
+
+
 def _upgrade_power_calibration(data: dict) -> Optional[dict]:
     """Upgrade power calibration data (laser, LED)."""
     description = data.get("description", "").lower()
@@ -832,6 +846,8 @@ def _upgrade_power_calibration(data: dict) -> Optional[dict]:
         calibration = _upgrade_power_calibration_percent_laser(data)
     elif "led calibration" in description:
         calibration = _upgrade_power_calibration_led(data)
+    elif "voltage (V)" in input_data and "power (mW)" in output_data:
+        calibration = _upgrade_power_calibration_voltage_input(data)
     else:
         return None
 
