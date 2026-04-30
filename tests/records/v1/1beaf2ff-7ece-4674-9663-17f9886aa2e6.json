@@ -1,0 +1,1890 @@
+{
+    "_id": "1beaf2ff-7ece-4674-9663-17f9886aa2e6",
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "schema_version": "1.2.1",
+    "name": "behavior_754560_2024-08-28_09-07-05_videoprocessed_2026-03-14_00-21-14",
+    "created": "2026-03-14T03:50:09.046603Z",
+    "last_modified": "2026-03-14T03:50:09.335Z",
+    "location": "s3://codeocean-s3datasetsbucket-1u41qdg42ur9/b8ccb7e3-cb85-4526-8a68-d72e6d8e08d8",
+    "metadata_status": "Invalid",
+    "external_links": {
+        "Code Ocean": [
+            "b8ccb7e3-cb85-4526-8a68-d72e6d8e08d8"
+        ]
+    },
+    "subject": {
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": null,
+        "date_of_birth": "2024-05-21",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "genotype": "wt/wt",
+        "housing": {
+            "cage_id": "8270923",
+            "cohoused_subjects": [],
+            "home_cage_enrichment": [],
+            "light_cycle": null,
+            "room_id": "221"
+        },
+        "notes": null,
+        "restrictions": null,
+        "rrid": null,
+        "schema_version": "1.0.2",
+        "sex": "Male",
+        "source": {
+            "abbreviation": null,
+            "name": "Other",
+            "registry": null,
+            "registry_identifier": null
+        },
+        "species": {
+            "name": "Mus musculus",
+            "registry": {
+                "abbreviation": "NCBI",
+                "name": "National Center for Biotechnology Information"
+            },
+            "registry_identifier": "NCBI:txid10090"
+        },
+        "subject_id": "754560",
+        "wellness_reports": []
+    },
+    "data_description": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "1.0.4",
+        "license": "CC-BY-4.0",
+        "platform": {
+            "name": "Behavior platform",
+            "abbreviation": "behavior"
+        },
+        "subject_id": "754560",
+        "creation_time": "2024-08-28T09:07:05Z",
+        "label": null,
+        "name": "behavior_754560_2024-08-28_09-07-05",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": "Bruno Cruz, Cindy Poo, Tiffany Ona"
+            },
+            {
+                "funder": {
+                    "name": "Simons Foundation",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "01cmst727"
+                },
+                "grant_number": "Simons863738",
+                "fundee": "Cindy Poo, Tiffany Ona"
+            }
+        ],
+        "data_level": "derived",
+        "group": null,
+        "investigators": [
+            {
+                "name": "Bruno Cruz",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "name": "Cindy Poo",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "name": "Tiffany Ona",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            }
+        ],
+        "project_name": "Cognitive flexibility in patch foraging",
+        "restrictions": null,
+        "modality": [
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            },
+            {
+                "name": "Behavior videos",
+                "abbreviation": "behavior-videos"
+            }
+        ],
+        "related_data": [],
+        "data_summary": null
+    },
+    "procedures": null,
+    "session": {
+        "active_mouse_platform": true,
+        "anaesthesia": null,
+        "animal_weight_post": "21.8",
+        "animal_weight_prior": null,
+        "calibrations": [],
+        "data_streams": [
+            {
+                "camera_names": [
+                    "FaceCamera",
+                    "SideCamera"
+                ],
+                "daq_names": [
+                    "harp_behavior",
+                    "harp_olfactometer",
+                    "harp_lickometer",
+                    "harp_clock_generator",
+                    "harp_treadmill",
+                    "harp_sniff_detector",
+                    "manipulator"
+                ],
+                "detectors": [],
+                "ephys_modules": [],
+                "fiber_connections": [],
+                "fiber_modules": [],
+                "light_sources": [],
+                "manipulator_modules": [],
+                "mri_scans": [],
+                "notes": null,
+                "ophys_fovs": [],
+                "slap_fovs": [],
+                "software": [],
+                "stack_parameters": null,
+                "stick_microscopes": [],
+                "stream_end_time": "2024-08-28T17:16:33.582873Z",
+                "stream_modalities": [
+                    {
+                        "abbreviation": "behavior",
+                        "name": "Behavior"
+                    },
+                    {
+                        "abbreviation": "behavior-videos",
+                        "name": "Behavior videos"
+                    }
+                ],
+                "stream_start_time": "2024-08-28T16:07:05.637051Z"
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/session.py",
+        "experimenter_full_name": [
+            "Katrina"
+        ],
+        "headframe_registration": null,
+        "iacuc_protocol": "2109",
+        "maintenance": [],
+        "mouse_platform_name": "VR Wheel",
+        "notes": null,
+        "protocol_id": [],
+        "reward_consumed_total": "0.94",
+        "reward_consumed_unit": "milliliter",
+        "reward_delivery": {
+            "notes": null,
+            "reward_solution": "Water",
+            "reward_spouts": [
+                {
+                    "side": "Center",
+                    "starting_position": {
+                        "device_axes": [
+                            {
+                                "direction": "Left",
+                                "name": "X"
+                            },
+                            {
+                                "direction": "Front",
+                                "name": "Y"
+                            },
+                            {
+                                "direction": "Top",
+                                "name": "Z"
+                            }
+                        ],
+                        "device_origin": "Manipulator home",
+                        "device_position_transformations": [
+                            {
+                                "translation": [
+                                    "0",
+                                    "0",
+                                    "0"
+                                ],
+                                "type": "translation"
+                            }
+                        ],
+                        "notes": null
+                    },
+                    "variable_position": false
+                }
+            ]
+        },
+        "rig_id": "5B",
+        "schema_version": "1.0.3",
+        "session_end_time": "2024-08-28T17:16:33.582873Z",
+        "session_start_time": "2024-08-28T16:07:05.637051Z",
+        "session_type": "AindVrForaging",
+        "stimulus_epochs": [
+            {
+                "light_source_config": [],
+                "notes": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": "0.94",
+                "reward_consumed_unit": "microliter",
+                "script": {
+                    "name": "vr-foraging",
+                    "parameters": {},
+                    "url": "https://github.com/AllenNeuralDynamics/Aind.Behavior.VrForaging/blob/main/src/vr-foraging.bonsai",
+                    "version": "unknown"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "Bonsai",
+                        "parameters": {},
+                        "url": "https://github.com/AllenNeuralDynamics/Aind.Behavior.VrForaging",
+                        "version": "unknown"
+                    }
+                ],
+                "speaker_config": {
+                    "name": "Speaker",
+                    "volume": "60",
+                    "volume_unit": "decibels"
+                },
+                "stimulus_device_names": [
+                    "harp_olfactometer",
+                    "Speaker",
+                    "Screen Left",
+                    "Screen Center",
+                    "Screen Right"
+                ],
+                "stimulus_end_time": "2024-08-28T17:16:33.582873Z",
+                "stimulus_modalities": [
+                    "Olfactory",
+                    "Auditory",
+                    "Visual",
+                    "Virtual reality",
+                    "Wheel friction"
+                ],
+                "stimulus_name": "AindVrForaging",
+                "stimulus_parameters": [
+                    {
+                        "amplitude_modulation_frequency": null,
+                        "bandpass_filter_type": null,
+                        "bandpass_high_frequency": null,
+                        "bandpass_low_frequency": null,
+                        "bandpass_order": null,
+                        "frequency_unit": "hertz",
+                        "notes": null,
+                        "sample_frequency": "0",
+                        "stimulus_name": "Beep",
+                        "stimulus_type": "Auditory Stimulation"
+                    },
+                    {
+                        "channels": [
+                            {
+                                "channel_index": 0,
+                                "notes": null,
+                                "odorant": "Amyl Acetate",
+                                "odorant_dilution": "1",
+                                "odorant_dilution_unit": "% v/v"
+                            }
+                        ],
+                        "notes": null,
+                        "stimulus_name": "Olfactory",
+                        "stimulus_type": "Olfactory Stimulation"
+                    },
+                    {
+                        "notes": null,
+                        "stimulus_name": "VrScreen",
+                        "stimulus_parameters": {},
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2024-08-28T16:07:05.637051Z",
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "trials_total": null
+            }
+        ],
+        "subject_id": "754560",
+        "weight_unit": "gram"
+    },
+    "rig": {
+        "additional_devices": [],
+        "calibrations": [
+            {
+                "calibration_date": "2024-08-22T00:00:00-07:00",
+                "description": "Water calibration for Lick spout. The input is the valve open time in seconds and the output is the volume of water delivered in microliters.",
+                "device_name": "WaterValve",
+                "input": {
+                    "valve open time (s):": [
+                        0.03,
+                        0.05,
+                        0.08,
+                        0.1,
+                        0.12,
+                        0.17,
+                        0.2
+                    ]
+                },
+                "notes": null,
+                "output": {
+                    "water volume (ul):": [
+                        0.45,
+                        0.68,
+                        1.08,
+                        1.31,
+                        1.71,
+                        2.48,
+                        2.87
+                    ]
+                }
+            }
+        ],
+        "cameras": [
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "LEVIATHON",
+                    "cooling": "Air",
+                    "crop_height": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "120",
+                    "frame_rate_unit": "hertz",
+                    "gain": "0.0",
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "name": "FaceCamera",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inch",
+                    "sensor_height": 540,
+                    "sensor_width": 720,
+                    "serial_number": "23022722",
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Face side right",
+                "filter": {
+                    "additional_settings": {},
+                    "center_wavelength": null,
+                    "cut_off_wavelength": null,
+                    "cut_on_wavelength": null,
+                    "description": "810 nm longpass filter",
+                    "device_type": "Filter",
+                    "diameter": null,
+                    "filter_type": "Long pass",
+                    "filter_wheel_index": null,
+                    "height": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Thorlabs",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "04gsnvb07"
+                    },
+                    "model": null,
+                    "name": "LP filter",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size_unit": "millimeter",
+                    "thickness": null,
+                    "thickness_unit": "millimeter",
+                    "wavelength_unit": "nanometer",
+                    "width": null
+                },
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "16",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Tamron",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "M112FM16",
+                    "name": "Behavior Video Lens Face View",
+                    "notes": null,
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "FaceCamera",
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "LEVIATHON",
+                    "cooling": "Air",
+                    "crop_height": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "120",
+                    "frame_rate_unit": "hertz",
+                    "gain": "0.0",
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "name": "SideCamera",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inch",
+                    "sensor_height": 540,
+                    "sensor_width": 720,
+                    "serial_number": "23022722",
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Side",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "5",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "LM5JCM",
+                    "name": "Behavior Video Lens Side View",
+                    "notes": "Manufacturer is KOWA",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "SideCamera",
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "Additive",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Color",
+                    "computer_name": "LEVIATHON",
+                    "cooling": "Air",
+                    "crop_height": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "30",
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "Ailipu",
+                        "name": "Ailipu Technology Co",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "ELP-USBFHD05MT-KL170IR",
+                    "name": "Bottom face Camera",
+                    "notes": "The targe is top of the body",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": {
+                        "name": "Bonsai",
+                        "parameters": {},
+                        "url": null,
+                        "version": "2.5"
+                    },
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 480,
+                    "sensor_width": 640,
+                    "serial_number": null,
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Body",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": null,
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": "f/1.4",
+                    "model": "XC0922LENS",
+                    "name": "Xenocam 2",
+                    "notes": "Focal Length 9-22mm 1/3\" IR F1.4",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": "unknown",
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "USB_top_view",
+                "position": null
+            }
+        ],
+        "ccf_coordinate_transform": null,
+        "daqs": [
+            {
+                "additional_settings": {},
+                "channels": [
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "FaceCamera",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "SideCamera",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO1",
+                        "channel_type": "Digital Output",
+                        "device_name": "Speaker",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO1",
+                        "channel_type": "Digital Output",
+                        "device_name": "Solenoid",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    }
+                ],
+                "computer_name": "LEVIATHON",
+                "core_version": null,
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Behavior",
+                    "whoami": 1216
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "OEPS",
+                    "name": "Open Ephys Production Site",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "007rkz355"
+                },
+                "model": null,
+                "name": "harp_behavior",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [],
+                "computer_name": "LEVIATHON",
+                "core_version": null,
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Clock Synchronizer",
+                    "whoami": 1152
+                },
+                "is_clock_generator": true,
+                "manufacturer": {
+                    "abbreviation": "OEPS",
+                    "name": "Open Ephys Production Site",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "007rkz355"
+                },
+                "model": null,
+                "name": "harp_clock_generator",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [],
+                "computer_name": "LEVIATHON",
+                "core_version": null,
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Clock Synchronizer",
+                    "whoami": 1152
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "OEPS",
+                    "name": "Open Ephys Production Site",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "007rkz355"
+                },
+                "model": null,
+                "name": "harp_clock_repeaters",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [
+                    {
+                        "channel_index": null,
+                        "channel_name": "Torque sensor",
+                        "channel_type": "Analog Output",
+                        "device_name": "harp_treadmill",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "Encoder",
+                        "channel_type": "Analog Output",
+                        "device_name": "harp_treadmill",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "Magnetic brake",
+                        "channel_type": "Analog Output",
+                        "device_name": "harp_treadmill",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    }
+                ],
+                "computer_name": "LEVIATHON",
+                "core_version": null,
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Treadmill",
+                    "whoami": 1402
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "AIND",
+                    "name": "Allen Institute for Neural Dynamics",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04szwah67"
+                },
+                "model": null,
+                "name": "harp_treadmill",
+                "notes": "https://github.com/AllenNeuralDynamics/harp.device.treadmill-driver",
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [],
+                "computer_name": "LEVIATHON",
+                "core_version": null,
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Lickety Split",
+                    "whoami": 1400
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "AIND",
+                    "name": "Allen Institute for Neural Dynamics",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04szwah67"
+                },
+                "model": null,
+                "name": "harp_lickometer",
+                "notes": "Lick sensor with low noise artifacts; https://github.com/AllenNeuralDynamics/harp.device.lickety-split",
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [],
+                "computer_name": "LEVIATHON",
+                "core_version": null,
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Stepper Driver",
+                    "whoami": 1130
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "AIND",
+                    "name": "Allen Institute for Neural Dynamics",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04szwah67"
+                },
+                "model": null,
+                "name": "Stepper driver",
+                "notes": "Stepper driver for positioning the lick spout and the odor tubes; https://allenneuraldynamics.github.io/Bonsai.AllenNeuralDynamics/articles/aind-manipulator.html",
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [],
+                "computer_name": "LEVIATHON",
+                "core_version": null,
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Olfactometer",
+                    "whoami": 1140
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "Champalimaud",
+                    "name": "Champalimaud Foundation",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "name": "harp_olfactometer",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/rig.py",
+        "detectors": [],
+        "digital_micromirror_devices": [],
+        "enclosure": {
+            "additional_settings": {},
+            "air_filtration": false,
+            "device_type": "Enclosure",
+            "external_material": "Wood and aluminium frame",
+            "grounded": true,
+            "internal_material": "High density foam",
+            "laser_interlock": false,
+            "manufacturer": {
+                "abbreviation": "AIND",
+                "name": "Allen Institute for Neural Dynamics",
+                "registry": {
+                    "abbreviation": "ROR",
+                    "name": "Research Organization Registry"
+                },
+                "registry_identifier": "04szwah67"
+            },
+            "model": null,
+            "name": "Behavior enclosure",
+            "notes": null,
+            "path_to_cad": null,
+            "port_index": null,
+            "serial_number": null,
+            "size": {
+                "height": 506,
+                "length": 540,
+                "unit": "millimeter",
+                "width": 568
+            }
+        },
+        "ephys_assemblies": [],
+        "fiber_assemblies": [],
+        "filters": [],
+        "laser_assemblies": [],
+        "lenses": [
+            {
+                "additional_settings": {},
+                "device_type": "Lens",
+                "focal_length": "50",
+                "focal_length_unit": "millimeter",
+                "lens_size_unit": "inch",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "max_aperture": null,
+                "model": "LA1255-B",
+                "name": "IR LED - Face lens",
+                "notes": null,
+                "optimized_wavelength_range": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "size": null,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Lens",
+                "focal_length": "30",
+                "focal_length_unit": "millimeter",
+                "lens_size_unit": "inch",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "max_aperture": null,
+                "model": "LA1805-B",
+                "name": "IR LED - Side lens",
+                "notes": null,
+                "optimized_wavelength_range": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "size": null,
+                "wavelength_unit": "nanometer"
+            }
+        ],
+        "light_sources": [
+            {
+                "additional_settings": {},
+                "bandwidth": null,
+                "bandwidth_unit": "nanometer",
+                "device_type": "Light emitting diode",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M810L5",
+                "name": "IR LED - Face",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "wavelength": 810,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": {},
+                "bandwidth": null,
+                "bandwidth_unit": "nanometer",
+                "device_type": "Light emitting diode",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M810L5",
+                "name": "IR LED - Side",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "wavelength": 810,
+                "wavelength_unit": "nanometer"
+            }
+        ],
+        "modalities": [
+            {
+                "abbreviation": "behavior",
+                "name": "Behavior"
+            },
+            {
+                "abbreviation": "behavior-videos",
+                "name": "Behavior videos"
+            }
+        ],
+        "modification_date": "2024-12-02",
+        "mouse_platform": {
+            "additional_settings": {},
+            "brake_output": {
+                "channel_index": null,
+                "channel_name": "Magnetic brake",
+                "channel_type": "Analog Output",
+                "device_name": "harp_treadmill",
+                "event_based_sampling": null,
+                "port": null,
+                "sample_rate": null,
+                "sample_rate_unit": "hertz"
+            },
+            "date_surface_replaced": null,
+            "device_type": "Wheel",
+            "encoder": {
+                "additional_settings": {},
+                "device_type": "Encoder",
+                "manufacturer": null,
+                "model": "AMT102-V",
+                "name": "Encoder",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null
+            },
+            "encoder_output": {
+                "channel_index": null,
+                "channel_name": "Encoder",
+                "channel_type": "Analog Output",
+                "device_name": "harp_treadmill",
+                "event_based_sampling": null,
+                "port": null,
+                "sample_rate": null,
+                "sample_rate_unit": "hertz"
+            },
+            "magnetic_brake": {
+                "additional_settings": {},
+                "device_type": "Magnetic brake",
+                "manufacturer": null,
+                "model": "B1-2FM",
+                "name": "Magnetic brake",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null
+            },
+            "manufacturer": {
+                "abbreviation": "AIND",
+                "name": "Allen Institute for Neural Dynamics",
+                "registry": {
+                    "abbreviation": "ROR",
+                    "name": "Research Organization Registry"
+                },
+                "registry_identifier": "04szwah67"
+            },
+            "model": null,
+            "name": "VR Wheel",
+            "notes": null,
+            "path_to_cad": "https://tinyurl.com/AI-RunningWheel",
+            "port_index": null,
+            "pulse_per_revolution": 8192,
+            "radius": "7.5",
+            "serial_number": null,
+            "size_unit": "centimeter",
+            "surface_material": "Rubber",
+            "torque_output": {
+                "channel_index": null,
+                "channel_name": "Torque sensor",
+                "channel_type": "Analog Output",
+                "device_name": "harp_treadmill",
+                "event_based_sampling": null,
+                "port": null,
+                "sample_rate": null,
+                "sample_rate_unit": "hertz"
+            },
+            "torque_sensor": {
+                "additional_settings": {},
+                "device_type": "Torque sensor",
+                "manufacturer": null,
+                "model": "RTS-10",
+                "name": "Torque sensor",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null
+            },
+            "width": "3.5"
+        },
+        "notes": null,
+        "objectives": [],
+        "origin": null,
+        "patch_cords": [],
+        "pockels_cells": [],
+        "polygonal_scanners": [],
+        "rig_axes": null,
+        "rig_id": "426_5B_20241202",
+        "schema_version": "1.0.3",
+        "stick_microscopes": [],
+        "stimulus_devices": [
+            {
+                "device_type": "Reward delivery",
+                "reward_spouts": [
+                    {
+                        "additional_settings": {},
+                        "device_type": "Reward spout",
+                        "lick_sensor": {
+                            "additional_settings": {},
+                            "device_type": "Harp device",
+                            "manufacturer": {
+                                "abbreviation": "AIND",
+                                "name": "Allen Institute for Neural Dynamics",
+                                "registry": {
+                                    "abbreviation": "ROR",
+                                    "name": "Research Organization Registry"
+                                },
+                                "registry_identifier": "04szwah67"
+                            },
+                            "model": null,
+                            "name": "harp_lickometer",
+                            "notes": "Lick sensor with low noise artifacts; https://github.com/AllenNeuralDynamics/harp.device.lickety-split",
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "serial_number": null
+                        },
+                        "lick_sensor_type": "Capacitive",
+                        "manufacturer": {
+                            "abbreviation": null,
+                            "name": "Other",
+                            "registry": null,
+                            "registry_identifier": null
+                        },
+                        "model": "89875K27",
+                        "name": "Lick spout",
+                        "notes": "Lick spout for water delivery, the tube is ordered from McMaster, cut to size and shaped by AIND",
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "serial_number": null,
+                        "side": "Center",
+                        "solenoid_valve": {
+                            "additional_settings": {},
+                            "device_type": "Solenoid",
+                            "manufacturer": {
+                                "abbreviation": null,
+                                "name": "The Lee Company",
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": "LHDB1233518H",
+                            "name": "Solenoid",
+                            "notes": null,
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "serial_number": null
+                        },
+                        "spout_diameter": "1.2",
+                        "spout_diameter_unit": "millimeter",
+                        "spout_position": null
+                    }
+                ],
+                "stage_type": {
+                    "additional_settings": {},
+                    "device_type": "Motorized stage",
+                    "firmware": null,
+                    "manufacturer": {
+                        "abbreviation": "AIND",
+                        "name": "Allen Institute for Neural Dynamics",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "04szwah67"
+                    },
+                    "model": "328-300-00",
+                    "name": "Motorized stage",
+                    "notes": "Motorized stage for positioning",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "travel": "30",
+                    "travel_unit": "millimeter"
+                }
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Speaker",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Tymphany",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "XT25SC90-04",
+                "name": "Speaker",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "position": null,
+                "serial_number": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [
+                    {
+                        "channel_index": 0,
+                        "channel_type": "Odor",
+                        "flow_capacity": 100,
+                        "flow_unit": "mL/min"
+                    },
+                    {
+                        "channel_index": 1,
+                        "channel_type": "Odor",
+                        "flow_capacity": 100,
+                        "flow_unit": "mL/min"
+                    },
+                    {
+                        "channel_index": 2,
+                        "channel_type": "Odor",
+                        "flow_capacity": 100,
+                        "flow_unit": "mL/min"
+                    },
+                    {
+                        "channel_index": 3,
+                        "channel_type": "Carrier",
+                        "flow_capacity": 1000,
+                        "flow_unit": "mL/min"
+                    },
+                    {
+                        "channel_index": 4,
+                        "channel_type": "Carrier",
+                        "flow_capacity": 1000,
+                        "flow_unit": "mL/min"
+                    }
+                ],
+                "computer_name": "LEVIATHON",
+                "core_version": null,
+                "data_interface": "USB",
+                "device_type": "Olfactometer",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Olfactometer",
+                    "whoami": 1140
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "Champalimaud",
+                    "name": "Champalimaud Foundation",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "name": "Olfactometer",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "brightness": null,
+                "contrast": null,
+                "device_type": "Monitor",
+                "height": 1536,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "LG",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "02b948n83"
+                },
+                "model": "LG LP097QX1",
+                "name": "Screen Left",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "position": null,
+                "refresh_rate": 60,
+                "serial_number": null,
+                "size_unit": "pixel",
+                "viewing_distance": "15.5",
+                "viewing_distance_unit": "centimeter",
+                "width": 2048
+            },
+            {
+                "additional_settings": {},
+                "brightness": null,
+                "contrast": null,
+                "device_type": "Monitor",
+                "height": 1536,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "LG",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "02b948n83"
+                },
+                "model": "LG LP097QX1",
+                "name": "Screen Center",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "position": null,
+                "refresh_rate": 60,
+                "serial_number": null,
+                "size_unit": "pixel",
+                "viewing_distance": "17.5",
+                "viewing_distance_unit": "centimeter",
+                "width": 2048
+            },
+            {
+                "additional_settings": {},
+                "brightness": null,
+                "contrast": null,
+                "device_type": "Monitor",
+                "height": 1536,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "LG",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "02b948n83"
+                },
+                "model": "LG LP097QX1",
+                "name": "Screen Right",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "position": null,
+                "refresh_rate": 60,
+                "serial_number": null,
+                "size_unit": "pixel",
+                "viewing_distance": "17.5",
+                "viewing_distance_unit": "centimeter",
+                "width": 2048
+            }
+        ]
+    },
+    "processing": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "schema_version": "1.1.4",
+        "processing_pipeline": {
+            "data_processes": [
+                {
+                    "name": "Compression",
+                    "software_version": "0.1.3",
+                    "start_date_time": "2024-12-16T15:50:46.133449Z",
+                    "end_date_time": "2024-12-16T19:00:56.276735Z",
+                    "input_location": "/allen/aind/scratch/vr-foraging/data/754560/754560_20240828T090705/behavior-videos",
+                    "output_location": "/allen/aind/stage/svc_aind_airflow/prod/behavior_754560_job_1734364011_2975e/behavior-videos",
+                    "code_url": "oras://ghcr.io/allenneuraldynamics/aind-behavior-video-transformation:0.1.3",
+                    "code_version": null,
+                    "parameters": {},
+                    "outputs": {},
+                    "notes": null,
+                    "resources": null
+                }
+            ],
+            "processor_full_name": "AIND Scientific Computing",
+            "pipeline_version": null,
+            "pipeline_url": null,
+            "note": null
+        },
+        "analyses": [],
+        "notes": null
+    },
+    "acquisition": null,
+    "instrument": null,
+    "quality_control": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/quality_control.py",
+        "schema_version": "1.2.2",
+        "evaluations": [
+            {
+                "modality": {
+                    "name": "Behavior videos",
+                    "abbreviation": "behavior-videos"
+                },
+                "stage": "Processing",
+                "name": "video_eval_metrics_summary",
+                "description": null,
+                "metrics": [
+                    {
+                        "name": "eval_metrics_summary",
+                        "value": "",
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": null,
+                        "reference": "eval_outputs/video/eval_metrics/eval_metrics_summary.pdf",
+                        "evaluated_assets": null
+                    }
+                ],
+                "tags": null,
+                "notes": "Evaluation metrics summary report",
+                "allow_failed_metrics": false,
+                "latest_status": "Pass",
+                "created": "2026-03-14T01:57:46.486288Z"
+            },
+            {
+                "modality": {
+                    "name": "Behavior videos",
+                    "abbreviation": "behavior-videos"
+                },
+                "stage": "Processing",
+                "name": "video_example_labeled_frames",
+                "description": null,
+                "metrics": [
+                    {
+                        "name": "video_example_frames_with_high_conf",
+                        "value": "",
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": null,
+                        "reference": "eval_outputs/video/example_frames_labeled/example_frames_with_high_conf.pdf",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "video_example_frames_with_low_conf",
+                        "value": "",
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": null,
+                        "reference": "eval_outputs/video/example_frames_labeled/example_frames_with_low_conf.pdf",
+                        "evaluated_assets": null
+                    }
+                ],
+                "tags": null,
+                "notes": "Example labeled frames summary report",
+                "allow_failed_metrics": false,
+                "latest_status": "Pass",
+                "created": "2026-03-14T01:57:46.773214Z"
+            },
+            {
+                "modality": {
+                    "name": "Behavior videos",
+                    "abbreviation": "behavior-videos"
+                },
+                "stage": "Processing",
+                "name": "video_Temporal_norm",
+                "description": null,
+                "metrics": [
+                    {
+                        "name": "nose_tip",
+                        "value": 0.73,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/nose_tip_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "jaw",
+                        "value": 1.91,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/jaw_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "tongue_tip",
+                        "value": 34.72,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Fail",
+                                "timestamp": "2026-03-14T01:36:34.665080Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/tongue_tip_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "ear_base_l",
+                        "value": 0.79,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/ear_base_l_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "shoulder_l",
+                        "value": 3.79,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/shoulder_l_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "elbow_l",
+                        "value": 8.48,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/elbow_l_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "paw_wrist_l",
+                        "value": 12.33,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/paw_wrist_l_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "middle_finger_l",
+                        "value": 21.69,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Fail",
+                                "timestamp": "2026-03-14T01:36:34.665080Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/middle_finger_l_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "paw_wrist_r",
+                        "value": 15.36,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/paw_wrist_r_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "middle_finger_r",
+                        "value": 24.37,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Fail",
+                                "timestamp": "2026-03-14T01:36:34.665080Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/middle_finger_r_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "hip_lh",
+                        "value": 5.61,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/hip_lh_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "knee_lh",
+                        "value": 8.08,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/knee_lh_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "ankle_lh",
+                        "value": 9.62,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/ankle_lh_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "toe_base_lh",
+                        "value": 14.7,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/toe_base_lh_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "middle_finger_lh",
+                        "value": 33.6,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Fail",
+                                "timestamp": "2026-03-14T01:36:34.665080Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/middle_finger_lh_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "ankle_rh",
+                        "value": 29.16,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Fail",
+                                "timestamp": "2026-03-14T01:36:34.665080Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/ankle_rh_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "toe_base_rh",
+                        "value": 30.01,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Fail",
+                                "timestamp": "2026-03-14T01:36:34.665080Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/toe_base_rh_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "middle_finger_rh",
+                        "value": 27.05,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Fail",
+                                "timestamp": "2026-03-14T01:36:34.665080Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/middle_finger_rh_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "spine_neck",
+                        "value": 2.5,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/spine_neck_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "spine_mid",
+                        "value": 6.67,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/spine_mid_TimeSeries.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "spine_tail",
+                        "value": 7.13,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": "Pass when lower than 20",
+                        "reference": "eval_outputs/video/trajectory/spine_tail_TimeSeries.png",
+                        "evaluated_assets": null
+                    }
+                ],
+                "tags": null,
+                "notes": "Pass when Temporal_norm lower than predefined threhold",
+                "allow_failed_metrics": false,
+                "latest_status": "Fail",
+                "created": "2026-03-14T01:57:46.776068Z"
+            },
+            {
+                "modality": {
+                    "name": "Behavior videos",
+                    "abbreviation": "behavior-videos"
+                },
+                "stage": "Processing",
+                "name": "video_rerun",
+                "description": null,
+                "metrics": [
+                    {
+                        "name": "vis_pose_tracking",
+                        "value": "",
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:36:34.664597Z"
+                            }
+                        ],
+                        "description": null,
+                        "reference": "eval_outputs/video/rerun_v0.19.1.rrd",
+                        "evaluated_assets": null
+                    }
+                ],
+                "tags": null,
+                "notes": "Visualize labeled video and trajectories",
+                "allow_failed_metrics": false,
+                "latest_status": "Pass",
+                "created": "2026-03-14T01:57:46.776507Z"
+            },
+            {
+                "modality": {
+                    "name": "Behavior videos",
+                    "abbreviation": "behavior-videos"
+                },
+                "stage": "Processing",
+                "name": "NWB File",
+                "description": "[Download NWB](co-nwb://SideCamera/nwb/video_pose_estimates.nwb",
+                "metrics": [
+                    {
+                        "name": "File Generated",
+                        "value": "",
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-03-14T01:57:58.963949Z"
+                            }
+                        ],
+                        "description": null,
+                        "reference": "video_pose_estimates.nwb",
+                        "evaluated_assets": null
+                    }
+                ],
+                "tags": null,
+                "notes": "NWB File",
+                "allow_failed_metrics": false,
+                "latest_status": "Pass",
+                "created": "2026-03-14T01:57:58.964182Z"
+            }
+        ],
+        "notes": null
+    }
+}

@@ -3,8 +3,10 @@
 from packaging.specifiers import SpecifierSet
 
 from aind_metadata_upgrader.acquisition.v1v2 import AcquisitionV1V2
+from aind_metadata_upgrader.acquisition.v2v2 import AcquisitionUpgraderV2V2
 from aind_metadata_upgrader.data_description.v1v2 import DataDescriptionV1V2
 from aind_metadata_upgrader.instrument.v1v2 import InstrumentUpgraderV1V2
+from aind_metadata_upgrader.instrument.v2v2 import InstrumentUpgraderV2V2
 from aind_metadata_upgrader.metadata.v1v2 import MetadataUpgraderV1V2
 from aind_metadata_upgrader.procedures.v1v2 import ProceduresUpgraderV1V2
 from aind_metadata_upgrader.processing.v1v2 import ProcessingV1V2
@@ -15,6 +17,7 @@ from aind_metadata_upgrader.subject.v1v2 import SubjectUpgraderV1V2
 
 ACQUISITION = [
     (SpecifierSet("<2.0.0"), AcquisitionV1V2),
+    (SpecifierSet(">=2.0.0,<3.0.0"), AcquisitionUpgraderV2V2),
 ]
 
 DATA_DESCRIPTION = [
@@ -23,6 +26,7 @@ DATA_DESCRIPTION = [
 
 INSTRUMENT = [
     (SpecifierSet("<2.0.0"), InstrumentUpgraderV1V2),
+    (SpecifierSet(">=2.0.0,<3.0.0"), InstrumentUpgraderV2V2),
 ]
 
 METADATA = [

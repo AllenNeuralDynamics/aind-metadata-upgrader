@@ -1,0 +1,2306 @@
+{
+    "_id": "00266698-e136-4ae8-86cd-16087ead3d50",
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "schema_version": "1.2.1",
+    "name": "behavior_827183_2026-02-07_17-14-12",
+    "created": "2026-02-08T15:32:49.519381Z",
+    "last_modified": "2026-03-25T23:17:54.007Z",
+    "location": "s3://aind-open-data/behavior_827183_2026-02-07_17-14-12",
+    "metadata_status": "Invalid",
+    "external_links": {
+        "Code Ocean": [
+            "20d2eefe-c838-4b3e-bd92-56002ae25a10"
+        ]
+    },
+    "subject": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "schema_version": "1.0.3",
+        "subject_id": "827183",
+        "sex": "Female",
+        "date_of_birth": "2025-09-03",
+        "genotype": "Adora2a-Cre/wt;Oi9(H11-CAG-LSL-Cas9)/wt",
+        "species": {
+            "name": "Mus musculus",
+            "registry": {
+                "name": "National Center for Biotechnology Information",
+                "abbreviation": "NCBI"
+            },
+            "registry_identifier": "NCBI:txid10090"
+        },
+        "alleles": [
+            {
+                "name": "Tg(Adora2a-cre)2MDkde",
+                "abbreviation": null,
+                "registry": {
+                    "name": "Mouse Genome Informatics",
+                    "abbreviation": "MGI"
+                },
+                "registry_identifier": "3852493"
+            }
+        ],
+        "background_strain": null,
+        "breeding_info": {
+            "breeding_group": "Exp-ND-01-001-2414",
+            "maternal_id": "814117",
+            "maternal_genotype": "Oi9(H11-CAG-LSL-Cas9)/wt",
+            "paternal_id": "816182",
+            "paternal_genotype": "Adora2a-Cre/wt"
+        },
+        "source": {
+            "name": "Allen Institute",
+            "abbreviation": "AI",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "03cpe7c52"
+        },
+        "rrid": null,
+        "restrictions": null,
+        "wellness_reports": [],
+        "housing": {
+            "cage_id": "8311827",
+            "room_id": "221",
+            "light_cycle": null,
+            "home_cage_enrichment": [],
+            "cohoused_subjects": []
+        },
+        "notes": null
+    },
+    "data_description": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "1.0.3",
+        "license": "CC-BY-4.0",
+        "platform": {
+            "name": "Behavior platform",
+            "abbreviation": "behavior"
+        },
+        "subject_id": "827183",
+        "creation_time": "2026-02-07T17:14:12-08:00",
+        "label": null,
+        "name": "behavior_827183_2026-02-07_17-14-12",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": "Anna Lakunina, Bowen Tan, Josh Siegle"
+            }
+        ],
+        "data_level": "raw",
+        "group": null,
+        "investigators": [
+            {
+                "name": "Anna Lakunina",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "name": "Bowen Tan",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "name": "Josh Siegle",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            }
+        ],
+        "project_name": "Striatum",
+        "restrictions": null,
+        "modality": [
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            },
+            {
+                "name": "Behavior videos",
+                "abbreviation": "behavior-videos"
+            },
+            {
+                "name": "Fiber photometry",
+                "abbreviation": "fib"
+            }
+        ],
+        "related_data": [],
+        "data_summary": null
+    },
+    "procedures": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "schema_version": "1.2.1",
+        "subject_id": "827183",
+        "subject_procedures": [
+            {
+                "procedure_type": "Surgery",
+                "start_date": "2025-11-12",
+                "experimenter_full_name": "NSB-2882",
+                "iacuc_protocol": "2414",
+                "animal_weight_prior": "19.8",
+                "animal_weight_post": "22.0",
+                "weight_unit": "gram",
+                "anaesthesia": {
+                    "type": "isoflurane",
+                    "duration": "180.0",
+                    "duration_unit": "minute",
+                    "level": "1.5"
+                },
+                "workstation_id": "SWS 9",
+                "procedures": [
+                    {
+                        "procedure_type": "Headframe",
+                        "headframe_type": "AI Straight bar",
+                        "headframe_part_number": null,
+                        "headframe_material": null,
+                        "well_part_number": null,
+                        "well_type": "No Well"
+                    },
+                    {
+                        "injection_materials": [],
+                        "recovery_time": "20.0",
+                        "recovery_time_unit": "minute",
+                        "injection_duration": null,
+                        "injection_duration_unit": "minute",
+                        "instrument_id": null,
+                        "injection_coordinate_ml": "-0.4",
+                        "injection_coordinate_ap": "2.5",
+                        "injection_coordinate_depth": [
+                            "2.0"
+                        ],
+                        "injection_coordinate_unit": "millimeter",
+                        "injection_coordinate_reference": "Bregma",
+                        "bregma_to_lambda_distance": null,
+                        "bregma_to_lambda_unit": "millimeter",
+                        "injection_angle": null,
+                        "injection_angle_unit": "degrees",
+                        "targeted_structure": null,
+                        "injection_hemisphere": "Left",
+                        "procedure_type": "Nanoject injection",
+                        "injection_volume": [
+                            "300.0"
+                        ],
+                        "injection_volume_unit": "nanoliter",
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4"
+                    },
+                    {
+                        "procedure_type": "Fiber implant",
+                        "probes": [
+                            {
+                                "ophys_probe": {
+                                    "device_type": "Fiber optic probe",
+                                    "serial_number": null,
+                                    "manufacturer": {
+                                        "name": "Neurophotometrics",
+                                        "abbreviation": null,
+                                        "registry": null,
+                                        "registry_identifier": null
+                                    },
+                                    "model": null,
+                                    "path_to_cad": null,
+                                    "port_index": null,
+                                    "additional_settings": {},
+                                    "notes": null,
+                                    "core_diameter": 200,
+                                    "core_diameter_unit": "micrometer",
+                                    "numerical_aperture": 0.37,
+                                    "ferrule_material": "Ceramic",
+                                    "active_length": null,
+                                    "total_length": "2.5",
+                                    "length_unit": "millimeter",
+                                    "name": "Fiber_0"
+                                },
+                                "targeted_structure": null,
+                                "stereotactic_coordinate_ap": "2.5",
+                                "stereotactic_coordinate_ml": "-0.4",
+                                "stereotactic_coordinate_dv": "-1.9",
+                                "stereotactic_coordinate_unit": "millimeter",
+                                "stereotactic_coordinate_reference": "Bregma",
+                                "bregma_to_lambda_distance": null,
+                                "bregma_to_lambda_unit": "millimeter",
+                                "angle": null,
+                                "angle_unit": "degrees",
+                                "notes": null
+                            }
+                        ]
+                    },
+                    {
+                        "injection_materials": [],
+                        "recovery_time": "20.0",
+                        "recovery_time_unit": "minute",
+                        "injection_duration": null,
+                        "injection_duration_unit": "minute",
+                        "instrument_id": null,
+                        "injection_coordinate_ml": "-1.1",
+                        "injection_coordinate_ap": "1.3",
+                        "injection_coordinate_depth": [
+                            "4.0"
+                        ],
+                        "injection_coordinate_unit": "millimeter",
+                        "injection_coordinate_reference": "Bregma",
+                        "bregma_to_lambda_distance": null,
+                        "bregma_to_lambda_unit": "millimeter",
+                        "injection_angle": null,
+                        "injection_angle_unit": "degrees",
+                        "targeted_structure": null,
+                        "injection_hemisphere": "Left",
+                        "procedure_type": "Nanoject injection",
+                        "injection_volume": [
+                            "300.0"
+                        ],
+                        "injection_volume_unit": "nanoliter",
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4"
+                    },
+                    {
+                        "procedure_type": "Fiber implant",
+                        "probes": [
+                            {
+                                "ophys_probe": {
+                                    "device_type": "Fiber optic probe",
+                                    "serial_number": null,
+                                    "manufacturer": {
+                                        "name": "Neurophotometrics",
+                                        "abbreviation": null,
+                                        "registry": null,
+                                        "registry_identifier": null
+                                    },
+                                    "model": null,
+                                    "path_to_cad": null,
+                                    "port_index": null,
+                                    "additional_settings": {},
+                                    "notes": null,
+                                    "core_diameter": 200,
+                                    "core_diameter_unit": "micrometer",
+                                    "numerical_aperture": 0.37,
+                                    "ferrule_material": "Ceramic",
+                                    "active_length": null,
+                                    "total_length": "4.5",
+                                    "length_unit": "millimeter",
+                                    "name": "Fiber_1"
+                                },
+                                "targeted_structure": null,
+                                "stereotactic_coordinate_ap": "1.3",
+                                "stereotactic_coordinate_ml": "-1.1",
+                                "stereotactic_coordinate_dv": "-3.9",
+                                "stereotactic_coordinate_unit": "millimeter",
+                                "stereotactic_coordinate_reference": "Bregma",
+                                "bregma_to_lambda_distance": null,
+                                "bregma_to_lambda_unit": "millimeter",
+                                "angle": null,
+                                "angle_unit": "degrees",
+                                "notes": null
+                            }
+                        ]
+                    },
+                    {
+                        "injection_materials": [],
+                        "recovery_time": "20.0",
+                        "recovery_time_unit": "minute",
+                        "injection_duration": null,
+                        "injection_duration_unit": "minute",
+                        "instrument_id": null,
+                        "injection_coordinate_ml": "-1.5",
+                        "injection_coordinate_ap": "-0.35",
+                        "injection_coordinate_depth": [
+                            "3.5"
+                        ],
+                        "injection_coordinate_unit": "millimeter",
+                        "injection_coordinate_reference": "Bregma",
+                        "bregma_to_lambda_distance": null,
+                        "bregma_to_lambda_unit": "millimeter",
+                        "injection_angle": null,
+                        "injection_angle_unit": "degrees",
+                        "targeted_structure": [],
+                        "injection_hemisphere": "Left",
+                        "procedure_type": "Nanoject injection",
+                        "injection_volume": [
+                            "300.0"
+                        ],
+                        "injection_volume_unit": "nanoliter",
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4"
+                    },
+                    {
+                        "procedure_type": "Fiber implant",
+                        "probes": [
+                            {
+                                "ophys_probe": {
+                                    "device_type": "Fiber optic probe",
+                                    "serial_number": null,
+                                    "manufacturer": {
+                                        "name": "Neurophotometrics",
+                                        "abbreviation": null,
+                                        "registry": null,
+                                        "registry_identifier": null
+                                    },
+                                    "model": null,
+                                    "path_to_cad": null,
+                                    "port_index": null,
+                                    "additional_settings": {},
+                                    "notes": null,
+                                    "core_diameter": 200,
+                                    "core_diameter_unit": "micrometer",
+                                    "numerical_aperture": 0.37,
+                                    "ferrule_material": "Ceramic",
+                                    "active_length": null,
+                                    "total_length": "4.0",
+                                    "length_unit": "millimeter",
+                                    "name": "Fiber_2"
+                                },
+                                "targeted_structure": [],
+                                "stereotactic_coordinate_ap": "-0.35",
+                                "stereotactic_coordinate_ml": "-1.5",
+                                "stereotactic_coordinate_dv": "-3.4",
+                                "stereotactic_coordinate_unit": "millimeter",
+                                "stereotactic_coordinate_reference": "Bregma",
+                                "bregma_to_lambda_distance": null,
+                                "bregma_to_lambda_unit": "millimeter",
+                                "angle": null,
+                                "angle_unit": "degrees",
+                                "notes": null
+                            }
+                        ]
+                    },
+                    {
+                        "injection_materials": [],
+                        "recovery_time": "20.0",
+                        "recovery_time_unit": "minute",
+                        "injection_duration": null,
+                        "injection_duration_unit": "minute",
+                        "instrument_id": null,
+                        "injection_coordinate_ml": "-1.0",
+                        "injection_coordinate_ap": "-3.5",
+                        "injection_coordinate_depth": [
+                            "4.0"
+                        ],
+                        "injection_coordinate_unit": "millimeter",
+                        "injection_coordinate_reference": "Bregma",
+                        "bregma_to_lambda_distance": null,
+                        "bregma_to_lambda_unit": "millimeter",
+                        "injection_angle": null,
+                        "injection_angle_unit": "degrees",
+                        "targeted_structure": [],
+                        "injection_hemisphere": "Left",
+                        "procedure_type": "Nanoject injection",
+                        "injection_volume": [
+                            "300.0"
+                        ],
+                        "injection_volume_unit": "nanoliter",
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.bp2l6nr7kgqe/v4"
+                    },
+                    {
+                        "procedure_type": "Fiber implant",
+                        "probes": [
+                            {
+                                "ophys_probe": {
+                                    "device_type": "Fiber optic probe",
+                                    "serial_number": null,
+                                    "manufacturer": {
+                                        "name": "Neurophotometrics",
+                                        "abbreviation": null,
+                                        "registry": null,
+                                        "registry_identifier": null
+                                    },
+                                    "model": null,
+                                    "path_to_cad": null,
+                                    "port_index": null,
+                                    "additional_settings": {},
+                                    "notes": null,
+                                    "core_diameter": 200,
+                                    "core_diameter_unit": "micrometer",
+                                    "numerical_aperture": 0.37,
+                                    "ferrule_material": "Ceramic",
+                                    "active_length": null,
+                                    "total_length": "4.5",
+                                    "length_unit": "millimeter",
+                                    "name": "Fiber_3"
+                                },
+                                "targeted_structure": [],
+                                "stereotactic_coordinate_ap": "-3.5",
+                                "stereotactic_coordinate_ml": "-1.0",
+                                "stereotactic_coordinate_dv": "-3.9",
+                                "stereotactic_coordinate_unit": "millimeter",
+                                "stereotactic_coordinate_reference": "Bregma",
+                                "bregma_to_lambda_distance": null,
+                                "bregma_to_lambda_unit": "millimeter",
+                                "angle": null,
+                                "angle_unit": "degrees",
+                                "notes": null
+                            }
+                        ]
+                    }
+                ],
+                "notes": null,
+                "protocol_id": "dx.doi.org/10.17504/protocols.io.kqdg392o7g25/v2"
+            },
+            {
+                "procedure_type": "Water restriction",
+                "target_fraction_weight": 85,
+                "target_fraction_weight_unit": "percent",
+                "minimum_water_per_day": "1.0",
+                "minimum_water_per_day_unit": "milliliter",
+                "baseline_weight": "23.7",
+                "weight_unit": "gram",
+                "start_date": "2026-01-09",
+                "end_date": null
+            }
+        ],
+        "specimen_procedures": [],
+        "notes": null
+    },
+    "session": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/session.py",
+        "schema_version": "1.0.1",
+        "protocol_id": [
+            ""
+        ],
+        "experimenter_full_name": [
+            "bowen.tan"
+        ],
+        "session_start_time": "2026-02-07T17:14:29.502449-08:00",
+        "session_end_time": "2026-02-07T18:40:31.646457-08:00",
+        "session_type": "Uncoupled Baiting",
+        "iacuc_protocol": "2414.0",
+        "rig_id": "447_3D_20260203",
+        "calibrations": [],
+        "maintenance": [],
+        "subject_id": "827183",
+        "animal_weight_prior": null,
+        "animal_weight_post": "21.7",
+        "weight_unit": "gram",
+        "anaesthesia": null,
+        "data_streams": [
+            {
+                "stream_start_time": "2026-02-07T17:14:29.502449-08:00",
+                "stream_end_time": "2026-02-07T18:40:31.646457-08:00",
+                "daq_names": [
+                    ""
+                ],
+                "camera_names": [
+                    "Face Side Right",
+                    "Face Bottom"
+                ],
+                "light_sources": [
+                    {
+                        "device_type": "Light emitting diode",
+                        "name": "IR LED",
+                        "excitation_power": null,
+                        "excitation_power_unit": "milliwatt"
+                    },
+                    {
+                        "device_type": "Light emitting diode",
+                        "name": "470nm LED",
+                        "excitation_power": null,
+                        "excitation_power_unit": "milliwatt"
+                    },
+                    {
+                        "device_type": "Light emitting diode",
+                        "name": "415nm LED",
+                        "excitation_power": null,
+                        "excitation_power_unit": "milliwatt"
+                    },
+                    {
+                        "device_type": "Light emitting diode",
+                        "name": "565nm LED",
+                        "excitation_power": null,
+                        "excitation_power_unit": "milliwatt"
+                    }
+                ],
+                "ephys_modules": [],
+                "stick_microscopes": [],
+                "manipulator_modules": [],
+                "detectors": [
+                    {
+                        "name": "Green CMOS",
+                        "exposure_time": "4870.406143",
+                        "exposure_time_unit": "microsecond",
+                        "trigger_type": "External"
+                    },
+                    {
+                        "name": "Red CMOS",
+                        "exposure_time": "4870.406143",
+                        "exposure_time_unit": "microsecond",
+                        "trigger_type": "External"
+                    }
+                ],
+                "fiber_connections": [
+                    {
+                        "fiber_name": "Fiber 0",
+                        "patch_cord_name": "Patch Cord A",
+                        "patch_cord_output_power": "0",
+                        "output_power_unit": "PowerUnit.UW",
+                        "channel": {
+                            "channel_name": "Fiber 0_red",
+                            "intended_measurement": null,
+                            "light_source_name": "565nm LED",
+                            "filter_names": [
+                                "Red emission bandpass filter",
+                                "Emission Dichroic",
+                                "dual-edge standard epi-fluorescence dichroic beamsplitter",
+                                "Excitation filter 560nm"
+                            ],
+                            "detector_name": "FLIR CMOS for Red Channel",
+                            "excitation_wavelength": 565,
+                            "excitation_power": 20,
+                            "excitation_power_unit": "microwatt",
+                            "emission_wavelength": 590,
+                            "description": "Red emission (590nm) with yellow excitation (565nm)",
+                            "emission_wavelength_unit": "nanometer"
+                        }
+                    },
+                    {
+                        "fiber_name": "Fiber 0",
+                        "patch_cord_name": "Patch Cord A",
+                        "patch_cord_output_power": "0",
+                        "output_power_unit": "PowerUnit.UW",
+                        "channel": {
+                            "channel_name": "Fiber 0_green",
+                            "intended_measurement": null,
+                            "light_source_name": "470nm LED",
+                            "filter_names": [
+                                "Green emission bandpass filter",
+                                "dual-edge standard epi-fluorescence dichroic beamsplitter",
+                                "Excitation filter 470nm"
+                            ],
+                            "detector_name": "FLIR CMOS for Green Channel",
+                            "excitation_wavelength": 470,
+                            "excitation_power": 20,
+                            "excitation_power_unit": "microwatt",
+                            "emission_wavelength": 510,
+                            "description": "Green emission (510nm) with blue excitation (470nm)",
+                            "emission_wavelength_unit": "nanometer"
+                        }
+                    },
+                    {
+                        "fiber_name": "Fiber 0",
+                        "patch_cord_name": "Patch Cord A",
+                        "patch_cord_output_power": "0",
+                        "output_power_unit": "PowerUnit.UW",
+                        "channel": {
+                            "channel_name": "Fiber 0_isosbestic",
+                            "intended_measurement": null,
+                            "light_source_name": "415nm LED",
+                            "filter_names": [
+                                "Green emission bandpass filter",
+                                "dual-edge standard epi-fluorescence dichroic beamsplitter",
+                                "Excitation filter 410nm"
+                            ],
+                            "detector_name": "FLIR CMOS for Green Channel",
+                            "excitation_wavelength": 415,
+                            "excitation_power": 20,
+                            "excitation_power_unit": "microwatt",
+                            "emission_wavelength": 510,
+                            "description": "Isosbestic control emission (510nm) with UV excitation (415nm)",
+                            "emission_wavelength_unit": "nanometer"
+                        }
+                    },
+                    {
+                        "fiber_name": "Fiber 1",
+                        "patch_cord_name": "Patch Cord B",
+                        "patch_cord_output_power": "0",
+                        "output_power_unit": "PowerUnit.UW",
+                        "channel": {
+                            "channel_name": "Fiber 1_red",
+                            "intended_measurement": null,
+                            "light_source_name": "565nm LED",
+                            "filter_names": [
+                                "Red emission bandpass filter",
+                                "Emission Dichroic",
+                                "dual-edge standard epi-fluorescence dichroic beamsplitter",
+                                "Excitation filter 560nm"
+                            ],
+                            "detector_name": "FLIR CMOS for Red Channel",
+                            "excitation_wavelength": 565,
+                            "excitation_power": 20,
+                            "excitation_power_unit": "microwatt",
+                            "emission_wavelength": 590,
+                            "description": "Red emission (590nm) with yellow excitation (565nm)",
+                            "emission_wavelength_unit": "nanometer"
+                        }
+                    },
+                    {
+                        "fiber_name": "Fiber 1",
+                        "patch_cord_name": "Patch Cord B",
+                        "patch_cord_output_power": "0",
+                        "output_power_unit": "PowerUnit.UW",
+                        "channel": {
+                            "channel_name": "Fiber 1_green",
+                            "intended_measurement": null,
+                            "light_source_name": "470nm LED",
+                            "filter_names": [
+                                "Green emission bandpass filter",
+                                "dual-edge standard epi-fluorescence dichroic beamsplitter",
+                                "Excitation filter 470nm"
+                            ],
+                            "detector_name": "FLIR CMOS for Green Channel",
+                            "excitation_wavelength": 470,
+                            "excitation_power": 20,
+                            "excitation_power_unit": "microwatt",
+                            "emission_wavelength": 510,
+                            "description": "Green emission (510nm) with blue excitation (470nm)",
+                            "emission_wavelength_unit": "nanometer"
+                        }
+                    },
+                    {
+                        "fiber_name": "Fiber 1",
+                        "patch_cord_name": "Patch Cord B",
+                        "patch_cord_output_power": "0",
+                        "output_power_unit": "PowerUnit.UW",
+                        "channel": {
+                            "channel_name": "Fiber 1_isosbestic",
+                            "intended_measurement": null,
+                            "light_source_name": "415nm LED",
+                            "filter_names": [
+                                "Green emission bandpass filter",
+                                "dual-edge standard epi-fluorescence dichroic beamsplitter",
+                                "Excitation filter 410nm"
+                            ],
+                            "detector_name": "FLIR CMOS for Green Channel",
+                            "excitation_wavelength": 415,
+                            "excitation_power": 20,
+                            "excitation_power_unit": "microwatt",
+                            "emission_wavelength": 510,
+                            "description": "Isosbestic control emission (510nm) with UV excitation (415nm)",
+                            "emission_wavelength_unit": "nanometer"
+                        }
+                    },
+                    {
+                        "fiber_name": "Fiber 2",
+                        "patch_cord_name": "Patch Cord C",
+                        "patch_cord_output_power": "0",
+                        "output_power_unit": "PowerUnit.UW",
+                        "channel": {
+                            "channel_name": "Fiber 2_red",
+                            "intended_measurement": null,
+                            "light_source_name": "565nm LED",
+                            "filter_names": [
+                                "Red emission bandpass filter",
+                                "Emission Dichroic",
+                                "dual-edge standard epi-fluorescence dichroic beamsplitter",
+                                "Excitation filter 560nm"
+                            ],
+                            "detector_name": "FLIR CMOS for Red Channel",
+                            "excitation_wavelength": 565,
+                            "excitation_power": 20,
+                            "excitation_power_unit": "microwatt",
+                            "emission_wavelength": 590,
+                            "description": "Red emission (590nm) with yellow excitation (565nm)",
+                            "emission_wavelength_unit": "nanometer"
+                        }
+                    },
+                    {
+                        "fiber_name": "Fiber 2",
+                        "patch_cord_name": "Patch Cord C",
+                        "patch_cord_output_power": "0",
+                        "output_power_unit": "PowerUnit.UW",
+                        "channel": {
+                            "channel_name": "Fiber 2_green",
+                            "intended_measurement": null,
+                            "light_source_name": "470nm LED",
+                            "filter_names": [
+                                "Green emission bandpass filter",
+                                "dual-edge standard epi-fluorescence dichroic beamsplitter",
+                                "Excitation filter 470nm"
+                            ],
+                            "detector_name": "FLIR CMOS for Green Channel",
+                            "excitation_wavelength": 470,
+                            "excitation_power": 20,
+                            "excitation_power_unit": "microwatt",
+                            "emission_wavelength": 510,
+                            "description": "Green emission (510nm) with blue excitation (470nm)",
+                            "emission_wavelength_unit": "nanometer"
+                        }
+                    },
+                    {
+                        "fiber_name": "Fiber 2",
+                        "patch_cord_name": "Patch Cord C",
+                        "patch_cord_output_power": "0",
+                        "output_power_unit": "PowerUnit.UW",
+                        "channel": {
+                            "channel_name": "Fiber 2_isosbestic",
+                            "intended_measurement": null,
+                            "light_source_name": "415nm LED",
+                            "filter_names": [
+                                "Green emission bandpass filter",
+                                "dual-edge standard epi-fluorescence dichroic beamsplitter",
+                                "Excitation filter 410nm"
+                            ],
+                            "detector_name": "FLIR CMOS for Green Channel",
+                            "excitation_wavelength": 415,
+                            "excitation_power": 20,
+                            "excitation_power_unit": "microwatt",
+                            "emission_wavelength": 510,
+                            "description": "Isosbestic control emission (510nm) with UV excitation (415nm)",
+                            "emission_wavelength_unit": "nanometer"
+                        }
+                    },
+                    {
+                        "fiber_name": "Fiber 3",
+                        "patch_cord_name": "Patch Cord D",
+                        "patch_cord_output_power": "0",
+                        "output_power_unit": "PowerUnit.UW",
+                        "channel": {
+                            "channel_name": "Fiber 3_red",
+                            "intended_measurement": null,
+                            "light_source_name": "565nm LED",
+                            "filter_names": [
+                                "Red emission bandpass filter",
+                                "Emission Dichroic",
+                                "dual-edge standard epi-fluorescence dichroic beamsplitter",
+                                "Excitation filter 560nm"
+                            ],
+                            "detector_name": "FLIR CMOS for Red Channel",
+                            "excitation_wavelength": 565,
+                            "excitation_power": 20,
+                            "excitation_power_unit": "microwatt",
+                            "emission_wavelength": 590,
+                            "description": "Red emission (590nm) with yellow excitation (565nm)",
+                            "emission_wavelength_unit": "nanometer"
+                        }
+                    },
+                    {
+                        "fiber_name": "Fiber 3",
+                        "patch_cord_name": "Patch Cord D",
+                        "patch_cord_output_power": "0",
+                        "output_power_unit": "PowerUnit.UW",
+                        "channel": {
+                            "channel_name": "Fiber 3_green",
+                            "intended_measurement": null,
+                            "light_source_name": "470nm LED",
+                            "filter_names": [
+                                "Green emission bandpass filter",
+                                "dual-edge standard epi-fluorescence dichroic beamsplitter",
+                                "Excitation filter 470nm"
+                            ],
+                            "detector_name": "FLIR CMOS for Green Channel",
+                            "excitation_wavelength": 470,
+                            "excitation_power": 20,
+                            "excitation_power_unit": "microwatt",
+                            "emission_wavelength": 510,
+                            "description": "Green emission (510nm) with blue excitation (470nm)",
+                            "emission_wavelength_unit": "nanometer"
+                        }
+                    },
+                    {
+                        "fiber_name": "Fiber 3",
+                        "patch_cord_name": "Patch Cord D",
+                        "patch_cord_output_power": "0",
+                        "output_power_unit": "PowerUnit.UW",
+                        "channel": {
+                            "channel_name": "Fiber 3_isosbestic",
+                            "intended_measurement": null,
+                            "light_source_name": "415nm LED",
+                            "filter_names": [
+                                "Green emission bandpass filter",
+                                "dual-edge standard epi-fluorescence dichroic beamsplitter",
+                                "Excitation filter 410nm"
+                            ],
+                            "detector_name": "FLIR CMOS for Green Channel",
+                            "excitation_wavelength": 415,
+                            "excitation_power": 20,
+                            "excitation_power_unit": "microwatt",
+                            "emission_wavelength": 510,
+                            "description": "Isosbestic control emission (510nm) with UV excitation (415nm)",
+                            "emission_wavelength_unit": "nanometer"
+                        }
+                    }
+                ],
+                "fiber_modules": [],
+                "ophys_fovs": [],
+                "slap_fovs": [],
+                "stack_parameters": null,
+                "mri_scans": [],
+                "stream_modalities": [
+                    {
+                        "name": "Behavior videos",
+                        "abbreviation": "behavior-videos"
+                    },
+                    {
+                        "name": "Fiber photometry",
+                        "abbreviation": "fib"
+                    }
+                ],
+                "software": [
+                    {
+                        "name": "dynamic-foraging-task",
+                        "version": "behavior branch:main   commit ID:da8d2e9594f47fcb6630dedc1290b966e802a4d1    version:1.6.65; metadata branch: main   commit ID:da8d2e9594f47fcb6630dedc1290b966e802a4d1   version:1.6.65",
+                        "url": "https://github.com/AllenNeuralDynamics/dynamic-foraging-task.git",
+                        "parameters": {}
+                    }
+                ],
+                "notes": "None;Fib modality: fib mode: Normal This record has been updated to include intended measurements. Fiber connections are repeated for fibers with multiple channels. Disconnected fibers are marked with fiber_name 'disconnected'."
+            }
+        ],
+        "stimulus_epochs": [
+            {
+                "stimulus_start_time": "2026-02-07T17:14:29.502449-08:00",
+                "stimulus_end_time": "2026-02-07T18:35:35.636703-08:00",
+                "stimulus_name": "The behavior auditory go cue",
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "dynamic-foraging-task",
+                        "version": "behavior branch:main   commit ID:da8d2e9594f47fcb6630dedc1290b966e802a4d1    version:1.6.65; metadata branch: main   commit ID:da8d2e9594f47fcb6630dedc1290b966e802a4d1   version:1.6.65",
+                        "url": "https://github.com/AllenNeuralDynamics/dynamic-foraging-task.git",
+                        "parameters": {}
+                    }
+                ],
+                "script": null,
+                "stimulus_modalities": [
+                    "Auditory"
+                ],
+                "stimulus_parameters": [
+                    {
+                        "stimulus_type": "Auditory Stimulation",
+                        "sitmulus_name": "auditory go cue",
+                        "sample_frequency": "96000",
+                        "amplitude_modulation_frequency": 7500,
+                        "frequency_unit": "hertz",
+                        "bandpass_low_frequency": null,
+                        "bandpass_high_frequency": null,
+                        "bandpass_filter_type": null,
+                        "bandpass_order": null,
+                        "notes": null
+                    }
+                ],
+                "stimulus_device_names": [
+                    "Stimulus Speaker"
+                ],
+                "speaker_config": {
+                    "name": "Stimulus Speaker",
+                    "volume": "71",
+                    "volume_unit": "decibels"
+                },
+                "light_source_config": [],
+                "output_parameters": {
+                    "meta": {
+                        "box": "447-3-D",
+                        "session_run_time_in_min": 81
+                    },
+                    "water": {
+                        "water_in_session_foraging": 0.388,
+                        "water_in_session_manual": 0.026000000000000023,
+                        "water_in_session_total": 0.41400000000000003,
+                        "water_after_session": 0.586,
+                        "water_day_total": 1
+                    },
+                    "performance": {
+                        "foraging_efficiency": 0.7385131285310089,
+                        "foraging_efficiency_with_actual_random_seed": 0.7461538461538462
+                    },
+                    "task_parameters": {
+                        "ITIMin": "1.0",
+                        "DelayMin": "1.0",
+                        "DelayBeta": "0.0",
+                        "DelayMax": "1.0",
+                        "Task": "Uncoupled Baiting",
+                        "BlockMax": "35",
+                        "ITIMax": "30.0",
+                        "ITIBeta": "3.0",
+                        "BlockBeta": "20",
+                        "BlockMin": "20",
+                        "RightValue_volume": "2.00",
+                        "LeftValue_volume": "2.00",
+                        "stage_in_use": "STAGE_FINAL",
+                        "curriculum_in_use": "Uncoupled Baiting (v2.3@1.0)",
+                        "reward_probability": "0.1, 0.4, 0.7"
+                    },
+                    "ffmpeg_parameters": {
+                        "ffmpeg_input_args": "-colorspace bt709 -color_primaries bt709 -color_range full -color_trc linear",
+                        "ffmpeg_output_args": "-vcodec h264_nvenc -rc vbr -cq 23 -preset fast -v warning"
+                    }
+                },
+                "reward_consumed_during_epoch": "388.0",
+                "reward_consumed_unit": "microliter",
+                "trials_total": 450,
+                "trials_finished": 379,
+                "trials_rewarded": 194,
+                "notes": "The duration of go cue is 100 ms. The frequency is 7500 Hz. Amplitude is 71dB. The total reward consumed in the session is 388.0 microliters. The total reward including consumed in the session and supplementary water is 1.0 milliliters."
+            }
+        ],
+        "mouse_platform_name": "mouse_tube_foraging",
+        "active_mouse_platform": false,
+        "headframe_registration": null,
+        "reward_delivery": null,
+        "reward_consumed_total": "388.0",
+        "reward_consumed_unit": "microliter",
+        "notes": ""
+    },
+    "rig": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/rig.py",
+        "schema_version": "1.0.1",
+        "rig_id": "447_3D_20260203",
+        "modification_date": "2026-02-03",
+        "mouse_platform": {
+            "device_type": "Tube",
+            "name": "mouse_tube_foraging",
+            "serial_number": null,
+            "manufacturer": {
+                "name": "Custom",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            },
+            "model": null,
+            "path_to_cad": null,
+            "port_index": null,
+            "additional_settings": {},
+            "notes": null,
+            "surface_material": null,
+            "date_surface_replaced": null,
+            "diameter": "3.0",
+            "diameter_unit": "centimeter"
+        },
+        "stimulus_devices": [
+            {
+                "device_type": "Reward delivery",
+                "stage_type": {
+                    "device_type": "Motorized stage",
+                    "name": "AIND lick spout stage",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Allen Institute for Neural Dynamics",
+                        "abbreviation": "AIND",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "04szwah67"
+                    },
+                    "model": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": "https://allenneuraldynamics.github.io/Bonsai.AllenNeuralDynamics/articles/aind-manipulator.html",
+                    "travel": "30",
+                    "travel_unit": "millimeter",
+                    "firmware": null
+                },
+                "reward_spouts": [
+                    {
+                        "device_type": "Reward spout",
+                        "name": "Left lick spout",
+                        "serial_number": null,
+                        "manufacturer": null,
+                        "model": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "additional_settings": {},
+                        "notes": null,
+                        "side": "Left",
+                        "spout_diameter": "1.2",
+                        "spout_diameter_unit": "millimeter",
+                        "spout_position": null,
+                        "solenoid_valve": {
+                            "device_type": "Solenoid",
+                            "name": "Solenoid Left",
+                            "serial_number": null,
+                            "manufacturer": {
+                                "name": "The Lee Company",
+                                "abbreviation": null,
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": "LHDA1233415H",
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "additional_settings": {},
+                            "notes": null
+                        },
+                        "lick_sensor": {
+                            "device_type": "Lick Sensor",
+                            "name": "Lick Sensor Left",
+                            "serial_number": null,
+                            "manufacturer": {
+                                "name": "Janelia Research Campus",
+                                "abbreviation": "Janelia",
+                                "registry": {
+                                    "name": "Research Organization Registry",
+                                    "abbreviation": "ROR"
+                                },
+                                "registry_identifier": "013sk6x84"
+                            },
+                            "model": null,
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "additional_settings": {},
+                            "notes": null
+                        },
+                        "lick_sensor_type": "Capacitive"
+                    },
+                    {
+                        "device_type": "Reward spout",
+                        "name": "Right lick spout",
+                        "serial_number": null,
+                        "manufacturer": null,
+                        "model": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "additional_settings": {},
+                        "notes": null,
+                        "side": "Right",
+                        "spout_diameter": "1.2",
+                        "spout_diameter_unit": "millimeter",
+                        "spout_position": null,
+                        "solenoid_valve": {
+                            "device_type": "Solenoid",
+                            "name": "Solenoid Right",
+                            "serial_number": null,
+                            "manufacturer": {
+                                "name": "The Lee Company",
+                                "abbreviation": null,
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": "LHDA1233415H",
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "additional_settings": {},
+                            "notes": null
+                        },
+                        "lick_sensor": {
+                            "device_type": "Lick Sensor",
+                            "name": "Lick Sensor Right",
+                            "serial_number": null,
+                            "manufacturer": {
+                                "name": "Janelia Research Campus",
+                                "abbreviation": "Janelia",
+                                "registry": {
+                                    "name": "Research Organization Registry",
+                                    "abbreviation": "ROR"
+                                },
+                                "registry_identifier": "013sk6x84"
+                            },
+                            "model": null,
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "additional_settings": {},
+                            "notes": null
+                        },
+                        "lick_sensor_type": "Capacitive"
+                    }
+                ]
+            },
+            {
+                "device_type": "Speaker",
+                "name": "Stimulus Speaker",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Tymphany",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "XT25SC90-04",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "position": null
+            }
+        ],
+        "cameras": [
+            {
+                "name": "Right Camera assembly",
+                "camera_target": "Face side right",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "Right size of face camera",
+                    "serial_number": "23349434",
+                    "manufacturer": {
+                        "name": "Teledyne FLIR",
+                        "abbreviation": "FLIR",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "Air",
+                    "computer_name": "W10DT714030",
+                    "frame_rate": null,
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Monochrome",
+                    "sensor_width": 720,
+                    "sensor_height": 540,
+                    "size_unit": "pixel",
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inch",
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": null,
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Behavior Video Lens Right Side",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Fujinon",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "CF16ZA-1S",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "focal_length": "16",
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": null,
+                "position": null
+            },
+            {
+                "name": "Bottom Camera assembly",
+                "camera_target": "Face bottom",
+                "camera": {
+                    "device_type": "Detector",
+                    "name": "bottom of face camera",
+                    "serial_number": "23347798",
+                    "manufacturer": {
+                        "name": "Teledyne FLIR",
+                        "abbreviation": "FLIR",
+                        "registry": {
+                            "name": "Research Organization Registry",
+                            "abbreviation": "ROR"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "Blackfly S BFS-U3-04S2M",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": null,
+                    "detector_type": "Camera",
+                    "data_interface": "USB",
+                    "cooling": "Air",
+                    "computer_name": "W10DT714030",
+                    "frame_rate": null,
+                    "frame_rate_unit": "hertz",
+                    "immersion": null,
+                    "chroma": "Monochrome",
+                    "sensor_width": 720,
+                    "sensor_height": 540,
+                    "size_unit": "pixel",
+                    "sensor_format": "1/2.9",
+                    "sensor_format_unit": "inch",
+                    "bit_depth": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bin_height": null,
+                    "bin_unit": "pixel",
+                    "gain": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_width": null,
+                    "crop_height": null,
+                    "crop_unit": "pixel",
+                    "recording_software": null,
+                    "driver": null,
+                    "driver_version": null
+                },
+                "lens": {
+                    "device_type": "Lens",
+                    "name": "Behavior Video Lens Bottom of face",
+                    "serial_number": null,
+                    "manufacturer": {
+                        "name": "Other",
+                        "abbreviation": null,
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "LM25HC",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "additional_settings": {},
+                    "notes": "Manufacturer is Kowa",
+                    "focal_length": "25",
+                    "focal_length_unit": "millimeter",
+                    "size": null,
+                    "lens_size_unit": "inch",
+                    "optimized_wavelength_range": null,
+                    "wavelength_unit": "nanometer",
+                    "max_aperture": null
+                },
+                "filter": null,
+                "position": null
+            }
+        ],
+        "enclosure": {
+            "device_type": "Enclosure",
+            "name": "Behavior enclosure",
+            "serial_number": null,
+            "manufacturer": {
+                "name": "Allen Institute for Neural Dynamics",
+                "abbreviation": "AIND",
+                "registry": {
+                    "name": "Research Organization Registry",
+                    "abbreviation": "ROR"
+                },
+                "registry_identifier": "04szwah67"
+            },
+            "model": null,
+            "path_to_cad": null,
+            "port_index": null,
+            "additional_settings": {},
+            "notes": null,
+            "size": {
+                "width": 54,
+                "length": 54,
+                "height": 54,
+                "unit": "centimeter"
+            },
+            "internal_material": "",
+            "external_material": "",
+            "grounded": false,
+            "laser_interlock": false,
+            "air_filtration": false
+        },
+        "ephys_assemblies": [],
+        "fiber_assemblies": [],
+        "stick_microscopes": [],
+        "laser_assemblies": [],
+        "patch_cords": [
+            {
+                "device_type": "Patch",
+                "name": "Bundle Branching Fiber-optic Patch Cord",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Doric",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "059n53q30"
+                },
+                "model": "BBP(4)_200/220/900-0.37_Custom_FCM-4xMF1.25",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "core_diameter": "200",
+                "numerical_aperture": "0.37",
+                "photobleaching_date": null
+            }
+        ],
+        "light_sources": [
+            {
+                "device_type": "Light emitting diode",
+                "name": "IR LED",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M810L5",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "wavelength": 810,
+                "wavelength_unit": "nanometer",
+                "bandwidth": null,
+                "bandwidth_unit": "nanometer"
+            },
+            {
+                "device_type": "Light emitting diode",
+                "name": "470nm LED",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M470F3",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "wavelength": 470,
+                "wavelength_unit": "nanometer",
+                "bandwidth": null,
+                "bandwidth_unit": "nanometer"
+            },
+            {
+                "device_type": "Light emitting diode",
+                "name": "415nm LED",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M415F3",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "wavelength": 415,
+                "wavelength_unit": "nanometer",
+                "bandwidth": null,
+                "bandwidth_unit": "nanometer"
+            },
+            {
+                "device_type": "Light emitting diode",
+                "name": "565nm LED",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M565F3",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "wavelength": 565,
+                "wavelength_unit": "nanometer",
+                "bandwidth": null,
+                "bandwidth_unit": "nanometer"
+            }
+        ],
+        "detectors": [
+            {
+                "device_type": "Detector",
+                "name": "Green CMOS",
+                "serial_number": "23391004",
+                "manufacturer": {
+                    "name": "Teledyne FLIR",
+                    "abbreviation": "FLIR",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "01j1gwp17"
+                },
+                "model": "BFS-U3-20S40M",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "detector_type": "Camera",
+                "data_interface": "USB",
+                "cooling": "Air",
+                "computer_name": null,
+                "frame_rate": null,
+                "frame_rate_unit": "hertz",
+                "immersion": "air",
+                "chroma": "Monochrome",
+                "sensor_width": null,
+                "sensor_height": null,
+                "size_unit": "pixel",
+                "sensor_format": null,
+                "sensor_format_unit": null,
+                "bit_depth": 16,
+                "bin_mode": "Additive",
+                "bin_width": 4,
+                "bin_height": 4,
+                "bin_unit": "pixel",
+                "gain": "2",
+                "crop_offset_x": null,
+                "crop_offset_y": null,
+                "crop_width": 200,
+                "crop_height": 200,
+                "crop_unit": "pixel",
+                "recording_software": null,
+                "driver": null,
+                "driver_version": null
+            },
+            {
+                "device_type": "Detector",
+                "name": "Red CMOS",
+                "serial_number": "23320855",
+                "manufacturer": {
+                    "name": "Teledyne FLIR",
+                    "abbreviation": "FLIR",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "01j1gwp17"
+                },
+                "model": "BFS-U3-20S40M",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "detector_type": "Camera",
+                "data_interface": "USB",
+                "cooling": "Air",
+                "computer_name": null,
+                "frame_rate": null,
+                "frame_rate_unit": "hertz",
+                "immersion": "air",
+                "chroma": "Monochrome",
+                "sensor_width": null,
+                "sensor_height": null,
+                "size_unit": "pixel",
+                "sensor_format": null,
+                "sensor_format_unit": null,
+                "bit_depth": 16,
+                "bin_mode": "Additive",
+                "bin_width": 4,
+                "bin_height": 4,
+                "bin_unit": "pixel",
+                "gain": "2",
+                "crop_offset_x": null,
+                "crop_offset_y": null,
+                "crop_width": 200,
+                "crop_height": 200,
+                "crop_unit": "pixel",
+                "recording_software": null,
+                "driver": null,
+                "driver_version": null
+            }
+        ],
+        "objectives": [
+            {
+                "device_type": "Objective",
+                "name": "Objective",
+                "serial_number": "128023323",
+                "manufacturer": {
+                    "name": "Nikon",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "0280y9h11"
+                },
+                "model": "CFI Plan Apochromat Lambda D 10x",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "numerical_aperture": "0.45",
+                "magnification": "10",
+                "immersion": "air",
+                "objective_type": null
+            }
+        ],
+        "filters": [
+            {
+                "device_type": "Filter",
+                "name": "Green emission filter",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Semrock",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "FF01-520/35-25",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "filter_type": "Band pass",
+                "diameter": "25",
+                "width": null,
+                "height": null,
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "filter_wheel_index": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "center_wavelength": 520,
+                "wavelength_unit": "nanometer",
+                "description": null
+            },
+            {
+                "device_type": "Filter",
+                "name": "Red emission filter",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Semrock",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "FF01-600/37-25",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "filter_type": "Band pass",
+                "diameter": "25",
+                "width": null,
+                "height": null,
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "filter_wheel_index": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "center_wavelength": 600,
+                "wavelength_unit": "nanometer",
+                "description": null
+            },
+            {
+                "device_type": "Filter",
+                "name": "Emission Dichroic",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Semrock",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "FF562-Di03-25x36",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "filter_type": "Dichroic",
+                "diameter": null,
+                "width": "36",
+                "height": "25",
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "filter_wheel_index": null,
+                "cut_off_wavelength": 562,
+                "cut_on_wavelength": null,
+                "center_wavelength": null,
+                "wavelength_unit": "nanometer",
+                "description": null
+            },
+            {
+                "device_type": "Filter",
+                "name": "beamsplitter",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Semrock",
+                    "abbreviation": null,
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "FF493/574-Di01-25x36",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": "493/574 nm BrightLine dual-edge standard epi-fluorescence dichroic beamsplitter",
+                "filter_type": "Multiband",
+                "diameter": null,
+                "width": "36",
+                "height": "25",
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "filter_wheel_index": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "center_wavelength": null,
+                "wavelength_unit": "nanometer",
+                "description": null
+            },
+            {
+                "device_type": "Filter",
+                "name": "Excitation filter 410nm",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "FB410-10",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "filter_type": "Band pass",
+                "diameter": "25",
+                "width": null,
+                "height": null,
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "filter_wheel_index": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "center_wavelength": 410,
+                "wavelength_unit": "nanometer",
+                "description": null
+            },
+            {
+                "device_type": "Filter",
+                "name": "Excitation filter 470nm",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "FB470-10",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "filter_type": "Band pass",
+                "diameter": "25",
+                "width": null,
+                "height": null,
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "filter_wheel_index": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "center_wavelength": 470,
+                "wavelength_unit": "nanometer",
+                "description": null
+            },
+            {
+                "device_type": "Filter",
+                "name": "Excitation filter 560nm",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "FB560-10",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "filter_type": "Band pass",
+                "diameter": "25",
+                "width": null,
+                "height": null,
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "filter_wheel_index": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "center_wavelength": 560,
+                "wavelength_unit": "nanometer",
+                "description": null
+            },
+            {
+                "device_type": "Filter",
+                "name": "450 Dichroic Longpass Filter",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Edmund Optics",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "01j1gwp17"
+                },
+                "model": "#69-898",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "filter_type": "Dichroic",
+                "diameter": null,
+                "width": "35.6",
+                "height": "25.2",
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "filter_wheel_index": null,
+                "cut_off_wavelength": 450,
+                "cut_on_wavelength": null,
+                "center_wavelength": null,
+                "wavelength_unit": "nanometer",
+                "description": null
+            },
+            {
+                "device_type": "Filter",
+                "name": "500 Dichroic Longpass Filter",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Edmund Optics",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "01j1gwp17"
+                },
+                "model": "#69-899",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "filter_type": "Dichroic",
+                "diameter": null,
+                "width": "35.6",
+                "height": "23.2",
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "filter_wheel_index": null,
+                "cut_off_wavelength": 500,
+                "cut_on_wavelength": null,
+                "center_wavelength": null,
+                "wavelength_unit": "nanometer",
+                "description": null
+            }
+        ],
+        "lenses": [
+            {
+                "device_type": "Lens",
+                "name": "Image focusing lens",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Thorlabs",
+                    "abbreviation": null,
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "AC254-080-A-ML",
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "focal_length": "80",
+                "focal_length_unit": "millimeter",
+                "size": 1,
+                "lens_size_unit": "inch",
+                "optimized_wavelength_range": null,
+                "wavelength_unit": "nanometer",
+                "max_aperture": null
+            }
+        ],
+        "digital_micromirror_devices": [],
+        "polygonal_scanners": [],
+        "pockels_cells": [],
+        "additional_devices": [
+            {
+                "device_type": "Photometry Clock",
+                "name": "Photometry Clock",
+                "serial_number": null,
+                "manufacturer": null,
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null
+            }
+        ],
+        "daqs": [
+            {
+                "device_type": "Harp device",
+                "name": "harp behavior board",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": "Champalimaud",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": "Left lick spout and Right lick spout, as well as reward delivery solenoids are connected via ethernet cables",
+                "data_interface": "Ethernet",
+                "computer_name": "W10DT714030",
+                "channels": [
+                    {
+                        "channel_name": "DI3",
+                        "device_name": "Photometry Clock",
+                        "channel_type": "Digital Input",
+                        "port": null,
+                        "channel_index": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz",
+                        "event_based_sampling": null
+                    }
+                ],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Behavior",
+                    "whoami": 1216
+                },
+                "core_version": "1.11",
+                "tag_version": null,
+                "is_clock_generator": false
+            },
+            {
+                "device_type": "Harp device",
+                "name": "harp sound card",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": "Champalimaud",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DT714030",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Sound Card",
+                    "whoami": 1280
+                },
+                "core_version": "1.4",
+                "tag_version": null,
+                "is_clock_generator": false
+            },
+            {
+                "device_type": "Harp device",
+                "name": "harp clock synchronization board",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": "Champalimaud",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DT714030",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Clock Synchronizer",
+                    "whoami": 1152
+                },
+                "core_version": "",
+                "tag_version": null,
+                "is_clock_generator": true
+            },
+            {
+                "device_type": "Harp device",
+                "name": "harp sound amplifier",
+                "serial_number": null,
+                "manufacturer": {
+                    "name": "Champalimaud Foundation",
+                    "abbreviation": "Champalimaud",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "additional_settings": {},
+                "notes": null,
+                "data_interface": "USB",
+                "computer_name": "W10DT714030",
+                "channels": [],
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Input Expander",
+                    "whoami": 1106
+                },
+                "core_version": "",
+                "tag_version": null,
+                "is_clock_generator": false
+            }
+        ],
+        "calibrations": [
+            {
+                "calibration_date": "2026-02-03T00:00:00-08:00",
+                "device_name": "Lick spout Left",
+                "description": "Spot check of water calibration for Lick spout Left. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.0286
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        1.81
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2026-01-27T00:00:00-08:00",
+                "device_name": "Lick spout Left",
+                "description": "Spot check of water calibration for Lick spout Left. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.0286
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        1.95
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2026-01-20T00:00:00-08:00",
+                "device_name": "Lick spout Left",
+                "description": "Spot check of water calibration for Lick spout Left. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.0286
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        1.885
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2026-01-13T00:00:00-08:00",
+                "device_name": "Lick spout Left",
+                "description": "Spot check of water calibration for Lick spout Left. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.0286
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        1.82
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2026-01-06T00:00:00-08:00",
+                "device_name": "Lick spout Left",
+                "description": "Spot check of water calibration for Lick spout Left. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.0286
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        2
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2026-01-05T00:00:00-08:00",
+                "device_name": "Lick spout Left",
+                "description": "Spot check of water calibration for Lick spout Left. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.0286
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        2
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2025-12-22T00:00:00-08:00",
+                "device_name": "Lick spout Left",
+                "description": "Water calibration for Lick spout Left. The input is the valve open time in seconds and the output is the volume of water delivered in microliters.",
+                "input": {
+                    "valve open time (s):": [
+                        0.02,
+                        0.03
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        1.314,
+                        2.112
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2026-02-03T00:00:00-08:00",
+                "device_name": "Lick spout Right",
+                "description": "Spot check of water calibration for Lick spout Right. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.025
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        2.04
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2026-01-27T00:00:00-08:00",
+                "device_name": "Lick spout Right",
+                "description": "Spot check of water calibration for Lick spout Right. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.025
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        2.04
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2026-01-20T00:00:00-08:00",
+                "device_name": "Lick spout Right",
+                "description": "Spot check of water calibration for Lick spout Right. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.025
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        2.005
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2026-01-13T00:00:00-08:00",
+                "device_name": "Lick spout Right",
+                "description": "Spot check of water calibration for Lick spout Right. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.025
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        1.99
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2026-01-06T00:00:00-08:00",
+                "device_name": "Lick spout Right",
+                "description": "Spot check of water calibration for Lick spout Right. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.025
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        2.08
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2026-01-05T00:00:00-08:00",
+                "device_name": "Lick spout Right",
+                "description": "Spot check of water calibration for Lick spout Right. The input is the valve open time in seconds and the output is the volume of water delievered in microliters. The valve open time was selected to produce 2ul of water. This measurement was used to check the previous calibration, and was not used to set the calibration.",
+                "input": {
+                    "valve open time (s):": [
+                        0.025
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        1.985
+                    ]
+                },
+                "notes": null
+            },
+            {
+                "calibration_date": "2025-12-22T00:00:00-08:00",
+                "device_name": "Lick spout Right",
+                "description": "Water calibration for Lick spout Right. The input is the valve open time in seconds and the output is the volume of water delivered in microliters.",
+                "input": {
+                    "valve open time (s):": [
+                        0.02,
+                        0.03
+                    ]
+                },
+                "output": {
+                    "water volume (ul):": [
+                        1.602,
+                        2.403
+                    ]
+                },
+                "notes": null
+            }
+        ],
+        "ccf_coordinate_transform": null,
+        "origin": null,
+        "rig_axes": null,
+        "modalities": [
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            },
+            {
+                "name": "Behavior videos",
+                "abbreviation": "behavior-videos"
+            },
+            {
+                "name": "Fiber photometry",
+                "abbreviation": "fib"
+            }
+        ],
+        "notes": null
+    },
+    "processing": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "schema_version": "1.1.3",
+        "processing_pipeline": {
+            "data_processes": [
+                {
+                    "name": "Other",
+                    "software_version": "",
+                    "input_location": "//allen/aind/scratch/dynamic_foraging_rig_transfer/behavior_827183_2026-02-07_17-14-12/behavior",
+                    "output_location": "",
+                    "code_url": "",
+                    "parameters": {
+                        "input_source": "//allen/aind/scratch/dynamic_foraging_rig_transfer/behavior_827183_2026-02-07_17-14-12/behavior"
+                    },
+                    "notes": "Data was copied",
+                    "start_date_time": "2026-02-08 05:39:27+00:00",
+                    "end_date_time": "2026-02-08 05:39:28+00:00"
+                },
+                {
+                    "name": "Other",
+                    "software_version": "0.2.2",
+                    "input_location": "//allen/aind/scratch/dynamic_foraging_rig_transfer/behavior_827183_2026-02-07_17-14-12/behavior-videos",
+                    "output_location": "/allen/aind/stage/svc_aind_airflow/prod/behavior_827183_2026-02-07_17-14-12_bd69248d7a/behavior-videos",
+                    "code_url": "ghcr.io/allenneuraldynamics/aind-behavior-video-transformation",
+                    "parameters": {
+                        "output_directory": "/allen/aind/stage/svc_aind_airflow/prod/behavior_827183_2026-02-07_17-14-12_bd69248d7a/behavior-videos",
+                        "input_source": "//allen/aind/scratch/dynamic_foraging_rig_transfer/behavior_827183_2026-02-07_17-14-12/behavior-videos"
+                    },
+                    "notes": null,
+                    "start_date_time": "2026-02-08 05:57:42+00:00",
+                    "end_date_time": "2026-02-08 15:25:02+00:00"
+                },
+                {
+                    "name": "Other",
+                    "software_version": "",
+                    "input_location": "//allen/aind/scratch/dynamic_foraging_rig_transfer/behavior_827183_2026-02-07_17-14-12/fib",
+                    "output_location": "",
+                    "code_url": "",
+                    "parameters": {
+                        "input_source": "//allen/aind/scratch/dynamic_foraging_rig_transfer/behavior_827183_2026-02-07_17-14-12/fib"
+                    },
+                    "notes": "Data was copied",
+                    "start_date_time": "2026-02-08 05:39:27+00:00",
+                    "end_date_time": "2026-02-08 05:39:28+00:00"
+                }
+            ],
+            "processor_full_name": "AIND Scientific Computing",
+            "pipeline_version": null,
+            "pipeline_url": null,
+            "note": null
+        },
+        "analyses": [],
+        "notes": null
+    },
+    "acquisition": null,
+    "instrument": null,
+    "quality_control": null
+}

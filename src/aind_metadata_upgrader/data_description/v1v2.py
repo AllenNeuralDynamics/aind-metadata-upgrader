@@ -119,15 +119,14 @@ class DataDescriptionV1V2(CoreUpgrader):
                 investigators[i] = Person(
                     name=investigator,
                 )
+            # Already a Person object
+            elif isinstance(investigator, Person):
+                investigators[i] = investigator
             # Convert from dict to Person
             elif isinstance(investigator, dict):
-                # Convert from PIDName to Person
-                if not isinstance(investigator, Person):
-                    investigators[i] = Person(
-                        name=investigator["name"],
-                    )
-                else:
-                    investigators[i] = investigator
+                investigators[i] = Person(
+                    name=investigator["name"],
+                )
             else:
                 raise ValueError(f"Unsupported investigator type: {investigator}")
         return investigators
@@ -185,9 +184,11 @@ class DataDescriptionV1V2(CoreUpgrader):
         return project_name
 
     def _ensure_investigators_exist(self, investigators: list) -> list:
-        """Ensure at least one investigator exists"""
+        """Ensure at least one investigator exists and convert to dicts"""
         if len(investigators) == 0:
             investigators.append(Person(name="unknown"))
+        # Convert all Person objects to dicts
+        investigators = [inv.model_dump(mode="json") for inv in investigators]
         return investigators
 
     def _build_output_dict(self, data: dict, schema_version: str, source_data: Optional[list] = None, **kwargs) -> dict:
@@ -198,7 +199,7 @@ class DataDescriptionV1V2(CoreUpgrader):
             "subject_id": data.get("subject_id", None),
             "creation_time": kwargs.get("creation_time"),
             "tags": None,  # Set to None as specified in the original
-            "name": data.get("name", None),
+            "name": kwargs.get("name"),
             "institution": kwargs.get("institution"),
             "funding_source": kwargs.get("funding_source"),
             "data_level": kwargs.get("data_level"),
@@ -260,11 +261,32 @@ class DataDescriptionV1V2(CoreUpgrader):
                 return Group.MSMA
         return data["group"]
 
+    def _ensure_name_consistency(self, metadata_name: Optional[str], data: dict) -> Optional[str]:
+        """Make sure the metadata name and data name are the same, if not, use the metadata name"""
+        if not metadata_name:
+            return data.get("name", None)
+
+        data_name = data.get("name", None)
+        if metadata_name != "unknown" and data_name != metadata_name:
+            print(
+                f"WARNING: Metadata name '{metadata_name}' and data name '{data_name}' are different."
+                " Using metadata name."
+            )
+            return metadata_name
+        return data_name
+
     def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the data description to v2.0"""
 
         if not isinstance(data, dict):
             raise ValueError("Data must be a dictionary")
+
+        metadata_name = metadata.get("name") if metadata else None
+
+        name = self._ensure_name_consistency(metadata_name, data)
+
+        if not name:
+            raise ValueError("Name is required for upgrade")
 
         # Get upgraded field values using helper methods
         funding_source = self._get_funding_source(data)
@@ -283,6 +305,7 @@ class DataDescriptionV1V2(CoreUpgrader):
         # Build and return the upgraded output
         return self._build_output_dict(
             data,
+            name=name,
             group=group,
             source_data=source_data,
             schema_version=schema_version,

@@ -43,7 +43,6 @@ from aind_data_schema.core.acquisition import (
 from aind_data_schema.components.connections import (
     Connection,
 )
-from aind_data_schema_models.modalities import Modality
 from aind_data_schema_models.stimulus_modality import StimulusModality
 from aind_data_schema_models.units import (
     MassUnit,
@@ -61,6 +60,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     remove,
     upgrade_calibration,
     upgrade_targeted_structure,
+    upgrade_v1_modalities,
     validate_angle_unit,
 )
 
@@ -647,10 +647,10 @@ class SessionV1V2(CoreUpgrader):
         if modality in ["ophys", "pophys"]:
             channels, images = self._create_ophys_components(stream, light_sources, detectors)
         elif modality == "slap":
-            raise NotImplementedError("SLAP imaging config upgrade not yet implemented")
+            pass  # channels/images remain empty; ImagingConfig still required for validation
 
-        # Don't create config if no channels
-        if not channels:
+        # Don't create config if no recognized imaging modality
+        if modality not in ["ophys", "pophys", "slap"]:
             return None
 
         # Create sampling strategy
@@ -666,19 +666,8 @@ class SessionV1V2(CoreUpgrader):
 
     def _upgrade_data_stream(self, stream: Dict, rig_id: str, fallback_tz=None) -> Dict:
         """Upgrade a single data stream from v1 to v2"""
-        # Extract modalities
-        modalities = []
-        for modality in stream.get("stream_modalities", []):
-            if isinstance(modality, dict):
-                abbreviation = modality.get("abbreviation", "")
-                try:
-                    modality_obj = Modality.from_abbreviation(abbreviation)
-                    modalities.append(modality_obj.model_dump())
-                except Exception:
-                    # Default to behavior if unknown
-                    modalities.append(Modality.BEHAVIOR.model_dump())
-            else:
-                modalities.append(Modality.BEHAVIOR.model_dump())
+        # Extract modalities — reuse the shared helper (handles slap->slap2, MODALITY_MAP, etc.)
+        modalities = upgrade_v1_modalities({"modality": stream.get("stream_modalities", [])})
 
         # Collect active devices
         active_devices = []
@@ -753,7 +742,9 @@ class SessionV1V2(CoreUpgrader):
         software = epoch["software"]
 
         if isinstance(software, list):
-            if len(software) == 1:
+            if len(software) == 0:
+                software = None
+            elif len(software) == 1:
                 software = software[0]
             elif len(software) == 2:
                 names = [sw.get("name", "").lower() for sw in software]
@@ -761,9 +752,8 @@ class SessionV1V2(CoreUpgrader):
                     # If one is Python, take the other one
                     software = next((sw for sw in software if sw.get("name", "").lower() != "python"), None)
             else:
-                # If there's two softwares, take the one that isn't Python
                 print(software)
-                raise ValueError("More than two software entries found, cannot upgrade")
+                raise ValueError("More than two software entries found, not sure how to proceed")
 
         return software
 
@@ -947,7 +937,7 @@ class SessionV1V2(CoreUpgrader):
         animal_weight_post = session_data.get("animal_weight_post")
         weight_unit = session_data.get("weight_unit", "gram")
         anaesthesia = session_data.get("anaesthesia")
-        mouse_platform_name = session_data.get("mouse_platform_name", "Unknown Platform")
+        mouse_platform_name = session_data.get("mouse_platform_name") or "unknown"
         reward_consumed_total = session_data.get("reward_consumed_total")
         reward_consumed_unit = session_data.get("reward_consumed_unit", "milliliter")
 
@@ -999,6 +989,24 @@ class SessionV1V2(CoreUpgrader):
             notes,
             fallback_tz=fallback_tz,
         )
+
+        # Fix any data streams whose end time falls before the acquisition start — these have
+        # obviously-wrong timestamps (e.g. a typo in the year). Replace with the acquisition
+        # start/end times and record what was done in the stream's notes.
+        for stream in upgraded_data_streams:
+            stream_end = stream.get("stream_end_time")
+            if stream_end is not None and session_start_time is not None and stream_end < session_start_time:
+                original_start = stream.get("stream_start_time")
+                original_end = stream_end
+                stream["stream_start_time"] = session_start_time
+                stream["stream_end_time"] = session_end_time
+                fix_note = (
+                    f"(v1v2 upgrade) stream_end_time {original_end} was before acquisition "
+                    f"start {session_start_time}; stream times reset to acquisition "
+                    f"start={session_start_time} end={session_end_time} "
+                    f"(original start={original_start})."
+                )
+                stream["notes"] = (stream["notes"] + " " + fix_note) if stream.get("notes") else fix_note
 
         # Get the iacuc_protocl
         ethics_review_id = session_data.get("iacuc_protocol")
@@ -1085,6 +1093,9 @@ class SessionV1V2(CoreUpgrader):
         session_start_time = ensure_pacific_timezone(session_start_time)
         session_end_time = ensure_pacific_timezone(session_end_time)
 
+        # Remember the original session timezone so we can normalize back to it after adjustments
+        session_tz = session_start_time.tzinfo if session_start_time else None
+
         # Invert start/end time if they are in the wrong order
         if session_start_time and session_end_time and session_start_time > session_end_time:
             session_start_time, session_end_time = session_end_time, session_start_time
@@ -1096,21 +1107,28 @@ class SessionV1V2(CoreUpgrader):
         valid_end_times = [ensure_timezone(t, fallback_tz) for t in end_times if t is not None]
         valid_end_times = [t for t in valid_end_times if t is not None]
 
-        if valid_start_times and session_start_time and any(start >= session_start_time for start in valid_start_times):
+        if valid_start_times and session_start_time and any(start < session_start_time for start in valid_start_times):
             min_start = min(valid_start_times)
             notes = (notes if notes else "") + (
                 f" (v1v2 upgrade) Session start time was adjusted from {session_start_time} " f"to {min_start}"
             )
             session_start_time = min_start
+
+        # If session end time is before any stream/epoch end time, adjust it to be after the latest one
         if valid_end_times and session_end_time is None:
             session_end_time = max(valid_end_times)
-        elif valid_end_times and session_end_time and any(end <= session_end_time for end in valid_end_times):
+        elif valid_end_times and session_end_time and any(end > session_end_time for end in valid_end_times):
             max_end = max(valid_end_times)
             notes = (notes if notes else "") + (
                 f" (v1v2 upgrade) Session end time was adjusted from {session_end_time} " f"to {max_end}"
             )
             session_end_time = max_end
-        else:
-            raise NotImplementedError("Not sure how we got here")
+
+        # Re-normalize both times back to the original session timezone using astimezone (preserves absolute time)
+        if session_tz:
+            if session_start_time:
+                session_start_time = session_start_time.astimezone(session_tz)
+            if session_end_time:
+                session_end_time = session_end_time.astimezone(session_tz)
 
         return session_start_time, session_end_time, notes

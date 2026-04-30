@@ -48,7 +48,17 @@ from aind_data_schema_models.units import (
     AngleUnit,
 )
 
-MODALITY_MAP = {"SmartSPIM": Modality.SPIM, "smartspim": Modality.SPIM, "FIP": Modality.FIB, "exaSPIM": Modality.SPIM}
+MODALITY_MAP = {
+    "SmartSPIM": Modality.SPIM,
+    "smartspim": Modality.SPIM,
+    "FIP": Modality.FIB,
+    "exaSPIM": Modality.SPIM,
+}
+
+MODALITY_ABBREV_MAP = {
+    "ophys": Modality.POPHYS,
+    "slap": Modality.SLAP2,
+}
 
 counts = {}
 
@@ -105,6 +115,18 @@ def validate_angle_unit(angle_unit: str) -> str:
         raise NotImplementedError()
 
 
+def _modality_abbreviation_wrapper(modality_str: str) -> dict:
+    """Wrapper to convert a modality string to a Modality dict using the abbreviation."""
+
+    if modality_str in MODALITY_ABBREV_MAP:
+        return MODALITY_ABBREV_MAP[modality_str].model_dump()
+
+    try:
+        return Modality.from_abbreviation(modality_str).model_dump()
+    except Exception as e:
+        raise ValueError(f"Unsupported modality abbreviation: {modality_str}") from e
+
+
 def _convert_modality_to_dict(modality) -> dict:
     """Convert a single modality (string, object string, or dict) to a Modality dict.
 
@@ -115,7 +137,10 @@ def _convert_modality_to_dict(modality) -> dict:
     - String abbreviation: converted directly
     """
     if isinstance(modality, dict):
-        return modality
+        abbreviation = modality.get("abbreviation", "")
+        if abbreviation in MODALITY_ABBREV_MAP:
+            return MODALITY_ABBREV_MAP[abbreviation].model_dump()
+        return _modality_abbreviation_wrapper(abbreviation) if abbreviation else modality
 
     if isinstance(modality, str):
         # Check MODALITY_MAP first (e.g., "SmartSPIM", "FIP")
@@ -129,13 +154,13 @@ def _convert_modality_to_dict(modality) -> dict:
                 # Extract the abbreviation value
                 abbrev_start = modality.find("abbreviation=") + len("abbreviation=")
                 abbrev_value = modality[abbrev_start:].strip().strip("'\"")
-                return Modality.from_abbreviation(abbrev_value).model_dump()
+                return _modality_abbreviation_wrapper(abbrev_value)
             except Exception as e:
                 raise ValueError(f"Could not parse modality string: {modality}") from e
 
         # Try direct abbreviation conversion
         try:
-            return Modality.from_abbreviation(modality).model_dump()
+            return _modality_abbreviation_wrapper(modality)
         except Exception as e:
             raise ValueError(f"Unsupported modality abbreviation: {modality}") from e
 
@@ -788,6 +813,20 @@ def _upgrade_power_calibration_led(data: dict) -> Optional[PowerCalibration]:
     )
 
 
+def _upgrade_power_calibration_voltage_input(data: dict) -> Optional[PowerCalibration]:
+    """Handle laser power calibration with voltage (V) input and power (mW) output."""
+
+    return PowerCalibration(
+        calibration_date=data["calibration_date"],
+        device_name=data["device_name"],
+        input=data["input"]["voltage (V)"],
+        input_unit=VoltageUnit.V,
+        output=data["output"]["power (mW)"],
+        output_unit=PowerUnit.MW,
+        notes=data.get("notes"),
+    )
+
+
 def _upgrade_power_calibration(data: dict) -> Optional[dict]:
     """Upgrade power calibration data (laser, LED)."""
     description = data.get("description", "").lower()
@@ -807,6 +846,8 @@ def _upgrade_power_calibration(data: dict) -> Optional[dict]:
         calibration = _upgrade_power_calibration_percent_laser(data)
     elif "led calibration" in description:
         calibration = _upgrade_power_calibration_led(data)
+    elif "voltage (V)" in input_data and "power (mW)" in output_data:
+        calibration = _upgrade_power_calibration_voltage_input(data)
     else:
         return None
 
@@ -926,6 +967,9 @@ CCF_MAPPING = {
 
 def upgrade_targeted_structure(data: dict | str) -> dict:
     """Upgrade targeted structure, especially convert strings to structure objects"""
+
+    if data is None or data == [] or data == {}:
+        return CCFv3.ROOT.model_dump()
 
     if isinstance(data, str):
         data = data.strip()

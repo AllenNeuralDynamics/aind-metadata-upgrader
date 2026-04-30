@@ -68,7 +68,7 @@ class RigUpgraderV1V2(CoreUpgrader):
     def _parse_name(self, data: dict):
         """Pull the rig_id and location from the rig_id field"""
 
-        instrument_id = data.get("rig_id", "")
+        instrument_id = data.get("rig_id") or data.get("instrument_id", "")
         location = data.get("location", None)  # Default location to None
 
         if not location:
@@ -317,6 +317,9 @@ class RigUpgraderV1V2(CoreUpgrader):
                 ),
             )
             components.append(device.model_dump())
+
+        # Remove any None entries (e.g. when mouse_platform is absent)
+        components = [c for c in components if c is not None]
 
         return components, connections
 

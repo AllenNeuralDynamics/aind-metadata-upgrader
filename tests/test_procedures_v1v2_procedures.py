@@ -681,5 +681,79 @@ class TestDynamicRoutingCraniotomy(unittest.TestCase):
             upgrader.upgrade(data, schema_version="2.0.0", metadata=None)
 
 
+class TestVisualCortexCraniotomy(unittest.TestCase):
+    """Trace 'Visual cortex 5 mm' through upgrade_craniotomy and verify position."""
+
+    def test_visual_cortex_5mm_with_coordinates_preserves_position(self):
+        """
+        Trace for a real record like cd2acb6f (ml=1.3, ap=-2.8, hemisphere=null):
+        1. upgrade_craniotomy receives craniotomy_type="Visual cortex 5 mm"
+        2. "Visual cortex 5 mm" maps via CRANIO_TYPES -> CraniotomyType.CIRCLE,
+           size=5, size_unit=SizeUnit.MM
+        3. _legacy_convert_craniotomy_fields adds craniotomy_coordinates_unit="millimeter"
+           and craniotomy_coordinates_reference="Bregma" (defaults for old format)
+        4. _determine_craniotomy_upgrade_path: craniotomy_hemisphere is None,
+           craniotomy_coordinates_ml=1.3 (not None, non-zero) -> upgrade_coordinate_craniotomy
+        5. upgrade_coordinate_craniotomy builds Translation([ap, ml, 0, 0])
+           = Translation([-2.8, 1.3, 0, 0]) and stores as position dict.
+        """
+        data = {
+            "craniotomy_type": "Visual cortex 5 mm",
+            "procedure_type": "Craniotomy",
+            "craniotomy_hemisphere": None,
+            "craniotomy_coordinates_ml": 1.3,
+            "craniotomy_coordinates_ap": -2.8,
+            "craniotomy_coordinates_unit": "millimeter",
+            "craniotomy_coordinates_reference": "Bregma",
+            "craniotomy_size": 5,
+            "craniotomy_size_unit": "millimeter",
+        }
+        result, _ = upgrade_craniotomy(data)
+
+        self.assertIn("position", result)
+        # position must be a Translation dict (not a list), containing the ap/ml values
+        position = result["position"]
+        self.assertIsInstance(position, dict)
+        translation = position["translation"]
+        self.assertAlmostEqual(translation[0], -2.8)  # AP
+        self.assertAlmostEqual(translation[1], 1.3)   # ML
+
+    def test_visual_cortex_5mm_without_coordinates_falls_back_to_origin(self):
+        """
+        When there are no coordinates or hemisphere, position falls back to ORIGIN.
+        Trace:
+        1-2: same as above (type mapped to CIRCLE, size=5)
+        3. _determine_craniotomy_upgrade_path: no craniotomy_coordinates_ml,
+           no craniotomy_hemisphere -> calls upgrade_hemisphere_craniotomy
+        4. upgrade_hemisphere_craniotomy: craniotomy_type == CraniotomyType.CIRCLE
+           -> position = [AnatomicalRelative.ORIGIN]
+        """
+        from aind_data_schema_models.coordinates import AnatomicalRelative
+
+        data = {"craniotomy_type": "Visual cortex 5 mm", "procedure_type": "Craniotomy"}
+        result, _ = upgrade_craniotomy(data)
+
+        self.assertEqual(result["position"], [AnatomicalRelative.ORIGIN])
+
+    def test_visual_cortex_5mm_size_and_type(self):
+        """Size and craniotomy_type are correctly set for 'Visual cortex 5 mm'."""
+        data = {
+            "craniotomy_type": "Visual cortex 5 mm",
+            "procedure_type": "Craniotomy",
+            "craniotomy_hemisphere": None,
+            "craniotomy_coordinates_ml": 1.3,
+            "craniotomy_coordinates_ap": -2.8,
+            "craniotomy_coordinates_unit": "millimeter",
+            "craniotomy_coordinates_reference": "Bregma",
+            "craniotomy_size": 5,
+            "craniotomy_size_unit": "millimeter",
+        }
+        result, _ = upgrade_craniotomy(data)
+
+        self.assertEqual(result["size"], 5)
+        self.assertEqual(result["size_unit"], SizeUnit.MM)
+        self.assertEqual(result["craniotomy_type"], CraniotomyType.CIRCLE)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,1519 @@
+{
+    "_id": "17e45eb4-942d-4f37-8ae0-c7b58f39f215",
+    "acquisition": null,
+    "created": "2025-08-01T17:26:42.877692",
+    "data_description": {
+        "creation_time": "2025-07-16T14:46:00-07:00",
+        "data_level": "raw",
+        "data_summary": null,
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "funding_source": [
+            {
+                "fundee": null,
+                "funder": {
+                    "abbreviation": "AI",
+                    "name": "Allen Institute",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null
+            }
+        ],
+        "group": null,
+        "institution": {
+            "abbreviation": "AIND",
+            "name": "Allen Institute for Neural Dynamics",
+            "registry": {
+                "abbreviation": "ROR",
+                "name": "Research Organization Registry"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "investigators": [
+            {
+                "abbreviation": null,
+                "name": "Lili Karashchuk",
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "abbreviation": null,
+                "name": "Mafalda Vicente",
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "abbreviation": null,
+                "name": "Rui M Costa",
+                "registry": null,
+                "registry_identifier": null
+            }
+        ],
+        "label": null,
+        "license": "CC-BY-4.0",
+        "modality": [
+            {
+                "abbreviation": "behavior-videos",
+                "name": "Behavior videos"
+            }
+        ],
+        "name": "motor-observatory_815175_2025-07-16_14-46-00",
+        "platform": {
+            "abbreviation": "motor-observatory",
+            "name": "Motor observatory platform"
+        },
+        "project_name": "Behavior and Motor Control",
+        "related_data": [],
+        "restrictions": null,
+        "schema_version": "1.0.3",
+        "subject_id": "815175"
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": {
+        "Code Ocean": [
+            "22c486f1-08f4-4ee0-99b1-86ff68b688cb"
+        ]
+    },
+    "instrument": null,
+    "last_modified": "2025-08-01T17:35:00.071Z",
+    "location": "s3://aind-open-data/motor-observatory_815175_2025-07-16_13-46-00",
+    "metadata_status": "Missing",
+    "name": "motor-observatory_815175_2025-07-16_13-46-00",
+    "procedures": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "notes": null,
+        "schema_version": "1.2.1",
+        "specimen_procedures": [],
+        "subject_id": "815175",
+        "subject_procedures": []
+    },
+    "processing": {
+        "analyses": [],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "notes": null,
+        "processing_pipeline": {
+            "data_processes": [
+                {
+                    "code_url": "",
+                    "code_version": null,
+                    "end_date_time": "2025-08-01T17:25:56.936810Z",
+                    "input_location": "/allen/aind/scratch/lili.karashchuk/session-2025-07-16--13-46-00--sub815175/behavior-videos",
+                    "name": "Other",
+                    "notes": "Data was copied",
+                    "output_location": "",
+                    "outputs": {},
+                    "parameters": {
+                        "input_source": "/allen/aind/scratch/lili.karashchuk/session-2025-07-16--13-46-00--sub815175/behavior-videos"
+                    },
+                    "resources": null,
+                    "software_version": "",
+                    "start_date_time": "2025-08-01T17:23:55.560761Z"
+                }
+            ],
+            "note": null,
+            "pipeline_url": null,
+            "pipeline_version": null,
+            "processor_full_name": "AIND Scientific Computing"
+        },
+        "schema_version": "1.1.3"
+    },
+    "quality_control": null,
+    "rig": {
+        "additional_devices": [],
+        "calibrations": [],
+        "cameras": [
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "W10DT714163",
+                    "cooling": "Air",
+                    "crop_height": 800,
+                    "crop_offset_x": 120,
+                    "crop_offset_y": 140,
+                    "crop_unit": "pixel",
+                    "crop_width": 1200,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "200",
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "BFS-U3-16S2M-CS",
+                    "name": "Camera 23381091",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 1080,
+                    "sensor_width": 1440,
+                    "serial_number": "23381091",
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Body",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "6",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "Kowa LM6HC",
+                    "name": "Lens 23381091",
+                    "notes": "Manufacturer is Kowa Lenses",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "Assembly 23381091",
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "W10DT714163",
+                    "cooling": "Air",
+                    "crop_height": 800,
+                    "crop_offset_x": 120,
+                    "crop_offset_y": 140,
+                    "crop_unit": "pixel",
+                    "crop_width": 1200,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "200",
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "BFS-U3-16S2M-CS",
+                    "name": "Camera 23382592",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 1080,
+                    "sensor_width": 1440,
+                    "serial_number": "23382592",
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Body",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "6",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "Kowa LM6HC",
+                    "name": "Lens 23382592",
+                    "notes": "Manufacturer is Kowa Lenses",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "Assembly 23382592",
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "W10DT714163",
+                    "cooling": "Air",
+                    "crop_height": 800,
+                    "crop_offset_x": 120,
+                    "crop_offset_y": 140,
+                    "crop_unit": "pixel",
+                    "crop_width": 1200,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "200",
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "BFS-U3-16S2M-CS",
+                    "name": "Camera 20519746",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 1080,
+                    "sensor_width": 1440,
+                    "serial_number": "20519746",
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Body",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "6",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "Kowa LM6HC",
+                    "name": "Lens 20519746",
+                    "notes": "Manufacturer is Kowa Lenses",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "Assembly 20519746",
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "W10DT714163",
+                    "cooling": "Air",
+                    "crop_height": 800,
+                    "crop_offset_x": 120,
+                    "crop_offset_y": 140,
+                    "crop_unit": "pixel",
+                    "crop_width": 1200,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "200",
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "BFS-U3-16S2M-CS",
+                    "name": "Camera 23381088",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 1080,
+                    "sensor_width": 1440,
+                    "serial_number": "23381088",
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Body",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "6",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "Kowa LM6HC",
+                    "name": "Lens 23381088",
+                    "notes": "Manufacturer is Kowa Lenses",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "Assembly 23381088",
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "W10DT714163",
+                    "cooling": "Air",
+                    "crop_height": 800,
+                    "crop_offset_x": 120,
+                    "crop_offset_y": 140,
+                    "crop_unit": "pixel",
+                    "crop_width": 1200,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "200",
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "BFS-U3-16S2M-CS",
+                    "name": "Camera 23113712",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 1080,
+                    "sensor_width": 1440,
+                    "serial_number": "23113712",
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Body",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "6",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "Kowa LM6HC",
+                    "name": "Lens 23113712",
+                    "notes": "Manufacturer is Kowa Lenses",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "Assembly 23113712",
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "W10DT714163",
+                    "cooling": "Air",
+                    "crop_height": 800,
+                    "crop_offset_x": 120,
+                    "crop_offset_y": 140,
+                    "crop_unit": "pixel",
+                    "crop_width": 1200,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "200",
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "BFS-U3-16S2M-CS",
+                    "name": "Camera 23382581",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 1080,
+                    "sensor_width": 1440,
+                    "serial_number": "23382581",
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Body",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "6",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "Kowa LM6HC",
+                    "name": "Lens 23382581",
+                    "notes": "Manufacturer is Kowa Lenses",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "Assembly 23382581",
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "W10DT714163",
+                    "cooling": "Air",
+                    "crop_height": 800,
+                    "crop_offset_x": 120,
+                    "crop_offset_y": 140,
+                    "crop_unit": "pixel",
+                    "crop_width": 1200,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "200",
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "BFS-U3-16S2M-CS",
+                    "name": "Camera 23382593",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 1080,
+                    "sensor_width": 1440,
+                    "serial_number": "23382593",
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Body",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "6",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "Kowa LM6HC",
+                    "name": "Lens 23382593",
+                    "notes": "Manufacturer is Kowa Lenses",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "Assembly 23382593",
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "W10DT714163",
+                    "cooling": "Air",
+                    "crop_height": 800,
+                    "crop_offset_x": 120,
+                    "crop_offset_y": 140,
+                    "crop_unit": "pixel",
+                    "crop_width": 1200,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "200",
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "BFS-U3-16S2M-CS",
+                    "name": "Camera 23354680",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 1080,
+                    "sensor_width": 1440,
+                    "serial_number": "23354680",
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Body",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "6",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "Kowa LM6HC",
+                    "name": "Lens 23354680",
+                    "notes": "Manufacturer is Kowa Lenses",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "Assembly 23354680",
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "W10DT714163",
+                    "cooling": "Air",
+                    "crop_height": 800,
+                    "crop_offset_x": 120,
+                    "crop_offset_y": 140,
+                    "crop_unit": "pixel",
+                    "crop_width": 1200,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "200",
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "BFS-U3-16S2M-CS",
+                    "name": "Camera 23373899",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 1080,
+                    "sensor_width": 1440,
+                    "serial_number": "23373899",
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Body",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "6",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "Kowa LM6HC",
+                    "name": "Lens 23373899",
+                    "notes": "Manufacturer is Kowa Lenses",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "Assembly 23373899",
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "W10DT714163",
+                    "cooling": "Air",
+                    "crop_height": 800,
+                    "crop_offset_x": 120,
+                    "crop_offset_y": 140,
+                    "crop_unit": "pixel",
+                    "crop_width": 1200,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "200",
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "BFS-U3-16S2M-CS",
+                    "name": "Camera 23373898",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 1080,
+                    "sensor_width": 1440,
+                    "serial_number": "23373898",
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Body",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "6",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "Kowa LM6HC",
+                    "name": "Lens 23373898",
+                    "notes": "Manufacturer is Kowa Lenses",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "Assembly 23373898",
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "W10DT714163",
+                    "cooling": "Air",
+                    "crop_height": 800,
+                    "crop_offset_x": 120,
+                    "crop_offset_y": 140,
+                    "crop_unit": "pixel",
+                    "crop_width": 1200,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "200",
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "BFS-U3-16S2M-CS",
+                    "name": "Camera 23378574",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 1080,
+                    "sensor_width": 1440,
+                    "serial_number": "23378574",
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Body",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "6",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "Kowa LM6HC",
+                    "name": "Lens 23378574",
+                    "notes": "Manufacturer is Kowa Lenses",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "Assembly 23378574",
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "computer_name": "W10DT714163",
+                    "cooling": "Air",
+                    "crop_height": 800,
+                    "crop_offset_x": 120,
+                    "crop_offset_y": 140,
+                    "crop_unit": "pixel",
+                    "crop_width": 1200,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "200",
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "FLIR",
+                        "name": "Teledyne FLIR",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "model": "BFS-U3-16S2M-CS",
+                    "name": "Camera 23354678",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": null,
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 1080,
+                    "sensor_width": 1440,
+                    "serial_number": "23354678",
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Body",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "6",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "Kowa LM6HC",
+                    "name": "Lens 23354678",
+                    "notes": "Manufacturer is Kowa Lenses",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "Assembly 23354678",
+                "position": null
+            }
+        ],
+        "ccf_coordinate_transform": null,
+        "daqs": [
+            {
+                "additional_settings": {},
+                "channels": [
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "Camera 23381091",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "Camera 23382592",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "Camera 20519746",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "Camera 23381088",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "Camera 23113712",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "Camera 23382581",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "Camera 23382593",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "Camera 23354680",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "Camera 23373899",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "Camera 23373898",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "Camera 23378574",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "Camera 23354678",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "DO0",
+                        "channel_type": "Digital Output",
+                        "device_name": "Open Ephys",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    }
+                ],
+                "computer_name": "W10DT714163",
+                "core_version": "2.1",
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Behavior",
+                    "whoami": 1216
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "OEPS",
+                    "name": "Open Ephys Production Site",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "007rkz355"
+                },
+                "model": null,
+                "name": "Harp Behavior",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [
+                    {
+                        "channel_index": null,
+                        "channel_name": "AI0",
+                        "channel_type": "Analog Input",
+                        "device_name": "Harp Behavior",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    }
+                ],
+                "computer_name": "W10DT714163",
+                "data_interface": "USB",
+                "device_type": "Open Ephys acquisition board",
+                "firmware_version": null,
+                "hardware_version": null,
+                "manufacturer": {
+                    "abbreviation": "OEPS",
+                    "name": "Open Ephys Production Site",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "007rkz355"
+                },
+                "model": null,
+                "name": "Open Ephys",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "ports": [
+                    {
+                        "index": 1,
+                        "probes": [
+                            "Myomatrix"
+                        ]
+                    }
+                ],
+                "serial_number": null
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/rig.py",
+        "detectors": [],
+        "digital_micromirror_devices": [],
+        "enclosure": null,
+        "ephys_assemblies": [],
+        "fiber_assemblies": [],
+        "filters": [],
+        "laser_assemblies": [],
+        "lenses": [],
+        "light_sources": [
+            {
+                "additional_settings": {},
+                "device_type": "Lamp",
+                "manufacturer": null,
+                "model": null,
+                "name": "Lights",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "temperature": null,
+                "temperature_unit": "Kelvin",
+                "wavelength_max": null,
+                "wavelength_min": null,
+                "wavelength_unit": "nanometer"
+            }
+        ],
+        "modalities": [
+            {
+                "abbreviation": "behavior-videos",
+                "name": "Behavior videos"
+            },
+            {
+                "abbreviation": "EMG",
+                "name": "Electromyography"
+            }
+        ],
+        "modification_date": "2024-10-25",
+        "mouse_platform": {
+            "additional_settings": {},
+            "date_surface_replaced": null,
+            "device_type": "Arena",
+            "manufacturer": null,
+            "model": null,
+            "name": "Arena",
+            "notes": null,
+            "objects_in_arena": [
+                {
+                    "additional_settings": {},
+                    "device_type": "Arena object",
+                    "manufacturer": null,
+                    "model": null,
+                    "name": "Mini wall",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null
+                },
+                {
+                    "additional_settings": {},
+                    "device_type": "Arena object",
+                    "manufacturer": null,
+                    "model": null,
+                    "name": "Climbing wall",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null
+                },
+                {
+                    "additional_settings": {},
+                    "device_type": "Arena object",
+                    "manufacturer": null,
+                    "model": null,
+                    "name": "Treat dispenser",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null
+                },
+                {
+                    "additional_settings": {},
+                    "device_type": "Arena object",
+                    "manufacturer": null,
+                    "model": null,
+                    "name": "Cylinder",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null
+                },
+                {
+                    "additional_settings": {},
+                    "device_type": "Arena object",
+                    "manufacturer": null,
+                    "model": null,
+                    "name": "Triangle ladder",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null
+                },
+                {
+                    "additional_settings": {},
+                    "device_type": "Arena object",
+                    "manufacturer": null,
+                    "model": null,
+                    "name": "Mini triangle",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null
+                },
+                {
+                    "additional_settings": {},
+                    "device_type": "Arena object",
+                    "manufacturer": null,
+                    "model": null,
+                    "name": "Running wheel",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null
+                },
+                {
+                    "additional_settings": {},
+                    "device_type": "Arena object",
+                    "manufacturer": null,
+                    "model": null,
+                    "name": "Tunnel",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null
+                }
+            ],
+            "path_to_cad": null,
+            "port_index": null,
+            "serial_number": null,
+            "size": {
+                "height": 40,
+                "length": 40,
+                "unit": "millimeter",
+                "width": 40
+            },
+            "surface_material": null
+        },
+        "notes": null,
+        "objectives": [],
+        "origin": null,
+        "patch_cords": [],
+        "pockels_cells": [],
+        "polygonal_scanners": [],
+        "rig_axes": null,
+        "rig_id": "421_MOTOBS1_20241025",
+        "schema_version": "1.0.3",
+        "stick_microscopes": [],
+        "stimulus_devices": []
+    },
+    "schema_version": "1.1.1",
+    "session": {
+        "active_mouse_platform": false,
+        "anaesthesia": null,
+        "animal_weight_post": null,
+        "animal_weight_prior": null,
+        "calibrations": [],
+        "data_streams": [
+            {
+                "camera_names": [
+                    "23381091",
+                    "23382592",
+                    "20519746",
+                    "23381088",
+                    "23113712",
+                    "23382581",
+                    "23382593",
+                    "23354680",
+                    "23373899",
+                    "23373898",
+                    "23378574",
+                    "23354678"
+                ],
+                "daq_names": [
+                    "Harp Behavior"
+                ],
+                "detectors": [],
+                "ephys_modules": [],
+                "fiber_connections": [],
+                "fiber_modules": [],
+                "light_sources": [],
+                "manipulator_modules": [],
+                "mri_scans": [],
+                "notes": null,
+                "ophys_fovs": [],
+                "slap_fovs": [],
+                "software": [
+                    {
+                        "name": "Bonsai",
+                        "parameters": {},
+                        "url": null,
+                        "version": "2.8"
+                    }
+                ],
+                "stack_parameters": null,
+                "stick_microscopes": [],
+                "stream_end_time": "2025-07-16T14:46:00-07:00",
+                "stream_modalities": [
+                    {
+                        "abbreviation": "behavior-videos",
+                        "name": "Behavior videos"
+                    }
+                ],
+                "stream_start_time": "2025-07-16T13:46:00-07:00"
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/session.py",
+        "experimenter_full_name": [
+            "Lili Karashchuk"
+        ],
+        "headframe_registration": null,
+        "iacuc_protocol": "2307",
+        "maintenance": [],
+        "mouse_platform_name": "Arena",
+        "notes": "Climbing wall, Triangle ladder",
+        "protocol_id": [],
+        "reward_consumed_total": null,
+        "reward_consumed_unit": "milliliter",
+        "reward_delivery": null,
+        "rig_id": "421_MOTOBS1_20241025",
+        "schema_version": "1.0.3",
+        "session_end_time": "2025-07-16T14:46:00-07:00",
+        "session_start_time": "2025-07-16T13:46:00-07:00",
+        "session_type": "Behavior",
+        "stimulus_epochs": [],
+        "subject_id": "815175",
+        "weight_unit": "gram"
+    },
+    "subject": {
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": {
+            "breeding_group": "Exp-CPGA-03-001-2511",
+            "maternal_genotype": null,
+            "maternal_id": null,
+            "paternal_genotype": null,
+            "paternal_id": null
+        },
+        "date_of_birth": "2025-04-01",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "genotype": "wt/wt",
+        "housing": {
+            "cage_id": "8300718",
+            "cohoused_subjects": [],
+            "home_cage_enrichment": [],
+            "light_cycle": null,
+            "room_id": "146"
+        },
+        "notes": null,
+        "restrictions": null,
+        "rrid": null,
+        "schema_version": "1.0.3",
+        "sex": "Female",
+        "source": {
+            "abbreviation": "AI",
+            "name": "Allen Institute",
+            "registry": {
+                "abbreviation": "ROR",
+                "name": "Research Organization Registry"
+            },
+            "registry_identifier": "03cpe7c52"
+        },
+        "species": {
+            "name": "Mus musculus",
+            "registry": {
+                "abbreviation": "NCBI",
+                "name": "National Center for Biotechnology Information"
+            },
+            "registry_identifier": "NCBI:txid10090"
+        },
+        "subject_id": "815175",
+        "wellness_reports": []
+    }
+}
