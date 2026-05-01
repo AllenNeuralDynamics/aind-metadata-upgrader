@@ -465,37 +465,72 @@ class SessionV1V2(CoreUpgrader):
         else:
             return [], []
 
+    def _get_emission_wavelengths_from_rig_filters(self) -> Dict:
+        """Build a color->wavelength map from rig band-pass filters, falling back to None if not found."""
+        wavelengths = {"green": None, "red": None}
+        for f in getattr(self, "_rig_filters", []):
+            if f.get("filter_type", "").lower() != "band pass":
+                continue
+            name_lower = f.get("name", "").lower()
+            center = f.get("center_wavelength")
+            if center is None:
+                continue
+            if "green" in name_lower:
+                wavelengths["green"] = center
+            elif "red" in name_lower:
+                wavelengths["red"] = center
+        return wavelengths
+
     def _create_ophys_fov_components(self, stream: Dict, light_sources: List, detectors: List) -> tuple:
         """Create channels and PlanarImage objects from ophys_fovs"""
         channels = []
         images = []
 
-        if len(detectors) > 1:
-            raise ValueError("Multiple detectors are not yet supported in ophys upgrade")
+        if len(detectors) > 2:
+            raise ValueError("More than two detectors are not supported in ophys upgrade")
 
-        channel = Channel(
-            channel_name="Ophys Channel",
-            detector=(
-                self._upgrade_detector_config(detectors[0])
-                if detectors
-                else DetectorConfig(
-                    device_name="Unknown Detector",
-                    exposure_time=1.0,
-                    exposure_time_unit=TimeUnit.MS,
-                    trigger_type=TriggerType.INTERNAL,
+        if len(detectors) == 2:
+            green_detectors = [d for d in detectors if "green" in d.get("name", "").lower()]
+            red_detectors = [d for d in detectors if "red" in d.get("name", "").lower()]
+            if len(green_detectors) != 1 or len(red_detectors) != 1:
+                raise ValueError(
+                    "When two detectors are present, expected exactly one green and one red detector, "
+                    f"got: {[d.get('name') for d in detectors]}"
                 )
-            ),
-            light_sources=[self._upgrade_light_source_config(ls) for ls in light_sources],
-        ).model_dump()
-        channels.append(channel)
-
-        for i, fov in enumerate(stream.get("ophys_fovs", [])):
-            # Create plane and image
-            plane = self._upgrade_ophys_fov_to_plane(fov)
-            image = PlanarImage(
-                planes=[plane], image_to_acquisition_transform=[], channel_name=channel["channel_name"]
+            color_wavelengths = self._get_emission_wavelengths_from_rig_filters()
+            for color, det in [("green", green_detectors[0]), ("red", red_detectors[0])]:
+                channel = Channel(
+                    channel_name=f"{color.capitalize()} Channel",
+                    detector=self._upgrade_detector_config(det),
+                    light_sources=[self._upgrade_light_source_config(ls) for ls in light_sources],
+                    emission_wavelength=color_wavelengths[color],
+                    emission_wavelength_unit=SizeUnit.NM if color_wavelengths[color] is not None else None,
+                ).model_dump()
+                channels.append(channel)
+        else:
+            channel = Channel(
+                channel_name="Ophys Channel",
+                detector=(
+                    self._upgrade_detector_config(detectors[0])
+                    if detectors
+                    else DetectorConfig(
+                        device_name="Unknown Detector",
+                        exposure_time=1.0,
+                        exposure_time_unit=TimeUnit.MS,
+                        trigger_type=TriggerType.INTERNAL,
+                    )
+                ),
+                light_sources=[self._upgrade_light_source_config(ls) for ls in light_sources],
             ).model_dump()
-            images.append(image)
+            channels.append(channel)
+
+        for fov in stream.get("ophys_fovs", []):
+            plane = self._upgrade_ophys_fov_to_plane(fov)
+            for channel in channels:
+                image = PlanarImage(
+                    planes=[plane], image_to_acquisition_transform=[], channel_name=channel["channel_name"]
+                ).model_dump()
+                images.append(image)
 
         return channels, images
 
@@ -940,6 +975,13 @@ class SessionV1V2(CoreUpgrader):
         mouse_platform_name = session_data.get("mouse_platform_name") or "unknown"
         reward_consumed_total = session_data.get("reward_consumed_total")
         reward_consumed_unit = session_data.get("reward_consumed_unit", "milliliter")
+
+        # Store rig filters for emission wavelength lookup during stream upgrade
+        self._rig_filters = []
+        if metadata and isinstance(metadata, dict):
+            rig = metadata.get("rig", {})
+            if isinstance(rig, dict):
+                self._rig_filters = rig.get("filters", []) or []
 
         # Upgrade experimenter names to Person objects
         experimenters = self._upgrade_experimenter_names(experimenter_full_name)
