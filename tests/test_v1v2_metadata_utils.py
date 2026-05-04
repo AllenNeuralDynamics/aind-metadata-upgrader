@@ -109,6 +109,7 @@ class TestRepairAcquisitionTimezone(unittest.TestCase):
     """Tests for repair_acquisition_timezone"""
 
     def _make_acq(self, start, end, stream_starts=None, stream_ends=None, epoch_starts=None, epoch_ends=None):
+        """Helper to create acquisition dicts with specified start/end times for acquisition, streams, and epochs"""
         streams = []
         for i, ss in enumerate(stream_starts or []):
             stream = {"stream_start_time": ss}
