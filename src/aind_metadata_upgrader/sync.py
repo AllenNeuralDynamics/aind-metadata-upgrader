@@ -199,8 +199,9 @@ def _flush_pending_upserts(
 ) -> None:
     """Batch upsert pending records to V2 and capture upgrade_datetime for each.
 
-    After the batch upsert the V2 records are fetched back by _id so that
-    the DB-assigned last_modified value can be stored as upgrade_datetime.
+    Attempts a bulk upsert first; falls back to individual upserts if the batch
+    fails (e.g. 413 Request Entity Too Large) so one oversized record cannot
+    abort the entire batch.
 
     Args:
         pending_upserts: List of (upgraded_model, location, record_id, data_dict) tuples.
@@ -210,7 +211,38 @@ def _flush_pending_upserts(
         return
     records_to_upsert = [model for model, _, _, _ in pending_upserts]
     logging.info(f"Batch upserting {len(records_to_upsert)} records to DocumentDB")
-    client_v2.upsert_list_of_docdb_records(records=records_to_upsert)
+
+    batch_failed = False
+    try:
+        client_v2.upsert_list_of_docdb_records(records=records_to_upsert)
+    except Exception as e:
+        logging.warning(f"Batch upsert failed ({e}); falling back to individual upserts")
+        batch_failed = True
+
+    if batch_failed:
+        for model, location, record_id, data_dict in pending_upserts:
+            try:
+                client_v2.upsert_one_docdb_record(record=model)
+                v2_after = _get_v2_record(location)
+                upgrade_results.append({
+                    "v1_id": str(record_id),
+                    "v2_id": str(model["_id"]),
+                    "upgrader_version": upgrader_version,
+                    "last_modified": data_dict.get("last_modified"),
+                    "upgrade_datetime": v2_after.get("last_modified") if v2_after else None,
+                    "status": "success",
+                })
+            except Exception as e2:
+                logging.error(f"Individual upsert failed for record {record_id}: {e2}")
+                upgrade_results.append({
+                    "v1_id": str(record_id),
+                    "v2_id": str(model["_id"]),
+                    "upgrader_version": upgrader_version,
+                    "last_modified": data_dict.get("last_modified"),
+                    "upgrade_datetime": None,
+                    "status": "failed",
+                })
+        return
 
     # Fetch back by _id to capture the DB-assigned last_modified as upgrade_datetime
     ids = [model["_id"] for model, _, _, _ in pending_upserts]
@@ -340,22 +372,37 @@ def run():
                 pending_upserts.append((upgraded_model, location, record_id, data_dict))
             else:
                 # New record — insert immediately so we can capture the assigned _id
-                response = client_v2.insert_one_docdb_record(record=upgraded_model)
-                new_v2_id = response.json().get("insertedId", "")
-                v2_after = _get_v2_record(location)
-                upgrade_results.append({
-                    "v1_id": str(record_id),
-                    "v2_id": str(new_v2_id),
-                    "upgrader_version": upgrader_version,
-                    "last_modified": data_dict.get("last_modified"),
-                    "upgrade_datetime": v2_after.get("last_modified") if v2_after else None,
-                    "status": "success",
-                })
+                try:
+                    response = client_v2.insert_one_docdb_record(record=upgraded_model)
+                    new_v2_id = response.json().get("insertedId", "")
+                    v2_after = _get_v2_record(location)
+                    upgrade_results.append({
+                        "v1_id": str(record_id),
+                        "v2_id": str(new_v2_id),
+                        "upgrader_version": upgrader_version,
+                        "last_modified": data_dict.get("last_modified"),
+                        "upgrade_datetime": v2_after.get("last_modified") if v2_after else None,
+                        "status": "success",
+                    })
+                except Exception as e:
+                    logging.error(f"Insert failed for record {record_id}: {e}")
+                    upgrade_results.append({
+                        "v1_id": str(record_id),
+                        "v2_id": None,
+                        "upgrader_version": upgrader_version,
+                        "last_modified": data_dict.get("last_modified"),
+                        "upgrade_datetime": None,
+                        "status": "failed",
+                    })
 
-        # Flush batch when it has grown to BATCH_SIZE
+        # Flush batch when it has grown to BATCH_SIZE; save progress so a
+        # crash mid-run doesn't lose completed work.
         if len(pending_upserts) >= BATCH_SIZE:
             _flush_pending_upserts(pending_upserts, upgrade_results)
             pending_upserts.clear()
+            _save_results(zs_df, upgrade_results)
+            zs_df = _zs_df  # refresh local reference after save
+            upgrade_results = []
 
     # Final flush of any remaining pending upserts
     if pending_upserts:
