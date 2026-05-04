@@ -151,9 +151,11 @@ class TestRepairAcquisitionTimezone(unittest.TestCase):
         )
         result = repair_acquisition_timezone(data)
         self.assertEqual(_iso(result["acquisition"]["acquisition_end_time"]), "2023-08-31T14:29:44.718331-07:00")
-        self.assertEqual(_iso(result["acquisition"]["data_streams"][0]["stream_start_time"]), "2023-08-31T12:33:31.218331-07:00")
+        actual_ss = _iso(result["acquisition"]["data_streams"][0]["stream_start_time"])
+        self.assertEqual(actual_ss, "2023-08-31T12:33:31.218331-07:00")
         # stream_end_time was already -07:00, should be unchanged (not UTC → stays as original type)
-        self.assertEqual(_iso(result["acquisition"]["data_streams"][0]["stream_end_time"]), "2023-08-31T14:29:44.497900-07:00")
+        actual_se = _iso(result["acquisition"]["data_streams"][0]["stream_end_time"])
+        self.assertEqual(actual_se, "2023-08-31T14:29:44.497900-07:00")
 
     def test_no_fix_when_reinterpretation_invalid(self):
         """No fix applied when reinterpreting UTC times would still violate containment"""
@@ -189,8 +191,10 @@ class TestRepairAcquisitionTimezone(unittest.TestCase):
             ["2023-08-31T12:33:31Z", "2023-08-31T13:00:00-07:00"],
         )
         result = repair_acquisition_timezone(data)
-        self.assertEqual(_iso(result["acquisition"]["data_streams"][0]["stream_start_time"]), "2023-08-31T12:33:31-07:00")
-        self.assertEqual(_iso(result["acquisition"]["data_streams"][1]["stream_start_time"]), "2023-08-31T13:00:00-07:00")
+        actual_s0 = _iso(result["acquisition"]["data_streams"][0]["stream_start_time"])
+        actual_s1 = _iso(result["acquisition"]["data_streams"][1]["stream_start_time"])
+        self.assertEqual(actual_s0, "2023-08-31T12:33:31-07:00")
+        self.assertEqual(actual_s1, "2023-08-31T13:00:00-07:00")
 
     def test_stimulus_epochs_patched_when_valid(self):
         """Stimulus epoch times are also patched when the fix is valid"""
@@ -203,8 +207,10 @@ class TestRepairAcquisitionTimezone(unittest.TestCase):
             ["2023-08-31T12:48:51Z"],
         )
         result = repair_acquisition_timezone(data)
-        self.assertEqual(_iso(result["acquisition"]["stimulus_epochs"][0]["stimulus_start_time"]), "2023-08-31T12:34:31-07:00")
-        self.assertEqual(_iso(result["acquisition"]["stimulus_epochs"][0]["stimulus_end_time"]), "2023-08-31T12:48:51-07:00")
+        actual_es = _iso(result["acquisition"]["stimulus_epochs"][0]["stimulus_start_time"])
+        actual_ee = _iso(result["acquisition"]["stimulus_epochs"][0]["stimulus_end_time"])
+        self.assertEqual(actual_es, "2023-08-31T12:34:31-07:00")
+        self.assertEqual(actual_ee, "2023-08-31T12:48:51-07:00")
 
     def test_no_fix_when_epoch_outside_bounds(self):
         """No fix applied when a stimulus epoch would fall outside acquisition bounds after reinterpretation"""
@@ -234,7 +240,8 @@ class TestRepairAcquisitionTimezone(unittest.TestCase):
         }
         result = repair_acquisition_timezone(data)
         self.assertEqual(_iso(result["acquisition"]["acquisition_end_time"]), "2023-08-31T14:29:44-07:00")
-        self.assertEqual(_iso(result["acquisition"]["data_streams"][0]["stream_start_time"]), "2023-08-31T12:33:31-07:00")
+        actual_ss = _iso(result["acquisition"]["data_streams"][0]["stream_start_time"])
+        self.assertEqual(actual_ss, "2023-08-31T12:33:31-07:00")
 
 
 if __name__ == "__main__":
