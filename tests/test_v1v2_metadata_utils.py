@@ -1,8 +1,16 @@
 """Tests for v1v2_metadata_utils ecephys ID mismatch handling"""
 
 import unittest
+from datetime import datetime
 
-from aind_metadata_upgrader.utils.v1v2_metadata_utils import repair_instrument_id_mismatch
+from aind_metadata_upgrader.utils.v1v2_metadata_utils import repair_instrument_id_mismatch, repair_acquisition_timezone
+
+
+def _iso(v):
+    """Normalise a string or datetime to an ISO string for assertion comparisons."""
+    if isinstance(v, datetime):
+        return v.isoformat()
+    return v
 
 
 def _make_data(instrument_id, acquisition_id):
@@ -95,6 +103,138 @@ class TestHandleEcephysIdMismatch(unittest.TestCase):
         data = _make_data("342_NP3_240906", None)
         result = repair_instrument_id_mismatch(data)
         self.assertIsNone(result["acquisition"]["instrument_id"])
+
+
+class TestRepairAcquisitionTimezone(unittest.TestCase):
+    """Tests for repair_acquisition_timezone"""
+
+    def _make_acq(self, start, end, stream_starts=None, stream_ends=None, epoch_starts=None, epoch_ends=None):
+        streams = []
+        for i, ss in enumerate(stream_starts or []):
+            stream = {"stream_start_time": ss}
+            if stream_ends and i < len(stream_ends):
+                stream["stream_end_time"] = stream_ends[i]
+            streams.append(stream)
+        epochs = []
+        for i, es in enumerate(epoch_starts or []):
+            epoch = {"stimulus_start_time": es}
+            if epoch_ends and i < len(epoch_ends):
+                epoch["stimulus_end_time"] = epoch_ends[i]
+            epochs.append(epoch)
+        return {
+            "acquisition": {
+                "acquisition_start_time": start,
+                "acquisition_end_time": end,
+                "data_streams": streams,
+                "stimulus_epochs": epochs,
+            }
+        }
+
+    def test_no_change_when_start_is_utc(self):
+        """No change when acquisition_start_time is UTC — values remain as original strings"""
+        data = self._make_acq(
+            "2023-08-31T12:33:31Z",
+            "2023-08-31T14:29:44Z",
+            ["2023-08-31T12:33:31Z"],
+        )
+        result = repair_acquisition_timezone(data)
+        self.assertEqual(result["acquisition"]["acquisition_end_time"], "2023-08-31T14:29:44Z")
+        self.assertEqual(result["acquisition"]["data_streams"][0]["stream_start_time"], "2023-08-31T12:33:31Z")
+
+    def test_fix_applied_when_reinterpretation_is_valid(self):
+        """Fix is applied when reinterpreting UTC times makes everything fit within acquisition bounds"""
+        data = self._make_acq(
+            "2023-08-31T12:33:31-07:00",
+            "2023-08-31T14:29:44.718331Z",
+            ["2023-08-31T12:33:31.218331Z"],
+            ["2023-08-31T14:29:44.497900-07:00"],
+        )
+        result = repair_acquisition_timezone(data)
+        self.assertEqual(_iso(result["acquisition"]["acquisition_end_time"]), "2023-08-31T14:29:44.718331-07:00")
+        self.assertEqual(_iso(result["acquisition"]["data_streams"][0]["stream_start_time"]), "2023-08-31T12:33:31.218331-07:00")
+        # stream_end_time was already -07:00, should be unchanged (not UTC → stays as original type)
+        self.assertEqual(_iso(result["acquisition"]["data_streams"][0]["stream_end_time"]), "2023-08-31T14:29:44.497900-07:00")
+
+    def test_no_fix_when_reinterpretation_invalid(self):
+        """No fix applied when reinterpreting UTC times would still violate containment"""
+        data = self._make_acq(
+            "2023-08-31T13:00:00-07:00",
+            "2023-08-31T14:29:44Z",
+            ["2023-08-31T12:00:00Z"],  # reinterpreted → 12:00-07:00 < 13:00-07:00: invalid
+        )
+        result = repair_acquisition_timezone(data)
+        self.assertEqual(result["acquisition"]["acquisition_end_time"], "2023-08-31T14:29:44Z")
+        self.assertEqual(result["acquisition"]["data_streams"][0]["stream_start_time"], "2023-08-31T12:00:00Z")
+
+    def test_no_change_when_end_already_has_tz(self):
+        """No change to end time when it already has a non-UTC timezone"""
+        data = self._make_acq(
+            "2023-08-31T12:33:31-07:00",
+            "2023-08-31T14:29:44-07:00",
+        )
+        result = repair_acquisition_timezone(data)
+        self.assertEqual(_iso(result["acquisition"]["acquisition_end_time"]), "2023-08-31T14:29:44-07:00")
+
+    def test_no_acquisition_key(self):
+        """No crash when acquisition key is missing"""
+        data = {"subject": {}}
+        result = repair_acquisition_timezone(data)
+        self.assertNotIn("acquisition", result)
+
+    def test_multiple_streams_partially_utc(self):
+        """Only UTC stream times are reinterpreted; non-UTC ones are left alone when valid"""
+        data = self._make_acq(
+            "2023-08-31T12:33:31-07:00",
+            "2023-08-31T14:29:44Z",
+            ["2023-08-31T12:33:31Z", "2023-08-31T13:00:00-07:00"],
+        )
+        result = repair_acquisition_timezone(data)
+        self.assertEqual(_iso(result["acquisition"]["data_streams"][0]["stream_start_time"]), "2023-08-31T12:33:31-07:00")
+        self.assertEqual(_iso(result["acquisition"]["data_streams"][1]["stream_start_time"]), "2023-08-31T13:00:00-07:00")
+
+    def test_stimulus_epochs_patched_when_valid(self):
+        """Stimulus epoch times are also patched when the fix is valid"""
+        data = self._make_acq(
+            "2023-08-31T12:33:31-07:00",
+            "2023-08-31T14:29:44Z",
+            [],
+            [],
+            ["2023-08-31T12:34:31Z"],
+            ["2023-08-31T12:48:51Z"],
+        )
+        result = repair_acquisition_timezone(data)
+        self.assertEqual(_iso(result["acquisition"]["stimulus_epochs"][0]["stimulus_start_time"]), "2023-08-31T12:34:31-07:00")
+        self.assertEqual(_iso(result["acquisition"]["stimulus_epochs"][0]["stimulus_end_time"]), "2023-08-31T12:48:51-07:00")
+
+    def test_no_fix_when_epoch_outside_bounds(self):
+        """No fix applied when a stimulus epoch would fall outside acquisition bounds after reinterpretation"""
+        data = self._make_acq(
+            "2023-08-31T12:33:31-07:00",
+            "2023-08-31T14:29:44Z",
+            [],
+            [],
+            ["2023-08-31T12:34:31Z"],
+            ["2023-08-31T15:00:00Z"],  # 15:00-07:00 > 14:29-07:00: invalid
+        )
+        result = repair_acquisition_timezone(data)
+        self.assertEqual(result["acquisition"]["stimulus_epochs"][0]["stimulus_end_time"], "2023-08-31T15:00:00Z")
+
+    def test_fix_works_with_datetime_objects(self):
+        """Works when values are already datetime objects (as from model_dump())"""
+        from datetime import timezone, timedelta
+        tz_minus7 = timezone(timedelta(hours=-7))
+        utc = timezone.utc
+        data = {
+            "acquisition": {
+                "acquisition_start_time": datetime(2023, 8, 31, 12, 33, 31, tzinfo=tz_minus7),
+                "acquisition_end_time": datetime(2023, 8, 31, 14, 29, 44, tzinfo=utc),
+                "data_streams": [{"stream_start_time": datetime(2023, 8, 31, 12, 33, 31, tzinfo=utc)}],
+                "stimulus_epochs": [],
+            }
+        }
+        result = repair_acquisition_timezone(data)
+        self.assertEqual(_iso(result["acquisition"]["acquisition_end_time"]), "2023-08-31T14:29:44-07:00")
+        self.assertEqual(_iso(result["acquisition"]["data_streams"][0]["stream_start_time"]), "2023-08-31T12:33:31-07:00")
 
 
 if __name__ == "__main__":
