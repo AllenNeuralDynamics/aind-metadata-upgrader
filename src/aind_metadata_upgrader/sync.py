@@ -96,14 +96,18 @@ def _should_skip(row: dict, data_dict: dict, v2_record: Optional[dict], upgrade_
         # v2 was deleted externally — re-upgrade to recreate it
         return False
     if v2_record.get("_last_modified") != upgrade_datetime:
+        # V2 has been modified since the last upgrade, bypass
         logging.info(f"Record {record_id}: bypassing — v2 was externally modified after last upgrade")
         return True
     if (
         row.get("upgrader_version") == upgrader_version
         and row.get("last_modified") == data_dict.get("last_modified")
     ):
+        # If the V1 record hasn't been modified AND
+        # the same upgrader was already successful
         logging.info(f"Record {record_id}: skipping — already up-to-date")
         return True
+    # Default to upgrading
     return False
 
 
