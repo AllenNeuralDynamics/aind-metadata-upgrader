@@ -159,6 +159,18 @@ def upgrade_record(data_dict: dict, existing_v2_id: Optional[str] = None) -> Opt
     return model
 
 
+def _make_failure_result(data_dict: dict) -> dict:
+    """Build a tracking dict representing a failed upgrade for a V1 record."""
+    return {
+        "v1_id": str(data_dict["_id"]),
+        "v2_id": None,
+        "upgrader_version": upgrader_version,
+        "last_modified": data_dict.get("last_modified"),
+        "upgrade_datetime": None,
+        "status": "failed",
+    }
+
+
 def _attempt_upgrade(
     data_dict: dict,
     v2_record: Optional[dict],
@@ -182,14 +194,7 @@ def _attempt_upgrade(
     if upgraded_model is None:
         if location:
             _delete_v2_record(location, upgrade_datetime, v2_record)
-        return None, {
-            "v1_id": str(record_id),
-            "v2_id": None,
-            "upgrader_version": upgrader_version,
-            "last_modified": data_dict.get("last_modified"),
-            "upgrade_datetime": None,
-            "status": "failed",
-        }
+        return None, _make_failure_result(data_dict)
 
     return upgraded_model, None
 
@@ -215,7 +220,26 @@ def _flush_pending_upserts(
         return
     records_to_upsert = [model for model, _, _, _ in pending_upserts]
     logging.info(f"Batch upserting {len(records_to_upsert)} records to DocumentDB")
-    client_v2.upsert_list_of_docdb_records(records=records_to_upsert)
+    try:
+        client_v2.upsert_list_of_docdb_records(records=records_to_upsert)
+    except Exception as e:
+        logging.warning(f"Batch upsert failed ({e}), falling back to individual upserts")
+        for model, location, record_id, data_dict in pending_upserts:
+            try:
+                client_v2.upsert_one_docdb_record(record=model)
+                v2_after = _get_v2_record(location)
+                upgrade_results.append({
+                    "v1_id": str(record_id),
+                    "v2_id": str(model["_id"]),
+                    "upgrader_version": upgrader_version,
+                    "last_modified": data_dict.get("last_modified"),
+                    "upgrade_datetime": v2_after.get("_last_modified") if v2_after else None,
+                    "status": "success",
+                })
+            except Exception as e2:
+                logging.error(f"Individual upsert failed for record {record_id}: {e2}")
+                upgrade_results.append(_make_failure_result(data_dict))
+        return
 
     # Fetch back by _id to capture the DB-assigned last_modified as upgrade_datetime
     ids = [model["_id"] for model, _, _, _ in pending_upserts]
@@ -270,9 +294,19 @@ def run_one(record_id: str):
         return
 
     if existing_v2_id:
-        client_v2.upsert_one_docdb_record(record=upgraded_model)
+        try:
+            client_v2.upsert_one_docdb_record(record=upgraded_model)
+        except Exception as e:
+            logging.error(f"Failed to upsert record {record_id} to V2: {e}")
+            _save_results(zs_df, [_make_failure_result(data_dict)])
+            return
     else:
-        response = client_v2.insert_one_docdb_record(record=upgraded_model)
+        try:
+            response = client_v2.insert_one_docdb_record(record=upgraded_model)
+        except Exception as e:
+            logging.error(f"Failed to insert record {record_id} to V2: {e}")
+            _save_results(zs_df, [_make_failure_result(data_dict)])
+            return
         existing_v2_id = response.json().get("insertedId", "")
 
     v2_record_after = _get_v2_record(location)
@@ -345,7 +379,12 @@ def run():
                 pending_upserts.append((upgraded_model, location, record_id, data_dict))
             else:
                 # New record — insert immediately so we can capture the assigned _id
-                response = client_v2.insert_one_docdb_record(record=upgraded_model)
+                try:
+                    response = client_v2.insert_one_docdb_record(record=upgraded_model)
+                except Exception as e:
+                    logging.error(f"Failed to insert record {record_id} to V2: {e}")
+                    upgrade_results.append(_make_failure_result(data_dict))
+                    continue
                 new_v2_id = response.json().get("insertedId", "")
                 v2_after = _get_v2_record(location)
                 upgrade_results.append({
