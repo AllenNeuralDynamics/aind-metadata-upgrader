@@ -465,6 +465,31 @@ class TestSync(unittest.TestCase):
         self.assertIsNone(df.iloc[0]["v2_id"])
         self.assertEqual(df.iloc[0]["status"], "failed")
 
+    def test_should_skip_bypass_when_v2_externally_modified(self):
+        """Bypass: upgrade_datetime set, v2 exists but last_modified differs."""
+        row = {"upgrade_datetime": "2025-01-01T00:00:00", "upgrader_version": "1.0.0", "last_modified": "2024-12-01"}
+        data_dict = {"_id": "rec1", "last_modified": "2024-12-01"}
+        v2_record = {"_id": "v2_rec1", "last_modified": "2025-06-01T00:00:00"}  # externally modified
+        self.assertTrue(sync._should_skip(row, data_dict, v2_record, "2025-01-01T00:00:00"))
+
+    def test_should_skip_no_bypass_when_v2_deleted(self):
+        """No bypass: upgrade_datetime set but v2 no longer exists — must re-upgrade."""
+        row = {"upgrade_datetime": "2025-01-01T00:00:00", "upgrader_version": "1.0.0", "last_modified": "2024-12-01"}
+        data_dict = {"_id": "rec1", "last_modified": "2024-12-01"}
+        self.assertFalse(sync._should_skip(row, data_dict, None, "2025-01-01T00:00:00"))
+
+    def test_should_skip_true_when_uptodate(self):
+        """Skip: upgrade_datetime matches v2, same version and v1 last_modified."""
+        with patch("aind_metadata_upgrader.sync.upgrader_version", "1.0.0"):
+            row = {"upgrade_datetime": "2025-01-01T00:00:00", "upgrader_version": "1.0.0", "last_modified": "2024-12-01"}
+            data_dict = {"_id": "rec1", "last_modified": "2024-12-01"}
+            v2_record = {"_id": "v2_rec1", "last_modified": "2025-01-01T00:00:00"}
+            self.assertTrue(sync._should_skip(row, data_dict, v2_record, "2025-01-01T00:00:00"))
+
+    def test_should_skip_false_when_no_upgrade_datetime(self):
+        """No skip: upgrade_datetime absent — always upgrade."""
+        self.assertFalse(sync._should_skip({}, {"_id": "rec1"}, None, None))
+
 
 if __name__ == "__main__":
     unittest.main()

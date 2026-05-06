@@ -83,14 +83,19 @@ def _get_cache_row(df: pd.DataFrame, record_id: str) -> dict:
 def _should_skip(row: dict, data_dict: dict, v2_record: Optional[dict], upgrade_datetime: Optional[str]) -> bool:
     """Return True if this record should not be upgraded, logging the reason.
 
-    Bypass — v2 was externally modified (e.g. QC update) after the last upgrade.
+    Bypass — v2 exists and was externally modified (e.g. QC update) after the last upgrade.
     Skip   — record is already up-to-date with the current upgrader and v1 data.
+
+    Note: if upgrade_datetime is set but v2 no longer exists, we do NOT bypass —
+    the record should be re-upgraded to recreate the v2 document.
     """
     if not upgrade_datetime:
         return False
     record_id = data_dict.get("_id")
-    v2_last_modified = (v2_record or {}).get("last_modified")
-    if v2_last_modified != upgrade_datetime:
+    if v2_record is None:
+        # v2 was deleted externally — re-upgrade to recreate it
+        return False
+    if v2_record.get("last_modified") != upgrade_datetime:
         logging.info(f"Record {record_id}: bypassing — v2 was externally modified after last upgrade")
         return True
     if (
