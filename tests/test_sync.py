@@ -90,7 +90,7 @@ class TestSync(unittest.TestCase):
         )
         mock_custom.return_value = existing_df
         mock_v2_client.retrieve_docdb_records.return_value = [
-            {"_id": "v2_record1", "last_modified": "2023-01-02T00:00:00"}
+            {"_id": "v2_record1", "_last_modified": "2023-01-02T00:00:00"}
         ]
 
         mock_v1_client.retrieve_docdb_records.side_effect = [
@@ -245,7 +245,7 @@ class TestSync(unittest.TestCase):
         )
         mock_custom.return_value = existing_df
         mock_v2_client.retrieve_docdb_records.return_value = [
-            {"_id": "v2_record1", "last_modified": "2023-01-02T00:00:00"}
+            {"_id": "v2_record1", "_last_modified": "2023-01-02T00:00:00"}
         ]
         # Only record1 exists in v1 DB; stale_record has been deleted
         mock_v1_client.retrieve_docdb_records.side_effect = [
@@ -343,7 +343,7 @@ class TestSync(unittest.TestCase):
         )
         mock_custom.return_value = existing_df
         mock_v2_client.retrieve_docdb_records.return_value = [
-            {"_id": "v2_record1", "last_modified": "2023-01-02T00:00:00"}
+            {"_id": "v2_record1", "_last_modified": "2023-01-02T00:00:00"}
         ]
 
         sync.run_one("record1")
@@ -469,7 +469,7 @@ class TestSync(unittest.TestCase):
         """Bypass: upgrade_datetime set, v2 exists but last_modified differs."""
         row = {"upgrade_datetime": "2025-01-01T00:00:00", "upgrader_version": "1.0.0", "last_modified": "2024-12-01"}
         data_dict = {"_id": "rec1", "last_modified": "2024-12-01"}
-        v2_record = {"_id": "v2_rec1", "last_modified": "2025-06-01T00:00:00"}  # externally modified
+        v2_record = {"_id": "v2_rec1", "_last_modified": "2025-06-01T00:00:00"}  # externally modified
         self.assertTrue(sync._should_skip(row, data_dict, v2_record, "2025-01-01T00:00:00"))
 
     def test_should_skip_no_bypass_when_v2_deleted(self):
@@ -483,7 +483,7 @@ class TestSync(unittest.TestCase):
         with patch("aind_metadata_upgrader.sync.upgrader_version", "1.0.0"):
             row = {"upgrade_datetime": "2025-01-01T00:00:00", "upgrader_version": "1.0.0", "last_modified": "2024-12-01"}
             data_dict = {"_id": "rec1", "last_modified": "2024-12-01"}
-            v2_record = {"_id": "v2_rec1", "last_modified": "2025-01-01T00:00:00"}
+            v2_record = {"_id": "v2_rec1", "_last_modified": "2025-01-01T00:00:00"}
             self.assertTrue(sync._should_skip(row, data_dict, v2_record, "2025-01-01T00:00:00"))
 
     def test_should_skip_false_when_no_upgrade_datetime(self):

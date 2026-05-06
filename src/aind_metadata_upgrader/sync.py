@@ -95,7 +95,7 @@ def _should_skip(row: dict, data_dict: dict, v2_record: Optional[dict], upgrade_
     if v2_record is None:
         # v2 was deleted externally — re-upgrade to recreate it
         return False
-    if v2_record.get("last_modified") != upgrade_datetime:
+    if v2_record.get("_last_modified") != upgrade_datetime:
         logging.info(f"Record {record_id}: bypassing — v2 was externally modified after last upgrade")
         return True
     if (
@@ -133,7 +133,7 @@ def _delete_v2_record(
         v2_record = _get_v2_record(location)
     if not v2_record:
         return
-    v2_last_modified = v2_record.get("last_modified")
+    v2_last_modified = v2_record.get("_last_modified")
     if upgrade_datetime and v2_last_modified != upgrade_datetime:
         logging.info(
             f"Skipping delete: v2 record was externally modified after upgrading "
@@ -221,9 +221,9 @@ def _flush_pending_upserts(
     ids = [model["_id"] for model, _, _, _ in pending_upserts]
     v2_records_after = client_v2.retrieve_docdb_records(
         filter_query={"_id": {"$in": ids}},
-        projection={"_id": 1, "last_modified": 1},
+        projection={"_id": 1, "_last_modified": 1},
     )
-    id_to_last_modified = {r["_id"]: r.get("last_modified") for r in v2_records_after}
+    id_to_last_modified = {r["_id"]: r.get("_last_modified") for r in v2_records_after}
 
     for model, location, record_id, data_dict in pending_upserts:
         upgrade_results.append({
@@ -281,7 +281,7 @@ def run_one(record_id: str):
         "v2_id": str(existing_v2_id),
         "upgrader_version": upgrader_version,
         "last_modified": data_dict.get("last_modified"),
-        "upgrade_datetime": v2_record_after.get("last_modified") if v2_record_after else None,
+        "upgrade_datetime": v2_record_after.get("_last_modified") if v2_record_after else None,
         "status": "success",
     }
     logging.info(f"Successfully processed record {record_id}")
@@ -353,7 +353,7 @@ def run():
                     "v2_id": str(new_v2_id),
                     "upgrader_version": upgrader_version,
                     "last_modified": data_dict.get("last_modified"),
-                    "upgrade_datetime": v2_after.get("last_modified") if v2_after else None,
+                    "upgrade_datetime": v2_after.get("_last_modified") if v2_after else None,
                     "status": "success",
                 })
 
