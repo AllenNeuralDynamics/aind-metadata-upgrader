@@ -481,7 +481,11 @@ class TestSync(unittest.TestCase):
     def test_should_skip_true_when_uptodate(self):
         """Skip: upgrade_datetime matches v2, same version and v1 last_modified."""
         with patch("aind_metadata_upgrader.sync.upgrader_version", "1.0.0"):
-            row = {"upgrade_datetime": "2025-01-01T00:00:00", "upgrader_version": "1.0.0", "last_modified": "2024-12-01"}
+            row = {
+                "upgrade_datetime": "2025-01-01T00:00:00",
+                "upgrader_version": "1.0.0",
+                "last_modified": "2024-12-01",
+            }
             data_dict = {"_id": "rec1", "last_modified": "2024-12-01"}
             v2_record = {"_id": "v2_rec1", "_last_modified": "2025-01-01T00:00:00"}
             self.assertTrue(sync._should_skip(row, data_dict, v2_record, "2025-01-01T00:00:00"))
