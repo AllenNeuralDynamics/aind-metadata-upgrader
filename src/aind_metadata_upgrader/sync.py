@@ -83,22 +83,31 @@ def _get_cache_row(df: pd.DataFrame, record_id: str) -> dict:
 def _should_skip(row: dict, data_dict: dict, v2_record: Optional[dict], upgrade_datetime: Optional[str]) -> bool:
     """Return True if this record should not be upgraded, logging the reason.
 
-    Bypass — v2 was externally modified (e.g. QC update) after the last upgrade.
+    Bypass — v2 exists and was externally modified (e.g. QC update) after the last upgrade.
     Skip   — record is already up-to-date with the current upgrader and v1 data.
+
+    Note: if upgrade_datetime is set but v2 no longer exists, we do NOT bypass —
+    the record should be re-upgraded to recreate the v2 document.
     """
     if not upgrade_datetime:
         return False
     record_id = data_dict.get("_id")
-    v2_last_modified = (v2_record or {}).get("last_modified")
-    if v2_last_modified != upgrade_datetime:
+    if v2_record is None:
+        # v2 was deleted externally — re-upgrade to recreate it
+        return False
+    if v2_record.get("_last_modified") != upgrade_datetime:
+        # V2 has been modified since the last upgrade, bypass
         logging.info(f"Record {record_id}: bypassing — v2 was externally modified after last upgrade")
         return True
     if (
         row.get("upgrader_version") == upgrader_version
         and row.get("last_modified") == data_dict.get("last_modified")
     ):
+        # If the V1 record hasn't been modified AND
+        # the same upgrader was already successful
         logging.info(f"Record {record_id}: skipping — already up-to-date")
         return True
+    # Default to upgrading
     return False
 
 
@@ -128,7 +137,7 @@ def _delete_v2_record(
         v2_record = _get_v2_record(location)
     if not v2_record:
         return
-    v2_last_modified = v2_record.get("last_modified")
+    v2_last_modified = v2_record.get("_last_modified")
     if upgrade_datetime and v2_last_modified != upgrade_datetime:
         logging.info(
             f"Skipping delete: v2 record was externally modified after upgrading "
@@ -154,6 +163,18 @@ def upgrade_record(data_dict: dict, existing_v2_id: Optional[str] = None) -> Opt
     return model
 
 
+def _make_failure_result(data_dict: dict) -> dict:
+    """Build a tracking dict representing a failed upgrade for a V1 record."""
+    return {
+        "v1_id": str(data_dict["_id"]),
+        "v2_id": None,
+        "upgrader_version": upgrader_version,
+        "last_modified": data_dict.get("last_modified"),
+        "upgrade_datetime": None,
+        "status": "failed",
+    }
+
+
 def _attempt_upgrade(
     data_dict: dict,
     v2_record: Optional[dict],
@@ -177,14 +198,7 @@ def _attempt_upgrade(
     if upgraded_model is None:
         if location:
             _delete_v2_record(location, upgrade_datetime, v2_record)
-        return None, {
-            "v1_id": str(record_id),
-            "v2_id": None,
-            "upgrader_version": upgrader_version,
-            "last_modified": data_dict.get("last_modified"),
-            "upgrade_datetime": None,
-            "status": "failed",
-        }
+        return None, _make_failure_result(data_dict)
 
     return upgraded_model, None
 
@@ -192,6 +206,56 @@ def _attempt_upgrade(
 # ---------------------------------------------------------------------------
 # Public entry points
 # ---------------------------------------------------------------------------
+
+def _process_record(
+    data_dict: dict,
+    zs_df: pd.DataFrame,
+    upgrade_results: list[dict],
+    pending_upserts: list[tuple],
+) -> None:
+    """Evaluate and process a single V1 record within a run() batch."""
+    record_id = data_dict["_id"]
+    location = data_dict.get("location")
+    logging.info(f"Testing upgrade for record ID: {record_id}")
+
+    row = _get_cache_row(zs_df, record_id)
+    upgrade_datetime = row.get("upgrade_datetime") or None
+
+    # Fetch current V2 record once — reused for bypass/skip check and upsert
+    v2_record = _get_v2_record(location) if location else None
+
+    if _should_skip(row, data_dict, v2_record, upgrade_datetime):
+        return
+
+    existing_v2_id = v2_record["_id"] if v2_record else None
+
+    upgraded_model, failure_result = _attempt_upgrade(data_dict, v2_record, upgrade_datetime)
+    if failure_result is not None:
+        upgrade_results.append(failure_result)
+        return
+
+    if existing_v2_id:
+        # Existing record — queue for batch upsert
+        pending_upserts.append((upgraded_model, location, record_id, data_dict))
+    else:
+        # New record — insert immediately so we can capture the assigned _id
+        try:
+            response = client_v2.insert_one_docdb_record(record=upgraded_model)
+        except Exception as e:
+            logging.error(f"Failed to insert record {record_id} to V2: {e}")
+            upgrade_results.append(_make_failure_result(data_dict))
+            return
+        new_v2_id = response.json().get("insertedId", "")
+        v2_after = _get_v2_record(location)
+        upgrade_results.append({
+            "v1_id": str(record_id),
+            "v2_id": str(new_v2_id),
+            "upgrader_version": upgrader_version,
+            "last_modified": data_dict.get("last_modified"),
+            "upgrade_datetime": v2_after.get("_last_modified") if v2_after else None,
+            "status": "success",
+        })
+
 
 def _flush_pending_upserts(
     pending_upserts: list[tuple[dict, str, str, dict]],
@@ -210,15 +274,34 @@ def _flush_pending_upserts(
         return
     records_to_upsert = [model for model, _, _, _ in pending_upserts]
     logging.info(f"Batch upserting {len(records_to_upsert)} records to DocumentDB")
-    client_v2.upsert_list_of_docdb_records(records=records_to_upsert)
+    try:
+        client_v2.upsert_list_of_docdb_records(records=records_to_upsert)
+    except Exception as e:
+        logging.warning(f"Batch upsert failed ({e}), falling back to individual upserts")
+        for model, location, record_id, data_dict in pending_upserts:
+            try:
+                client_v2.upsert_one_docdb_record(record=model)
+                v2_after = _get_v2_record(location)
+                upgrade_results.append({
+                    "v1_id": str(record_id),
+                    "v2_id": str(model["_id"]),
+                    "upgrader_version": upgrader_version,
+                    "last_modified": data_dict.get("last_modified"),
+                    "upgrade_datetime": v2_after.get("_last_modified") if v2_after else None,
+                    "status": "success",
+                })
+            except Exception as e2:
+                logging.error(f"Individual upsert failed for record {record_id}: {e2}")
+                upgrade_results.append(_make_failure_result(data_dict))
+        return
 
     # Fetch back by _id to capture the DB-assigned last_modified as upgrade_datetime
     ids = [model["_id"] for model, _, _, _ in pending_upserts]
     v2_records_after = client_v2.retrieve_docdb_records(
         filter_query={"_id": {"$in": ids}},
-        projection={"_id": 1, "last_modified": 1},
+        projection={"_id": 1, "_last_modified": 1},
     )
-    id_to_last_modified = {r["_id"]: r.get("last_modified") for r in v2_records_after}
+    id_to_last_modified = {r["_id"]: r.get("_last_modified") for r in v2_records_after}
 
     for model, location, record_id, data_dict in pending_upserts:
         upgrade_results.append({
@@ -265,9 +348,19 @@ def run_one(record_id: str):
         return
 
     if existing_v2_id:
-        client_v2.upsert_one_docdb_record(record=upgraded_model)
+        try:
+            client_v2.upsert_one_docdb_record(record=upgraded_model)
+        except Exception as e:
+            logging.error(f"Failed to upsert record {record_id} to V2: {e}")
+            _save_results(zs_df, [_make_failure_result(data_dict)])
+            return
     else:
-        response = client_v2.insert_one_docdb_record(record=upgraded_model)
+        try:
+            response = client_v2.insert_one_docdb_record(record=upgraded_model)
+        except Exception as e:
+            logging.error(f"Failed to insert record {record_id} to V2: {e}")
+            _save_results(zs_df, [_make_failure_result(data_dict)])
+            return
         existing_v2_id = response.json().get("insertedId", "")
 
     v2_record_after = _get_v2_record(location)
@@ -276,7 +369,7 @@ def run_one(record_id: str):
         "v2_id": str(existing_v2_id),
         "upgrader_version": upgrader_version,
         "last_modified": data_dict.get("last_modified"),
-        "upgrade_datetime": v2_record_after.get("last_modified") if v2_record_after else None,
+        "upgrade_datetime": v2_record_after.get("_last_modified") if v2_record_after else None,
         "status": "success",
     }
     logging.info(f"Successfully processed record {record_id}")
@@ -315,42 +408,7 @@ def run():
         )
 
         for data_dict in cached_records:
-            record_id = data_dict["_id"]
-            location = data_dict.get("location")
-            logging.info(f"Testing upgrade for record ID: {record_id}")
-
-            row = _get_cache_row(zs_df, record_id)
-            upgrade_datetime = row.get("upgrade_datetime") or None
-
-            # Fetch current V2 record once — reused for bypass/skip check and upsert
-            v2_record = _get_v2_record(location) if location else None
-
-            if _should_skip(row, data_dict, v2_record, upgrade_datetime):
-                continue
-
-            existing_v2_id = v2_record["_id"] if v2_record else None
-
-            upgraded_model, failure_result = _attempt_upgrade(data_dict, v2_record, upgrade_datetime)
-            if failure_result is not None:
-                upgrade_results.append(failure_result)
-                continue
-
-            if existing_v2_id:
-                # Existing record — queue for batch upsert
-                pending_upserts.append((upgraded_model, location, record_id, data_dict))
-            else:
-                # New record — insert immediately so we can capture the assigned _id
-                response = client_v2.insert_one_docdb_record(record=upgraded_model)
-                new_v2_id = response.json().get("insertedId", "")
-                v2_after = _get_v2_record(location)
-                upgrade_results.append({
-                    "v1_id": str(record_id),
-                    "v2_id": str(new_v2_id),
-                    "upgrader_version": upgrader_version,
-                    "last_modified": data_dict.get("last_modified"),
-                    "upgrade_datetime": v2_after.get("last_modified") if v2_after else None,
-                    "status": "success",
-                })
+            _process_record(data_dict, zs_df, upgrade_results, pending_upserts)
 
         # Flush batch when it has grown to BATCH_SIZE
         if len(pending_upserts) >= BATCH_SIZE:
