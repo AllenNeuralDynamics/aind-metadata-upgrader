@@ -11,6 +11,7 @@ class TestSync(unittest.TestCase):
 
     def setUp(self):
         """Set up test fixtures."""
+        sync._zs_df = None  # Reset in-memory ZS cache before each test
         self.mock_v1_client = MagicMock()
         self.mock_v2_client = MagicMock()
         self.mock_upgrade = MagicMock()
@@ -83,10 +84,14 @@ class TestSync(unittest.TestCase):
                     "upgrader_version": "1.0.0",
                     "status": "success",
                     "last_modified": "2023-01-01",
+                    "upgrade_datetime": "2023-01-02T00:00:00",
                 }
             ]
         )
         mock_custom.return_value = existing_df
+        mock_v2_client.retrieve_docdb_records.return_value = [
+            {"_id": "v2_record1", "_last_modified": "2023-01-02T00:00:00"}
+        ]
 
         mock_v1_client.retrieve_docdb_records.side_effect = [
             [{"_id": "record1"}],  # Record IDs
@@ -97,7 +102,8 @@ class TestSync(unittest.TestCase):
 
         mock_upgrade_class.assert_not_called()
         store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("df") is not None]
-        self.assertEqual(len(store_calls), 0)
+        # _save_results always writes back (so pruning stale rows is always persisted)
+        self.assertEqual(len(store_calls), 1)
 
     @patch("aind_metadata_upgrader.sync.custom")
     @patch("aind_metadata_upgrader.sync.client_v2")
@@ -225,6 +231,7 @@ class TestSync(unittest.TestCase):
                     "upgrader_version": "1.0.0",
                     "status": "success",
                     "last_modified": "2023-01-01",
+                    "upgrade_datetime": "2023-01-02T00:00:00",
                 },
                 {
                     "v1_id": "stale_record",
@@ -232,10 +239,14 @@ class TestSync(unittest.TestCase):
                     "upgrader_version": "1.0.0",
                     "status": "success",
                     "last_modified": "2022-01-01",
+                    "upgrade_datetime": "2022-01-02T00:00:00",
                 },
             ]
         )
         mock_custom.return_value = existing_df
+        mock_v2_client.retrieve_docdb_records.return_value = [
+            {"_id": "v2_record1", "_last_modified": "2023-01-02T00:00:00"}
+        ]
         # Only record1 exists in v1 DB; stale_record has been deleted
         mock_v1_client.retrieve_docdb_records.side_effect = [
             [{"_id": "record1"}],
@@ -260,7 +271,7 @@ class TestSync(unittest.TestCase):
 
         sync.run()
 
-        mock_logging.info.assert_called_with("(METADATA VALIDATOR) No upgrade results to write to ZS")
+        mock_logging.info.assert_called_with("Uploading 0 tracking records to ZS")
 
     @patch("aind_metadata_upgrader.sync.custom")
     @patch("aind_metadata_upgrader.sync.client_v2")
@@ -326,10 +337,14 @@ class TestSync(unittest.TestCase):
                     "upgrader_version": "1.0.0",
                     "status": "success",
                     "last_modified": "2023-01-01",
+                    "upgrade_datetime": "2023-01-02T00:00:00",
                 }
             ]
         )
         mock_custom.return_value = existing_df
+        mock_v2_client.retrieve_docdb_records.return_value = [
+            {"_id": "v2_record1", "_last_modified": "2023-01-02T00:00:00"}
+        ]
 
         sync.run_one("record1")
 
@@ -361,20 +376,20 @@ class TestSync(unittest.TestCase):
     @patch("aind_metadata_upgrader.sync.upgrader_version", "2.5.0")
     @patch("aind_metadata_upgrader.sync.TABLE_NAME", "test_table")
     def test_update_rds_tracking_insert_new_record(self, mock_custom):
-        """Test that update_rds_tracking correctly inserts a new record."""
-        mock_custom.side_effect = lambda *a, **kw: (
-            (_ for _ in ()).throw(ValueError("empty")) if kw.get("df") is None else kw["df"]
-        )
+        """Test that _save_results correctly inserts a new record."""
+        mock_custom.side_effect = lambda *a, **kw: kw["df"] if kw.get("df") is not None else None
 
+        base_df = pd.DataFrame(columns=sync._ZS_COLUMNS)
         result = {
             "v1_id": "test_v1_id_123",
             "v2_id": "test_v2_id_456",
             "upgrader_version": "2.5.0",
             "last_modified": "2024-12-15T10:30:00",
+            "upgrade_datetime": None,
             "status": "success",
         }
 
-        sync.update_cache_tracking("test_v1_id_123", result, None)
+        sync._save_results(base_df, [result])
 
         store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("df") is not None]
         self.assertEqual(len(store_calls), 1)
@@ -388,29 +403,32 @@ class TestSync(unittest.TestCase):
     @patch("aind_metadata_upgrader.sync.upgrader_version", "3.1.4")
     @patch("aind_metadata_upgrader.sync.TABLE_NAME", "test_table")
     def test_update_rds_tracking_update_existing_record(self, mock_custom):
-        """Test that update_rds_tracking correctly overwrites an existing record."""
-        existing_df = pd.DataFrame(
+        """Test that _save_results correctly overwrites an existing record."""
+        mock_custom.side_effect = lambda *a, **kw: kw["df"] if kw.get("df") is not None else None
+
+        base_df = pd.DataFrame(
             [
                 {
                     "v1_id": "old_v1_id_789",
                     "v2_id": "old_v2_id",
                     "upgrader_version": "1.0.0",
                     "last_modified": "2023-01-01",
+                    "upgrade_datetime": None,
                     "status": "success",
                 }
             ]
         )
-        mock_custom.side_effect = lambda *a, **kw: kw["df"] if kw.get("df") is not None else existing_df
 
         result = {
             "v1_id": "old_v1_id_789",
             "v2_id": "new_v2_id_999",
             "upgrader_version": "3.1.4",
             "last_modified": "2025-06-20T14:45:30",
+            "upgrade_datetime": None,
             "status": "success",
         }
 
-        sync.update_cache_tracking("old_v1_id_789", result, [{"existing": "row"}])
+        sync._save_results(base_df, [result])
 
         store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("df") is not None]
         self.assertEqual(len(store_calls), 1)
@@ -425,20 +443,20 @@ class TestSync(unittest.TestCase):
     @patch("aind_metadata_upgrader.sync.upgrader_version", "1.2.3")
     @patch("aind_metadata_upgrader.sync.TABLE_NAME", "test_table")
     def test_update_rds_tracking_failed_status(self, mock_custom):
-        """Test that update_rds_tracking correctly handles failed upgrades with None v2_id."""
-        mock_custom.side_effect = lambda *a, **kw: (
-            (_ for _ in ()).throw(ValueError("empty")) if kw.get("df") is None else kw["df"]
-        )
+        """Test that _save_results correctly handles failed upgrades with None v2_id."""
+        mock_custom.side_effect = lambda *a, **kw: kw["df"] if kw.get("df") is not None else None
 
+        base_df = pd.DataFrame(columns=sync._ZS_COLUMNS)
         result = {
             "v1_id": "failed_v1_id_555",
             "v2_id": None,
             "upgrader_version": "1.2.3",
             "last_modified": "2024-03-10T08:00:00",
+            "upgrade_datetime": None,
             "status": "failed",
         }
 
-        sync.update_cache_tracking("failed_v1_id_555", result, None)
+        sync._save_results(base_df, [result])
 
         store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("df") is not None]
         self.assertEqual(len(store_calls), 1)
@@ -446,6 +464,35 @@ class TestSync(unittest.TestCase):
         self.assertEqual(df.iloc[0]["v1_id"], "failed_v1_id_555")
         self.assertIsNone(df.iloc[0]["v2_id"])
         self.assertEqual(df.iloc[0]["status"], "failed")
+
+    def test_should_skip_bypass_when_v2_externally_modified(self):
+        """Bypass: upgrade_datetime set, v2 exists but last_modified differs."""
+        row = {"upgrade_datetime": "2025-01-01T00:00:00", "upgrader_version": "1.0.0", "last_modified": "2024-12-01"}
+        data_dict = {"_id": "rec1", "last_modified": "2024-12-01"}
+        v2_record = {"_id": "v2_rec1", "_last_modified": "2025-06-01T00:00:00"}  # externally modified
+        self.assertTrue(sync._should_skip(row, data_dict, v2_record, "2025-01-01T00:00:00"))
+
+    def test_should_skip_no_bypass_when_v2_deleted(self):
+        """No bypass: upgrade_datetime set but v2 no longer exists — must re-upgrade."""
+        row = {"upgrade_datetime": "2025-01-01T00:00:00", "upgrader_version": "1.0.0", "last_modified": "2024-12-01"}
+        data_dict = {"_id": "rec1", "last_modified": "2024-12-01"}
+        self.assertFalse(sync._should_skip(row, data_dict, None, "2025-01-01T00:00:00"))
+
+    def test_should_skip_true_when_uptodate(self):
+        """Skip: upgrade_datetime matches v2, same version and v1 last_modified."""
+        with patch("aind_metadata_upgrader.sync.upgrader_version", "1.0.0"):
+            row = {
+                "upgrade_datetime": "2025-01-01T00:00:00",
+                "upgrader_version": "1.0.0",
+                "last_modified": "2024-12-01",
+            }
+            data_dict = {"_id": "rec1", "last_modified": "2024-12-01"}
+            v2_record = {"_id": "v2_rec1", "_last_modified": "2025-01-01T00:00:00"}
+            self.assertTrue(sync._should_skip(row, data_dict, v2_record, "2025-01-01T00:00:00"))
+
+    def test_should_skip_false_when_no_upgrade_datetime(self):
+        """No skip: upgrade_datetime absent — always upgrade."""
+        self.assertFalse(sync._should_skip({}, {"_id": "rec1"}, None, None))
 
 
 if __name__ == "__main__":
