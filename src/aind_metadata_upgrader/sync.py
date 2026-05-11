@@ -82,7 +82,9 @@ def _get_cache_row(df: pd.DataFrame, record_id: str) -> dict:
 # Per-record decision / action helpers
 # ---------------------------------------------------------------------------
 
-def _should_skip(row: dict, data_dict: dict, v2_record: Optional[dict], upgrade_datetime: Optional[str]) -> Optional[str]:
+def _should_skip(
+    row: dict, data_dict: dict, v2_record: Optional[dict], upgrade_datetime: Optional[str]
+) -> Optional[str]:
     """Return a skip reason string if this record should not be upgraded, else None.
 
     "bypassed" — v2 exists and was externally modified (e.g. QC update) after the last upgrade.
