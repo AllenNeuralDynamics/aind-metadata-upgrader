@@ -416,6 +416,7 @@ def run():
     all_pending_upserts: list[tuple[dict, str, str, dict]] = []
 
     def _process_batch_parallel(batch_ids: list) -> tuple[list[dict], list[tuple], dict]:
+        """Process a batch of record IDs in parallel, returning results, pending upserts, and stats."""
         cached_records = client_v1.retrieve_docdb_records(
             filter_query={"_id": {"$in": batch_ids}},
         )
