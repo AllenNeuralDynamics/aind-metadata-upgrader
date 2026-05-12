@@ -821,6 +821,12 @@ def upgrade_fiber_probe(data: dict) -> dict:
 
     data = basic_device_checks(data, "FiberProbe")
 
+    # If core diameter is missing or empty, set it to 200
+    if "core_diameter" in data and not data["core_diameter"] or "core_diameter" not in data:
+        data["core_diameter"] = 200
+        data["core_diameter_unit"] = "micrometer"
+        data["numerical_aperture"] = 0.37
+
     if "core_diameter_unit" in data and data["core_diameter_unit"]:
         data["core_diameter_unit"] = repair_unit(data["core_diameter_unit"])
 
