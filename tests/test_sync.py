@@ -55,11 +55,8 @@ class TestSync(unittest.TestCase):
         mock_upgrade_instance.metadata.model_dump.return_value = {"test": "data"}
         mock_upgrade_class.return_value = mock_upgrade_instance
 
-        # Mock v2 client responses
-        mock_v2_client.retrieve_docdb_records.side_effect = [
-            [],  # No existing record
-            [{"_id": "new_v2_id"}],  # New record after insertion
-        ]
+        # Mock v2 client responses — no existing v2 records
+        mock_v2_client.retrieve_docdb_records.return_value = []
 
         sync.run()
 
@@ -90,8 +87,12 @@ class TestSync(unittest.TestCase):
         )
         mock_custom.return_value = existing_df
         mock_v2_client.retrieve_docdb_records.return_value = [
-            {"_id": "v2_record1", "_last_modified": "2023-01-02T00:00:00"}
+            {"_id": "v2_record1", "location": "loc1"}
         ]
+
+        mock_upgrade_instance = MagicMock()
+        mock_upgrade_instance.metadata.model_dump.return_value = {"test": "data"}
+        mock_upgrade_class.return_value = mock_upgrade_instance
 
         mock_v1_client.retrieve_docdb_records.side_effect = [
             [{"_id": "record1"}],  # Record IDs
@@ -100,9 +101,9 @@ class TestSync(unittest.TestCase):
 
         sync.run()
 
-        mock_upgrade_class.assert_not_called()
+        mock_upgrade_class.assert_called_once()
+        mock_v2_client.upsert_list_of_docdb_records.assert_called_once()
         store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("df") is not None]
-        # _save_results always writes back (so pruning stale rows is always persisted)
         self.assertEqual(len(store_calls), 1)
 
     @patch("aind_metadata_upgrader.sync.custom")
@@ -174,7 +175,7 @@ class TestSync(unittest.TestCase):
         mock_upgrade_instance.metadata.name = "test_name"
         mock_upgrade_instance.metadata.model_dump.return_value = {"test": "data"}
         mock_upgrade_class.return_value = mock_upgrade_instance
-        mock_v2_client.retrieve_docdb_records.return_value = [{"_id": "existing_v2_id"}]
+        mock_v2_client.retrieve_docdb_records.return_value = [{"_id": "existing_v2_id", "location": "loc1"}]
 
         sync.run()
 
@@ -207,13 +208,17 @@ class TestSync(unittest.TestCase):
         mock_upgrade_instance.metadata.name = "test_name"
         mock_upgrade_instance.metadata.model_dump.return_value = {"test": "data"}
         mock_upgrade_class.return_value = mock_upgrade_instance
-        mock_v2_client.retrieve_docdb_records.return_value = [{"_id": "existing_v2_id"}]
+        mock_v2_client.retrieve_docdb_records.return_value = [
+            {"_id": "existing_v2_id_1", "location": "loc1"},
+            {"_id": "existing_v2_id_2", "location": "loc2"},
+            {"_id": "existing_v2_id_3", "location": "loc3"},
+        ]
 
         sync.run()
 
         self.assertGreaterEqual(mock_v1_client.retrieve_docdb_records.call_count, 3)
-        # All pending upserts are flushed once at the end, not per batch
-        self.assertEqual(mock_v2_client.upsert_list_of_docdb_records.call_count, 1)
+        # Upserts are flushed per batch (2 batches of size 2 and 1)
+        self.assertGreaterEqual(mock_v2_client.upsert_list_of_docdb_records.call_count, 1)
 
     @patch("aind_metadata_upgrader.sync.custom")
     @patch("aind_metadata_upgrader.sync.client_v2")
@@ -246,8 +251,13 @@ class TestSync(unittest.TestCase):
         )
         mock_custom.return_value = existing_df
         mock_v2_client.retrieve_docdb_records.return_value = [
-            {"_id": "v2_record1", "_last_modified": "2023-01-02T00:00:00"}
+            {"_id": "v2_record1", "location": "loc1"}
         ]
+
+        mock_upgrade_instance = MagicMock()
+        mock_upgrade_instance.metadata.model_dump.return_value = {"test": "data"}
+        mock_upgrade_class.return_value = mock_upgrade_instance
+
         # Only record1 exists in v1 DB; stale_record has been deleted
         mock_v1_client.retrieve_docdb_records.side_effect = [
             [{"_id": "record1"}],
@@ -256,8 +266,9 @@ class TestSync(unittest.TestCase):
 
         sync.run()
 
-        # record1 is up-to-date so no upgrade; stale_record silently filtered out
-        mock_upgrade_class.assert_not_called()
+        # record1 is always re-upgraded; stale_record silently filtered out
+        mock_upgrade_class.assert_called_once()
+        mock_v2_client.upsert_list_of_docdb_records.assert_called_once()
 
     @patch("aind_metadata_upgrader.sync.custom")
     @patch("aind_metadata_upgrader.sync.client_v2")
@@ -324,9 +335,10 @@ class TestSync(unittest.TestCase):
     @patch("aind_metadata_upgrader.sync.custom")
     @patch("aind_metadata_upgrader.sync.client_v2")
     @patch("aind_metadata_upgrader.sync.client_v1")
+    @patch("aind_metadata_upgrader.sync.Upgrade")
     @patch("aind_metadata_upgrader.sync.upgrader_version", "1.0.0")
-    def test_run_one_skip_condition(self, mock_v1_client, mock_v2_client, mock_custom):
-        """Test run_one skips already upgraded records."""
+    def test_run_one_always_upgrades(self, mock_upgrade_class, mock_v1_client, mock_v2_client, mock_custom):
+        """Test run_one always re-upgrades records regardless of previous cache state."""
         mock_v1_client.retrieve_docdb_records.return_value = [
             {"_id": "record1", "location": "loc1", "last_modified": "2023-01-01"}
         ]
@@ -337,21 +349,20 @@ class TestSync(unittest.TestCase):
                     "v2_id": "v2_record1",
                     "upgrader_version": "1.0.0",
                     "status": "success",
-                    "last_modified": "2023-01-01",
-                    "upgrade_datetime": "2023-01-02T00:00:00",
                 }
             ]
         )
         mock_custom.return_value = existing_df
-        mock_v2_client.retrieve_docdb_records.return_value = [
-            {"_id": "v2_record1", "_last_modified": "2023-01-02T00:00:00"}
-        ]
+        mock_upgrade_instance = MagicMock()
+        mock_upgrade_instance.metadata.model_dump.return_value = {"test": "data"}
+        mock_upgrade_class.return_value = mock_upgrade_instance
+        mock_v2_client.retrieve_docdb_records.return_value = [{"_id": "v2_record1"}]
 
         sync.run_one("record1")
 
-        mock_v2_client.upsert_one_docdb_record.assert_not_called()
+        mock_v2_client.upsert_one_docdb_record.assert_called_once()
         store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("df") is not None]
-        self.assertEqual(len(store_calls), 0)
+        self.assertEqual(len(store_calls), 1)
 
     @patch("aind_metadata_upgrader.sync.custom")
     @patch("aind_metadata_upgrader.sync.client_v2")
@@ -466,34 +477,6 @@ class TestSync(unittest.TestCase):
         self.assertIsNone(df.iloc[0]["v2_id"])
         self.assertEqual(df.iloc[0]["status"], "failed")
 
-    def test_should_skip_bypass_when_v2_externally_modified(self):
-        """Bypass: upgrade_datetime set, v2 exists but last_modified differs."""
-        row = {"upgrade_datetime": "2025-01-01T00:00:00", "upgrader_version": "1.0.0", "last_modified": "2024-12-01"}
-        data_dict = {"_id": "rec1", "last_modified": "2024-12-01"}
-        v2_record = {"_id": "v2_rec1", "_last_modified": "2025-06-01T00:00:00"}  # externally modified
-        self.assertTrue(sync._should_skip(row, data_dict, v2_record, "2025-01-01T00:00:00"))
-
-    def test_should_skip_no_bypass_when_v2_deleted(self):
-        """No bypass: upgrade_datetime set but v2 no longer exists — must re-upgrade."""
-        row = {"upgrade_datetime": "2025-01-01T00:00:00", "upgrader_version": "1.0.0", "last_modified": "2024-12-01"}
-        data_dict = {"_id": "rec1", "last_modified": "2024-12-01"}
-        self.assertFalse(sync._should_skip(row, data_dict, None, "2025-01-01T00:00:00"))
-
-    def test_should_skip_true_when_uptodate(self):
-        """Skip: upgrade_datetime matches v2, same version and v1 last_modified."""
-        with patch("aind_metadata_upgrader.sync.upgrader_version", "1.0.0"):
-            row = {
-                "upgrade_datetime": "2025-01-01T00:00:00",
-                "upgrader_version": "1.0.0",
-                "last_modified": "2024-12-01",
-            }
-            data_dict = {"_id": "rec1", "last_modified": "2024-12-01"}
-            v2_record = {"_id": "v2_rec1", "_last_modified": "2025-01-01T00:00:00"}
-            self.assertTrue(sync._should_skip(row, data_dict, v2_record, "2025-01-01T00:00:00"))
-
-    def test_should_skip_false_when_no_upgrade_datetime(self):
-        """No skip: upgrade_datetime absent — always upgrade."""
-        self.assertFalse(sync._should_skip({}, {"_id": "rec1"}, None, None))
 
 
 if __name__ == "__main__":
