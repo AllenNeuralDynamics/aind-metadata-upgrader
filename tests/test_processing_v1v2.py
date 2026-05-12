@@ -138,6 +138,21 @@ class TestProcessingV1V2(unittest.TestCase):
         self.assertIn("Analysis_3", process_names)  # First analysis
         self.assertIn("Analysis_4", process_names)  # Second analysis (had to skip Analysis_1, 2, 3)
 
+    def test_resolve_process_type_valid(self):
+        """Valid ProcessName values pass through unchanged"""
+        self.assertEqual(self.upgrader._resolve_process_type("Fix color range"), "Fix color range")
+        self.assertEqual(self.upgrader._resolve_process_type("Analysis"), "Analysis")
+
+    def test_resolve_process_type_repaired(self):
+        """'Fix Color Range' is repaired to the canonical 'Fix color range'"""
+        self.assertEqual(self.upgrader._resolve_process_type("Fix Color Range"), "Fix color range")
+
+    def test_resolve_process_type_invalid(self):
+        """Unrecognised process types raise ValueError"""
+        with self.assertRaises(ValueError) as ctx:
+            self.upgrader._resolve_process_type("Not A Real Process")
+        self.assertIn("Not A Real Process", str(ctx.exception))
+
 
 if __name__ == "__main__":
     unittest.main()
