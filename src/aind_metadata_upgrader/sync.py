@@ -2,6 +2,7 @@
 
 import logging
 import os
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Optional
 from aind_metadata_upgrader.upgrade import Upgrade
@@ -14,6 +15,8 @@ from aind_metadata_upgrader import __version__ as upgrader_version
 DOCDB_HOST = os.getenv("DOCDB_HOST", "api.allenneuraldynamics.org")
 BATCH_SIZE = 50
 MAX_WORKERS = int(os.getenv("UPGRADE_MAX_WORKERS", "1"))
+MAX_RETRIES = int(os.getenv("UPGRADE_MAX_RETRIES", "3"))
+RETRY_BACKOFF = float(os.getenv("UPGRADE_RETRY_BACKOFF", "2.0"))  # seconds, doubles each attempt
 
 
 # docdb
@@ -35,6 +38,26 @@ _ZS_COLUMNS = ["v1_id", "v2_id", "upgrader_version", "last_modified", "upgrade_d
 
 # In-memory cache of the ZS table for the current process lifetime
 _zs_df: Optional[pd.DataFrame] = None
+
+
+# ---------------------------------------------------------------------------
+# Retry helper
+# ---------------------------------------------------------------------------
+
+def _retry(fn, *args, **kwargs):
+    """Call fn(*args, **kwargs), retrying on any exception with exponential backoff."""
+    delay = RETRY_BACKOFF
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            return fn(*args, **kwargs)
+        except Exception as e:
+            if attempt == MAX_RETRIES:
+                raise
+            logging.warning(
+                f"Transient error (attempt {attempt}/{MAX_RETRIES}), retrying in {delay:.0f}s: {e}"
+            )
+            time.sleep(delay)
+            delay *= 2
 
 
 # ---------------------------------------------------------------------------
@@ -217,6 +240,7 @@ def _process_record(
     zs_df: pd.DataFrame,
     upgrade_results: list[dict],
     pending_upserts: list[tuple],
+    v2_record: Optional[dict] = None,
 ) -> str:
     """Evaluate and process a single V1 record within a run() batch.
 
@@ -229,13 +253,13 @@ def _process_record(
     """
     record_id = data_dict["_id"]
     location = data_dict.get("location")
-    logging.info(f"Testing upgrade for record ID: {record_id}")
 
     row = _get_cache_row(zs_df, record_id)
     upgrade_datetime = row.get("upgrade_datetime") or None
 
-    # Fetch current V2 record once — reused for bypass/skip check and upsert
-    v2_record = _get_v2_record(location) if location else None
+    # v2_record is pre-fetched by the batch; fall back to individual fetch if not supplied
+    if v2_record is None and location:
+        v2_record = _get_v2_record(location)
 
     skip_reason = _should_skip(row, data_dict, v2_record, upgrade_datetime)
     if skip_reason:
@@ -288,46 +312,61 @@ def _flush_pending_upserts(
     """
     if not pending_upserts:
         return
-    records_to_upsert = [model for model, _, _, _ in pending_upserts]
-    logging.info(f"Batch upserting {len(records_to_upsert)} records to DocumentDB")
-    try:
-        client_v2.upsert_list_of_docdb_records(records=records_to_upsert)
-    except Exception as e:
-        logging.warning(f"Batch upsert failed ({e}), falling back to individual upserts")
-        for model, location, record_id, data_dict in pending_upserts:
-            try:
-                client_v2.upsert_one_docdb_record(record=model)
-                v2_after = _get_v2_record(location)
-                upgrade_results.append({
-                    "v1_id": str(record_id),
-                    "v2_id": str(model["_id"]),
-                    "upgrader_version": upgrader_version,
-                    "last_modified": data_dict.get("last_modified"),
-                    "upgrade_datetime": v2_after.get("_last_modified") if v2_after else None,
-                    "status": "success",
-                })
-            except Exception as e2:
-                logging.error(f"Individual upsert failed for record {record_id}: {e2}")
-                upgrade_results.append(_make_failure_result(data_dict))
-        return
 
-    # Fetch back by _id to capture the DB-assigned last_modified as upgrade_datetime
-    ids = [model["_id"] for model, _, _, _ in pending_upserts]
-    v2_records_after = client_v2.retrieve_docdb_records(
-        filter_query={"_id": {"$in": ids}},
-        projection={"_id": 1, "_last_modified": 1},
+    # Process in chunks to avoid oversized requests
+    chunks = [
+        pending_upserts[i: i + BATCH_SIZE]
+        for i in range(0, len(pending_upserts), BATCH_SIZE)
+    ]
+    logging.info(
+        f"Batch upserting {len(pending_upserts)} records to DocumentDB "
+        f"in {len(chunks)} chunk(s) of up to {BATCH_SIZE}"
     )
-    id_to_last_modified = {r["_id"]: r.get("_last_modified") for r in v2_records_after}
 
-    for model, location, record_id, data_dict in pending_upserts:
-        upgrade_results.append({
-            "v1_id": str(record_id),
-            "v2_id": str(model["_id"]),
-            "upgrader_version": upgrader_version,
-            "last_modified": data_dict.get("last_modified"),
-            "upgrade_datetime": id_to_last_modified.get(model["_id"]),
-            "status": "success",
-        })
+    for chunk in chunks:
+        records_to_upsert = [model for model, _, _, _ in chunk]
+        upsert_ok = True
+        try:
+            client_v2.upsert_list_of_docdb_records(records=records_to_upsert)
+        except Exception as e:
+            logging.warning(f"Batch upsert failed ({e}), falling back to individual upserts")
+            upsert_ok = False
+            for model, location, record_id, data_dict in chunk:
+                try:
+                    client_v2.upsert_one_docdb_record(record=model)
+                    v2_after = _get_v2_record(location)
+                    upgrade_results.append({
+                        "v1_id": str(record_id),
+                        "v2_id": str(model["_id"]),
+                        "upgrader_version": upgrader_version,
+                        "last_modified": data_dict.get("last_modified"),
+                        "upgrade_datetime": v2_after.get("_last_modified") if v2_after else None,
+                        "status": "success",
+                    })
+                except Exception as e2:
+                    logging.error(f"Individual upsert failed for record {record_id}: {e2}")
+                    upgrade_results.append(_make_failure_result(data_dict))
+
+        if not upsert_ok:
+            continue
+
+        # Fetch back by _id to capture the DB-assigned last_modified as upgrade_datetime
+        ids = [model["_id"] for model, _, _, _ in chunk]
+        v2_records_after = client_v2.retrieve_docdb_records(
+            filter_query={"_id": {"$in": ids}},
+            projection={"_id": 1, "_last_modified": 1},
+        )
+        id_to_last_modified = {r["_id"]: r.get("_last_modified") for r in v2_records_after}
+
+        for model, location, record_id, data_dict in chunk:
+            upgrade_results.append({
+                "v1_id": str(record_id),
+                "v2_id": str(model["_id"]),
+                "upgrader_version": upgrader_version,
+                "last_modified": data_dict.get("last_modified"),
+                "upgrade_datetime": id_to_last_modified.get(model["_id"]),
+                "status": "success",
+            })
 
 
 def run_one(record_id: str):
@@ -399,6 +438,11 @@ def run():
     queued and batch-upserted for efficiency; new records are inserted
     individually so the DB-assigned _id can be captured immediately.
     """
+    # Always reload from ZS at the start of a run so a re-run picks up any
+    # progress saved by a previous (possibly crashed) run.
+    global _zs_df
+    _zs_df = None
+
     records_list = client_v1.retrieve_docdb_records(filter_query={}, projection={"_id": 1})
     record_ids = [record["_id"] for record in records_list]
     logging.info(f"Found {len(record_ids)} records to process")
@@ -412,55 +456,77 @@ def run():
         zs_df = zs_df[zs_df["v1_id"].isin(record_ids_set)]
         logging.info(f"Filtered tracking data to {len(zs_df)} records that exist in v1 database")
 
-    all_upgrade_results: list[dict] = []
-    all_pending_upserts: list[tuple[dict, str, str, dict]] = []
-
-    def _process_batch_parallel(batch_ids: list) -> tuple[list[dict], list[tuple], dict]:
+    def _process_batch_parallel(batch_ids: list, snapshot_df: pd.DataFrame) -> tuple[list[dict], list[tuple], dict]:
         """Process a batch of record IDs in parallel, returning results, pending upserts, and stats."""
-        cached_records = client_v1.retrieve_docdb_records(
+        cached_records = _retry(
+            client_v1.retrieve_docdb_records,
             filter_query={"_id": {"$in": batch_ids}},
         )
+
+        # Pre-fetch all V2 records for the batch in one request to avoid
+        # N individual lookups that exhaust the HTTP connection pool
+        locations = [r["location"] for r in cached_records if r.get("location")]
+        v2_by_location: dict[str, dict] = {}
+        if locations:
+            v2_records = _retry(
+                client_v2.retrieve_docdb_records,
+                filter_query={"location": {"$in": locations}},
+                projection={"_id": 1, "location": 1, "_last_modified": 1},
+            )
+            v2_by_location = {r["location"]: r for r in v2_records}
+
         batch_results: list[dict] = []
         batch_upserts: list[tuple] = []
         batch_stats: dict[str, int] = {"bypassed": 0, "skipped": 0, "inserted": 0, "queued_upsert": 0, "failed": 0}
         for data_dict in cached_records:
-            status = _process_record(data_dict, zs_df, batch_results, batch_upserts)
+            v2_record = v2_by_location.get(data_dict.get("location"))
+            status = _process_record(data_dict, snapshot_df, batch_results, batch_upserts, v2_record)
             batch_stats[status] = batch_stats.get(status, 0) + 1
         return batch_results, batch_upserts, batch_stats
 
     batches = [record_ids[i: i + BATCH_SIZE] for i in range(0, num_records, BATCH_SIZE)]
-    pre_flush_stats: dict[str, int] = {"bypassed": 0, "skipped": 0, "inserted": 0, "queued_upsert": 0, "failed": 0}
+    summary_stats: dict[str, int] = {"bypassed": 0, "skipped": 0, "inserted": 0, "upserted": 0, "failed": 0}
 
+    completed_batches = 0
+    current_zs_df = zs_df
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = {executor.submit(_process_batch_parallel, batch): i for i, batch in enumerate(batches)}
+        futures = {executor.submit(_process_batch_parallel, batch, current_zs_df): i for i, batch in enumerate(batches)}
         for future in as_completed(futures):
             batch_index = futures[future]
+            batch_results: list[dict] = []
+            batch_upserts: list[tuple] = []
             try:
                 batch_results, batch_upserts, batch_stats = future.result()
-                all_upgrade_results.extend(batch_results)
-                all_pending_upserts.extend(batch_upserts)
                 for k, v in batch_stats.items():
-                    pre_flush_stats[k] = pre_flush_stats.get(k, 0) + v
-                logging.info(f"Completed batch {batch_index + 1}/{len(batches)}")
+                    summary_stats[k] = summary_stats.get(k, 0) + v
             except Exception as e:
                 logging.error(f"Batch {batch_index} failed with unhandled exception: {e}")
 
-    results_before_flush = len(all_upgrade_results)
-    _flush_pending_upserts(all_pending_upserts, all_upgrade_results)
-    _save_results(zs_df, all_upgrade_results)
+            # Flush upserts and save after every batch so progress survives a crash
+            pre_flush_count = len(batch_results)
+            _flush_pending_upserts(batch_upserts, batch_results)
+            flush_results = batch_results[pre_flush_count:]
+            upsert_successes = sum(1 for r in flush_results if r.get("status") == "success")
+            upsert_failures = len(flush_results) - upsert_successes
+            summary_stats["upserted"] = summary_stats.get("upserted", 0) + upsert_successes
+            summary_stats["failed"] = summary_stats.get("failed", 0) + upsert_failures
+            _save_results(current_zs_df, batch_results)
+            current_zs_df = _zs_df  # type: ignore[assignment]  # _save_results updated the global
 
-    # -----------------------------------------------------------------------
-    # Summary stats
-    # -----------------------------------------------------------------------
-    flush_results = all_upgrade_results[results_before_flush:]
-    upsert_successes = sum(1 for r in flush_results if r.get("status") == "success")
-    upsert_failures = sum(1 for r in flush_results if r.get("status") != "success")
+            completed_batches += 1
+            records_done = min(completed_batches * BATCH_SIZE, num_records)
+            pct = records_done / num_records * 100 if num_records else 100
+            logging.info(f"Progress: {records_done}/{num_records} records ({pct:.1f}%)")
 
-    total_new = pre_flush_stats["inserted"]
-    total_re_upgraded = upsert_successes
-    total_failed = pre_flush_stats["failed"] + upsert_failures
-    total_bypassed = pre_flush_stats["bypassed"]
-    total_skipped = pre_flush_stats["skipped"]
+    # If no batches ran (zero records), still persist the (possibly pruned) tracking table
+    if not batches:
+        _save_results(current_zs_df, [])
+
+    total_new = summary_stats["inserted"]
+    total_re_upgraded = summary_stats["upserted"]
+    total_failed = summary_stats["failed"]
+    total_bypassed = summary_stats["bypassed"]
+    total_skipped = summary_stats["skipped"]
     total_processed = total_new + total_re_upgraded + total_failed + total_bypassed + total_skipped
 
     logging.info("=" * 60)

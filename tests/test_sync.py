@@ -271,7 +271,7 @@ class TestSync(unittest.TestCase):
 
         sync.run()
 
-        mock_logging.info.assert_called_with("Uploading 0 tracking records to ZS")
+        mock_logging.info.assert_any_call("Uploading 0 tracking records to ZS")
 
     @patch("aind_metadata_upgrader.sync.custom")
     @patch("aind_metadata_upgrader.sync.client_v2")

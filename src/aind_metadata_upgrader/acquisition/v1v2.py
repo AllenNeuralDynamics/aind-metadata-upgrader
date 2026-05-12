@@ -132,7 +132,10 @@ class AcquisitionV1V2(CoreUpgrader):
         experimenter_full_name = data.get("experimenter_full_name", [])
         specimen_id = data.get("specimen_id")
         subject_id = data.get("subject_id")
-        instrument_id = data.get("instrument_id")
+        instrument_id = data.get("instrument_id") or None
+        if not instrument_id and metadata and metadata.get("instrument"):
+            instrument_id = metadata["instrument"].get("instrument_id")
+        instrument_id = instrument_id or "unknown"
         calibrations = data.get("calibrations", [])
         if not calibrations:
             calibrations = []

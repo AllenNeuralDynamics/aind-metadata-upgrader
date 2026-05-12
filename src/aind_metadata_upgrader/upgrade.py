@@ -233,12 +233,8 @@ class Upgrade:
             original_schema_version = Version("0.0.0")  # Default to 0.0.0 if not present
         upgraded_schema_version = Version(UPGRADE_VERSIONS[core_file])
 
-        print(f"Upgrading {core_file}:{original_schema_version} -> {upgraded_schema_version}")
-
         upgraded_data = core_data.copy()
-        if original_schema_version == upgraded_schema_version:
-            print(f"No upgrade needed for {core_file} (version {original_schema_version})")
-        else:
+        if original_schema_version != upgraded_schema_version:
             # Apply all upgraders (in order) that match the original schema version
             for specifier_set, upgrader in MAPPING[core_file]:
                 if original_schema_version in specifier_set:
