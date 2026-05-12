@@ -86,9 +86,7 @@ class TestSync(unittest.TestCase):
             ]
         )
         mock_custom.return_value = existing_df
-        mock_v2_client.retrieve_docdb_records.return_value = [
-            {"_id": "v2_record1", "location": "loc1"}
-        ]
+        mock_v2_client.retrieve_docdb_records.return_value = [{"_id": "v2_record1", "location": "loc1"}]
 
         mock_upgrade_instance = MagicMock()
         mock_upgrade_instance.metadata.model_dump.return_value = {"test": "data"}
@@ -250,9 +248,7 @@ class TestSync(unittest.TestCase):
             ]
         )
         mock_custom.return_value = existing_df
-        mock_v2_client.retrieve_docdb_records.return_value = [
-            {"_id": "v2_record1", "location": "loc1"}
-        ]
+        mock_v2_client.retrieve_docdb_records.return_value = [{"_id": "v2_record1", "location": "loc1"}]
 
         mock_upgrade_instance = MagicMock()
         mock_upgrade_instance.metadata.model_dump.return_value = {"test": "data"}
@@ -476,7 +472,6 @@ class TestSync(unittest.TestCase):
         self.assertEqual(df.iloc[0]["v1_id"], "failed_v1_id_555")
         self.assertIsNone(df.iloc[0]["v2_id"])
         self.assertEqual(df.iloc[0]["status"], "failed")
-
 
 
 if __name__ == "__main__":
