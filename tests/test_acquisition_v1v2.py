@@ -61,7 +61,8 @@ def _make_v1_acquisition(tiles, axes=None, subject_id="765830",
                          specimen_id="765830",
                          session_start="2025-11-21T12:01:47.108976-08:00",
                          session_end="2025-11-21T12:19:53.806266-08:00",
-                         chamber_immersion=None):
+                         chamber_immersion=None,
+                         instrument_id="exaSPIM"):
     """Build a minimal V1 acquisition dict."""
     return {
         "schema_version": "1.0.4",
@@ -69,7 +70,7 @@ def _make_v1_acquisition(tiles, axes=None, subject_id="765830",
         "experimenter_full_name": ["adam glaser"],
         "specimen_id": specimen_id,
         "subject_id": subject_id,
-        "instrument_id": "",
+        "instrument_id": instrument_id,
         "calibrations": [],
         "maintenance": [],
         "session_start_time": session_start,

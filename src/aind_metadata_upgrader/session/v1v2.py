@@ -243,7 +243,7 @@ class SessionV1V2(CoreUpgrader):
         return DetectorConfig(**data).model_dump()
 
     def _upgrade_fiber_connection_config(self, stream: Dict, fiber_connection: Dict) -> tuple:
-        """Convert a single fiber connection config, return Channel, PatchCordConfig, Connection"""
+        """Convert a single fiber connection config, return (Channel, patch_cord_name, connections)"""
 
         # First, gather the names of all the devices that are involved
         patch_cord_name = fiber_connection.get("patch_cord_name", "unknown")
@@ -251,7 +251,7 @@ class SessionV1V2(CoreUpgrader):
         channel_data = fiber_connection.get("channel", {})
 
         if not channel_data or channel_data["channel_name"] == "disconnected":
-            return None, []
+            return None, None, []
 
         # Deal with the detector
         detector_name = channel_data.get("detector_name", None)
@@ -293,12 +293,6 @@ class SessionV1V2(CoreUpgrader):
             emission_wavelength_unit=channel_data.get("emission_wavelength_unit", None),
         )
 
-        # Build the PatchCordConfig
-        patch_cord_config = PatchCordConfig(
-            device_name=patch_cord_name,
-            channels=[channel],
-        ).model_dump()
-
         # Build the connections
         connections = []
         # Build the light source->patch cord connection
@@ -321,7 +315,7 @@ class SessionV1V2(CoreUpgrader):
         connections.append(patch_fiber_conn.model_dump())
         connections.append(patch_detector_conn.model_dump())
 
-        return patch_cord_config, connections
+        return channel, patch_cord_name, connections
 
     def _upgrade_fiber(self, stream: Dict) -> tuple:
         """Convert all fiber data within a stream to the new Channel and PatchCordConfig format"""
@@ -333,14 +327,26 @@ class SessionV1V2(CoreUpgrader):
             fiber_connection_configs.extend(module.get("fiber_connections", []))
 
         # For each FiberConnectionConfig, run the new upgrader which will create a
-        # Channel, PatchCordConfig, and a Connection
-        patchcord_configs = []
+        # Channel and connections, then aggregate channels by patch_cord_name
+        channels_by_patchcord = {}  # patch_cord_name -> list of Channel dicts
         all_connections = []
+        seen_connections = set()  # deduplicate connections
         for fiber_conn in fiber_connection_configs:
-            patchcord_config, connections = self._upgrade_fiber_connection_config(stream, fiber_conn)
-            if patchcord_config:
-                patchcord_configs.append(patchcord_config)
-                all_connections.extend(connections)
+            channel, patch_cord_name, connections = self._upgrade_fiber_connection_config(stream, fiber_conn)
+            if channel is not None:
+                if patch_cord_name not in channels_by_patchcord:
+                    channels_by_patchcord[patch_cord_name] = []
+                channels_by_patchcord[patch_cord_name].append(channel.model_dump())
+                for conn in connections:
+                    conn_key = (conn.get("source_device"), conn.get("target_device"))
+                    if conn_key not in seen_connections:
+                        seen_connections.add(conn_key)
+                        all_connections.append(conn)
+
+        patchcord_configs = [
+            PatchCordConfig(device_name=name, channels=channels).model_dump()
+            for name, channels in channels_by_patchcord.items()
+        ]
 
         return patchcord_configs, all_connections
 
