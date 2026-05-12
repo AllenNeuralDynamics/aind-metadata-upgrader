@@ -2,6 +2,7 @@
 
 import logging
 import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Optional
 from aind_metadata_upgrader.upgrade import Upgrade
 from aind_data_access_api.document_db import MetadataDbClient
@@ -11,7 +12,8 @@ from aind_metadata_upgrader import __version__ as upgrader_version
 
 
 DOCDB_HOST = os.getenv("DOCDB_HOST", "api.allenneuraldynamics.org")
-BATCH_SIZE = 100
+BATCH_SIZE = 50
+MAX_WORKERS = int(os.getenv("UPGRADE_MAX_WORKERS", "1"))
 
 
 # docdb
@@ -80,25 +82,28 @@ def _get_cache_row(df: pd.DataFrame, record_id: str) -> dict:
 # Per-record decision / action helpers
 # ---------------------------------------------------------------------------
 
-def _should_skip(row: dict, data_dict: dict, v2_record: Optional[dict], upgrade_datetime: Optional[str]) -> bool:
-    """Return True if this record should not be upgraded, logging the reason.
+def _should_skip(
+    row: dict, data_dict: dict, v2_record: Optional[dict], upgrade_datetime: Optional[str]
+) -> Optional[str]:
+    """Return a skip reason string if this record should not be upgraded, else None.
 
-    Bypass — v2 exists and was externally modified (e.g. QC update) after the last upgrade.
-    Skip   — record is already up-to-date with the current upgrader and v1 data.
+    "bypassed" — v2 exists and was externally modified (e.g. QC update) after the last upgrade.
+    "skipped"  — record is already up-to-date with the current upgrader and v1 data.
+    None       — proceed with the upgrade.
 
     Note: if upgrade_datetime is set but v2 no longer exists, we do NOT bypass —
     the record should be re-upgraded to recreate the v2 document.
     """
     if not upgrade_datetime:
-        return False
+        return None
     record_id = data_dict.get("_id")
     if v2_record is None:
         # v2 was deleted externally — re-upgrade to recreate it
-        return False
+        return None
     if v2_record.get("_last_modified") != upgrade_datetime:
         # V2 has been modified since the last upgrade, bypass
         logging.info(f"Record {record_id}: bypassing — v2 was externally modified after last upgrade")
-        return True
+        return "bypassed"
     if (
         row.get("upgrader_version") == upgrader_version
         and row.get("last_modified") == data_dict.get("last_modified")
@@ -106,9 +111,9 @@ def _should_skip(row: dict, data_dict: dict, v2_record: Optional[dict], upgrade_
         # If the V1 record hasn't been modified AND
         # the same upgrader was already successful
         logging.info(f"Record {record_id}: skipping — already up-to-date")
-        return True
+        return "skipped"
     # Default to upgrading
-    return False
+    return None
 
 
 def _get_v2_record(location: str) -> Optional[dict]:
@@ -212,8 +217,16 @@ def _process_record(
     zs_df: pd.DataFrame,
     upgrade_results: list[dict],
     pending_upserts: list[tuple],
-) -> None:
-    """Evaluate and process a single V1 record within a run() batch."""
+) -> str:
+    """Evaluate and process a single V1 record within a run() batch.
+
+    Returns a status string indicating what happened:
+      "bypassed"      — v2 was externally modified, skipped
+      "skipped"       — already up-to-date, skipped
+      "failed"        — upgrade or insert failed
+      "inserted"      — new v2 record successfully created
+      "queued_upsert" — existing v2 record queued for batch upsert
+    """
     record_id = data_dict["_id"]
     location = data_dict.get("location")
     logging.info(f"Testing upgrade for record ID: {record_id}")
@@ -224,19 +237,21 @@ def _process_record(
     # Fetch current V2 record once — reused for bypass/skip check and upsert
     v2_record = _get_v2_record(location) if location else None
 
-    if _should_skip(row, data_dict, v2_record, upgrade_datetime):
-        return
+    skip_reason = _should_skip(row, data_dict, v2_record, upgrade_datetime)
+    if skip_reason:
+        return skip_reason
 
     existing_v2_id = v2_record["_id"] if v2_record else None
 
     upgraded_model, failure_result = _attempt_upgrade(data_dict, v2_record, upgrade_datetime)
     if failure_result is not None:
         upgrade_results.append(failure_result)
-        return
+        return "failed"
 
     if existing_v2_id:
         # Existing record — queue for batch upsert
         pending_upserts.append((upgraded_model, location, record_id, data_dict))
+        return "queued_upsert"
     else:
         # New record — insert immediately so we can capture the assigned _id
         try:
@@ -244,7 +259,7 @@ def _process_record(
         except Exception as e:
             logging.error(f"Failed to insert record {record_id} to V2: {e}")
             upgrade_results.append(_make_failure_result(data_dict))
-            return
+            return "failed"
         new_v2_id = response.json().get("insertedId", "")
         v2_after = _get_v2_record(location)
         upgrade_results.append({
@@ -255,6 +270,7 @@ def _process_record(
             "upgrade_datetime": v2_after.get("_last_modified") if v2_after else None,
             "status": "success",
         })
+        return "inserted"
 
 
 def _flush_pending_upserts(
@@ -396,27 +412,68 @@ def run():
         zs_df = zs_df[zs_df["v1_id"].isin(record_ids_set)]
         logging.info(f"Filtered tracking data to {len(zs_df)} records that exist in v1 database")
 
-    upgrade_results: list[dict] = []
-    # List of (upgraded_model, location, record_id, data_dict) awaiting batch upsert
-    pending_upserts: list[tuple[dict, str, str, dict]] = []
+    all_upgrade_results: list[dict] = []
+    all_pending_upserts: list[tuple[dict, str, str, dict]] = []
 
-    for i in range(0, num_records, BATCH_SIZE):
-        logging.info(f"Records: {i}/{num_records}")
-        batch_ids = record_ids[i: i + BATCH_SIZE]
+    def _process_batch_parallel(batch_ids: list) -> tuple[list[dict], list[tuple], dict]:
+        """Process a batch of record IDs in parallel, returning results, pending upserts, and stats."""
         cached_records = client_v1.retrieve_docdb_records(
             filter_query={"_id": {"$in": batch_ids}},
         )
-
+        batch_results: list[dict] = []
+        batch_upserts: list[tuple] = []
+        batch_stats: dict[str, int] = {"bypassed": 0, "skipped": 0, "inserted": 0, "queued_upsert": 0, "failed": 0}
         for data_dict in cached_records:
-            _process_record(data_dict, zs_df, upgrade_results, pending_upserts)
+            status = _process_record(data_dict, zs_df, batch_results, batch_upserts)
+            batch_stats[status] = batch_stats.get(status, 0) + 1
+        return batch_results, batch_upserts, batch_stats
 
-        # Flush batch when it has grown to BATCH_SIZE
-        if len(pending_upserts) >= BATCH_SIZE:
-            _flush_pending_upserts(pending_upserts, upgrade_results)
-            pending_upserts.clear()
+    batches = [record_ids[i: i + BATCH_SIZE] for i in range(0, num_records, BATCH_SIZE)]
+    pre_flush_stats: dict[str, int] = {"bypassed": 0, "skipped": 0, "inserted": 0, "queued_upsert": 0, "failed": 0}
 
-    # Final flush of any remaining pending upserts
-    if pending_upserts:
-        _flush_pending_upserts(pending_upserts, upgrade_results)
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = {executor.submit(_process_batch_parallel, batch): i for i, batch in enumerate(batches)}
+        for future in as_completed(futures):
+            batch_index = futures[future]
+            try:
+                batch_results, batch_upserts, batch_stats = future.result()
+                all_upgrade_results.extend(batch_results)
+                all_pending_upserts.extend(batch_upserts)
+                for k, v in batch_stats.items():
+                    pre_flush_stats[k] = pre_flush_stats.get(k, 0) + v
+                logging.info(f"Completed batch {batch_index + 1}/{len(batches)}")
+            except Exception as e:
+                logging.error(f"Batch {batch_index} failed with unhandled exception: {e}")
 
-    _save_results(zs_df, upgrade_results)
+    results_before_flush = len(all_upgrade_results)
+    _flush_pending_upserts(all_pending_upserts, all_upgrade_results)
+    _save_results(zs_df, all_upgrade_results)
+
+    # -----------------------------------------------------------------------
+    # Summary stats
+    # -----------------------------------------------------------------------
+    flush_results = all_upgrade_results[results_before_flush:]
+    upsert_successes = sum(1 for r in flush_results if r.get("status") == "success")
+    upsert_failures = sum(1 for r in flush_results if r.get("status") != "success")
+
+    total_new = pre_flush_stats["inserted"]
+    total_re_upgraded = upsert_successes
+    total_failed = pre_flush_stats["failed"] + upsert_failures
+    total_bypassed = pre_flush_stats["bypassed"]
+    total_skipped = pre_flush_stats["skipped"]
+    total_processed = total_new + total_re_upgraded + total_failed + total_bypassed + total_skipped
+
+    logging.info("=" * 60)
+    logging.info("Upgrade run complete — summary:")
+    logging.info(f"  Total records in v1:          {num_records}")
+    logging.info(f"  Total processed:              {total_processed}")
+    logging.info(f"  New upgrades (inserted):      {total_new}")
+    logging.info(f"  Re-upgraded (upserted):       {total_re_upgraded}")
+    logging.info(f"  Skipped (already up-to-date): {total_skipped}")
+    logging.info(f"  Bypassed (v2 externally mod): {total_bypassed}")
+    logging.info(f"  Failed:                       {total_failed}")
+    logging.info("=" * 60)
+
+
+if __name__ == "__main__":
+    run()
