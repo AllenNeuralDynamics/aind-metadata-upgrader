@@ -114,7 +114,7 @@ def _should_skip(
     "skipped"  — record is already up-to-date with the current upgrader and v1 data.
     None       — proceed with the upgrade.
 
-    Note: if upgrade_datetime is set but v2 no longer exists, we do NOT bypass —
+    Note: if upgrade_datetime is set but v2 no longer exists, we do NOT bypass
     the record should be re-upgraded to recreate the v2 document.
     """
     if not upgrade_datetime:

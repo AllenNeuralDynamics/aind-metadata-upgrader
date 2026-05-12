@@ -3,8 +3,16 @@
 from typing import Optional
 from aind_data_schema.components.identifiers import Code
 from aind_data_schema.core.processing import DataProcess
+from aind_data_schema_models.process_names import ProcessName
 
 from aind_metadata_upgrader.base import CoreUpgrader
+
+# Map known invalid process_type values to their correct ProcessName equivalents
+_PROCESS_TYPE_REPAIR_MAP = {
+    "Fix Color Range": ProcessName.FIX_COLOR_RANGE.value,
+}
+
+_VALID_PROCESS_TYPES = {e.value for e in ProcessName}
 
 
 class ProcessingV1V2(CoreUpgrader):
@@ -27,6 +35,13 @@ class ProcessingV1V2(CoreUpgrader):
             url=url,
             parameters=process_data.get("parameters", None),
         )
+
+    def _resolve_process_type(self, name: str) -> str:
+        """Repair known invalid process_type values and validate against ProcessName enum."""
+        repaired = _PROCESS_TYPE_REPAIR_MAP.get(name, name)
+        if repaired not in _VALID_PROCESS_TYPES:
+            raise ValueError(f"Invalid process_type '{name}': not a valid ProcessName value")
+        return repaired
 
     def _get_process_name(self, name: str) -> str:
         """Get a name for this process, append 1/2/3 for duplicates"""
@@ -62,8 +77,10 @@ class ProcessingV1V2(CoreUpgrader):
         if process_data.get("name", "Other") == "Other" and not notes:
             notes = "(v1v2 upgrade) Process type is unknown, no notes were provided."
 
+        process_type = self._resolve_process_type(process_data.get("name", "Unknown"))
+
         v2_process = DataProcess(
-            process_type=process_data.get("name", "Unknown"),
+            process_type=process_type,
             name=self._get_process_name(process_data.get("name", "Unknown")),
             stage=stage,
             code=self._create_code_object(process_data),

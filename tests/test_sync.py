@@ -212,7 +212,8 @@ class TestSync(unittest.TestCase):
         sync.run()
 
         self.assertGreaterEqual(mock_v1_client.retrieve_docdb_records.call_count, 3)
-        self.assertEqual(mock_v2_client.upsert_list_of_docdb_records.call_count, 2)
+        # All pending upserts are flushed once at the end, not per batch
+        self.assertEqual(mock_v2_client.upsert_list_of_docdb_records.call_count, 1)
 
     @patch("aind_metadata_upgrader.sync.custom")
     @patch("aind_metadata_upgrader.sync.client_v2")
