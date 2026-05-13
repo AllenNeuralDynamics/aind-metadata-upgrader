@@ -1,8 +1,10 @@
 """<=v1.4 to v2.0 acquisition upgrade functions"""
 
+import re
 from typing import Dict, List, Optional
 
 from aind_data_schema.core.acquisition import AcquisitionSubjectDetails
+from aind_data_schema_models.devices import ImmersionMedium
 
 from aind_metadata_upgrader.acquisition.v1v2_tiles import (
     upgrade_tiles_to_data_stream,
@@ -156,6 +158,22 @@ class AcquisitionV1V2(CoreUpgrader):
 
         chamber_immersion = data.get("chamber_immersion")
         sample_immersion = data.get("sample_immersion")
+
+        # For legacy SmartSPIM assets (collected in 2022 or earlier), fill in
+        # known immersion defaults when the fields are absent from the record.
+        asset_name = metadata.get("name", "") if metadata else ""
+        _smartspim_year_match = re.search(
+            r"SmartSPIM[^_]*_\d+_(\d{4})-", asset_name, re.IGNORECASE
+        )
+        _is_legacy_smartspim = (
+            _smartspim_year_match is not None
+            and int(_smartspim_year_match.group(1)) <= 2022
+        )
+        if _is_legacy_smartspim:
+            if not chamber_immersion or chamber_immersion.get("medium") == "nan":
+                chamber_immersion = {"medium": ImmersionMedium.OIL.value, "refractive_index": 1.52}
+            if sample_immersion and sample_immersion.get("medium") == "nan":
+                sample_immersion = None
 
         # Upgrade experimenter names to Person objects
         experimenters = self._upgrade_experimenter_names(experimenter_full_name)
