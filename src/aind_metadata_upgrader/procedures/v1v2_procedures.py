@@ -445,6 +445,13 @@ def upgrade_anaesthetic(data: dict) -> dict:
     upgraded_data["anaesthetic_type"] = upgraded_data.get("type", "Unknown")
     remove(upgraded_data, "type")
 
+    # If level is 15, divide by 10
+    if "level" in upgraded_data and upgraded_data["level"] is not None:
+        level = float(upgraded_data["level"])
+        if level == 15:
+            level /= 10
+        upgraded_data["level"] = level
+
     if "duration" not in upgraded_data or upgraded_data["duration"] is None:
         upgraded_data["duration"] = 0
 
