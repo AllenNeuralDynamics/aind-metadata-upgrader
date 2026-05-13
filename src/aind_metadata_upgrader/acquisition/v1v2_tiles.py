@@ -298,7 +298,6 @@ MEDIUM_MAP = {
 def upgrade_immersion(data: dict, allow_none: bool = False) -> Optional[dict]:
     """Upgrade an immersion dictionary to the new Immersion schema"""
 
-
     if "medium" in data:
         # If medium is "nan" we just return None
         if data["medium"] == "nan":
