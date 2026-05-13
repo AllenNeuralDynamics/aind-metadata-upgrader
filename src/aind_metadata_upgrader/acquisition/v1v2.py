@@ -174,6 +174,11 @@ class AcquisitionV1V2(CoreUpgrader):
                 chamber_immersion = {"medium": ImmersionMedium.OIL.value, "refractive_index": 1.52}
             if sample_immersion and sample_immersion.get("medium") == "nan":
                 sample_immersion = None
+            pilot_note = (
+                "(v1v2 upgrade) Pilot data: chamber immersion assumed to be Cargille oil (RI=1.52); "
+                "sample immersion unknown."
+            )
+            notes = f"{notes}; {pilot_note}" if notes else pilot_note
 
         # Upgrade experimenter names to Person objects
         experimenters = self._upgrade_experimenter_names(experimenter_full_name)
