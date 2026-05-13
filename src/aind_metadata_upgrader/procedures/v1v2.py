@@ -514,6 +514,11 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             # procedure instead of nesting it inside a Surgery object.
             return self._wrap_procedure_in_surgery(data, data)
 
+        elif procedure_type in PROC_UPGRADE_MAP:
+            # Some legacy records store surgery sub-procedures (e.g. injections) directly
+            # as top-level subject procedures instead of nesting them inside a Surgery object.
+            return self._wrap_procedure_in_surgery(data, data)
+
         raise ValueError("Unsupported subject procedure type: {}".format(procedure_type))
 
     def _upgrade_specimen_procedure(self, data: dict) -> dict:
