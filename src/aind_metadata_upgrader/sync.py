@@ -335,6 +335,12 @@ def run():
         summary_stats[status] = summary_stats.get(status, 0) + 1
         if (i + 1) % BATCH_SIZE == 0:
             logging.info(f"Progress: {i + 1}/{num_records} records")
+            pre_flush_count = len(all_upgrade_results)
+            _flush_pending_upserts(all_pending_upserts, all_upgrade_results)
+            all_pending_upserts.clear()
+            _save_results(zs_df, all_upgrade_results)
+            all_upgrade_results.clear()
+            zs_df = _zs_df  # pick up the updated dataframe for skip checks
 
     pre_flush_count = len(all_upgrade_results)
     _flush_pending_upserts(all_pending_upserts, all_upgrade_results)
@@ -362,4 +368,5 @@ def run():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.ERROR)
     run()
