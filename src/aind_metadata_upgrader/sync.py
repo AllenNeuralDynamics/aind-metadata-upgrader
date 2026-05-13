@@ -237,7 +237,7 @@ def _flush_pending_upserts(
     pending_upserts: list[tuple[dict, str, str, dict]],
     upgrade_results: list[dict],
 ) -> None:
-    """Batch upsert pending records to V2.
+    """Upsert pending records to V2 individually.
 
     Args:
         pending_upserts: List of (upgraded_model, location, record_id, data_dict) tuples.
@@ -246,47 +246,20 @@ def _flush_pending_upserts(
     if not pending_upserts:
         return
 
-    # Process in chunks to avoid oversized requests
-    chunks = [
-        pending_upserts[i: i + BATCH_SIZE]
-        for i in range(0, len(pending_upserts), BATCH_SIZE)
-    ]
-    logging.info(
-        f"Batch upserting {len(pending_upserts)} records to DocumentDB "
-        f"in {len(chunks)} chunk(s) of up to {BATCH_SIZE}"
-    )
+    logging.info(f"Upserting {len(pending_upserts)} records to DocumentDB individually")
 
-    for chunk in chunks:
-        records_to_upsert = [model for model, _, _, _ in chunk]
-        upsert_ok = True
+    for model, location, record_id, data_dict in pending_upserts:
         try:
-            client_v2.upsert_list_of_docdb_records(records=records_to_upsert)
-        except Exception as e:
-            logging.warning(f"Batch upsert failed ({e}), falling back to individual upserts")
-            upsert_ok = False
-            for model, location, record_id, data_dict in chunk:
-                try:
-                    client_v2.upsert_one_docdb_record(record=model)
-                    upgrade_results.append({
-                        "v1_id": str(record_id),
-                        "v2_id": str(model["_id"]),
-                        "upgrader_version": upgrader_version,
-                        "status": "success",
-                    })
-                except Exception as e2:
-                    logging.error(f"Individual upsert failed for record {record_id}: {e2}")
-                    upgrade_results.append(_make_failure_result(data_dict))
-
-        if not upsert_ok:
-            continue
-
-        for model, location, record_id, data_dict in chunk:
+            client_v2.upsert_one_docdb_record(record=model)
             upgrade_results.append({
                 "v1_id": str(record_id),
                 "v2_id": str(model["_id"]),
                 "upgrader_version": upgrader_version,
                 "status": "success",
             })
+        except Exception as e:
+            logging.error(f"Individual upsert failed for record {record_id}: {e}")
+            upgrade_results.append(_make_failure_result(data_dict))
 
 
 def run_one(record_id: str):
