@@ -290,11 +290,14 @@ MEDIUM_MAP = {
     "0.05x SSC": ImmersionMedium.WATER,
     "ACB": ImmersionMedium.ACB,
     "Ethyl cinnamate": ImmersionMedium.ECI,
+    "EZ View": ImmersionMedium.OIL,
+    "EZView": ImmersionMedium.OIL,
 }
 
 
 def upgrade_immersion(data: dict, allow_none: bool = False) -> Optional[dict]:
     """Upgrade an immersion dictionary to the new Immersion schema"""
+
 
     if "medium" in data:
         # If medium is "nan" we just return None
