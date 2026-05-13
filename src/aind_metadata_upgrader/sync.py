@@ -29,7 +29,7 @@ client_v2 = MetadataDbClient(
 # cache settings
 # we'll store v1_id, v2_id, upgrade_version, status
 TABLE_NAME = os.getenv("TABLE_NAME", "metadata_upgrade_status_prod")
-_ZS_COLUMNS = ["v1_id", "v2_id", "upgrader_version", "status"]
+_ZS_COLUMNS = ["v1_id", "v2_id", "upgrader_version", "last_modified", "status"]
 
 # In-memory cache of the ZS table for the current process lifetime
 _zs_df: Optional[pd.DataFrame] = None
@@ -123,6 +123,7 @@ def _make_failure_result(data_dict: dict) -> dict:
         "v1_id": str(data_dict["_id"]),
         "v2_id": None,
         "upgrader_version": upgrader_version,
+        "last_modified": data_dict.get("last_modified"),
         "status": "failed",
     }
 
@@ -175,6 +176,15 @@ def _process_record(
     record_id = data_dict["_id"]
     location = data_dict.get("location")
 
+    row = _get_cache_row(zs_df, record_id)
+    if (
+        row.get("upgrader_version") == upgrader_version
+        and row.get("status") == "success"
+        and row.get("last_modified") == data_dict.get("last_modified")
+    ):
+        logging.info(f"Record {record_id}: skipping — already up-to-date")
+        return "skipped"
+
     # v2_record is pre-fetched by the batch; fall back to individual fetch if not supplied
     if v2_record is None and location:
         v2_record = _get_v2_record(location)
@@ -203,6 +213,7 @@ def _process_record(
             "v1_id": str(record_id),
             "v2_id": str(new_v2_id),
             "upgrader_version": upgrader_version,
+            "last_modified": data_dict.get("last_modified"),
             "status": "success",
         })
         return "inserted"
@@ -230,6 +241,7 @@ def _flush_pending_upserts(
                 "v1_id": str(record_id),
                 "v2_id": str(model["_id"]),
                 "upgrader_version": upgrader_version,
+                "last_modified": data_dict.get("last_modified"),
                 "status": "success",
             })
         except Exception as e:
@@ -284,6 +296,7 @@ def run_one(record_id: str):
         "v1_id": str(record_id),
         "v2_id": str(existing_v2_id),
         "upgrader_version": upgrader_version,
+        "last_modified": data_dict.get("last_modified"),
         "status": "success",
     }
     logging.info(f"Successfully processed record {record_id}")
@@ -310,7 +323,7 @@ def run():
 
     all_upgrade_results: list[dict] = []
     all_pending_upserts: list[tuple] = []
-    summary_stats: dict[str, int] = {"inserted": 0, "queued_upsert": 0, "failed": 0}
+    summary_stats: dict[str, int] = {"inserted": 0, "queued_upsert": 0, "failed": 0, "skipped": 0}
 
     for i, record_id in enumerate(record_ids):
         records = client_v1.retrieve_docdb_records(filter_query={"_id": record_id})
@@ -334,15 +347,17 @@ def run():
     total_new = summary_stats["inserted"]
     total_re_upgraded = upsert_successes
     total_failed = summary_stats["failed"] + upsert_failures
-    total_processed = total_new + total_re_upgraded + total_failed
+    total_skipped = summary_stats["skipped"]
+    total_processed = total_new + total_re_upgraded + total_failed + total_skipped
 
     logging.info("=" * 60)
     logging.info("Upgrade run complete — summary:")
-    logging.info(f"  Total records in v1:     {num_records}")
-    logging.info(f"  Total processed:         {total_processed}")
-    logging.info(f"  New upgrades (inserted): {total_new}")
-    logging.info(f"  Re-upgraded (upserted):  {total_re_upgraded}")
-    logging.info(f"  Failed:                  {total_failed}")
+    logging.info(f"  Total records in v1:          {num_records}")
+    logging.info(f"  Total processed:              {total_processed}")
+    logging.info(f"  New upgrades (inserted):      {total_new}")
+    logging.info(f"  Re-upgraded (upserted):       {total_re_upgraded}")
+    logging.info(f"  Skipped (already up-to-date): {total_skipped}")
+    logging.info(f"  Failed:                       {total_failed}")
     logging.info("=" * 60)
 
 
