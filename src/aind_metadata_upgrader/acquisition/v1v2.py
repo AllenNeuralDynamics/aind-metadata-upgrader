@@ -120,6 +120,31 @@ class AcquisitionV1V2(CoreUpgrader):
 
         return session_start_time, session_end_time
 
+    def _apply_legacy_smartspim_immersion(
+        self,
+        asset_name: str,
+        chamber_immersion: Optional[dict],
+        sample_immersion: Optional[dict],
+        notes: Optional[str],
+    ) -> tuple:
+        """For SmartSPIM assets collected in 2022 or earlier, fill in known
+        immersion defaults and append a note. Returns updated
+        (chamber_immersion, sample_immersion, notes)."""
+        match = re.search(r"SmartSPIM[^_]*_\d+_(\d{4})-", asset_name, re.IGNORECASE)
+        if not (match and int(match.group(1)) <= 2022):
+            return chamber_immersion, sample_immersion, notes
+
+        if not chamber_immersion or chamber_immersion.get("medium") == "nan":
+            chamber_immersion = {"medium": ImmersionMedium.OIL.value, "refractive_index": 1.52}
+        if not sample_immersion or sample_immersion.get("medium") == "nan":
+            sample_immersion = None
+        pilot_note = (
+            "(v1v2 upgrade) Pilot data: chamber immersion assumed to be Cargille oil (RI=1.52); "
+            "sample immersion unknown."
+        )
+        notes = f"{notes}; {pilot_note}" if notes else pilot_note
+        return chamber_immersion, sample_immersion, notes
+
     def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict]) -> dict:
         """Upgrade the acquisition data to v2.0"""
 
@@ -159,26 +184,10 @@ class AcquisitionV1V2(CoreUpgrader):
         chamber_immersion = data.get("chamber_immersion")
         sample_immersion = data.get("sample_immersion")
 
-        # For legacy SmartSPIM assets (collected in 2022 or earlier), fill in
-        # known immersion defaults when the fields are absent from the record.
         asset_name = metadata.get("name", "") if metadata else ""
-        _smartspim_year_match = re.search(
-            r"SmartSPIM[^_]*_\d+_(\d{4})-", asset_name, re.IGNORECASE
+        chamber_immersion, sample_immersion, notes = self._apply_legacy_smartspim_immersion(
+            asset_name, chamber_immersion, sample_immersion, notes
         )
-        _is_legacy_smartspim = (
-            _smartspim_year_match is not None
-            and int(_smartspim_year_match.group(1)) <= 2022
-        )
-        if _is_legacy_smartspim:
-            if not chamber_immersion or chamber_immersion.get("medium") == "nan":
-                chamber_immersion = {"medium": ImmersionMedium.OIL.value, "refractive_index": 1.52}
-            if sample_immersion and sample_immersion.get("medium") == "nan":
-                sample_immersion = None
-            pilot_note = (
-                "(v1v2 upgrade) Pilot data: chamber immersion assumed to be Cargille oil (RI=1.52); "
-                "sample immersion unknown."
-            )
-            notes = f"{notes}; {pilot_note}" if notes else pilot_note
 
         # Upgrade experimenter names to Person objects
         experimenters = self._upgrade_experimenter_names(experimenter_full_name)
