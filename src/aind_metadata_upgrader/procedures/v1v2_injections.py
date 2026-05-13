@@ -304,7 +304,7 @@ def upgrade_retro_orbital_injection(data: dict) -> dict:
     upgraded_data.pop("procedure_type", None)
 
     upgraded_data = upgrade_generic_injection(upgraded_data)
-    injection_materials = upgrade_injection_materials(data.get("injection_materials", []))
+    injection_materials = upgrade_injection_materials(data.get("injection_materials") or [])
 
     if len(injection_materials) == 0:
         injection_materials.append(
