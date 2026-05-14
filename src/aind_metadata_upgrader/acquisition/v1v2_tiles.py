@@ -290,6 +290,8 @@ MEDIUM_MAP = {
     "0.05x SSC": ImmersionMedium.WATER,
     "ACB": ImmersionMedium.ACB,
     "Ethyl cinnamate": ImmersionMedium.ECI,
+    "EZ View": ImmersionMedium.OIL,
+    "EZView": ImmersionMedium.OIL,
 }
 
 
