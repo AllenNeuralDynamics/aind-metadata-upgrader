@@ -41,7 +41,9 @@ class TestSync(unittest.TestCase):
         """Test successful upgrade with no existing cache table."""
         mock_v1_client.retrieve_docdb_records.side_effect = [
             self.sample_v1_records,  # First call for record IDs
-            self.sample_cached_records[:1],  # Second call for cached records
+            self.sample_cached_records[:1],  # record1 individual fetch
+            [],  # record2 not found
+            [],  # record3 not found
         ]
 
         mock_custom.side_effect = lambda *a, **kw: (
@@ -99,8 +101,8 @@ class TestSync(unittest.TestCase):
 
         sync.run()
 
-        mock_upgrade_class.assert_called_once()
-        mock_v2_client.upsert_list_of_docdb_records.assert_called_once()
+        mock_upgrade_class.assert_not_called()
+        mock_v2_client.upsert_one_docdb_record.assert_not_called()
         store_calls = [c for c in mock_custom.call_args_list if c.kwargs.get("df") is not None]
         self.assertEqual(len(store_calls), 1)
 
@@ -178,7 +180,7 @@ class TestSync(unittest.TestCase):
         sync.run()
 
         mock_v2_client.insert_one_docdb_record.assert_not_called()
-        mock_v2_client.upsert_list_of_docdb_records.assert_called_once()
+        mock_v2_client.upsert_one_docdb_record.assert_called_once()
 
     @patch("aind_metadata_upgrader.sync.custom")
     @patch("aind_metadata_upgrader.sync.client_v2")
@@ -195,8 +197,9 @@ class TestSync(unittest.TestCase):
         cached_records_batch2 = [{"_id": "record3", "location": "loc3", "last_modified": "2023-01-03"}]
         mock_v1_client.retrieve_docdb_records.side_effect = [
             records,
-            cached_records_batch1,
-            cached_records_batch2,
+            [cached_records_batch1[0]],  # record1 individual fetch
+            [cached_records_batch1[1]],  # record2 individual fetch
+            [cached_records_batch2[0]],  # record3 individual fetch
         ]
         mock_custom.side_effect = lambda *a, **kw: (
             (_ for _ in ()).throw(ValueError("empty")) if kw.get("df") is None else kw["df"]
@@ -214,9 +217,9 @@ class TestSync(unittest.TestCase):
 
         sync.run()
 
-        self.assertGreaterEqual(mock_v1_client.retrieve_docdb_records.call_count, 3)
-        # Upserts are flushed per batch (2 batches of size 2 and 1)
-        self.assertGreaterEqual(mock_v2_client.upsert_list_of_docdb_records.call_count, 1)
+        self.assertGreaterEqual(mock_v1_client.retrieve_docdb_records.call_count, 4)
+        # Upserts are flushed per batch
+        self.assertGreaterEqual(mock_v2_client.upsert_one_docdb_record.call_count, 1)
 
     @patch("aind_metadata_upgrader.sync.custom")
     @patch("aind_metadata_upgrader.sync.client_v2")
@@ -232,7 +235,7 @@ class TestSync(unittest.TestCase):
                 {
                     "v1_id": "record1",
                     "v2_id": "v2_record1",
-                    "upgrader_version": "1.0.0",
+                    "upgrader_version": "0.9.0",
                     "status": "success",
                     "last_modified": "2023-01-01",
                     "upgrade_datetime": "2023-01-02T00:00:00",
@@ -240,7 +243,7 @@ class TestSync(unittest.TestCase):
                 {
                     "v1_id": "stale_record",
                     "v2_id": "v2_stale",
-                    "upgrader_version": "1.0.0",
+                    "upgrader_version": "0.9.0",
                     "status": "success",
                     "last_modified": "2022-01-01",
                     "upgrade_datetime": "2022-01-02T00:00:00",
@@ -262,9 +265,9 @@ class TestSync(unittest.TestCase):
 
         sync.run()
 
-        # record1 is always re-upgraded; stale_record silently filtered out
+        # record1 is re-upgraded (old version); stale_record silently filtered out
         mock_upgrade_class.assert_called_once()
-        mock_v2_client.upsert_list_of_docdb_records.assert_called_once()
+        mock_v2_client.upsert_one_docdb_record.assert_called_once()
 
     @patch("aind_metadata_upgrader.sync.custom")
     @patch("aind_metadata_upgrader.sync.client_v2")
