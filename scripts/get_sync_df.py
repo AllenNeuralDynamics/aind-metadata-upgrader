@@ -1,6 +1,5 @@
 """Script to get sync dataframe and print upgrade status summary"""
 from zombie_squirrel import custom
-from datetime import datetime
 
 from aind_metadata_upgrader.sync import TABLE_NAME
 
