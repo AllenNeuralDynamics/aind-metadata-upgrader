@@ -3,6 +3,7 @@
 import logging
 import os
 from typing import Optional
+from packaging.version import Version
 from aind_metadata_upgrader.upgrade import Upgrade
 from aind_data_access_api.document_db import MetadataDbClient
 from zombie_squirrel import custom
@@ -50,7 +51,7 @@ def _load_zs_cache() -> pd.DataFrame:
             raise ValueError("Table empty or missing v1_id column")
         _zs_df = candidate
     except ValueError as e:
-        logging.info(f"No previous tracking data found, starting fresh: {e}")
+        print(f"No previous tracking data found, starting fresh: {e}")
         _zs_df = pd.DataFrame(columns=_ZS_COLUMNS)
     return _zs_df
 
@@ -65,7 +66,7 @@ def _save_results(base_df: pd.DataFrame, results: list[dict]) -> None:
     new_rows = pd.DataFrame(results) if results else pd.DataFrame(columns=_ZS_COLUMNS)
     combined = pd.concat([base_df, new_rows], ignore_index=True)
     combined = combined.drop_duplicates(subset=["v1_id"], keep="last")
-    logging.info(f"Uploading {len(combined)} tracking records to ZS")
+    print(f"Uploading {len(combined)} tracking records to ZS")
     custom(TABLE_NAME, df=combined)
     _zs_df = combined
 
@@ -95,7 +96,7 @@ def _delete_v2_record(location: str, v2_record: Optional[dict] = None) -> None:
         v2_record = _get_v2_record(location)
     if not v2_record:
         return
-    logging.info(f"Deleting v2 record due to failed upgrade: {v2_record['_id']}")
+    print(f"Deleting v2 record due to failed upgrade: {v2_record['_id']}")
     client_v2.delete_one_record(v2_record["_id"])
 
 
@@ -179,10 +180,9 @@ def _process_record(
     row = _get_cache_row(zs_df, record_id)
     if (
         row.get("upgrader_version") == upgrader_version
-        and row.get("status") == "success"
         and row.get("last_modified") == data_dict.get("last_modified")
     ):
-        logging.info(f"Record {record_id}: skipping — already up-to-date")
+        print(f"Record {record_id}: skipping — already up-to-date")
         return "skipped"
 
     # v2_record is pre-fetched by the batch; fall back to individual fetch if not supplied
@@ -219,6 +219,33 @@ def _process_record(
         return "inserted"
 
 
+def _build_upgrade_set(record_ids: list, zs_df: pd.DataFrame) -> list:
+    """Pre-pass: batch-fetch slim projections to identify records that need upgrading.
+
+    Fetches only _id and last_modified in batches of BATCH_SIZE, checks each
+    record against the ZS cache skip condition, and returns an ordered list of
+    IDs that must be upgraded (i.e. not already up-to-date).
+    """
+    needs_upgrade: list = []
+    for i in range(0, len(record_ids), BATCH_SIZE):
+        batch_ids = record_ids[i : i + BATCH_SIZE]
+        slim_records = client_v1.retrieve_docdb_records(
+            filter_query={"_id": {"$in": batch_ids}},
+            projection={"_id": 1, "last_modified": 1},
+        )
+        for rec in slim_records:
+            row = _get_cache_row(zs_df, rec["_id"])
+            if not (
+                row.get("upgrader_version") == upgrader_version
+                and row.get("last_modified") == rec.get("last_modified")
+            ):
+                needs_upgrade.append(rec["_id"])
+    print(
+        f"Pre-pass complete: {len(needs_upgrade)}/{len(record_ids)} records need upgrading"
+    )
+    return needs_upgrade
+
+
 def _flush_pending_upserts(
     pending_upserts: list[tuple[dict, str, str, dict]],
     upgrade_results: list[dict],
@@ -232,7 +259,7 @@ def _flush_pending_upserts(
     if not pending_upserts:
         return
 
-    logging.info(f"Upserting {len(pending_upserts)} records to DocumentDB individually")
+    print(f"Upserting {len(pending_upserts)} records to DocumentDB individually")
 
     for model, location, record_id, data_dict in pending_upserts:
         try:
@@ -255,7 +282,7 @@ def run_one(record_id: str):
 
     Decision logic is the same as run() — see _should_skip for details.
     """
-    logging.info(f"Processing single record ID: {record_id}")
+    print(f"Processing single record ID: {record_id}")
 
     records = client_v1.retrieve_docdb_records(filter_query={"_id": record_id})
     if not records:
@@ -265,6 +292,16 @@ def run_one(record_id: str):
     location = data_dict.get("location")
 
     zs_df = _load_zs_cache()
+
+    # Refuse to downgrade: if the cache already records a newer upgrader version, abort
+    row = _get_cache_row(zs_df, record_id)
+    cached_version = row.get("upgrader_version")
+    if cached_version and Version(cached_version) > Version(upgrader_version):
+        print(
+            f"Skipping record {record_id}: cached upgrader version {cached_version} "
+            f"is newer than current {upgrader_version}"
+        )
+        return
 
     # Fetch current V2 record to determine if this is an insert or upsert
     v2_record = _get_v2_record(location) if location else None
@@ -299,7 +336,7 @@ def run_one(record_id: str):
         "last_modified": data_dict.get("last_modified"),
         "status": "success",
     }
-    logging.info(f"Successfully processed record {record_id}")
+    print(f"Successfully processed record {record_id}")
     _save_results(zs_df, [result])
 
 
@@ -311,7 +348,7 @@ def run():
     records_list = client_v1.retrieve_docdb_records(filter_query={}, projection={"_id": 1})
     record_ids = [record["_id"] for record in records_list]
     num_records = len(record_ids)
-    logging.info(f"Found {num_records} records to process")
+    print(f"Found {num_records} records to process")
 
     zs_df = _load_zs_cache()
 
@@ -319,52 +356,63 @@ def run():
     if num_records > 0:
         record_ids_set = {str(rid) for rid in record_ids}
         zs_df = zs_df[zs_df["v1_id"].isin(record_ids_set)]
-        logging.info(f"Filtered tracking data to {len(zs_df)} records that exist in v1 database")
+        print(f"Filtered tracking data to {len(zs_df)} records that exist in v1 database")
+
+    # Pre-pass: identify which records actually need upgrading without fetching full payloads
+    ids_to_upgrade = _build_upgrade_set(record_ids, zs_df)
+    num_to_upgrade = len(ids_to_upgrade)
+    num_skipped = num_records - num_to_upgrade
+    print(f"Skipping {num_skipped} already up-to-date records; upgrading {num_to_upgrade}")
 
     all_upgrade_results: list[dict] = []
     all_pending_upserts: list[tuple] = []
-    summary_stats: dict[str, int] = {"inserted": 0, "queued_upsert": 0, "failed": 0, "skipped": 0}
+    summary_stats: dict[str, int] = {
+        "inserted": 0,
+        "queued_upsert": 0,
+        "failed": 0,
+        "skipped": num_skipped,
+    }
 
-    for i, record_id in enumerate(record_ids):
-        records = client_v1.retrieve_docdb_records(filter_query={"_id": record_id})
-        if not records:
-            logging.warning(f"Record {record_id} not found in v1 database, skipping")
-            continue
-        data_dict = records[0]
-        status = _process_record(data_dict, zs_df, all_upgrade_results, all_pending_upserts)
-        summary_stats[status] = summary_stats.get(status, 0) + 1
-        if (i + 1) % BATCH_SIZE == 0:
-            logging.info(f"Progress: {i + 1}/{num_records} records")
-            pre_flush_count = len(all_upgrade_results)
-            _flush_pending_upserts(all_pending_upserts, all_upgrade_results)
-            all_pending_upserts.clear()
-            _save_results(zs_df, all_upgrade_results)
-            all_upgrade_results.clear()
-            zs_df = _zs_df  # pick up the updated dataframe for skip checks
+    for i in range(0, num_to_upgrade, BATCH_SIZE):
+        batch_ids = ids_to_upgrade[i : i + BATCH_SIZE]
+        batch_records = client_v1.retrieve_docdb_records(
+            filter_query={"_id": {"$in": batch_ids}},
+        )
+        id_to_record = {r["_id"]: r for r in batch_records}
+        for record_id in batch_ids:
+            data_dict = id_to_record.get(record_id)
+            if not data_dict:
+                logging.warning(f"Record {record_id} not found in v1 database, skipping")
+                continue
+            status = _process_record(data_dict, zs_df, all_upgrade_results, all_pending_upserts)
+            summary_stats[status] = summary_stats.get(status, 0) + 1
+        print(f"Progress: {min(i + BATCH_SIZE, num_to_upgrade)}/{num_to_upgrade} upgrade-eligible records")
+        pre_flush_count = len(all_upgrade_results)
+        _flush_pending_upserts(all_pending_upserts, all_upgrade_results)
+        all_pending_upserts.clear()
+        _save_results(zs_df, all_upgrade_results)
+        all_upgrade_results.clear()
+        zs_df = _zs_df  # pick up the updated dataframe for skip checks
 
-    pre_flush_count = len(all_upgrade_results)
-    _flush_pending_upserts(all_pending_upserts, all_upgrade_results)
-    _save_results(zs_df, all_upgrade_results)
-
-    flush_results = all_upgrade_results[pre_flush_count:]
-    upsert_successes = sum(1 for r in flush_results if r.get("status") == "success")
-    upsert_failures = len(flush_results) - upsert_successes
+    # If there were no batches at all (num_to_upgrade == 0), still persist the pruned zs_df
+    if num_to_upgrade == 0:
+        _save_results(zs_df, [])
 
     total_new = summary_stats["inserted"]
-    total_re_upgraded = upsert_successes
-    total_failed = summary_stats["failed"] + upsert_failures
+    total_re_upgraded = summary_stats["queued_upsert"]
+    total_failed = summary_stats["failed"]
     total_skipped = summary_stats["skipped"]
     total_processed = total_new + total_re_upgraded + total_failed + total_skipped
 
-    logging.info("=" * 60)
-    logging.info("Upgrade run complete — summary:")
-    logging.info(f"  Total records in v1:          {num_records}")
-    logging.info(f"  Total processed:              {total_processed}")
-    logging.info(f"  New upgrades (inserted):      {total_new}")
-    logging.info(f"  Re-upgraded (upserted):       {total_re_upgraded}")
-    logging.info(f"  Skipped (already up-to-date): {total_skipped}")
-    logging.info(f"  Failed:                       {total_failed}")
-    logging.info("=" * 60)
+    print("=" * 60)
+    print("Upgrade run complete — summary:")
+    print(f"  Total records in v1:          {num_records}")
+    print(f"  Total processed:              {total_processed}")
+    print(f"  New upgrades (inserted):      {total_new}")
+    print(f"  Re-upgraded (upserted):       {total_re_upgraded}")
+    print(f"  Skipped (already up-to-date): {total_skipped}")
+    print(f"  Failed:                       {total_failed}")
+    print("=" * 60)
 
 
 if __name__ == "__main__":
