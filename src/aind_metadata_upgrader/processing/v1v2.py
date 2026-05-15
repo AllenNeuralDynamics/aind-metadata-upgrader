@@ -50,7 +50,7 @@ class ProcessingV1V2(CoreUpgrader):
             self.names[name] = 1
         else:
             self.names[name] += 1
-            
+
         if self.names[name] > 1:
             return f"{name}_{self.names[name]}"
         return name
