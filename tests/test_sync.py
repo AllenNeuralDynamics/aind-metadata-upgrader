@@ -1,7 +1,7 @@
 """Tests for the sync module helpers."""
 
 import unittest
-from unittest.mock import MagicMock, call, patch
+from unittest.mock import MagicMock, patch
 import pandas as pd
 from aind_metadata_upgrader import sync
 
@@ -12,8 +12,20 @@ class TestGetCacheRow(unittest.TestCase):
     def setUp(self):
         self.df = pd.DataFrame(
             [
-                {"v1_id": "rec1", "v2_id": "v2_1", "upgrader_version": "1.0.0", "status": "success", "last_modified": "2024-01-01"},
-                {"v1_id": "rec2", "v2_id": None, "upgrader_version": "1.0.0", "status": "failed", "last_modified": "2024-01-02"},
+                {
+                    "v1_id": "rec1",
+                    "v2_id": "v2_1",
+                    "upgrader_version": "1.0.0",
+                    "status": "success",
+                    "last_modified": "2024-01-01",
+                },
+                {
+                    "v1_id": "rec2",
+                    "v2_id": None,
+                    "upgrader_version": "1.0.0",
+                    "status": "failed",
+                    "last_modified": "2024-01-02",
+                },
             ]
         )
 
@@ -125,10 +137,17 @@ class TestProcessRecord(unittest.TestCase):
 
     @patch("aind_metadata_upgrader.sync.upgrader_version", "1.0.0")
     def test_skips_up_to_date_record(self):
-        df = pd.DataFrame([{
-            "v1_id": "rec1", "v2_id": "v2_1", "upgrader_version": "1.0.0",
-            "status": "success", "last_modified": "2024-01-01",
-        }])
+        df = pd.DataFrame(
+            [
+                {
+                    "v1_id": "rec1",
+                    "v2_id": "v2_1",
+                    "upgrader_version": "1.0.0",
+                    "status": "success",
+                    "last_modified": "2024-01-01",
+                }
+            ]
+        )
         data = {"_id": "rec1", "last_modified": "2024-01-01"}
         results, upserts = [], []
         status = sync._process_record(data, df, results, upserts)
@@ -233,9 +252,11 @@ class TestBuildUpgradeSet(unittest.TestCase):
             {"_id": "rec1", "last_modified": "2024-01-01"},
             {"_id": "rec2", "last_modified": "2024-01-02"},
         ]
-        df = pd.DataFrame([
-            {"v1_id": "rec1", "upgrader_version": "1.0.0", "last_modified": "2024-01-01", "status": "success"},
-        ])
+        df = pd.DataFrame(
+            [
+                {"v1_id": "rec1", "upgrader_version": "1.0.0", "last_modified": "2024-01-01", "status": "success"},
+            ]
+        )
         result = sync._build_upgrade_set(["rec1", "rec2"], df)
         self.assertNotIn("rec1", result)
         self.assertIn("rec2", result)
@@ -258,8 +279,11 @@ class TestSaveResults(unittest.TestCase):
         mock_custom.side_effect = lambda *a, **kw: kw["df"] if kw.get("df") is not None else None
         base_df = pd.DataFrame(columns=sync._ZS_COLUMNS)
         result = {
-            "v1_id": "rec1", "v2_id": "v2_1", "upgrader_version": "1.0.0",
-            "last_modified": "2024-01-01", "status": "success",
+            "v1_id": "rec1",
+            "v2_id": "v2_1",
+            "upgrader_version": "1.0.0",
+            "last_modified": "2024-01-01",
+            "status": "success",
         }
         sync._save_results(base_df, [result])
         df = mock_custom.call_args.kwargs["df"]
@@ -269,13 +293,23 @@ class TestSaveResults(unittest.TestCase):
     @patch("aind_metadata_upgrader.sync.custom")
     def test_overwrites_existing_row_by_v1_id(self, mock_custom):
         mock_custom.side_effect = lambda *a, **kw: kw["df"] if kw.get("df") is not None else None
-        base_df = pd.DataFrame([{
-            "v1_id": "rec1", "v2_id": "old_v2", "upgrader_version": "0.9.0",
-            "last_modified": "2023-01-01", "status": "success",
-        }])
+        base_df = pd.DataFrame(
+            [
+                {
+                    "v1_id": "rec1",
+                    "v2_id": "old_v2",
+                    "upgrader_version": "0.9.0",
+                    "last_modified": "2023-01-01",
+                    "status": "success",
+                }
+            ]
+        )
         result = {
-            "v1_id": "rec1", "v2_id": "new_v2", "upgrader_version": "1.0.0",
-            "last_modified": "2024-01-01", "status": "success",
+            "v1_id": "rec1",
+            "v2_id": "new_v2",
+            "upgrader_version": "1.0.0",
+            "last_modified": "2024-01-01",
+            "status": "success",
         }
         sync._save_results(base_df, [result])
         df = mock_custom.call_args.kwargs["df"]
@@ -287,14 +321,16 @@ class TestSaveResults(unittest.TestCase):
         mock_custom.side_effect = lambda *a, **kw: kw["df"] if kw.get("df") is not None else None
         base_df = pd.DataFrame(columns=sync._ZS_COLUMNS)
         result = {
-            "v1_id": "rec1", "v2_id": None, "upgrader_version": "1.0.0",
-            "last_modified": "2024-01-01", "status": "failed",
+            "v1_id": "rec1",
+            "v2_id": None,
+            "upgrader_version": "1.0.0",
+            "last_modified": "2024-01-01",
+            "status": "failed",
         }
         sync._save_results(base_df, [result])
         df = mock_custom.call_args.kwargs["df"]
         self.assertIsNone(df.iloc[0]["v2_id"])
         self.assertEqual(df.iloc[0]["status"], "failed")
-
 
 
 if __name__ == "__main__":
