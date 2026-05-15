@@ -40,6 +40,7 @@ _zs_df: Optional[pd.DataFrame] = None
 # ZS cache helpers
 # ---------------------------------------------------------------------------
 
+
 def _load_zs_cache() -> pd.DataFrame:
     """Load (or return the already-cached) ZS tracking table."""
     global _zs_df
@@ -80,6 +81,7 @@ def _get_cache_row(df: pd.DataFrame, record_id: str) -> dict:
 # ---------------------------------------------------------------------------
 # Per-record decision / action helpers
 # ---------------------------------------------------------------------------
+
 
 def _get_v2_record(location: str) -> Optional[dict]:
     """Fetch the current V2 record by location, or None if not found."""
@@ -160,6 +162,7 @@ def _attempt_upgrade(
 # Public entry points
 # ---------------------------------------------------------------------------
 
+
 def _process_record(
     data_dict: dict,
     zs_df: pd.DataFrame,
@@ -178,10 +181,7 @@ def _process_record(
     location = data_dict.get("location")
 
     row = _get_cache_row(zs_df, record_id)
-    if (
-        row.get("upgrader_version") == upgrader_version
-        and row.get("last_modified") == data_dict.get("last_modified")
-    ):
+    if row.get("upgrader_version") == upgrader_version and row.get("last_modified") == data_dict.get("last_modified"):
         print(f"Record {record_id}: skipping — already up-to-date")
         return "skipped"
 
@@ -209,13 +209,15 @@ def _process_record(
             upgrade_results.append(_make_failure_result(data_dict))
             return "failed"
         new_v2_id = response.json().get("insertedId", "")
-        upgrade_results.append({
-            "v1_id": str(record_id),
-            "v2_id": str(new_v2_id),
-            "upgrader_version": upgrader_version,
-            "last_modified": data_dict.get("last_modified"),
-            "status": "success",
-        })
+        upgrade_results.append(
+            {
+                "v1_id": str(record_id),
+                "v2_id": str(new_v2_id),
+                "upgrader_version": upgrader_version,
+                "last_modified": data_dict.get("last_modified"),
+                "status": "success",
+            }
+        )
         return "inserted"
 
 
@@ -228,7 +230,7 @@ def _build_upgrade_set(record_ids: list, zs_df: pd.DataFrame) -> list:
     """
     needs_upgrade: list = []
     for i in range(0, len(record_ids), BATCH_SIZE):
-        batch_ids = record_ids[i : i + BATCH_SIZE]
+        batch_ids = record_ids[i: i + BATCH_SIZE]
         slim_records = client_v1.retrieve_docdb_records(
             filter_query={"_id": {"$in": batch_ids}},
             projection={"_id": 1, "last_modified": 1},
@@ -236,13 +238,10 @@ def _build_upgrade_set(record_ids: list, zs_df: pd.DataFrame) -> list:
         for rec in slim_records:
             row = _get_cache_row(zs_df, rec["_id"])
             if not (
-                row.get("upgrader_version") == upgrader_version
-                and row.get("last_modified") == rec.get("last_modified")
+                row.get("upgrader_version") == upgrader_version and row.get("last_modified") == rec.get("last_modified")
             ):
                 needs_upgrade.append(rec["_id"])
-    print(
-        f"Pre-pass complete: {len(needs_upgrade)}/{len(record_ids)} records need upgrading"
-    )
+    print(f"Pre-pass complete: {len(needs_upgrade)}/{len(record_ids)} records need upgrading")
     return needs_upgrade
 
 
@@ -264,13 +263,15 @@ def _flush_pending_upserts(
     for model, location, record_id, data_dict in pending_upserts:
         try:
             client_v2.upsert_one_docdb_record(record=model)
-            upgrade_results.append({
-                "v1_id": str(record_id),
-                "v2_id": str(model["_id"]),
-                "upgrader_version": upgrader_version,
-                "last_modified": data_dict.get("last_modified"),
-                "status": "success",
-            })
+            upgrade_results.append(
+                {
+                    "v1_id": str(record_id),
+                    "v2_id": str(model["_id"]),
+                    "upgrader_version": upgrader_version,
+                    "last_modified": data_dict.get("last_modified"),
+                    "status": "success",
+                }
+            )
         except Exception as e:
             logging.error(f"Individual upsert failed for record {record_id}: {e}")
             upgrade_results.append(_make_failure_result(data_dict))
@@ -374,7 +375,7 @@ def run():
     }
 
     for i in range(0, num_to_upgrade, BATCH_SIZE):
-        batch_ids = ids_to_upgrade[i : i + BATCH_SIZE]
+        batch_ids = ids_to_upgrade[i: i + BATCH_SIZE]
         batch_records = client_v1.retrieve_docdb_records(
             filter_query={"_id": {"$in": batch_ids}},
         )
@@ -387,7 +388,6 @@ def run():
             status = _process_record(data_dict, zs_df, all_upgrade_results, all_pending_upserts)
             summary_stats[status] = summary_stats.get(status, 0) + 1
         print(f"Progress: {min(i + BATCH_SIZE, num_to_upgrade)}/{num_to_upgrade} upgrade-eligible records")
-        pre_flush_count = len(all_upgrade_results)
         _flush_pending_upserts(all_pending_upserts, all_upgrade_results)
         all_pending_upserts.clear()
         _save_results(zs_df, all_upgrade_results)
