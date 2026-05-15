@@ -82,16 +82,16 @@ class TestProcessingV1V2(unittest.TestCase):
 
         # Check that duplicate names are handled
         process_names = [proc["name"] for proc in result["data_processes"]]
-        self.assertIn("Analysis_1", process_names)  # First processing process
+        self.assertIn("Analysis", process_names)  # First processing process
         self.assertIn("Analysis_2", process_names)  # First analysis (duplicate resolved)
         self.assertIn("Analysis_3", process_names)  # Second analysis (duplicate resolved)
 
     def test_upgrade_with_analyses_complex_duplicate_names(self):
         """Test upgrade with analyses having complex duplicate names - covers lines 132-135"""
 
-        # Create a scenario where processing creates "Analysis_1", "Analysis_2",
+        # Create a scenario where processing creates "Analysis", "Analysis_2",
         # and then analyses has "Analysis" which should become "Analysis_3"
-        # and another "Analysis" which should check if "Analysis_1" is in seen_names
+        # and another "Analysis" which should check if "Analysis" is in seen_names
         data = {
             "processing_pipeline": {
                 "data_processes": [
@@ -133,7 +133,7 @@ class TestProcessingV1V2(unittest.TestCase):
 
         # Check that the while loop incremented properly when Analysis_1, Analysis_2, Analysis_3 were already seen
         process_names = [proc["name"] for proc in result["data_processes"]]
-        self.assertIn("Analysis_1", process_names)  # First processing process
+        self.assertIn("Analysis", process_names)  # First processing process
         self.assertIn("Analysis_2", process_names)  # Second processing process
         self.assertIn("Analysis_3", process_names)  # First analysis
         self.assertIn("Analysis_4", process_names)  # Second analysis (had to skip Analysis_1, 2, 3)
