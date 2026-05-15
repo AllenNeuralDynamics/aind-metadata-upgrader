@@ -80,7 +80,7 @@ class TestUpgradeRecord(unittest.TestCase):
 
     @patch("aind_metadata_upgrader.sync.Upgrade")
     def test_sets_id_and_strips_qc_for_existing_record(self, mock_upgrade_class):
-        """Tests that for an existing record, the _id is set to the existing v2 ID and quality_control field is removed."""
+        """Tests that for an existing record"""
         mock_instance = MagicMock()
         mock_instance.metadata.model_dump.return_value = {"field": "value", "quality_control": {"some": "data"}}
         mock_upgrade_class.return_value = mock_instance
@@ -267,7 +267,7 @@ class TestBuildUpgradeSet(unittest.TestCase):
     @patch("aind_metadata_upgrader.sync.client_v1")
     @patch("aind_metadata_upgrader.sync.upgrader_version", "1.0.0")
     def test_excludes_up_to_date_records(self, mock_v1_client):
-        """Tests that records already at the current upgrader version and last_modified are excluded from the upgrade set."""
+        """Tests that records already at the current upgrader version"""
         mock_v1_client.retrieve_docdb_records.return_value = [
             {"_id": "rec1", "last_modified": "2024-01-01"},
             {"_id": "rec2", "last_modified": "2024-01-02"},
