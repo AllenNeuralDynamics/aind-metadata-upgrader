@@ -44,13 +44,16 @@ class ProcessingV1V2(CoreUpgrader):
         return repaired
 
     def _get_process_name(self, name: str) -> str:
-        """Get a name for this process, append 1/2/3 for duplicates"""
+        """Get a name for this process, append _2/_3/etc for duplicates"""
 
         if name not in self.names:
             self.names[name] = 1
         else:
             self.names[name] += 1
-        return f"{name}_{self.names[name]}"
+
+        if self.names[name] > 1:
+            return f"{name}_{self.names[name]}"
+        return name
 
     def _convert_v1_process_to_v2(self, process_data: dict, stage: str) -> dict:
         """Convert a V1 process/analysis to V2 DataProcess format"""
