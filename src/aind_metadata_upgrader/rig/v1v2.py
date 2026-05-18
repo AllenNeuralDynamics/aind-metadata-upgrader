@@ -499,16 +499,6 @@ class RigUpgraderV1V2(CoreUpgrader):
                     session_start_time_str = session_data["session_start_time"]
                     target_date = datetime.fromisoformat(session_start_time_str.replace('Z', '+00:00'))
             
-            # Fall back to rig's modification_date if session not available
-            if target_date is None and metadata and "rig" in metadata and metadata["rig"]:
-                rig_data = metadata["rig"]
-                if isinstance(rig_data, dict) and "modification_date" in rig_data:
-                    mod_date_str = rig_data["modification_date"]
-                    try:
-                        target_date = datetime.fromisoformat(mod_date_str.replace('Z', '+00:00'))
-                    except ValueError:
-                        target_date = datetime.fromisoformat(mod_date_str + "T00:00:00")
-            
             # Only replace the date if it's after the target date (i.e. it's actually a bad future date)
             if target_date:
                 cal_date_str = upgraded_cal.get("calibration_date")
