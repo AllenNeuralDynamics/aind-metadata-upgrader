@@ -1,7 +1,7 @@
 """<=v1.4 to v2.0 rig upgrade functions"""
 
 import re
-from datetime import date
+from datetime import date, datetime, timezone
 from typing import Optional
 
 from aind_data_schema.components.coordinates import (
@@ -474,6 +474,56 @@ class RigUpgraderV1V2(CoreUpgrader):
         """Helper method to upgrade devices that don't return connections."""
         return [upgrade_func(device) for device in devices]
 
+    def _upgrade_calibration_with_placeholder_fix(self, calibration: dict, metadata: Optional[dict] = None) -> Optional[dict]:
+        """Upgrade calibration and fix placeholder dates.
+        
+        If the calibration notes contain 'placeholder', replace the calibration date
+        with the acquisition start time (at midnight) from metadata, or the rig's
+        modification_date if acquisition is not available.
+        """
+        # First, upgrade the calibration normally
+        upgraded_cal = upgrade_calibration(calibration)
+        
+        if upgraded_cal is None:
+            return None
+        
+        # Check if the notes contain 'placeholder'
+        original_notes = calibration.get("notes", "")
+        if original_notes and "placeholder" in original_notes.lower():
+            target_date = None
+            
+            # Try to get session start time from metadata
+            if metadata and "session" in metadata and metadata["session"]:
+                session_data = metadata["session"]
+                if isinstance(session_data, dict) and "session_start_time" in session_data:
+                    session_start_time_str = session_data["session_start_time"]
+                    target_date = datetime.fromisoformat(session_start_time_str.replace('Z', '+00:00'))
+            
+            # Fall back to rig's modification_date if session not available
+            if target_date is None and metadata and "rig" in metadata and metadata["rig"]:
+                rig_data = metadata["rig"]
+                if isinstance(rig_data, dict) and "modification_date" in rig_data:
+                    mod_date_str = rig_data["modification_date"]
+                    try:
+                        target_date = datetime.fromisoformat(mod_date_str.replace('Z', '+00:00'))
+                    except ValueError:
+                        target_date = datetime.fromisoformat(mod_date_str + "T00:00:00")
+            
+            # Only replace the date if it's after the target date (i.e. it's actually a bad future date)
+            if target_date:
+                cal_date_str = upgraded_cal.get("calibration_date")
+                if cal_date_str:
+                    cal_date = datetime.fromisoformat(str(cal_date_str).replace('Z', '+00:00'))
+                    # Ensure both are offset-aware for comparison
+                    if cal_date.tzinfo is None:
+                        cal_date = cal_date.replace(tzinfo=timezone.utc)
+                    if cal_date > target_date:
+                        midnight = target_date.replace(hour=0, minute=0, second=0, microsecond=0)
+                        upgraded_cal["calibration_date"] = midnight.isoformat()
+                        upgraded_cal["notes"] = "(v1v2 upgrade) Calibration date placeholder modified to match acquisition"
+        
+        return upgraded_cal
+
     def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the rig core file data to a v2.0 instrument"""
 
@@ -487,7 +537,7 @@ class RigUpgraderV1V2(CoreUpgrader):
         coordinate_system = self._get_coordinate_system(data)
         notes = data.get("notes", "")
 
-        calibrations = [upgrade_calibration(cal) for cal in data.get("calibrations", [])]
+        calibrations = [self._upgrade_calibration_with_placeholder_fix(cal, metadata) for cal in data.get("calibrations", [])]
         # remove None values from calibrations list
         calibrations = [cal for cal in calibrations if cal is not None]
 
