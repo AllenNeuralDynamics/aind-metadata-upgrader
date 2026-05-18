@@ -164,8 +164,7 @@ class SubjectUpgraderV1V2(CoreUpgrader):
                 source=source,
                 restrictions=restrictions,
                 rrid=rrid,
-            )
-            mouse_subject = mouse_subject.model_dump()
+            ).model_dump()
         elif species["name"] == "Macaca mulatta":
             year = datetime.fromisoformat(date_of_birth).year
 
@@ -176,7 +175,7 @@ class SubjectUpgraderV1V2(CoreUpgrader):
                 species=species,
                 mating_status="Unknown",
                 source=source,
-            )
+            ).model_dump()
         else:
             raise ValueError(f"Species {species['name']} is not supported for V1->V2 upgrade")
 
