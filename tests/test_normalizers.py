@@ -1,6 +1,5 @@
 """Tests for pre-upgrade normalisation utilities."""
 
-import copy
 import unittest
 
 from aind_metadata_upgrader.utils.normalizers import (

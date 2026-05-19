@@ -122,6 +122,78 @@ def _build_camera_normalization_plan(rig_names: list) -> dict | None:
 # ---------------------------------------------------------------------------
 
 
+def _rig_needs_camera_rename(rig: dict, plan: dict) -> bool:
+    """Return True if any rig camera assembly or its inner camera needs renaming."""
+    for section in ("cameras", "camera_assemblies"):
+        for item in rig.get(section) or []:
+            rig_name = item.get("name", "")
+            if rig_name not in plan:
+                continue
+            info = plan[rig_name]
+            if item["name"] != info["assembly_name"]:
+                return True
+            inner_name = (item.get("camera") or {}).get("name", "")
+            if inner_name and inner_name != info["camera_name"]:
+                return True
+    return False
+
+
+def _session_needs_camera_rename(session: dict, base_lower_to_info: dict) -> bool:
+    """Return True if any session camera_name differs from the canonical assembly name."""
+    for stream in session.get("data_streams", []):
+        for cam_name in stream.get("camera_names", []):
+            base = _extract_base_name(cam_name).lower()
+            if base in base_lower_to_info and cam_name != base_lower_to_info[base]["assembly_name"]:
+                return True
+    return False
+
+
+def _apply_rig_camera_renames(rig: dict, plan: dict) -> None:
+    """Rename camera assemblies and inner cameras in-place according to *plan*."""
+    for section in ("cameras", "camera_assemblies"):
+        for item in rig.get(section, []):
+            rig_name = item.get("name", "")
+            if rig_name not in plan:
+                continue
+            info = plan[rig_name]
+            if item["name"] != info["assembly_name"]:
+                logger.info(
+                    "Pre-upgrade normalisation: renaming rig %s '%s' → '%s'",
+                    section.rstrip("s"),
+                    rig_name,
+                    info["assembly_name"],
+                )
+                item["name"] = info["assembly_name"]
+            camera = item.get("camera")
+            if camera and camera.get("name") != info["camera_name"]:
+                logger.info(
+                    "Pre-upgrade normalisation: renaming inner camera '%s' → '%s'",
+                    camera["name"],
+                    info["camera_name"],
+                )
+                camera["name"] = info["camera_name"]
+
+
+def _apply_session_camera_renames(session: dict, base_lower_to_info: dict) -> None:
+    """Rewrite session camera_names in-place to canonical assembly names."""
+    for stream in session.get("data_streams", []):
+        new_names = []
+        for cam_name in stream.get("camera_names", []):
+            base = _extract_base_name(cam_name).lower()
+            if base in base_lower_to_info:
+                new_name = base_lower_to_info[base]["assembly_name"]
+                if cam_name != new_name:
+                    logger.info(
+                        "Pre-upgrade normalisation: renaming session camera_name '%s' → '%s'",
+                        cam_name,
+                        new_name,
+                    )
+                new_names.append(new_name)
+            else:
+                new_names.append(cam_name)
+        stream["camera_names"] = new_names
+
+
 def normalize_camera_names(data: dict) -> dict:
     """Normalise camera assembly names using the rig as ground truth.
 
@@ -158,86 +230,21 @@ def normalize_camera_names(data: dict) -> dict:
     if not rig:
         return data
 
-    rig_camera_names = _get_rig_camera_assembly_names(rig)
-    plan = _build_camera_normalization_plan(rig_camera_names)
-
-    if plan is None or not plan:
+    plan = _build_camera_normalization_plan(_get_rig_camera_assembly_names(rig))
+    if not plan:
         return data
-
-    # Determine whether anything actually needs changing before deep-copying.
-    needs_change = False
-    for section in ("cameras", "camera_assemblies"):
-        for item in rig.get(section) or []:
-            rig_name = item.get("name", "")
-            if rig_name in plan:
-                info = plan[rig_name]
-                if item["name"] != info["assembly_name"]:
-                    needs_change = True
-                    break
-                inner_name = (item.get("camera") or {}).get("name", "")
-                if inner_name and inner_name != info["camera_name"]:
-                    needs_change = True
-                    break
 
     session = data.get("session") or {}
     base_lower_to_info = {info["base_lower"]: info for info in plan.values()}
-    if not needs_change and session:
-        for stream in session.get("data_streams", []):
-            for cam_name in stream.get("camera_names", []):
-                base = _extract_base_name(cam_name).lower()
-                if base in base_lower_to_info:
-                    if cam_name != base_lower_to_info[base]["assembly_name"]:
-                        needs_change = True
-                        break
 
+    needs_change = _rig_needs_camera_rename(rig, plan) or _session_needs_camera_rename(session, base_lower_to_info)
     if not needs_change:
         return data
 
     data = copy.deepcopy(data)
-
-    # Rename rig camera assemblies and their inner cameras.
-    for section in ("cameras", "camera_assemblies"):
-        for item in data["rig"].get(section, []):
-            rig_name = item.get("name", "")
-            if rig_name not in plan:
-                continue
-            info = plan[rig_name]
-            if item["name"] != info["assembly_name"]:
-                logger.info(
-                    "Pre-upgrade normalisation: renaming rig %s '%s' → '%s'",
-                    section.rstrip("s"),
-                    rig_name,
-                    info["assembly_name"],
-                )
-                item["name"] = info["assembly_name"]
-            camera = item.get("camera")
-            if camera and camera.get("name") != info["camera_name"]:
-                logger.info(
-                    "Pre-upgrade normalisation: renaming inner camera '%s' → '%s'",
-                    camera["name"],
-                    info["camera_name"],
-                )
-                camera["name"] = info["camera_name"]
-
-    # Update session camera_names to use the new assembly names.
+    _apply_rig_camera_renames(data["rig"], plan)
     if session:
-        for stream in data["session"].get("data_streams", []):
-            new_names = []
-            for cam_name in stream.get("camera_names", []):
-                base = _extract_base_name(cam_name).lower()
-                if base in base_lower_to_info:
-                    new_name = base_lower_to_info[base]["assembly_name"]
-                    if cam_name != new_name:
-                        logger.info(
-                            "Pre-upgrade normalisation: renaming session "
-                            "camera_name '%s' → '%s'",
-                            cam_name,
-                            new_name,
-                        )
-                    new_names.append(new_name)
-                else:
-                    new_names.append(cam_name)
-            stream["camera_names"] = new_names
+        _apply_session_camera_renames(data["session"], base_lower_to_info)
 
     return data
 
