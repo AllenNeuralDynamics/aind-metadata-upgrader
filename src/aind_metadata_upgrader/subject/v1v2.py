@@ -1,8 +1,9 @@
 """<=v1.4 to v2.0 data description upgrade functions"""
 
+from datetime import datetime
 from typing import Optional
 
-from aind_data_schema.components.subjects import BreedingInfo, MouseSubject
+from aind_data_schema.components.subjects import BreedingInfo, MouseSubject, NonHumanPrimateSubject
 from aind_data_schema_models.organizations import Organization
 from aind_data_schema_models.species import Species, Strain
 
@@ -71,11 +72,11 @@ class SubjectUpgraderV1V2(CoreUpgrader):
         if species and isinstance(species, str) and species == "Mus musculus":
             # Convert string species name to Species model
             species = Species.HOUSE_MOUSE.model_dump()
-        if species and isinstance(species, dict) and species["name"] == "Mus musculus":
-            # Replace with the new Species model
-            species = Species.HOUSE_MOUSE.model_dump()
-        else:
-            raise ValueError("Species must be specified")
+        if species and isinstance(species, dict):
+            try:
+                species = Species.from_name(species["name"]).model_dump()
+            except ValueError:
+                raise ValueError(f"Unsupported species: {species['name']}")
 
         if isinstance(species["registry"], dict):
             species = upgrade_registry(species)
@@ -150,7 +151,7 @@ class SubjectUpgraderV1V2(CoreUpgrader):
 
         # Package MouseSubject
         if species["name"] == "Mus musculus":
-            mouse_subject = MouseSubject(
+            subject_details = MouseSubject(
                 sex=sex,
                 date_of_birth=date_of_birth,
                 strain=background_strain,
@@ -163,8 +164,18 @@ class SubjectUpgraderV1V2(CoreUpgrader):
                 source=source,
                 restrictions=restrictions,
                 rrid=rrid,
-            )
-            mouse_subject = mouse_subject.model_dump()
+            ).model_dump()
+        elif species["name"] == "Macaca mulatta":
+            year = datetime.fromisoformat(date_of_birth).year
+
+            subject_details = NonHumanPrimateSubject(
+                sex=sex,
+                date_of_birth=date_of_birth,
+                year_of_birth=year,
+                species=species,
+                mating_status="Unknown",
+                source=source,
+            ).model_dump()
         else:
             raise ValueError(f"Species {species['name']} is not supported for V1->V2 upgrade")
 
@@ -172,6 +183,6 @@ class SubjectUpgraderV1V2(CoreUpgrader):
             "object_type": "Subject",
             "subject_id": subject_id,
             "notes": notes,
-            "subject_details": mouse_subject,
+            "subject_details": subject_details,
             "schema_version": schema_version,
         }

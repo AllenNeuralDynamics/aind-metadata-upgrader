@@ -49,7 +49,8 @@ class DataDescriptionV1V2(CoreUpgrader):
             if funder == "AIND":
                 return Organization.AI
             else:
-                return Organization.from_name(funder)
+                return Organization.from_name(funder) or Organization.from_abbreviation(funder)
+
         elif isinstance(funder, dict):
             # Replace AIND with AI if you see it
             if funder.get("name") == "Allen Institute for Neural Dynamics":

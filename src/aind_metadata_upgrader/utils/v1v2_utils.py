@@ -58,6 +58,7 @@ MODALITY_MAP = {
 MODALITY_ABBREV_MAP = {
     "ophys": Modality.POPHYS,
     "slap": Modality.SLAP2,
+    "HSFP": Modality.FIB,
 }
 
 counts = {}

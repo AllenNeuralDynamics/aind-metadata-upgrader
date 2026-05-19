@@ -54,13 +54,16 @@ def upgrade_viral_material(data: dict) -> dict:
     return ViralMaterial(**data).model_dump()
 
 
-def upgrade_injection_materials(data: list) -> list:
-    """Upgrade injection materials from V1 to V2"""
-    # V1 uses a list of strings, V2 uses a list of BrainInjectionMaterial objects
-    materials = []
-    for material in data:
+def upgrade_injection_materials(data: list | dict) -> list:
+    """Upgrade injection materials from V1 to V2. Accepts a dict or list."""
+    def _upgrade_single_material(material: dict) -> dict:
+        """Upgrade a single material dict based on its material_type field"""
+        # Always repair/upgrade the 'source' registry if present
+        if "source" in material and material["source"]:
+            if isinstance(material["source"], dict):
+                material["source"] = upgrade_registry(material["source"])
         if material["material_type"] == "Virus":
-            materials.append(upgrade_viral_material(material))
+            return upgrade_viral_material(material)
         elif material["material_type"] == "Reagent":
             reagent = material.copy()
             remove(reagent, "material_type")
@@ -68,12 +71,21 @@ def upgrade_injection_materials(data: list) -> list:
                 reagent["source"] = Organization.UNKNOWN
             elif isinstance(reagent["source"], str):
                 reagent["source"] = repair_organization(reagent["source"])
-            materials.append(NonViralMaterial(**reagent).model_dump())
+
+            if isinstance(reagent["source"], dict):
+                reagent["source"] = upgrade_registry(reagent["source"])
+            return NonViralMaterial(**reagent).model_dump()
         else:
             raise ValueError(
-                f"Unsupported injection material type: {material['material_type']}. " "Expected 'Virus' or 'Reagent'."
+                f"Unsupported injection material type: {material['material_type']}. Expected 'Virus' or 'Reagent'."
             )
-    return materials
+
+    if isinstance(data, dict):
+        return [_upgrade_single_material(data)]
+    elif isinstance(data, list):
+        return [_upgrade_single_material(material) for material in data]
+    else:
+        raise TypeError(f"Expected dict or list, got {type(data)}")
 
 
 def build_volume_injection_dynamics(data: dict) -> dict:
