@@ -480,6 +480,28 @@ class SessionV1V2(CoreUpgrader):
                 wavelengths["red"] = center
         return wavelengths
 
+    def _build_coupled_fov_partner_map(self, fovs: List[Dict]) -> Dict[int, int]:
+        """Build a mapping from each FOV index to its coupled partner's index.
+
+        In V1, planes sharing the same coupled_fov_index are paired together.
+        In V2, each plane's coupled_plane_index must point to the OTHER plane in the pair.
+        """
+        coupled_partner_map = {}  # fov_index -> partner_fov_index
+        groups: Dict[int, List[int]] = {}
+
+        for fov in fovs:
+            group_id = fov.get("coupled_fov_index")
+            if group_id is not None:
+                groups.setdefault(group_id, []).append(fov.get("index", 0))
+
+        for group_members in groups.values():
+            if len(group_members) == 2:
+                a, b = group_members
+                coupled_partner_map[a] = b
+                coupled_partner_map[b] = a
+
+        return coupled_partner_map
+
     def _create_ophys_fov_components(self, stream: Dict, light_sources: List, detectors: List) -> tuple:
         """Create channels and PlanarImage objects from ophys_fovs"""
         channels = []
@@ -523,21 +545,8 @@ class SessionV1V2(CoreUpgrader):
             ).model_dump()
             channels.append(channel)
 
-        # Build a mapping from each fov's index to its partner's index.
-        # In V1, planes sharing the same coupled_fov_index are paired together.
-        # In V2, each plane's coupled_plane_index must point to the OTHER plane in the pair.
         fovs = stream.get("ophys_fovs", [])
-        coupled_partner_map = {}  # fov_index -> partner_fov_index
-        groups: Dict[int, List[int]] = {}
-        for fov in fovs:
-            group_id = fov.get("coupled_fov_index")
-            if group_id is not None:
-                groups.setdefault(group_id, []).append(fov.get("index", 0))
-        for group_members in groups.values():
-            if len(group_members) == 2:
-                a, b = group_members
-                coupled_partner_map[a] = b
-                coupled_partner_map[b] = a
+        coupled_partner_map = self._build_coupled_fov_partner_map(fovs)
 
         for fov in fovs:
             fov_index = fov.get("index", 0)
