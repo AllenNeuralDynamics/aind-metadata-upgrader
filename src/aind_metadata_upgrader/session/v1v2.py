@@ -62,23 +62,12 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_targeted_structure,
     upgrade_v1_modalities,
     validate_angle_unit,
+    upgrade_experimenter_names,
 )
 
 
 class SessionV1V2(CoreUpgrader):
     """Upgrade session from v1.4 to v2.0 (acquisition)"""
-
-    def _upgrade_experimenter_names(self, experimenter_names: List[str]) -> List[str]:
-        """Convert experimenter full names to Person objects"""
-        experimenters = []
-
-        if isinstance(experimenter_names, str):
-            experimenter_names = [experimenter_names]
-
-        for name in experimenter_names:
-            if name and name.strip():
-                experimenters.append(name.strip())
-        return experimenters
 
     def _upgrade_maintenance(self, maintenance: List[Dict]) -> List[Dict]:
         """Upgrade maintenance objects"""
@@ -990,7 +979,7 @@ class SessionV1V2(CoreUpgrader):
                 self._rig_filters = rig.get("filters", []) or []
 
         # Upgrade experimenter names to Person objects
-        experimenters = self._upgrade_experimenter_names(experimenter_full_name)
+        experimenters = upgrade_experimenter_names(experimenter_full_name)
 
         # Extract the timezone from session_start_time to use as fallback for naive sub-timestamps.
         # This prevents Pydantic's _coerce_naive_datetime from attaching the server's local

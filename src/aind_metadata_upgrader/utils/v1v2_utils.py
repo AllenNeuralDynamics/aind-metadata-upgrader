@@ -88,6 +88,24 @@ def ensure_pacific_timezone(dt: Optional[str]) -> Optional[datetime]:
     return ensure_timezone(dt, fallback_tz=None)
 
 
+def upgrade_experimenter_names(experimenter_names) -> list:
+    """Convert experimenter names to a list, handling both string and list inputs.
+    
+    Filters out None and empty values.
+    """
+    if not experimenter_names:
+        return []
+    
+    if isinstance(experimenter_names, str):
+        experimenter_names = [experimenter_names]
+
+    experimenters = []
+    for name in experimenter_names:
+        if name and isinstance(name, str) and name.strip():
+            experimenters.append(name.strip())
+    return experimenters
+
+
 def validate_frequency_unit(frequency_unit: str) -> str:
     """Validate a frequency unit and repair it if needed"""
     if frequency_unit in [member.value for member in FrequencyUnit]:
