@@ -21,6 +21,7 @@ from aind_data_schema_models.units import AngleUnit
 
 from aind_metadata_upgrader.utils.v1v2_utils import (
     remove,
+    repair_organization,
     upgrade_registry,
     upgrade_targeted_structure,
 )
@@ -53,28 +54,33 @@ def upgrade_viral_material(data: dict) -> dict:
     return ViralMaterial(**data).model_dump()
 
 
+def _upgrade_single_material(material: dict) -> dict:
+    """Upgrade a single material dict based on its material_type field"""
+    # Always repair/upgrade the 'source' registry if present
+    if "source" in material and material["source"]:
+        if isinstance(material["source"], dict):
+            material["source"] = upgrade_registry(material["source"])
+    if material["material_type"] == "Virus":
+        return upgrade_viral_material(material)
+    elif material["material_type"] == "Reagent":
+        reagent = material.copy()
+        remove(reagent, "material_type")
+        if "source" not in reagent or not reagent["source"]:
+            reagent["source"] = Organization.UNKNOWN
+        elif isinstance(reagent["source"], str):
+            reagent["source"] = repair_organization(reagent["source"])
+
+        if isinstance(reagent["source"], dict):
+            reagent["source"] = upgrade_registry(reagent["source"])
+        return NonViralMaterial(**reagent).model_dump()
+    else:
+        raise ValueError(
+            f"Unsupported injection material type: {material['material_type']}. Expected 'Virus' or 'Reagent'."
+        )
+
+
 def upgrade_injection_materials(data: list | dict) -> list:
     """Upgrade injection materials from V1 to V2. Accepts a dict or list."""
-    def _upgrade_single_material(material: dict) -> dict:
-        """Upgrade a single material dict based on its material_type field"""
-        # Always repair/upgrade the 'source' registry if present
-        if "source" in material and material["source"]:
-            if isinstance(material["source"], dict):
-                material["source"] = upgrade_registry(material["source"])
-        if material["material_type"] == "Virus":
-            return upgrade_viral_material(material)
-        elif material["material_type"] == "Reagent":
-            reagent = material.copy()
-            remove(reagent, "material_type")
-            if "source" not in reagent or not reagent["source"]:
-                reagent["source"] = Organization.UNKNOWN
-            elif isinstance(reagent["source"], dict):
-                reagent["source"] = upgrade_registry(reagent["source"])
-            return NonViralMaterial(**reagent).model_dump()
-        else:
-            raise ValueError(
-                f"Unsupported injection material type: {material['material_type']}. Expected 'Virus' or 'Reagent'."
-            )
 
     if isinstance(data, dict):
         return [_upgrade_single_material(data)]
