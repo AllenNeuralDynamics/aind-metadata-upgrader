@@ -21,6 +21,7 @@ from aind_data_schema_models.units import AngleUnit
 
 from aind_metadata_upgrader.utils.v1v2_utils import (
     remove,
+    repair_organization,
     upgrade_registry,
     upgrade_targeted_structure,
 )
@@ -65,6 +66,8 @@ def upgrade_injection_materials(data: list) -> list:
             remove(reagent, "material_type")
             if "source" not in reagent or not reagent["source"]:
                 reagent["source"] = Organization.UNKNOWN
+            elif isinstance(reagent["source"], str):
+                reagent["source"] = repair_organization(reagent["source"])
             materials.append(NonViralMaterial(**reagent).model_dump())
         else:
             raise ValueError(

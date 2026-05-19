@@ -200,6 +200,7 @@ def add_name(data: dict, type: str) -> dict:
 
 ORG_MAP = {
     "LiveCanvas Technologies": Organization.LIFECANVAS,
+    "Invitrogen, ThermoFisher": Organization.THERMO_FISHER_SCIENTIFIC,
 }
 
 
