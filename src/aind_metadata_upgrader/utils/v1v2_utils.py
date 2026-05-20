@@ -920,9 +920,7 @@ IGNORED_CALIBRATIONS = [
     "sound_volume = log(1 - ((dB - c) / a)) / b;dB is sound pressure",
 ]
 
-IGNORED_NOTES = [
-    "placeholder"
-]
+IGNORED_NOTES = ["placeholder"]
 
 
 def upgrade_calibration(data: dict) -> Optional[dict]:
@@ -972,9 +970,9 @@ CCF_MAPPING = {
     "V1 center": CCFv3.VISP,
     "GenFacCran": CCFv3.GVIIN,
     "385": CCFv3.VISP,
-    "AntComMid": CCFv3.ACO,          # anterior commissure, olfactory limb / midline guess
-    "CCant": CCFv3.CC,               # corpus callosum anterior
-    "CCpst": CCFv3.CC,               # corpus callosum posterior
+    "AntComMid": CCFv3.ACO,  # anterior commissure, olfactory limb / midline guess
+    "CCant": CCFv3.CC,  # corpus callosum anterior
+    "CCpst": CCFv3.CC,  # corpus callosum posterior
     "Ccant": CCFv3.CC,
     "Cortex": CCFv3.CTX,
     "DRN": CCFv3.DR,
@@ -997,7 +995,7 @@ CCF_MAPPING = {
     "Striatum and GPe (probe A) MRN (probe B)": CCFv3.STR,
     "Striatum, GPe": CCFv3.STR,
     "Thalamus": CCFv3.TH,
-    "VM/VAL": CCFv3.VM,             # could be VM + VAL composite
+    "VM/VAL": CCFv3.VM,  # could be VM + VAL composite
     "VP, NAc": CCFv3.VP,
     "Ventral Striatum": CCFv3.ACB,
     "Ventral Striatum/ NAc": CCFv3.ACB,
