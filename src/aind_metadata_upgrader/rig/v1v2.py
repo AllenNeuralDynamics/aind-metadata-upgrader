@@ -487,9 +487,7 @@ class RigUpgraderV1V2(CoreUpgrader):
         coordinate_system = self._get_coordinate_system(data)
         notes = data.get("notes", "")
 
-        calibrations = [
-            upgrade_calibration(cal) for cal in data.get("calibrations", [])
-        ]
+        calibrations = [upgrade_calibration(cal) for cal in data.get("calibrations", [])]
         # remove None values from calibrations list
         calibrations = [cal for cal in calibrations if cal is not None]
 
