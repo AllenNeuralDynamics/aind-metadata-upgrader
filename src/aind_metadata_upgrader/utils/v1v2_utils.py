@@ -917,6 +917,11 @@ def _upgrade_generic_calibration(data: dict) -> Optional[dict]:
 
 IGNORED_CALIBRATIONS = [
     "solenoid open time (ms) = slope * expected water volume (mL) + intercept",
+    "sound_volume = log(1 - ((dB - c) / a)) / b;dB is sound pressure",
+]
+
+IGNORED_NOTES = [
+    "placeholder"
 ]
 
 
@@ -925,6 +930,10 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
 
     if any(ignored in data.get("description", "") for ignored in IGNORED_CALIBRATIONS):
         # Skip ignored calibrations
+        return None
+
+    if any(ignored in data.get("notes", "") for ignored in IGNORED_NOTES):
+        # Skip calibrations with ignored notes
         return None
 
     # Try volume calibrations first

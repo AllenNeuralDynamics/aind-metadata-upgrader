@@ -474,26 +474,6 @@ class RigUpgraderV1V2(CoreUpgrader):
         """Helper method to upgrade devices that don't return connections."""
         return [upgrade_func(device) for device in devices]
 
-    def _upgrade_calibration_with_placeholder_fix(
-        self, calibration: dict, metadata: Optional[dict] = None
-    ) -> Optional[dict]:
-        """Upgrade calibrations
-
-        Strip calibrations that have 'placeholder' in the notes
-        """
-        # First, upgrade the calibration normally
-        upgraded_cal = upgrade_calibration(calibration)
-
-        if upgraded_cal is None:
-            return None
-
-        # Check if the notes contain 'placeholder'
-        original_notes = calibration.get("notes", "")
-        if original_notes and "placeholder" in original_notes.lower():
-            return None
-
-        return upgraded_cal
-
     def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the rig core file data to a v2.0 instrument"""
 
@@ -508,7 +488,7 @@ class RigUpgraderV1V2(CoreUpgrader):
         notes = data.get("notes", "")
 
         calibrations = [
-            self._upgrade_calibration_with_placeholder_fix(cal, metadata) for cal in data.get("calibrations", [])
+            upgrade_calibration(cal) for cal in data.get("calibrations", [])
         ]
         # remove None values from calibrations list
         calibrations = [cal for cal in calibrations if cal is not None]
