@@ -89,6 +89,24 @@ def ensure_pacific_timezone(dt: Optional[str]) -> Optional[datetime]:
     return ensure_timezone(dt, fallback_tz=None)
 
 
+def upgrade_experimenter_names(experimenter_names) -> list:
+    """Convert experimenter names to a list, handling both string and list inputs.
+
+    Filters out None and empty values.
+    """
+    if not experimenter_names:
+        return []
+
+    if isinstance(experimenter_names, str):
+        experimenter_names = [experimenter_names]
+
+    experimenters = []
+    for name in experimenter_names:
+        if name and isinstance(name, str) and name.strip():
+            experimenters.append(name.strip())
+    return experimenters
+
+
 def validate_frequency_unit(frequency_unit: str) -> str:
     """Validate a frequency unit and repair it if needed"""
     if frequency_unit in [member.value for member in FrequencyUnit]:
@@ -965,9 +983,9 @@ CCF_MAPPING = {
     "V1 center": CCFv3.VISP,
     "GenFacCran": CCFv3.GVIIN,
     "385": CCFv3.VISP,
-    "AntComMid": CCFv3.ACO,          # anterior commissure, olfactory limb / midline guess
-    "CCant": CCFv3.CC,               # corpus callosum anterior
-    "CCpst": CCFv3.CC,               # corpus callosum posterior
+    "AntComMid": CCFv3.ACO,  # anterior commissure, olfactory limb / midline guess
+    "CCant": CCFv3.CC,  # corpus callosum anterior
+    "CCpst": CCFv3.CC,  # corpus callosum posterior
     "Ccant": CCFv3.CC,
     "Cortex": CCFv3.CTX,
     "DRN": CCFv3.DR,
@@ -990,7 +1008,7 @@ CCF_MAPPING = {
     "Striatum and GPe (probe A) MRN (probe B)": CCFv3.STR,
     "Striatum, GPe": CCFv3.STR,
     "Thalamus": CCFv3.TH,
-    "VM/VAL": CCFv3.VM,             # could be VM + VAL composite
+    "VM/VAL": CCFv3.VM,  # could be VM + VAL composite
     "VP, NAc": CCFv3.VP,
     "Ventral Striatum": CCFv3.ACB,
     "Ventral Striatum/ NAc": CCFv3.ACB,
