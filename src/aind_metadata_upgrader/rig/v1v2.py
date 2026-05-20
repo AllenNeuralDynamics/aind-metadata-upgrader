@@ -475,11 +475,9 @@ class RigUpgraderV1V2(CoreUpgrader):
         return [upgrade_func(device) for device in devices]
 
     def _upgrade_calibration_with_placeholder_fix(self, calibration: dict, metadata: Optional[dict] = None) -> Optional[dict]:
-        """Upgrade calibration and fix placeholder dates.
+        """Upgrade calibrations
         
-        If the calibration notes contain 'placeholder', replace the calibration date
-        with the acquisition start time (at midnight) from metadata, or the rig's
-        modification_date if acquisition is not available.
+        Strip calibrations that have 'placeholder' in the notes
         """
         # First, upgrade the calibration normally
         upgraded_cal = upgrade_calibration(calibration)
@@ -490,28 +488,8 @@ class RigUpgraderV1V2(CoreUpgrader):
         # Check if the notes contain 'placeholder'
         original_notes = calibration.get("notes", "")
         if original_notes and "placeholder" in original_notes.lower():
-            target_date = None
-            
-            # Try to get session start time from metadata
-            if metadata and "session" in metadata and metadata["session"]:
-                session_data = metadata["session"]
-                if isinstance(session_data, dict) and "session_start_time" in session_data:
-                    session_start_time_str = session_data["session_start_time"]
-                    target_date = datetime.fromisoformat(session_start_time_str.replace('Z', '+00:00'))
-            
-            # Only replace the date if it's after the target date (i.e. it's actually a bad future date)
-            if target_date:
-                cal_date_str = upgraded_cal.get("calibration_date")
-                if cal_date_str:
-                    cal_date = datetime.fromisoformat(str(cal_date_str).replace('Z', '+00:00'))
-                    # Ensure both are offset-aware for comparison
-                    if cal_date.tzinfo is None:
-                        cal_date = cal_date.replace(tzinfo=timezone.utc)
-                    if cal_date > target_date:
-                        midnight = target_date.replace(hour=0, minute=0, second=0, microsecond=0)
-                        upgraded_cal["calibration_date"] = midnight.isoformat()
-                        upgraded_cal["notes"] = "(v1v2 upgrade) Calibration date placeholder modified to match acquisition"
-        
+            return None
+
         return upgraded_cal
 
     def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
