@@ -16,6 +16,7 @@ from packaging.version import Version
 from pydantic import ValidationError
 
 from aind_metadata_upgrader.upgrade_mapping import MAPPING
+from aind_metadata_upgrader.utils.normalizers import pre_upgrade_normalize
 from aind_metadata_upgrader.utils.v1v2_metadata_utils import repair_metadata
 
 CORE_FILES = [
@@ -72,6 +73,10 @@ class Upgrade:
         self.data = record
         self.raw_data = copy.deepcopy(record)  # Keep a copy of the original data
         self.skip_metadata_validation = skip_metadata_validation
+
+        # Apply pre-upgrade normalisations (e.g. align camera names between
+        # session and rig before the individual upgraders run).
+        self.data = pre_upgrade_normalize(self.data)
 
         # Figure out what core files we have, and what outputs we expected
         expected_core_files = self._determine_expected_core_files()
