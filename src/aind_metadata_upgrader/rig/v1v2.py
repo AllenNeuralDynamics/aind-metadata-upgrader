@@ -34,6 +34,7 @@ from aind_metadata_upgrader.rig.v1v2_devices import (
     upgrade_stimulus_device,
 )
 from aind_metadata_upgrader.utils.v1v2_utils import (
+    remove,
     upgrade_calibration,
     upgrade_enclosure,
     upgrade_filter,
@@ -363,7 +364,7 @@ class RigUpgraderV1V2(CoreUpgrader):
         daqs = self._none_to_list(data.get("daqs", []))
         upgraded_daqs, daq_connections = self._upgrade_devices_with_connections(daqs, upgrade_daq_devices)
         all_connections.extend(daq_connections)
-        del data["daqs"]
+        remove(data, "daqs")
 
         # Create components list and validate connections
         components = self._create_components_list(

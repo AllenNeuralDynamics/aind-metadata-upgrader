@@ -191,6 +191,7 @@ CRANIO_TYPES = {
     "5 mm": CraniotomyType.CIRCLE,
     "3 mm": CraniotomyType.CIRCLE,
     "Visual cortex 5 mm": CraniotomyType.CIRCLE,
+    "Visual Cortex": CraniotomyType.CIRCLE,
 }
 
 
@@ -238,6 +239,8 @@ def upgrade_craniotomy(data: dict) -> tuple[dict, list]:
                 upgraded_data["size"] = 5
             elif "3" in upgraded_data["craniotomy_type"]:
                 upgraded_data["size"] = 3
+            elif upgraded_data["craniotomy_type"] == "Visual Cortex":
+                upgraded_data["size"] = 5  # Default to 5 mm
             upgraded_data["craniotomy_type"] = CRANIO_TYPES[upgraded_data["craniotomy_type"]]
             upgraded_data["size_unit"] = SizeUnit.MM
         else:
@@ -445,11 +448,12 @@ def upgrade_anaesthetic(data: dict) -> dict:
     upgraded_data["anaesthetic_type"] = upgraded_data.get("type", "Unknown")
     remove(upgraded_data, "type")
 
-    # If level is 15, divide by 10
     if "level" in upgraded_data and upgraded_data["level"] is not None:
         level = float(upgraded_data["level"])
         if level == 15:
-            level /= 10
+            level = 1.5
+        elif level == 105:
+            level = 1.5
         upgraded_data["level"] = level
 
     if "duration" not in upgraded_data or upgraded_data["duration"] is None:

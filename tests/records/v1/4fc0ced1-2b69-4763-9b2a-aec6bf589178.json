@@ -1,0 +1,3538 @@
+{
+    "_id": "4fc0ced1-2b69-4763-9b2a-aec6bf589178",
+    "acquisition": {
+        "active_objectives": [
+            "LCT 3.6x"
+        ],
+        "axes": [
+            {
+                "dimension": 0,
+                "direction": "Superior_to_inferior",
+                "name": "Z",
+                "unit": "micrometer"
+            },
+            {
+                "dimension": 1,
+                "direction": "Posterior_to_anterior",
+                "name": "Y",
+                "unit": "micrometer"
+            },
+            {
+                "dimension": 2,
+                "direction": "Right_to_left",
+                "name": "X",
+                "unit": "micrometer"
+            }
+        ],
+        "calibrations": [],
+        "chamber_immersion": {
+            "medium": "other",
+            "refractive_index": "1.517"
+        },
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/acquisition.py",
+        "experimenter_full_name": [
+            "Mike Taormina"
+        ],
+        "external_storage_directory": "",
+        "instrument_id": "440_SmartSPIM2_20250114",
+        "local_storage_directory": "D:/SmartSPIM_Data",
+        "maintenance": [],
+        "notes": "Chamber immersion: oil - Sample immersion: easy index",
+        "processing_steps": [],
+        "protocol_id": [],
+        "sample_immersion": {
+            "medium": "other",
+            "refractive_index": "1.51165"
+        },
+        "schema_version": "1.0.0",
+        "session_end_time": "2025-04-03T21:41:55-07:00",
+        "session_start_time": "2025-04-03T17:50:21-07:00",
+        "session_type": null,
+        "software": [],
+        "specimen_id": "",
+        "subject_id": "M2501",
+        "tiles": [
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 34.34,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "45121.0",
+                            "68530.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/451210/451210_685300/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 85,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "45121.0",
+                            "68530.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/451210/451210_685300/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 34.34,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "48162.0",
+                            "68530.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/481620/481620_685300/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 85,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "48162.0",
+                            "68530.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/481620/481620_685300/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 25,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "51203.0",
+                            "68530.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/512030/512030_685300/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 75,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "51203.0",
+                            "68530.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/512030/512030_685300/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 25,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "54244.0",
+                            "68530.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/542440/542440_685300/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 75,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "54244.0",
+                            "68530.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/542440/542440_685300/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 34.34,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "45121.0",
+                            "70741.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/451210/451210_707410/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 85,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "45121.0",
+                            "70741.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/451210/451210_707410/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 34.34,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "48162.0",
+                            "70741.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/481620/481620_707410/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 85,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "48162.0",
+                            "70741.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/481620/481620_707410/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 25,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "51203.0",
+                            "70741.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/512030/512030_707410/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 75,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "51203.0",
+                            "70741.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/512030/512030_707410/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 25,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "54244.0",
+                            "70741.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/542440/542440_707410/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 75,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "54244.0",
+                            "70741.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/542440/542440_707410/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 34.34,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "45121.0",
+                            "72952.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/451210/451210_729520/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 85,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "45121.0",
+                            "72952.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/451210/451210_729520/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 34.34,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "48162.0",
+                            "72952.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/481620/481620_729520/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 85,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "48162.0",
+                            "72952.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/481620/481620_729520/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 25,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "51203.0",
+                            "72952.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/512030/512030_729520/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 75,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "51203.0",
+                            "72952.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/512030/512030_729520/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 25,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "54244.0",
+                            "72952.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/542440/542440_729520/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 75,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "54244.0",
+                            "72952.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/542440/542440_729520/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 34.34,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "45121.0",
+                            "75163.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/451210/451210_751630/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 85,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "45121.0",
+                            "75163.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/451210/451210_751630/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 34.34,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "48162.0",
+                            "75163.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/481620/481620_751630/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 85,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "48162.0",
+                            "75163.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/481620/481620_751630/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 25,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "51203.0",
+                            "75163.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/512030/512030_751630/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 75,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "51203.0",
+                            "75163.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/512030/512030_751630/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 25,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "54244.0",
+                            "75163.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/542440/542440_751630/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 75,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "54244.0",
+                            "75163.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/542440/542440_751630/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 34.34,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "45121.0",
+                            "77374.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/451210/451210_773740/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 85,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "45121.0",
+                            "77374.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/451210/451210_773740/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 34.34,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "48162.0",
+                            "77374.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/481620/481620_773740/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 85,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "48162.0",
+                            "77374.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/481620/481620_773740/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 25,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "51203.0",
+                            "77374.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/512030/512030_773740/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 75,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "51203.0",
+                            "77374.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/512030/512030_773740/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 25,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "54244.0",
+                            "77374.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/542440/542440_773740/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 75,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "54244.0",
+                            "77374.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/542440/542440_773740/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 34.34,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "45121.0",
+                            "79585.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/451210/451210_795850/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 85,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "45121.0",
+                            "79585.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/451210/451210_795850/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 34.34,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "48162.0",
+                            "79585.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/481620/481620_795850/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 85,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "48162.0",
+                            "79585.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/481620/481620_795850/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 25,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "51203.0",
+                            "79585.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/512030/512030_795850/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 75,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "51203.0",
+                            "79585.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/512030/512030_795850/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 25,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "54244.0",
+                            "79585.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/542440/542440_795850/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 75,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "54244.0",
+                            "79585.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/542440/542440_795850/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 34.34,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "45121.0",
+                            "81796.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/451210/451210_817960/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 85,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "45121.0",
+                            "81796.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/451210/451210_817960/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 34.34,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "48162.0",
+                            "81796.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/481620/481620_817960/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 85,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "48162.0",
+                            "81796.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/481620/481620_817960/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 25,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "51203.0",
+                            "81796.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/512030/512030_817960/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 75,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "51203.0",
+                            "81796.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/512030/512030_817960/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 25,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "54244.0",
+                            "81796.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/542440/542440_817960/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 75,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "54244.0",
+                            "81796.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/542440/542440_817960/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 34.34,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "45121.0",
+                            "84007.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/451210/451210_840070/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 85,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "45121.0",
+                            "84007.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/451210/451210_840070/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 34.34,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "48162.0",
+                            "84007.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/481620/481620_840070/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 85,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "48162.0",
+                            "84007.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/481620/481620_840070/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 25,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "51203.0",
+                            "84007.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/512030/512030_840070/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 75,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "51203.0",
+                            "84007.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/512030/512030_840070/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 25,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 1,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "54244.0",
+                            "84007.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_561_Em_600/542440/542440_840070/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            },
+            {
+                "acquisition_end_time": null,
+                "acquisition_start_time": null,
+                "channel": {
+                    "additional_device_names": [],
+                    "channel_name": "639",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 75,
+                    "excitation_power_unit": "percent",
+                    "excitation_wavelength": 639,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [
+                        ""
+                    ],
+                    "filter_wheel_index": 2,
+                    "light_source_name": "639"
+                },
+                "coordinate_transformations": [
+                    {
+                        "translation": [
+                            "54244.0",
+                            "84007.0",
+                            "158.9"
+                        ],
+                        "type": "translation"
+                    },
+                    {
+                        "scale": [
+                            "1.8",
+                            "1.8",
+                            "2.0"
+                        ],
+                        "type": "scale"
+                    }
+                ],
+                "file_name": "Ex_639_Em_680/542440/542440_840070/",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": "\nLaser power is in percentage of total, it needs calibration"
+            }
+        ]
+    },
+    "created": "2025-04-18T23:30:49.022738",
+    "data_description": {
+        "creation_time": "2025-04-03T17:50:21-07:00",
+        "data_level": "raw",
+        "data_summary": null,
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "funding_source": [
+            {
+                "fundee": null,
+                "funder": {
+                    "abbreviation": "AI",
+                    "name": "Allen Institute",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null
+            }
+        ],
+        "group": null,
+        "institution": {
+            "abbreviation": "AIBS",
+            "name": "Allen Institute for Brain Science",
+            "registry": {
+                "abbreviation": "ROR",
+                "name": "Research Organization Registry"
+            },
+            "registry_identifier": "00dcv1019"
+        },
+        "investigators": [
+            {
+                "abbreviation": null,
+                "name": "Bosiljka Tasic",
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "abbreviation": null,
+                "name": "Deepanjali Dwivedi",
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "abbreviation": null,
+                "name": "Jonathan Ting",
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "abbreviation": null,
+                "name": "Marcus Hooper",
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "abbreviation": null,
+                "name": "Shenqin Yao",
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "abbreviation": null,
+                "name": "Sujatha Narayan",
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "abbreviation": null,
+                "name": "Yoav Ben-Simon",
+                "registry": null,
+                "registry_identifier": null
+            }
+        ],
+        "label": null,
+        "license": "CC-BY-4.0",
+        "modality": [
+            {
+                "abbreviation": "SPIM",
+                "name": "Selective plane illumination microscopy"
+            }
+        ],
+        "name": "SmartSPIM_M2501_2025-04-03_17-50-21",
+        "platform": {
+            "abbreviation": "SmartSPIM",
+            "name": "SmartSPIM platform"
+        },
+        "project_name": "CTY Genetic Tools",
+        "related_data": [],
+        "restrictions": null,
+        "schema_version": "1.0.3",
+        "subject_id": "M2501"
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": {
+        "Code Ocean": [
+            "b65e3b60-840d-4235-b8ce-d3d10375eff4"
+        ]
+    },
+    "instrument": {
+        "additional_devices": [
+            {
+                "additional_settings": {},
+                "device_type": "Additional imaging device",
+                "imaging_device_type": "Other",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Optotune",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "EL-16-40-TC",
+                "name": "tunable lens",
+                "notes": "Electrically tunable lens",
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": "Unknown-1"
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Additional imaging device",
+                "imaging_device_type": "Other",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Optotune",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "EL-16-40-TC",
+                "name": "tunable lens",
+                "notes": "Electrically tunable lens",
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": "Unknown-2"
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Additional imaging device",
+                "imaging_device_type": "Sample Chamber",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "LifeCanvas",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "Large-uncoated-glass",
+                "name": "Sample Chamber",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": "Unknown-1"
+            }
+        ],
+        "calibration_data": null,
+        "calibration_date": null,
+        "com_ports": [
+            {
+                "com_port": "COM3",
+                "hardware_name": "Laser Launch"
+            },
+            {
+                "com_port": "COM5",
+                "hardware_name": "Applied Scientific Instrumentation Tiger"
+            },
+            {
+                "com_port": "COM4",
+                "hardware_name": "MightyZap"
+            }
+        ],
+        "daqs": [],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/instrument.py",
+        "detectors": [
+            {
+                "additional_settings": {},
+                "bin_height": null,
+                "bin_mode": "None",
+                "bin_unit": "pixel",
+                "bin_width": null,
+                "bit_depth": null,
+                "chroma": null,
+                "computer_name": null,
+                "cooling": "Water",
+                "crop_height": null,
+                "crop_offset_x": null,
+                "crop_offset_y": null,
+                "crop_unit": "pixel",
+                "crop_width": null,
+                "data_interface": "USB",
+                "detector_type": "Camera",
+                "device_type": "Detector",
+                "driver": null,
+                "driver_version": null,
+                "frame_rate": null,
+                "frame_rate_unit": "hertz",
+                "gain": null,
+                "immersion": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Hamamatsu",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "03natb733"
+                },
+                "model": "C14440-20UP",
+                "name": "Camera",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "recording_software": null,
+                "sensor_format": null,
+                "sensor_format_unit": null,
+                "sensor_height": null,
+                "sensor_width": null,
+                "serial_number": "001107",
+                "size_unit": "pixel"
+            }
+        ],
+        "enclosure": null,
+        "fluorescence_filters": [
+            {
+                "additional_settings": {},
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "description": null,
+                "device_type": "Filter",
+                "diameter": "25",
+                "filter_type": "Band pass",
+                "filter_wheel_index": 0,
+                "height": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Semrock",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "FF03-525/50-32",
+                "name": "Em_525",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": "Unknown-1",
+                "size_unit": "millimeter",
+                "thickness": "2.0",
+                "thickness_unit": "millimeter",
+                "wavelength_unit": "nanometer",
+                "width": null
+            },
+            {
+                "additional_settings": {},
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "description": null,
+                "device_type": "Filter",
+                "diameter": "25",
+                "filter_type": "Band pass",
+                "filter_wheel_index": 1,
+                "height": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Semrock",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "FF01-600/52-32",
+                "name": "Em_600",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": "Unknown-2",
+                "size_unit": "millimeter",
+                "thickness": "2.0",
+                "thickness_unit": "millimeter",
+                "wavelength_unit": "nanometer",
+                "width": null
+            },
+            {
+                "additional_settings": {},
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "description": null,
+                "device_type": "Filter",
+                "diameter": "25",
+                "filter_type": "Band pass",
+                "filter_wheel_index": 2,
+                "height": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Chroma",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "FF01-680/42-32",
+                "name": "Em_680",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": "Unknown-3",
+                "size_unit": "millimeter",
+                "thickness": "2.0",
+                "thickness_unit": "millimeter",
+                "wavelength_unit": "nanometer",
+                "width": null
+            }
+        ],
+        "humidity_control": false,
+        "instrument_id": "440_SmartSPIM2_20250114",
+        "instrument_type": "SmartSPIM",
+        "lenses": [],
+        "light_sources": [
+            {
+                "additional_settings": {},
+                "coupling": "Single-mode fiber",
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "device_type": "Laser",
+                "item_number": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Vortran",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "maximum_power": "150",
+                "model": "Stradus",
+                "name": "Ex_488",
+                "notes": "All lasers controlled via Vortran VersaLase System",
+                "path_to_cad": null,
+                "port_index": null,
+                "power_unit": "milliwatt",
+                "serial_number": "",
+                "wavelength": 488,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": {},
+                "coupling": "Single-mode fiber",
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "device_type": "Laser",
+                "item_number": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "maximum_power": "150",
+                "model": "Obis",
+                "name": "Ex_561",
+                "notes": "All lasers controlled via Vortran VersaLase System",
+                "path_to_cad": null,
+                "port_index": null,
+                "power_unit": "milliwatt",
+                "serial_number": "",
+                "wavelength": 561,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": {},
+                "coupling": "Single-mode fiber",
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "device_type": "Laser",
+                "item_number": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Vortran",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "maximum_power": "160",
+                "model": "Stradus",
+                "name": "Ex_639",
+                "notes": "All lasers controlled via Vortran VersaLase System",
+                "path_to_cad": null,
+                "port_index": null,
+                "power_unit": "milliwatt",
+                "serial_number": "",
+                "wavelength": 639,
+                "wavelength_unit": "nanometer"
+            }
+        ],
+        "manufacturer": {
+            "abbreviation": null,
+            "name": "LifeCanvas",
+            "registry": null,
+            "registry_identifier": null
+        },
+        "modification_date": "2025-01-14",
+        "motorized_stages": [
+            {
+                "additional_settings": {},
+                "device_type": "Motorized stage",
+                "firmware": null,
+                "manufacturer": {
+                    "abbreviation": "ASI",
+                    "name": "Applied Scientific Instrumentation",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LS-100",
+                "name": "Focus stage",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": "6244",
+                "travel": "100",
+                "travel_unit": "millimeter"
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Motorized stage",
+                "firmware": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "L12-20F-4",
+                "name": "Cylindrical lens #1",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": "Unknown-1",
+                "travel": "41",
+                "travel_unit": "millimeter"
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Motorized stage",
+                "firmware": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "L12-20F-4",
+                "name": "Cylindrical lens #2",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": "Unknown-2",
+                "travel": "41",
+                "travel_unit": "millimeter"
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Motorized stage",
+                "firmware": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "L12-20F-4",
+                "name": "Cylindrical lens #3",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": "Unknown-3",
+                "travel": "41",
+                "travel_unit": "millimeter"
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Motorized stage",
+                "firmware": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "L12-20F-4",
+                "name": "Cylindrical lens #4",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": "Unknown-4",
+                "travel": "41",
+                "travel_unit": "millimeter"
+            }
+        ],
+        "notes": null,
+        "objectives": [
+            {
+                "additional_settings": {},
+                "device_type": "Objective",
+                "immersion": "multi",
+                "magnification": "3.6",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "TL4X-SAP",
+                "name": "LCT 3.6x",
+                "notes": "Thorlabs TL4X-SAP with LifeCanvas dipping cap and correction optics.",
+                "numerical_aperture": "0.2",
+                "objective_type": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": "Unknown"
+            }
+        ],
+        "optical_tables": [
+            {
+                "additional_settings": {},
+                "device_type": "Optical table",
+                "length": "35",
+                "manufacturer": {
+                    "abbreviation": "TMC",
+                    "name": "Technical Manufacturing Corporation",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "CleanTop",
+                "name": "table",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": "Unknown",
+                "table_size_unit": "inch",
+                "vibration_control": true,
+                "width": "29"
+            }
+        ],
+        "scanning_stages": [
+            {
+                "additional_settings": {},
+                "device_type": "Motorized stage",
+                "firmware": null,
+                "manufacturer": {
+                    "abbreviation": "ASI",
+                    "name": "Applied Scientific Instrumentation",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LS-50",
+                "name": "Sample stage Z",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": "6243",
+                "stage_axis_direction": "Detection axis",
+                "stage_axis_name": "Z",
+                "travel": "50",
+                "travel_unit": "millimeter"
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Motorized stage",
+                "firmware": null,
+                "manufacturer": {
+                    "abbreviation": "ASI",
+                    "name": "Applied Scientific Instrumentation",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LS-50",
+                "name": "Sample stage X",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": "6249",
+                "stage_axis_direction": "Illumination axis",
+                "stage_axis_name": "X",
+                "travel": "50",
+                "travel_unit": "millimeter"
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Motorized stage",
+                "firmware": null,
+                "manufacturer": {
+                    "abbreviation": "ASI",
+                    "name": "Applied Scientific Instrumentation",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LS-50",
+                "name": "Sample stage Y",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": "6247",
+                "stage_axis_direction": "Perpendicular axis",
+                "stage_axis_name": "Y",
+                "travel": "50",
+                "travel_unit": "millimeter"
+            }
+        ],
+        "schema_version": "1.0.0",
+        "temperature_control": false
+    },
+    "last_modified": "2025-04-18T23:35:55.762Z",
+    "location": "s3://aind-open-data/SmartSPIM_M2501_2025-04-03_17-50-21",
+    "metadata_status": "Missing",
+    "name": "SmartSPIM_M2501_2025-04-03_17-50-21",
+    "procedures": null,
+    "processing": {
+        "analyses": [],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "notes": null,
+        "processing_pipeline": {
+            "data_processes": [
+                {
+                    "code_url": "/allen/aind/scratch/svc_aind_airflow/singularity/aind_smartspim_data_transformation_0_1_3.sif",
+                    "code_version": null,
+                    "end_date_time": "2025-04-18T23:29:57.555075Z",
+                    "input_location": "//allen/aind/stage/SmartSPIM/SmartSPIM_M2501_2025-04-03_17-50-21",
+                    "name": "Compression",
+                    "notes": null,
+                    "output_location": "/allen/aind/stage/svc_aind_airflow/prod/SmartSPIM_M2501_job_1745015553_4e53b_cf/SPIM",
+                    "outputs": {},
+                    "parameters": {
+                        "compress_data_settings": {
+                            "aws": {
+                                "bucket_map": {
+                                    "archive": "aind-archive",
+                                    "open": "aind-open-data",
+                                    "private": "aind-private-data-prod-o5171v",
+                                    "scratch": "aind-scratch-data"
+                                }
+                            },
+                            "job_properties": {
+                                "array": "0-9",
+                                "environment": {
+                                    "LD_LIBRARY_PATH": "/lib/:/lib64/:/usr/local/lib",
+                                    "PATH": "/bin:/usr/bin/:/usr/local/bin/"
+                                },
+                                "memory_per_cpu": 1000,
+                                "minimum_cpus_per_node": 4,
+                                "name": "SmartSPIM_M2501_job_1745015754_2c413_SPIM",
+                                "partition": "aind",
+                                "qos": "production",
+                                "standard_error": "/allen/aind/scratch/svc_aind_airflow/prod/logs/SmartSPIM_M2501_job_1745015754_2c413_SPIM_error.out",
+                                "standard_out": "/allen/aind/scratch/svc_aind_airflow/prod/logs/SmartSPIM_M2501_job_1745015754_2c413_SPIM.out",
+                                "time_limit": 120
+                            },
+                            "logs_directory": "/allen/aind/scratch/svc_aind_airflow/prod/logs",
+                            "module": "aind_smartspim_data_transformation.smartspim_job",
+                            "process_name": "Compression",
+                            "sif_container": "/allen/aind/scratch/svc_aind_airflow/singularity/aind_smartspim_data_transformation_0_1_3.sif",
+                            "singularity": {
+                                "env_file_map": {
+                                    "archive": "/home/svc_aind_airflow/.aws_envs/prod.env",
+                                    "open": "/home/svc_aind_airflow/.aws_envs/open.env",
+                                    "private": "/home/svc_aind_airflow/.aws_envs/prod.env",
+                                    "scratch": "/home/svc_aind_airflow/.aws_envs/prod.env"
+                                }
+                            }
+                        },
+                        "compress_raw_data": true,
+                        "modality": {
+                            "abbreviation": "SPIM",
+                            "name": "Selective plane illumination microscopy"
+                        },
+                        "output_folder_name": "SPIM",
+                        "platform": "SmartSPIM",
+                        "s3_bucket": "open",
+                        "s3_prefix": "SmartSPIM_M2501_2025-04-03_17-50-21",
+                        "slurm_settings": {
+                            "array": "0-15",
+                            "environment": {},
+                            "open_mode": "append",
+                            "time_limit": 120
+                        },
+                        "source": "//allen/aind/stage/SmartSPIM/SmartSPIM_M2501_2025-04-03_17-50-21"
+                    },
+                    "resources": null,
+                    "software_version": "latest",
+                    "start_date_time": "2025-04-18T22:35:54.297958Z"
+                }
+            ],
+            "note": null,
+            "pipeline_url": null,
+            "pipeline_version": null,
+            "processor_full_name": "AIND Scientific Computing"
+        },
+        "schema_version": "1.1.3"
+    },
+    "quality_control": null,
+    "rig": null,
+    "schema_version": "1.1.1",
+    "session": null,
+    "subject": {
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": null,
+        "date_of_birth": "2025-03-13",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "genotype": "wt",
+        "housing": null,
+        "notes": null,
+        "restrictions": null,
+        "rrid": null,
+        "schema_version": "1.0.0",
+        "sex": "Female",
+        "source": {
+            "abbreviation": null,
+            "name": "Other",
+            "registry": null,
+            "registry_identifier": null
+        },
+        "species": {
+            "name": "Macaca mulatta",
+            "registry": {
+                "abbreviation": "NCBI",
+                "name": "National Center for Biotechnology Information"
+            },
+            "registry_identifier": "NCBI:txid9544"
+        },
+        "subject_id": "M2501",
+        "wellness_reports": []
+    }
+}

@@ -1,0 +1,1480 @@
+{
+    "_id": "230d01fe-52b2-4c5b-962a-d11611b2713a",
+    "acquisition": null,
+    "created": "2024-11-19T12:01:50Z",
+    "data_description": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "1.0.4",
+        "license": "CC-BY-4.0",
+        "platform": {
+            "name": "Multiplane optical physiology platform",
+            "abbreviation": "multiplane-ophys"
+        },
+        "subject_id": "741865",
+        "creation_time": "2024-11-19 12:01:50-08:00",
+        "label": null,
+        "name": "multiplane-ophys_741865_2024-09-04_09-28-30_processed_2024-11-19_12-01-50",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": "Marina Garrett, Peter Groblewski, Shawn Olsen"
+            },
+            {
+                "funder": {
+                    "name": "National Institute of Mental Health",
+                    "abbreviation": "NIMH",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "04xeg9z08"
+                },
+                "grant_number": "U01MH130907",
+                "fundee": "Marina Garrett"
+            }
+        ],
+        "data_level": "derived",
+        "group": null,
+        "investigators": [
+            {
+                "name": "Peter Groblewski",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "name": "Marina Garrett",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "name": "Shawn Olsen",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            }
+        ],
+        "project_name": "Learning mFISH-V1omFISH",
+        "restrictions": null,
+        "modality": [
+            {
+                "name": "Planar optical physiology",
+                "abbreviation": "pophys"
+            },
+            {
+                "name": "Behavior videos",
+                "abbreviation": "behavior-videos"
+            },
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            }
+        ],
+        "related_data": [],
+        "data_summary": null,
+        "input_data_name": "multiplane-ophys_741865_2024-09-04_09-28-30",
+        "process_name": "processed"
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": {
+        "Code Ocean": [
+            "f4473adf-fe70-430f-9cd9-7698d1b41ef7"
+        ]
+    },
+    "instrument": null,
+    "last_modified": "2025-12-22T23:12:52.303Z",
+    "location": "s3://codeocean-s3datasetsbucket-1u41qdg42ur9/f4473adf-fe70-430f-9cd9-7698d1b41ef7",
+    "metadata_status": "Unknown",
+    "name": "multiplane-ophys_741865_2024-09-04_09-28-30_processed_2024-11-19_12-01-50",
+    "procedures": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "notes": null,
+        "schema_version": "1.1.1",
+        "specimen_procedures": [],
+        "subject_id": "741865",
+        "subject_procedures": [
+            {
+                "procedure_type": "Surgery",
+                "start_date": "2024-11-11",
+                "experimenter_full_name": "14394",
+                "iacuc_protocol": "2402",
+                "animal_weight_prior": null,
+                "animal_weight_post": null,
+                "weight_unit": "gram",
+                "anaesthesia": null,
+                "workstation_id": null,
+                "procedures": [
+                    {
+                        "recovery_time": null,
+                        "recovery_time_unit": "minute",
+                        "injection_duration": null,
+                        "injection_duration_unit": "minute",
+                        "instrument_id": null,
+                        "procedure_type": "Retro-orbital injection",
+                        "injection_volume": null,
+                        "injection_volume_unit": "microliter",
+                        "injection_eye": null,
+                        "injection_materials": {
+                            "name": "Texas Red-dextran",
+                            "source": {
+                                "name": "Thermo Fisher Scientific",
+                                "abbreviation": null,
+                                "registry": {
+                                    "name": "Research Organization Registry",
+                                    "abbreviation": "ROR"
+                                },
+                                "registry_identifier": "03x1ewr52"
+                            },
+                            "rrid": null,
+                            "lot_number": "NA",
+                            "expiration_date": null,
+                            "material_type": "Reagent",
+                            "concentration": 50,
+                            "concentration_unit": "mg/mL"
+                        },
+                        "protocol_id": null
+                    }
+                ],
+                "notes": null
+            },
+            {
+                "procedure_type": "Surgery",
+                "start_date": "2024-11-22",
+                "experimenter_full_name": "12388",
+                "iacuc_protocol": "2402",
+                "animal_weight_prior": null,
+                "animal_weight_post": null,
+                "weight_unit": "gram",
+                "anaesthesia": null,
+                "workstation_id": null,
+                "procedures": [
+                    {
+                        "procedure_type": "Perfusion",
+                        "output_specimen_ids": [
+                            "741865"
+                        ],
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.8epv51bejl1b/v6"
+                    }
+                ],
+                "notes": null
+            },
+            {
+                "procedure_type": "Surgery",
+                "start_date": "2024-06-24",
+                "experimenter_full_name": "NSB-2864",
+                "iacuc_protocol": "2402",
+                "animal_weight_prior": "21.2",
+                "animal_weight_post": "24.1",
+                "weight_unit": "gram",
+                "anaesthesia": {
+                    "type": "isoflurane",
+                    "duration": "180.0",
+                    "duration_unit": "minute",
+                    "level": "1.5"
+                },
+                "workstation_id": "SWS 1",
+                "procedures": [
+                    {
+                        "procedure_type": "Craniotomy",
+                        "craniotomy_type": "5 mm",
+                        "craniotomy_hemisphere": null,
+                        "bregma_to_lambda_distance": "4.266",
+                        "bregma_to_lambda_unit": "millimeter",
+                        "implant_part_number": "5mm stacked coverslip",
+                        "dura_removed": null,
+                        "protective_material": null,
+                        "recovery_time": "5.0",
+                        "recovery_time_unit": "minute",
+                        "protocol_id": null
+                    },
+                    {
+                        "procedure_type": "Headframe",
+                        "headframe_type": "Visual Ctx",
+                        "headframe_part_number": "0160-100-10",
+                        "headframe_material": null,
+                        "well_part_number": "0160-200-20",
+                        "well_type": "Mesoscope",
+                        "protocol_id": null
+                    }
+                ],
+                "notes": null,
+                "protocol_id": "dx.doi.org/10.17504/protocols.io.kqdg392o7g25/v2"
+            },
+            {
+                "procedure_type": "Surgery",
+                "start_date": "2024-06-18",
+                "experimenter_full_name": "LAS-46",
+                "iacuc_protocol": "2402",
+                "animal_weight_prior": null,
+                "animal_weight_post": null,
+                "weight_unit": "gram",
+                "anaesthesia": null,
+                "workstation_id": null,
+                "procedures": [
+                    {
+                        "injection_materials": [
+                            {
+                                "material_type": "Virus",
+                                "name": "Syn1-iCre",
+                                "tars_identifiers": {
+                                    "virus_tars_id": "AiV300036_PHPeB",
+                                    "plasmid_tars_alias": "ExP300036",
+                                    "prep_lot_number": "VT7351G",
+                                    "prep_date": "2024-05-03",
+                                    "prep_type": "Purified",
+                                    "prep_protocol": "SOP#VC003"
+                                },
+                                "addgene_id": {
+                                    "name": "Syn1-iCre",
+                                    "abbreviation": null,
+                                    "registry": null,
+                                    "registry_identifier": "122518"
+                                },
+                                "titer": 72600000000000,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "recovery_time": null,
+                        "recovery_time_unit": "minute",
+                        "injection_duration": null,
+                        "injection_duration_unit": "minute",
+                        "instrument_id": null,
+                        "procedure_type": "Retro-orbital injection",
+                        "injection_volume": "100",
+                        "injection_volume_unit": "microliter",
+                        "injection_eye": "Left",
+                        "protocol_id": null
+                    }
+                ],
+                "notes": null
+            }
+        ]
+    },
+    "processing": {
+        "analyses": [],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "notes": null,
+        "processing_pipeline": {
+            "data_processes": [],
+            "note": null,
+            "pipeline_url": null,
+            "pipeline_version": null,
+            "processor_full_name": "AIND Scientific Computing"
+        },
+        "schema_version": "1.1.1"
+    },
+    "quality_control": null,
+    "rig": {
+        "additional_devices": [],
+        "calibrations": [],
+        "cameras": [
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bit_depth": 8,
+                    "chroma": "Monochrome",
+                    "computer_name": "Video Monitor",
+                    "crop_height": null,
+                    "crop_width": null,
+                    "data_interface": "Ethernet",
+                    "detector_type": "Camera",
+                    "driver": "Vimba",
+                    "driver_version": "Vimba GigE Transport Layer 1.6.0",
+                    "frame_rate_unit": "hertz",
+                    "gain": 4,
+                    "immersion": null,
+                    "manufacturer": {
+                        "name": "Allied",
+                        "registry_identifier": null
+                    },
+                    "max_frame_rate": 60,
+                    "model": "Mako G-32B",
+                    "name": "Behavior Camera",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": {
+                        "name": "MultiVideoRecorder",
+                        "url": null,
+                        "version": "1.1.7"
+                    },
+                    "sensor_format": "1/3",
+                    "sensor_format_unit": "inch",
+                    "sensor_height": 492,
+                    "sensor_width": 658,
+                    "serial_number": null,
+                    "size_unit": "inch"
+                },
+                "camera_target": "Body",
+                "filter": {
+                    "additional_settings": {},
+                    "center_wavelength": 747,
+                    "cut_off_wavelength": 780,
+                    "cut_on_wavelength": 714,
+                    "description": null,
+                    "device_type": "Filter",
+                    "diameter": null,
+                    "filter_type": "Band pass",
+                    "filter_wheel_index": null,
+                    "height": null,
+                    "manufacturer": {
+                        "name": "Semrock",
+                        "registry_identifier": null
+                    },
+                    "model": "FF01-747/33-25",
+                    "name": "Behavior Camera Filter",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size_unit": "millimeter",
+                    "thickness": null,
+                    "thickness_unit": "millimeter",
+                    "wavelength_unit": "nanometer",
+                    "width": null
+                },
+                "lens": {
+                    "focal_length": 6,
+                    "focal_length_unit": "millimeter",
+                    "manufacturer": {
+                        "name": "Thorlabs",
+                        "registry_identifier": "04gsnvb07"
+                    },
+                    "max_aperture": "f/1.4",
+                    "model": "MVL6WA",
+                    "name": "Behavior Camera Lens",
+                    "notes": null,
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null
+                },
+                "name": "Behavior Camera",
+                "position": {
+                    "device_axes": [
+                        {
+                            "direction": "moving away from the sensor towards the object",
+                            "name": "Z"
+                        },
+                        {
+                            "direction": "pointing to the bottom edge of the sensor",
+                            "name": "Y"
+                        },
+                        {
+                            "direction": "parallel to the bottom edge of the sensor",
+                            "name": "X"
+                        }
+                    ],
+                    "device_origin": "Located on face of the lens mounting surface in its center",
+                    "device_position_transformations": [
+                        {
+                            "rotation": [
+                                -1,
+                                0,
+                                0,
+                                0,
+                                0,
+                                -1,
+                                0,
+                                -3,
+                                0
+                            ],
+                            "type": "rotation"
+                        },
+                        {
+                            "translation": [
+                                -0.03617,
+                                0.23887,
+                                -0.02535
+                            ],
+                            "type": "translation"
+                        }
+                    ],
+                    "notes": null
+                }
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bit_depth": 8,
+                    "chroma": "Monochrome",
+                    "computer_name": "Video Monitor",
+                    "crop_height": null,
+                    "crop_width": null,
+                    "data_interface": "Ethernet",
+                    "detector_type": "Camera",
+                    "driver": "Vimba",
+                    "driver_version": "Vimba GigE Transport Layer 1.6.0",
+                    "frame_rate_unit": "hertz",
+                    "gain": 4,
+                    "immersion": null,
+                    "manufacturer": {
+                        "name": "Allied",
+                        "registry_identifier": null
+                    },
+                    "max_frame_rate": 60,
+                    "model": "Mako G-32B",
+                    "name": "Eye Camera",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": {
+                        "name": "MultiVideoRecorder",
+                        "url": null,
+                        "version": "1.1.7"
+                    },
+                    "sensor_format": "1/3",
+                    "sensor_format_unit": "inch",
+                    "sensor_height": 492,
+                    "sensor_width": 658,
+                    "serial_number": null,
+                    "size_unit": "inch"
+                },
+                "camera_target": "Eye",
+                "filter": {
+                    "additional_settings": {},
+                    "center_wavelength": 850,
+                    "cut_off_wavelength": 860,
+                    "cut_on_wavelength": 840,
+                    "description": null,
+                    "device_type": "Filter",
+                    "diameter": null,
+                    "filter_type": "Band pass",
+                    "filter_wheel_index": null,
+                    "height": null,
+                    "manufacturer": {
+                        "name": "Semrock",
+                        "registry_identifier": null
+                    },
+                    "model": "FF01-850/10-25",
+                    "name": "Eye Camera Filter",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size_unit": "millimeter",
+                    "thickness": null,
+                    "thickness_unit": "millimeter",
+                    "wavelength_unit": "nanometer",
+                    "width": null
+                },
+                "lens": {
+                    "focal_length": null,
+                    "focal_length_unit": "millimeter",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Infinity Photo-Optical",
+                        "registry_identifier": null
+                    },
+                    "max_aperture": null,
+                    "model": "213073",
+                    "name": "Eye Camera Lens",
+                    "notes": null,
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null
+                },
+                "name": "Eye Camera",
+                "position": {
+                    "device_axes": [
+                        {
+                            "direction": "moving away from the sensor towards the object",
+                            "name": "Z"
+                        },
+                        {
+                            "direction": "pointing to the bottom edge of the sensor",
+                            "name": "Y"
+                        },
+                        {
+                            "direction": "parallel to the bottom edge of the sensor",
+                            "name": "X"
+                        }
+                    ],
+                    "device_origin": "Located on face of the lens mounting surface in its center",
+                    "device_position_transformations": [
+                        {
+                            "rotation": [
+                                -0.5,
+                                -0.86603,
+                                0,
+                                -0.366,
+                                0.21131,
+                                -0.90631,
+                                0.78489,
+                                -0.45315,
+                                -0.42262
+                            ],
+                            "type": "rotation"
+                        },
+                        {
+                            "translation": [
+                                -0.14259,
+                                0.06209,
+                                -0.09576
+                            ],
+                            "type": "translation"
+                        }
+                    ],
+                    "notes": null
+                }
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "None",
+                    "bin_width": null,
+                    "bit_depth": 8,
+                    "chroma": "Monochrome",
+                    "computer_name": "Video Monitor",
+                    "crop_height": null,
+                    "crop_width": null,
+                    "data_interface": "Ethernet",
+                    "detector_type": "Camera",
+                    "driver": "Vimba",
+                    "driver_version": "Vimba GigE Transport Layer 1.6.0",
+                    "frame_rate_unit": "hertz",
+                    "gain": 4,
+                    "immersion": null,
+                    "manufacturer": {
+                        "name": "Allied",
+                        "registry_identifier": null
+                    },
+                    "max_frame_rate": 60,
+                    "model": "Mako G-32B",
+                    "name": "Face Camera",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": {
+                        "name": "MultiVideoRecorder",
+                        "url": null,
+                        "version": "1.1.7"
+                    },
+                    "sensor_format": "1/3",
+                    "sensor_format_unit": "inch",
+                    "sensor_height": 492,
+                    "sensor_width": 658,
+                    "serial_number": null,
+                    "size_unit": "inch"
+                },
+                "camera_target": "Face forward",
+                "filter": {
+                    "additional_settings": {},
+                    "center_wavelength": null,
+                    "cut_off_wavelength": null,
+                    "cut_on_wavelength": 715,
+                    "description": null,
+                    "device_type": "Filter",
+                    "diameter": null,
+                    "filter_type": "Long pass",
+                    "filter_wheel_index": null,
+                    "height": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Semrock",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "FF01-715/LP-25",
+                    "name": "Face Camera Filter",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size_unit": "millimeter",
+                    "thickness": null,
+                    "thickness_unit": "millimeter",
+                    "wavelength_unit": "nanometer",
+                    "width": null
+                },
+                "lens": {
+                    "focal_length": 8.5,
+                    "focal_length_unit": "millimeter",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Edmund Optics",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "01j1gwp17"
+                    },
+                    "max_aperture": "f/8",
+                    "model": "86-604",
+                    "name": "Face Camera Lens",
+                    "notes": null,
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null
+                },
+                "name": "Face Camera",
+                "position": {
+                    "device_axes": [
+                        {
+                            "direction": "moving away from the sensor towards the object",
+                            "name": "Z"
+                        },
+                        {
+                            "direction": "pointing to the bottom edge of the sensor",
+                            "name": "Y"
+                        },
+                        {
+                            "direction": "parallel to the bottom edge of the sensor",
+                            "name": "X"
+                        }
+                    ],
+                    "device_origin": "Located on face of the lens mounting surface in its center",
+                    "device_position_transformations": [
+                        {
+                            "rotation": [
+                                -0.17365,
+                                0.98481,
+                                0,
+                                0.44709,
+                                0.07883,
+                                -0.89101,
+                                -0.87747,
+                                -0.15472,
+                                -0.45399
+                            ],
+                            "type": "rotation"
+                        },
+                        {
+                            "translation": [
+                                0.154,
+                                0.03078,
+                                0.06346
+                            ],
+                            "type": "translation"
+                        }
+                    ],
+                    "notes": null
+                }
+            }
+        ],
+        "ccf_coordinate_transform": null,
+        "daqs": [
+            {
+                "additional_settings": {},
+                "channels": [],
+                "computer_name": "STIM",
+                "data_interface": "USB",
+                "device_type": "DAQ Device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "National Instruments",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "026exqw73"
+                },
+                "model": "USB-6001",
+                "name": "VBEB DAQ",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [],
+                "computer_name": "SYNC",
+                "data_interface": "PCIe",
+                "device_type": "DAQ Device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "National Instruments",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "026exqw73"
+                },
+                "model": "PCIe-6612",
+                "name": "SYNC DAQ",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [],
+                "computer_name": "STIM",
+                "data_interface": "PCIe",
+                "device_type": "DAQ Device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "National Instruments",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "026exqw73"
+                },
+                "model": "PCIe-6321",
+                "name": "STIM DAQ",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/rig.py",
+        "detectors": [],
+        "digital_micromirror_devices": [],
+        "enclosure": null,
+        "ephys_assemblies": [],
+        "fiber_assemblies": [],
+        "filters": [],
+        "laser_assemblies": [],
+        "lenses": [],
+        "light_sources": [],
+        "modalities": [],
+        "modification_date": "2024-04-02",
+        "mouse_platform": {
+            "date_surface_replaced": null,
+            "decoder": "LS7366R",
+            "device_type": "Disc",
+            "encoder": "CUI Devices AMT102-V 0000 Dip Switch 2048 ppr",
+            "encoder_firmware": {
+                "name": "ls7366r_quadrature_counter",
+                "parameters": {},
+                "url": "https://eng-gitlab/hardware/ls7366r_quadrature_counter",
+                "version": "0.1.6"
+            },
+            "manufacturer": {
+                "abbreviation": "AI",
+                "name": "Allen Institute",
+                "registry": {
+                    "abbreviation": "ROR",
+                    "name": "Research Organization Registry"
+                },
+                "registry_identifier": "03cpe7c52"
+            },
+            "model": null,
+            "name": "MindScope Running Disk",
+            "notes": null,
+            "output": "Digital Output",
+            "path_to_cad": null,
+            "port_index": null,
+            "radius": 8.255,
+            "radius_unit": "centimeter",
+            "serial_number": null,
+            "surface_material": "Kittrich Magic Cover Solid Grip Liner"
+        },
+        "notes": null,
+        "objectives": [],
+        "origin": "Bregma",
+        "patch_cords": [],
+        "pockels_cells": [],
+        "polygonal_scanners": [],
+        "rig_axes": [
+            {
+                "direction": "lays on the Mouse Sagittal Plane, Positive direction is towards the nose of the mouse",
+                "name": "X"
+            },
+            {
+                "direction": "positive pointing UP opposite the direction from the force of gravity",
+                "name": "Z"
+            },
+            {
+                "direction": "defined by the right hand rule and the other two axis",
+                "name": "Y"
+            }
+        ],
+        "rig_id": "429-mesoscope-20220321",
+        "schema_version": "0.3.2",
+        "stick_microscopes": [],
+        "stimulus_devices": [
+            {
+                "additional_settings": {},
+                "brightness": null,
+                "contrast": null,
+                "device_type": "Monitor",
+                "height": 1200,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "ASUS",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "00bxkz165"
+                },
+                "model": "PA248Q",
+                "name": "Stimulus Screen",
+                "notes": "viewing distance is from screen normal to bregma",
+                "path_to_cad": null,
+                "port_index": null,
+                "position": {
+                    "device_axes": [
+                        {
+                            "direction": "Away from screen",
+                            "name": "Z"
+                        },
+                        {
+                            "direction": "Pointing to the top of the screen",
+                            "name": "Y"
+                        },
+                        {
+                            "direction": "Oriented parallel to the long edge of the screen",
+                            "name": "X"
+                        }
+                    ],
+                    "device_origin": "Center of Screen on Face",
+                    "device_position_transformations": [
+                        {
+                            "rotation": [
+                                -0.80914,
+                                -0.58761,
+                                0,
+                                -0.12391,
+                                0.17063,
+                                0.97751,
+                                -0.5744,
+                                0.79095,
+                                -0.21087
+                            ],
+                            "type": "rotation"
+                        },
+                        {
+                            "translation": [
+                                0.08751,
+                                -0.12079,
+                                0.02298
+                            ],
+                            "type": "translation"
+                        }
+                    ],
+                    "notes": null
+                },
+                "refresh_rate": 60,
+                "serial_number": null,
+                "size_unit": "pixel",
+                "viewing_distance": 15.5,
+                "viewing_distance_unit": "centimeter",
+                "width": 1920
+            }
+        ]
+    },
+    "schema_version": "1.0.0",
+    "session": {
+        "active_mouse_platform": true,
+        "anaesthesia": null,
+        "animal_weight_post": null,
+        "animal_weight_prior": null,
+        "calibrations": [],
+        "data_streams": [
+            {
+                "camera_names": [
+                    "Mesoscope",
+                    "Behavior",
+                    "Eye",
+                    "Face"
+                ],
+                "daq_names": [],
+                "detectors": [],
+                "ephys_modules": [],
+                "fiber_connections": [],
+                "fiber_modules": [],
+                "light_sources": [
+                    {
+                        "device_type": "Laser",
+                        "excitation_power": null,
+                        "excitation_power_unit": "milliwatt",
+                        "name": "Laser",
+                        "wavelength": 920,
+                        "wavelength_unit": "nanometer"
+                    }
+                ],
+                "manipulator_modules": [],
+                "mri_scans": [],
+                "notes": null,
+                "ophys_fovs": [
+                    {
+                        "coupled_fov_index": 0,
+                        "fov_coordinate_ap": "1.5",
+                        "fov_coordinate_ml": "1.5",
+                        "fov_coordinate_unit": "micrometer",
+                        "fov_height": 512,
+                        "fov_reference": "Bregma",
+                        "fov_scale_factor": "0.78",
+                        "fov_scale_factor_unit": "um/pixel",
+                        "fov_size_unit": "pixel",
+                        "fov_width": 512,
+                        "frame_rate": "37.92",
+                        "frame_rate_unit": "hertz",
+                        "imaging_depth": 175,
+                        "imaging_depth_unit": "micrometer",
+                        "index": 0,
+                        "magnification": "16x",
+                        "notes": null,
+                        "power": "6.0",
+                        "power_ratio": "34.0",
+                        "power_unit": "percent",
+                        "scanfield_z": 75,
+                        "scanfield_z_unit": "micrometer",
+                        "scanimage_roi_index": 0,
+                        "targeted_structure": "VISp"
+                    },
+                    {
+                        "coupled_fov_index": 0,
+                        "fov_coordinate_ap": "1.5",
+                        "fov_coordinate_ml": "1.5",
+                        "fov_coordinate_unit": "micrometer",
+                        "fov_height": 512,
+                        "fov_reference": "Bregma",
+                        "fov_scale_factor": "0.78",
+                        "fov_scale_factor_unit": "um/pixel",
+                        "fov_size_unit": "pixel",
+                        "fov_width": 512,
+                        "frame_rate": "37.92",
+                        "frame_rate_unit": "hertz",
+                        "imaging_depth": 275,
+                        "imaging_depth_unit": "micrometer",
+                        "index": 1,
+                        "magnification": "16x",
+                        "notes": null,
+                        "power": "6.0",
+                        "power_ratio": "34.0",
+                        "power_unit": "percent",
+                        "scanfield_z": 160,
+                        "scanfield_z_unit": "micrometer",
+                        "scanimage_roi_index": 0,
+                        "targeted_structure": "VISp"
+                    }
+                ],
+                "slap_fovs": [],
+                "software": [],
+                "stack_parameters": null,
+                "stick_microscopes": [],
+                "stream_end_time": "2024-09-04T10:31:06.381480-07:00",
+                "stream_modalities": [
+                    {
+                        "abbreviation": "pophys",
+                        "name": "Planar optical physiology"
+                    }
+                ],
+                "stream_start_time": "2024-09-04T09:28:30.138510-07:00"
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/session.py",
+        "experimenter_full_name": [
+            "unknown user"
+        ],
+        "headframe_registration": null,
+        "iacuc_protocol": "2115",
+        "maintenance": [],
+        "mouse_platform_name": "disc",
+        "notes": null,
+        "protocol_id": [],
+        "reward_consumed_total": null,
+        "reward_consumed_unit": "milliliter",
+        "reward_delivery": null,
+        "rig_id": "MESO.1",
+        "schema_version": "1.0.0",
+        "session_end_time": "2024-09-04T10:31:06.381480-07:00",
+        "session_start_time": "2024-09-04T09:28:30.138510-07:00",
+        "session_type": "STAGE_1",
+        "stimulus_epochs": [
+            {
+                "light_source_config": [],
+                "notes": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "microliter",
+                "script": {
+                    "name": "omFISH_Ophys_test_v0.0.2",
+                    "parameters": {},
+                    "url": "http://stash.corp.alleninstitute.org/projects/VB/repos/visual_behavior_scripts/raw/testing/gratings.py?at=500697e44ba5b7237ed7afc7cec069746f50892a",
+                    "version": "1.0"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "camstim",
+                        "parameters": {},
+                        "url": "https://eng-gitlab.corp.alleninstitute.org/braintv/camstim",
+                        "version": "1.0"
+                    }
+                ],
+                "speaker_config": null,
+                "stimulus_device_names": [],
+                "stimulus_end_time": "2024-09-04T09:28:55.712317-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "spontaneous",
+                "stimulus_parameters": [
+                    {
+                        "notes": null,
+                        "stimulus_name": "spontaneous",
+                        "stimulus_parameters": {
+                            "contrast": [],
+                            "orientation": [],
+                            "spatial_frequency": [],
+                            "stim_block": [],
+                            "stim_index": [],
+                            "temporal_frequency": []
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2024-09-04T09:28:35.695427-07:00",
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "trials_total": null
+            },
+            {
+                "light_source_config": [],
+                "notes": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "microliter",
+                "script": {
+                    "name": "omFISH_Ophys_test_v0.0.2",
+                    "parameters": {},
+                    "url": "http://stash.corp.alleninstitute.org/projects/VB/repos/visual_behavior_scripts/raw/testing/gratings.py?at=500697e44ba5b7237ed7afc7cec069746f50892a",
+                    "version": "1.0"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "camstim",
+                        "parameters": {},
+                        "url": "https://eng-gitlab.corp.alleninstitute.org/braintv/camstim",
+                        "version": "1.0"
+                    }
+                ],
+                "speaker_config": null,
+                "stimulus_device_names": [],
+                "stimulus_end_time": "2024-09-04T09:42:55.455842-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "drifting_gratings_contrast",
+                "stimulus_parameters": [
+                    {
+                        "notes": null,
+                        "stimulus_name": "drifting_gratings_contrast",
+                        "stimulus_parameters": {
+                            "contrast": [
+                                0.2,
+                                0.4,
+                                0.1,
+                                0.8,
+                                0.05
+                            ],
+                            "orientation": [
+                                0,
+                                225,
+                                135,
+                                45,
+                                270,
+                                180,
+                                90,
+                                315
+                            ],
+                            "spatial_frequency": [
+                                0.04
+                            ],
+                            "stim_block": [
+                                0
+                            ],
+                            "stim_index": [
+                                0
+                            ],
+                            "temporal_frequency": [
+                                1
+                            ]
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2024-09-04T09:28:55.712317-07:00",
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "trials_total": null
+            },
+            {
+                "light_source_config": [],
+                "notes": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "microliter",
+                "script": {
+                    "name": "omFISH_Ophys_test_v0.0.2",
+                    "parameters": {},
+                    "url": "http://stash.corp.alleninstitute.org/projects/VB/repos/visual_behavior_scripts/raw/testing/gratings.py?at=500697e44ba5b7237ed7afc7cec069746f50892a",
+                    "version": "1.0"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "camstim",
+                        "parameters": {},
+                        "url": "https://eng-gitlab.corp.alleninstitute.org/braintv/camstim",
+                        "version": "1.0"
+                    }
+                ],
+                "speaker_config": null,
+                "stimulus_device_names": [],
+                "stimulus_end_time": "2024-09-04T09:42:56.456677-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "spontaneous",
+                "stimulus_parameters": [
+                    {
+                        "notes": null,
+                        "stimulus_name": "spontaneous",
+                        "stimulus_parameters": {
+                            "contrast": [],
+                            "orientation": [],
+                            "spatial_frequency": [],
+                            "stim_block": [],
+                            "stim_index": [],
+                            "temporal_frequency": []
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2024-09-04T09:42:55.455842-07:00",
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "trials_total": null
+            },
+            {
+                "light_source_config": [],
+                "notes": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "microliter",
+                "script": {
+                    "name": "omFISH_Ophys_test_v0.0.2",
+                    "parameters": {},
+                    "url": "http://stash.corp.alleninstitute.org/projects/VB/repos/visual_behavior_scripts/raw/testing/gratings.py?at=500697e44ba5b7237ed7afc7cec069746f50892a",
+                    "version": "1.0"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "camstim",
+                        "parameters": {},
+                        "url": "https://eng-gitlab.corp.alleninstitute.org/braintv/camstim",
+                        "version": "1.0"
+                    }
+                ],
+                "speaker_config": null,
+                "stimulus_device_names": [],
+                "stimulus_end_time": "2024-09-04T09:56:56.166952-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "drifting_gratings_TF",
+                "stimulus_parameters": [
+                    {
+                        "notes": null,
+                        "stimulus_name": "drifting_gratings_TF",
+                        "stimulus_parameters": {
+                            "contrast": [
+                                0.8
+                            ],
+                            "orientation": [
+                                0,
+                                225,
+                                135,
+                                45,
+                                270,
+                                180,
+                                90,
+                                315
+                            ],
+                            "spatial_frequency": [
+                                0.04
+                            ],
+                            "stim_block": [
+                                1
+                            ],
+                            "stim_index": [
+                                1
+                            ],
+                            "temporal_frequency": [
+                                1,
+                                2,
+                                4,
+                                8,
+                                15
+                            ]
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2024-09-04T09:42:56.456677-07:00",
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "trials_total": null
+            },
+            {
+                "light_source_config": [],
+                "notes": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "microliter",
+                "script": {
+                    "name": "omFISH_Ophys_test_v0.0.2",
+                    "parameters": {},
+                    "url": "http://stash.corp.alleninstitute.org/projects/VB/repos/visual_behavior_scripts/raw/testing/gratings.py?at=500697e44ba5b7237ed7afc7cec069746f50892a",
+                    "version": "1.0"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "camstim",
+                        "parameters": {},
+                        "url": "https://eng-gitlab.corp.alleninstitute.org/braintv/camstim",
+                        "version": "1.0"
+                    }
+                ],
+                "speaker_config": null,
+                "stimulus_device_names": [],
+                "stimulus_end_time": "2024-09-04T10:02:57.472587-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "spontaneous",
+                "stimulus_parameters": [
+                    {
+                        "notes": null,
+                        "stimulus_name": "spontaneous",
+                        "stimulus_parameters": {
+                            "contrast": [],
+                            "orientation": [],
+                            "spatial_frequency": [],
+                            "stim_block": [],
+                            "stim_index": [],
+                            "temporal_frequency": []
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2024-09-04T09:56:56.166952-07:00",
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "trials_total": null
+            },
+            {
+                "light_source_config": [],
+                "notes": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "microliter",
+                "script": {
+                    "name": "omFISH_Ophys_test_v0.0.2",
+                    "parameters": {},
+                    "url": "http://stash.corp.alleninstitute.org/projects/VB/repos/visual_behavior_scripts/raw/testing/gratings.py?at=500697e44ba5b7237ed7afc7cec069746f50892a",
+                    "version": "1.0"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "camstim",
+                        "parameters": {},
+                        "url": "https://eng-gitlab.corp.alleninstitute.org/braintv/camstim",
+                        "version": "1.0"
+                    }
+                ],
+                "speaker_config": null,
+                "stimulus_device_names": [],
+                "stimulus_end_time": "2024-09-04T10:16:57.216262-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "drifting_gratings_contrast",
+                "stimulus_parameters": [
+                    {
+                        "notes": null,
+                        "stimulus_name": "drifting_gratings_contrast",
+                        "stimulus_parameters": {
+                            "contrast": [
+                                0.4,
+                                0.8,
+                                0.1,
+                                0.2,
+                                0.05
+                            ],
+                            "orientation": [
+                                0,
+                                225,
+                                135,
+                                45,
+                                270,
+                                180,
+                                90,
+                                315
+                            ],
+                            "spatial_frequency": [
+                                0.04
+                            ],
+                            "stim_block": [
+                                2
+                            ],
+                            "stim_index": [
+                                0
+                            ],
+                            "temporal_frequency": [
+                                1
+                            ]
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2024-09-04T10:02:57.472587-07:00",
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "trials_total": null
+            },
+            {
+                "light_source_config": [],
+                "notes": null,
+                "output_parameters": {},
+                "reward_consumed_during_epoch": null,
+                "reward_consumed_unit": "microliter",
+                "script": {
+                    "name": "omFISH_Ophys_test_v0.0.2",
+                    "parameters": {},
+                    "url": "http://stash.corp.alleninstitute.org/projects/VB/repos/visual_behavior_scripts/raw/testing/gratings.py?at=500697e44ba5b7237ed7afc7cec069746f50892a",
+                    "version": "1.0"
+                },
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "camstim",
+                        "parameters": {},
+                        "url": "https://eng-gitlab.corp.alleninstitute.org/braintv/camstim",
+                        "version": "1.0"
+                    }
+                ],
+                "speaker_config": null,
+                "stimulus_device_names": [],
+                "stimulus_end_time": "2024-09-04T10:16:58.217097-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "spontaneous",
+                "stimulus_parameters": [
+                    {
+                        "notes": null,
+                        "stimulus_name": "spontaneous",
+                        "stimulus_parameters": {
+                            "contrast": [],
+                            "orientation": [],
+                            "spatial_frequency": [],
+                            "stim_block": [],
+                            "stim_index": [],
+                            "temporal_frequency": []
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2024-09-04T10:16:57.216262-07:00",
+                "trials_finished": null,
+                "trials_rewarded": null,
+                "trials_total": null
+            }
+        ],
+        "subject_id": "741865",
+        "weight_unit": "gram"
+    },
+    "subject": {
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": {
+            "breeding_group": "Oi4(HOMO)(ND)",
+            "maternal_genotype": "Oi4(TIT2L-jGCaMP8s-RiboL1-WPRE-ICL-IRES-tTA2-WPRE)/wt",
+            "maternal_id": "723389",
+            "paternal_genotype": "Oi4(TIT2L-jGCaMP8s-RiboL1-WPRE-ICL-IRES-tTA2-WPRE)/wt",
+            "paternal_id": "723385"
+        },
+        "date_of_birth": "2024-05-12",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "genotype": "Oi4(TIT2L-jGCaMP8s-RiboL1-WPRE-ICL-IRES-tTA2-WPRE)/Oi4(TIT2L-jGCaMP8s-RiboL1-WPRE-ICL-IRES-tTA2-WPRE)",
+        "housing": {
+            "cage_id": "8267224",
+            "cohoused_subjects": [],
+            "home_cage_enrichment": [],
+            "light_cycle": null,
+            "room_id": "221"
+        },
+        "notes": null,
+        "restrictions": null,
+        "rrid": null,
+        "schema_version": "1.0.0",
+        "sex": "Male",
+        "source": {
+            "abbreviation": "AI",
+            "name": "Allen Institute",
+            "registry": {
+                "abbreviation": "ROR",
+                "name": "Research Organization Registry"
+            },
+            "registry_identifier": "03cpe7c52"
+        },
+        "species": {
+            "name": "Mus musculus",
+            "registry": {
+                "abbreviation": "NCBI",
+                "name": "National Center for Biotechnology Information"
+            },
+            "registry_identifier": "NCBI:txid10090"
+        },
+        "subject_id": "741865",
+        "wellness_reports": []
+    }
+}

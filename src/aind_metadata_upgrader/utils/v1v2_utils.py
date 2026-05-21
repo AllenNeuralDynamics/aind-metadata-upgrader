@@ -58,6 +58,7 @@ MODALITY_MAP = {
 MODALITY_ABBREV_MAP = {
     "ophys": Modality.POPHYS,
     "slap": Modality.SLAP2,
+    "HSFP": Modality.FIB,
 }
 
 counts = {}
@@ -86,6 +87,24 @@ def ensure_timezone(dt: Optional[str], fallback_tz=None) -> Optional[datetime]:
 def ensure_pacific_timezone(dt: Optional[str]) -> Optional[datetime]:
     """Ensure datetime is in Pacific timezone (backward-compatible wrapper)."""
     return ensure_timezone(dt, fallback_tz=None)
+
+
+def upgrade_experimenter_names(experimenter_names) -> list:
+    """Convert experimenter names to a list, handling both string and list inputs.
+
+    Filters out None and empty values.
+    """
+    if not experimenter_names:
+        return []
+
+    if isinstance(experimenter_names, str):
+        experimenter_names = [experimenter_names]
+
+    experimenters = []
+    for name in experimenter_names:
+        if name and isinstance(name, str) and name.strip():
+            experimenters.append(name.strip())
+    return experimenters
 
 
 def validate_frequency_unit(frequency_unit: str) -> str:
@@ -200,6 +219,7 @@ def add_name(data: dict, type: str) -> dict:
 
 ORG_MAP = {
     "LiveCanvas Technologies": Organization.LIFECANVAS,
+    "Invitrogen, ThermoFisher": Organization.THERMO_FISHER_SCIENTIFIC,
 }
 
 

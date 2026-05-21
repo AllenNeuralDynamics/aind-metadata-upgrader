@@ -10,7 +10,12 @@ from aind_metadata_upgrader.acquisition.v1v2_tiles import (
     upgrade_tiles_to_data_stream,
 )
 from aind_metadata_upgrader.base import CoreUpgrader
-from aind_metadata_upgrader.utils.v1v2_utils import upgrade_calibration, upgrade_reagent, ensure_pacific_timezone
+from aind_metadata_upgrader.utils.v1v2_utils import (
+    upgrade_calibration,
+    upgrade_reagent,
+    ensure_pacific_timezone,
+    upgrade_experimenter_names,
+)
 from aind_data_schema.components.coordinates import (
     CoordinateSystem,
     Origin,
@@ -22,18 +27,6 @@ from aind_data_schema.components.coordinates import (
 
 class AcquisitionV1V2(CoreUpgrader):
     """Upgrade acquisition from v1.4 to v2.0"""
-
-    def _upgrade_experimenter_names(self, experimenter_names: List[str]) -> List[Dict]:
-        """Convert experimenter full names to Person objects"""
-        experimenters = []
-
-        if isinstance(experimenter_names, str):
-            experimenter_names = [experimenter_names]
-
-        for name in experimenter_names:
-            if name and name.strip():
-                experimenters.append(name.strip())
-        return experimenters
 
     def _upgrade_maintenance(self, maintenance: List[Dict]) -> List[Dict]:
         """Upgrade maintenance objects"""
@@ -190,7 +183,7 @@ class AcquisitionV1V2(CoreUpgrader):
         )
 
         # Upgrade experimenter names to Person objects
-        experimenters = self._upgrade_experimenter_names(experimenter_full_name)
+        experimenters = upgrade_experimenter_names(experimenter_full_name)
 
         # Create coordinate system from axes (needed both at the acquisition
         # level and inside ImagingConfig when ImageSPIM tiles are present)

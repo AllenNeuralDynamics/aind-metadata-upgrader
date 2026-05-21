@@ -22,6 +22,7 @@ from aind_metadata_upgrader.instrument.v1v2_devices import (
     upgrade_scanning_stages,
 )
 from aind_metadata_upgrader.utils.v1v2_utils import (
+    remove,
     upgrade_enclosure,
     upgrade_filter,
     upgrade_lens,
@@ -185,7 +186,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
             daq, connections = upgrade_daq_devices(daq)
             saved_connections.extend(connections)
             upgraded_daqs.append(daq)
-        del data["daqs"]
+        remove(data, "daqs")
 
         return upgraded_daqs, saved_connections
 
