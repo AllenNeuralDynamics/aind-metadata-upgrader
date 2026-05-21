@@ -12,7 +12,6 @@ from aind_data_schema.core.procedures import Procedures
 from aind_data_schema.core.processing import Processing
 from aind_data_schema.core.quality_control import QualityControl
 from aind_data_schema.core.subject import Subject
-from aind_data_schema.core.metadata import REQUIRED_FILE_SETS
 from packaging.version import Version
 from pydantic import ValidationError
 
@@ -84,13 +83,7 @@ class Upgrade:
 
         core_files = self._repair_missing_procedures(core_files)
 
-        self._validate_required_files(core_files)
-
         self.upgrade_metadata(core_files)
-
-        for expected_core_file in expected_core_files:
-            if not hasattr(self.metadata, expected_core_file) or getattr(self.metadata, expected_core_file) is None:
-                raise ValueError(f"Expected core file '{expected_core_file}' not found in upgraded metadata")
 
     def _repair_missing_procedures(self, core_files: dict) -> dict:
         """If the Procedures are missing but subject is present, create an empty Procedures"""
@@ -121,26 +114,6 @@ class Upgrade:
                 if target_key not in core_files:
                     core_files[target_key] = self.upgrade_core_file(core_file)
         return core_files
-
-    def _validate_required_files(self, core_files: dict):
-        """Validate that all required core files are present"""
-        if not self.skip_metadata_validation:
-            # Check that at least one of the required file sets is present
-            if not any(file in core_files for file in REQUIRED_FILE_SETS):
-                raise ValueError(
-                    "No required core files found. At least one of the required file sets must be present. "
-                    "This asset cannot be upgraded."
-                )
-
-            for trigger_file, required_files in REQUIRED_FILE_SETS.items():
-                if trigger_file in core_files.keys():
-                    if not all(
-                        required_file in core_files and core_files[required_file] is not None
-                        for required_file in required_files
-                    ):
-                        raise ValueError(
-                            f"All required core files {required_files} were not found. This asset cannot be upgraded."
-                        )
 
     def save(self):
         """Save the upgraded metadata to a standard file"""
