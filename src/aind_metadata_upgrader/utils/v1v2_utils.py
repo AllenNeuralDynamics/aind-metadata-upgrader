@@ -950,7 +950,7 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
         # Skip ignored calibrations
         return None
 
-    if any(ignored in data.get("notes", "") for ignored in IGNORED_NOTES):
+    if any(ignored in (data.get("notes") or "") for ignored in IGNORED_NOTES):
         # Skip calibrations with ignored notes
         return None
 
