@@ -339,34 +339,27 @@ class SessionV1V2(CoreUpgrader):
 
         return patchcord_configs, all_connections
 
-    def _upgrade_ophys_fov_to_plane(self, fov: Dict) -> Dict:
+    def _upgrade_ophys_fov_to_plane(self, fov: Dict, coupled_partner_index: Optional[int] = None) -> Dict:
         """Convert ophys FOV to Plane"""
-        # Determine the targeted structure
         targeted_structure = upgrade_targeted_structure(fov.get("targeted_structure"))
-
-        plane = Plane(
+        data_dict = dict(
             depth=float(fov.get("imaging_depth", 0)),
             depth_unit=SizeUnit.UM,
             power=float(fov.get("power", 0)) if fov.get("power") else 0.0,
             power_unit=PowerUnit.PERCENT,
             targeted_structure=targeted_structure,
-        ).model_dump()
+        )
 
-        # Handle coupled FOVs
-        if fov.get("coupled_fov_index") is not None:
-            coupled_plane = CoupledPlane(
-                depth=float(fov.get("imaging_depth", 0)),
-                depth_unit=SizeUnit.UM,
-                power=float(fov.get("power", 0)) if fov.get("power") else 0.0,
-                power_unit=PowerUnit.PERCENT,
-                targeted_structure=targeted_structure,
+        # coupled_partner_index is the index of the OTHER plane this one is coupled to
+        if fov.get("coupled_fov_index") is not None and coupled_partner_index is not None:
+            return CoupledPlane(
+                **data_dict,
                 plane_index=fov.get("index", 0),
-                coupled_plane_index=fov.get("coupled_fov_index"),
+                coupled_plane_index=coupled_partner_index,
                 power_ratio=float(fov.get("power_ratio", 1.0)) if fov.get("power_ratio") else 1.0,
             ).model_dump()
-            return coupled_plane
 
-        return plane
+        return Plane(**data_dict).model_dump()
 
     def _upgrade_mri_scan_to_config(self, scan: Dict) -> Dict:
         """Convert MRI scan to MRIScan config"""
@@ -476,6 +469,28 @@ class SessionV1V2(CoreUpgrader):
                 wavelengths["red"] = center
         return wavelengths
 
+    def _build_coupled_fov_partner_map(self, fovs: List[Dict]) -> Dict[int, int]:
+        """Build a mapping from each FOV index to its coupled partner's index.
+
+        In V1, planes sharing the same coupled_fov_index are paired together.
+        In V2, each plane's coupled_plane_index must point to the OTHER plane in the pair.
+        """
+        coupled_partner_map = {}  # fov_index -> partner_fov_index
+        groups: Dict[int, List[int]] = {}
+
+        for fov in fovs:
+            group_id = fov.get("coupled_fov_index")
+            if group_id is not None:
+                groups.setdefault(group_id, []).append(fov.get("index", 0))
+
+        for group_members in groups.values():
+            if len(group_members) == 2:
+                a, b = group_members
+                coupled_partner_map[a] = b
+                coupled_partner_map[b] = a
+
+        return coupled_partner_map
+
     def _create_ophys_fov_components(self, stream: Dict, light_sources: List, detectors: List) -> tuple:
         """Create channels and PlanarImage objects from ophys_fovs"""
         channels = []
@@ -519,8 +534,13 @@ class SessionV1V2(CoreUpgrader):
             ).model_dump()
             channels.append(channel)
 
-        for fov in stream.get("ophys_fovs", []):
-            plane = self._upgrade_ophys_fov_to_plane(fov)
+        fovs = stream.get("ophys_fovs", [])
+        coupled_partner_map = self._build_coupled_fov_partner_map(fovs)
+
+        for fov in fovs:
+            fov_index = fov.get("index", 0)
+            partner_index = coupled_partner_map.get(fov_index)
+            plane = self._upgrade_ophys_fov_to_plane(fov, coupled_partner_index=partner_index)
             for channel in channels:
                 image = PlanarImage(
                     planes=[plane], image_to_acquisition_transform=[], channel_name=channel["channel_name"]
