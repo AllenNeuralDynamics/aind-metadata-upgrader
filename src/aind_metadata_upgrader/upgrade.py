@@ -12,7 +12,6 @@ from aind_data_schema.core.procedures import Procedures
 from aind_data_schema.core.processing import Processing
 from aind_data_schema.core.quality_control import QualityControl
 from aind_data_schema.core.subject import Subject
-from aind_data_schema.core.metadata import REQUIRED_FILE_SETS
 from packaging.version import Version
 from pydantic import ValidationError
 
