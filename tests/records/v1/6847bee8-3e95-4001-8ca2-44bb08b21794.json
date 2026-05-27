@@ -1,0 +1,1384 @@
+{
+    "_id": "6847bee8-3e95-4001-8ca2-44bb08b21794",
+    "acquisition": {
+        "acquisition_end_time": "2019-03-15 16:32:35.439350-07:00",
+        "acquisition_start_time": "2019-03-15 15:31:03.507360-07:00",
+        "acquisition_type": "V1DD Session",
+        "calibrations": [],
+        "coordinate_system": null,
+        "data_streams": [
+            {
+                "active_devices": [
+                    "Ti-Saph",
+                    "Eye Camera",
+                    "Body Camera",
+                    "Deepscope"
+                ],
+                "code": null,
+                "configurations": [
+                    {
+                        "device_name": "Ti-Saph",
+                        "object_type": "Laser config",
+                        "power": null,
+                        "power_unit": "milliwatt",
+                        "wavelength": 920,
+                        "wavelength_unit": "nanometer"
+                    },
+                    {
+                        "channels": [
+                            {
+                                "additional_device_names": null,
+                                "channel_name": "Ophys Channel",
+                                "detector": {
+                                    "compression": null,
+                                    "device_name": "PMT",
+                                    "exposure_time": 1,
+                                    "exposure_time_unit": "millisecond",
+                                    "object_type": "Detector config",
+                                    "trigger_type": "Internal"
+                                },
+                                "emission_filters": null,
+                                "emission_wavelength": 480,
+                                "emission_wavelength_unit": "nanometer",
+                                "excitation_filters": null,
+                                "intended_measurement": "GCaMP signal",
+                                "light_sources": [
+                                    {
+                                        "device_name": "Ti-Saph",
+                                        "object_type": "Laser config",
+                                        "power": null,
+                                        "power_unit": "milliwatt",
+                                        "wavelength": 920,
+                                        "wavelength_unit": "nanometer"
+                                    }
+                                ],
+                                "object_type": "Channel",
+                                "variable_power": false
+                            }
+                        ],
+                        "coordinate_system": null,
+                        "device_name": "Deepscope",
+                        "images": [
+                            {
+                                "channel_name": "Ophys Channel",
+                                "dimensions": "object_type='Scale' scale=[512.0, 512.0]",
+                                "dimensions_unit": "pixel",
+                                "image_to_acquisition_transform": [
+                                    "object_type='Translation' translation=[-1216.0, -378.0]"
+                                ],
+                                "object_type": "Planar image",
+                                "planes": [
+                                    {
+                                        "depth": 226,
+                                        "depth_unit": "micrometer",
+                                        "object_type": "Plane",
+                                        "power": 0,
+                                        "power_unit": "percent",
+                                        "targeted_structure": {
+                                            "acronym": "VISp",
+                                            "atlas": "CCFv3",
+                                            "id": "385",
+                                            "name": "Primary visual area"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "channel_name": "Ophys Channel",
+                                "dimensions": "object_type='Scale' scale=[512.0, 512.0]",
+                                "dimensions_unit": "pixel",
+                                "image_to_acquisition_transform": [
+                                    "object_type='Translation' translation=[-1216.0, -378.0]"
+                                ],
+                                "object_type": "Planar image",
+                                "planes": [
+                                    {
+                                        "depth": 210,
+                                        "depth_unit": "micrometer",
+                                        "object_type": "Plane",
+                                        "power": 0,
+                                        "power_unit": "percent",
+                                        "targeted_structure": {
+                                            "acronym": "VISp",
+                                            "atlas": "CCFv3",
+                                            "id": "385",
+                                            "name": "Primary visual area"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "channel_name": "Ophys Channel",
+                                "dimensions": "object_type='Scale' scale=[512.0, 512.0]",
+                                "dimensions_unit": "pixel",
+                                "image_to_acquisition_transform": [
+                                    "object_type='Translation' translation=[-1216.0, -378.0]"
+                                ],
+                                "object_type": "Planar image",
+                                "planes": [
+                                    {
+                                        "depth": 194,
+                                        "depth_unit": "micrometer",
+                                        "object_type": "Plane",
+                                        "power": 0,
+                                        "power_unit": "percent",
+                                        "targeted_structure": {
+                                            "acronym": "VISp",
+                                            "atlas": "CCFv3",
+                                            "id": "385",
+                                            "name": "Primary visual area"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "channel_name": "Ophys Channel",
+                                "dimensions": "object_type='Scale' scale=[512.0, 512.0]",
+                                "dimensions_unit": "pixel",
+                                "image_to_acquisition_transform": [
+                                    "object_type='Translation' translation=[-1216.0, -378.0]"
+                                ],
+                                "object_type": "Planar image",
+                                "planes": [
+                                    {
+                                        "depth": 178,
+                                        "depth_unit": "micrometer",
+                                        "object_type": "Plane",
+                                        "power": 0,
+                                        "power_unit": "percent",
+                                        "targeted_structure": {
+                                            "acronym": "VISp",
+                                            "atlas": "CCFv3",
+                                            "id": "385",
+                                            "name": "Primary visual area"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "channel_name": "Ophys Channel",
+                                "dimensions": "object_type='Scale' scale=[512.0, 512.0]",
+                                "dimensions_unit": "pixel",
+                                "image_to_acquisition_transform": [
+                                    "object_type='Translation' translation=[-1216.0, -378.0]"
+                                ],
+                                "object_type": "Planar image",
+                                "planes": [
+                                    {
+                                        "depth": 162,
+                                        "depth_unit": "micrometer",
+                                        "object_type": "Plane",
+                                        "power": 0,
+                                        "power_unit": "percent",
+                                        "targeted_structure": {
+                                            "acronym": "VISp",
+                                            "atlas": "CCFv3",
+                                            "id": "385",
+                                            "name": "Primary visual area"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "channel_name": "Ophys Channel",
+                                "dimensions": "object_type='Scale' scale=[512.0, 512.0]",
+                                "dimensions_unit": "pixel",
+                                "image_to_acquisition_transform": [
+                                    "object_type='Translation' translation=[-1216.0, -378.0]"
+                                ],
+                                "object_type": "Planar image",
+                                "planes": [
+                                    {
+                                        "depth": 146,
+                                        "depth_unit": "micrometer",
+                                        "object_type": "Plane",
+                                        "power": 0,
+                                        "power_unit": "percent",
+                                        "targeted_structure": {
+                                            "acronym": "VISp",
+                                            "atlas": "CCFv3",
+                                            "id": "385",
+                                            "name": "Primary visual area"
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        "object_type": "Imaging config",
+                        "sampling_strategy": {
+                            "frame_rate": 6.02,
+                            "frame_rate_unit": "hertz",
+                            "object_type": "Sampling strategy"
+                        }
+                    }
+                ],
+                "connections": [],
+                "modalities": [
+                    {
+                        "abbreviation": "pophys",
+                        "name": "Planar optical physiology"
+                    }
+                ],
+                "notes": null,
+                "object_type": "Data stream",
+                "stream_end_time": "2019-03-15 16:32:35.439350-07:00",
+                "stream_start_time": "2019-03-15 15:31:03.507360-07:00"
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/acquisition.py",
+        "ethics_review_id": null,
+        "experimenters": [
+            "unknown user"
+        ],
+        "instrument_id": "Deepscope",
+        "maintenance": [],
+        "notes": "Column: 2, Volume: 2",
+        "object_type": "Acquisition",
+        "protocol_id": null,
+        "schema_version": "2.0.34",
+        "specimen_id": null,
+        "stimulus_epochs": [
+            {
+                "active_devices": [
+                    "Stimulus screen"
+                ],
+                "code": {
+                    "container": null,
+                    "core_dependency": {
+                        "name": "camstim",
+                        "object_type": "Software",
+                        "version": "1.0"
+                    },
+                    "input_data": null,
+                    "language": null,
+                    "language_version": null,
+                    "name": "No stage - old dataset",
+                    "object_type": "Code",
+                    "parameters": {
+                        "notes": null,
+                        "stimulus_name": "drifting_gratings_volume_full",
+                        "stimulus_parameters": {
+                            "contrast": [
+                                0.8
+                            ],
+                            "orientation": [
+                                0,
+                                330,
+                                300,
+                                270,
+                                240,
+                                210,
+                                180,
+                                150,
+                                120,
+                                90,
+                                60,
+                                30
+                            ],
+                            "spatial_frequency": [
+                                0.04,
+                                0.08
+                            ],
+                            "stim_index": [
+                                1
+                            ],
+                            "temporal_frequency": [
+                                1
+                            ]
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    },
+                    "run_script": null,
+                    "url": "",
+                    "version": "1.0"
+                },
+                "configurations": [],
+                "curriculum_status": null,
+                "notes": null,
+                "object_type": "Stimulus epoch",
+                "performance_metrics": null,
+                "stimulus_end_time": "2019-03-15 15:36:41.426870-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "drifting_gratings_volume_full",
+                "stimulus_start_time": "2019-03-15 15:31:54.188010-07:00",
+                "training_protocol_name": null
+            },
+            {
+                "active_devices": [
+                    "Stimulus screen"
+                ],
+                "code": {
+                    "container": null,
+                    "core_dependency": {
+                        "name": "camstim",
+                        "object_type": "Software",
+                        "version": "1.0"
+                    },
+                    "input_data": null,
+                    "language": null,
+                    "language_version": null,
+                    "name": "No stage - old dataset",
+                    "object_type": "Code",
+                    "parameters": {
+                        "notes": null,
+                        "stimulus_name": "drifting_gratings_volume_windowed",
+                        "stimulus_parameters": {
+                            "contrast": [
+                                0.8
+                            ],
+                            "orientation": [
+                                0,
+                                330,
+                                300,
+                                270,
+                                240,
+                                210,
+                                180,
+                                150,
+                                120,
+                                90,
+                                60,
+                                30
+                            ],
+                            "spatial_frequency": [
+                                0.08,
+                                0.04
+                            ],
+                            "stim_index": [
+                                0
+                            ],
+                            "temporal_frequency": [
+                                1
+                            ]
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    },
+                    "run_script": null,
+                    "url": "",
+                    "version": "1.0"
+                },
+                "configurations": [],
+                "curriculum_status": null,
+                "notes": null,
+                "object_type": "Stimulus epoch",
+                "performance_metrics": null,
+                "stimulus_end_time": "2019-03-15 15:41:31.668360-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "drifting_gratings_volume_windowed",
+                "stimulus_start_time": "2019-03-15 15:36:44.429370-07:00",
+                "training_protocol_name": null
+            },
+            {
+                "active_devices": [
+                    "Stimulus screen"
+                ],
+                "code": {
+                    "container": null,
+                    "core_dependency": {
+                        "name": "camstim",
+                        "object_type": "Software",
+                        "version": "1.0"
+                    },
+                    "input_data": null,
+                    "language": null,
+                    "language_version": null,
+                    "name": "No stage - old dataset",
+                    "object_type": "Code",
+                    "parameters": {
+                        "notes": null,
+                        "stimulus_name": "locally_sparse_noise",
+                        "stimulus_parameters": {
+                            "stim_index": [
+                                2,
+                                3
+                            ]
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    },
+                    "run_script": null,
+                    "url": "",
+                    "version": "1.0"
+                },
+                "configurations": [],
+                "curriculum_status": null,
+                "notes": null,
+                "object_type": "Stimulus epoch",
+                "performance_metrics": null,
+                "stimulus_end_time": "2019-03-15 15:45:34.904060-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "locally_sparse_noise",
+                "stimulus_start_time": "2019-03-15 15:41:34.670880-07:00",
+                "training_protocol_name": null
+            },
+            {
+                "active_devices": [
+                    "Stimulus screen"
+                ],
+                "code": {
+                    "container": null,
+                    "core_dependency": {
+                        "name": "camstim",
+                        "object_type": "Software",
+                        "version": "1.0"
+                    },
+                    "input_data": null,
+                    "language": null,
+                    "language_version": null,
+                    "name": "No stage - old dataset",
+                    "object_type": "Code",
+                    "parameters": {
+                        "notes": null,
+                        "stimulus_name": "images",
+                        "stimulus_parameters": {
+                            "stim_index": [
+                                4
+                            ]
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    },
+                    "run_script": null,
+                    "url": "",
+                    "version": "1.0"
+                },
+                "configurations": [],
+                "curriculum_status": null,
+                "notes": null,
+                "object_type": "Stimulus epoch",
+                "performance_metrics": null,
+                "stimulus_end_time": "2019-03-15 15:53:11.250410-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "images",
+                "stimulus_start_time": "2019-03-15 15:50:39.123770-07:00",
+                "training_protocol_name": null
+            },
+            {
+                "active_devices": [
+                    "Stimulus screen"
+                ],
+                "code": {
+                    "container": null,
+                    "core_dependency": {
+                        "name": "camstim",
+                        "object_type": "Software",
+                        "version": "1.0"
+                    },
+                    "input_data": null,
+                    "language": null,
+                    "language_version": null,
+                    "name": "No stage - old dataset",
+                    "object_type": "Code",
+                    "parameters": {
+                        "notes": null,
+                        "stimulus_name": "natural_movie_short",
+                        "stimulus_parameters": {
+                            "stim_index": [
+                                6
+                            ]
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    },
+                    "run_script": null,
+                    "url": "",
+                    "version": "1.0"
+                },
+                "configurations": [],
+                "curriculum_status": null,
+                "notes": null,
+                "object_type": "Stimulus epoch",
+                "performance_metrics": null,
+                "stimulus_end_time": "2019-03-15 16:00:53.635160-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "natural_movie_one",
+                "stimulus_start_time": "2019-03-15 15:53:23.260330-07:00",
+                "training_protocol_name": null
+            },
+            {
+                "active_devices": [
+                    "Stimulus screen"
+                ],
+                "code": {
+                    "container": null,
+                    "core_dependency": {
+                        "name": "camstim",
+                        "object_type": "Software",
+                        "version": "1.0"
+                    },
+                    "input_data": null,
+                    "language": null,
+                    "language_version": null,
+                    "name": "No stage - old dataset",
+                    "object_type": "Code",
+                    "parameters": {
+                        "notes": null,
+                        "stimulus_name": "locally_sparse_noise",
+                        "stimulus_parameters": {
+                            "stim_index": [
+                                2
+                            ]
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    },
+                    "run_script": null,
+                    "url": "",
+                    "version": "1.0"
+                },
+                "configurations": [],
+                "curriculum_status": null,
+                "notes": null,
+                "object_type": "Stimulus epoch",
+                "performance_metrics": null,
+                "stimulus_end_time": "2019-03-15 16:05:57.804710-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "locally_sparse_noise",
+                "stimulus_start_time": "2019-03-15 16:00:57.671730-07:00",
+                "training_protocol_name": null
+            },
+            {
+                "active_devices": [
+                    "Stimulus screen"
+                ],
+                "code": {
+                    "container": null,
+                    "core_dependency": {
+                        "name": "camstim",
+                        "object_type": "Software",
+                        "version": "1.0"
+                    },
+                    "input_data": null,
+                    "language": null,
+                    "language_version": null,
+                    "name": "No stage - old dataset",
+                    "object_type": "Code",
+                    "parameters": {
+                        "notes": null,
+                        "stimulus_name": "NaturalImages",
+                        "stimulus_parameters": {
+                            "stim_index": [
+                                5
+                            ]
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    },
+                    "run_script": null,
+                    "url": "",
+                    "version": "1.0"
+                },
+                "configurations": [],
+                "curriculum_status": null,
+                "notes": null,
+                "object_type": "Stimulus epoch",
+                "performance_metrics": null,
+                "stimulus_end_time": "2019-03-15 16:10:59.072060-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "NaturalImages",
+                "stimulus_start_time": "2019-03-15 16:05:59.889800-07:00",
+                "training_protocol_name": null
+            },
+            {
+                "active_devices": [
+                    "Stimulus screen"
+                ],
+                "code": {
+                    "container": null,
+                    "core_dependency": {
+                        "name": "camstim",
+                        "object_type": "Software",
+                        "version": "1.0"
+                    },
+                    "input_data": null,
+                    "language": null,
+                    "language_version": null,
+                    "name": "No stage - old dataset",
+                    "object_type": "Code",
+                    "parameters": {
+                        "notes": null,
+                        "stimulus_name": "drifting_gratings_volume_windowed",
+                        "stimulus_parameters": {
+                            "contrast": [
+                                0.8
+                            ],
+                            "orientation": [
+                                0,
+                                330,
+                                300,
+                                270,
+                                240,
+                                210,
+                                180,
+                                150,
+                                120,
+                                90,
+                                60,
+                                30
+                            ],
+                            "spatial_frequency": [
+                                0.08,
+                                0.04
+                            ],
+                            "stim_index": [
+                                0
+                            ],
+                            "temporal_frequency": [
+                                1
+                            ]
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    },
+                    "run_script": null,
+                    "url": "",
+                    "version": "1.0"
+                },
+                "configurations": [],
+                "curriculum_status": null,
+                "notes": null,
+                "object_type": "Stimulus epoch",
+                "performance_metrics": null,
+                "stimulus_end_time": "2019-03-15 16:16:25.410280-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "drifting_gratings_volume_windowed",
+                "stimulus_start_time": "2019-03-15 16:11:14.151420-07:00",
+                "training_protocol_name": null
+            },
+            {
+                "active_devices": [
+                    "Stimulus screen"
+                ],
+                "code": {
+                    "container": null,
+                    "core_dependency": {
+                        "name": "camstim",
+                        "object_type": "Software",
+                        "version": "1.0"
+                    },
+                    "input_data": null,
+                    "language": null,
+                    "language_version": null,
+                    "name": "No stage - old dataset",
+                    "object_type": "Code",
+                    "parameters": {
+                        "notes": null,
+                        "stimulus_name": "drifting_gratings_volume_full",
+                        "stimulus_parameters": {
+                            "contrast": [
+                                0.8
+                            ],
+                            "orientation": [
+                                0,
+                                330,
+                                300,
+                                270,
+                                240,
+                                210,
+                                180,
+                                150,
+                                120,
+                                90,
+                                60,
+                                30
+                            ],
+                            "spatial_frequency": [
+                                0.04,
+                                0.08
+                            ],
+                            "stim_index": [
+                                1
+                            ],
+                            "temporal_frequency": [
+                                1
+                            ]
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    },
+                    "run_script": null,
+                    "url": "",
+                    "version": "1.0"
+                },
+                "configurations": [],
+                "curriculum_status": null,
+                "notes": null,
+                "object_type": "Stimulus epoch",
+                "performance_metrics": null,
+                "stimulus_end_time": "2019-03-15 16:21:45.676660-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "drifting_gratings_volume_full",
+                "stimulus_start_time": "2019-03-15 16:16:34.417730-07:00",
+                "training_protocol_name": null
+            },
+            {
+                "active_devices": [
+                    "Stimulus screen"
+                ],
+                "code": {
+                    "container": null,
+                    "core_dependency": {
+                        "name": "camstim",
+                        "object_type": "Software",
+                        "version": "1.0"
+                    },
+                    "input_data": null,
+                    "language": null,
+                    "language_version": null,
+                    "name": "No stage - old dataset",
+                    "object_type": "Code",
+                    "parameters": {
+                        "notes": null,
+                        "stimulus_name": "natural_movie_short",
+                        "stimulus_parameters": {
+                            "stim_index": [
+                                6
+                            ]
+                        },
+                        "stimulus_template_name": [],
+                        "stimulus_type": "Visual Stimulation"
+                    },
+                    "run_script": null,
+                    "url": "",
+                    "version": "1.0"
+                },
+                "configurations": [],
+                "curriculum_status": null,
+                "notes": null,
+                "object_type": "Stimulus epoch",
+                "performance_metrics": null,
+                "stimulus_end_time": "2019-03-15 16:29:27.077160-07:00",
+                "stimulus_modalities": [
+                    "Visual"
+                ],
+                "stimulus_name": "natural_movie_one",
+                "stimulus_start_time": "2019-03-15 16:21:56.685800-07:00",
+                "training_protocol_name": null
+            }
+        ],
+        "subject_details": {
+            "anaesthesia": null,
+            "animal_weight_post": null,
+            "animal_weight_prior": null,
+            "mouse_platform_name": "Disc",
+            "object_type": "Acquisition subject details",
+            "reward_consumed_total": null,
+            "reward_consumed_unit": "milliliter",
+            "weight_unit": "gram"
+        },
+        "subject_id": "438833"
+    },
+    "created": "2025-08-16T08:24:49.984518",
+    "data_description": {
+        "creation_time": "2019-03-15T15:31:03-07:00",
+        "data_level": "derived",
+        "data_summary": null,
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "funding_source": [
+            {
+                "fundee": null,
+                "funder": {
+                    "abbreviation": "AI",
+                    "name": "Allen Institute",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "object_type": "Funding"
+            }
+        ],
+        "group": null,
+        "institution": {
+            "abbreviation": "AIBS",
+            "name": "Allen Institute for Brain Science",
+            "registry": "Research Organization Registry (ROR)",
+            "registry_identifier": "00dcv1019"
+        },
+        "investigators": [
+            {
+                "name": "Saskia de Vries",
+                "object_type": "Person",
+                "registry": "Open Researcher and Contributor ID (ORCID)",
+                "registry_identifier": "0000-0002-3704-3499"
+            },
+            {
+                "name": "Michael Buice",
+                "object_type": "Person",
+                "registry": "Open Researcher and Contributor ID (ORCID)",
+                "registry_identifier": null
+            },
+            {
+                "name": "Clay Reid",
+                "object_type": "Person",
+                "registry": "Open Researcher and Contributor ID (ORCID)",
+                "registry_identifier": null
+            }
+        ],
+        "license": "CC-BY-4.0",
+        "modalities": [
+            {
+                "abbreviation": "pophys",
+                "name": "Planar optical physiology"
+            },
+            {
+                "abbreviation": "behavior-videos",
+                "name": "Behavior videos"
+            }
+        ],
+        "name": "438833_2019-03-15_15-31-03_nwb_2025-08-08_16-28-11",
+        "object_type": "Data description",
+        "project_name": "V1 Deep Dive",
+        "restrictions": null,
+        "schema_version": "2.0.12",
+        "subject_id": "438833",
+        "tags": [
+            "Column 2",
+            "Volume 2"
+        ]
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": {
+        "Code Ocean": [
+            "8f341e1f-2953-4755-8855-d35eb4365c37"
+        ]
+    },
+    "instrument": {
+        "calibrations": null,
+        "components": [
+            {
+                "additional_settings": null,
+                "coupling": null,
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Spectra-Physics",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "02ad9kp97"
+                },
+                "model": "Insight X3",
+                "name": "Ti-Saph",
+                "notes": null,
+                "object_type": "Laser",
+                "serial_number": null,
+                "wavelength": 940,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": null,
+                "imaging_device_type": "Spatial light modulator",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Meadowlark Optics",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "00n8qbq54"
+                },
+                "model": "HSP-512",
+                "name": "SLM",
+                "notes": null,
+                "object_type": "Additional imaging device",
+                "serial_number": null
+            },
+            {
+                "additional_settings": null,
+                "manufacturer": {
+                    "abbreviation": "Janelia",
+                    "name": "Janelia Research Campus",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "013sk6x84"
+                },
+                "model": "MIMMS",
+                "name": "MIMMS",
+                "notes": null,
+                "object_type": "Microscope",
+                "serial_number": null
+            },
+            {
+                "additional_settings": null,
+                "immersion": "water",
+                "magnification": "16",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Nikon",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "0280y9h11"
+                },
+                "model": "N16XLWD-PF",
+                "name": "Nikon 16x",
+                "notes": null,
+                "numerical_aperture": "0.8",
+                "object_type": "Objective",
+                "objective_type": null,
+                "serial_number": null
+            },
+            {
+                "additional_settings": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "SL50-3P",
+                "name": "Scan Lens L7",
+                "notes": null,
+                "object_type": "Lens",
+                "serial_number": null
+            },
+            {
+                "additional_settings": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "TL200-3P",
+                "name": "Scan Lens L8",
+                "notes": null,
+                "object_type": "Lens",
+                "serial_number": null
+            },
+            {
+                "additional_settings": null,
+                "bin_height": null,
+                "bin_mode": "No binning",
+                "bin_unit": "pixel",
+                "bin_width": null,
+                "bit_depth": null,
+                "chroma": null,
+                "cooling": "No cooling",
+                "crop_height": null,
+                "crop_offset_x": null,
+                "crop_offset_y": null,
+                "crop_unit": "pixel",
+                "crop_width": null,
+                "data_interface": "PCIe",
+                "detector_type": "Photomultiplier Tube",
+                "driver": null,
+                "driver_version": null,
+                "frame_rate": null,
+                "frame_rate_unit": null,
+                "gain": null,
+                "immersion": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Hamamatsu",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "03natb733"
+                },
+                "model": "H10770PA-40 SEL",
+                "name": "PMT",
+                "notes": null,
+                "object_type": "Detector",
+                "recording_software": null,
+                "sensor_format": null,
+                "sensor_format_unit": null,
+                "sensor_height": null,
+                "sensor_width": null,
+                "serial_number": null,
+                "size_unit": "pixel"
+            },
+            {
+                "additional_settings": null,
+                "imaging_device_type": "Other",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "P-725KHDS",
+                "name": "Piezo Actuator",
+                "notes": "PZT Physical Instruments Piezo Actuator",
+                "object_type": "Additional imaging device",
+                "serial_number": null
+            },
+            {
+                "additional_settings": null,
+                "brightness": 50,
+                "contrast": 30,
+                "coordinate_system": null,
+                "height": 1200,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "ASUS",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "00bxkz165"
+                },
+                "model": "PA248Q",
+                "name": "Stimulus Screen",
+                "notes": "viewing distance is from screen normal to bregma",
+                "object_type": "Monitor",
+                "refresh_rate": 60,
+                "relative_position": [
+                    "Anterior",
+                    "Right"
+                ],
+                "serial_number": null,
+                "size_unit": "pixel",
+                "transform": null,
+                "viewing_distance": "15.5",
+                "viewing_distance_unit": "centimeter",
+                "width": 1920
+            },
+            {
+                "additional_settings": null,
+                "decoder": "LS7366R",
+                "encoder": "CUI Devices AMT102-V 0000 Dip Switch 2048 ppr",
+                "encoder_firmware": {
+                    "name": "ls7366r_quadrature_counter",
+                    "object_type": "Software",
+                    "version": "0.1.6"
+                },
+                "manufacturer": {
+                    "abbreviation": "AIND",
+                    "name": "Allen Institute for Neural Dynamics",
+                    "registry": "Research Organization Registry (ROR)",
+                    "registry_identifier": "04szwah67"
+                },
+                "model": null,
+                "name": "MindScope Running Disc",
+                "notes": null,
+                "object_type": "Disc",
+                "output": "Digital Output",
+                "radius": "8.255",
+                "radius_unit": "centimeter",
+                "serial_number": null,
+                "surface_material": "Kittrich Magic Cover Solid Grip Liner"
+            },
+            {
+                "camera": {
+                    "additional_settings": null,
+                    "bin_height": null,
+                    "bin_mode": "No binning",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "cooling": "No cooling",
+                    "crop_height": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "Ethernet",
+                    "detector_type": "Camera",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "60.0",
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Allied",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "Mako G-32B",
+                    "name": "Eye Camera",
+                    "notes": "Assuming same camera as current setup",
+                    "object_type": "Camera",
+                    "recording_software": null,
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": null,
+                    "sensor_width": null,
+                    "serial_number": null,
+                    "size_unit": "pixel"
+                },
+                "coordinate_system": null,
+                "filter": null,
+                "lens": {
+                    "additional_settings": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Thorlabs",
+                        "registry": "Research Organization Registry (ROR)",
+                        "registry_identifier": "04gsnvb07"
+                    },
+                    "model": null,
+                    "name": "Eye Camera Lens",
+                    "notes": null,
+                    "object_type": "Lens",
+                    "serial_number": null
+                },
+                "name": "Eye Camera Assembly",
+                "object_type": "Camera assembly",
+                "relative_position": [
+                    "Right"
+                ],
+                "target": "Eye",
+                "transform": null
+            },
+            {
+                "camera": {
+                    "additional_settings": null,
+                    "bin_height": null,
+                    "bin_mode": "No binning",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Monochrome",
+                    "cooling": "No cooling",
+                    "crop_height": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "Ethernet",
+                    "detector_type": "Camera",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": "60.0",
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Allied",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "Mako G-32B",
+                    "name": "Body Camera",
+                    "notes": "Assuming same camera as current setup",
+                    "object_type": "Camera",
+                    "recording_software": null,
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": null,
+                    "sensor_width": null,
+                    "serial_number": null,
+                    "size_unit": "pixel"
+                },
+                "coordinate_system": null,
+                "filter": null,
+                "lens": {
+                    "additional_settings": null,
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Thorlabs",
+                        "registry": "Research Organization Registry (ROR)",
+                        "registry_identifier": "04gsnvb07"
+                    },
+                    "model": null,
+                    "name": "Body Camera Lens",
+                    "notes": null,
+                    "object_type": "Lens",
+                    "serial_number": null
+                },
+                "name": "Body Camera Assembly",
+                "object_type": "Camera assembly",
+                "relative_position": [
+                    "Left",
+                    "Posterior"
+                ],
+                "target": "Body",
+                "transform": null
+            }
+        ],
+        "connections": [],
+        "coordinate_system": {
+            "axes": [
+                {
+                    "direction": "Posterior_to_anterior",
+                    "name": "AP",
+                    "object_type": "Axis"
+                },
+                {
+                    "direction": "Left_to_right",
+                    "name": "ML",
+                    "object_type": "Axis"
+                },
+                {
+                    "direction": "Superior_to_inferior",
+                    "name": "SI",
+                    "object_type": "Axis"
+                }
+            ],
+            "axis_unit": "millimeter",
+            "name": "BREGMA_ARI",
+            "object_type": "Coordinate system",
+            "origin": "Bregma"
+        },
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/instrument.py",
+        "instrument_id": "Deepscope",
+        "location": "Unknown",
+        "modalities": [
+            {
+                "abbreviation": "behavior-videos",
+                "name": "Behavior videos"
+            },
+            {
+                "abbreviation": "pophys",
+                "name": "Planar optical physiology"
+            }
+        ],
+        "modification_date": "2025-06-12",
+        "notes": "Created several years posthoc from incomplete records. Much information is missing.",
+        "object_type": "Instrument",
+        "schema_version": "2.0.38",
+        "temperature_control": null
+    },
+    "last_modified": "2025-08-19T18:31:59.595Z",
+    "location": "s3://aind-open-data/438833_2019-03-15_15-31-03_nwb_2025-08-08_16-28-11",
+    "metadata_status": "Invalid",
+    "name": "438833_2019-03-15_15-31-03_nwb_2025-08-08_16-28-11",
+    "procedures": {
+        "coordinate_system": null,
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "notes": null,
+        "object_type": "Procedures",
+        "schema_version": "2.0.32",
+        "specimen_procedures": [],
+        "subject_id": "438833",
+        "subject_procedures": [
+            {
+                "anaesthesia": {
+                    "anaesthetic_type": "Isoflurane",
+                    "duration": 1.75,
+                    "duration_unit": "minute",
+                    "level": null,
+                    "object_type": "Anaesthetic"
+                },
+                "animal_weight_post": 26.5,
+                "animal_weight_prior": 23.7,
+                "coordinate_system": {
+                    "axes": [
+                        {
+                            "direction": "Posterior_to_anterior",
+                            "name": "AP",
+                            "object_type": "Axis"
+                        },
+                        {
+                            "direction": "Left_to_right",
+                            "name": "ML",
+                            "object_type": "Axis"
+                        },
+                        {
+                            "direction": "Superior_to_inferior",
+                            "name": "SI",
+                            "object_type": "Axis"
+                        }
+                    ],
+                    "axis_unit": "millimeter",
+                    "name": "LAMBDA_ARI",
+                    "object_type": "Coordinate system",
+                    "origin": "Lambda"
+                },
+                "ethics_review_id": "1801",
+                "experimenters": [
+                    "NSB"
+                ],
+                "measured_coordinates": null,
+                "notes": null,
+                "object_type": "Surgery",
+                "procedures": [
+                    {
+                        "headframe_material": null,
+                        "headframe_part_number": "0160-100-10 Rev A",
+                        "headframe_type": "CAM-style headframe",
+                        "object_type": "Headframe",
+                        "protocol_id": null,
+                        "well_part_number": null,
+                        "well_type": null
+                    },
+                    {
+                        "coordinate_system_name": "LAMBDA_ARI",
+                        "craniotomy_type": "Circle",
+                        "dura_removed": true,
+                        "implant_part_number": null,
+                        "object_type": "Craniotomy",
+                        "position": {
+                            "object_type": "Translation",
+                            "translation": [
+                                1.3,
+                                -2.8,
+                                0
+                            ]
+                        },
+                        "protective_material": null,
+                        "protocol_id": null,
+                        "size": 5,
+                        "size_unit": "millimeter"
+                    }
+                ],
+                "protocol_id": null,
+                "start_date": "2019-01-28",
+                "weight_unit": "gram",
+                "workstation_id": null
+            }
+        ]
+    },
+    "processing": null,
+    "quality_control": null,
+    "rig": null,
+    "schema_version": "1.1.1",
+    "session": null,
+    "subject": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "notes": null,
+        "object_type": "Subject",
+        "schema_version": "2.0.12",
+        "subject_details": {
+            "alleles": [],
+            "breeding_info": {
+                "breeding_group": "Slc17a7-IRES2-Cre;Camk2a-tTA;Ai94(V1DD)",
+                "maternal_genotype": "",
+                "maternal_id": "414244",
+                "object_type": "Breeding info",
+                "paternal_genotype": "Slc17a7-IRES2-Cre/wt",
+                "paternal_id": "412384"
+            },
+            "date_of_birth": "2018-12-01",
+            "genotype": "Slc17a7-IRES2-Cre/wt;Camk2a-tTA/wt;Ai94(TITL-GCaMP6s)/wt",
+            "housing": null,
+            "object_type": "Mouse subject",
+            "restrictions": null,
+            "rrid": null,
+            "sex": "Male",
+            "source": {
+                "abbreviation": "AI",
+                "name": "Allen Institute",
+                "registry": "Research Organization Registry (ROR)",
+                "registry_identifier": "03cpe7c52"
+            },
+            "species": {
+                "common_name": "House mouse",
+                "name": "Mus musculus",
+                "registry": "National Center for Biotechnology Information (NCBI)",
+                "registry_identifier": "NCBI:txid10090"
+            },
+            "strain": {
+                "name": "C57BL/6J",
+                "registry": "Mouse Genome Informatics (MGI)",
+                "registry_identifier": "MGI:3028467",
+                "species": "Mus musculus"
+            },
+            "wellness_reports": []
+        },
+        "subject_id": "438833"
+    }
+}
