@@ -676,7 +676,7 @@ class SessionV1V2(CoreUpgrader):
             return {"object_type": "Sampling strategy", "frame_rate": float(frame_rate), "frame_rate_unit": "hertz"}
         return None
 
-    def _create_imaging_config(self, stream: Dict) -> Optional[Dict]:
+    def _create_imaging_config(self, stream: Dict, instrument_id: str = "") -> Optional[Dict]:
         """Create ImagingConfig from stream data using modality-specific orchestration"""
 
         # Determine the primary imaging modality
@@ -708,7 +708,7 @@ class SessionV1V2(CoreUpgrader):
 
         # Create the ImagingConfig
         return ImagingConfig(
-            device_name="Imaging System",
+            device_name=instrument_id,
             channels=channels,
             images=images,
             sampling_strategy=sampling_strategy,
@@ -1120,7 +1120,7 @@ class SessionV1V2(CoreUpgrader):
             configurations.append(self._upgrade_mri_scan_to_config(mri_scan))
 
         # Imaging config
-        imaging_config = self._create_imaging_config(stream)
+        imaging_config = self._create_imaging_config(stream, rig_id)
         if imaging_config:
             configurations.append(imaging_config)
 
