@@ -290,11 +290,13 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
     def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the procedures to v2"""
 
-        # Extract the nested procedures dict if it exists
+        # Extract the nested procedures dict if it exists.
+        # Deep-copy so that in-place mutations (e.g. remove("procedure_type")) don't
+        # corrupt the caller's dict on a second upgrade attempt.
         if "procedures" in data:
-            procedures_data = data["procedures"]
+            procedures_data = copy.deepcopy(data["procedures"])
         else:
-            procedures_data = data
+            procedures_data = copy.deepcopy(data)
 
         self.subject_id = procedures_data.get("subject_id")
 

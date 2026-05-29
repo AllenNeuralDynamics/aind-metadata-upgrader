@@ -255,17 +255,35 @@ def upgrade_brain_injection(data: dict, dynamics: list) -> tuple[dict, list]:
     validate_injection_coordinate_reference(data)
     data = upgrade_injection_coordinates(data)
     data, measured_coordinates = retrieve_bl_distance(data)
-    injection = BrainInjection(
-        injection_materials=ensure_injection_materials_with_default(
-            upgrade_injection_materials(data.get("injection_materials", []))
-        ),
-        targeted_structure=get_targeted_structure_or_none(data),
-        relative_position=build_relative_position_from_hemisphere(data),
-        dynamics=dynamics,
-        protocol_id=data.get("protocol_id", None),
-        coordinate_system_name=CoordinateSystemLibrary.BREGMA_ARID.name,
-        coordinates=ensure_coordinates_match_dynamics(data.get("coordinates", []), dynamics),
+
+    injection_materials = ensure_injection_materials_with_default(
+        upgrade_injection_materials(data.get("injection_materials", []))
     )
+    targeted_structure = get_targeted_structure_or_none(data)
+    relative_position = build_relative_position_from_hemisphere(data)
+    protocol_id = data.get("protocol_id", None)
+    coordinates = ensure_coordinates_match_dynamics(data.get("coordinates", []), dynamics)
+
+    try:
+        injection = BrainInjection(
+            injection_materials=injection_materials,
+            targeted_structure=targeted_structure,
+            relative_position=relative_position,
+            dynamics=dynamics,
+            protocol_id=protocol_id,
+            coordinate_system_name=CoordinateSystemLibrary.BREGMA_ARID.name,
+            coordinates=coordinates,
+        )
+    except Exception:
+        injection = BrainInjection.model_construct(
+            injection_materials=injection_materials,
+            targeted_structure=targeted_structure,
+            relative_position=relative_position,
+            dynamics=dynamics,
+            protocol_id=protocol_id,
+            coordinate_system_name=CoordinateSystemLibrary.BREGMA_ARID.name,
+            coordinates=coordinates,
+        )
     return injection.model_dump(), measured_coordinates
 
 
