@@ -258,12 +258,8 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         ) = device_collections
         saved_connections.extend(device_connections)
 
-        # Create the new Microscope device
-        microscope = Microscope(name=data.get("instrument_id", "Microscope"))
-        scope_name = microscope.name
-
         # Process connections and DAQs
-        upgraded_daqs, connection_data = self._process_connections_and_daqs(data, scope_name)
+        upgraded_daqs, connection_data = self._process_connections_and_daqs(data, data.get("instrument_id"))
         saved_connections.extend(connection_data)
 
         # Compile components list
@@ -277,7 +273,6 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
             *scanning_stages,
             *additional_devices,
             *upgraded_daqs,
-            microscope.model_dump(),
         ]
         if enclosure:
             components.append(enclosure)
@@ -288,66 +283,6 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         # Validate and fix connections
         components = self._validate_and_fix_connections(components, connections)
-
-        return (components, connections)
-
-        # Compile components list
-        components = [
-            *objectives,
-            *upgraded_detectors,
-            *light_sources,
-            *lenses,
-            *fluorescence_filters,
-            *motorized_stages,
-            *scanning_stages,
-            *additional_devices,
-            *upgraded_daqs,
-            microscope.model_dump(),
-        ]
-        if enclosure:
-            components.append(enclosure)
-
-        # Handle connections and upgrade DAQDevice to new version
-
-        print(f"{len(saved_connections)} saved connections pending")
-        connections = []
-
-        for connection in saved_connections:
-            # Check if this is just a model_dump of a Connection object
-            if "object_type" in connection:
-                connections.append(connection)
-            else:
-                connections.append(
-                    Connection(
-                        source_device=connection["send"],
-                        target_device=connection["receive"],
-                    ).model_dump()
-                )
-
-        # Check that we're going to pass the connection validation
-        # Flatten the list of device names from all connections
-        connection_names = [name for conn in connections for name in [conn["source_device"], conn["target_device"]]]
-
-        component_names = []
-        for component in components:
-            component_names.extend(recursive_get_all_names(component))
-        component_names = [name for name in component_names if name is not None]
-
-        missing_names = []
-        for name in connection_names:
-            if name not in component_names:
-                missing_names.append(name)
-
-        for name in set(missing_names):
-            # Create an empty Device with the name
-            device = Device(
-                name=name,
-                notes=(
-                    "(v1v2 upgrade instrument) This device was not found in the components list, "
-                    "but is referenced in connections."
-                ),
-            )
-            components.append(device.model_dump())
 
         return (components, connections)
 
