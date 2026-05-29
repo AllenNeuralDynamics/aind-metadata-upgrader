@@ -5,7 +5,7 @@ from datetime import date
 from typing import Optional
 
 from aind_data_schema.components.coordinates import CoordinateSystemLibrary
-from aind_data_schema.components.devices import Device, Microscope
+from aind_data_schema.components.devices import Device
 from aind_data_schema.components.measurements import Calibration
 from aind_data_schema.components.connections import (
     Connection,
