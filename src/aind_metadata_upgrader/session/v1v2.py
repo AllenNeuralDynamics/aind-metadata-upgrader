@@ -853,18 +853,21 @@ class SessionV1V2(CoreUpgrader):
 
     def _determine_stimulus_modalities(self, epoch: dict) -> list:
         """Determine stimulus modalities from epoch data"""
+
         stimulus_modalities = epoch.get("stimulus_modalities", [])
         if not stimulus_modalities or stimulus_modalities == ["None"] or stimulus_modalities == [None]:
-            stimulus_name = epoch.get("stimulus_name", "").lower()
-            if "spontaneous" in stimulus_name:
-                stimulus_modalities = [StimulusModality.NO_STIMULUS]
-            elif "the random reward stimulus" in stimulus_name:
-                # This is the dynamic foraging task
-                stimulus_modalities = [StimulusModality.AUDITORY]
-            elif "2p photostimulation" in stimulus_name:
-                stimulus_modalities = [StimulusModality.OPTOGENETICS]
-            elif "manual water delivery" in stimulus_name:
-                stimulus_modalities = [StimulusModality.NO_STIMULUS]
+            stimulus_name = (epoch.get("stimulus_name") or epoch.get("stimulus", {}).get("stimulus_name") or "").lower()
+            stimulus_name_map = [
+                ("spontaneous", [StimulusModality.NO_STIMULUS]),
+                ("the random reward stimulus", [StimulusModality.AUDITORY]),  # dynamic foraging task
+                ("2p photostimulation", [StimulusModality.OPTOGENETICS]),
+                ("manual water delivery", [StimulusModality.NO_STIMULUS]),
+                ("laser pulses", [StimulusModality.OPTOGENETICS]),
+            ]
+            for key, modalities in stimulus_name_map:
+                if key in stimulus_name:
+                    stimulus_modalities = modalities
+                    break
             else:
                 raise ValueError(f"Unknown stimulus name: {stimulus_name}")
         return stimulus_modalities
