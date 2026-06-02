@@ -1100,16 +1100,33 @@ class SessionV1V2(CoreUpgrader):
 
         return acquisition.model_dump()
 
+    def _get_imaging_config_light_source_names(self, imaging_config: Optional[Dict]) -> set:
+        """Return the set of device_names for all light sources embedded in an imaging config's channels."""
+        names = set()
+        if imaging_config:
+            for channel in imaging_config.get("channels", []):
+                for ls in channel.get("light_sources", []):
+                    name = ls.get("device_name")
+                    if name:
+                        names.add(name)
+        return names
+
     def _upgrade_all_device_configurations(self, stream: Dict, rig_id: str) -> tuple:
         """Upgrade all device configurations from a stream and return configurations and connections"""
         configurations = []
         connections = []
 
-        # Light source and detector configs
+        # Build imaging config first so we can check which light sources it already uses
+        imaging_config = self._create_imaging_config(stream, rig_id)
+        imaging_used_light_source_names = self._get_imaging_config_light_source_names(imaging_config)
+
+        # Light source configs — skip any already captured inside the imaging config
         for light_source in stream.get("light_sources", []):
-            config = self._upgrade_light_source_config(light_source)
-            if config:
-                configurations.append(config)
+            ls_name = light_source.get("name", "Unknown Device")
+            if ls_name not in imaging_used_light_source_names:
+                config = self._upgrade_light_source_config(light_source)
+                if config:
+                    configurations.append(config)
 
         for detector in stream.get("detectors", []):
             configurations.append(self._upgrade_detector_config(detector))
@@ -1128,8 +1145,6 @@ class SessionV1V2(CoreUpgrader):
         for mri_scan in stream.get("mri_scans", []):
             configurations.append(self._upgrade_mri_scan_to_config(mri_scan))
 
-        # Imaging config
-        imaging_config = self._create_imaging_config(stream, rig_id)
         if imaging_config:
             configurations.append(imaging_config)
 
