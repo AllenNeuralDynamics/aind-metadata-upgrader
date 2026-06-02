@@ -864,14 +864,23 @@ class SessionV1V2(CoreUpgrader):
 
     def _determine_stimulus_modalities(self, epoch: dict) -> list:
         """Determine stimulus modalities from epoch data"""
+
         stimulus_modalities = epoch.get("stimulus_modalities", [])
         if not stimulus_modalities or stimulus_modalities == ["None"] or stimulus_modalities == [None]:
-            stimulus_name = epoch.get("stimulus_name", "").lower()
-            if "spontaneous" in stimulus_name:
-                stimulus_modalities = [StimulusModality.NO_STIMULUS]
-            if "the random reward stimulus" in stimulus_name:
-                # This is the dynamic foraging task
-                stimulus_modalities = [StimulusModality.AUDITORY]
+            stimulus_name = (epoch.get("stimulus_name") or epoch.get("stimulus", {}).get("stimulus_name") or "").lower()
+            stimulus_name_map = [
+                ("spontaneous", [StimulusModality.NO_STIMULUS]),
+                ("the random reward stimulus", [StimulusModality.AUDITORY]),  # dynamic foraging task
+                ("2p photostimulation", [StimulusModality.OPTOGENETICS]),
+                ("manual water delivery", [StimulusModality.NO_STIMULUS]),
+                ("laser pulses", [StimulusModality.OPTOGENETICS]),
+            ]
+            for key, modalities in stimulus_name_map:
+                if key in stimulus_name:
+                    stimulus_modalities = modalities
+                    break
+            else:
+                raise ValueError(f"Unknown stimulus name: {stimulus_name}")
         return stimulus_modalities
 
     def _create_speaker_config(self, epoch: dict) -> Optional[dict]:
@@ -1104,18 +1113,35 @@ class SessionV1V2(CoreUpgrader):
 
         return acquisition.model_dump()
 
+    def _get_imaging_config_light_source_names(self, imaging_config: Optional[Dict]) -> set:
+        """Return the set of device_names for all light sources embedded in an imaging config's channels."""
+        names = set()
+        if imaging_config:
+            for channel in imaging_config.get("channels", []):
+                for ls in channel.get("light_sources", []):
+                    name = ls.get("device_name")
+                    if name:
+                        names.add(name)
+        return names
+
     def _upgrade_all_device_configurations(self, stream: Dict, rig_id: str) -> tuple:
         """Upgrade all device configurations from a stream and return configurations and connections"""
         configurations = []
         connections = []
 
-        # Light source configs: use stream-level sources if present, otherwise resolve from rig
-        # via fiber connection excitation wavelengths
+        # Build imaging config first so we can check which light sources it already uses
+        imaging_config = self._create_imaging_config(stream, rig_id)
+        imaging_used_light_source_names = self._get_imaging_config_light_source_names(imaging_config)
+
+        # Light source configs: use stream-level sources if present (skipping any already captured
+        # inside the imaging config), otherwise resolve from rig via fiber connection excitation wavelengths
         if stream.get("light_sources"):
             for light_source in stream.get("light_sources", []):
-                config = self._upgrade_light_source_config(light_source)
-                if config:
-                    configurations.append(config)
+                ls_name = light_source.get("name", "Unknown Device")
+                if ls_name not in imaging_used_light_source_names:
+                    config = self._upgrade_light_source_config(light_source)
+                    if config:
+                        configurations.append(config)
         else:
             rig_light_sources = getattr(self, "_rig_light_sources", [])
             added_wavelengths = set()
@@ -1150,8 +1176,6 @@ class SessionV1V2(CoreUpgrader):
         for mri_scan in stream.get("mri_scans", []):
             configurations.append(self._upgrade_mri_scan_to_config(mri_scan))
 
-        # Imaging config
-        imaging_config = self._create_imaging_config(stream, rig_id)
         if imaging_config:
             configurations.append(imaging_config)
 
