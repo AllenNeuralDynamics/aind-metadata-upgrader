@@ -274,7 +274,10 @@ class SessionV1V2(CoreUpgrader):
                 if matching_light_source:
                     light_source_name = matching_light_source.get("name", light_source_name)
         if not matching_light_source:
-            raise ValueError(f"Light source '{light_source_name}' with excitation {excitation_wavelength} not found in stream light sources")
+            raise ValueError(
+                f"Light source '{light_source_name}' with excitation "
+                f"{excitation_wavelength} not found in stream light sources"
+            )
 
         light_source_config = self._upgrade_light_source_config(matching_light_source)
 
@@ -1124,6 +1127,38 @@ class SessionV1V2(CoreUpgrader):
                         names.add(name)
         return names
 
+    def _resolve_light_source_configs_for_stream(self, stream: Dict, imaging_used_names: set) -> List[Dict]:
+        """Return top-level light source configs for a stream.
+
+        If the stream carries its own light_sources, upgrade those (skipping any already embedded
+        in the imaging config).  Otherwise fall back to matching rig light sources by excitation
+        wavelength pulled from each fiber connection channel.
+        """
+        configs = []
+        if stream.get("light_sources"):
+            for light_source in stream["light_sources"]:
+                if light_source.get("name", "Unknown Device") not in imaging_used_names:
+                    config = self._upgrade_light_source_config(light_source)
+                    if config:
+                        configs.append(config)
+        else:
+            rig_light_sources = getattr(self, "_rig_light_sources", [])
+            added_wavelengths: set = set()
+            for fc in stream.get("fiber_connections", []):
+                excitation_wavelength = fc.get("channel", {}).get("excitation_wavelength")
+                if excitation_wavelength is None or excitation_wavelength in added_wavelengths:
+                    continue
+                matching = next(
+                    (ls for ls in rig_light_sources if ls.get("wavelength") == int(excitation_wavelength)),
+                    None,
+                )
+                if matching:
+                    config = self._upgrade_light_source_config(matching)
+                    if config:
+                        configs.append(config)
+                        added_wavelengths.add(excitation_wavelength)
+        return configs
+
     def _upgrade_all_device_configurations(self, stream: Dict, rig_id: str) -> tuple:
         """Upgrade all device configurations from a stream and return configurations and connections"""
         configurations = []
@@ -1131,48 +1166,20 @@ class SessionV1V2(CoreUpgrader):
 
         # Build imaging config first so we can check which light sources it already uses
         imaging_config = self._create_imaging_config(stream, rig_id)
-        imaging_used_light_source_names = self._get_imaging_config_light_source_names(imaging_config)
+        imaging_used_names = self._get_imaging_config_light_source_names(imaging_config)
 
-        # Light source configs: use stream-level sources if present (skipping any already captured
-        # inside the imaging config), otherwise resolve from rig via fiber connection excitation wavelengths
-        if stream.get("light_sources"):
-            for light_source in stream.get("light_sources", []):
-                ls_name = light_source.get("name", "Unknown Device")
-                if ls_name not in imaging_used_light_source_names:
-                    config = self._upgrade_light_source_config(light_source)
-                    if config:
-                        configurations.append(config)
-        else:
-            rig_light_sources = getattr(self, "_rig_light_sources", [])
-            added_wavelengths = set()
-            for fc in stream.get("fiber_connections", []):
-                channel_data = fc.get("channel", {})
-                excitation_wavelength = channel_data.get("excitation_wavelength")
-                if excitation_wavelength is not None and excitation_wavelength not in added_wavelengths:
-                    matching = next(
-                        (ls for ls in rig_light_sources if ls.get("wavelength") == int(excitation_wavelength)),
-                        None,
-                    )
-                    if matching:
-                        config = self._upgrade_light_source_config(matching)
-                        if config:
-                            configurations.append(config)
-                            added_wavelengths.add(excitation_wavelength)
+        configurations.extend(self._resolve_light_source_configs_for_stream(stream, imaging_used_names))
 
         for detector in stream.get("detectors", []):
             configurations.append(self._upgrade_detector_config(detector))
 
-        # Ephys configs
         for ephys_module in stream.get("ephys_modules", []):
-            configs = self._upgrade_ephys_module_to_configs(ephys_module)
-            configurations.extend(configs)
+            configurations.extend(self._upgrade_ephys_module_to_configs(ephys_module))
 
-        # Fiber upgrader
         patchcord_configs, fiber_connections = self._upgrade_fiber(stream)
         configurations.extend(patchcord_configs)
         connections.extend(fiber_connections)
 
-        # MRI configs
         for mri_scan in stream.get("mri_scans", []):
             configurations.append(self._upgrade_mri_scan_to_config(mri_scan))
 
