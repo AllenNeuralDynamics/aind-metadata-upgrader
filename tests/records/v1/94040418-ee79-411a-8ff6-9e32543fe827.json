@@ -1,0 +1,2397 @@
+{
+    "_id": "94040418-ee79-411a-8ff6-9e32543fe827",
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "schema_version": "1.2.1",
+    "name": "behavior_717535_2024-10-25_10-24-48_processed_2026-04-10_21-32-50",
+    "created": "2026-04-10T21:39:58.525127Z",
+    "last_modified": "2026-06-02T04:16:13.811Z",
+    "location": "s3://codeocean-s3datasetsbucket-1u41qdg42ur9/8806dc51-993d-4ddb-9e03-059fb0e4509c",
+    "metadata_status": "Invalid",
+    "external_links": {
+        "Code Ocean": [
+            "8806dc51-993d-4ddb-9e03-059fb0e4509c"
+        ]
+    },
+    "subject": {
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": {
+            "breeding_group": "Gad2-IRES-Cre-Homo(ND)",
+            "maternal_genotype": "Gad2-IRES-Cre/Gad2-IRES-Cre",
+            "maternal_id": "693183",
+            "paternal_genotype": "Gad2-IRES-Cre/Gad2-IRES-Cre",
+            "paternal_id": "693177"
+        },
+        "date_of_birth": "2023-12-21",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "genotype": "Gad2-IRES-Cre/Gad2-IRES-Cre",
+        "housing": {
+            "cage_id": "8255643",
+            "cohoused_subjects": [],
+            "home_cage_enrichment": [],
+            "light_cycle": null,
+            "room_id": "221"
+        },
+        "notes": null,
+        "restrictions": null,
+        "rrid": null,
+        "schema_version": "1.0.0",
+        "sex": "Female",
+        "source": {
+            "abbreviation": "AI",
+            "name": "Allen Institute",
+            "registry": {
+                "abbreviation": "ROR",
+                "name": "Research Organization Registry"
+            },
+            "registry_identifier": "03cpe7c52"
+        },
+        "species": {
+            "name": "Mus musculus",
+            "registry": {
+                "abbreviation": "NCBI",
+                "name": "National Center for Biotechnology Information"
+            },
+            "registry_identifier": "NCBI:txid10090"
+        },
+        "subject_id": "717535",
+        "wellness_reports": []
+    },
+    "data_description": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "schema_version": "1.0.4",
+        "license": "CC-BY-4.0",
+        "platform": {
+            "name": "Behavior platform",
+            "abbreviation": "behavior"
+        },
+        "subject_id": "717535",
+        "creation_time": "2026-04-10T21:32:50.846601Z",
+        "label": null,
+        "name": "behavior_717535_2024-10-25_10-24-48_processed_2026-04-10_21-32-50",
+        "institution": {
+            "name": "Allen Institute for Neural Dynamics",
+            "abbreviation": "AIND",
+            "registry": {
+                "name": "Research Organization Registry",
+                "abbreviation": "ROR"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "funding_source": [
+            {
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null,
+                "fundee": "Cindy Poo, Jeremiah Cohen"
+            }
+        ],
+        "data_level": "derived",
+        "group": null,
+        "investigators": [
+            {
+                "name": "Cindy Poo",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            },
+            {
+                "name": "Jeremiah Cohen",
+                "abbreviation": null,
+                "registry": null,
+                "registry_identifier": null
+            }
+        ],
+        "project_name": "Behavior Platform",
+        "restrictions": null,
+        "modality": [
+            {
+                "name": "Behavior",
+                "abbreviation": "behavior"
+            },
+            {
+                "name": "Behavior videos",
+                "abbreviation": "behavior-videos"
+            }
+        ],
+        "related_data": [],
+        "data_summary": null,
+        "input_data_name": "behavior_717535_2024-10-25_10-24-48",
+        "process_name": "processed"
+    },
+    "procedures": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/procedures.py",
+        "schema_version": "1.2.1",
+        "subject_id": "717535",
+        "subject_procedures": [
+            {
+                "procedure_type": "Surgery",
+                "start_date": "2024-11-15",
+                "experimenter_full_name": "30361",
+                "iacuc_protocol": "2414",
+                "animal_weight_prior": null,
+                "animal_weight_post": null,
+                "weight_unit": "gram",
+                "anaesthesia": null,
+                "workstation_id": null,
+                "procedures": [
+                    {
+                        "procedure_type": "Perfusion",
+                        "output_specimen_ids": [
+                            "717535"
+                        ],
+                        "protocol_id": "dx.doi.org/10.17504/protocols.io.8epv51bejl1b/v6"
+                    }
+                ],
+                "notes": null
+            },
+            {
+                "procedure_type": "Surgery",
+                "start_date": "2024-02-19",
+                "experimenter_full_name": "NSB-949",
+                "iacuc_protocol": "2109",
+                "animal_weight_prior": "20.5",
+                "animal_weight_post": "22.4",
+                "weight_unit": "gram",
+                "anaesthesia": {
+                    "type": "isoflurane",
+                    "duration": "90.0",
+                    "duration_unit": "minute",
+                    "level": "1.5"
+                },
+                "workstation_id": "SWS 3",
+                "procedures": [
+                    {
+                        "procedure_type": "Headframe",
+                        "headframe_type": "AI Straight bar",
+                        "headframe_part_number": null,
+                        "headframe_material": null,
+                        "well_part_number": null,
+                        "well_type": "No Well"
+                    },
+                    {
+                        "injection_materials": [
+                            {
+                                "material_type": "Virus",
+                                "name": "ExP32011-pAAV-hsyn-GRAB-DA3m-WPRE",
+                                "tars_identifiers": {
+                                    "virus_tars_id": "VIR32011_PHPeB",
+                                    "plasmid_tars_alias": "ExP32011",
+                                    "prep_lot_number": "VT6557G",
+                                    "prep_date": "2023-12-21",
+                                    "prep_type": "Purified",
+                                    "prep_protocol": "SOP#VC003"
+                                },
+                                "addgene_id": {
+                                    "name": "ExP32011-pAAV-hsyn-GRAB-DA3m-WPRE",
+                                    "abbreviation": null,
+                                    "registry": null,
+                                    "registry_identifier": "208698"
+                                },
+                                "titer": 5000000000000,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "recovery_time": "15.0",
+                        "recovery_time_unit": "minute",
+                        "injection_duration": null,
+                        "injection_duration_unit": "minute",
+                        "instrument_id": null,
+                        "injection_coordinate_ml": "-1.5",
+                        "injection_coordinate_ap": "1.0",
+                        "injection_coordinate_depth": [
+                            "-4.2"
+                        ],
+                        "injection_coordinate_unit": "millimeter",
+                        "injection_coordinate_reference": "Bregma",
+                        "bregma_to_lambda_distance": "3.94",
+                        "bregma_to_lambda_unit": "millimeter",
+                        "injection_angle": "0.0",
+                        "injection_angle_unit": "degrees",
+                        "targeted_structure": {
+                            "atlas": "CCFv3",
+                            "name": "Nucleus accumbens",
+                            "acronym": "ACB",
+                            "id": "56"
+                        },
+                        "injection_hemisphere": "Left",
+                        "procedure_type": "Nanoject injection",
+                        "injection_volume": [
+                            "200.0"
+                        ],
+                        "injection_volume_unit": "nanoliter"
+                    },
+                    {
+                        "procedure_type": "Fiber implant",
+                        "probes": [
+                            {
+                                "ophys_probe": {
+                                    "device_type": "Fiber optic probe",
+                                    "serial_number": null,
+                                    "manufacturer": {
+                                        "name": "Neurophotometrics",
+                                        "abbreviation": null,
+                                        "registry": null,
+                                        "registry_identifier": null
+                                    },
+                                    "model": null,
+                                    "path_to_cad": null,
+                                    "port_index": null,
+                                    "additional_settings": {},
+                                    "notes": null,
+                                    "core_diameter": 200,
+                                    "core_diameter_unit": "micrometer",
+                                    "numerical_aperture": 0.37,
+                                    "ferrule_material": "Ceramic",
+                                    "active_length": null,
+                                    "total_length": "4.5",
+                                    "length_unit": "millimeter",
+                                    "name": "Fiber_1"
+                                },
+                                "targeted_structure": {
+                                    "atlas": "CCFv3",
+                                    "name": "Nucleus accumbens",
+                                    "acronym": "ACB",
+                                    "id": "56"
+                                },
+                                "stereotactic_coordinate_ap": "1.0",
+                                "stereotactic_coordinate_ml": "-1.5",
+                                "stereotactic_coordinate_dv": "-4.1",
+                                "stereotactic_coordinate_unit": "millimeter",
+                                "stereotactic_coordinate_reference": "Bregma",
+                                "bregma_to_lambda_distance": "3.94",
+                                "bregma_to_lambda_unit": "millimeter",
+                                "angle": "0.0",
+                                "angle_unit": "degrees",
+                                "notes": null
+                            }
+                        ]
+                    },
+                    {
+                        "injection_materials": [
+                            {
+                                "material_type": "Virus",
+                                "name": "ExP32011-pAAV-hsyn-GRAB-DA3m-WPRE",
+                                "tars_identifiers": {
+                                    "virus_tars_id": "VIR32011_PHPeB",
+                                    "plasmid_tars_alias": "ExP32011",
+                                    "prep_lot_number": "VT6557G",
+                                    "prep_date": "2023-12-21",
+                                    "prep_type": "Purified",
+                                    "prep_protocol": "SOP#VC003"
+                                },
+                                "addgene_id": {
+                                    "name": "ExP32011-pAAV-hsyn-GRAB-DA3m-WPRE",
+                                    "abbreviation": null,
+                                    "registry": null,
+                                    "registry_identifier": "208698"
+                                },
+                                "titer": 5000000000000,
+                                "titer_unit": "gc/mL"
+                            }
+                        ],
+                        "recovery_time": "15.0",
+                        "recovery_time_unit": "minute",
+                        "injection_duration": null,
+                        "injection_duration_unit": "minute",
+                        "instrument_id": null,
+                        "injection_coordinate_ml": "0.5",
+                        "injection_coordinate_ap": "2.0",
+                        "injection_coordinate_depth": [
+                            "-1.6"
+                        ],
+                        "injection_coordinate_unit": "millimeter",
+                        "injection_coordinate_reference": "Bregma",
+                        "bregma_to_lambda_distance": "3.94",
+                        "bregma_to_lambda_unit": "millimeter",
+                        "injection_angle": "0.0",
+                        "injection_angle_unit": "degrees",
+                        "targeted_structure": {
+                            "atlas": "CCFv3",
+                            "name": "Prelimbic area",
+                            "acronym": "PL",
+                            "id": "972"
+                        },
+                        "injection_hemisphere": "Right",
+                        "procedure_type": "Nanoject injection",
+                        "injection_volume": [
+                            "200.0"
+                        ],
+                        "injection_volume_unit": "nanoliter"
+                    },
+                    {
+                        "procedure_type": "Fiber implant",
+                        "probes": [
+                            {
+                                "ophys_probe": {
+                                    "device_type": "Fiber optic probe",
+                                    "serial_number": null,
+                                    "manufacturer": {
+                                        "name": "Neurophotometrics",
+                                        "abbreviation": null,
+                                        "registry": null,
+                                        "registry_identifier": null
+                                    },
+                                    "model": null,
+                                    "path_to_cad": null,
+                                    "port_index": null,
+                                    "additional_settings": {},
+                                    "notes": null,
+                                    "core_diameter": 200,
+                                    "core_diameter_unit": "micrometer",
+                                    "numerical_aperture": 0.37,
+                                    "ferrule_material": "Ceramic",
+                                    "active_length": null,
+                                    "total_length": "2.0",
+                                    "length_unit": "millimeter",
+                                    "name": "Fiber_0"
+                                },
+                                "targeted_structure": {
+                                    "atlas": "CCFv3",
+                                    "name": "Prelimbic area",
+                                    "acronym": "PL",
+                                    "id": "972"
+                                },
+                                "stereotactic_coordinate_ap": "2.0",
+                                "stereotactic_coordinate_ml": "0.5",
+                                "stereotactic_coordinate_dv": "-1.5",
+                                "stereotactic_coordinate_unit": "millimeter",
+                                "stereotactic_coordinate_reference": "Bregma",
+                                "bregma_to_lambda_distance": "3.94",
+                                "bregma_to_lambda_unit": "millimeter",
+                                "angle": "0.0",
+                                "angle_unit": "degrees",
+                                "notes": null
+                            }
+                        ]
+                    }
+                ],
+                "notes": null,
+                "protocol_id": "dx.doi.org/10.17504/protocols.io.kqdg392o7g25/v2"
+            }
+        ],
+        "specimen_procedures": [],
+        "notes": null
+    },
+    "session": {
+        "active_mouse_platform": false,
+        "anaesthesia": null,
+        "animal_weight_post": "21.7",
+        "animal_weight_prior": null,
+        "calibrations": [],
+        "data_streams": [
+            {
+                "camera_names": [],
+                "daq_names": [
+                    "Harp Behavior",
+                    "Harp Sound",
+                    "Harp clock synchronization board",
+                    "Harp sound amplifier",
+                    "Lick Sensor Left",
+                    "Lick Sensor Right"
+                ],
+                "detectors": [
+                    {
+                        "name": "FLIR CMOS for Red Channel"
+                    },
+                    {
+                        "name": "FLIR CMOS for Green Channel"
+                    }
+                ],
+                "ephys_modules": [],
+                "fiber_connections": [
+                    {
+                        "channel": {
+                            "additional_device_names": [],
+                            "channel_name": "Fiber_0_green",
+                            "description": "Green emission (510nm) with blue excitation (470nm)",
+                            "detector_name": "FLIR CMOS for Green Channel",
+                            "dilation": null,
+                            "dilation_unit": "pixel",
+                            "emission_wavelength": 510,
+                            "emission_wavelength_unit": "nanometer",
+                            "excitation_power": 1,
+                            "excitation_power_unit": "microwatt",
+                            "excitation_wavelength": 470,
+                            "excitation_wavelength_unit": "nanometer",
+                            "filter_names": [
+                                "Green emission bandpass filter",
+                                "dual-edge standard epi-fluorescence dichroic beamsplitter",
+                                "Excitation filter 470nm"
+                            ],
+                            "filter_wheel_index": null,
+                            "intended_measurement": "dopamine",
+                            "light_source_name": "LED"
+                        },
+                        "fiber_name": "Fiber_0",
+                        "output_power_unit": "microwatt",
+                        "patch_cord_name": "Patch Cord A",
+                        "patch_cord_output_power": "0"
+                    },
+                    {
+                        "channel": {
+                            "additional_device_names": [],
+                            "channel_name": "Fiber_0_isosbestic",
+                            "description": "Isosbestic control emission (510nm) with UV excitation (415nm)",
+                            "detector_name": "FLIR CMOS for Green Channel",
+                            "dilation": null,
+                            "dilation_unit": "pixel",
+                            "emission_wavelength": 510,
+                            "emission_wavelength_unit": "nanometer",
+                            "excitation_power": 1,
+                            "excitation_power_unit": "microwatt",
+                            "excitation_wavelength": 415,
+                            "excitation_wavelength_unit": "nanometer",
+                            "filter_names": [
+                                "Green emission bandpass filter",
+                                "dual-edge standard epi-fluorescence dichroic beamsplitter",
+                                "Excitation filter 410nm"
+                            ],
+                            "filter_wheel_index": null,
+                            "intended_measurement": "control",
+                            "light_source_name": "LED"
+                        },
+                        "fiber_name": "Fiber_0",
+                        "output_power_unit": "microwatt",
+                        "patch_cord_name": "Patch Cord A",
+                        "patch_cord_output_power": "0"
+                    },
+                    {
+                        "channel": {
+                            "additional_device_names": [],
+                            "channel_name": "Fiber_1_green",
+                            "description": "Green emission (510nm) with blue excitation (470nm)",
+                            "detector_name": "FLIR CMOS for Green Channel",
+                            "dilation": null,
+                            "dilation_unit": "pixel",
+                            "emission_wavelength": 510,
+                            "emission_wavelength_unit": "nanometer",
+                            "excitation_power": 1,
+                            "excitation_power_unit": "microwatt",
+                            "excitation_wavelength": 470,
+                            "excitation_wavelength_unit": "nanometer",
+                            "filter_names": [
+                                "Green emission bandpass filter",
+                                "dual-edge standard epi-fluorescence dichroic beamsplitter",
+                                "Excitation filter 470nm"
+                            ],
+                            "filter_wheel_index": null,
+                            "intended_measurement": "dopamine",
+                            "light_source_name": "LED"
+                        },
+                        "fiber_name": "Fiber_1",
+                        "output_power_unit": "microwatt",
+                        "patch_cord_name": "Patch Cord A",
+                        "patch_cord_output_power": "0"
+                    },
+                    {
+                        "channel": {
+                            "additional_device_names": [],
+                            "channel_name": "Fiber_1_isosbestic",
+                            "description": "Isosbestic control emission (510nm) with UV excitation (415nm)",
+                            "detector_name": "FLIR CMOS for Green Channel",
+                            "dilation": null,
+                            "dilation_unit": "pixel",
+                            "emission_wavelength": 510,
+                            "emission_wavelength_unit": "nanometer",
+                            "excitation_power": 1,
+                            "excitation_power_unit": "microwatt",
+                            "excitation_wavelength": 415,
+                            "excitation_wavelength_unit": "nanometer",
+                            "filter_names": [
+                                "Green emission bandpass filter",
+                                "dual-edge standard epi-fluorescence dichroic beamsplitter",
+                                "Excitation filter 410nm"
+                            ],
+                            "filter_wheel_index": null,
+                            "intended_measurement": "control",
+                            "light_source_name": "LED"
+                        },
+                        "fiber_name": "Fiber_1",
+                        "output_power_unit": "microwatt",
+                        "patch_cord_name": "Patch Cord A",
+                        "patch_cord_output_power": "0"
+                    }
+                ],
+                "fiber_modules": [],
+                "light_sources": [],
+                "manipulator_modules": [],
+                "mri_scans": [],
+                "notes": "None This record has been updated to include intended measurements. Fiber connections are repeated for fibers with multiple channels. Disconnected fibers are marked with fiber_name 'disconnected'.",
+                "ophys_fovs": [],
+                "slap_fovs": [],
+                "software": [
+                    {
+                        "name": "dynamic-foraging-task",
+                        "parameters": {},
+                        "url": "https://github.com/AllenNeuralDynamics/dynamic-foraging-task.git",
+                        "version": "behavior branch:main   commit ID:7cfa7c02e7cd498774e7f5e7bcc15962200df3a8    version:1.6.6; metadata branch: main   commit ID:7cfa7c02e7cd498774e7f5e7bcc15962200df3a8   version:1.6.6"
+                    }
+                ],
+                "stack_parameters": null,
+                "stick_microscopes": [],
+                "stream_end_time": "2024-10-25T11:39:51.756458-07:00",
+                "stream_modalities": [
+                    {
+                        "abbreviation": "behavior",
+                        "name": "Behavior"
+                    },
+                    {
+                        "abbreviation": "fib",
+                        "name": "Fiber photometry"
+                    }
+                ],
+                "stream_start_time": "2024-10-25T10:24:48.557209-07:00"
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/session.py",
+        "experimenter_full_name": [
+            "Henry Loeffler"
+        ],
+        "headframe_registration": null,
+        "iacuc_protocol": "2109",
+        "maintenance": [],
+        "mouse_platform_name": "mouse_tube_foraging",
+        "notes": "",
+        "protocol_id": [
+            ""
+        ],
+        "reward_consumed_total": "302.0",
+        "reward_consumed_unit": "microliter",
+        "reward_delivery": null,
+        "rig_id": "447_2D_20241023",
+        "schema_version": "1.0.1",
+        "session_end_time": "2024-10-25T11:39:51.756458-07:00",
+        "session_start_time": "2024-10-25T10:24:48.557209-07:00",
+        "session_type": "Coupled Without Baiting",
+        "stimulus_epochs": [
+            {
+                "light_source_config": [],
+                "notes": "The duration of go cue is 100ms. The frequency is 7500Hz. Decibel is 71dB. The total reward consumed in the session is 302.0 microliter. The total reward indcluding consumed in the session and supplementary water is 1.314 millimeters.",
+                "output_parameters": {
+                    "meta": {
+                        "box": "447-2-D",
+                        "session_end_time": "2024-10-25 11:39:51.756458",
+                        "session_run_time_in_min": 75
+                    },
+                    "performance": {
+                        "foraging_efficiency": 0.20841458658346335,
+                        "foraging_efficiency_with_actual_random_seed": 0.20787746170678337
+                    },
+                    "task_parameters": {
+                        "AddOneTrialForNoresponse": "Yes",
+                        "AdvancedBlockAuto": "now",
+                        "AlignToGoCue": "yes",
+                        "AutoReward": true,
+                        "AutoTrain": false,
+                        "AutoWaterType": "Natural",
+                        "BaseRewardSum": "0.8",
+                        "BaseWeight": "26.67",
+                        "BlockBeta": "10",
+                        "BlockMax": "35",
+                        "BlockMin": "20",
+                        "BlockMinReward": "0",
+                        "Camera_dialog": {
+                            "AutoControl": "No",
+                            "FrameRate": "500",
+                            "OpenSaveFolder": false,
+                            "StartPreview": false,
+                            "StartRecording": false,
+                            "camera_start_time": "",
+                            "camera_stop_time": "",
+                            "qt_spinbox_lineedit": "500"
+                        },
+                        "Clear": false,
+                        "DelayBeta": "0.0",
+                        "DelayMax": "0.25",
+                        "DelayMin": "0.25",
+                        "Experimenter": "Henry Loeffler",
+                        "FIPMode": "Normal",
+                        "GetPositions": false,
+                        "GiveLeft": false,
+                        "GiveRight": false,
+                        "GiveWaterL": "0.028",
+                        "GiveWaterL_volume": "3.00",
+                        "GiveWaterR": "0.026",
+                        "GiveWaterR_volume": "3.00",
+                        "HarpFolder": "C:\\behavior_data\\447-2-D\\717535\\behavior_717535_2024-10-25_10-24-48\\behavior\\raw.harp",
+                        "ID": "717535",
+                        "ITIBeta": "3.0",
+                        "ITIIncrease": "0",
+                        "ITIMax": "10.0",
+                        "ITIMin": "1.0",
+                        "Ignored": "7",
+                        "IncludeAutoReward": "no",
+                        "InitiallyInactiveN": "2",
+                        "LaserCalibration_dialog": {
+                            "Capture": false,
+                            "CopyCondition": "Condition_1",
+                            "CopyFromOpto": false,
+                            "CopyLaser": "Laser_1",
+                            "CopyToSession": false,
+                            "Duration_1": "10",
+                            "Flush_DO0": false,
+                            "Flush_DO1": false,
+                            "Flush_DO2": false,
+                            "Flush_DO3": false,
+                            "Flush_Port2": false,
+                            "Frequency_1": "40",
+                            "KeepOpen": false,
+                            "LaserColor_1": "Blue",
+                            "LaserPowerMeasured": "",
+                            "Location_1": "Both",
+                            "Open": false,
+                            "Protocol_1": "Sine",
+                            "PulseDur_1": "0.002",
+                            "RD_1": "1",
+                            "SampleFrequency": "5000",
+                            "Save": false,
+                            "qt_spinbox_lineedit": "",
+                            "showrecentlaser": "",
+                            "showspecificcalilaser": "NA",
+                            "voltage": "0.1"
+                        },
+                        "LeftValue": "0.019",
+                        "LeftValue_volume": "2.00",
+                        "Load": false,
+                        "ManualWaterVolume": [
+                            0,
+                            0
+                        ],
+                        "MartchingType": "log ratio",
+                        "MaxTime": "75",
+                        "MaxTrial": "1000",
+                        "MetadataFolder": "C:\\behavior_data\\447-2-D\\717535\\behavior_717535_2024-10-25_10-24-48\\metadata-dir",
+                        "Metadata_dialog": {
+                            "ArcAngle": "",
+                            "ClearMetadata": false,
+                            "DataSummary": "",
+                            "EphysProbes": "",
+                            "ExperimentDescription": "",
+                            "Fundee": "nan",
+                            "FundingSource": "Allen Institute",
+                            "GoCueDecibel": "71",
+                            "GrantNumber": "nan",
+                            "IACUCProtocol": "2109",
+                            "Investigators": "Jeremiah Cohen",
+                            "LickSpoutDistance": "",
+                            "LickSpoutReferenceArea": "",
+                            "LickSpoutReferenceX": "",
+                            "LickSpoutReferenceY": "",
+                            "LickSpoutReferenceZ": "",
+                            "LoadMeta": false,
+                            "ManipulatorX": "",
+                            "ManipulatorY": "",
+                            "ManipulatorZ": "",
+                            "ModuleAngle": "",
+                            "ProbeTarget": "",
+                            "ProjectName": "Behavior Platform",
+                            "ProtocolID": "",
+                            "RigMetadataFile": "rig_447-2-D_2024-10-23_09_48_22.json",
+                            "RotationAngle": "",
+                            "SaveMeta": false,
+                            "SelectRigMetadata": false,
+                            "StickMicroscopes": "",
+                            "Stick_ArcAngle": "",
+                            "Stick_ModuleAngle": "",
+                            "Stick_RotationAngle": ""
+                        },
+                        "MoveXN": false,
+                        "MoveXN_2": false,
+                        "MoveXP": false,
+                        "MoveXP_2": false,
+                        "MoveYN": false,
+                        "MoveYP": false,
+                        "MoveZN": false,
+                        "MoveZP": false,
+                        "Multiplier": "0.5",
+                        "NewSession": false,
+                        "NextBlock": false,
+                        "OpenEphysRecordingType": "Behavior",
+                        "Opto_dialog": {
+                            "": "40",
+                            "ConditionP_1": "1",
+                            "ConditionP_2": "1",
+                            "ConditionP_3": "1",
+                            "ConditionP_4": "1",
+                            "ConditionP_5": "1",
+                            "ConditionP_6": "1",
+                            "Condition_1": "NA",
+                            "Condition_2": "NA",
+                            "Condition_3": "NA",
+                            "Condition_4": "NA",
+                            "Condition_5": "NA",
+                            "Condition_6": "NA",
+                            "Duration_1": "5",
+                            "Duration_2": "5",
+                            "Duration_3": "5",
+                            "Duration_4": "5",
+                            "Duration_5": "5",
+                            "Duration_6": "5",
+                            "FractionOfSession": "0.5",
+                            "Frequency_1": "40",
+                            "Frequency_2": "40",
+                            "Frequency_3": "40",
+                            "Frequency_4": "40",
+                            "Frequency_5": "40",
+                            "Frequency_6": "40",
+                            "Laser1_power_1": "0 mw",
+                            "Laser1_power_2": "0 mw",
+                            "Laser1_power_3": "0 mw",
+                            "Laser1_power_4": "0 mw",
+                            "Laser1_power_5": "0 mw",
+                            "Laser1_power_6": "0 mw",
+                            "Laser2_power_1": "0 mw",
+                            "Laser2_power_2": "0 mw",
+                            "Laser2_power_3": "0 mw",
+                            "Laser2_power_4": "0 mw",
+                            "Laser2_power_5": "0 mw",
+                            "Laser2_power_6": "0 mw",
+                            "LaserColor_1": "NA",
+                            "LaserColor_2": "NA",
+                            "LaserColor_3": "NA",
+                            "LaserColor_4": "NA",
+                            "LaserColor_5": "NA",
+                            "LaserColor_6": "NA",
+                            "LaserEnd_1": "Trial start",
+                            "LaserEnd_2": "Trial start",
+                            "LaserEnd_3": "Trial start",
+                            "LaserEnd_4": "Trial start",
+                            "LaserEnd_5": "Trial start",
+                            "LaserEnd_6": "Trial start",
+                            "LaserStart_1": "Trial start",
+                            "LaserStart_2": "Trial start",
+                            "LaserStart_3": "Trial start",
+                            "LaserStart_4": "Trial start",
+                            "LaserStart_5": "Trial start",
+                            "LaserStart_6": "Trial start",
+                            "Laser_calibration": "Blue",
+                            "LatestCalibrationDate": "NA",
+                            "Location_1": "Both",
+                            "Location_2": "Both",
+                            "Location_3": "Both",
+                            "Location_4": "Both",
+                            "Location_5": "Both",
+                            "Location_6": "Both",
+                            "MinOptoInterval": "0",
+                            "OffsetEnd_1": "0",
+                            "OffsetEnd_2": "0",
+                            "OffsetEnd_3": "0",
+                            "OffsetEnd_4": "0",
+                            "OffsetEnd_5": "0",
+                            "OffsetEnd_6": "0",
+                            "OffsetStart_1": "0",
+                            "OffsetStart_2": "0",
+                            "OffsetStart_3": "0",
+                            "OffsetStart_4": "0",
+                            "OffsetStart_5": "0",
+                            "OffsetStart_6": "0",
+                            "Probability_1": "0.25",
+                            "Probability_2": "0.25",
+                            "Probability_3": "0.25",
+                            "Probability_4": "0.25",
+                            "Probability_5": "0.25",
+                            "Probability_6": "0.25",
+                            "Protocol_1": "Sine",
+                            "Protocol_2": "Sine",
+                            "Protocol_3": "Sine",
+                            "Protocol_4": "Sine",
+                            "Protocol_5": "Sine",
+                            "Protocol_6": "Sine",
+                            "PulseDur_1": "0.002",
+                            "PulseDur_2": "0.002",
+                            "PulseDur_3": "0.002",
+                            "PulseDur_4": "0.002",
+                            "PulseDur_5": "0.002",
+                            "PulseDur_6": "0.002",
+                            "RD_1": "1",
+                            "RD_2": "1",
+                            "RD_3": "1",
+                            "RD_4": "1",
+                            "RD_5": "1",
+                            "RD_6": "1",
+                            "SampleFrequency": "5000",
+                            "SessionAlternating": "on",
+                            "SessionStartWith": "on",
+                            "SessionWideControl": "off",
+                            "laser_1_calibration_power": "",
+                            "laser_1_calibration_voltage": "",
+                            "laser_1_target": "",
+                            "laser_2_calibration_power": "",
+                            "laser_2_calibration_voltage": "",
+                            "laser_2_target": ""
+                        },
+                        "OptogeneticsB": "off",
+                        "Ot_log_folder": "C:\\behavior_data\\447-2-D\\717535\\behavior_717535_2024-10-25_10-24-48\\behavior\\raw.harp",
+                        "Other_CurrentTime": "2024-10-25 11:39:51.756458",
+                        "Other_RunningTime": 75,
+                        "Other_SessionStartTime": "2024-10-25 10:24:48.557209",
+                        "Other_current_box": "447-2-D",
+                        "Other_go_cue_decibel": "71",
+                        "Other_lick_spout_distance": 5000,
+                        "Other_manual_water_left_time": [
+                            27.779934308748874,
+                            27.779934308748874,
+                            27.779934308748874,
+                            27.779934308748874,
+                            52.86204837264854
+                        ],
+                        "Other_manual_water_left_volume": [
+                            3,
+                            3,
+                            3,
+                            3,
+                            6
+                        ],
+                        "Other_manual_water_right_time": [
+                            25.510543840177583,
+                            25.510543840177583,
+                            25.510543840177583,
+                            25.510543840177583,
+                            25.510543840177583,
+                            25.510543840177583,
+                            25.510543840177583,
+                            25.510543840177583
+                        ],
+                        "Other_manual_water_right_volume": [
+                            3,
+                            3,
+                            3,
+                            3,
+                            3,
+                            3,
+                            3,
+                            3
+                        ],
+                        "PhotometryB": "off",
+                        "PhotometryFolder": "C:\\behavior_data\\447-2-D\\717535\\behavior_717535_2024-10-25_10-24-48\\fib",
+                        "PointsInARow": "5",
+                        "PositionX": "8508.5",
+                        "PositionY": "5707.0",
+                        "PositionZ": "5647.0",
+                        "Randomness": "Exponential",
+                        "ResponseTime": "1.5",
+                        "RewardConsumeTime": "1.0",
+                        "RewardDelay": "0.1",
+                        "RewardFamily": "1",
+                        "RewardPairsN": "1",
+                        "RightValue": "0.018",
+                        "RightValue_volume": "2.00",
+                        "RunLength": "10",
+                        "Save": true,
+                        "SaveFile": "C:\\behavior_data\\447-2-D\\717535\\behavior_717535_2024-10-25_10-24-48\\behavior\\717535_2024-10-25_10-24-48.json",
+                        "SessionFolder": "C:\\behavior_data\\447-2-D\\717535\\behavior_717535_2024-10-25_10-24-48",
+                        "Sessionlist": "",
+                        "SessionlistSpin": "1",
+                        "SetReference": false,
+                        "ShowNotes": "",
+                        "StageStop": false,
+                        "Start": false,
+                        "StartBleaching": false,
+                        "StartEphysRecording": false,
+                        "StartExcitation": false,
+                        "StartFIP": false,
+                        "Step": "200",
+                        "StepSize": "5",
+                        "StopIgnores": "25",
+                        "SuggestedWater": "0.97",
+                        "SwitchThr": "0.5",
+                        "TargetRatio": "0.85",
+                        "TargetWeight": "22.67",
+                        "Task": "Coupled Without Baiting",
+                        "TotalWater": "1.314",
+                        "TrainingFolder": "C:\\behavior_data\\447-2-D\\717535\\behavior_717535_2024-10-25_10-24-48\\behavior",
+                        "UncoupledReward": "0.1,0.3,0.7",
+                        "Unrewarded": "7",
+                        "VideoFolder": "C:\\behavior_data\\447-2-D\\717535\\behavior_717535_2024-10-25_10-24-48\\behavior-videos",
+                        "WeightAfter": "21.7",
+                        "WindowSize": "100",
+                        "baselinetime": "10",
+                        "box": "447-2-D",
+                        "commit_ID": "7cfa7c02e7cd498774e7f5e7bcc15962200df3a8",
+                        "current_branch": "main",
+                        "curriculum_in_use": "Uncoupled Without Baiting (v2.3.1rwdDelay159@1.0)",
+                        "dirty_files": "",
+                        "drop_frames_tag": 0,
+                        "drop_frames_warning_text": "",
+                        "fiber_mode": "Normal",
+                        "fiber_photometry_end_time": "",
+                        "fiber_photometry_start_time": "",
+                        "frame_num": {},
+                        "generate_data_description_success": true,
+                        "generate_rig_metadata_success": true,
+                        "generate_session_metadata_success": true,
+                        "info_performance_essential_1": "Current trial: 642\nResponded trial: 193/641 (0.30)\nReward Trial: 95/641 (0.15)\nEarned Reward: 0.190 mL\nWater in session: 0.344 mL",
+                        "info_performance_essential_2": "Foraging eff: 0.21\nForaging eff (r.s.): 0.21\n\nBias: 0.00 (right)",
+                        "info_performance_others": "Left choice rewarded: 37/70 (0.53)\nRight choice rewarded: 58/123 (0.47)\n\nEarly licking (EL)\n  Frac of EL trial start_goCue: 384/640 (0.6)\n  Frac of EL trial start_delay: 369/640 (0.58)\n  Frac of EL trial delay_goCue: 75/640 (0.12)\n  Left/Right early licks start_goCue: 644/1118 (0.58)\n\nDouble dipping (DD)\n  Frac of DD trial start_goCue: 18/640 (0.03)\n  Frac of DD trial start_delay: 14/640 (0.02)\n  Frac of DD trial delay_goCue: 5/640 (0.01)\n  Frac of DD trial goCue_goCue1: 2/640 (0.0)\n  DD per finish trial start_goCue: 0.04\n  DD per finish trial goCue_goCue1: 0.04\n\n  Frac of DD trial goCue_nextStart: 4/639 (0.01)\n  DD per finish trial goCue_nextStart: 0.06\n",
+                        "info_task": "Session started: 10:24\nCurrent time: 11:39\nRun time: 75 mins\n\nCurrent left block: 94/95\nCurrent right block: 94/95",
+                        "open_ephys": [],
+                        "pushButton_streamlit": false,
+                        "qt_spinbox_lineedit": "10",
+                        "repo_dirty_flag": false,
+                        "repo_url": "https://github.com/AllenNeuralDynamics/dynamic-foraging-task.git",
+                        "saving_type_label": "force saving",
+                        "session_metadata": {},
+                        "settings": {
+                            "AutomaticUpload": true,
+                            "FIP_settings": "C:\\Users\\svc_aind_behavior\\Documents\\FIPSettings",
+                            "FIP_workflow_path": "C:\\Users\\svc_aind_behavior\\Documents\\Github\\FIP_DAQ_Control\\src\\ThorFIP.bonsai",
+                            "Teensy_COM_box1": "",
+                            "Teensy_COM_box2": "",
+                            "Teensy_COM_box3": "",
+                            "Teensy_COM_box4": "COM9",
+                            "auto_engage": true,
+                            "bonsai_config_path": "C:\\Users\\svc_aind_behavior\\Documents\\GitHub\\dynamic-foraging-task\\bonsai\\Bonsai.config",
+                            "bonsai_path": "C:\\Users\\svc_aind_behavior\\Documents\\Github\\dynamic-foraging-task\\bonsai\\Bonsai.exe",
+                            "bonsaiworkflow_path": "C:\\Users\\svc_aind_behavior\\Documents\\Github\\dynamic-foraging-task\\src\\workflows\\foraging.bonsai",
+                            "clear_figure_after_save": true,
+                            "create_rig_metadata": true,
+                            "current_box": "447-2",
+                            "default_openFolder": "C:\\behavior_data\\",
+                            "default_saveFolder": "C:\\behavior_data\\",
+                            "default_ui": "ForagingGUI.ui",
+                            "go_cue_decibel_box1": 75,
+                            "go_cue_decibel_box2": 75,
+                            "go_cue_decibel_box3": 74,
+                            "go_cue_decibel_box4": 71,
+                            "lick_spout_distance_box1": 5000,
+                            "lick_spout_distance_box2": 5000,
+                            "lick_spout_distance_box3": 5000,
+                            "lick_spout_distance_box4": 5000,
+                            "manifest_flag_dir": "C:\\Users\\svc_aind_behavior\\Documents\\aind_watchdog_service\\manifest",
+                            "metadata_dialog_folder": "C:\\Users\\svc_aind_behavior\\Documents\\ForagingSettings\\metadata_dialog\\",
+                            "name_mapper_file": "C:\\Users\\svc_aind_behavior\\Documents\\ForagingSettings\\name_mapper.json",
+                            "newscale_serial_num_box1": "",
+                            "newscale_serial_num_box2": "",
+                            "newscale_serial_num_box3": "46797",
+                            "newscale_serial_num_box4": "46794",
+                            "open_ephys_machine_ip_address": "",
+                            "project_info_file": "C:\\Users\\svc_aind_behavior\\Documents\\ForagingSettings\\Project Name and Funding Source v2.csv",
+                            "rig_metadata_folder": "C:\\Users\\svc_aind_behavior\\Documents\\ForagingSettings\\rig_metadata\\",
+                            "save_each_trial": true,
+                            "schedule_path": "Z:\\dynamic_foraging\\DynamicForagingSchedule.csv",
+                            "show_log_info_in_console": false,
+                            "temporary_video_folder": "C:\\Users\\svc_aind_behavior\\Documents\\temporaryvideo\\"
+                        },
+                        "settings_box": {
+                            "AINDLickDetector": "0",
+                            "AttenuationLeft": "50",
+                            "AttenuationRight": "50",
+                            "Behavior": "COM3",
+                            "BonsaiOsc1": "4032",
+                            "BonsaiOsc2": "4033",
+                            "BonsaiOsc3": "4034",
+                            "BonsaiOsc4": "4035",
+                            "FipObjectiveSerialNumber": "128122507",
+                            "HighSpeedCamera": "0",
+                            "Soundcard": "COM5",
+                            "current_box": "447-2-D"
+                        },
+                        "stage_in_use": "STAGE_2",
+                        "trigger_length": 0,
+                        "version": "1.6.6",
+                        "warm_max_choice_ratio_bias": "0.1",
+                        "warm_min_finish_ratio": "0.8",
+                        "warm_min_trial": "60",
+                        "warm_windowsize": "20",
+                        "warmup": "off"
+                    },
+                    "water": {
+                        "water_after_session": 0.97,
+                        "water_day_total": 1.314,
+                        "water_in_session_foraging": 0.302,
+                        "water_in_session_manual": 0.04200000000000009,
+                        "water_in_session_total": 0.3440000000000001
+                    },
+                    "weight": {
+                        "base_weight": 26.67,
+                        "target_weight": 22.67,
+                        "target_weight_ratio": 0.85,
+                        "weight_after": 21.7
+                    }
+                },
+                "reward_consumed_during_epoch": "302.0",
+                "reward_consumed_unit": "microliter",
+                "script": null,
+                "session_number": null,
+                "software": [
+                    {
+                        "name": "dynamic-foraging-task",
+                        "parameters": {},
+                        "url": "https://github.com/AllenNeuralDynamics/dynamic-foraging-task.git",
+                        "version": "behavior branch:main   commit ID:7cfa7c02e7cd498774e7f5e7bcc15962200df3a8    version:1.6.6; metadata branch: main   commit ID:7cfa7c02e7cd498774e7f5e7bcc15962200df3a8   version:1.6.6"
+                    }
+                ],
+                "speaker_config": {
+                    "name": "Stimulus Speaker",
+                    "volume": "71",
+                    "volume_unit": "decibels"
+                },
+                "stimulus_device_names": [],
+                "stimulus_end_time": "2024-10-25T11:39:51.756458-07:00",
+                "stimulus_modalities": [
+                    "Auditory"
+                ],
+                "stimulus_name": "auditory go cue",
+                "stimulus_parameters": [
+                    {
+                        "amplitude_modulation_frequency": 7500,
+                        "bandpass_filter_type": null,
+                        "bandpass_high_frequency": null,
+                        "bandpass_low_frequency": null,
+                        "bandpass_order": null,
+                        "frequency_unit": "hertz",
+                        "notes": null,
+                        "sample_frequency": "96000",
+                        "sitmulus_name": "auditory go cue",
+                        "stimulus_type": "Auditory Stimulation"
+                    }
+                ],
+                "stimulus_start_time": "2024-10-25T10:24:48.557209-07:00",
+                "trials_finished": 193,
+                "trials_rewarded": 95,
+                "trials_total": 641
+            }
+        ],
+        "subject_id": "717535",
+        "weight_unit": "gram"
+    },
+    "rig": {
+        "additional_devices": [
+            {
+                "additional_settings": {},
+                "device_type": "Photometry Clock",
+                "manufacturer": null,
+                "model": null,
+                "name": "Photometry Clock",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null
+            }
+        ],
+        "calibrations": [
+            {
+                "calibration_date": "2024-09-26T00:00:00-07:00",
+                "description": "Water calibration for Lick spout Left. The input is the valve open time in seconds and the output is the volume of water delivered in microliters.",
+                "device_name": "Lick spout Left",
+                "input": {
+                    "valve open time (s):": [
+                        0.02,
+                        0.025,
+                        0.03,
+                        0.035,
+                        0.04,
+                        0.045,
+                        0.05
+                    ]
+                },
+                "notes": null,
+                "output": {
+                    "water volume (ul):": [
+                        2,
+                        2.7,
+                        3.315,
+                        3.86,
+                        4.495,
+                        5.06,
+                        5.615
+                    ]
+                }
+            },
+            {
+                "calibration_date": "2024-09-26T00:00:00-07:00",
+                "description": "Water calibration for Lick spout Right. The input is the valve open time in seconds and the output is the volume of water delivered in microliters.",
+                "device_name": "Lick spout Right",
+                "input": {
+                    "valve open time (s):": [
+                        0.02,
+                        0.025,
+                        0.03,
+                        0.035,
+                        0.04,
+                        0.045,
+                        0.05
+                    ]
+                },
+                "notes": null,
+                "output": {
+                    "water volume (ul):": [
+                        2.25,
+                        2.92,
+                        3.6,
+                        4.255,
+                        4.92,
+                        5.525,
+                        6.08
+                    ]
+                }
+            }
+        ],
+        "cameras": [
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "Additive",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Color",
+                    "computer_name": "W10DT714027",
+                    "cooling": "Air",
+                    "crop_height": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": null,
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "Ailipu",
+                        "name": "Ailipu Technology Co",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "ELP-USBFHD05MT-KL170IR",
+                    "name": "Side face camera",
+                    "notes": "The light intensity sensor was removed; IR illumination is constantly on",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": {
+                        "name": "Bonsai",
+                        "parameters": {},
+                        "url": null,
+                        "version": "2.8.0"
+                    },
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 480,
+                    "sensor_width": 640,
+                    "serial_number": null,
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Face side right",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "9",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": "f/1.4",
+                    "model": "XC0922LENS",
+                    "name": "Xenocam 1",
+                    "notes": "Manufacturer is Xenocam",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "BehaviorVideography_FaceSide",
+                "position": null
+            },
+            {
+                "camera": {
+                    "additional_settings": {},
+                    "bin_height": null,
+                    "bin_mode": "Additive",
+                    "bin_unit": "pixel",
+                    "bin_width": null,
+                    "bit_depth": null,
+                    "chroma": "Color",
+                    "computer_name": "W10DT714027",
+                    "cooling": "Air",
+                    "crop_height": null,
+                    "crop_offset_x": null,
+                    "crop_offset_y": null,
+                    "crop_unit": "pixel",
+                    "crop_width": null,
+                    "data_interface": "USB",
+                    "detector_type": "Camera",
+                    "device_type": "Detector",
+                    "driver": null,
+                    "driver_version": null,
+                    "frame_rate": null,
+                    "frame_rate_unit": "hertz",
+                    "gain": null,
+                    "immersion": null,
+                    "manufacturer": {
+                        "abbreviation": "Ailipu",
+                        "name": "Ailipu Technology Co",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "ELP-USBFHD05MT-KL170IR",
+                    "name": "Bottom face Camera",
+                    "notes": "The light intensity sensor was removed; IR illumination is constantly on",
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "recording_software": {
+                        "name": "Bonsai",
+                        "parameters": {},
+                        "url": null,
+                        "version": "2.8.0"
+                    },
+                    "sensor_format": null,
+                    "sensor_format_unit": null,
+                    "sensor_height": 480,
+                    "sensor_width": 640,
+                    "serial_number": null,
+                    "size_unit": "pixel"
+                },
+                "camera_target": "Face bottom",
+                "filter": null,
+                "lens": {
+                    "additional_settings": {},
+                    "device_type": "Lens",
+                    "focal_length": "9",
+                    "focal_length_unit": "millimeter",
+                    "lens_size_unit": "inch",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "Other",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "max_aperture": "f/1.4",
+                    "model": "XC0922LENS",
+                    "name": "Xenocam 2",
+                    "notes": "Manufacturer is Xenocam",
+                    "optimized_wavelength_range": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null,
+                    "size": null,
+                    "wavelength_unit": "nanometer"
+                },
+                "name": "BehaviorVideography_FaceBottom",
+                "position": null
+            }
+        ],
+        "ccf_coordinate_transform": null,
+        "daqs": [
+            {
+                "additional_settings": {},
+                "channels": [
+                    {
+                        "channel_index": null,
+                        "channel_name": "DI3",
+                        "channel_type": "Digital Input",
+                        "device_name": "Photometry Clock",
+                        "event_based_sampling": null,
+                        "port": null,
+                        "sample_rate": null,
+                        "sample_rate_unit": "hertz"
+                    }
+                ],
+                "computer_name": "W10DT714027",
+                "core_version": "1.11",
+                "data_interface": "Ethernet",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Behavior",
+                    "whoami": 1216
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "Champalimaud",
+                    "name": "Champalimaud Foundation",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "name": "Harp Behavior",
+                "notes": "Left lick spout and Right lick spout, as well as reward delivery solenoids are connected via ethernet cables",
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [],
+                "computer_name": "W10DT714027",
+                "core_version": "1.4",
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Sound Card",
+                    "whoami": 1280
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "Champalimaud",
+                    "name": "Champalimaud Foundation",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "name": "Harp Sound",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [],
+                "computer_name": "W10DT714027",
+                "core_version": "",
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Clock Synchronizer",
+                    "whoami": 1152
+                },
+                "is_clock_generator": true,
+                "manufacturer": {
+                    "abbreviation": "Champalimaud",
+                    "name": "Champalimaud Foundation",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "name": "Harp clock synchronization board",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            },
+            {
+                "additional_settings": {},
+                "channels": [],
+                "computer_name": "W10DT714027",
+                "core_version": "",
+                "data_interface": "USB",
+                "device_type": "Harp device",
+                "firmware_version": null,
+                "hardware_version": null,
+                "harp_device_type": {
+                    "name": "Input Expander",
+                    "whoami": 1106
+                },
+                "is_clock_generator": false,
+                "manufacturer": {
+                    "abbreviation": "Champalimaud",
+                    "name": "Champalimaud Foundation",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "03g001n57"
+                },
+                "model": null,
+                "name": "Harp sound amplifier",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "tag_version": null
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/rig.py",
+        "detectors": [
+            {
+                "additional_settings": {},
+                "bin_height": 4,
+                "bin_mode": "Additive",
+                "bin_unit": "pixel",
+                "bin_width": 4,
+                "bit_depth": 16,
+                "chroma": "Monochrome",
+                "computer_name": null,
+                "cooling": "Air",
+                "crop_height": 200,
+                "crop_offset_x": null,
+                "crop_offset_y": null,
+                "crop_unit": "pixel",
+                "crop_width": 200,
+                "data_interface": "USB",
+                "detector_type": "Camera",
+                "device_type": "Detector",
+                "driver": null,
+                "driver_version": null,
+                "frame_rate": null,
+                "frame_rate_unit": "hertz",
+                "gain": "2",
+                "immersion": "air",
+                "manufacturer": {
+                    "abbreviation": "FLIR",
+                    "name": "Teledyne FLIR",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "01j1gwp17"
+                },
+                "model": "BFS-U3-20S40M",
+                "name": "Green CMOS",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "recording_software": null,
+                "sensor_format": null,
+                "sensor_format_unit": null,
+                "sensor_height": null,
+                "sensor_width": null,
+                "serial_number": "23391007",
+                "size_unit": "pixel"
+            },
+            {
+                "additional_settings": {},
+                "bin_height": 4,
+                "bin_mode": "Additive",
+                "bin_unit": "pixel",
+                "bin_width": 4,
+                "bit_depth": 16,
+                "chroma": "Monochrome",
+                "computer_name": null,
+                "cooling": "Air",
+                "crop_height": 200,
+                "crop_offset_x": null,
+                "crop_offset_y": null,
+                "crop_unit": "pixel",
+                "crop_width": 200,
+                "data_interface": "USB",
+                "detector_type": "Camera",
+                "device_type": "Detector",
+                "driver": null,
+                "driver_version": null,
+                "frame_rate": null,
+                "frame_rate_unit": "hertz",
+                "gain": "2",
+                "immersion": "air",
+                "manufacturer": {
+                    "abbreviation": "FLIR",
+                    "name": "Teledyne FLIR",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "01j1gwp17"
+                },
+                "model": "BFS-U3-20S40M",
+                "name": "Red CMOS",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "recording_software": null,
+                "sensor_format": null,
+                "sensor_format_unit": null,
+                "sensor_height": null,
+                "sensor_width": null,
+                "serial_number": "23391006",
+                "size_unit": "pixel"
+            }
+        ],
+        "digital_micromirror_devices": [],
+        "enclosure": {
+            "additional_settings": {},
+            "air_filtration": false,
+            "device_type": "Enclosure",
+            "external_material": "",
+            "grounded": false,
+            "internal_material": "",
+            "laser_interlock": false,
+            "manufacturer": {
+                "abbreviation": "AIND",
+                "name": "Allen Institute for Neural Dynamics",
+                "registry": {
+                    "abbreviation": "ROR",
+                    "name": "Research Organization Registry"
+                },
+                "registry_identifier": "04szwah67"
+            },
+            "model": null,
+            "name": "Behavior enclosure",
+            "notes": null,
+            "path_to_cad": null,
+            "port_index": null,
+            "serial_number": null,
+            "size": {
+                "height": 54,
+                "length": 54,
+                "unit": "centimeter",
+                "width": 54
+            }
+        },
+        "ephys_assemblies": [],
+        "fiber_assemblies": [],
+        "filters": [
+            {
+                "additional_settings": {},
+                "center_wavelength": 520,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "description": null,
+                "device_type": "Filter",
+                "diameter": "25",
+                "filter_type": "Band pass",
+                "filter_wheel_index": null,
+                "height": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Semrock",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "FF01-520/35-25",
+                "name": "Green emission filter",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "wavelength_unit": "nanometer",
+                "width": null
+            },
+            {
+                "additional_settings": {},
+                "center_wavelength": 600,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "description": null,
+                "device_type": "Filter",
+                "diameter": "25",
+                "filter_type": "Band pass",
+                "filter_wheel_index": null,
+                "height": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Semrock",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "FF01-600/37-25",
+                "name": "Red emission filter",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "wavelength_unit": "nanometer",
+                "width": null
+            },
+            {
+                "additional_settings": {},
+                "center_wavelength": null,
+                "cut_off_wavelength": 562,
+                "cut_on_wavelength": null,
+                "description": null,
+                "device_type": "Filter",
+                "diameter": null,
+                "filter_type": "Dichroic",
+                "filter_wheel_index": null,
+                "height": "25",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Semrock",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "FF562-Di03-25x36",
+                "name": "Emission Dichroic",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "wavelength_unit": "nanometer",
+                "width": "36"
+            },
+            {
+                "additional_settings": {},
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "description": null,
+                "device_type": "Filter",
+                "diameter": null,
+                "filter_type": "Multiband",
+                "filter_wheel_index": null,
+                "height": "25",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Semrock",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "FF493/574-Di01-25x36",
+                "name": "beamsplitter",
+                "notes": "493/574 nm BrightLine dual-edge standard epi-fluorescence dichroic beamsplitter",
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "wavelength_unit": "nanometer",
+                "width": "36"
+            },
+            {
+                "additional_settings": {},
+                "center_wavelength": 410,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "description": null,
+                "device_type": "Filter",
+                "diameter": "25",
+                "filter_type": "Band pass",
+                "filter_wheel_index": null,
+                "height": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "FB410-10",
+                "name": "Excitation filter 410nm",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "wavelength_unit": "nanometer",
+                "width": null
+            },
+            {
+                "additional_settings": {},
+                "center_wavelength": 470,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "description": null,
+                "device_type": "Filter",
+                "diameter": "25",
+                "filter_type": "Band pass",
+                "filter_wheel_index": null,
+                "height": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "FB470-10",
+                "name": "Excitation filter 470nm",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "wavelength_unit": "nanometer",
+                "width": null
+            },
+            {
+                "additional_settings": {},
+                "center_wavelength": 560,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "description": null,
+                "device_type": "Filter",
+                "diameter": "25",
+                "filter_type": "Band pass",
+                "filter_wheel_index": null,
+                "height": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "FB560-10",
+                "name": "Excitation filter 560nm",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "wavelength_unit": "nanometer",
+                "width": null
+            },
+            {
+                "additional_settings": {},
+                "center_wavelength": null,
+                "cut_off_wavelength": 450,
+                "cut_on_wavelength": null,
+                "description": null,
+                "device_type": "Filter",
+                "diameter": null,
+                "filter_type": "Dichroic",
+                "filter_wheel_index": null,
+                "height": "25.2",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Edmund Optics",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "01j1gwp17"
+                },
+                "model": "#69-898",
+                "name": "450 Dichroic Longpass Filter",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "wavelength_unit": "nanometer",
+                "width": "35.6"
+            },
+            {
+                "additional_settings": {},
+                "center_wavelength": null,
+                "cut_off_wavelength": 500,
+                "cut_on_wavelength": null,
+                "description": null,
+                "device_type": "Filter",
+                "diameter": null,
+                "filter_type": "Dichroic",
+                "filter_wheel_index": null,
+                "height": "23.2",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Edmund Optics",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "01j1gwp17"
+                },
+                "model": "#69-899",
+                "name": "500 Dichroic Longpass Filter",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "size_unit": "millimeter",
+                "thickness": null,
+                "thickness_unit": "millimeter",
+                "wavelength_unit": "nanometer",
+                "width": "35.6"
+            }
+        ],
+        "laser_assemblies": [],
+        "lenses": [
+            {
+                "additional_settings": {},
+                "device_type": "Lens",
+                "focal_length": "80",
+                "focal_length_unit": "millimeter",
+                "lens_size_unit": "inch",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "max_aperture": null,
+                "model": "AC254-080-A-ML",
+                "name": "Image focusing lens",
+                "notes": null,
+                "optimized_wavelength_range": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "size": 1,
+                "wavelength_unit": "nanometer"
+            }
+        ],
+        "light_sources": [
+            {
+                "additional_settings": {},
+                "bandwidth": null,
+                "bandwidth_unit": "nanometer",
+                "device_type": "Light emitting diode",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M810L5",
+                "name": "IR LED",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "wavelength": 810,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": {},
+                "bandwidth": null,
+                "bandwidth_unit": "nanometer",
+                "device_type": "Light emitting diode",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M470F3",
+                "name": "470nm LED",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "wavelength": 470,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": {},
+                "bandwidth": null,
+                "bandwidth_unit": "nanometer",
+                "device_type": "Light emitting diode",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M415F3",
+                "name": "415nm LED",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "wavelength": 415,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "additional_settings": {},
+                "bandwidth": null,
+                "bandwidth_unit": "nanometer",
+                "device_type": "Light emitting diode",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "M565F3",
+                "name": "565nm LED",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": null,
+                "wavelength": 565,
+                "wavelength_unit": "nanometer"
+            }
+        ],
+        "modalities": [
+            {
+                "abbreviation": "behavior",
+                "name": "Behavior"
+            },
+            {
+                "abbreviation": "behavior-videos",
+                "name": "Behavior videos"
+            },
+            {
+                "abbreviation": "fib",
+                "name": "Fiber photometry"
+            }
+        ],
+        "modification_date": "2024-10-23",
+        "mouse_platform": {
+            "additional_settings": {},
+            "date_surface_replaced": null,
+            "device_type": "Tube",
+            "diameter": "3.0",
+            "diameter_unit": "centimeter",
+            "manufacturer": {
+                "abbreviation": null,
+                "name": "Custom",
+                "registry": null,
+                "registry_identifier": null
+            },
+            "model": null,
+            "name": "mouse_tube_foraging",
+            "notes": null,
+            "path_to_cad": null,
+            "port_index": null,
+            "serial_number": null,
+            "surface_material": null
+        },
+        "notes": null,
+        "objectives": [
+            {
+                "additional_settings": {},
+                "device_type": "Objective",
+                "immersion": "air",
+                "magnification": "10",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Nikon",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "0280y9h11"
+                },
+                "model": "CFI Plan Apochromat Lambda D 10x",
+                "name": "Objective",
+                "notes": null,
+                "numerical_aperture": "0.45",
+                "objective_type": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "serial_number": "128122507"
+            }
+        ],
+        "origin": null,
+        "patch_cords": [
+            {
+                "additional_settings": {},
+                "core_diameter": "200",
+                "device_type": "Patch",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Doric",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "059n53q30"
+                },
+                "model": "BBP(4)_200/220/900-0.37_Custom_FCM-4xMF1.25",
+                "name": "Bundle Branching Fiber-optic Patch Cord",
+                "notes": null,
+                "numerical_aperture": "0.37",
+                "path_to_cad": null,
+                "photobleaching_date": null,
+                "port_index": null,
+                "serial_number": null
+            }
+        ],
+        "pockels_cells": [],
+        "polygonal_scanners": [],
+        "rig_axes": null,
+        "rig_id": "447_2D_20241023",
+        "schema_version": "1.0.1",
+        "stick_microscopes": [],
+        "stimulus_devices": [
+            {
+                "device_type": "Reward delivery",
+                "reward_spouts": [
+                    {
+                        "additional_settings": {},
+                        "device_type": "Reward spout",
+                        "lick_sensor": {
+                            "additional_settings": {},
+                            "device_type": "Lick Sensor",
+                            "manufacturer": {
+                                "abbreviation": "Janelia",
+                                "name": "Janelia Research Campus",
+                                "registry": {
+                                    "abbreviation": "ROR",
+                                    "name": "Research Organization Registry"
+                                },
+                                "registry_identifier": "013sk6x84"
+                            },
+                            "model": null,
+                            "name": "Lick Sensor Left",
+                            "notes": null,
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "serial_number": null
+                        },
+                        "lick_sensor_type": "Capacitive",
+                        "manufacturer": null,
+                        "model": null,
+                        "name": "Left lick spout",
+                        "notes": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "serial_number": null,
+                        "side": "Left",
+                        "solenoid_valve": {
+                            "additional_settings": {},
+                            "device_type": "Solenoid",
+                            "manufacturer": {
+                                "abbreviation": null,
+                                "name": "The Lee Company",
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": "LHDA1233415H",
+                            "name": "Solenoid Left",
+                            "notes": null,
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "serial_number": null
+                        },
+                        "spout_diameter": "1.2",
+                        "spout_diameter_unit": "millimeter",
+                        "spout_position": null
+                    },
+                    {
+                        "additional_settings": {},
+                        "device_type": "Reward spout",
+                        "lick_sensor": {
+                            "additional_settings": {},
+                            "device_type": "Lick Sensor",
+                            "manufacturer": {
+                                "abbreviation": "Janelia",
+                                "name": "Janelia Research Campus",
+                                "registry": {
+                                    "abbreviation": "ROR",
+                                    "name": "Research Organization Registry"
+                                },
+                                "registry_identifier": "013sk6x84"
+                            },
+                            "model": null,
+                            "name": "Lick Sensor Right",
+                            "notes": null,
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "serial_number": null
+                        },
+                        "lick_sensor_type": "Capacitive",
+                        "manufacturer": null,
+                        "model": null,
+                        "name": "Right lick spout",
+                        "notes": null,
+                        "path_to_cad": null,
+                        "port_index": null,
+                        "serial_number": null,
+                        "side": "Right",
+                        "solenoid_valve": {
+                            "additional_settings": {},
+                            "device_type": "Solenoid",
+                            "manufacturer": {
+                                "abbreviation": null,
+                                "name": "The Lee Company",
+                                "registry": null,
+                                "registry_identifier": null
+                            },
+                            "model": "LHDA1233415H",
+                            "name": "Solenoid Right",
+                            "notes": null,
+                            "path_to_cad": null,
+                            "port_index": null,
+                            "serial_number": null
+                        },
+                        "spout_diameter": "1.2",
+                        "spout_diameter_unit": "millimeter",
+                        "spout_position": null
+                    }
+                ],
+                "stage_type": {
+                    "additional_settings": {},
+                    "device_type": "Motorized stage",
+                    "firmware": "https://github.com/AllenNeuralDynamics/python-newscale, branch: axes-on-target, commit #7c17497",
+                    "manufacturer": {
+                        "abbreviation": null,
+                        "name": "New Scale Technologies",
+                        "registry": null,
+                        "registry_identifier": null
+                    },
+                    "model": "XYZ Stage with M30LS-3.4-15 linear stages",
+                    "name": "NewScaleMotor for LickSpouts",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": "46794",
+                    "travel": "15.0",
+                    "travel_unit": "millimeter"
+                }
+            },
+            {
+                "additional_settings": {},
+                "device_type": "Speaker",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Tymphany",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "XT25SC90-04",
+                "name": "Stimulus Speaker",
+                "notes": null,
+                "path_to_cad": null,
+                "port_index": null,
+                "position": null,
+                "serial_number": null
+            }
+        ]
+    },
+    "processing": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "schema_version": "1.1.4",
+        "processing_pipeline": {
+            "data_processes": [],
+            "processor_full_name": "AIND Scientific Computing",
+            "pipeline_version": "20.0",
+            "pipeline_url": "https://github.com/AllenNeuralDynamics/aind-fiber-photometry-pipeline",
+            "note": null
+        },
+        "analyses": [],
+        "notes": null
+    },
+    "acquisition": null,
+    "instrument": null,
+    "quality_control": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/quality_control.py",
+        "schema_version": "1.2.2",
+        "evaluations": [
+            {
+                "modality": {
+                    "name": "Behavior videos",
+                    "abbreviation": "behavior-videos"
+                },
+                "stage": "Raw data",
+                "name": "dropped frames check",
+                "description": "pass when there are no dropped frames",
+                "metrics": [
+                    {
+                        "name": "dropped frames",
+                        "value": 0,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-04-10T14:31:46.577355-07:00"
+                            }
+                        ],
+                        "description": null,
+                        "reference": null,
+                        "evaluated_assets": null
+                    }
+                ],
+                "tags": null,
+                "notes": null,
+                "allow_failed_metrics": false,
+                "latest_status": "Pass",
+                "created": "2026-04-10T21:31:46.577568Z"
+            },
+            {
+                "modality": {
+                    "name": "Behavior",
+                    "abbreviation": "behavior"
+                },
+                "stage": "Raw data",
+                "name": "Basic Configuration",
+                "description": "pass when researcher name is not default name, and code repo is clean",
+                "metrics": [
+                    {
+                        "name": "researcher name",
+                        "value": "Henry Loeffler",
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-04-10T14:31:46.577620-07:00"
+                            }
+                        ],
+                        "description": "Experimenter name should not be set to the default value of \"the ghost in the shell\"",
+                        "reference": null,
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "untracked local changes",
+                        "value": "",
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-04-10T14:31:46.577664-07:00"
+                            }
+                        ],
+                        "description": "Whether the code base had untracked changes, and if so, which files",
+                        "reference": null,
+                        "evaluated_assets": null
+                    }
+                ],
+                "tags": null,
+                "notes": null,
+                "allow_failed_metrics": false,
+                "latest_status": "Pass",
+                "created": "2026-04-10T21:31:46.577714Z"
+            },
+            {
+                "modality": {
+                    "name": "Behavior",
+                    "abbreviation": "behavior"
+                },
+                "stage": "Raw data",
+                "name": "Side bias",
+                "description": "pass when average side bias is less than 0.5",
+                "metrics": [
+                    {
+                        "name": "average side bias",
+                        "value": 0,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-04-10T14:31:46.577880-07:00"
+                            }
+                        ],
+                        "description": "average side bias should be less than 0.5",
+                        "reference": "dynamic-foraging-qc/side_bias.png",
+                        "evaluated_assets": null
+                    }
+                ],
+                "tags": null,
+                "notes": null,
+                "allow_failed_metrics": false,
+                "latest_status": "Pass",
+                "created": "2026-04-10T21:31:46.577939Z"
+            },
+            {
+                "modality": {
+                    "name": "Behavior",
+                    "abbreviation": "behavior"
+                },
+                "stage": "Raw data",
+                "name": "Lick Intervals",
+                "description": "pass when lick intervals <100ms are less than 10 percent of licks",
+                "metrics": [
+                    {
+                        "name": "Left Lick Interval (%)",
+                        "value": 3.38,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-04-10T14:31:46.580037-07:00"
+                            }
+                        ],
+                        "description": "% of lick intervals < 50ms. These indicate grooming bouts",
+                        "reference": "dynamic-foraging-qc/lick_intervals.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "Right Lick Interval (%)",
+                        "value": 1.65,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-04-10T14:31:46.580125-07:00"
+                            }
+                        ],
+                        "description": "% of lick intervals < 50ms. These indicate grooming bouts",
+                        "reference": "dynamic-foraging-qc/lick_intervals.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "Cross Side Lick Interval (%)",
+                        "value": 0.47,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-04-10T14:31:46.580156-07:00"
+                            }
+                        ],
+                        "description": "% of lick intervals < 50ms. These indicate grooming bouts",
+                        "reference": "dynamic-foraging-qc/lick_intervals.png",
+                        "evaluated_assets": null
+                    },
+                    {
+                        "name": "Artifact Percent (%)",
+                        "value": 0,
+                        "status_history": [
+                            {
+                                "evaluator": "Automated",
+                                "status": "Pass",
+                                "timestamp": "2026-04-10T14:31:46.580185-07:00"
+                            }
+                        ],
+                        "description": "% of lick intervals less than 0.5ms. These indicate electical artifacts",
+                        "reference": "dynamic-foraging-qc/lick_intervals.png",
+                        "evaluated_assets": null
+                    }
+                ],
+                "tags": null,
+                "notes": null,
+                "allow_failed_metrics": false,
+                "latest_status": "Pass",
+                "created": "2026-04-10T21:31:46.580231Z"
+            }
+        ],
+        "notes": null
+    }
+}

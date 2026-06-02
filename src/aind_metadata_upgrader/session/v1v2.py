@@ -263,7 +263,18 @@ class SessionV1V2(CoreUpgrader):
         # Find the matching light source config
         matching_light_source = next((ls for ls in light_sources if ls.get("name") == light_source_name), None)
         if not matching_light_source:
-            raise ValueError(f"Light source '{light_source_name}' not found in stream light sources")
+            # Fallback: try to match by excitation_wavelength against rig light sources
+            excitation_wavelength = channel_data.get("excitation_wavelength")
+            rig_light_sources = getattr(self, "_rig_light_sources", [])
+            if excitation_wavelength is not None and rig_light_sources:
+                matching_light_source = next(
+                    (ls for ls in rig_light_sources if ls.get("wavelength") == int(excitation_wavelength)),
+                    None,
+                )
+                if matching_light_source:
+                    light_source_name = matching_light_source.get("name", light_source_name)
+        if not matching_light_source:
+            raise ValueError(f"Light source '{light_source_name}' with excitation {excitation_wavelength} not found in stream light sources")
 
         light_source_config = self._upgrade_light_source_config(matching_light_source)
 
@@ -991,12 +1002,14 @@ class SessionV1V2(CoreUpgrader):
         reward_consumed_total = session_data.get("reward_consumed_total")
         reward_consumed_unit = session_data.get("reward_consumed_unit", "milliliter")
 
-        # Store rig filters for emission wavelength lookup during stream upgrade
+        # Store rig filters and light sources for lookup during stream upgrade
         self._rig_filters = []
+        self._rig_light_sources = []
         if metadata and isinstance(metadata, dict):
             rig = metadata.get("rig", {})
             if isinstance(rig, dict):
                 self._rig_filters = rig.get("filters", []) or []
+                self._rig_light_sources = rig.get("light_sources", []) or []
 
         # Upgrade experimenter names to Person objects
         experimenters = upgrade_experimenter_names(experimenter_full_name)
@@ -1096,11 +1109,29 @@ class SessionV1V2(CoreUpgrader):
         configurations = []
         connections = []
 
-        # Light source and detector configs
-        for light_source in stream.get("light_sources", []):
-            config = self._upgrade_light_source_config(light_source)
-            if config:
-                configurations.append(config)
+        # Light source configs: use stream-level sources if present, otherwise resolve from rig
+        # via fiber connection excitation wavelengths
+        if stream.get("light_sources"):
+            for light_source in stream.get("light_sources", []):
+                config = self._upgrade_light_source_config(light_source)
+                if config:
+                    configurations.append(config)
+        else:
+            rig_light_sources = getattr(self, "_rig_light_sources", [])
+            added_wavelengths = set()
+            for fc in stream.get("fiber_connections", []):
+                channel_data = fc.get("channel", {})
+                excitation_wavelength = channel_data.get("excitation_wavelength")
+                if excitation_wavelength is not None and excitation_wavelength not in added_wavelengths:
+                    matching = next(
+                        (ls for ls in rig_light_sources if ls.get("wavelength") == int(excitation_wavelength)),
+                        None,
+                    )
+                    if matching:
+                        config = self._upgrade_light_source_config(matching)
+                        if config:
+                            configurations.append(config)
+                            added_wavelengths.add(excitation_wavelength)
 
         for detector in stream.get("detectors", []):
             configurations.append(self._upgrade_detector_config(detector))
