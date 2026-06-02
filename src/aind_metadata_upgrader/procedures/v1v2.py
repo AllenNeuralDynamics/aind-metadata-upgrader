@@ -298,6 +298,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         else:
             procedures_data = copy.deepcopy(data)
 
+        print(procedures_data)
         self.subject_id = procedures_data.get("subject_id")
 
         # Extract project_name from metadata for context-dependent upgrades

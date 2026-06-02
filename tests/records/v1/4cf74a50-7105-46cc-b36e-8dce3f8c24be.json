@@ -1,0 +1,276 @@
+{
+    "_id": "4cf74a50-7105-46cc-b36e-8dce3f8c24be",
+    "acquisition": null,
+    "created": "2025-01-13T22:48:51.323845",
+    "data_description": {
+        "creation_time": "2024-09-24T10:39:23",
+        "data_level": "raw",
+        "data_summary": null,
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/data_description.py",
+        "funding_source": [
+            {
+                "fundee": null,
+                "funder": {
+                    "abbreviation": "AI",
+                    "name": "Allen Institute",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null
+            }
+        ],
+        "group": null,
+        "institution": {
+            "abbreviation": "AIND",
+            "name": "Allen Institute for Neural Dynamics",
+            "registry": {
+                "abbreviation": "ROR",
+                "name": "Research Organization Registry"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "investigators": [],
+        "label": null,
+        "license": "CC-BY-4.0",
+        "modality": [
+            {
+                "abbreviation": "behavior-videos",
+                "name": "Behavior videos"
+            }
+        ],
+        "name": "behavior_745374_2024-09-24_10-39-23",
+        "platform": {
+            "abbreviation": "behavior",
+            "name": "Behavior platform"
+        },
+        "project_name": "Behavior and Motor Control",
+        "related_data": [],
+        "restrictions": null,
+        "schema_version": "1.0.3",
+        "subject_id": "745374"
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": {
+        "Code Ocean": [
+            "dc498984-7f80-45f8-86fb-a28ba7a26cf9"
+        ]
+    },
+    "instrument": null,
+    "last_modified": "2025-01-14T00:16:57.127088",
+    "location": "s3://aind-private-data-prod-o5171v/behavior_745374_2024-09-24_10-39-23",
+    "metadata_status": "Missing",
+    "name": "behavior_745374_2024-09-24_10-39-23",
+    "procedures": {
+        "anaesthesia": null,
+        "animal_weight_post": "20.3",
+        "animal_weight_prior": "20.0",
+        "experimenter_full_name": "NSB-7755",
+        "iacuc_protocol": null,
+        "notes": null,
+        "procedure_type": "Surgery",
+        "procedures": [
+            {
+                "myomatrix_array": {
+                    "additional_settings": {},
+                    "array_type": "Sutured",
+                    "device_type": "Myomatrix Array",
+                    "manufacturer": {
+                        "abbreviation": "Emory",
+                        "name": "Emory University",
+                        "registry": {
+                            "abbreviation": "ROR",
+                            "name": "Research Organization Registry"
+                        },
+                        "registry_identifier": "03czfpz43"
+                    },
+                    "model": null,
+                    "name": "Array 0",
+                    "notes": null,
+                    "path_to_cad": null,
+                    "port_index": null,
+                    "serial_number": null
+                },
+                "procedure_type": "Myomatrix_Insertion",
+                "threads": [
+                    {
+                        "contacts": [
+                            {
+                                "body_part": {
+                                    "name": "forelimb",
+                                    "registry": {
+                                        "abbreviation": "EMAPA",
+                                        "name": "Edinburgh Mouse Atlas Project"
+                                    },
+                                    "registry_identifier": "EMAPA_17412"
+                                },
+                                "in_muscle": false,
+                                "notes": null
+                            }
+                        ],
+                        "ground_electrode_location": {
+                            "name": "neck",
+                            "registry": {
+                                "abbreviation": "EMAPA",
+                                "name": "Edinburgh Mouse Atlas Project"
+                            },
+                            "registry_identifier": "EMAPA_35587"
+                        }
+                    },
+                    {
+                        "contacts": [
+                            {
+                                "body_part": {
+                                    "name": "forelimb",
+                                    "registry": {
+                                        "abbreviation": "EMAPA",
+                                        "name": "Edinburgh Mouse Atlas Project"
+                                    },
+                                    "registry_identifier": "EMAPA_17412"
+                                },
+                                "in_muscle": true,
+                                "muscle": {
+                                    "name": "lateral head of triceps brachii",
+                                    "registry": {
+                                        "abbreviation": "EMAPA",
+                                        "name": "Edinburgh Mouse Atlas Project"
+                                    },
+                                    "registry_identifier": "EMAPA_36184"
+                                },
+                                "notes": null,
+                                "side": "Right"
+                            }
+                        ],
+                        "ground_electrode_location": {
+                            "name": "neck",
+                            "registry": {
+                                "abbreviation": "EMAPA",
+                                "name": "Edinburgh Mouse Atlas Project"
+                            },
+                            "registry_identifier": "EMAPA_35587"
+                        }
+                    },
+                    {
+                        "contacts": [
+                            {
+                                "body_part": {
+                                    "name": "forelimb",
+                                    "registry": {
+                                        "abbreviation": "EMAPA",
+                                        "name": "Edinburgh Mouse Atlas Project"
+                                    },
+                                    "registry_identifier": "EMAPA_17412"
+                                },
+                                "in_muscle": true,
+                                "muscle": {
+                                    "name": "long head of triceps brachii",
+                                    "registry": {
+                                        "abbreviation": "EMAPA",
+                                        "name": "Edinburgh Mouse Atlas Project"
+                                    },
+                                    "registry_identifier": "EMAPA_36185"
+                                },
+                                "notes": null,
+                                "side": "Left"
+                            }
+                        ],
+                        "ground_electrode_location": {
+                            "name": "neck",
+                            "registry": {
+                                "abbreviation": "EMAPA",
+                                "name": "Edinburgh Mouse Atlas Project"
+                            },
+                            "registry_identifier": "EMAPA_35587"
+                        }
+                    },
+                    {
+                        "contacts": [
+                            {
+                                "body_part": {
+                                    "name": "forelimb",
+                                    "registry": {
+                                        "abbreviation": "EMAPA",
+                                        "name": "Edinburgh Mouse Atlas Project"
+                                    },
+                                    "registry_identifier": "EMAPA_17412"
+                                },
+                                "in_muscle": false,
+                                "notes": null
+                            }
+                        ],
+                        "ground_electrode_location": {
+                            "name": "neck",
+                            "registry": {
+                                "abbreviation": "EMAPA",
+                                "name": "Edinburgh Mouse Atlas Project"
+                            },
+                            "registry_identifier": "EMAPA_35587"
+                        }
+                    }
+                ]
+            }
+        ],
+        "protocol_id": "dx.doi.org/10.17504/protocols.io.kqdg392o7g25/v2",
+        "start_date": "2024-08-29",
+        "weight_unit": "gram",
+        "workstation_id": null
+    },
+    "processing": {
+        "analyses": [],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/processing.py",
+        "notes": null,
+        "processing_pipeline": {
+            "data_processes": [],
+            "note": null,
+            "pipeline_url": null,
+            "pipeline_version": null,
+            "processor_full_name": "AIND Scientific Computing"
+        },
+        "schema_version": "1.1.3"
+    },
+    "quality_control": null,
+    "rig": null,
+    "schema_version": "1.1.1",
+    "session": null,
+    "subject": {
+        "alleles": [],
+        "background_strain": null,
+        "breeding_info": {
+            "breeding_group": "C57BL6J(PD)",
+            "maternal_genotype": "wt/wt",
+            "maternal_id": "740089",
+            "paternal_genotype": "wt/wt",
+            "paternal_id": "740086"
+        },
+        "date_of_birth": "2024-05-31",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/subject.py",
+        "genotype": "wt/wt",
+        "housing": null,
+        "notes": null,
+        "restrictions": null,
+        "rrid": null,
+        "schema_version": "1.0.2",
+        "sex": "Female",
+        "source": {
+            "abbreviation": "AI",
+            "name": "Allen Institute",
+            "registry": {
+                "abbreviation": "ROR",
+                "name": "Research Organization Registry"
+            },
+            "registry_identifier": "03cpe7c52"
+        },
+        "species": {
+            "name": "Mus musculus",
+            "registry": {
+                "abbreviation": "NCBI",
+                "name": "National Center for Biotechnology Information"
+            },
+            "registry_identifier": "NCBI:txid10090"
+        },
+        "subject_id": "745374",
+        "wellness_reports": []
+    }
+}
