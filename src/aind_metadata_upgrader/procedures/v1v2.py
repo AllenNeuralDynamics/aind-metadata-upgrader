@@ -242,9 +242,12 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
     def _infer_specimen_procedure_dates(self, specimen_procedures: list) -> list:
         """Fill in missing start/end dates for runs of null-date procedures.
 
-        If a consecutive run of procedures all have null start_date and end_date,
-        and the preceding procedure's end_date equals the following procedure's
-        start_date, then all procedures in that run get that shared date assigned.
+        Two strategies are tried in order:
+        1. If the preceding procedure's end_date equals the following procedure's
+           start_date, assign that shared date as both start and end.
+        2. Otherwise, if the preceding procedure's start_date and the following
+           procedure's end_date both exist and form a valid range (end >= start),
+           assign those as start_date and end_date respectively.
         """
         procs = specimen_procedures
         n = len(procs)
@@ -257,21 +260,37 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                     i += 1
                 run_end = i  # exclusive
 
-                # Check bordering dates
                 prev_end = procs[run_start - 1].get("end_date") if run_start > 0 else None
                 next_start = procs[run_end].get("start_date") if run_end < n else None
 
                 if prev_end is not None and next_start is not None and prev_end == next_start:
-                    inferred_date = prev_end
+                    # Strategy 1: procedures fit exactly between neighbours
+                    inferred_start = prev_end
+                    inferred_end = prev_end
                     logging.warning(
-                        f"Inferring missing start_date/end_date as {inferred_date} for "
+                        f"Inferring missing start_date/end_date as {inferred_start} for "
                         f"{run_end - run_start} specimen procedure(s) at index(es) "
                         f"{list(range(run_start, run_end))} "
                         f"(bounded by preceding end_date == following start_date)"
                     )
                     for j in range(run_start, run_end):
-                        procs[j]["start_date"] = inferred_date
-                        procs[j]["end_date"] = inferred_date
+                        procs[j]["start_date"] = inferred_start
+                        procs[j]["end_date"] = inferred_end
+                else:
+                    prev_start = procs[run_start - 1].get("start_date") if run_start > 0 else None
+                    next_end = procs[run_end].get("end_date") if run_end < n else None
+
+                    if prev_start is not None and next_end is not None and next_end >= prev_start:
+                        # Strategy 2: span the range of the surrounding procedures
+                        logging.warning(
+                            f"Inferring missing start_date/end_date as [{prev_start}, {next_end}] for "
+                            f"{run_end - run_start} specimen procedure(s) at index(es) "
+                            f"{list(range(run_start, run_end))} "
+                            f"(using start_date of preceding and end_date of following procedure)"
+                        )
+                        for j in range(run_start, run_end):
+                            procs[j]["start_date"] = prev_start
+                            procs[j]["end_date"] = next_end
             else:
                 i += 1
         return procs
