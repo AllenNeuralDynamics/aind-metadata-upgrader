@@ -1,3 +1,3 @@
 """Init package"""
 
-__version__ = "0.15.21"
+__version__ = "0.15.22"
