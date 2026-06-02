@@ -473,7 +473,7 @@ def upgrade_positioned_device(data: dict, relative_position_list: list = []) -> 
         data["coordinate_system"] = None
         data["transform"] = None
     else:
-        transforms = relative_position.get("device_position_transforms", [])
+        transforms = relative_position.get("device_position_transformations", [])
 
         data["transform"] = []
 
