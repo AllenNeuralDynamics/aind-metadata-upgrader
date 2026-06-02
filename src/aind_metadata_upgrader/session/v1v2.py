@@ -858,9 +858,15 @@ class SessionV1V2(CoreUpgrader):
             stimulus_name = epoch.get("stimulus_name", "").lower()
             if "spontaneous" in stimulus_name:
                 stimulus_modalities = [StimulusModality.NO_STIMULUS]
-            if "the random reward stimulus" in stimulus_name:
+            elif "the random reward stimulus" in stimulus_name:
                 # This is the dynamic foraging task
                 stimulus_modalities = [StimulusModality.AUDITORY]
+            elif "2p photostimulation" in stimulus_name:
+                stimulus_modalities = [StimulusModality.OPTOGENETICS]
+            elif "manual water delivery" in stimulus_name:
+                stimulus_modalities = [StimulusModality.NO_STIMULUS]
+            else:
+                raise ValueError(f"Unknown stimulus name: {stimulus_name}")
         return stimulus_modalities
 
     def _create_speaker_config(self, epoch: dict) -> Optional[dict]:
