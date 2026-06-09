@@ -2,7 +2,6 @@
 
 import copy
 import logging
-from datetime import date
 from typing import Optional
 
 from aind_data_schema.components.coordinates import CoordinateSystemLibrary
