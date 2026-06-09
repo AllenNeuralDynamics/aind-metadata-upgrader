@@ -8,6 +8,7 @@ from aind_metadata_upgrader.utils.normalizers import (
     _get_rig_camera_assembly_names,
     _get_session_camera_names,
     normalize_camera_names,
+    normalize_fiber_names,
     pre_upgrade_normalize,
 )
 
@@ -322,6 +323,82 @@ class TestPreUpgradeNormalize(unittest.TestCase):
         """Empty record is no-op."""
         data: dict = {}
         result = pre_upgrade_normalize(data)
+        self.assertIs(result, data)
+
+    def test_delegates_to_fiber_normalization(self):
+        """Delegates to fiber name normalization."""
+        data = {"rig": {"fibers": [{"name": "Fiber_0"}, {"name": "Fiber_1"}]}}
+        result = pre_upgrade_normalize(data)
+        names = [f["name"] for f in result["rig"]["fibers"]]
+        self.assertEqual(names, ["Fiber 0", "Fiber 1"])
+
+
+class TestNormalizeFiberNames(unittest.TestCase):
+    """Test normalize_fiber_names."""
+
+    def test_replaces_fiber_underscore_in_name_field(self):
+        """Fiber_N in a 'name' field becomes Fiber N."""
+        data = {"fibers": [{"name": "Fiber_0"}, {"name": "Fiber_1"}, {"name": "Fiber_2"}]}
+        result = normalize_fiber_names(data)
+        names = [f["name"] for f in result["fibers"]]
+        self.assertEqual(names, ["Fiber 0", "Fiber 1", "Fiber 2"])
+
+    def test_handles_large_numbers(self):
+        """Works for multi-digit fiber numbers."""
+        data = {"name": "Fiber_42"}
+        result = normalize_fiber_names(data)
+        self.assertEqual(result["name"], "Fiber 42")
+
+    def test_does_not_touch_non_name_fields(self):
+        """Only 'name' fields are changed; other fields with Fiber_N are left alone."""
+        data = {"label": "Fiber_0", "name": "Fiber_0"}
+        result = normalize_fiber_names(data)
+        self.assertEqual(result["label"], "Fiber_0")
+        self.assertEqual(result["name"], "Fiber 0")
+
+    def test_already_normalized_is_no_op(self):
+        """Records with 'Fiber N' (space) are returned unchanged."""
+        data = {"fibers": [{"name": "Fiber 0"}, {"name": "Fiber 1"}]}
+        result = normalize_fiber_names(data)
+        self.assertIs(result, data)
+
+    def test_empty_record_is_no_op(self):
+        """Empty dict is returned as-is."""
+        data: dict = {}
+        result = normalize_fiber_names(data)
+        self.assertIs(result, data)
+
+    def test_does_not_mutate_original(self):
+        """Original dict is not mutated."""
+        data = {"name": "Fiber_0"}
+        normalize_fiber_names(data)
+        self.assertEqual(data["name"], "Fiber_0")
+
+    def test_nested_structure(self):
+        """Replacement works deep inside nested dicts and lists."""
+        data = {
+            "session": {
+                "data_streams": [
+                    {"fiber_modules": [{"name": "Fiber_3"}]}
+                ]
+            }
+        }
+        result = normalize_fiber_names(data)
+        self.assertEqual(
+            result["session"]["data_streams"][0]["fiber_modules"][0]["name"],
+            "Fiber 3",
+        )
+
+    def test_non_fiber_name_unchanged(self):
+        """Names that don't match Fiber_N pattern are not changed."""
+        data = {"name": "Laser_0"}
+        result = normalize_fiber_names(data)
+        self.assertIs(result, data)
+
+    def test_partial_match_unchanged(self):
+        """'Fiber_0_extra' is not a match (anchored regex)."""
+        data = {"name": "Fiber_0_extra"}
+        result = normalize_fiber_names(data)
         self.assertIs(result, data)
 
 
