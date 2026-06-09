@@ -440,7 +440,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         # Set default start_date if missing
         if "start_date" not in data or not data["start_date"]:
-            data["start_date"] = date(1970, 1, 1)
+            data["start_date"] = None
 
         # Remove end_date - Surgery doesn't have this field
         remove(data, "end_date")
