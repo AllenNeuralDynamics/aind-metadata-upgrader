@@ -257,7 +257,7 @@ def upgrade_brain_injection(data: dict, dynamics: list) -> tuple[dict, list]:
     data, measured_coordinates = retrieve_bl_distance(data)
 
     injection_materials = ensure_injection_materials_with_default(
-        upgrade_injection_materials(data.get("injection_materials", []))
+        upgrade_injection_materials(data.get("injection_materials") or [])
     )
     targeted_structure = get_targeted_structure_or_none(data)
     relative_position = build_relative_position_from_hemisphere(data)
