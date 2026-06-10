@@ -249,11 +249,66 @@ def normalize_camera_names(data: dict) -> dict:
     return data
 
 
+_FIBER_UNDERSCORE_RE = re.compile(r"^Fiber_(\d+)$")
+
+
+def _has_fiber_underscore_name(obj) -> bool:
+    """Return True if any 'name' field anywhere in *obj* contains a Fiber_N value."""
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if k == "name" and isinstance(v, str) and _FIBER_UNDERSCORE_RE.match(v):
+                return True
+            if _has_fiber_underscore_name(v):
+                return True
+    elif isinstance(obj, list):
+        return any(_has_fiber_underscore_name(item) for item in obj)
+    return False
+
+
+def _fix_fiber_names(obj):
+    """Return a new object with Fiber_N replaced by Fiber N in every 'name' field."""
+    if isinstance(obj, dict):
+        return {
+            k: re.sub(r"^Fiber_(\d+)$", r"Fiber \1", v)
+            if k == "name" and isinstance(v, str)
+            else _fix_fiber_names(v)
+            for k, v in obj.items()
+        }
+    if isinstance(obj, list):
+        return [_fix_fiber_names(item) for item in obj]
+    return obj
+
+
+def normalize_fiber_names(data: dict) -> dict:
+    """Normalize fiber name fields: replace ``'Fiber_N'`` with ``'Fiber N'`` in any
+    ``'name'`` field found anywhere in the record.
+
+    The substitution is driven by the regex ``^Fiber_(\\d+)$``, so only exact
+    matches are changed (e.g. ``"Fiber_0"`` → ``"Fiber 0"``).  Fields named
+    anything other than ``"name"`` are left untouched.
+
+    Parameters
+    ----------
+    data:
+        Raw record dict.
+
+    Returns
+    -------
+    dict
+        A deep copy with all matching name fields normalised, or the original
+        *data* dict unchanged when no normalisation is needed.
+    """
+    if not _has_fiber_underscore_name(data):
+        return data
+    return _fix_fiber_names(copy.deepcopy(data))
+
+
 def pre_upgrade_normalize(data: dict) -> dict:
     """Apply all pre-upgrade normalisations to a raw metadata record.
 
     Currently normalises:
     * Camera assembly names (session ↔ rig).
+    * Fiber name fields: ``'Fiber_N'`` → ``'Fiber N'`` in any ``'name'`` field.
 
     Each normalisation is conservative and is skipped when any ambiguity is
     detected, so the function is safe to call on all records.
@@ -269,4 +324,5 @@ def pre_upgrade_normalize(data: dict) -> dict:
         The record with normalisations applied (deep-copied when changed).
     """
     data = normalize_camera_names(data)
+    data = normalize_fiber_names(data)
     return data
