@@ -49,6 +49,7 @@ PROC_UPGRADE_MAP = {
     "Headframe": upgrade_headframe,
     "Ground wire": upgrade_protective_material_replacement,
     "Nanoject injection": upgrade_nanoject_injection,
+    "Nanoject (Pressure)": upgrade_nanoject_injection,
     "Iontophoresis injection": upgrade_iontophoresis_injection,
     "ICV injection": upgrade_icv_injection,
     "ICM injection": upgrade_icm_injection,
@@ -387,7 +388,6 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         if procedure_type in PROC_UPGRADE_MAP:
             return PROC_UPGRADE_MAP[procedure_type](data)
         else:
-            print(data)
             raise ValueError(f"Unsupported procedure type: {procedure_type}")
 
     def _process_surgery_procedures(self, data: dict) -> None:
@@ -520,6 +520,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             # as top-level subject procedures instead of nesting them inside a Surgery object.
             return self._wrap_procedure_in_surgery(data, data)
 
+        print(data)
         raise ValueError("Unsupported subject procedure type: {}".format(procedure_type))
 
     def _upgrade_specimen_procedure(self, data: dict) -> dict:
