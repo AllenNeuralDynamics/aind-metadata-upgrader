@@ -92,6 +92,24 @@ def ensure_pacific_timezone(dt: Optional[str]) -> Optional[datetime]:
     return ensure_timezone(dt, fallback_tz=None)
 
 
+def upgrade_experimenter_names(experimenter_names) -> list:
+    """Convert experimenter names to a list, handling both string and list inputs.
+
+    Filters out None and empty values.
+    """
+    if not experimenter_names:
+        return []
+
+    if isinstance(experimenter_names, str):
+        experimenter_names = [experimenter_names]
+
+    experimenters = []
+    for name in experimenter_names:
+        if name and isinstance(name, str) and name.strip():
+            experimenters.append(name.strip())
+    return experimenters
+
+
 def validate_frequency_unit(frequency_unit: str) -> str:
     """Validate a frequency unit and repair it if needed"""
     if frequency_unit in [member.value for member in FrequencyUnit]:
@@ -443,6 +461,48 @@ def upgrade_filter(data: dict) -> dict:
     return filter_device.model_dump()
 
 
+def _build_transforms(transforms: list) -> list:
+    """Convert a v1 list of rotation/translation dicts to v2 transform dicts."""
+    result = []
+    for transform in transforms:
+        if transform["type"] == "rotation":
+            # rotation data is originally stored as a flat list 3 x 3, we convert to list of lists
+            result.append(
+                Affine(
+                    affine_transform=[
+                        transform["rotation"][0:3],
+                        transform["rotation"][3:6],
+                        transform["rotation"][6:9],
+                    ]
+                ).model_dump()
+            )
+        elif transform["type"] == "translation":
+            result.append(Translation(translation=transform["translation"]).model_dump())
+        else:
+            raise ValueError(f"Unsupported transform type: {transform['type']}")
+    return result
+
+
+def _origin_to_coordinate_system(origin: str, relative_position: dict):
+    """Map a v1 device_origin string to a CoordinateSystemLibrary value."""
+    if origin == "Center of Screen on Face":
+        return CoordinateSystemLibrary.SIPE_MONITOR_RTF
+    elif "Located on face of the lens mounting surface in its center" in origin:
+        return CoordinateSystemLibrary.SIPE_CAMERA_RBF
+    elif "Located on the face of the lens mounting surface at its center" in origin:
+        return CoordinateSystemLibrary.SIPE_CAMERA_RBF
+    elif "Located at the center of the screen" in origin:
+        return CoordinateSystemLibrary.SIPE_MONITOR_RTF
+    elif (
+        "Located on the front mounting flange face. Right and left conventions are relative to "
+        "the front side of the speaker, ie. from the subject's perspective" in origin
+    ):
+        return CoordinateSystemLibrary.SIPE_SPEAKER_LTF
+    else:
+        print(relative_position)
+        raise ValueError(f"Unsupported origin: {origin}")
+
+
 def upgrade_positioned_device(data: dict, relative_position_list: list = []) -> dict:
     """Take v1 RelativePosition object
 
@@ -453,58 +513,22 @@ def upgrade_positioned_device(data: dict, relative_position_list: list = []) -> 
     remove(data, "position")
 
     if not relative_position:
-        # No information about relative position, set defaults
         data["relative_position"] = relative_position_list
         data["coordinate_system"] = None
         data["transform"] = None
     else:
-        transforms = relative_position.get("device_position_transforms", [])
+        transforms = relative_position.get("device_position_transformations", [])
+        if not transforms:
+            transforms = relative_position.get("device_position_transforms", [])
 
-        data["transform"] = []
-
-        translation = None
-
-        for transform in transforms:
-            if transform["type"] == "rotation":
-                # rotation data is originally stored as a flat list 3 x 3, we convert to list of lists
-                data["transform"].append(
-                    Affine(
-                        affine_transform=[
-                            transform["rotation"][0:3],
-                            transform["rotation"][3:6],
-                            transform["rotation"][6:9],
-                        ]
-                    ).model_dump()
-                )
-            elif transform["type"] == "translation":
-                translation = Translation(translation=transform["translation"])
-                data["transform"].append(translation.model_dump())
-            else:
-                raise ValueError(f"Unsupported transform type: {transform['type']}")
+        data["transform"] = _build_transforms(transforms)
 
         origin = relative_position.get("device_origin", {})
-        # axes = relative_position.get("device_axes", [])
-
         # We can't easily recover the relative position, leave this for a data migration later
         data["relative_position"] = []
-
         # Rather than parse the origin/axes, we'll use a library coordinate system
-        if origin == "Center of Screen on Face":
-            data["coordinate_system"] = CoordinateSystemLibrary.SIPE_MONITOR_RTF
-        elif "Located on face of the lens mounting surface in its center" in origin:
-            data["coordinate_system"] = CoordinateSystemLibrary.SIPE_CAMERA_RBF
-        elif "Located on the face of the lens mounting surface at its center" in origin:
-            data["coordinate_system"] = CoordinateSystemLibrary.SIPE_CAMERA_RBF
-        elif "Located at the center of the screen" in origin:
-            data["coordinate_system"] = CoordinateSystemLibrary.SIPE_MONITOR_RTF
-        elif (
-            "Located on the front mounting flange face. Right and left conventions are relative to "
-            "the front side of the speaker, ie. from the subject's perspective" in origin
-        ):
-            data["coordinate_system"] = CoordinateSystemLibrary.SIPE_SPEAKER_LTF
-        else:
-            print(relative_position)
-            raise ValueError(f"Unsupported origin: {origin}")
+        data["coordinate_system"] = _origin_to_coordinate_system(origin, relative_position)
+
     return data
 
 
@@ -922,7 +946,10 @@ def _upgrade_generic_calibration(data: dict) -> Optional[dict]:
 
 IGNORED_CALIBRATIONS = [
     "solenoid open time (ms) = slope * expected water volume (mL) + intercept",
+    "sound_volume = log(1 - ((dB - c) / a)) / b;dB is sound pressure",
 ]
+
+IGNORED_NOTES = ["placeholder"]
 
 
 def upgrade_calibration(data: dict) -> Optional[dict]:
@@ -930,6 +957,10 @@ def upgrade_calibration(data: dict) -> Optional[dict]:
 
     if any(ignored in data.get("description", "") for ignored in IGNORED_CALIBRATIONS):
         # Skip ignored calibrations
+        return None
+
+    if any(ignored in (data.get("notes") or "") for ignored in IGNORED_NOTES):
+        # Skip calibrations with ignored notes
         return None
 
     # Try volume calibrations first
@@ -968,9 +999,9 @@ CCF_MAPPING = {
     "V1 center": CCFv3.VISP,
     "GenFacCran": CCFv3.GVIIN,
     "385": CCFv3.VISP,
-    "AntComMid": CCFv3.ACO,          # anterior commissure, olfactory limb / midline guess
-    "CCant": CCFv3.CC,               # corpus callosum anterior
-    "CCpst": CCFv3.CC,               # corpus callosum posterior
+    "AntComMid": CCFv3.ACO,  # anterior commissure, olfactory limb / midline guess
+    "CCant": CCFv3.CC,  # corpus callosum anterior
+    "CCpst": CCFv3.CC,  # corpus callosum posterior
     "Ccant": CCFv3.CC,
     "Cortex": CCFv3.CTX,
     "DRN": CCFv3.DR,
@@ -993,7 +1024,7 @@ CCF_MAPPING = {
     "Striatum and GPe (probe A) MRN (probe B)": CCFv3.STR,
     "Striatum, GPe": CCFv3.STR,
     "Thalamus": CCFv3.TH,
-    "VM/VAL": CCFv3.VM,             # could be VM + VAL composite
+    "VM/VAL": CCFv3.VM,  # could be VM + VAL composite
     "VP, NAc": CCFv3.VP,
     "Ventral Striatum": CCFv3.ACB,
     "Ventral Striatum/ NAc": CCFv3.ACB,

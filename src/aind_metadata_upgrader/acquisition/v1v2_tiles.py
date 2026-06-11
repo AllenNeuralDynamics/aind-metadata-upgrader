@@ -288,6 +288,7 @@ MEDIUM_MAP = {
     "Cargille oil 1.5200": ImmersionMedium.OIL,
     "EasyIndex": ImmersionMedium.EASYINDEX,
     "0.05x SSC": ImmersionMedium.WATER,
+    "0.07x SSC": ImmersionMedium.WATER,
     "ACB": ImmersionMedium.ACB,
     "Ethyl cinnamate": ImmersionMedium.ECI,
     "EZ View": ImmersionMedium.OIL,

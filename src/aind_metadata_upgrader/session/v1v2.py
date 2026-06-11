@@ -62,23 +62,12 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_targeted_structure,
     upgrade_v1_modalities,
     validate_angle_unit,
+    upgrade_experimenter_names,
 )
 
 
 class SessionV1V2(CoreUpgrader):
     """Upgrade session from v1.4 to v2.0 (acquisition)"""
-
-    def _upgrade_experimenter_names(self, experimenter_names: List[str]) -> List[str]:
-        """Convert experimenter full names to Person objects"""
-        experimenters = []
-
-        if isinstance(experimenter_names, str):
-            experimenter_names = [experimenter_names]
-
-        for name in experimenter_names:
-            if name and name.strip():
-                experimenters.append(name.strip())
-        return experimenters
 
     def _upgrade_maintenance(self, maintenance: List[Dict]) -> List[Dict]:
         """Upgrade maintenance objects"""
@@ -274,7 +263,21 @@ class SessionV1V2(CoreUpgrader):
         # Find the matching light source config
         matching_light_source = next((ls for ls in light_sources if ls.get("name") == light_source_name), None)
         if not matching_light_source:
-            raise ValueError(f"Light source '{light_source_name}' not found in stream light sources")
+            # Fallback: try to match by excitation_wavelength against rig light sources
+            excitation_wavelength = channel_data.get("excitation_wavelength")
+            rig_light_sources = getattr(self, "_rig_light_sources", [])
+            if excitation_wavelength is not None and rig_light_sources:
+                matching_light_source = next(
+                    (ls for ls in rig_light_sources if ls.get("wavelength") == int(excitation_wavelength)),
+                    None,
+                )
+                if matching_light_source:
+                    light_source_name = matching_light_source.get("name", light_source_name)
+        if not matching_light_source:
+            raise ValueError(
+                f"Light source '{light_source_name}' with excitation "
+                f"{excitation_wavelength} not found in stream light sources"
+            )
 
         light_source_config = self._upgrade_light_source_config(matching_light_source)
 
@@ -350,34 +353,27 @@ class SessionV1V2(CoreUpgrader):
 
         return patchcord_configs, all_connections
 
-    def _upgrade_ophys_fov_to_plane(self, fov: Dict) -> Dict:
+    def _upgrade_ophys_fov_to_plane(self, fov: Dict, coupled_partner_index: Optional[int] = None) -> Dict:
         """Convert ophys FOV to Plane"""
-        # Determine the targeted structure
         targeted_structure = upgrade_targeted_structure(fov.get("targeted_structure"))
-
-        plane = Plane(
+        data_dict = dict(
             depth=float(fov.get("imaging_depth", 0)),
             depth_unit=SizeUnit.UM,
             power=float(fov.get("power", 0)) if fov.get("power") else 0.0,
             power_unit=PowerUnit.PERCENT,
             targeted_structure=targeted_structure,
-        ).model_dump()
+        )
 
-        # Handle coupled FOVs
-        if fov.get("coupled_fov_index") is not None:
-            coupled_plane = CoupledPlane(
-                depth=float(fov.get("imaging_depth", 0)),
-                depth_unit=SizeUnit.UM,
-                power=float(fov.get("power", 0)) if fov.get("power") else 0.0,
-                power_unit=PowerUnit.PERCENT,
-                targeted_structure=targeted_structure,
+        # coupled_partner_index is the index of the OTHER plane this one is coupled to
+        if fov.get("coupled_fov_index") is not None and coupled_partner_index is not None:
+            return CoupledPlane(
+                **data_dict,
                 plane_index=fov.get("index", 0),
-                coupled_plane_index=fov.get("coupled_fov_index"),
+                coupled_plane_index=coupled_partner_index,
                 power_ratio=float(fov.get("power_ratio", 1.0)) if fov.get("power_ratio") else 1.0,
             ).model_dump()
-            return coupled_plane
 
-        return plane
+        return Plane(**data_dict).model_dump()
 
     def _upgrade_mri_scan_to_config(self, scan: Dict) -> Dict:
         """Convert MRI scan to MRIScan config"""
@@ -487,6 +483,28 @@ class SessionV1V2(CoreUpgrader):
                 wavelengths["red"] = center
         return wavelengths
 
+    def _build_coupled_fov_partner_map(self, fovs: List[Dict]) -> Dict[int, int]:
+        """Build a mapping from each FOV index to its coupled partner's index.
+
+        In V1, planes sharing the same coupled_fov_index are paired together.
+        In V2, each plane's coupled_plane_index must point to the OTHER plane in the pair.
+        """
+        coupled_partner_map = {}  # fov_index -> partner_fov_index
+        groups: Dict[int, List[int]] = {}
+
+        for fov in fovs:
+            group_id = fov.get("coupled_fov_index")
+            if group_id is not None:
+                groups.setdefault(group_id, []).append(fov.get("index", 0))
+
+        for group_members in groups.values():
+            if len(group_members) == 2:
+                a, b = group_members
+                coupled_partner_map[a] = b
+                coupled_partner_map[b] = a
+
+        return coupled_partner_map
+
     def _create_ophys_fov_components(self, stream: Dict, light_sources: List, detectors: List) -> tuple:
         """Create channels and PlanarImage objects from ophys_fovs"""
         channels = []
@@ -530,8 +548,13 @@ class SessionV1V2(CoreUpgrader):
             ).model_dump()
             channels.append(channel)
 
-        for fov in stream.get("ophys_fovs", []):
-            plane = self._upgrade_ophys_fov_to_plane(fov)
+        fovs = stream.get("ophys_fovs", [])
+        coupled_partner_map = self._build_coupled_fov_partner_map(fovs)
+
+        for fov in fovs:
+            fov_index = fov.get("index", 0)
+            partner_index = coupled_partner_map.get(fov_index)
+            plane = self._upgrade_ophys_fov_to_plane(fov, coupled_partner_index=partner_index)
             for channel in channels:
                 image = PlanarImage(
                     planes=[plane], image_to_acquisition_transform=[], channel_name=channel["channel_name"]
@@ -667,7 +690,7 @@ class SessionV1V2(CoreUpgrader):
             return {"object_type": "Sampling strategy", "frame_rate": float(frame_rate), "frame_rate_unit": "hertz"}
         return None
 
-    def _create_imaging_config(self, stream: Dict) -> Optional[Dict]:
+    def _create_imaging_config(self, stream: Dict, instrument_id: str = "") -> Optional[Dict]:
         """Create ImagingConfig from stream data using modality-specific orchestration"""
 
         # Determine the primary imaging modality
@@ -699,7 +722,7 @@ class SessionV1V2(CoreUpgrader):
 
         # Create the ImagingConfig
         return ImagingConfig(
-            device_name="Imaging System",
+            device_name=instrument_id,
             channels=channels,
             images=images,
             sampling_strategy=sampling_strategy,
@@ -844,14 +867,23 @@ class SessionV1V2(CoreUpgrader):
 
     def _determine_stimulus_modalities(self, epoch: dict) -> list:
         """Determine stimulus modalities from epoch data"""
+
         stimulus_modalities = epoch.get("stimulus_modalities", [])
         if not stimulus_modalities or stimulus_modalities == ["None"] or stimulus_modalities == [None]:
-            stimulus_name = epoch.get("stimulus_name", "").lower()
-            if "spontaneous" in stimulus_name:
-                stimulus_modalities = [StimulusModality.NO_STIMULUS]
-            if "the random reward stimulus" in stimulus_name:
-                # This is the dynamic foraging task
-                stimulus_modalities = [StimulusModality.AUDITORY]
+            stimulus_name = (epoch.get("stimulus_name") or epoch.get("stimulus", {}).get("stimulus_name") or "").lower()
+            stimulus_name_map = [
+                ("spontaneous", [StimulusModality.NO_STIMULUS]),
+                ("the random reward stimulus", [StimulusModality.AUDITORY]),  # dynamic foraging task
+                ("2p photostimulation", [StimulusModality.OPTOGENETICS]),
+                ("manual water delivery", [StimulusModality.NO_STIMULUS]),
+                ("laser pulses", [StimulusModality.OPTOGENETICS]),
+            ]
+            for key, modalities in stimulus_name_map:
+                if key in stimulus_name:
+                    stimulus_modalities = modalities
+                    break
+            else:
+                raise ValueError(f"Unknown stimulus name: {stimulus_name}")
         return stimulus_modalities
 
     def _create_speaker_config(self, epoch: dict) -> Optional[dict]:
@@ -982,15 +1014,17 @@ class SessionV1V2(CoreUpgrader):
         reward_consumed_total = session_data.get("reward_consumed_total")
         reward_consumed_unit = session_data.get("reward_consumed_unit", "milliliter")
 
-        # Store rig filters for emission wavelength lookup during stream upgrade
+        # Store rig filters and light sources for lookup during stream upgrade
         self._rig_filters = []
+        self._rig_light_sources = []
         if metadata and isinstance(metadata, dict):
             rig = metadata.get("rig", {})
             if isinstance(rig, dict):
                 self._rig_filters = rig.get("filters", []) or []
+                self._rig_light_sources = rig.get("light_sources", []) or []
 
         # Upgrade experimenter names to Person objects
-        experimenters = self._upgrade_experimenter_names(experimenter_full_name)
+        experimenters = upgrade_experimenter_names(experimenter_full_name)
 
         # Extract the timezone from session_start_time to use as fallback for naive sub-timestamps.
         # This prevents Pydantic's _coerce_naive_datetime from attaching the server's local
@@ -1082,36 +1116,73 @@ class SessionV1V2(CoreUpgrader):
 
         return acquisition.model_dump()
 
+    def _get_imaging_config_light_source_names(self, imaging_config: Optional[Dict]) -> set:
+        """Return the set of device_names for all light sources embedded in an imaging config's channels."""
+        names = set()
+        if imaging_config:
+            for channel in imaging_config.get("channels", []):
+                for ls in channel.get("light_sources", []):
+                    name = ls.get("device_name")
+                    if name:
+                        names.add(name)
+        return names
+
+    def _resolve_light_source_configs_for_stream(self, stream: Dict, imaging_used_names: set) -> List[Dict]:
+        """Return top-level light source configs for a stream.
+
+        If the stream carries its own light_sources, upgrade those (skipping any already embedded
+        in the imaging config).  Otherwise fall back to matching rig light sources by excitation
+        wavelength pulled from each fiber connection channel.
+        """
+        configs = []
+        if stream.get("light_sources"):
+            for light_source in stream["light_sources"]:
+                if light_source.get("name", "Unknown Device") not in imaging_used_names:
+                    config = self._upgrade_light_source_config(light_source)
+                    if config:
+                        configs.append(config)
+        else:
+            rig_light_sources = getattr(self, "_rig_light_sources", [])
+            added_wavelengths: set = set()
+            for fc in stream.get("fiber_connections", []):
+                excitation_wavelength = fc.get("channel", {}).get("excitation_wavelength")
+                if excitation_wavelength is None or excitation_wavelength in added_wavelengths:
+                    continue
+                matching = next(
+                    (ls for ls in rig_light_sources if ls.get("wavelength") == int(excitation_wavelength)),
+                    None,
+                )
+                if matching:
+                    config = self._upgrade_light_source_config(matching)
+                    if config:
+                        configs.append(config)
+                        added_wavelengths.add(excitation_wavelength)
+        return configs
+
     def _upgrade_all_device_configurations(self, stream: Dict, rig_id: str) -> tuple:
         """Upgrade all device configurations from a stream and return configurations and connections"""
         configurations = []
         connections = []
 
-        # Light source and detector configs
-        for light_source in stream.get("light_sources", []):
-            config = self._upgrade_light_source_config(light_source)
-            if config:
-                configurations.append(config)
+        # Build imaging config first so we can check which light sources it already uses
+        imaging_config = self._create_imaging_config(stream, rig_id)
+        imaging_used_names = self._get_imaging_config_light_source_names(imaging_config)
+
+        configurations.extend(self._resolve_light_source_configs_for_stream(stream, imaging_used_names))
 
         for detector in stream.get("detectors", []):
             configurations.append(self._upgrade_detector_config(detector))
 
-        # Ephys configs
         for ephys_module in stream.get("ephys_modules", []):
-            configs = self._upgrade_ephys_module_to_configs(ephys_module)
-            configurations.extend(configs)
+            configurations.extend(self._upgrade_ephys_module_to_configs(ephys_module))
 
-        # Fiber upgrader
         patchcord_configs, fiber_connections = self._upgrade_fiber(stream)
         configurations.extend(patchcord_configs)
         connections.extend(fiber_connections)
 
-        # MRI configs
         for mri_scan in stream.get("mri_scans", []):
             configurations.append(self._upgrade_mri_scan_to_config(mri_scan))
 
-        # Imaging config
-        imaging_config = self._create_imaging_config(stream)
         if imaging_config:
             configurations.append(imaging_config)
 

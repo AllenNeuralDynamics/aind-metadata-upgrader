@@ -2,7 +2,6 @@
 
 import copy
 import logging
-from datetime import date
 from typing import Optional
 
 from aind_data_schema.components.coordinates import CoordinateSystemLibrary
@@ -50,6 +49,7 @@ PROC_UPGRADE_MAP = {
     "Headframe": upgrade_headframe,
     "Ground wire": upgrade_protective_material_replacement,
     "Nanoject injection": upgrade_nanoject_injection,
+    "Nanoject (Pressure)": upgrade_nanoject_injection,
     "Iontophoresis injection": upgrade_iontophoresis_injection,
     "ICV injection": upgrade_icv_injection,
     "ICM injection": upgrade_icm_injection,
@@ -290,11 +290,13 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
     def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
         """Upgrade the procedures to v2"""
 
-        # Extract the nested procedures dict if it exists
+        # Extract the nested procedures dict if it exists.
+        # Deep-copy so that in-place mutations (e.g. remove("procedure_type")) don't
+        # corrupt the caller's dict on a second upgrade attempt.
         if "procedures" in data:
-            procedures_data = data["procedures"]
+            procedures_data = copy.deepcopy(data["procedures"])
         else:
-            procedures_data = data
+            procedures_data = copy.deepcopy(data)
 
         self.subject_id = procedures_data.get("subject_id")
 
@@ -386,7 +388,6 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         if procedure_type in PROC_UPGRADE_MAP:
             return PROC_UPGRADE_MAP[procedure_type](data)
         else:
-            print(data)
             raise ValueError(f"Unsupported procedure type: {procedure_type}")
 
     def _process_surgery_procedures(self, data: dict) -> None:
@@ -438,7 +439,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         # Set default start_date if missing
         if "start_date" not in data or not data["start_date"]:
-            data["start_date"] = date(1970, 1, 1)
+            data["start_date"] = None
 
         # Remove end_date - Surgery doesn't have this field
         remove(data, "end_date")
@@ -519,6 +520,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
             # as top-level subject procedures instead of nesting them inside a Surgery object.
             return self._wrap_procedure_in_surgery(data, data)
 
+        print(data)
         raise ValueError("Unsupported subject procedure type: {}".format(procedure_type))
 
     def _upgrade_specimen_procedure(self, data: dict) -> dict:
