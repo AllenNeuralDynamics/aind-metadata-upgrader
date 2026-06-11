@@ -6,7 +6,7 @@ from typing import Optional
 from packaging.version import Version
 from aind_metadata_upgrader.upgrade import Upgrade
 from aind_data_access_api.document_db import MetadataDbClient
-from zombie_squirrel import custom
+from biodata_cache import custom
 import pandas as pd
 from aind_metadata_upgrader import __version__ as upgrader_version
 

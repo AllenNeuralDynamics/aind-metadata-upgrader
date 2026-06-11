@@ -1,5 +1,5 @@
 """Script to get sync dataframe and print upgrade status summary"""
-from zombie_squirrel import custom
+from biodata_cache import custom
 
 from aind_metadata_upgrader.sync import TABLE_NAME
 
