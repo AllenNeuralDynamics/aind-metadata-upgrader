@@ -220,9 +220,34 @@ def _determine_craniotomy_upgrade_path(upgraded_data: dict) -> dict:
         return upgrade_hemisphere_craniotomy(upgraded_data)
 
 
+def _compute_visual_cortex_position(data: dict):
+    """Return a Translation position dict for visual cortex craniotomies, or None.
+
+    Applies only when the craniotomy type string contains 'visual', no explicit
+    ML/AP coordinates were provided, and a bregma-to-lambda distance is present.
+    Position is -1.3 mm posterior to Lambda (AP = -(bl_distance + 1.3) from Bregma).
+    """
+    if "visual" not in str(data.get("craniotomy_type", "")).lower():
+        return None
+    has_real_coords = data.get("craniotomy_coordinates_ml") is not None and (
+        float(data.get("craniotomy_coordinates_ml", 0)) != 0
+        or float(data.get("craniotomy_coordinates_ap", 0)) != 0
+    )
+    if has_real_coords:
+        return None
+    raw_dist = data.get("bregma_to_lambda_distance")
+    if not raw_dist:
+        return None
+    bl_distance_mm = abs(float(raw_dist))
+    raw_unit = data.get("bregma_to_lambda_unit")
+    if raw_unit == SizeUnit.UM or raw_unit == "micrometer":
+        bl_distance_mm /= 1000
+    ap = -(bl_distance_mm + 1.3)
+    return Translation(translation=[ap, -2.8, 0, 0]).model_dump()
+
+
 def upgrade_craniotomy(data: dict) -> tuple[dict, list]:
     """Upgrade Craniotomy procedure from V1 to V2"""
-    # V1 uses craniotomy_coordinates_*, V2 uses coordinate system
     upgraded_data = data.copy()
 
     remove(upgraded_data, "procedure_type")
@@ -231,9 +256,7 @@ def upgrade_craniotomy(data: dict) -> tuple[dict, list]:
 
     # Check if the craniotomy_type string is a valid enum value
     valid_enum_values = [e.value for e in CraniotomyType]
-
     if upgraded_data["craniotomy_type"] not in valid_enum_values:
-        # Need to convert craniotomy type
         if upgraded_data["craniotomy_type"] in CRANIO_TYPES.keys():
             if "5" in upgraded_data["craniotomy_type"]:
                 upgraded_data["size"] = 5
@@ -249,9 +272,15 @@ def upgrade_craniotomy(data: dict) -> tuple[dict, list]:
                 f"Expected one of {valid_enum_values}."
             )
 
-    upgraded_data, measured_coordinates = retrieve_bl_distance(upgraded_data)
+    # Must be called before retrieve_bl_distance strips the distance field
+    visual_cortex_position = _compute_visual_cortex_position(data)
 
+    upgraded_data, measured_coordinates = retrieve_bl_distance(upgraded_data)
     upgraded_data = _determine_craniotomy_upgrade_path(upgraded_data)
+
+    if visual_cortex_position is not None:
+        upgraded_data["position"] = visual_cortex_position
+        upgraded_data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
 
     if (
         "protocol_id" in upgraded_data
