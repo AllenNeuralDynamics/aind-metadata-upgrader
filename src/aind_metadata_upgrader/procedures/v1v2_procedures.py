@@ -489,7 +489,9 @@ def upgrade_antibody(data: dict) -> dict:
                 "target": target,
                 "name": "Chicken polyclonal to GFP",
                 "source": Organization.from_name(upgraded_data["source"]["name"]),
-                "rrid": PIDName(name="Chicken polyclonal to GFP", registry=Registry.RRID, registry_identifier="ab13970"),
+                "rrid": PIDName(
+                    name="Chicken polyclonal to GFP", registry=Registry.RRID, registry_identifier="ab13970"
+                ),
             }
             return safe_model_construct(ProbeReagent, probe_reagent_data)
         elif upgraded_data["immunolabel_class"].lower() == "secondary":
