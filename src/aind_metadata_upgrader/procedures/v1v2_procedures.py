@@ -229,6 +229,18 @@ def upgrade_craniotomy(data: dict) -> tuple[dict, list]:
     remove(upgraded_data, "recovery_time")
     remove(upgraded_data, "recovery_time_unit")
 
+    is_visual_cortex = "visual" in str(data.get("craniotomy_type", "")).lower()
+
+    # Check if real (non-zero) coordinates exist before they get stripped
+    had_real_coordinates = (
+        "craniotomy_coordinates_ml" in upgraded_data
+        and upgraded_data["craniotomy_coordinates_ml"] is not None
+        and (
+            float(upgraded_data.get("craniotomy_coordinates_ml", 0)) != 0
+            or float(upgraded_data.get("craniotomy_coordinates_ap", 0)) != 0
+        )
+    )
+
     # Check if the craniotomy_type string is a valid enum value
     valid_enum_values = [e.value for e in CraniotomyType]
 
@@ -249,9 +261,28 @@ def upgrade_craniotomy(data: dict) -> tuple[dict, list]:
                 f"Expected one of {valid_enum_values}."
             )
 
+    # For visual cortex craniotomies without explicit coordinates, extract the
+    # bregma-to-lambda distance before retrieve_bl_distance removes it, so we can
+    # compute the standard visual cortex position (-1.3 mm posterior to Lambda).
+    bl_distance_mm = None
+    if is_visual_cortex and not had_real_coordinates:
+        raw_dist = upgraded_data.get("bregma_to_lambda_distance")
+        raw_unit = upgraded_data.get("bregma_to_lambda_unit")
+        if raw_dist:
+            bl_distance_mm = abs(float(raw_dist))
+            if raw_unit == SizeUnit.UM or raw_unit == "micrometer":
+                bl_distance_mm /= 1000
+
     upgraded_data, measured_coordinates = retrieve_bl_distance(upgraded_data)
 
     upgraded_data = _determine_craniotomy_upgrade_path(upgraded_data)
+
+    # Override position for visual cortex craniotomies that lacked explicit coordinates:
+    # the standard center is -1.3 mm posterior to Lambda, converted to Bregma coordinates.
+    if is_visual_cortex and not had_real_coordinates and bl_distance_mm is not None:
+        ap = -(bl_distance_mm + 1.3)
+        upgraded_data["position"] = Translation(translation=[ap, -2.8, 0, 0]).model_dump()
+        upgraded_data["coordinate_system_name"] = CoordinateSystemLibrary.BREGMA_ARID.name
 
     if (
         "protocol_id" in upgraded_data
