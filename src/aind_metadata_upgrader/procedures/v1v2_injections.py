@@ -24,6 +24,7 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     repair_organization,
     upgrade_registry,
     upgrade_targeted_structure,
+    safe_model_construct,
 )
 
 from aind_metadata_upgrader.procedures.v1v2_procedures import retrieve_bl_distance
@@ -51,7 +52,7 @@ def upgrade_viral_material(data: dict) -> dict:
         if data["addgene_id"].get("registry") is None:
             data["addgene_id"]["registry"] = Registry.ADDGENE
 
-    return ViralMaterial(**data).model_dump()
+    return safe_model_construct(ViralMaterial, data)
 
 
 def _upgrade_single_material(material: dict) -> dict:
@@ -72,7 +73,7 @@ def _upgrade_single_material(material: dict) -> dict:
 
         if isinstance(reagent["source"], dict):
             reagent["source"] = upgrade_registry(reagent["source"])
-        return NonViralMaterial(**reagent).model_dump()
+        return safe_model_construct(NonViralMaterial, reagent)
     else:
         raise ValueError(
             f"Unsupported injection material type: {material['material_type']}. Expected 'Virus' or 'Reagent'."
@@ -123,7 +124,7 @@ def build_volume_injection_dynamics(data: dict) -> dict:
         dynamics[0]["duration"] = duration
         dynamics[0]["duration_unit"] = duration_unit
 
-    return [InjectionDynamics(**dynamic).model_dump() for dynamic in dynamics]
+    return [safe_model_construct(InjectionDynamics, dynamic) for dynamic in dynamics]
 
 
 def build_current_injection_dynamics(data: dict) -> dict:
@@ -138,7 +139,7 @@ def build_current_injection_dynamics(data: dict) -> dict:
     dynamics["injection_current_unit"] = data.get("injection_current_unit", None)
     dynamics["alternating_current"] = data.get("alternating_current", None)
 
-    return [InjectionDynamics(**dynamics).model_dump()]
+    return [safe_model_construct(InjectionDynamics, dynamics)]
 
 
 def upgrade_injection_coordinates(data: dict) -> dict:
@@ -302,15 +303,16 @@ def upgrade_iontophoresis_injection(data: dict) -> tuple[dict, list]:
 def upgrade_typeless_base_injection(data: dict) -> dict:
     """Upgrade a typeless base Injection (no brain coordinates) from V1 to V2."""
     data = upgrade_generic_injection(data)
-    return Injection(
-        injection_materials=ensure_injection_materials_with_default(
+    injection_data = {
+        "injection_materials": ensure_injection_materials_with_default(
             upgrade_injection_materials(data.get("injection_materials", []))
         ),
-        targeted_structure=get_targeted_structure_or_none(data),
-        relative_position=build_relative_position_from_hemisphere(data),
-        dynamics=build_volume_injection_dynamics(data),
-        protocol_id=data.get("protocol_id", None),
-    ).model_dump()
+        "targeted_structure": get_targeted_structure_or_none(data),
+        "relative_position": build_relative_position_from_hemisphere(data),
+        "dynamics": build_volume_injection_dynamics(data),
+        "protocol_id": data.get("protocol_id", None),
+    }
+    return safe_model_construct(Injection, injection_data)
 
 
 def upgrade_icv_injection(data: dict) -> dict:
@@ -368,7 +370,7 @@ def upgrade_retro_orbital_injection(data: dict) -> dict:
     remove(upgraded_data, "injection_duration")
     remove(upgraded_data, "injection_duration_unit")
 
-    return Injection(**upgraded_data).model_dump()
+    return safe_model_construct(Injection, upgraded_data)
 
 
 def upgrade_intraperitoneal_injection(data: dict) -> dict:
@@ -393,4 +395,4 @@ def upgrade_intraperitoneal_injection(data: dict) -> dict:
     remove(upgraded_data, "injection_duration_unit")
     remove(upgraded_data, "time")
 
-    return Injection(**upgraded_data).model_dump()
+    return safe_model_construct(Injection, upgraded_data)

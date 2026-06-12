@@ -1,8 +1,11 @@
 """Shared utility functions for the AIND Metadata Upgrader."""
 
+import logging
 from datetime import datetime
 from typing import Optional
 from zoneinfo import ZoneInfo
+
+from pydantic import ValidationError
 
 from aind_data_schema.components.coordinates import (
     Affine,
@@ -1152,3 +1155,30 @@ def _upgrade_sound_calibration(data: dict) -> Optional[dict]:
         ).model_dump()
 
     return None
+
+
+def safe_model_construct(model_class, data: dict, model_name: str = None):
+    """Safely construct a Pydantic model, falling back to model_construct if validation fails.
+
+    ONLY catches Pydantic ValidationError - other exceptions (ValueError, TypeError, etc.)
+    from the upgrade logic itself will propagate normally so they can be fixed.
+
+    Args:
+        model_class: The Pydantic model class to instantiate
+        data: Dict of data to pass to the model
+        model_name: Optional name for logging (defaults to model_class.__name__)
+
+    Returns:
+        Dict from model_dump()
+
+    Raises:
+        Any exception other than ValidationError (these indicate upgrader bugs to fix)
+    """
+    if model_name is None:
+        model_name = model_class.__name__
+
+    try:
+        return model_class(**data).model_dump()
+    except ValidationError as e:
+        logging.warning(f"{model_name} validation failed, using model_construct: {e}")
+        return model_class.model_construct(**data).model_dump()

@@ -49,7 +49,7 @@ from aind_data_schema_models.registries import Registry
 from aind_data_schema_models.organizations import Organization
 
 from aind_metadata_upgrader.rig.v1v2_devices import upgrade_fiber_probe
-from aind_metadata_upgrader.utils.v1v2_utils import remove
+from aind_metadata_upgrader.utils.v1v2_utils import remove, safe_model_construct
 
 coordinate_system_required = False
 
@@ -289,11 +289,8 @@ def upgrade_craniotomy(data: dict) -> tuple[dict, list]:
     ):
         upgraded_data["protocol_id"] = None
 
-    try:
-        return Craniotomy(**upgraded_data).model_dump(), measured_coordinates
-    except Exception as e:
-        print(data)
-        raise e
+    craniotomy_dict = safe_model_construct(Craniotomy, upgraded_data)
+    return craniotomy_dict, measured_coordinates
 
 
 def upgrade_headframe(data: dict) -> dict:
@@ -308,7 +305,7 @@ def upgrade_headframe(data: dict) -> dict:
     if "headframe_type" in upgraded_data and not upgraded_data["headframe_type"]:
         upgraded_data["headframe_type"] = "unknown"
 
-    return Headframe(**upgraded_data).model_dump()
+    return safe_model_construct(Headframe, upgraded_data)
 
 
 def upgrade_protective_material_replacement(data: dict) -> dict:
@@ -318,7 +315,7 @@ def upgrade_protective_material_replacement(data: dict) -> dict:
     # V1 uses "Ground wire" as procedure_type, V2 uses GroundWireImplant
     upgraded_data.pop("procedure_type", None)
 
-    return GroundWireImplant(**upgraded_data).model_dump()
+    return safe_model_construct(GroundWireImplant, upgraded_data)
 
 
 def upgrade_sample_collection(data: dict) -> dict:
@@ -326,7 +323,7 @@ def upgrade_sample_collection(data: dict) -> dict:
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
 
-    return SampleCollection(**upgraded_data).model_dump()
+    return safe_model_construct(SampleCollection, upgraded_data)
 
 
 def upgrade_perfusion(data: dict) -> dict:
@@ -343,7 +340,7 @@ def upgrade_perfusion(data: dict) -> dict:
         else:
             raise ValueError("output_specimen_ids must be a string or a list of strings")
 
-    return Perfusion(**upgraded_data).model_dump()
+    return safe_model_construct(Perfusion, upgraded_data)
 
 
 def retrieve_probe_config(data: dict) -> tuple:
@@ -402,24 +399,26 @@ def retrieve_probe_config(data: dict) -> tuple:
         angle = implant.get("angle", None)
         angle_unit = implant.get("angle_unit", "degrees")
 
-        transforms = [Translation(translation=[ap, ml, 0, dv])]
+        translation_data = {"translation": [ap, ml, 0, dv]}
+        translation = safe_model_construct(Translation, translation_data)
+        transforms = [translation]
 
         if angle:
             if angle_unit != "degrees":
                 raise ValueError(f"Unsupported angle_unit: {angle_unit}. " "Expected 'degrees'.")
-            rotation = Rotation(
-                angles=[float(angle), 0, 0, 0],
-            )
+            rotation_data = {"angles": [float(angle), 0, 0, 0]}
+            rotation = safe_model_construct(Rotation, rotation_data)
             transforms.append(rotation)
 
-        config = ProbeConfig(
-            device_name=name,
-            primary_targeted_structure=targeted_structure,
-            coordinate_system=CoordinateSystemLibrary.MPM_MANIP_RFB,
-            transform=transforms,
-        )
+        config_data = {
+            "device_name": name,
+            "primary_targeted_structure": targeted_structure,
+            "coordinate_system": CoordinateSystemLibrary.MPM_MANIP_RFB,
+            "transform": transforms,
+        }
+        config = safe_model_construct(ProbeConfig, config_data)
 
-        configs.append(config.model_dump())
+        configs.append(config)
 
         implant = retrieve_bl_distance(implant)
 
@@ -435,13 +434,12 @@ def upgrade_fiber_implant(data: dict) -> list:
 
     implants = []
     for i, probe in enumerate(probes):
-        implants.append(
-            ProbeImplant(
-                protocol_id=data.get("protocol_id", "unknown"),
-                implanted_device=probe,
-                device_config=configs[i],
-            ).model_dump()
-        )
+        probe_implant_data = {
+            "protocol_id": data.get("protocol_id", "unknown"),
+            "implanted_device": probe,
+            "device_config": configs[i],
+        }
+        implants.append(safe_model_construct(ProbeImplant, probe_implant_data))
 
     return implants
 
@@ -451,7 +449,7 @@ def upgrade_myomatrix_insertion(data: dict) -> dict:
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
 
-    return MyomatrixInsertion(**upgraded_data).model_dump()
+    return safe_model_construct(MyomatrixInsertion, upgraded_data)
 
 
 def upgrade_catheter_implant(data: dict) -> dict:
@@ -459,7 +457,7 @@ def upgrade_catheter_implant(data: dict) -> dict:
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
 
-    return CatheterImplant(**upgraded_data).model_dump()
+    return safe_model_construct(CatheterImplant, upgraded_data)
 
 
 def upgrade_other_subject_procedure(data: dict) -> dict:
@@ -467,7 +465,7 @@ def upgrade_other_subject_procedure(data: dict) -> dict:
     upgraded_data = data.copy()
     upgraded_data.pop("procedure_type", None)
 
-    return GenericSurgeryProcedure(**upgraded_data).model_dump()
+    return safe_model_construct(GenericSurgeryProcedure, upgraded_data)
 
 
 def upgrade_anaesthetic(data: dict) -> dict:
@@ -488,7 +486,7 @@ def upgrade_anaesthetic(data: dict) -> dict:
     if "duration" not in upgraded_data or upgraded_data["duration"] is None:
         upgraded_data["duration"] = 0
 
-    return Anaesthetic(**upgraded_data).model_dump()
+    return safe_model_construct(Anaesthetic, upgraded_data)
 
 
 def repair_generic_surgery_procedure(data: dict, subject_id: str) -> dict:
@@ -516,12 +514,15 @@ def upgrade_antibody(data: dict) -> dict:
                     mass_unit=upgraded_data.get("mass_unit"),
                     species=Species.CHICKEN,
                 )
-            return ProbeReagent(
-                target=target,
-                name="Chicken polyclonal to GFP",
-                source=Organization.from_name(upgraded_data["source"]["name"]),
-                rrid=PIDName(name="Chicken polyclonal to GFP", registry=Registry.RRID, registry_identifier="ab13970"),
-            ).model_dump()
+            probe_reagent_data = {
+                "target": target,
+                "name": "Chicken polyclonal to GFP",
+                "source": Organization.from_name(upgraded_data["source"]["name"]),
+                "rrid": PIDName(
+                    name="Chicken polyclonal to GFP", registry=Registry.RRID, registry_identifier="ab13970"
+                ),
+            }
+            return safe_model_construct(ProbeReagent, probe_reagent_data)
         elif upgraded_data["immunolabel_class"].lower() == "secondary":
             # Upgrade to FluorescentStain
             # Example data: {
@@ -550,13 +551,14 @@ def upgrade_antibody(data: dict) -> dict:
                     excitation_wavelength_unit=SizeUnit.NM,
                 )
 
-                return FluorescentStain(
-                    name=upgraded_data["rrid"]["name"],
-                    source=Organization.from_name(upgraded_data["source"]["name"]),
-                    probe=probe,
-                    stain_type=StainType.PROTEIN,
-                    fluorophore=fluorophore,
-                ).model_dump()
+                fluorescent_stain_data = {
+                    "name": upgraded_data["rrid"]["name"],
+                    "source": Organization.from_name(upgraded_data["source"]["name"]),
+                    "probe": probe,
+                    "stain_type": StainType.PROTEIN,
+                    "fluorophore": fluorophore,
+                }
+                return safe_model_construct(FluorescentStain, fluorescent_stain_data)
         else:
             print(data)
             raise NotImplementedError("TODO")
@@ -574,7 +576,7 @@ def upgrade_hcr_series(data: dict) -> dict:
     """Upgrade HCRSeries from V1 to V2"""
     upgraded_data = data.copy()
 
-    return HCRSeries(**upgraded_data).model_dump()
+    return safe_model_construct(HCRSeries, upgraded_data)
 
 
 def _create_section(
@@ -690,7 +692,7 @@ def upgrade_planar_sectioning(data: dict) -> dict:
         "section_orientation": section_orientation,
     }
 
-    return PlanarSectioning(**upgraded_data).model_dump()
+    return safe_model_construct(PlanarSectioning, upgraded_data)
 
 
 def upgrade_water_restriction(data: dict) -> dict:
