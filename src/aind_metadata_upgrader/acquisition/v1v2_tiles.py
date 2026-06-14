@@ -293,6 +293,7 @@ MEDIUM_MAP = {
     "Ethyl cinnamate": ImmersionMedium.ECI,
     "EZ View": ImmersionMedium.OIL,
     "EZView": ImmersionMedium.OIL,
+    "1x PBS w/PVSA": ImmersionMedium.PBS,
 }
 
 
