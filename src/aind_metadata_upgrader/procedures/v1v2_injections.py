@@ -20,6 +20,7 @@ from aind_data_schema_models.organizations import Organization
 from aind_data_schema_models.units import AngleUnit
 
 from aind_metadata_upgrader.utils.v1v2_utils import (
+    correct_ap_angle_for_hemisphere,
     remove,
     repair_organization,
     upgrade_registry,
@@ -181,9 +182,7 @@ def upgrade_injection_coordinates(data: dict) -> dict:
                         "Expected 'degrees'."
                     )
 
-                ap_angle = float(data["injection_angle"])
-                if ml is not None and float(ml) < 0:
-                    ap_angle = -abs(ap_angle)
+                ap_angle = correct_ap_angle_for_hemisphere(float(data["injection_angle"]), ml)
 
                 rotation = Rotation(
                     angles=[ap_angle, 0, 0],
