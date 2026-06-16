@@ -181,8 +181,12 @@ def upgrade_injection_coordinates(data: dict) -> dict:
                         "Expected 'degrees'."
                     )
 
+                ap_angle = float(data["injection_angle"])
+                if ml is not None and float(ml) < 0:
+                    ap_angle = -abs(ap_angle)
+
                 rotation = Rotation(
-                    angles=[data["injection_angle"], 0, 0],
+                    angles=[ap_angle, 0, 0],
                     angles_unit=AngleUnit.DEG,
                 )
 
