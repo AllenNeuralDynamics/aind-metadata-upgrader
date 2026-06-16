@@ -406,7 +406,10 @@ def retrieve_probe_config(data: dict) -> tuple:
         if angle:
             if angle_unit != "degrees":
                 raise ValueError(f"Unsupported angle_unit: {angle_unit}. " "Expected 'degrees'.")
-            rotation_data = {"angles": [float(angle), 0, 0, 0]}
+            ap_angle = float(angle)
+            if ml is not None and float(ml) < 0:
+                ap_angle = -abs(ap_angle)
+            rotation_data = {"angles": [ap_angle, 0, 0, 0]}
             rotation = safe_model_construct(Rotation, rotation_data)
             transforms.append(rotation)
 
