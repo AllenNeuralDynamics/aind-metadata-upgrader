@@ -59,6 +59,7 @@ class TestUpgradeInjectionCoordinatesAngle(unittest.TestCase):
     """Test that the AP angle sign is corrected based on ML hemisphere"""
 
     def _make_data(self, ml, angle):
+        """Helper to create injection data with specified ML coordinate and AP angle"""
         return {
             "injection_coordinate_ml": ml,
             "injection_coordinate_ap": "1.0",
@@ -70,6 +71,7 @@ class TestUpgradeInjectionCoordinatesAngle(unittest.TestCase):
         }
 
     def _get_ap_angle(self, data):
+        """Helper to extract the AP angle from the upgraded injection coordinates"""
         result = upgrade_injection_coordinates(data)
         # coordinates[0] is the first depth; [1] is the rotation (after translation)
         rotation = result["coordinates"][0][1]
