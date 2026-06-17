@@ -162,9 +162,14 @@ class AcquisitionV1V2(CoreUpgrader):
         tiles = data.get("tiles", [])
         axes = data.get("axes", [])
         notes = data.get("notes")
-        
+
         # Get instrument_id from instrument if missing
-        if not instrument_id and metadata and metadata.get("instrument") and metadata["instrument"].get("instrument_id"):
+        if (
+            not instrument_id
+            and metadata
+            and metadata.get("instrument")
+            and metadata["instrument"].get("instrument_id")
+        ):
             instrument_id = metadata["instrument"]["instrument_id"]
 
         # Convert start and end times to Pacific timezone

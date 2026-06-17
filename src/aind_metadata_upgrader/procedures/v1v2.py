@@ -397,8 +397,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         # Check if this surgery contains a WHC headframe (used to infer craniotomy type)
         self._surgery_has_whc_headframe = any(
-            p.get("procedure_type") == "Headframe" and "WHC" in str(p.get("headframe_type", ""))
-            for p in procedures
+            p.get("procedure_type") == "Headframe" and "WHC" in str(p.get("headframe_type", "")) for p in procedures
         )
 
         # If ethics_review_id was not set at the surgery level, fall back to the
@@ -443,7 +442,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         # Remove end_date - Surgery doesn't have this field
         remove(data, "end_date")
-        
+
         # Repair experimenters as ints
         if "experimenters" in data:
             data["experimenters"] = [str(exp) for exp in data["experimenters"]]
