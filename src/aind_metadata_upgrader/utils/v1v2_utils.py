@@ -336,6 +336,13 @@ def remove(data: dict, field: str):
         del data[field]
 
 
+def correct_ap_angle_for_hemisphere(ap_angle: float, ml) -> float:
+    """Return ap_angle forced negative when ml < 0 (left hemisphere), unchanged otherwise."""
+    if ml is not None and float(ml) < 0:
+        return -abs(ap_angle)
+    return ap_angle
+
+
 def upgrade_software(data: dict | str) -> dict:
     """Upgrade software class from v1.x to v2.0"""
 
