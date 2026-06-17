@@ -306,10 +306,10 @@ def upgrade_immersion(data: dict, allow_none: bool = False) -> Optional[dict]:
             return None
 
         # First check for old string mappings
-        if any(key in data["medium"] for key in MEDIUM_MAP.keys()):
+        if any(key.lower() in data["medium"].lower() for key in MEDIUM_MAP.keys()):
             # Find the matching medium key and update it
             for old_key, new_medium in MEDIUM_MAP.items():
-                if old_key in data["medium"]:
+                if old_key.lower() in data["medium"].lower():
                     data["medium"] = new_medium
                     break
         else:
