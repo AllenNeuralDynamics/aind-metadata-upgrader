@@ -552,7 +552,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         if data.get("antibodies") and isinstance(data["antibodies"], list):
             antibodies = [upgrade_antibody(ab) for ab in data["antibodies"]]
-            procedure_details.extend(antibodies)
+            procedure_details.extend(ab for ab in antibodies if ab is not None)
         if data.get("hcr_series") and data["hcr_series"]:
             procedure_details.append(upgrade_hcr_series(data["hcr_series"]))
         if data.get("sectioning") and data["sectioning"]:

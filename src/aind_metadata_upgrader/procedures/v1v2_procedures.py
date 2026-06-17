@@ -513,6 +513,9 @@ def upgrade_antibody(data: dict) -> dict:
                     mass_unit=upgraded_data.get("mass_unit"),
                     species=Species.CHICKEN,
                 )
+            else:
+                logging.warning(f"Unhandled primary antibody (no recognized rrid): {upgraded_data}")
+                return None
             probe_reagent_data = {
                 "target": target,
                 "name": "Chicken polyclonal to GFP",
@@ -536,6 +539,9 @@ def upgrade_antibody(data: dict) -> dict:
             #   'fluorophore': 'Alexa Fluor 488', 'mass': '4', 'mass_unit': 'microgram', 'notes': None
             # }
 
+            if not upgraded_data.get("rrid"):
+                logging.warning(f"Unhandled secondary antibody (no rrid): {upgraded_data}")
+                return None
             if (
                 upgraded_data.get("rrid")
                 and upgraded_data["rrid"]["name"] == "Alexa Fluor 488 goat anti-chicken IgY (H+L)"
