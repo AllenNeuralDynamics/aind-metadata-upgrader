@@ -1,0 +1,1513 @@
+{
+    "_id": "e617e755-e06f-452e-bba3-f70d42cf17fb",
+    "acquisition": {
+        "active_objectives": null,
+        "axes": [
+            {
+                "dimension": 2,
+                "direction": "Anterior_to_posterior",
+                "name": "X",
+                "unit": "micrometer"
+            },
+            {
+                "dimension": 1,
+                "direction": "Inferior_to_superior",
+                "name": "Y",
+                "unit": "micrometer"
+            },
+            {
+                "dimension": 0,
+                "direction": "Left_to_right",
+                "name": "Z",
+                "unit": "micrometer"
+            }
+        ],
+        "calibrations": null,
+        "chamber_immersion": {
+            "medium": "0.05X SSC",
+            "refractive_index": 1.33
+        },
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/imaging/acquisition.py",
+        "experimenter_full_name": [
+            "John Rohde"
+        ],
+        "external_storage_directory": "Z:\\exaSPIM\\654308-ID_2023-11-02_14-07-20\\exaSPIM",
+        "instrument_id": "exaspim-01",
+        "local_storage_directory": "E:\\654308-ID_2023-11-02_14-07-20\\exaSPIM",
+        "maintenance": null,
+        "notes": null,
+        "processing_steps": null,
+        "sample_immersion": null,
+        "schema_version": "0.5.2",
+        "session_end_time": "2023-11-05T14:12:36",
+        "session_start_time": "2023-11-02T14:07:21",
+        "session_type": null,
+        "specimen_id": "654308",
+        "subject_id": "654308",
+        "tiles": [
+            {
+                "channel": {
+                    "additional_device_names": null,
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            0.748,
+                            0.748,
+                            1
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            0,
+                            13.529824000000001,
+                            0
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_x_0000_y_0000_z_0000_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "channel": {
+                    "additional_device_names": null,
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            0.748,
+                            0.748,
+                            1
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            0,
+                            6.764912000000001,
+                            0
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_x_0000_y_0001_z_0000_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "channel": {
+                    "additional_device_names": null,
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            0.748,
+                            0.748,
+                            1
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            0,
+                            0,
+                            0
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_x_0000_y_0002_z_0000_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "channel": {
+                    "additional_device_names": null,
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            0.748,
+                            0.748,
+                            1
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            9.023273600000001,
+                            13.529824000000001,
+                            0
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_x_0001_y_0000_z_0000_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "channel": {
+                    "additional_device_names": null,
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            0.748,
+                            0.748,
+                            1
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            9.023273600000001,
+                            6.764912000000001,
+                            0
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_x_0001_y_0001_z_0000_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "channel": {
+                    "additional_device_names": null,
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            0.748,
+                            0.748,
+                            1
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            9.023273600000001,
+                            0,
+                            0
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_x_0001_y_0002_z_0000_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "channel": {
+                    "additional_device_names": null,
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            0.748,
+                            0.748,
+                            1
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            18.046547200000003,
+                            13.529824000000001,
+                            0
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_x_0002_y_0000_z_0000_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "channel": {
+                    "additional_device_names": null,
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            0.748,
+                            0.748,
+                            1
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            18.046547200000003,
+                            6.764912000000001,
+                            0
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_x_0002_y_0001_z_0000_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "channel": {
+                    "additional_device_names": null,
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            0.748,
+                            0.748,
+                            1
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            18.046547200000003,
+                            0,
+                            0
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_x_0002_y_0002_z_0000_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "channel": {
+                    "additional_device_names": null,
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            0.748,
+                            0.748,
+                            1
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            27.069820800000002,
+                            13.529824000000001,
+                            0
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_x_0003_y_0000_z_0000_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "channel": {
+                    "additional_device_names": null,
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            0.748,
+                            0.748,
+                            1
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            27.069820800000002,
+                            6.764912000000001,
+                            0
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_x_0003_y_0001_z_0000_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "channel": {
+                    "additional_device_names": null,
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            0.748,
+                            0.748,
+                            1
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            27.069820800000002,
+                            0,
+                            0
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_x_0003_y_0002_z_0000_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "channel": {
+                    "additional_device_names": null,
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            0.748,
+                            0.748,
+                            1
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            36.093094400000005,
+                            13.529824000000001,
+                            0
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_x_0004_y_0000_z_0000_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "channel": {
+                    "additional_device_names": null,
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            0.748,
+                            0.748,
+                            1
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            36.093094400000005,
+                            6.764912000000001,
+                            0
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_x_0004_y_0001_z_0000_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            },
+            {
+                "channel": {
+                    "additional_device_names": null,
+                    "channel_name": "561",
+                    "description": null,
+                    "detector_name": "",
+                    "dilation": null,
+                    "dilation_unit": "pixel",
+                    "excitation_power": 1000,
+                    "excitation_power_unit": "milliwatt",
+                    "excitation_wavelength": 561,
+                    "excitation_wavelength_unit": "nanometer",
+                    "filter_names": [],
+                    "filter_wheel_index": 0,
+                    "light_source_name": "561"
+                },
+                "coordinate_transformations": [
+                    {
+                        "scale": [
+                            0.748,
+                            0.748,
+                            1
+                        ],
+                        "type": "scale"
+                    },
+                    {
+                        "translation": [
+                            36.093094400000005,
+                            0,
+                            0
+                        ],
+                        "type": "translation"
+                    }
+                ],
+                "file_name": "tile_x_0004_y_0002_z_0000_ch_561.ims",
+                "imaging_angle": 0,
+                "imaging_angle_unit": "degrees",
+                "notes": null
+            }
+        ]
+    },
+    "created": "2024-06-20T21:14:31.244913",
+    "data_description": {
+        "creation_time": "2023-11-02T14:07:20",
+        "data_level": "raw",
+        "data_summary": null,
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/data_description.py",
+        "funding_source": [
+            {
+                "fundee": null,
+                "funder": {
+                    "name": "Allen Institute",
+                    "abbreviation": "AI",
+                    "registry": {
+                        "name": "Research Organization Registry",
+                        "abbreviation": "ROR"
+                    },
+                    "registry_identifier": "03cpe7c52"
+                },
+                "grant_number": null
+            }
+        ],
+        "group": null,
+        "institution": {
+            "abbreviation": "AIND",
+            "name": "Allen Institute for Neural Dynamics",
+            "registry": {
+                "abbreviation": "ROR",
+                "name": "Research Organization Registry"
+            },
+            "registry_identifier": "04szwah67"
+        },
+        "investigators": [],
+        "license": "CC-BY-4.0",
+        "modality": [
+            {
+                "abbreviation": "SPIM",
+                "name": "Selective plane illumination microscopy"
+            }
+        ],
+        "name": "exaSPIM_654308_2023-11-02_14-07-20",
+        "platform": {
+            "abbreviation": "exaSPIM",
+            "name": "ExaSPIM platform"
+        },
+        "project_name": null,
+        "related_data": [],
+        "restrictions": null,
+        "schema_version": "0.10.0",
+        "subject_id": "654308"
+    },
+    "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/core/metadata.py",
+    "external_links": {
+        "Code Ocean": [
+            "d2b1162b-2971-4a81-8f60-a7502e86468b"
+        ]
+    },
+    "instrument": {
+        "additional_devices": [
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LMPLANFL N 50X",
+                "name": "L1",
+                "notes": "L1. first beam expander lens. f = 3.6 mm",
+                "serial_number": null,
+                "type": "Other"
+            },
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "7.5X Mitutoyo Plan Apo",
+                "name": "L2",
+                "notes": "L2. second beam expander lens. f = 26.67 mm",
+                "serial_number": null,
+                "type": "Other"
+            },
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "ACY254-050-A-ML",
+                "name": "L3",
+                "notes": "L3. cylindrical lens. f = 50 mm",
+                "serial_number": null,
+                "type": "Other"
+            },
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "AC508-200-A-ML",
+                "name": "L4",
+                "notes": "L4. first relay lens. f = 200 mm",
+                "serial_number": null,
+                "type": "Other"
+            },
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "AC508-300-A-ML",
+                "name": "L5",
+                "notes": "L5. second relay lens. f = 300 mm",
+                "serial_number": null,
+                "type": "Other"
+            },
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Optotune",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "EL-16-40-TC-VIS-20D-C",
+                "name": "ETL",
+                "notes": null,
+                "serial_number": "ANAC4286",
+                "type": "Other"
+            },
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": "ASI",
+                    "name": "Applied Scientific Instrumentation",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "C60-3060-CMR-MO",
+                "name": "Cylindrical lens rotation stage",
+                "notes": null,
+                "serial_number": null,
+                "type": "Rotation mount"
+            },
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "AOTFnC-400.650-TN",
+                "name": "AOTF",
+                "notes": null,
+                "serial_number": "1002-Q220234",
+                "type": "Other"
+            },
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Other",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "MPDS8C-D65-22-74.158-RS",
+                "name": "AOTF RF driver",
+                "notes": null,
+                "serial_number": "2001-Q220234",
+                "type": "Other"
+            },
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": "ASI",
+                    "name": "Applied Scientific Instrumentation",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "TG8-XY:A(Xb)H-Z/F:5A:FTP",
+                "name": "Tiger controller",
+                "notes": null,
+                "serial_number": "2112-2317-8584-5632-5631",
+                "type": "Other"
+            },
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "National Instruments",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "026exqw73"
+                },
+                "model": "SCB-68A",
+                "name": "NIDAQ breakout board",
+                "notes": null,
+                "serial_number": "1FCD210",
+                "type": "Other"
+            },
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "QS20Y-AG",
+                "name": "Galvo 1",
+                "notes": null,
+                "serial_number": "20375",
+                "type": "Other"
+            },
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "QS20Y-AG",
+                "name": "Galvo 2",
+                "notes": null,
+                "serial_number": "20385",
+                "type": "Other"
+            },
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "QS20Y-AG",
+                "name": "Galvo servo 1",
+                "notes": null,
+                "serial_number": "02232",
+                "type": "Other"
+            },
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "QS20Y-AG",
+                "name": "Galvo servo 2",
+                "notes": null,
+                "serial_number": "02216",
+                "type": "Other"
+            },
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Coherent Scientific",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "031tysd23"
+                },
+                "model": "0P9T257P30",
+                "name": "488 nm laser 210 Watt Thermoelectric Chiller with Coherent Logo",
+                "notes": null,
+                "serial_number": "A76636",
+                "type": "Other"
+            },
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Coherent Scientific",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "031tysd23"
+                },
+                "model": "0P9T257P30",
+                "name": "561 nm laser 210 Watt Thermoelectric Chiller with Coherent Logo",
+                "notes": null,
+                "serial_number": "A76626",
+                "type": "Other"
+            },
+            {
+                "device_type": "AdditionalImagingDevice",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Coherent Scientific",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "031tysd23"
+                },
+                "model": "0P9T257P30",
+                "name": "639 nm laser 210 Watt Thermoelectric Chiller with Coherent Logo",
+                "notes": null,
+                "serial_number": "A76606",
+                "type": "Other"
+            }
+        ],
+        "calibration_data": null,
+        "calibration_date": null,
+        "com_ports": [
+            {
+                "com_port": "COM13",
+                "hardware_name": "AOTF RF driver"
+            },
+            {
+                "com_port": "COM5",
+                "hardware_name": "Tiger Controller"
+            }
+        ],
+        "daqs": [
+            {
+                "channels": [
+                    {
+                        "channel_index": null,
+                        "channel_name": "AO0",
+                        "channel_type": "Analog Output",
+                        "device_name": "ETL",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": 10000,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "AO1",
+                        "channel_type": "Analog Output",
+                        "device_name": "Imaging camera",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": 10000,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "AO2",
+                        "channel_type": "Analog Output",
+                        "device_name": "Z scanning stage",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": 10000,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "AO3",
+                        "channel_type": "Analog Output",
+                        "device_name": "AOTF RF driver, 488 nm",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": 10000,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "AO3",
+                        "channel_type": "Analog Output",
+                        "device_name": "AOTF RF driver, 488 nm",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": 10000,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "AO4",
+                        "channel_type": "Analog Output",
+                        "device_name": "AOTF RF driver, 639 nm",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": 10000,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "AO13",
+                        "channel_type": "Analog Output",
+                        "device_name": "AOTF RF driver, 561 nm",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": 10000,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "AO17",
+                        "channel_type": "Analog Output",
+                        "device_name": "Galvo servo 1",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": 10000,
+                        "sample_rate_unit": "hertz"
+                    },
+                    {
+                        "channel_index": null,
+                        "channel_name": "AO19",
+                        "channel_type": "Analog Output",
+                        "device_name": "Galvo servo 2",
+                        "event_based_sampling": false,
+                        "port": null,
+                        "sample_rate": 10000,
+                        "sample_rate_unit": "hertz"
+                    }
+                ],
+                "computer_name": "W10DTA03416",
+                "data_interface": "PCIe",
+                "device_type": "DAQDevice",
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "National Instruments",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "026exqw73"
+                },
+                "model": "PCIe-6738",
+                "name": "NIDAQ",
+                "notes": "Dev2",
+                "serial_number": null
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/imaging/instrument.py",
+        "detectors": [
+            {
+                "bin_height": null,
+                "bin_mode": "none",
+                "bin_unit": "pixel",
+                "bin_width": null,
+                "bit_depth": null,
+                "chroma": null,
+                "cooling": "air",
+                "crop_height": null,
+                "crop_unit": "pixel",
+                "crop_width": null,
+                "data_interface": "Coax",
+                "detector_type": "Camera",
+                "device_type": "Detector",
+                "gain": null,
+                "immersion": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Vieworks",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "VP-151MX-M6H0",
+                "name": null,
+                "notes": null,
+                "sensor_height": null,
+                "sensor_width": null,
+                "serial_number": "MP151BBX006",
+                "size_unit": "pixel"
+            }
+        ],
+        "fluorescence_filters": [
+            {
+                "center_wavelength": null,
+                "cut_off_wavelength": null,
+                "cut_on_wavelength": null,
+                "description": null,
+                "device_type": "Filter",
+                "diameter": 44.05,
+                "filter_type": "Multiband",
+                "filter_wheel_index": null,
+                "height": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Chroma",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "ZET488/561m",
+                "name": "Emission filter",
+                "notes": "Custom made filter. No filter wheel.",
+                "serial_number": null,
+                "size_unit": "millimeter",
+                "thickness": 1,
+                "thickness_unit": "millimeter",
+                "wavelength_unit": "nanometer",
+                "width": null
+            }
+        ],
+        "humidity_control": false,
+        "instrument_id": "exaSPIM1-01",
+        "instrument_type": "exaSPIM",
+        "lenses": null,
+        "light_sources": [
+            {
+                "coupling": "Free-space",
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "device_type": "Laser",
+                "item_number": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Coherent Scientific",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "031tysd23"
+                },
+                "maximum_power": 1000,
+                "model": "Genesis MX488-1000 STM OPSLaser-Diode System",
+                "name": "488 nm laser",
+                "notes": "Housed in custom laser combiner. Water cooled.",
+                "power_unit": "milliwatt",
+                "serial_number": "MX1275",
+                "wavelength": 488,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "coupling": "Free-space",
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "device_type": "Laser",
+                "item_number": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Coherent Scientific",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "031tysd23"
+                },
+                "maximum_power": 1000,
+                "model": "Genesis MX561-1000 STM OPSLaser-Diode System",
+                "name": "561 nm laser",
+                "notes": "Housed in custom laser combiner. Water cooled.",
+                "power_unit": "milliwatt",
+                "serial_number": "MX1276",
+                "wavelength": 561,
+                "wavelength_unit": "nanometer"
+            },
+            {
+                "coupling": "Free-space",
+                "coupling_efficiency": null,
+                "coupling_efficiency_unit": "percent",
+                "device_type": "Laser",
+                "item_number": null,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Coherent Scientific",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "031tysd23"
+                },
+                "maximum_power": 1000,
+                "model": "Genesis MX639-1000 STM OPSLaser-Diode System",
+                "name": "639 nm laser",
+                "notes": "Housed in custom laser combiner. Water cooled.",
+                "power_unit": "milliwatt",
+                "serial_number": "MX1274",
+                "wavelength": 639,
+                "wavelength_unit": "nanometer"
+            }
+        ],
+        "manufacturer": {
+            "abbreviation": null,
+            "name": "Custom",
+            "registry": null,
+            "registry_identifier": null
+        },
+        "modification_date": "2023-10-27",
+        "motorized_stages": [
+            {
+                "device_type": "MotorizedStage",
+                "firmware": null,
+                "manufacturer": {
+                    "abbreviation": "ASI",
+                    "name": "Applied Scientific Instrumentation",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LS-50",
+                "name": "Illumination objective stage 1",
+                "notes": "translates illumination objective along detection axis. tiger M axis.",
+                "serial_number": null,
+                "travel": 50,
+                "travel_unit": "millimeter"
+            },
+            {
+                "device_type": "MotorizedStage",
+                "firmware": null,
+                "manufacturer": {
+                    "abbreviation": "ASI",
+                    "name": "Applied Scientific Instrumentation",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LS-50",
+                "name": "Illumination objective stage 2",
+                "notes": "translates illumination objective perpendicular to detection axis. tiger N axis.",
+                "serial_number": null,
+                "travel": 50,
+                "travel_unit": "millimeter"
+            }
+        ],
+        "notes": null,
+        "objectives": [
+            {
+                "device_type": "Objective",
+                "immersion": "air",
+                "magnification": 5,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Vieworks",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "JM_DIAMOND 5.0X/1.3",
+                "name": "Detection objective",
+                "notes": "detection objective. manufacturer collaboration between Schneider-Kreuznach and Vieworks",
+                "numerical_aperture": 0.305,
+                "serial_number": "15618844"
+            },
+            {
+                "device_type": "Objective",
+                "immersion": "air",
+                "magnification": 2,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "Thorlabs",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "04gsnvb07"
+                },
+                "model": "TL2X-SAP",
+                "name": "Excitation objective",
+                "notes": "excitation objective. magnification assuming 200 mm tube lens focal length",
+                "numerical_aperture": 0.1,
+                "serial_number": null
+            }
+        ],
+        "optical_tables": [
+            {
+                "device_type": "OpticalTable",
+                "length": 36,
+                "manufacturer": {
+                    "abbreviation": null,
+                    "name": "MKS Newport",
+                    "registry": {
+                        "abbreviation": "ROR",
+                        "name": "Research Organization Registry"
+                    },
+                    "registry_identifier": "00k17f049"
+                },
+                "model": "VIS3648-PG2-325A",
+                "name": null,
+                "notes": null,
+                "serial_number": "10349925",
+                "table_size_unit": "inch",
+                "vibration_control": true,
+                "width": 48
+            }
+        ],
+        "scanning_stages": [
+            {
+                "device_type": "MotorizedStage",
+                "firmware": null,
+                "manufacturer": {
+                    "abbreviation": "ASI",
+                    "name": "Applied Scientific Instrumentation",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "MS-8000",
+                "name": "X scanning stage",
+                "notes": null,
+                "serial_number": null,
+                "stage_axis_direction": "Detection axis",
+                "stage_axis_name": "X",
+                "travel": 1000,
+                "travel_unit": "millimeter"
+            },
+            {
+                "device_type": "MotorizedStage",
+                "firmware": null,
+                "manufacturer": {
+                    "abbreviation": "ASI",
+                    "name": "Applied Scientific Instrumentation",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "MS-8000",
+                "name": "Y scanning stage",
+                "notes": null,
+                "serial_number": null,
+                "stage_axis_direction": "Perpendicular axis",
+                "stage_axis_name": "Y",
+                "travel": 1000,
+                "travel_unit": "millimeter"
+            },
+            {
+                "device_type": "MotorizedStage",
+                "firmware": null,
+                "manufacturer": {
+                    "abbreviation": "ASI",
+                    "name": "Applied Scientific Instrumentation",
+                    "registry": null,
+                    "registry_identifier": null
+                },
+                "model": "LS-100",
+                "name": "Z scanning stage",
+                "notes": null,
+                "serial_number": null,
+                "stage_axis_direction": "Illumination axis",
+                "stage_axis_name": "Z",
+                "travel": 100,
+                "travel_unit": "millimeter"
+            }
+        ],
+        "schema_version": "0.9.1",
+        "temperature_control": false
+    },
+    "last_modified": "2025-02-18T18:26:09.534Z",
+    "location": "s3://aind-open-data/exaSPIM_654308_2023-11-02_14-07-20",
+    "metadata_status": "Unknown",
+    "name": "exaSPIM_654308_2023-11-02_14-07-20",
+    "procedures": {
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/procedures.py",
+        "notes": null,
+        "schema_version": "0.9.3",
+        "specimen_procedures": [],
+        "subject_id": "654308",
+        "subject_procedures": [
+            {
+                "anaesthesia": null,
+                "animal_weight_post": null,
+                "animal_weight_prior": null,
+                "end_date": "2022-11-17",
+                "experimenter_full_name": 13040,
+                "iacuc_protocol": "2109",
+                "injection_duration": null,
+                "injection_duration_unit": "minute",
+                "injection_materials": null,
+                "injection_volume_unit": "microliter",
+                "instrument_id": null,
+                "notes": null,
+                "procedure_type": "Retro-orbital injection",
+                "recovery_time": null,
+                "recovery_time_unit": "minute",
+                "start_date": "2022-11-17",
+                "weight_unit": "gram",
+                "workstation_id": null
+            },
+            {
+                "anaesthesia": null,
+                "animal_weight_post": null,
+                "animal_weight_prior": null,
+                "end_date": "2023-01-05",
+                "experimenter_full_name": 13040,
+                "iacuc_protocol": "2109",
+                "notes": null,
+                "output_specimen_ids": [
+                    654308
+                ],
+                "procedure_type": "Perfusion",
+                "start_date": "2023-01-05",
+                "weight_unit": "gram"
+            }
+        ]
+    },
+    "processing": {
+        "data_processes": [
+            {
+                "code_url": "https://github.com/AllenNeuralDynamics/aind-data-transfer",
+                "code_version": null,
+                "end_date_time": "2023-11-13T22:02:18.450247+00:00",
+                "input_location": "/allen/aind/stage/exaSPIM/654308-ID_2023-11-02_14-07-20",
+                "name": "Other",
+                "notes": null,
+                "output_location": "s3://aind-open-data/exaSPIM_654308_2023-11-02_14-07-20",
+                "outputs": null,
+                "parameters": {
+                    "compress_raw_data": false,
+                    "extra_configs": null,
+                    "modality": {
+                        "abbreviation": "SPIM",
+                        "name": "Selective plane illumination microscopy"
+                    },
+                    "skip_staging": false,
+                    "source": "/allen/aind/stage/exaSPIM/654308-ID_2023-11-02_14-07-20"
+                },
+                "start_date_time": "2023-11-13T22:02:15.187257+00:00",
+                "version": "0.30.1"
+            }
+        ],
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/processing.py",
+        "pipeline_url": null,
+        "pipeline_version": null,
+        "schema_version": "0.2.5"
+    },
+    "rig": null,
+    "schema_version": "0.2.7",
+    "session": null,
+    "subject": {
+        "background_strain": null,
+        "breeding_group": "Slc17a6-IRES-Cre(ND)",
+        "date_of_birth": "2022-10-13",
+        "describedBy": "https://raw.githubusercontent.com/AllenNeuralDynamics/aind-data-schema/main/src/aind_data_schema/subject.py",
+        "genotype": "Slc17a6-IRES-Cre/wt",
+        "housing": null,
+        "maternal_genotype": "Slc17a6-IRES-Cre/wt",
+        "maternal_id": "639016",
+        "mgi_allele_ids": null,
+        "notes": null,
+        "paternal_genotype": "wt/wt",
+        "paternal_id": "641050",
+        "restrictions": null,
+        "rrid": null,
+        "schema_version": "0.4.2",
+        "sex": "Female",
+        "source": null,
+        "species": {
+            "abbreviation": null,
+            "name": "Mus musculus",
+            "registry": {
+                "abbreviation": "NCBI",
+                "name": "National Center for Biotechnology Information"
+            },
+            "registry_identifier": "10090"
+        },
+        "subject_id": "654308",
+        "wellness_reports": null
+    }
+}
