@@ -443,6 +443,10 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         # Remove end_date - Surgery doesn't have this field
         remove(data, "end_date")
+        
+        # Repair experimenters as ints
+        if "experimenters" in data:
+            data["experimenters"] = [str(exp) for exp in data["experimenters"]]
 
         # Replace list of measured_coordinate dicts with a single dictionary
         if "measured_coordinates" in data:
