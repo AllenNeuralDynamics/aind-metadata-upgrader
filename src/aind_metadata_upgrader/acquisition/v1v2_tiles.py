@@ -32,7 +32,7 @@ FILTER_MAPPING = {
 
 def _create_detector_config(channel_data: dict) -> DetectorConfig:
     """Create detector config from tile channel data"""
-    device_name = channel_data.get("detector_name", "unknown_detector")
+    device_name = channel_data.get("detector_name") or "unknown_detector"
     return DetectorConfig(
         device_name=device_name,
         exposure_time=1.0,  # Default value — V1 tiles don't carry exposure_time
