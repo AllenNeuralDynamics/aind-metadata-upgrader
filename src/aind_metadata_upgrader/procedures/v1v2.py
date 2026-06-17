@@ -546,7 +546,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         # Create procedure_details from reagents, antibodies, hcr_series, sectioning
         procedure_details = []
 
-        reagents = data.get("reagents", [])
+        reagents = data.get("reagents") or []
         reagents = [upgrade_reagent(r) for r in reagents]
 
         procedure_details.extend(reagents)
