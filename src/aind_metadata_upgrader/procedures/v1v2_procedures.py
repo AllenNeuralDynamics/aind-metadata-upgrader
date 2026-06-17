@@ -507,7 +507,7 @@ def upgrade_antibody(data: dict) -> dict:
     if "immunolabel_class" in upgraded_data:
         if upgraded_data["immunolabel_class"].lower() == "primary":
             # Upgrade to ProbeReagent pattern
-            if upgraded_data["rrid"]["name"] == "Chicken polyclonal to GFP":
+            if upgraded_data.get("rrid") and upgraded_data["rrid"]["name"] == "Chicken polyclonal to GFP":
                 target = ProteinProbe(
                     protein=PIDName(name="GFP", registry=Registry.UNIPROT, registry_identifier="P42212"),
                     mass=float(upgraded_data.get("mass", 0)),
@@ -537,7 +537,7 @@ def upgrade_antibody(data: dict) -> dict:
             #   'fluorophore': 'Alexa Fluor 488', 'mass': '4', 'mass_unit': 'microgram', 'notes': None
             # }
 
-            if upgraded_data["rrid"]["name"] == "Alexa Fluor 488 goat anti-chicken IgY (H+L)":
+            if upgraded_data.get("rrid") and upgraded_data["rrid"]["name"] == "Alexa Fluor 488 goat anti-chicken IgY (H+L)":
                 probe = ProteinProbe(
                     protein=PIDName(name="TODO", registry=Registry.UNIPROT, registry_identifier="unknown"),
                     mass=4,
