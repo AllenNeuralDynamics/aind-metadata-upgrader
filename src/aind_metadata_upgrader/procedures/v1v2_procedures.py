@@ -230,8 +230,7 @@ def _compute_visual_cortex_position(data: dict):
     if "visual" not in str(data.get("craniotomy_type", "")).lower():
         return None
     has_real_coords = data.get("craniotomy_coordinates_ml") is not None and (
-        float(data.get("craniotomy_coordinates_ml", 0)) != 0
-        or float(data.get("craniotomy_coordinates_ap", 0)) != 0
+        float(data.get("craniotomy_coordinates_ml", 0)) != 0 or float(data.get("craniotomy_coordinates_ap", 0)) != 0
     )
     if has_real_coords:
         return None
@@ -508,13 +507,16 @@ def upgrade_antibody(data: dict) -> dict:
     if "immunolabel_class" in upgraded_data:
         if upgraded_data["immunolabel_class"].lower() == "primary":
             # Upgrade to ProbeReagent pattern
-            if upgraded_data["rrid"]["name"] == "Chicken polyclonal to GFP":
+            if upgraded_data.get("rrid") and upgraded_data["rrid"]["name"] == "Chicken polyclonal to GFP":
                 target = ProteinProbe(
                     protein=PIDName(name="GFP", registry=Registry.UNIPROT, registry_identifier="P42212"),
                     mass=float(upgraded_data.get("mass", 0)),
                     mass_unit=upgraded_data.get("mass_unit"),
                     species=Species.CHICKEN,
                 )
+            else:
+                logging.warning(f"Unhandled primary antibody (no recognized rrid): {upgraded_data}")
+                return None
             probe_reagent_data = {
                 "target": target,
                 "name": "Chicken polyclonal to GFP",
@@ -538,7 +540,13 @@ def upgrade_antibody(data: dict) -> dict:
             #   'fluorophore': 'Alexa Fluor 488', 'mass': '4', 'mass_unit': 'microgram', 'notes': None
             # }
 
-            if upgraded_data["rrid"]["name"] == "Alexa Fluor 488 goat anti-chicken IgY (H+L)":
+            if not upgraded_data.get("rrid"):
+                logging.warning(f"Unhandled secondary antibody (no rrid): {upgraded_data}")
+                return None
+            if (
+                upgraded_data.get("rrid")
+                and upgraded_data["rrid"]["name"] == "Alexa Fluor 488 goat anti-chicken IgY (H+L)"
+            ):
                 probe = ProteinProbe(
                     protein=PIDName(name="TODO", registry=Registry.UNIPROT, registry_identifier="unknown"),
                     mass=4,

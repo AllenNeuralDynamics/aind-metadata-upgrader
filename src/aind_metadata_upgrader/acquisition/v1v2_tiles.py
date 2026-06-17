@@ -32,7 +32,7 @@ FILTER_MAPPING = {
 
 def _create_detector_config(channel_data: dict) -> DetectorConfig:
     """Create detector config from tile channel data"""
-    device_name = channel_data.get("detector_name", "unknown_detector")
+    device_name = channel_data.get("detector_name") or "unknown_detector"
     return DetectorConfig(
         device_name=device_name,
         exposure_time=1.0,  # Default value — V1 tiles don't carry exposure_time
@@ -293,6 +293,7 @@ MEDIUM_MAP = {
     "Ethyl cinnamate": ImmersionMedium.ECI,
     "EZ View": ImmersionMedium.OIL,
     "EZView": ImmersionMedium.OIL,
+    "1x PBS w/PVSA": ImmersionMedium.PBS,
 }
 
 
@@ -305,10 +306,10 @@ def upgrade_immersion(data: dict, allow_none: bool = False) -> Optional[dict]:
             return None
 
         # First check for old string mappings
-        if any(key in data["medium"] for key in MEDIUM_MAP.keys()):
+        if any(key.lower() in data["medium"].lower() for key in MEDIUM_MAP.keys()):
             # Find the matching medium key and update it
             for old_key, new_medium in MEDIUM_MAP.items():
-                if old_key in data["medium"]:
+                if old_key.lower() in data["medium"].lower():
                     data["medium"] = new_medium
                     break
         else:

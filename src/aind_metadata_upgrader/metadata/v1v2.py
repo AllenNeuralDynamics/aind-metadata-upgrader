@@ -13,7 +13,8 @@ class MetadataUpgraderV1V2(CoreUpgrader):
         data["schema_version"] = schema_version
 
         # Rename fields that have changed
-        data["other_identifiers"] = data.get("external_links", {})
+        external_links = data.get("external_links", {})
+        data["other_identifiers"] = external_links if isinstance(external_links, dict) else {}
         remove(data, "external_links")
 
         # Remove fields that are gone in v2.0

@@ -397,8 +397,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         # Check if this surgery contains a WHC headframe (used to infer craniotomy type)
         self._surgery_has_whc_headframe = any(
-            p.get("procedure_type") == "Headframe" and "WHC" in str(p.get("headframe_type", ""))
-            for p in procedures
+            p.get("procedure_type") == "Headframe" and "WHC" in str(p.get("headframe_type", "")) for p in procedures
         )
 
         # If ethics_review_id was not set at the surgery level, fall back to the
@@ -443,6 +442,10 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         # Remove end_date - Surgery doesn't have this field
         remove(data, "end_date")
+
+        # Repair experimenters as ints
+        if "experimenters" in data:
+            data["experimenters"] = [str(exp) for exp in data["experimenters"]]
 
         # Replace list of measured_coordinate dicts with a single dictionary
         if "measured_coordinates" in data:
@@ -542,14 +545,14 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
         # Create procedure_details from reagents, antibodies, hcr_series, sectioning
         procedure_details = []
 
-        reagents = data.get("reagents", [])
+        reagents = data.get("reagents") or []
         reagents = [upgrade_reagent(r) for r in reagents]
 
         procedure_details.extend(reagents)
 
         if data.get("antibodies") and isinstance(data["antibodies"], list):
             antibodies = [upgrade_antibody(ab) for ab in data["antibodies"]]
-            procedure_details.extend(antibodies)
+            procedure_details.extend(ab for ab in antibodies if ab is not None)
         if data.get("hcr_series") and data["hcr_series"]:
             procedure_details.append(upgrade_hcr_series(data["hcr_series"]))
         if data.get("sectioning") and data["sectioning"]:
