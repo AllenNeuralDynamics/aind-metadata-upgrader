@@ -230,8 +230,7 @@ def _compute_visual_cortex_position(data: dict):
     if "visual" not in str(data.get("craniotomy_type", "")).lower():
         return None
     has_real_coords = data.get("craniotomy_coordinates_ml") is not None and (
-        float(data.get("craniotomy_coordinates_ml", 0)) != 0
-        or float(data.get("craniotomy_coordinates_ap", 0)) != 0
+        float(data.get("craniotomy_coordinates_ml", 0)) != 0 or float(data.get("craniotomy_coordinates_ap", 0)) != 0
     )
     if has_real_coords:
         return None
@@ -537,7 +536,10 @@ def upgrade_antibody(data: dict) -> dict:
             #   'fluorophore': 'Alexa Fluor 488', 'mass': '4', 'mass_unit': 'microgram', 'notes': None
             # }
 
-            if upgraded_data.get("rrid") and upgraded_data["rrid"]["name"] == "Alexa Fluor 488 goat anti-chicken IgY (H+L)":
+            if (
+                upgraded_data.get("rrid")
+                and upgraded_data["rrid"]["name"] == "Alexa Fluor 488 goat anti-chicken IgY (H+L)"
+            ):
                 probe = ProteinProbe(
                     protein=PIDName(name="TODO", registry=Registry.UNIPROT, registry_identifier="unknown"),
                     mass=4,
