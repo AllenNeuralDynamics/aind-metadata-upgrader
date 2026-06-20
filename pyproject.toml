@@ -35,7 +35,7 @@ dev = [
     'aind-metadata-upgrader[sync]',
 ]
 sync = [
-    'zombie-squirrel>=0.16.1,<1',
+    'biodata-cache>=0.33.2,<1',
 ]
 
 [tool.setuptools.packages.find]

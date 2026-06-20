@@ -49,7 +49,7 @@ from aind_data_schema_models.registries import Registry
 from aind_data_schema_models.organizations import Organization
 
 from aind_metadata_upgrader.rig.v1v2_devices import upgrade_fiber_probe
-from aind_metadata_upgrader.utils.v1v2_utils import remove, safe_model_construct
+from aind_metadata_upgrader.utils.v1v2_utils import correct_ap_angle_for_hemisphere, remove, safe_model_construct
 
 coordinate_system_required = False
 
@@ -405,7 +405,8 @@ def retrieve_probe_config(data: dict) -> tuple:
         if angle:
             if angle_unit != "degrees":
                 raise ValueError(f"Unsupported angle_unit: {angle_unit}. " "Expected 'degrees'.")
-            rotation_data = {"angles": [float(angle), 0, 0, 0]}
+            ap_angle = correct_ap_angle_for_hemisphere(float(angle), ml)
+            rotation_data = {"angles": [ap_angle, 0, 0, 0]}
             rotation = safe_model_construct(Rotation, rotation_data)
             transforms.append(rotation)
 
