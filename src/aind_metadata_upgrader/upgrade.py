@@ -216,7 +216,9 @@ class Upgrade:
             # Apply all upgraders (in order) that match the original schema version
             for specifier_set, upgrader in MAPPING[core_file]:
                 if original_schema_version in specifier_set:
-                    upgraded_data = upgrader().upgrade(core_data, upgraded_schema_version, metadata=self.raw_data)
+                    upgraded_data = upgrader().upgrade(
+                        core_data, UPGRADE_VERSIONS[core_file], metadata=self.raw_data
+                    )
 
         if upgraded_data is None:
             logging.info(f"Upgrader for {core_file} returned None, dropping file")
