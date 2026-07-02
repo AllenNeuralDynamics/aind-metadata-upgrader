@@ -408,19 +408,7 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                     break
 
         for procedure in procedures:
-            try:
-                upgraded = self._upgrade_procedure(procedure)
-            except Exception as e:
-                logging.warning(
-                    f"Failed to upgrade procedure {procedure.get('procedure_type')!r}, "
-                    f"falling back to GenericSurgeryProcedure: {e}"
-                )
-                upgraded = GenericSurgeryProcedure(
-                    description=(
-                        f"(v1v2 upgrader) Could not upgrade procedure "
-                        f"{procedure.get('procedure_type')!r}: {e}"
-                    ),
-                ).model_dump()
+            upgraded = self._upgrade_procedure(procedure)
             if isinstance(upgraded, tuple):
                 upgraded, measured_coordinates = upgraded
                 if measured_coordinates:
