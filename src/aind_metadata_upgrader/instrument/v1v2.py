@@ -208,7 +208,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
 
         return connections
 
-    def _validate_and_fix_connections(self, components: list, connections: list) -> list:
+    def _validate_and_fix_connections(self, components: list, connections: list, instrument_id: str = "") -> list:
         """Validate connections and add missing devices if needed"""
         # Flatten the list of device names from all connections
         connection_names = [name for conn in connections for name in [conn["source_device"], conn["target_device"]]]
@@ -224,6 +224,10 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
                 missing_names.append(name)
 
         for name in set(missing_names):
+            # The instrument_id itself is a valid connection endpoint (representing the
+            # whole instrument), not a missing component — skip it.
+            if instrument_id and name == instrument_id:
+                continue
             # Create an empty Device with the name
             device = Device(
                 name=name,
@@ -282,7 +286,7 @@ class InstrumentUpgraderV1V2(CoreUpgrader):
         connections = self._create_component_connections(saved_connections)
 
         # Validate and fix connections
-        components = self._validate_and_fix_connections(components, connections)
+        components = self._validate_and_fix_connections(components, connections, data.get("instrument_id", ""))
 
         return (components, connections)
 
