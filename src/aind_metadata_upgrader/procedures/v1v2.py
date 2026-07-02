@@ -345,12 +345,11 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
 
         procedure_type = data.get("procedure_type")
 
-        # For Dynamic Routing data, a null craniotomy_type is a whole hemisphere craniotomy,
-        # but only when the same surgery also has a headframe with "WHC" in its type.
+        # A null craniotomy_type alongside a WHC headframe in the same surgery indicates
+        # a whole hemisphere craniotomy regardless of project.
         if (
             procedure_type == "Craniotomy"
             and not data.get("craniotomy_type")
-            and self.project_name == "Dynamic Routing"
             and self._surgery_has_whc_headframe
         ):
             data["craniotomy_type"] = "Whole hemisphere craniotomy"
@@ -409,7 +408,19 @@ class ProceduresUpgraderV1V2(CoreUpgrader):
                     break
 
         for procedure in procedures:
-            upgraded = self._upgrade_procedure(procedure)
+            try:
+                upgraded = self._upgrade_procedure(procedure)
+            except Exception as e:
+                logging.warning(
+                    f"Failed to upgrade procedure {procedure.get('procedure_type')!r}, "
+                    f"falling back to GenericSurgeryProcedure: {e}"
+                )
+                upgraded = GenericSurgeryProcedure(
+                    description=(
+                        f"(v1v2 upgrader) Could not upgrade procedure "
+                        f"{procedure.get('procedure_type')!r}: {e}"
+                    ),
+                ).model_dump()
             if isinstance(upgraded, tuple):
                 upgraded, measured_coordinates = upgraded
                 if measured_coordinates:
