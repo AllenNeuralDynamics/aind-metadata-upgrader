@@ -52,11 +52,20 @@ def repair_missing_active_devices(data: dict) -> dict:
         except Exception as e:
             print(f"Failed to validate procedures to capture procedure device names: {e}")
 
+    # Exclude the instrument_id itself — ImagingConfig.device_name legitimately points to
+    # the whole instrument, so it should never be treated as a missing component device.
+    instrument_id = (
+        data.get("acquisition", {}).get("instrument_id")
+        or data.get("instrument", {}).get("instrument_id")
+    )
+
     # Check if all active devices are in the available devices
     if not all(device in device_names for device in active_devices):
         missing_devices = set(active_devices) - set(device_names)
         # Create missing devices with default names
         for device in missing_devices:
+            if instrument_id and device == instrument_id:
+                continue
             new_device = Device(
                 name=device,
                 notes=(
@@ -113,8 +122,17 @@ def repair_connection_devices(data: dict) -> dict:
             procedures = Procedures.model_construct(**data["procedures"])
         device_names.extend(procedures.get_device_names())
 
+    # Exclude the instrument_id itself — it's a valid connection endpoint representing
+    # the whole instrument, not a missing component device.
+    instrument_id = (
+        data.get("acquisition", {}).get("instrument_id")
+        or data.get("instrument", {}).get("instrument_id")
+    )
+
     # Check if all connection devices are in the available devices
     for device_name in connection_devices:
+        if instrument_id and device_name == instrument_id:
+            continue
         if device_name not in device_names:
             # Create a new device with a note indicating it was missing
             new_device = Device(
