@@ -266,10 +266,11 @@ def upgrade_craniotomy(data: dict) -> tuple[dict, list]:
             upgraded_data["craniotomy_type"] = CRANIO_TYPES[upgraded_data["craniotomy_type"]]
             upgraded_data["size_unit"] = SizeUnit.MM
         else:
-            raise ValueError(
-                f"Unsupported craniotomy_type: {upgraded_data['craniotomy_type']}. "
-                f"Expected one of {valid_enum_values}."
+            logging.warning(
+                f"Unsupported craniotomy_type: {upgraded_data['craniotomy_type']!r}. "
+                f"Defaulting to 'Other'."
             )
+            upgraded_data["craniotomy_type"] = CraniotomyType.OTHER.value
 
     # Must be called before retrieve_bl_distance strips the distance field
     visual_cortex_position = _compute_visual_cortex_position(data)

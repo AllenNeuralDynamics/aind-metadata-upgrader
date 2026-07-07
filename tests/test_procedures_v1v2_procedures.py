@@ -648,37 +648,77 @@ class TestDynamicRoutingCraniotomy(unittest.TestCase):
         self.assertIsNotNone(craniotomy)
         self.assertEqual(craniotomy["craniotomy_type"], "Whole hemisphere craniotomy")
 
-    def test_null_craniotomy_without_whc_headframe_raises(self):
-        """Null craniotomy_type with no WHC headframe should raise, even in Dynamic Routing."""
+    def test_null_craniotomy_without_whc_headframe_defaults_to_other(self):
+        """Null craniotomy_type with no WHC headframe defaults to 'Other'."""
         upgrader = ProceduresUpgraderV1V2()
         non_whc_headframe = {**self._WHC_HEADFRAME, "headframe_type": "Standard"}
         data = self._make_data([dict(self._CRANIOTOMY), non_whc_headframe])
         metadata = {"data_description": {"project_name": "Dynamic Routing"}}
-        with self.assertRaises(ValueError):
-            upgrader.upgrade(data, schema_version="2.0.0", metadata=metadata)
+        upgraded = upgrader.upgrade(data, schema_version="2.0.0", metadata=metadata)
+        craniotomy = next(
+            (
+                p
+                for sp in upgraded["subject_procedures"]
+                for p in sp["procedures"]
+                if p.get("object_type") == "Craniotomy"
+            ),
+            None,
+        )
+        self.assertIsNotNone(craniotomy)
+        self.assertEqual(craniotomy["craniotomy_type"], "Other")
 
-    def test_null_craniotomy_no_headframe_raises(self):
-        """Null craniotomy_type with no headframe at all should raise."""
+    def test_null_craniotomy_no_headframe_defaults_to_other(self):
+        """Null craniotomy_type with no headframe at all defaults to 'Other'."""
         upgrader = ProceduresUpgraderV1V2()
         data = self._make_data([dict(self._CRANIOTOMY)])
         metadata = {"data_description": {"project_name": "Dynamic Routing"}}
-        with self.assertRaises(ValueError):
-            upgrader.upgrade(data, schema_version="2.0.0", metadata=metadata)
+        upgraded = upgrader.upgrade(data, schema_version="2.0.0", metadata=metadata)
+        craniotomy = next(
+            (
+                p
+                for sp in upgraded["subject_procedures"]
+                for p in sp["procedures"]
+                if p.get("object_type") == "Craniotomy"
+            ),
+            None,
+        )
+        self.assertIsNotNone(craniotomy)
+        self.assertEqual(craniotomy["craniotomy_type"], "Other")
 
-    def test_null_craniotomy_type_non_dynamic_routing_raises(self):
-        """Null craniotomy_type in a non-Dynamic Routing record should raise even with WHC headframe."""
+    def test_null_craniotomy_type_non_dynamic_routing_whc_becomes_whole_hemisphere(self):
+        """Null craniotomy_type with WHC headframe becomes whole hemisphere regardless of project."""
         upgrader = ProceduresUpgraderV1V2()
         data = self._make_data([dict(self._CRANIOTOMY), dict(self._WHC_HEADFRAME)])
         metadata = {"data_description": {"project_name": "Some Other Project"}}
-        with self.assertRaises(ValueError):
-            upgrader.upgrade(data, schema_version="2.0.0", metadata=metadata)
+        upgraded = upgrader.upgrade(data, schema_version="2.0.0", metadata=metadata)
+        craniotomy = next(
+            (
+                p
+                for sp in upgraded["subject_procedures"]
+                for p in sp["procedures"]
+                if p.get("object_type") == "Craniotomy"
+            ),
+            None,
+        )
+        self.assertIsNotNone(craniotomy)
+        self.assertEqual(craniotomy["craniotomy_type"], "Whole hemisphere craniotomy")
 
-    def test_null_craniotomy_type_no_metadata_raises(self):
-        """Null craniotomy_type with no metadata should raise."""
+    def test_null_craniotomy_type_no_metadata_whc_becomes_whole_hemisphere(self):
+        """Null craniotomy_type with WHC headframe becomes whole hemisphere even with no metadata."""
         upgrader = ProceduresUpgraderV1V2()
         data = self._make_data([dict(self._CRANIOTOMY), dict(self._WHC_HEADFRAME)])
-        with self.assertRaises(ValueError):
-            upgrader.upgrade(data, schema_version="2.0.0", metadata=None)
+        upgraded = upgrader.upgrade(data, schema_version="2.0.0", metadata=None)
+        craniotomy = next(
+            (
+                p
+                for sp in upgraded["subject_procedures"]
+                for p in sp["procedures"]
+                if p.get("object_type") == "Craniotomy"
+            ),
+            None,
+        )
+        self.assertIsNotNone(craniotomy)
+        self.assertEqual(craniotomy["craniotomy_type"], "Whole hemisphere craniotomy")
 
 
 class TestVisualCortexCraniotomy(unittest.TestCase):
