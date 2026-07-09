@@ -24,6 +24,14 @@ client = MetadataDbClient(
 class DataDescriptionV1V2(CoreUpgrader):
     """Upgrade data description from v1.4 to v2.0"""
 
+    def _coerce_person(self, value) -> Person:
+        """Coerce a value (string or V2-style Person dict) into a Person"""
+        if isinstance(value, Person):
+            return value
+        if isinstance(value, dict):
+            return Person(name=value["name"])
+        return Person(name=value)
+
     def _process_comma_separated_funders(self, funder: str, fundee, grant_number) -> list:
         """Process comma-separated funders into separate funding sources"""
         result = []
@@ -37,7 +45,7 @@ class DataDescriptionV1V2(CoreUpgrader):
             result.append(
                 Funding(
                     funder=Organization.from_name(funder_name.strip()),
-                    fundee=[Person(name=f) for f in fundee_list],
+                    fundee=[self._coerce_person(f) for f in fundee_list],
                     grant_number=grant_number,
                 ).model_dump()
             )
@@ -98,7 +106,7 @@ class DataDescriptionV1V2(CoreUpgrader):
                     else:
                         fundee_list = [Person(name="unknown")]
                 elif isinstance(fundee, list):
-                    fundee_list = [Person(name=f) for f in fundee]
+                    fundee_list = [self._coerce_person(f) for f in fundee]
                 else:
                     fundee_list = [Person(name="unknown")]
 
