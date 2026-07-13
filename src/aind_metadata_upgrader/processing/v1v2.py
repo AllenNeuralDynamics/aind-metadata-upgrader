@@ -38,6 +38,8 @@ class ProcessingV1V2(CoreUpgrader):
 
     def _resolve_process_type(self, name: str) -> str:
         """Repair known invalid process_type values and validate against ProcessName enum."""
+        if "transcode" in name.lower():
+            return ProcessName.OTHER.value
         repaired = _PROCESS_TYPE_REPAIR_MAP.get(name, name)
         if repaired not in _VALID_PROCESS_TYPES:
             raise ValueError(f"Invalid process_type '{name}': not a valid ProcessName value")
