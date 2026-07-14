@@ -1,5 +1,7 @@
 """Sync code to upgrade metadata from v1 to v2 and store results in ZS"""
 
+import contextlib
+import io
 import logging
 import os
 from typing import Optional
@@ -9,6 +11,37 @@ from aind_data_access_api.document_db import MetadataDbClient
 from biodata_cache import custom
 import pandas as pd
 from aind_metadata_upgrader import __version__ as upgrader_version
+
+_logger = logging.getLogger(__name__)
+
+# Loggers that emit noisy WARNING-level messages during model construction/validation
+_NOISY_LOGGERS = [
+    "aind_data_schema",
+    "aind_metadata_upgrader.upgrade",
+    "aind_metadata_upgrader.procedures",
+    "aind_metadata_upgrader.instrument",
+    "aind_metadata_upgrader.acquisition",
+    "aind_metadata_upgrader.data_description",
+    "aind_metadata_upgrader.session",
+    "aind_metadata_upgrader.subject",
+    "aind_metadata_upgrader.rig",
+    "aind_metadata_upgrader.processing",
+    "aind_metadata_upgrader.quality_control",
+]
+
+
+@contextlib.contextmanager
+def _quiet_upgrade():
+    """Suppress stdout and noisy WARNING-level log messages during upgrade."""
+    saved = {name: logging.getLogger(name).level for name in _NOISY_LOGGERS}
+    for name in _NOISY_LOGGERS:
+        logging.getLogger(name).setLevel(logging.ERROR)
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            yield
+    finally:
+        for name, level in saved.items():
+            logging.getLogger(name).setLevel(level)
 
 
 DOCDB_HOST = os.getenv("DOCDB_HOST", "api.allenneuraldynamics.org")
@@ -51,6 +84,9 @@ def _load_zs_cache() -> pd.DataFrame:
         if "v1_id" not in candidate.columns or len(candidate) == 0:
             raise ValueError("Table empty or missing v1_id column")
         _zs_df = candidate
+        versions = candidate["upgrader_version"].unique().tolist() if "upgrader_version" in candidate.columns else []
+        print(f"Loaded tracking table: {len(candidate)} records (versions in cache: {versions})")
+        print(f"Current upgrader_version: {upgrader_version}")
     except ValueError as e:
         print(f"No previous tracking data found, starting fresh: {e}")
         _zs_df = pd.DataFrame(columns=_ZS_COLUMNS)
@@ -146,7 +182,8 @@ def _attempt_upgrade(
 
     upgraded_model = None
     try:
-        upgraded_model = upgrade_record(data_dict, existing_v2_id)
+        with _quiet_upgrade():
+            upgraded_model = upgrade_record(data_dict, existing_v2_id)
     except Exception as e:
         logging.error(f"Upgrade failed for record {record_id}: {e}")
 
@@ -182,7 +219,7 @@ def _process_record(
 
     row = _get_cache_row(zs_df, record_id)
     if row.get("upgrader_version") == upgrader_version and row.get("last_modified") == data_dict.get("last_modified"):
-        print(f"Record {record_id}: skipping — already up-to-date")
+        _logger.debug(f"Record {record_id}: skipping — already up-to-date")
         return "skipped"
 
     # v2_record is pre-fetched by the batch; fall back to individual fetch if not supplied
@@ -373,6 +410,8 @@ def run():
         "failed": 0,
         "skipped": num_skipped,
     }
+    upgraded_names: list[str] = []
+    failed_names: list[str] = []
 
     for i in range(0, num_to_upgrade, BATCH_SIZE):
         batch_ids = ids_to_upgrade[i: i + BATCH_SIZE]
@@ -387,6 +426,11 @@ def run():
                 continue
             status = _process_record(data_dict, zs_df, all_upgrade_results, all_pending_upserts)
             summary_stats[status] = summary_stats.get(status, 0) + 1
+            name = data_dict.get("location") or str(record_id)
+            if status in ("inserted", "queued_upsert"):
+                upgraded_names.append(name)
+            elif status == "failed":
+                failed_names.append(name)
         print(f"Progress: {min(i + BATCH_SIZE, num_to_upgrade)}/{num_to_upgrade} upgrade-eligible records")
         _flush_pending_upserts(all_pending_upserts, all_upgrade_results)
         all_pending_upserts.clear()
@@ -413,6 +457,14 @@ def run():
     print(f"  Skipped (already up-to-date): {total_skipped}")
     print(f"  Failed:                       {total_failed}")
     print("=" * 60)
+    if upgraded_names:
+        print("\nUpgraded records:")
+        for name in upgraded_names:
+            print(f"  + {name}")
+    if failed_names:
+        print("\nFailed records:")
+        for name in failed_names:
+            print(f"  ! {name}")
 
 
 if __name__ == "__main__":
