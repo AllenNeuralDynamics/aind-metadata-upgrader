@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.10"
 resolution-markers = [
     "python_full_version >= '3.14' and sys_platform == 'win32'",
@@ -87,6 +87,7 @@ dependencies = [
 
 [package.optional-dependencies]
 dev = [
+    { name = "biodata-cache" },
     { name = "black" },
     { name = "coverage" },
     { name = "flake8" },
@@ -96,10 +97,9 @@ dev = [
     { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "sphinx", version = "8.2.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "tzlocal" },
-    { name = "zombie-squirrel" },
 ]
 sync = [
-    { name = "zombie-squirrel" },
+    { name = "biodata-cache" },
 ]
 
 [package.metadata]
@@ -107,6 +107,7 @@ requires-dist = [
     { name = "aind-data-access-api", extras = ["docdb"] },
     { name = "aind-data-schema", specifier = ">=2.7.1,<3" },
     { name = "aind-metadata-upgrader", extras = ["sync"], marker = "extra == 'dev'" },
+    { name = "biodata-cache", marker = "extra == 'sync'", specifier = ">=0.39.0,<1" },
     { name = "black", marker = "extra == 'dev'" },
     { name = "coverage", marker = "extra == 'dev'" },
     { name = "flake8", marker = "extra == 'dev'" },
@@ -116,7 +117,6 @@ requires-dist = [
     { name = "packaging" },
     { name = "sphinx", marker = "extra == 'dev'" },
     { name = "tzlocal", marker = "extra == 'dev'" },
-    { name = "zombie-squirrel", marker = "extra == 'sync'", specifier = ">=0.16.1,<1" },
 ]
 provides-extras = ["dev", "sync"]
 
@@ -237,6 +237,23 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c3/b0/1c6a16426d389813b48d95e26898aff79abbde42ad353958ad95cc8c9b21/beautifulsoup4-4.14.3.tar.gz", hash = "sha256:6292b1c5186d356bba669ef9f7f051757099565ad9ada5dd630bd9de5fa7fb86", size = 627737, upload-time = "2025-11-30T15:08:26.084Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/1a/39/47f9197bdd44df24d67ac8893641e16f386c984a0619ef2ee4c51fbbc019/beautifulsoup4-4.14.3-py3-none-any.whl", hash = "sha256:0918bfe44902e6ad8d57732ba310582e98da931428d231a5ecb9e7c703a735bb", size = 107721, upload-time = "2025-11-30T15:08:24.087Z" },
+]
+
+[[package]]
+name = "biodata-cache"
+version = "0.39.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "boto3" },
+    { name = "duckdb" },
+    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "pandas", version = "3.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "pyarrow" },
+    { name = "semver" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/6b/df/fa5d9c0119b5c78a0d4abbf84ca6a9a8ef4877868c4809c7feae801a72ef/biodata_cache-0.39.0.tar.gz", hash = "sha256:3934dbb68066b200611baacc59504e71ef950ccd984461a7401408997d79f006", size = 58444, upload-time = "2026-07-13T20:38:52.732Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ec/21/e2cf246f2357e69e88e34812f32cadb695d9d9bd89d1a5c5cb74159a0c68/biodata_cache-0.39.0-py3-none-any.whl", hash = "sha256:1a3481234c1c7a68bf684afae9f2f530ccdb5f9995372e540242c901ea919eb3", size = 69730, upload-time = "2026-07-13T20:38:51.721Z" },
 ]
 
 [[package]]
@@ -1628,6 +1645,15 @@ wheels = [
 ]
 
 [[package]]
+name = "semver"
+version = "3.0.4"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/72/d1/d3159231aec234a59dd7d601e9dd9fe96f3afff15efd33c1070019b26132/semver-3.0.4.tar.gz", hash = "sha256:afc7d8c584a5ed0a11033af086e8af226a9c0b206f313e0301f8dd7b6b589602", size = 269730, upload-time = "2025-01-24T13:19:27.617Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a6/24/4d91e05817e92e3a61c8a21e08fd0f390f5301f1c448b137c57c4bc6e543/semver-3.0.4-py3-none-any.whl", hash = "sha256:9c824d87ba7f7ab4a1890799cec8596f15c1241cb473404ea1cb0c55e4b04746", size = 17912, upload-time = "2025-01-24T13:19:24.949Z" },
+]
+
+[[package]]
 name = "six"
 version = "1.17.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1910,21 +1936,4 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/15/22/9ee70a2574a4f4599c47dd506532914ce044817c7752a79b6a51286319bc/urllib3-2.5.0.tar.gz", hash = "sha256:3fc47733c7e419d4bc3f6b3dc2b4f890bb743906a30d56ba4a5bfa4bbff92760", size = 393185, upload-time = "2025-06-18T14:07:41.644Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a7/c2/fe1e52489ae3122415c51f387e221dd0773709bad6c6cdaa599e8a2c5185/urllib3-2.5.0-py3-none-any.whl", hash = "sha256:e6b01673c0fa6a13e374b50871808eb3bf7046c4b125b216f6bf1cc604cff0dc", size = 129795, upload-time = "2025-06-18T14:07:40.39Z" },
-]
-
-[[package]]
-name = "zombie-squirrel"
-version = "0.16.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "aind-data-access-api", extra = ["docdb"] },
-    { name = "boto3" },
-    { name = "duckdb" },
-    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "pandas", version = "3.0.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
-    { name = "pyarrow" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/b0/77/a1b0b513336acee1cb7ad516aadf9f29746ded9e08c1c7e4810ef0169876/zombie_squirrel-0.16.1.tar.gz", hash = "sha256:be32796b0ce01a1e418aac5ff250a8298b7c9d77141993386f1e9a04e372035a", size = 23860, upload-time = "2026-03-25T22:13:27.526Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/28/f7/bb1fc16d938c991baa4ab9fb4517533d1460677d5446c8c58db477aa20b8/zombie_squirrel-0.16.1-py3-none-any.whl", hash = "sha256:0e8d71bc667c7d25dfb0f6cfd9b62f3fea1f0602f1b18641ad40f50cd6f62fe8", size = 22974, upload-time = "2026-03-25T22:13:26.434Z" },
 ]
