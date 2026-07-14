@@ -35,7 +35,7 @@ dev = [
     'aind-metadata-upgrader[sync]',
 ]
 sync = [
-    'biodata-cache>=0.33.2,<1',
+    'biodata-cache>=0.39.0,<1',
 ]
 
 [tool.setuptools.packages.find]
