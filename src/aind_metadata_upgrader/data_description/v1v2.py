@@ -262,13 +262,14 @@ class DataDescriptionV1V2(CoreUpgrader):
             print(f"Derived data without input_data_name, using name to infer input: {input_name}")
             return [input_name]
 
-    def _upgrade_group(self, data: dict) -> str:
+    def _upgrade_group(self, data: dict) -> Optional[str]:
         """Upgrade group string if needed"""
         # No changes needed for now
         if "group" in data and data["group"]:
             if data["group"] == "Molecular Anatomy":
                 return Group.MSMA
-        return data["group"]
+            return data["group"]
+        return None
 
     def _ensure_name_consistency(self, metadata_name: Optional[str], data: dict) -> Optional[str]:
         """Make sure the metadata name and data name are the same, if not, use the metadata name"""
