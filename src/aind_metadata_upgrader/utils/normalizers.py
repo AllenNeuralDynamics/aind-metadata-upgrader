@@ -256,38 +256,48 @@ def normalize_camera_names(data: dict) -> dict:
 _FIBER_UNDERSCORE_RE = re.compile(r"^Fiber_(\d+)$")
 
 
-def _fix_fiber_names(obj):
-    """Return ``(object, changed)`` after replacing Fiber_N names in one traversal."""
-    if isinstance(obj, dict):
-        result = None
-        for key, value in obj.items():
-            if key == "name" and isinstance(value, str):
-                fixed_value = _FIBER_UNDERSCORE_RE.sub(r"Fiber \1", value)
-                if fixed_value != value:
-                    if result is None:
-                        result = obj.copy()
-                    result[key] = fixed_value
-                continue
-
-            if not isinstance(value, (dict, list)):
-                continue
-            fixed_value, changed = _fix_fiber_names(value)
-            if changed:
+def _fix_fiber_names_in_dict(obj: dict) -> tuple[dict, bool]:
+    """Return ``(object, changed)`` after fixing nested dict values."""
+    result = None
+    for key, value in obj.items():
+        if key == "name" and isinstance(value, str):
+            fixed_value = _FIBER_UNDERSCORE_RE.sub(r"Fiber \1", value)
+            if fixed_value != value:
                 if result is None:
                     result = obj.copy()
                 result[key] = fixed_value
-        return (result if result is not None else obj), result is not None
+            continue
+
+        if not isinstance(value, (dict, list)):
+            continue
+        fixed_value, changed = _fix_fiber_names(value)
+        if changed:
+            if result is None:
+                result = obj.copy()
+            result[key] = fixed_value
+    return (result if result is not None else obj), result is not None
+
+
+def _fix_fiber_names_in_list(obj: list) -> tuple[list, bool]:
+    """Return ``(object, changed)`` after fixing nested list values."""
+    result = None
+    for index, value in enumerate(obj):
+        if not isinstance(value, (dict, list)):
+            continue
+        fixed_value, changed = _fix_fiber_names(value)
+        if changed:
+            if result is None:
+                result = obj.copy()
+            result[index] = fixed_value
+    return (result if result is not None else obj), result is not None
+
+
+def _fix_fiber_names(obj):
+    """Return ``(object, changed)`` after replacing Fiber_N names in one traversal."""
+    if isinstance(obj, dict):
+        return _fix_fiber_names_in_dict(obj)
     if isinstance(obj, list):
-        result = None
-        for index, value in enumerate(obj):
-            if not isinstance(value, (dict, list)):
-                continue
-            fixed_value, changed = _fix_fiber_names(value)
-            if changed:
-                if result is None:
-                    result = obj.copy()
-                result[index] = fixed_value
-        return (result if result is not None else obj), result is not None
+        return _fix_fiber_names_in_list(obj)
     return obj, False
 
 
