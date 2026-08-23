@@ -109,5 +109,32 @@ class TestDataDescriptionV1V2FundingSource(unittest.TestCase):
         self.assertEqual(result[0]["fundee"][1]["name"], "John Smith")
 
 
+class TestDataDescriptionSourceData(unittest.TestCase):
+    """Test source-data parent lookup behavior."""
+
+    def test_reuses_parent_lookup_for_repeated_chain(self):
+        """Repeated upgrades of the same parent chain should reuse lookups."""
+        from aind_metadata_upgrader.data_description import v1v2
+
+        v1v2._parent_data_description_cache_clear()
+        with patch.object(v1v2.client, "retrieve_docdb_records") as retrieve:
+            retrieve.side_effect = [
+                [{"data_description": {"data_level": "derived", "input_data_name": "raw_asset"}}],
+                [{"data_description": {"data_level": "raw", "name": "raw_asset"}}],
+            ]
+            data = {"data_level": "derived", "input_data_name": "derived_asset_name_2024_extra"}
+
+            first = self._source_data(data)
+            second = self._source_data(data)
+
+        self.assertEqual(first, ["raw_asset", "raw_asset", "derived_asset_name_2024_extra"])
+        self.assertEqual(second, first)
+        self.assertEqual(retrieve.call_count, 2)
+
+    def _source_data(self, data):
+        """Call the source-data upgrade helper."""
+        return DataDescriptionV1V2()._upgrade_source_data(data)
+
+
 if __name__ == "__main__":
     unittest.main()

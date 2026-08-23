@@ -1,11 +1,14 @@
 """Unit tests for procedures v1v2_injections module"""
 
 import unittest
+from aind_data_schema_models.coordinates import AnatomicalRelative
 from aind_data_schema.components.injection_procedures import Injection
 from aind_data_schema_models.mouse_anatomy import InjectionTargets
+from aind_data_schema_models.registries import Registry
 from aind_metadata_upgrader.procedures.v1v2_injections import (
     upgrade_injection_coordinates,
     upgrade_intraperitoneal_injection,
+    upgrade_retro_orbital_injection,
 )
 
 
@@ -96,6 +99,40 @@ class TestUpgradeInjectionCoordinatesAngle(unittest.TestCase):
         """Zero angle should stay zero regardless of hemisphere"""
         data = self._make_data(ml="-1.5", angle="0.0")
         self.assertEqual(self._get_ap_angle(data), 0.0)
+
+
+class TestRetroOrbitalInjection(unittest.TestCase):
+    """Test the retro-orbital injection upgrade output."""
+
+    def test_preserves_retro_orbital_target_and_conversion(self):
+        """Retro-orbital upgrades preserve their target and converted fields."""
+        result = upgrade_retro_orbital_injection(
+            {
+                "procedure_type": "Retro-orbital injection",
+                "injection_materials": [],
+                "injection_volume": ["10.0"],
+                "injection_volume_unit": "microliter",
+                "injection_duration": "2.0",
+                "injection_duration_unit": "minute",
+                "injection_eye": "Left",
+                "recovery_time": None,
+                "recovery_time_unit": "minute",
+                "instrument_id": None,
+            }
+        )
+
+        self.assertEqual(
+            result["targeted_structure"],
+            {
+                "name": "venous sinus",
+                "registry": Registry.EMAPA,
+                "registry_identifier": "37025",
+            },
+        )
+        self.assertEqual(result["relative_position"], [AnatomicalRelative.LEFT])
+        self.assertEqual(result["dynamics"][0]["volume"], 10.0)
+        self.assertEqual(result["dynamics"][0]["duration"], 2.0)
+        self.assertNotIn("procedure_type", result)
 
 
 if __name__ == "__main__":

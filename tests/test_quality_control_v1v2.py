@@ -2,6 +2,8 @@
 
 import unittest
 
+from aind_data_schema.core.quality_control import QualityControl
+
 from aind_metadata_upgrader.quality_control.v1v2 import (
     QCUpgraderV1V2,
     upgrade_metric,
@@ -155,6 +157,34 @@ class TestQualityControlV1V2(unittest.TestCase):
         self.assertEqual(result["metrics"][0]["name"], "test_metric")
         self.assertEqual(result["default_grouping"], ["type"])
         self.assertEqual(result["notes"], "Test notes")
+
+    def test_upgrade_can_return_validated_model_without_changing_dump(self):
+        """The full-metadata path can reuse validated QC models without changing output."""
+        data = {
+            "evaluations": [
+                {
+                    "name": "test_evaluation",
+                    "modality": {"name": "Extracellular electrophysiology", "abbreviation": "ecephys"},
+                    "stage": "Raw data",
+                    "metrics": [
+                        {
+                            "name": "test_metric",
+                            "value": 1.0,
+                            "status_history": [
+                                {"status": "Pass", "timestamp": "2024-01-01T10:00:00Z", "evaluator": "test"}
+                            ],
+                            "evaluated_assets": None,
+                        }
+                    ],
+                }
+            ]
+        }
+
+        dumped = self.upgrader.upgrade(data.copy(), "2.0.6")
+        model = self.upgrader.upgrade(data.copy(), "2.0.6", return_model=True)
+
+        self.assertIsInstance(model, QualityControl)
+        self.assertEqual(model.model_dump(), QualityControl.model_validate(dumped).model_dump())
 
     def test_upgrade_curation_metric_basic(self):
         """Test upgrade_curation_metric with valid data - covers lines 34-47"""

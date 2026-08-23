@@ -241,9 +241,13 @@ def normalize_camera_names(data: dict) -> dict:
     if not needs_change:
         return data
 
-    data = copy.deepcopy(data)
+    # Only rig and session are mutated below; copying the complete record is
+    # needlessly expensive for large acquisition/procedure payloads.
+    data = data.copy()
+    data["rig"] = copy.deepcopy(rig)
     _apply_rig_camera_renames(data["rig"], plan)
     if session:
+        data["session"] = copy.deepcopy(session)
         _apply_session_camera_renames(data["session"], base_lower_to_info)
 
     return data
@@ -252,31 +256,39 @@ def normalize_camera_names(data: dict) -> dict:
 _FIBER_UNDERSCORE_RE = re.compile(r"^Fiber_(\d+)$")
 
 
-def _has_fiber_underscore_name(obj) -> bool:
-    """Return True if any 'name' field anywhere in *obj* contains a Fiber_N value."""
-    if isinstance(obj, dict):
-        for k, v in obj.items():
-            if k == "name" and isinstance(v, str) and _FIBER_UNDERSCORE_RE.match(v):
-                return True
-            if _has_fiber_underscore_name(v):
-                return True
-    elif isinstance(obj, list):
-        return any(_has_fiber_underscore_name(item) for item in obj)
-    return False
-
-
 def _fix_fiber_names(obj):
-    """Return a new object with Fiber_N replaced by Fiber N in every 'name' field."""
+    """Return ``(object, changed)`` after replacing Fiber_N names in one traversal."""
     if isinstance(obj, dict):
-        return {
-            k: re.sub(r"^Fiber_(\d+)$", r"Fiber \1", v)
-            if k == "name" and isinstance(v, str)
-            else _fix_fiber_names(v)
-            for k, v in obj.items()
-        }
+        result = None
+        for key, value in obj.items():
+            if key == "name" and isinstance(value, str):
+                fixed_value = _FIBER_UNDERSCORE_RE.sub(r"Fiber \1", value)
+                if fixed_value != value:
+                    if result is None:
+                        result = obj.copy()
+                    result[key] = fixed_value
+                continue
+
+            if not isinstance(value, (dict, list)):
+                continue
+            fixed_value, changed = _fix_fiber_names(value)
+            if changed:
+                if result is None:
+                    result = obj.copy()
+                result[key] = fixed_value
+        return (result if result is not None else obj), result is not None
     if isinstance(obj, list):
-        return [_fix_fiber_names(item) for item in obj]
-    return obj
+        result = None
+        for index, value in enumerate(obj):
+            if not isinstance(value, (dict, list)):
+                continue
+            fixed_value, changed = _fix_fiber_names(value)
+            if changed:
+                if result is None:
+                    result = obj.copy()
+                result[index] = fixed_value
+        return (result if result is not None else obj), result is not None
+    return obj, False
 
 
 def normalize_fiber_names(data: dict) -> dict:
@@ -295,12 +307,11 @@ def normalize_fiber_names(data: dict) -> dict:
     Returns
     -------
     dict
-        A deep copy with all matching name fields normalised, or the original
-        *data* dict unchanged when no normalisation is needed.
+        A copy-on-write result with all matching name fields normalised, or the
+        original *data* dict unchanged when no normalisation is needed.
     """
-    if not _has_fiber_underscore_name(data):
-        return data
-    return _fix_fiber_names(copy.deepcopy(data))
+    normalized, changed = _fix_fiber_names(data)
+    return normalized if changed else data
 
 
 def pre_upgrade_normalize(data: dict) -> dict:
