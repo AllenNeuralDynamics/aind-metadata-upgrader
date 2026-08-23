@@ -292,7 +292,7 @@ def _fix_fiber_names_in_list(obj: list) -> tuple[list, bool]:
     return (result if result is not None else obj), result is not None
 
 
-def _fix_fiber_names(obj):
+def _fix_fiber_names(obj: dict | list) -> tuple[dict | list, bool]:
     """Return ``(object, changed)`` after replacing Fiber_N names in one traversal."""
     if isinstance(obj, dict):
         return _fix_fiber_names_in_dict(obj)
@@ -320,7 +320,7 @@ def normalize_fiber_names(data: dict) -> dict:
         A copy-on-write result with all matching name fields normalised, or the
         original *data* dict unchanged when no normalisation is needed.
     """
-    normalized, changed = _fix_fiber_names(data)
+    normalized, changed = _fix_fiber_names_in_dict(data)
     return normalized if changed else data
 
 
