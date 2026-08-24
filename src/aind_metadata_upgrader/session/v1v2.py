@@ -65,6 +65,31 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
     upgrade_experimenter_names,
 )
 
+# Conversion factors from a length unit to millimeter (the BREGMA_ARI axis unit)
+_LENGTH_UNIT_TO_MM = {
+    "nanometer": 1e-6,
+    "nm": 1e-6,
+    "micrometer": 1e-3,
+    "micron": 1e-3,
+    "um": 1e-3,
+    "millimeter": 1.0,
+    "mm": 1.0,
+    "centimeter": 10.0,
+    "cm": 10.0,
+    "meter": 1000.0,
+    "m": 1000.0,
+}
+
+
+def _length_to_mm_factor(unit: Optional[str]) -> float:
+    """Return the multiplier that converts a value in ``unit`` to millimeters.
+
+    Falls back to 1.0 (assume already millimeters) for unknown/None units.
+    """
+    if not unit:
+        return 1.0
+    return _LENGTH_UNIT_TO_MM.get(str(unit).strip().lower(), 1.0)
+
 
 class SessionV1V2(CoreUpgrader):
     """Upgrade session from v1.4 to v2.0 (acquisition)"""
@@ -551,17 +576,68 @@ class SessionV1V2(CoreUpgrader):
         fovs = stream.get("ophys_fovs", [])
         coupled_partner_map = self._build_coupled_fov_partner_map(fovs)
 
+        # Any planar imaging FOV is expressed relative to Bregma (ARI orientation)
+        if fovs:
+            self._acquisition_coordinate_system = CoordinateSystemLibrary.BREGMA_ARI.model_dump()
+
         for fov in fovs:
             fov_index = fov.get("index", 0)
             partner_index = coupled_partner_map.get(fov_index)
             plane = self._upgrade_ophys_fov_to_plane(fov, coupled_partner_index=partner_index)
+            transform, dimensions = self._build_fov_image_transform(fov)
             for channel in channels:
                 image = PlanarImage(
-                    planes=[plane], image_to_acquisition_transform=[], channel_name=channel["channel_name"]
+                    planes=[plane],
+                    image_to_acquisition_transform=transform,
+                    dimensions=dimensions,
+                    dimensions_unit=SizeUnit.PX,
+                    channel_name=channel["channel_name"],
                 ).model_dump()
                 images.append(image)
 
         return channels, images
+
+    def _build_fov_image_transform(self, fov: Dict) -> tuple:
+        """Build the image_to_acquisition_transform and dimensions for an ophys FOV.
+
+        The transform maps image pixel space into the acquisition coordinate system
+        (BREGMA_ARI, millimeters): a Scale (um/pixel -> mm/pixel) followed by a
+        Translation of the AP/ML position (converted to mm). scanfield_z is not
+        represented in v2, so the SI component is left at 0.
+        """
+        # AP/ML position, converted from the recorded unit to millimeters
+        coord_factor = _length_to_mm_factor(fov.get("fov_coordinate_unit"))
+        ap = float(fov.get("fov_coordinate_ap", 0) or 0) * coord_factor
+        ml = float(fov.get("fov_coordinate_ml", 0) or 0) * coord_factor
+        translation = Translation(translation=[ap, ml, 0])
+
+        transform = []
+        # Scale factor (e.g. um/pixel) converted to the coordinate system unit (mm/pixel)
+        scale_factor = fov.get("fov_scale_factor")
+        if scale_factor is not None:
+            scale_unit = fov.get("fov_scale_factor_unit", "")
+            length_part = str(scale_unit).split("/")[0] if scale_unit else None
+            scale_mm = float(scale_factor) * _length_to_mm_factor(length_part)
+            transform.append(Scale(scale=[scale_mm, scale_mm]))
+        transform.append(translation)
+
+        # Image dimensions (width, height) in pixels
+        dimensions = None
+        width = fov.get("fov_width")
+        height = fov.get("fov_height")
+        if width is not None and height is not None:
+            dimensions = Scale(scale=[float(width), float(height)])
+
+        # Preserve fields that have no dedicated home in v2 on the stream notes
+        extras = []
+        if fov.get("magnification") is not None:
+            extras.append(f"magnification={fov.get('magnification')}")
+        if fov.get("scanimage_roi_index") is not None:
+            extras.append(f"scanimage_roi_index={fov.get('scanimage_roi_index')}")
+        if extras:
+            self._fov_notes.append(f"FOV {fov.get('index', 0)}: " + ", ".join(extras))
+
+        return transform, dimensions
 
     def _create_stack_components(self, stream: Dict, light_sources: List, detectors: List) -> tuple:
         """Create channels and PlanarImageStack objects from stack_parameters"""
@@ -747,6 +823,7 @@ class SessionV1V2(CoreUpgrader):
             active_devices.append(stick_microscope.get("assembly_name", "Unknown Stick Microscope"))
 
         # Create configurations and connections
+        self._fov_notes = []
         configurations, connections = self._upgrade_all_device_configurations(stream, rig_id)
 
         # Make sure all configuration devices are in active devices
@@ -756,6 +833,12 @@ class SessionV1V2(CoreUpgrader):
         ]
         active_devices = list(set(active_devices + configuration_device_names + connection_device_names))
 
+        # Merge any FOV fields that have no dedicated v2 home into the stream notes
+        notes = stream.get("notes")
+        if self._fov_notes:
+            fov_note = "(v1v2 upgrade) " + "; ".join(self._fov_notes)
+            notes = f"{notes} {fov_note}" if notes else fov_note
+
         # Create the data stream
         return DataStream(
             stream_start_time=ensure_timezone(stream.get("stream_start_time"), fallback_tz),
@@ -764,7 +847,7 @@ class SessionV1V2(CoreUpgrader):
             active_devices=active_devices,
             configurations=configurations,
             connections=connections,
-            notes=stream.get("notes"),
+            notes=notes,
         ).model_dump()
 
     def _create_performance_metrics(self, epoch: Dict) -> Optional[Dict]:
@@ -1017,6 +1100,9 @@ class SessionV1V2(CoreUpgrader):
         # Store rig filters and light sources for lookup during stream upgrade
         self._rig_filters = []
         self._rig_light_sources = []
+        # Set to BREGMA_ARI when planar imaging FOVs are encountered during stream upgrade
+        self._acquisition_coordinate_system = None
+        self._fov_notes = []
         if metadata and isinstance(metadata, dict):
             rig = metadata.get("rig", {})
             if isinstance(rig, dict):
@@ -1106,6 +1192,7 @@ class SessionV1V2(CoreUpgrader):
             instrument_id=rig_id,
             acquisition_type=acquisition_type,
             notes=notes,
+            coordinate_system=self._acquisition_coordinate_system,
             calibrations=upgraded_calibrations,
             maintenance=upgraded_maintenance,
             data_streams=upgraded_data_streams,
