@@ -1052,6 +1052,9 @@ class SessionV1V2(CoreUpgrader):
         # Handle legacy stimulus data
         code = self._handle_legacy_stimulus_data(epoch, code)
 
+        output_parameters = epoch.get("output_parameters") or {}
+        task_parameters = output_parameters.get("task_parameters") or {}
+
         return StimulusEpoch(
             stimulus_start_time=ensure_timezone(epoch.get("stimulus_start_time"), fallback_tz),
             stimulus_end_time=ensure_timezone(epoch.get("stimulus_end_time"), fallback_tz),
@@ -1062,6 +1065,7 @@ class SessionV1V2(CoreUpgrader):
             active_devices=epoch.get("stimulus_device_names", []),
             configurations=configurations,
             notes=epoch.get("notes"),
+            curriculum_status=task_parameters.get("stage_in_use"),
         ).model_dump()
 
     def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
