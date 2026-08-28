@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from typing import Optional
-from aind_data_schema.core.quality_control import CurationMetric, QCMetric, CurationHistory
+from aind_data_schema.core.quality_control import CurationHistory, CurationMetric, QCMetric, QualityControl
 
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import remove
@@ -68,7 +68,7 @@ def upgrade_reference(data: Optional[str]) -> Optional[str]:
     return data
 
 
-def upgrade_metric(data: dict, modality: dict, stage: str, tags: dict) -> dict:
+def upgrade_metric(data: dict, modality: dict, stage: str, tags: dict, return_model: bool = False) -> dict | QCMetric:
     """Upgrade a metric to the new format"""
     if not isinstance(data, dict):
         raise ValueError("Data must be a dictionary")
@@ -88,10 +88,12 @@ def upgrade_metric(data: dict, modality: dict, stage: str, tags: dict) -> dict:
         evaluated_assets=data.get("evaluated_assets", []),
     )
 
-    return metric.model_dump()
+    return metric if return_model else metric.model_dump()
 
 
-def upgrade_curation_metric(data: dict, modality: dict, stage: str, tags: dict) -> dict:
+def upgrade_curation_metric(
+    data: dict, modality: dict, stage: str, tags: dict, return_model: bool = False
+) -> dict | CurationMetric:
     """Upgrade a curation metric to the new format"""
 
     curations = data["value"]["curations"]
@@ -116,13 +118,15 @@ def upgrade_curation_metric(data: dict, modality: dict, stage: str, tags: dict) 
         curation_history=curation_history,
     )
 
-    return metric.model_dump()
+    return metric if return_model else metric.model_dump()
 
 
 class QCUpgraderV1V2(CoreUpgrader):
     """Upgrade quality control core file from v1.x to v2.0"""
 
-    def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
+    def upgrade(
+        self, data: dict, schema_version: str, metadata: Optional[dict] = None, return_model: bool = False
+    ) -> dict | QualityControl:
         """Upgrade the subject core file data to v2.0"""
 
         if not isinstance(data, dict):
@@ -151,6 +155,7 @@ class QCUpgraderV1V2(CoreUpgrader):
                         modality=modality,
                         stage=stage,
                         tags=tags,
+                        return_model=return_model,
                     )
                 else:
                     metric_data = upgrade_metric(
@@ -158,6 +163,7 @@ class QCUpgraderV1V2(CoreUpgrader):
                         modality=modality,
                         stage=stage,
                         tags=tags,
+                        return_model=return_model,
                     )
                 metrics.append(metric_data)
 
@@ -165,6 +171,13 @@ class QCUpgraderV1V2(CoreUpgrader):
 
         if not metrics:
             return None
+
+        if return_model:
+            return QualityControl(
+                metrics=metrics,
+                default_grouping=default_grouping,
+                notes=data.get("notes", None),
+            )
 
         return {
             "object_type": "Quality control",
