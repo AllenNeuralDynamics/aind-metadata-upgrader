@@ -382,7 +382,7 @@ class SessionV1V2(CoreUpgrader):
         """Convert ophys FOV to Plane"""
         targeted_structure = upgrade_targeted_structure(fov.get("targeted_structure"))
         data_dict = dict(
-            depth=float(fov.get("imaging_depth", 0)),
+            depth=float(fov.get("imaging_depth", 0)) if fov.get("imaging_depth") is not None else 0.0,
             depth_unit=SizeUnit.UM,
             power=float(fov.get("power", 0)) if fov.get("power") else 0.0,
             power_unit=PowerUnit.PERCENT,

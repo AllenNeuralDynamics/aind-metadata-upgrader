@@ -152,5 +152,37 @@ class TestValidateAndAdjustSessionTimes(unittest.TestCase):
         self.assertIsNone(notes)
 
 
+class TestUpgradeOphysFovToPlane(unittest.TestCase):
+    """Tests for _upgrade_ophys_fov_to_plane"""
+
+    def setUp(self):
+        """Set up a SessionV1V2 upgrader instance for testing"""
+        self.upgrader = SessionV1V2()
+
+    def test_null_imaging_depth_defaults_to_zero(self):
+        """imaging_depth present but explicitly null does not crash float()"""
+        fov = {"imaging_depth": None, "targeted_structure": None}
+
+        plane = self.upgrader._upgrade_ophys_fov_to_plane(fov)
+
+        self.assertEqual(plane["depth"], 0.0)
+
+    def test_missing_imaging_depth_defaults_to_zero(self):
+        """imaging_depth absent entirely also defaults to zero"""
+        fov = {"targeted_structure": None}
+
+        plane = self.upgrader._upgrade_ophys_fov_to_plane(fov)
+
+        self.assertEqual(plane["depth"], 0.0)
+
+    def test_numeric_imaging_depth_is_preserved(self):
+        """A real imaging_depth value passes through unchanged"""
+        fov = {"imaging_depth": 150, "targeted_structure": None}
+
+        plane = self.upgrader._upgrade_ophys_fov_to_plane(fov)
+
+        self.assertEqual(plane["depth"], 150.0)
+
+
 if __name__ == "__main__":
     unittest.main()
