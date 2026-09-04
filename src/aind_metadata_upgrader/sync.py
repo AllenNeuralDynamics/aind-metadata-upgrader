@@ -1,5 +1,7 @@
 """Sync code to upgrade metadata from v1 to v2 and store results in ZS"""
 
+import contextlib
+import io
 import logging
 import os
 from typing import Optional
@@ -9,6 +11,37 @@ from aind_data_access_api.document_db import MetadataDbClient
 from biodata_cache import custom
 import pandas as pd
 from aind_metadata_upgrader import __version__ as upgrader_version
+
+_logger = logging.getLogger(__name__)
+
+# Loggers that emit noisy WARNING-level messages during model construction/validation
+_NOISY_LOGGERS = [
+    "aind_data_schema",
+    "aind_metadata_upgrader.upgrade",
+    "aind_metadata_upgrader.procedures",
+    "aind_metadata_upgrader.instrument",
+    "aind_metadata_upgrader.acquisition",
+    "aind_metadata_upgrader.data_description",
+    "aind_metadata_upgrader.session",
+    "aind_metadata_upgrader.subject",
+    "aind_metadata_upgrader.rig",
+    "aind_metadata_upgrader.processing",
+    "aind_metadata_upgrader.quality_control",
+]
+
+
+@contextlib.contextmanager
+def _quiet_upgrade():
+    """Suppress stdout and noisy WARNING-level log messages during upgrade."""
+    saved = {name: logging.getLogger(name).level for name in _NOISY_LOGGERS}
+    for name in _NOISY_LOGGERS:
+        logging.getLogger(name).setLevel(logging.ERROR)
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            yield
+    finally:
+        for name, level in saved.items():
+            logging.getLogger(name).setLevel(level)
 
 
 DOCDB_HOST = os.getenv("DOCDB_HOST", "api.allenneuraldynamics.org")
@@ -51,6 +84,9 @@ def _load_zs_cache() -> pd.DataFrame:
         if "v1_id" not in candidate.columns or len(candidate) == 0:
             raise ValueError("Table empty or missing v1_id column")
         _zs_df = candidate
+        versions = candidate["upgrader_version"].unique().tolist() if "upgrader_version" in candidate.columns else []
+        print(f"Loaded tracking table: {len(candidate)} records (versions in cache: {versions})")
+        print(f"Current upgrader_version: {upgrader_version}")
     except ValueError as e:
         print(f"No previous tracking data found, starting fresh: {e}")
         _zs_df = pd.DataFrame(columns=_ZS_COLUMNS)
@@ -146,7 +182,8 @@ def _attempt_upgrade(
 
     upgraded_model = None
     try:
-        upgraded_model = upgrade_record(data_dict, existing_v2_id)
+        with _quiet_upgrade():
+            upgraded_model = upgrade_record(data_dict, existing_v2_id)
     except Exception as e:
         logging.error(f"Upgrade failed for record {record_id}: {e}")
 
@@ -182,7 +219,7 @@ def _process_record(
 
     row = _get_cache_row(zs_df, record_id)
     if row.get("upgrader_version") == upgrader_version and row.get("last_modified") == data_dict.get("last_modified"):
-        print(f"Record {record_id}: skipping — already up-to-date")
+        _logger.debug(f"Record {record_id}: skipping — already up-to-date")
         return "skipped"
 
     # v2_record is pre-fetched by the batch; fall back to individual fetch if not supplied
@@ -277,6 +314,76 @@ def _flush_pending_upserts(
             upgrade_results.append(_make_failure_result(data_dict))
 
 
+def _process_upgrade_batch(
+    batch_ids: list,
+    id_to_record: dict,
+    zs_df: pd.DataFrame,
+    upgrade_results: list[dict],
+    pending_upserts: list[tuple],
+    summary_stats: dict[str, int],
+    upgraded_names: list[str],
+    failed_names: list[str],
+) -> None:
+    """Process the records in one fetched batch and update run statistics."""
+    for record_id in batch_ids:
+        data_dict = id_to_record.get(record_id)
+        if not data_dict:
+            logging.warning(f"Record {record_id} not found in v1 database, skipping")
+            continue
+
+        status = _process_record(data_dict, zs_df, upgrade_results, pending_upserts)
+        summary_stats[status] = summary_stats.get(status, 0) + 1
+        name = data_dict.get("location") or str(record_id)
+        if status in ("inserted", "queued_upsert"):
+            upgraded_names.append(name)
+        elif status == "failed":
+            failed_names.append(name)
+
+
+def _process_upgrade_batches(
+    ids_to_upgrade: list,
+    zs_df: pd.DataFrame,
+    num_skipped: int,
+) -> tuple[dict[str, int], list[str], list[str], pd.DataFrame]:
+    """Fetch and process upgrade-eligible records in batches."""
+    num_to_upgrade = len(ids_to_upgrade)
+    all_upgrade_results: list[dict] = []
+    all_pending_upserts: list[tuple] = []
+    summary_stats: dict[str, int] = {
+        "inserted": 0,
+        "queued_upsert": 0,
+        "failed": 0,
+        "skipped": num_skipped,
+    }
+    upgraded_names: list[str] = []
+    failed_names: list[str] = []
+
+    for i in range(0, num_to_upgrade, BATCH_SIZE):
+        batch_ids = ids_to_upgrade[i: i + BATCH_SIZE]
+        batch_records = client_v1.retrieve_docdb_records(
+            filter_query={"_id": {"$in": batch_ids}},
+        )
+        id_to_record = {r["_id"]: r for r in batch_records}
+        _process_upgrade_batch(
+            batch_ids,
+            id_to_record,
+            zs_df,
+            all_upgrade_results,
+            all_pending_upserts,
+            summary_stats,
+            upgraded_names,
+            failed_names,
+        )
+        print(f"Progress: {min(i + BATCH_SIZE, num_to_upgrade)}/{num_to_upgrade} upgrade-eligible records")
+        _flush_pending_upserts(all_pending_upserts, all_upgrade_results)
+        all_pending_upserts.clear()
+        _save_results(zs_df, all_upgrade_results)
+        all_upgrade_results.clear()
+        zs_df = _zs_df
+
+    return summary_stats, upgraded_names, failed_names, zs_df
+
+
 def run_one(record_id: str):
     """
     Upgrade a single V1 record and persist the result to the ZS tracking table.
@@ -365,34 +472,11 @@ def run():
     num_skipped = num_records - num_to_upgrade
     print(f"Skipping {num_skipped} already up-to-date records; upgrading {num_to_upgrade}")
 
-    all_upgrade_results: list[dict] = []
-    all_pending_upserts: list[tuple] = []
-    summary_stats: dict[str, int] = {
-        "inserted": 0,
-        "queued_upsert": 0,
-        "failed": 0,
-        "skipped": num_skipped,
-    }
-
-    for i in range(0, num_to_upgrade, BATCH_SIZE):
-        batch_ids = ids_to_upgrade[i: i + BATCH_SIZE]
-        batch_records = client_v1.retrieve_docdb_records(
-            filter_query={"_id": {"$in": batch_ids}},
-        )
-        id_to_record = {r["_id"]: r for r in batch_records}
-        for record_id in batch_ids:
-            data_dict = id_to_record.get(record_id)
-            if not data_dict:
-                logging.warning(f"Record {record_id} not found in v1 database, skipping")
-                continue
-            status = _process_record(data_dict, zs_df, all_upgrade_results, all_pending_upserts)
-            summary_stats[status] = summary_stats.get(status, 0) + 1
-        print(f"Progress: {min(i + BATCH_SIZE, num_to_upgrade)}/{num_to_upgrade} upgrade-eligible records")
-        _flush_pending_upserts(all_pending_upserts, all_upgrade_results)
-        all_pending_upserts.clear()
-        _save_results(zs_df, all_upgrade_results)
-        all_upgrade_results.clear()
-        zs_df = _zs_df  # pick up the updated dataframe for skip checks
+    summary_stats, upgraded_names, failed_names, zs_df = _process_upgrade_batches(
+        ids_to_upgrade,
+        zs_df,
+        num_skipped,
+    )
 
     # If there were no batches at all (num_to_upgrade == 0), still persist the pruned zs_df
     if num_to_upgrade == 0:
@@ -413,6 +497,14 @@ def run():
     print(f"  Skipped (already up-to-date): {total_skipped}")
     print(f"  Failed:                       {total_failed}")
     print("=" * 60)
+    if upgraded_names:
+        print("\nUpgraded records:")
+        for name in upgraded_names:
+            print(f"  + {name}")
+    if failed_names:
+        print("\nFailed records:")
+        for name in failed_names:
+            print(f"  ! {name}")
 
 
 if __name__ == "__main__":
