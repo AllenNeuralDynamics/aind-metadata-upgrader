@@ -71,20 +71,20 @@ class Upgrade:
         """Initialize the upgrader"""
 
         self.data = record
-        self.raw_data = copy.deepcopy(record)  # Keep a copy of the original data
+        # Only these sections are read as untouched context by core upgraders. Copying
+        # them preserves that contract without recursively copying large procedure and
+        # acquisition payloads for every record.
+        self.raw_data = record.copy()
+        for core_file in ("instrument", "rig", "data_description"):
+            if core_file in record:
+                self.raw_data[core_file] = copy.deepcopy(record[core_file])
         self.skip_metadata_validation = skip_metadata_validation
 
         # Apply pre-upgrade normalisations (e.g. align camera names between
         # session and rig before the individual upgraders run).
         self.data = pre_upgrade_normalize(self.data)
 
-        # Figure out what core files we have, and what outputs we expected
-        expected_core_files = self._determine_expected_core_files()
-
         core_files = self._process_core_files()
-
-        # Remove expected files that the upgrader intentionally dropped (returned None)
-        expected_core_files = [f for f in expected_core_files if core_files.get(f) is not None]
 
         core_files = self._repair_missing_procedures(core_files)
 
@@ -216,12 +216,26 @@ class Upgrade:
             # Apply all upgraders (in order) that match the original schema version
             for specifier_set, upgrader in MAPPING[core_file]:
                 if original_schema_version in specifier_set:
-                    upgraded_data = upgrader().upgrade(
-                        core_data, UPGRADE_VERSIONS[core_file], metadata=self.raw_data
-                    )
+                    upgrader_instance = upgrader()
+                    if core_file == "quality_control" and not self.skip_metadata_validation:
+                        upgraded_data = upgrader_instance.upgrade(
+                            core_data,
+                            UPGRADE_VERSIONS[core_file],
+                            metadata=self.raw_data,
+                            return_model=True,
+                        )
+                    else:
+                        upgraded_data = upgrader_instance.upgrade(
+                            core_data, UPGRADE_VERSIONS[core_file], metadata=self.raw_data
+                        )
 
         if upgraded_data is None:
             logging.info(f"Upgrader for {core_file} returned None, dropping file")
             return None
 
-        return self._try_validate(core_file, upgraded_data)
+        # Metadata validation below validates every core model again. Keep the
+        # standalone-core validation path, but avoid the duplicate round-trip
+        # when full metadata validation is enabled.
+        if self.skip_metadata_validation or core_file == "data_description":
+            return self._try_validate(core_file, upgraded_data)
+        return upgraded_data

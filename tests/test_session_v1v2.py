@@ -23,6 +23,33 @@ class TestValidateAndAdjustSessionTimes(unittest.TestCase):
         """Set up a SessionV1V2 upgrader instance for testing"""
         self.upgrader = SessionV1V2()
 
+    def test_stimulus_epoch_stage_in_use_becomes_curriculum_status(self):
+        """Copy stage_in_use from output task parameters to curriculum status"""
+        epoch = {
+            "stimulus_start_time": "2025-09-25T10:00:00-07:00",
+            "stimulus_end_time": "2025-09-25T11:00:00-07:00",
+            "stimulus_name": "training stimulus",
+            "stimulus_modalities": ["Visual"],
+            "output_parameters": {"task_parameters": {"stage_in_use": "STAGE_FINAL"}},
+        }
+
+        upgraded_epoch = self.upgrader._upgrade_stimulus_epoch(epoch)
+
+        self.assertEqual(upgraded_epoch["curriculum_status"], "STAGE_FINAL")
+
+    def test_stimulus_epoch_without_stage_in_use_has_no_curriculum_status(self):
+        """Missing output task parameters leave curriculum status unset"""
+        epoch = {
+            "stimulus_start_time": "2025-09-25T10:00:00-07:00",
+            "stimulus_end_time": "2025-09-25T11:00:00-07:00",
+            "stimulus_name": "training stimulus",
+            "stimulus_modalities": ["Visual"],
+        }
+
+        upgraded_epoch = self.upgrader._upgrade_stimulus_epoch(epoch)
+
+        self.assertIsNone(upgraded_epoch["curriculum_status"])
+
     def _call(self, start, end, streams=None, epochs=None, notes=None, fallback_tz=None):
         """Helper to call _validate_and_adjust_session_times with given inputs"""
         return self.upgrader._validate_and_adjust_session_times(
@@ -123,6 +150,38 @@ class TestValidateAndAdjustSessionTimes(unittest.TestCase):
         self.assertEqual(start.hour, 10)
         self.assertEqual(end.hour, 12)
         self.assertIsNone(notes)
+
+
+class TestUpgradeOphysFovToPlane(unittest.TestCase):
+    """Tests for _upgrade_ophys_fov_to_plane"""
+
+    def setUp(self):
+        """Set up a SessionV1V2 upgrader instance for testing"""
+        self.upgrader = SessionV1V2()
+
+    def test_null_imaging_depth_defaults_to_zero(self):
+        """imaging_depth present but explicitly null does not crash float()"""
+        fov = {"imaging_depth": None, "targeted_structure": None}
+
+        plane = self.upgrader._upgrade_ophys_fov_to_plane(fov)
+
+        self.assertEqual(plane["depth"], 0.0)
+
+    def test_missing_imaging_depth_defaults_to_zero(self):
+        """imaging_depth absent entirely also defaults to zero"""
+        fov = {"targeted_structure": None}
+
+        plane = self.upgrader._upgrade_ophys_fov_to_plane(fov)
+
+        self.assertEqual(plane["depth"], 0.0)
+
+    def test_numeric_imaging_depth_is_preserved(self):
+        """A real imaging_depth value passes through unchanged"""
+        fov = {"imaging_depth": 150, "targeted_structure": None}
+
+        plane = self.upgrader._upgrade_ophys_fov_to_plane(fov)
+
+        self.assertEqual(plane["depth"], 150.0)
 
 
 if __name__ == "__main__":

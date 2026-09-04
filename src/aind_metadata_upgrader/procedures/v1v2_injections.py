@@ -1,5 +1,7 @@
 """Upgraders for injection procedures"""
 
+from functools import cache
+
 from aind_data_schema.components.coordinates import (
     CoordinateSystemLibrary,
     Rotation,
@@ -29,6 +31,18 @@ from aind_metadata_upgrader.utils.v1v2_utils import (
 )
 
 from aind_metadata_upgrader.procedures.v1v2_procedures import retrieve_bl_distance
+
+
+@cache
+def _retro_orbital_targeted_structure() -> dict:
+    """Resolve the schema library's remote-backed target at most once per process."""
+    return InjectionTargets.RETRO_ORBITAL.model_dump()
+
+
+@cache
+def _intraperitoneal_targeted_structure() -> dict:
+    """Resolve the schema library's remote-backed target at most once per process."""
+    return InjectionTargets.INTRAPERITONEAL.model_dump()
 
 
 def upgrade_viral_material(data: dict) -> dict:
@@ -355,7 +369,7 @@ def upgrade_retro_orbital_injection(data: dict) -> dict:
 
     upgraded_data["injection_materials"] = injection_materials
 
-    upgraded_data["targeted_structure"] = InjectionTargets.RETRO_ORBITAL.model_dump()
+    upgraded_data["targeted_structure"] = dict(_retro_orbital_targeted_structure())
 
     if "injection_eye" in data and data["injection_eye"]:
         if data["injection_eye"].lower() == "left":
@@ -388,7 +402,7 @@ def upgrade_intraperitoneal_injection(data: dict) -> dict:
 
     upgraded_data["injection_materials"] = injection_materials
 
-    upgraded_data["targeted_structure"] = InjectionTargets.INTRAPERITONEAL.model_dump()
+    upgraded_data["targeted_structure"] = dict(_intraperitoneal_targeted_structure())
 
     dynamics = build_volume_injection_dynamics(data)
     upgraded_data["dynamics"] = dynamics

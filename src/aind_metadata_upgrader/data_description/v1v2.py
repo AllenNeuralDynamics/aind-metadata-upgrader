@@ -1,6 +1,7 @@
 """<=v1.4 to v2.0 data description upgrade functions"""
 
 import re
+from functools import cache
 from typing import Optional
 from aind_data_schema.components.identifiers import Person
 from aind_data_schema.core.data_description import Funding
@@ -19,6 +20,21 @@ client = MetadataDbClient(
     host="api.allenneuraldynamics.org",
     version="v1",
 )
+
+
+@cache
+def _get_parent_data_description(name: str) -> dict:
+    """Fetch one parent description and reuse it for the process lifetime."""
+    return client.retrieve_docdb_records(
+        filter_query={"data_description.name": name},
+        projection={"data_description": 1},
+        limit=1,
+    )[0]
+
+
+def _parent_data_description_cache_clear() -> None:
+    """Clear cached parent descriptions for tests or long-lived clients."""
+    _get_parent_data_description.cache_clear()
 
 
 class DataDescriptionV1V2(CoreUpgrader):
@@ -148,8 +164,8 @@ class DataDescriptionV1V2(CoreUpgrader):
             if "," in ct:
                 return ct.replace(",", "T")
             # Normalize hyphens used as time separators (e.g., "2023-05-11T19-29-48-07:00")
-            if re.search(r'T\d{2}-\d{2}-\d{2}', ct):
-                ct = re.sub(r'T(\d{2})-(\d{2})-(\d{2})', r'T\1:\2:\3', ct)
+            if re.search(r"T\d{2}-\d{2}-\d{2}", ct):
+                ct = re.sub(r"T(\d{2})-(\d{2})-(\d{2})", r"T\1:\2:\3", ct)
             return ct
         elif "creation_date" in data and "creation_time" in data:
             creation_datetime = data["creation_date"] + "T" + data["creation_time"]
@@ -236,19 +252,12 @@ class DataDescriptionV1V2(CoreUpgrader):
             if len(input_name.split("_")) > 4:
                 # Use the client to get the parent asset's input_data_name and chain up until we reach raw data
                 input_names = [input_name]
-                prev_data_description = client.retrieve_docdb_records(
-                    filter_query={"data_description.name": input_name},
-                    projection={"data_description": 1},
-                    limit=1,
-                )[0]
+                prev_data_description = _get_parent_data_description(input_name)
                 while "raw" not in prev_data_description.get("data_description", {}).get("data_level", "").lower():
                     # Add to the start of the list the name and get the next parent
                     next_input_name = prev_data_description.get("data_description", {}).get("input_data_name", None)
                     input_names.insert(0, next_input_name)
-                    prev_data_description = client.retrieve_docdb_records(
-                        filter_query={"data_description.name": next_input_name},
-                        limit=1,
-                    )[0]
+                    prev_data_description = _get_parent_data_description(next_input_name)
 
                 # Insert the raw data name at the start
                 raw_data_name = prev_data_description.get("data_description", {}).get("name", None)
@@ -262,13 +271,14 @@ class DataDescriptionV1V2(CoreUpgrader):
             print(f"Derived data without input_data_name, using name to infer input: {input_name}")
             return [input_name]
 
-    def _upgrade_group(self, data: dict) -> str:
+    def _upgrade_group(self, data: dict) -> Optional[str]:
         """Upgrade group string if needed"""
         # No changes needed for now
         if "group" in data and data["group"]:
             if data["group"] == "Molecular Anatomy":
                 return Group.MSMA
-        return data["group"]
+            return data["group"]
+        return None
 
     def _ensure_name_consistency(self, metadata_name: Optional[str], data: dict) -> Optional[str]:
         """Make sure the metadata name and data name are the same, if not, use the metadata name"""
