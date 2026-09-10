@@ -41,7 +41,7 @@ class DataDescriptionV1V2(CoreUpgrader):
     """Upgrade data description from v1.4 to v2.0"""
 
     def _coerce_person(self, value) -> Person:
-        """Coerce a name, v1/v2 dictionary, or Person without losing identifiers."""
+        """Coerce a value (string or V1/V2-style Person dict) into a Person"""
         if isinstance(value, Person):
             return value
         if isinstance(value, dict):
