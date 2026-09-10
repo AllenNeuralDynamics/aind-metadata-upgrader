@@ -20,6 +20,13 @@ upgraded_record = Upgrade(data)
 upgraded_record.save()
 ```
 
+For v1 data descriptions, call
+`DataDescriptionV1V2().upgrade(data, schema_version, resolve_ancestry=False)`
+to opt out of ancestry expansion and name inference without parent lookups.
+Derived descriptions preserve a populated `input_data_name` as `source_data=[input_data_name]`;
+raw descriptions and missing or empty parents retain `source_data=None`.
+Ancestry resolution remains enabled by default.
+
 ### On a single record in V1 DocDB
 
 ```python
