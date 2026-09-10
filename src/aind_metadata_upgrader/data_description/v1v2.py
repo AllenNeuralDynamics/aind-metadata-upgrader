@@ -238,12 +238,16 @@ class DataDescriptionV1V2(CoreUpgrader):
             "object_type": "Data description",
         }
 
-    def _upgrade_source_data(self, data: dict) -> Optional[list]:
+    def _upgrade_source_data(self, data: dict, resolve_ancestry: bool = True) -> Optional[list]:
         """Upgrade the source_data field for v2.0"""
 
         # If this is raw data, return None
         if "raw" in data.get("data_level", "").lower():
             return None
+
+        if not resolve_ancestry:
+            input_name = data.get("input_data_name")
+            return [input_name] if input_name else None
 
         # Derived asset -- if we have input_data_name, use that
         if "input_data_name" in data and data["input_data_name"]:
@@ -294,8 +298,10 @@ class DataDescriptionV1V2(CoreUpgrader):
             return metadata_name
         return data_name
 
-    def upgrade(self, data: dict, schema_version: str, metadata: Optional[dict] = None) -> dict:
-        """Upgrade the data description to v2.0"""
+    def upgrade(
+        self, data: dict, schema_version: str, metadata: Optional[dict] = None, *, resolve_ancestry: bool = True
+    ) -> dict:
+        """Upgrade to v2.0; disable resolve_ancestry to keep only declared parents without lookups or inference."""
 
         if not isinstance(data, dict):
             raise ValueError("Data must be a dictionary")
@@ -319,7 +325,7 @@ class DataDescriptionV1V2(CoreUpgrader):
         group = self._upgrade_group(data)
 
         # Upgrade the new source_data field for 2.0
-        source_data = self._upgrade_source_data(data)
+        source_data = self._upgrade_source_data(data, resolve_ancestry=resolve_ancestry)
 
         # Build and return the upgraded output
         return self._build_output_dict(

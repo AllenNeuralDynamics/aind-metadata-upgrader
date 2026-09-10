@@ -3,6 +3,8 @@
 import unittest
 from unittest.mock import patch
 
+from aind_data_schema.core.data_description import DataDescription
+
 from aind_metadata_upgrader.data_description.v1v2 import DataDescriptionV1V2
 
 
@@ -111,6 +113,41 @@ class TestDataDescriptionV1V2FundingSource(unittest.TestCase):
 
 class TestDataDescriptionSourceData(unittest.TestCase):
     """Test source-data parent lookup behavior."""
+
+    def test_upgrade_without_ancestry(self):
+        """Preserve declared parents without lookups or inference and validate v2 output."""
+        from aind_metadata_upgrader.data_description import v1v2
+
+        raw_parent = "ecephys_123456_2024-01-01_12-00-00"
+        derived_parent = raw_parent + "_sorted_2024-01-02_12-00-00_curated_2024-01-03_12-00-00"
+        with (
+            patch.object(v1v2, "_get_parent_data_description", side_effect=AssertionError("Unexpected parent lookup")),
+            patch.object(v1v2.client, "retrieve_docdb_records", side_effect=AssertionError("Unexpected network call")),
+        ):
+            for data_level in ("raw", "derived"):
+                for parent in (raw_parent, derived_parent, None, ""):
+                    with self.subTest(data_level=data_level, parent=parent):
+                        data = {
+                            "name": raw_parent + "_processed_2024-01-04_12-00-00",
+                            "subject_id": "123456",
+                            "creation_time": "2024-01-04T12:00:00Z",
+                            "institution": "AIND",
+                            "funding_source": [{"funder": "AIND", "fundee": "Jane Smith"}],
+                            "investigators": ["Jane Smith"],
+                            "project_name": "Example",
+                            "modalities": [],
+                            "data_level": data_level,
+                        }
+                        if parent is not None:
+                            data["input_data_name"] = parent
+                        result = DataDescriptionV1V2().upgrade(
+                            data,
+                            DataDescription.model_fields["schema_version"].default,
+                            resolve_ancestry=False,
+                        )
+                        expected = [parent] if data_level == "derived" and parent else None
+                        self.assertEqual(result["source_data"], expected)
+                        self.assertEqual(DataDescription.model_validate(result).source_data, expected)
 
     def test_reuses_parent_lookup_for_repeated_chain(self):
         """Repeated upgrades of the same parent chain should reuse lookups."""
