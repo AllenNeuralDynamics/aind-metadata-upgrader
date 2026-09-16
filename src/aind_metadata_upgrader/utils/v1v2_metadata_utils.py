@@ -2,9 +2,9 @@
 
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
-from aind_data_schema.core.procedures import Procedures
-from aind_data_schema.core.instrument import Instrument
-from aind_data_schema.components.devices import Device
+from biodata_schema.core.procedures import Procedures
+from biodata_schema.core.instrument import Instrument
+from biodata_schema.components.devices import Device
 from pydantic import ValidationError
 
 from aind_metadata_upgrader.utils.v1v2_inst_id_repair import (

@@ -2,7 +2,7 @@
 
 import unittest
 
-from aind_data_schema.core.quality_control import QualityControl
+from biodata_schema.core.quality_control import QualityControl
 
 from aind_metadata_upgrader.quality_control.v1v2 import (
     QCUpgraderV1V2,

@@ -4,14 +4,14 @@ import traceback
 import copy
 import logging
 
-from aind_data_schema.core.acquisition import Acquisition
-from aind_data_schema.core.data_description import DataDescription
-from aind_data_schema.core.instrument import Instrument
-from aind_data_schema.core.metadata import Metadata
-from aind_data_schema.core.procedures import Procedures
-from aind_data_schema.core.processing import Processing
-from aind_data_schema.core.quality_control import QualityControl
-from aind_data_schema.core.subject import Subject
+from biodata_schema.core.acquisition import Acquisition
+from biodata_schema.core.data_description import DataDescription
+from biodata_schema.core.instrument import Instrument
+from biodata_schema.core.metadata import Metadata
+from biodata_schema.core.procedures import Procedures
+from biodata_schema.core.processing import Processing
+from biodata_schema.core.quality_control import QualityControl
+from biodata_schema.core.subject import Subject
 from packaging.version import Version
 from pydantic import ValidationError
 
@@ -193,6 +193,20 @@ class Upgrade:
         if invalid_procedures is not None:
             self.metadata.procedures = invalid_procedures
 
+    def _run_upgraders(self, core_file: str, core_data: dict, original_schema_version: Version):
+        """Chain every registered upgrader that matches the original schema version"""
+        upgraded_data = core_data.copy()
+        for specifier_set, upgrader in MAPPING[core_file]:
+            if upgraded_data is None:
+                break
+            if original_schema_version not in specifier_set:
+                continue
+            kwargs = {"metadata": self.raw_data}
+            if core_file == "quality_control" and not self.skip_metadata_validation:
+                kwargs["return_model"] = True
+            upgraded_data = upgrader().upgrade(upgraded_data, UPGRADE_VERSIONS[core_file], **kwargs)
+        return upgraded_data
+
     def upgrade_core_file(self, core_file: str):
         """Initialize one core file"""
 
@@ -213,21 +227,7 @@ class Upgrade:
 
         upgraded_data = core_data.copy()
         if original_schema_version != upgraded_schema_version:
-            # Apply all upgraders (in order) that match the original schema version
-            for specifier_set, upgrader in MAPPING[core_file]:
-                if original_schema_version in specifier_set:
-                    upgrader_instance = upgrader()
-                    if core_file == "quality_control" and not self.skip_metadata_validation:
-                        upgraded_data = upgrader_instance.upgrade(
-                            core_data,
-                            UPGRADE_VERSIONS[core_file],
-                            metadata=self.raw_data,
-                            return_model=True,
-                        )
-                    else:
-                        upgraded_data = upgrader_instance.upgrade(
-                            core_data, UPGRADE_VERSIONS[core_file], metadata=self.raw_data
-                        )
+            upgraded_data = self._run_upgraders(core_file, core_data, original_schema_version)
 
         if upgraded_data is None:
             logging.info(f"Upgrader for {core_file} returned None, dropping file")

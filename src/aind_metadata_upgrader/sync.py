@@ -17,6 +17,7 @@ _logger = logging.getLogger(__name__)
 # Loggers that emit noisy WARNING-level messages during model construction/validation
 _NOISY_LOGGERS = [
     "aind_data_schema",
+    "biodata_schema",
     "aind_metadata_upgrader.upgrade",
     "aind_metadata_upgrader.procedures",
     "aind_metadata_upgrader.instrument",

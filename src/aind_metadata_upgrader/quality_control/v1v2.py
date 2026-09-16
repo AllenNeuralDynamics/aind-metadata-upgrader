@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from typing import Optional
-from aind_data_schema.core.quality_control import CurationHistory, CurationMetric, QCMetric, QualityControl
+from biodata_schema.core.quality_control import CurationHistory, CurationMetric, QCMetric, QualityControl
 
 from aind_metadata_upgrader.base import CoreUpgrader
 from aind_metadata_upgrader.utils.v1v2_utils import remove
