@@ -184,5 +184,48 @@ class TestUpgradeOphysFovToPlane(unittest.TestCase):
         self.assertEqual(plane["depth"], 150.0)
 
 
+class TestUpgradeMriScanToConfig(unittest.TestCase):
+    """Tests for MRI scan coordinate-system handling."""
+
+    def setUp(self):
+        """Set up a SessionV1V2 upgrader instance for testing"""
+        self.upgrader = SessionV1V2()
+
+    @staticmethod
+    def _primary_scan():
+        """Return the minimum primary MRI scan payload."""
+        return {
+            "primary_scan": True,
+            "scan_index": 1,
+            "scan_type": "3D Scan",
+            "scan_sequence_type": "RARE",
+            "mri_scanner": {"name": "MRI"},
+            "vc_orientation": {"rotation": [1, 0, 0, 0, 1, 0, 0, 0, 1]},
+            "vc_position": {"translation": [0, 0, 0]},
+            "voxel_sizes": {"scale": [1, 1, 1]},
+            "echo_time": 1,
+            "repetition_time": 1,
+            "subject_position": "Supine",
+        }
+
+    def test_primary_mri_scan_sets_acquisition_coordinate_system_when_unset(self):
+        """MRI_LPS fills the acquisition frame when no other frame exists."""
+        self.upgrader._acquisition_coordinate_system = None
+
+        config = self.upgrader._upgrade_mri_scan_to_config(self._primary_scan())
+
+        self.assertEqual(self.upgrader._acquisition_coordinate_system["name"], "MRI_LPS")
+        self.assertEqual(config["scanner_coordinate_system"]["name"], "MRI_LPS")
+
+    def test_primary_mri_scan_preserves_existing_acquisition_coordinate_system(self):
+        """An existing acquisition frame is not replaced by MRI_LPS."""
+        existing = {"name": "EXISTING"}
+        self.upgrader._acquisition_coordinate_system = existing
+
+        self.upgrader._upgrade_mri_scan_to_config(self._primary_scan())
+
+        self.assertIs(self.upgrader._acquisition_coordinate_system, existing)
+
+
 if __name__ == "__main__":
     unittest.main()

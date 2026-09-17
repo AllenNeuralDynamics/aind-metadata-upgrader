@@ -406,6 +406,8 @@ class SessionV1V2(CoreUpgrader):
         if primary:
             # Upgrade the affine transform
             coordinate_system = CoordinateSystemLibrary.MRI_LPS
+            if getattr(self, "_acquisition_coordinate_system", None) is None:
+                self._acquisition_coordinate_system = coordinate_system.model_dump()
             vc_orientation = scan.get("vc_orientation", None)
             vc_position = scan.get("vc_position", None)
             if not vc_orientation or not vc_position:
@@ -618,7 +620,7 @@ class SessionV1V2(CoreUpgrader):
             scale_unit = fov.get("fov_scale_factor_unit", "")
             length_part = str(scale_unit).split("/")[0] if scale_unit else None
             scale_mm = float(scale_factor) * _length_to_mm_factor(length_part)
-            transform.append(Scale(scale=[scale_mm, scale_mm]))
+            transform.append(Scale(scale=[scale_mm, scale_mm, 0]))
         transform.append(translation)
 
         # Image dimensions (width, height) in pixels
