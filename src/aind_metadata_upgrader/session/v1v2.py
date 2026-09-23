@@ -923,68 +923,61 @@ class SessionV1V2(CoreUpgrader):
             commit_hash.group(1) if commit_hash else None,
         )
 
+    def _get_stimulus_code_parameters(self, epoch: Dict, code_parameters: Optional[Dict] = None) -> Optional[Dict]:
+        """Combine epoch stimulus parameters with script or software parameters."""
+        stimulus_parameters = epoch.get("stimulus_parameters", [])
+        if isinstance(stimulus_parameters, list):
+            if len(stimulus_parameters) == 1:
+                stimulus_parameters = stimulus_parameters[0]
+            elif len(stimulus_parameters) > 1:
+                stimulus_parameters = {
+                    params.get("stimulus_name", f"Stimulus_{index}"): params
+                    for index, params in enumerate(stimulus_parameters)
+                }
+
+        if not stimulus_parameters:
+            stimulus_parameters = None
+        if code_parameters:
+            stimulus_parameters = (stimulus_parameters or {}) | code_parameters
+
+        return stimulus_parameters
+
+    def _create_code_from_script(self, script_data: Dict, software: Optional[Dict], parameters: Optional[Dict]) -> Dict:
+        """Create a Code object from script metadata and optional runtime software."""
+        core_dependency = (
+            Software(name=software.get("name", "unknown"), version=software.get("version")) if software else None
+        )
+        return Code(
+            name=script_data.get("name", "Unknown Script"),
+            version=script_data.get("version", "unknown"),
+            url=script_data.get("url", "unknown") or "",
+            parameters=parameters,
+            core_dependency=core_dependency,
+        ).model_dump()
+
+    def _create_code_from_software(self, software: Dict, parameters: Optional[Dict]) -> Dict:
+        """Create a Code object from software metadata when no script is supplied."""
+        version, commit_hash = self._parse_software_version(software.get("name"), software.get("version"))
+        return Code(
+            name=software.get("name", "Unknown Software"),
+            version=version or "unknown",
+            url=software.get("url", "unknown") or "",
+            commit_hash=commit_hash,
+            parameters=parameters,
+        ).model_dump()
+
     def _create_code_object(self, epoch: Dict) -> Optional[Dict]:
         """Create code object from epoch script or software metadata."""
-        code = None
         software = self._get_software(epoch)
         script_data = epoch.get("script")
-        if script_data or software:
+        if not script_data and not software:
+            return None
 
-            stimulus_parameters = epoch.get("stimulus_parameters", [])
-            if isinstance(stimulus_parameters, list):
-                if len(stimulus_parameters) == 1:
-                    stimulus_parameters = stimulus_parameters[0]
-                elif len(stimulus_parameters) > 1:
-                    split_parameters = {}
-                    for i, params in enumerate(stimulus_parameters):
-                        if "stimulus_name" in params:
-                            split_parameters[params["stimulus_name"]] = params
-                        else:
-                            split_parameters[f"Stimulus_{i}"] = params
-                    stimulus_parameters = split_parameters
-
-            if not stimulus_parameters:
-                stimulus_parameters = None
-
-            if script_data and "parameters" in script_data:
-                stimulus_parameters = (stimulus_parameters if stimulus_parameters else {}) | script_data["parameters"]
-
-            if software and not script_data and software.get("parameters"):
-                stimulus_parameters = (stimulus_parameters if stimulus_parameters else {}) | software["parameters"]
-
-            if script_data:
-                name = script_data.get("name", "Unknown Script")
-                version = script_data.get("version", "unknown")
-                url = script_data.get("url", "unknown") or ""
-                commit_hash = None
-                core_dependency = (
-                    Software(
-                        name=software.get("name", "unknown"),
-                        version=software.get("version", None),
-                    )
-                    if software
-                    else None
-                )
-            else:
-                version, commit_hash = self._parse_software_version(software.get("name"), software.get("version"))
-                name = software.get("name", "Unknown Software")
-                url = software.get("url", "unknown") or ""
-                core_dependency = None
-
-            if script_data:
-                code_version = version
-            else:
-                code_version = version or "unknown"
-
-            code = Code(
-                name=name,
-                version=code_version,
-                url=url,
-                commit_hash=commit_hash,
-                parameters=stimulus_parameters,
-                core_dependency=core_dependency,
-            )
-        return code.model_dump() if code else None
+        source_data = script_data or software
+        parameters = self._get_stimulus_code_parameters(epoch, source_data.get("parameters"))
+        if script_data:
+            return self._create_code_from_script(script_data, software, parameters)
+        return self._create_code_from_software(software, parameters)
 
     def _determine_stimulus_modalities(self, epoch: dict) -> list:
         """Determine stimulus modalities from epoch data"""
