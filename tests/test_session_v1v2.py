@@ -152,6 +152,105 @@ class TestValidateAndAdjustSessionTimes(unittest.TestCase):
         self.assertIsNone(notes)
 
 
+class TestUpgradeStimulusEpochSoftware(unittest.TestCase):
+    """Tests for stimulus epoch software conversion."""
+
+    def setUp(self):
+        self.upgrader = SessionV1V2()
+
+    def test_software_without_script_populates_code_fields(self):
+        epoch = {
+            "stimulus_start_time": "2025-09-25T10:00:00-07:00",
+            "stimulus_end_time": "2025-09-25T11:00:00-07:00",
+            "stimulus_name": "training stimulus",
+            "stimulus_modalities": ["Visual"],
+            "script": None,
+            "software": [
+                {
+                    "name": "behavior-task",
+                    "version": "1.2.3",
+                    "url": "https://example.test/behavior-task",
+                }
+            ],
+        }
+
+        upgraded_epoch = self.upgrader._upgrade_stimulus_epoch(epoch)
+        code = upgraded_epoch["code"]
+
+        self.assertEqual(code["name"], "behavior-task")
+        self.assertEqual(code["version"], "1.2.3")
+        self.assertIsNone(code["commit_hash"])
+        self.assertEqual(code["url"], "https://example.test/behavior-task")
+        self.assertIsNone(code["core_dependency"])
+
+    def test_software_version_text_populates_code_version_and_commit_hash(self):
+        commit_hash = "94823a7969e2f423cdb2eab12d55023efe4c5156"
+        epoch = {
+            "stimulus_start_time": "2025-09-25T10:00:00-07:00",
+            "stimulus_end_time": "2025-09-25T11:00:00-07:00",
+            "stimulus_name": "training stimulus",
+            "stimulus_modalities": ["Visual"],
+            "script": None,
+            "software": [
+                {
+                    "name": "dynamic-foraging-task",
+                    "version": (
+                        f"behavior branch:main commit ID:{commit_hash} version:1.6.33; "
+                        f"metadata branch:main commit ID:{commit_hash} version:1.6.33"
+                    ),
+                }
+            ],
+        }
+
+        upgraded_epoch = self.upgrader._upgrade_stimulus_epoch(epoch)
+        code = upgraded_epoch["code"]
+
+        self.assertEqual(code["name"], "dynamic-foraging-task")
+        self.assertEqual(code["version"], "1.6.33")
+        self.assertEqual(code["commit_hash"], commit_hash)
+        self.assertIsNone(code["core_dependency"])
+
+    def test_other_software_version_text_is_preserved(self):
+        version = "branch:main commit ID:94823a7969e2f423cdb2eab12d55023efe4c5156 version:1.6.33"
+        epoch = {
+            "stimulus_start_time": "2025-09-25T10:00:00-07:00",
+            "stimulus_end_time": "2025-09-25T11:00:00-07:00",
+            "stimulus_name": "training stimulus",
+            "stimulus_modalities": ["Visual"],
+            "script": None,
+            "software": [{"name": "other-task", "version": version}],
+        }
+
+        upgraded_epoch = self.upgrader._upgrade_stimulus_epoch(epoch)
+        code = upgraded_epoch["code"]
+
+        self.assertEqual(code["version"], version)
+        self.assertIsNone(code["commit_hash"])
+
+    def test_script_remains_code_when_runtime_software_is_present(self):
+        epoch = {
+            "stimulus_start_time": "2025-09-25T10:00:00-07:00",
+            "stimulus_end_time": "2025-09-25T11:00:00-07:00",
+            "stimulus_name": "opto tagging",
+            "stimulus_modalities": ["Visual"],
+            "script": {
+                "name": "OptoTagging",
+                "version": "a498cb9582051b2fba3ccdbd4703cd97ad4033ad",
+                "url": "https://example.test/OptoTagging.py",
+                "parameters": {},
+            },
+            "software": [{"name": "PsychoPy", "version": "2022.1.2"}],
+        }
+
+        upgraded_epoch = self.upgrader._upgrade_stimulus_epoch(epoch)
+        code = upgraded_epoch["code"]
+
+        self.assertEqual(code["name"], "OptoTagging")
+        self.assertEqual(code["url"], "https://example.test/OptoTagging.py")
+        self.assertEqual(code["core_dependency"]["name"], "PsychoPy")
+        self.assertEqual(code["core_dependency"]["version"], "2022.1.2")
+
+
 class TestUpgradeOphysFovToPlane(unittest.TestCase):
     """Tests for _upgrade_ophys_fov_to_plane"""
 

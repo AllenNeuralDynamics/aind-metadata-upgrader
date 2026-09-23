@@ -1,5 +1,6 @@
 """<=v1.4 to v2.0 session upgrade functions"""
 
+import re
 from typing import Dict, List, Optional, Union
 
 from aind_data_schema.base import GenericModel
@@ -886,7 +887,7 @@ class SessionV1V2(CoreUpgrader):
 
     def _get_software(self, epoch: Dict) -> Optional[Dict]:
         """Extract software information from epoch data, handling cases with multiple software entries"""
-        software = epoch["software"]
+        software = epoch.get("software")
 
         if isinstance(software, list):
             if len(software) == 0:
@@ -904,11 +905,30 @@ class SessionV1V2(CoreUpgrader):
 
         return software
 
+    def _parse_software_version(
+        self, software_name: Optional[str], version: Optional[str]
+    ) -> tuple[Optional[str], Optional[str]]:
+        """Parse dynamic-foraging-task build details from legacy version text."""
+        if software_name != "dynamic-foraging-task" or not version:
+            return version, None
+
+        parsed_version = re.search(r"\bversion\s*:\s*([^;\s]+)", version, re.IGNORECASE)
+        commit_hash = re.search(r"\bcommit\s+id\s*:\s*([0-9a-f]{7,60})\b", version, re.IGNORECASE)
+
+        if not parsed_version and not commit_hash:
+            return version, None
+
+        return (
+            parsed_version.group(1) if parsed_version else None,
+            commit_hash.group(1) if commit_hash else None,
+        )
+
     def _create_code_object(self, epoch: Dict) -> Optional[Dict]:
-        """Create code object from epoch script"""
+        """Create code object from epoch script or software metadata."""
         code = None
-        if epoch.get("script"):
-            script_data = epoch["script"]
+        software = self._get_software(epoch)
+        script_data = epoch.get("script")
+        if script_data or software:
 
             stimulus_parameters = epoch.get("stimulus_parameters", [])
             if isinstance(stimulus_parameters, list):
@@ -926,23 +946,41 @@ class SessionV1V2(CoreUpgrader):
             if not stimulus_parameters:
                 stimulus_parameters = None
 
-            if "parameters" in script_data:
+            if script_data and "parameters" in script_data:
                 stimulus_parameters = (stimulus_parameters if stimulus_parameters else {}) | script_data["parameters"]
 
-            software = self._get_software(epoch)
+            if software and not script_data and software.get("parameters"):
+                stimulus_parameters = (stimulus_parameters if stimulus_parameters else {}) | software["parameters"]
 
-            if software:
-                core_dependency = Software(
-                    name=software.get("name", "unknown"),
-                    version=software.get("version", None),
+            if script_data:
+                name = script_data.get("name", "Unknown Script")
+                version = script_data.get("version", "unknown")
+                url = script_data.get("url", "unknown") or ""
+                commit_hash = None
+                core_dependency = (
+                    Software(
+                        name=software.get("name", "unknown"),
+                        version=software.get("version", None),
+                    )
+                    if software
+                    else None
                 )
             else:
+                version, commit_hash = self._parse_software_version(software.get("name"), software.get("version"))
+                name = software.get("name", "Unknown Software")
+                url = software.get("url", "unknown") or ""
                 core_dependency = None
 
+            if script_data:
+                code_version = version
+            else:
+                code_version = version or "unknown"
+
             code = Code(
-                name=script_data.get("name", "Unknown Script"),
-                version=script_data.get("version", "unknown"),
-                url=script_data.get("url", "unknown") or "",
+                name=name,
+                version=code_version,
+                url=url,
+                commit_hash=commit_hash,
                 parameters=stimulus_parameters,
                 core_dependency=core_dependency,
             )
