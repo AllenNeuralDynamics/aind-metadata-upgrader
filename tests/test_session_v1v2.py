@@ -156,9 +156,11 @@ class TestUpgradeStimulusEpochSoftware(unittest.TestCase):
     """Tests for stimulus epoch software conversion."""
 
     def setUp(self):
+        """Create the session upgrader used by each test."""
         self.upgrader = SessionV1V2()
 
     def test_software_without_script_populates_code_fields(self):
+        """Map software metadata to Code fields when script is absent."""
         epoch = {
             "stimulus_start_time": "2025-09-25T10:00:00-07:00",
             "stimulus_end_time": "2025-09-25T11:00:00-07:00",
@@ -184,6 +186,7 @@ class TestUpgradeStimulusEpochSoftware(unittest.TestCase):
         self.assertIsNone(code["core_dependency"])
 
     def test_software_version_text_populates_code_version_and_commit_hash(self):
+        """Parse dynamic-foraging-task version and commit from its legacy string."""
         commit_hash = "94823a7969e2f423cdb2eab12d55023efe4c5156"
         epoch = {
             "stimulus_start_time": "2025-09-25T10:00:00-07:00",
@@ -211,6 +214,7 @@ class TestUpgradeStimulusEpochSoftware(unittest.TestCase):
         self.assertIsNone(code["core_dependency"])
 
     def test_other_software_version_text_is_preserved(self):
+        """Leave other software version strings unchanged."""
         version = "branch:main commit ID:94823a7969e2f423cdb2eab12d55023efe4c5156 version:1.6.33"
         epoch = {
             "stimulus_start_time": "2025-09-25T10:00:00-07:00",
@@ -228,6 +232,7 @@ class TestUpgradeStimulusEpochSoftware(unittest.TestCase):
         self.assertIsNone(code["commit_hash"])
 
     def test_script_remains_code_when_runtime_software_is_present(self):
+        """Keep script metadata as Code and map runtime software as dependency."""
         epoch = {
             "stimulus_start_time": "2025-09-25T10:00:00-07:00",
             "stimulus_end_time": "2025-09-25T11:00:00-07:00",
