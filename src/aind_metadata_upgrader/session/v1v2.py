@@ -1,5 +1,6 @@
 """<=v1.4 to v2.0 session upgrade functions"""
 
+import re
 from typing import Dict, List, Optional, Union
 
 from aind_data_schema.base import GenericModel
@@ -886,7 +887,7 @@ class SessionV1V2(CoreUpgrader):
 
     def _get_software(self, epoch: Dict) -> Optional[Dict]:
         """Extract software information from epoch data, handling cases with multiple software entries"""
-        software = epoch["software"]
+        software = epoch.get("software")
 
         if isinstance(software, list):
             if len(software) == 0:
@@ -904,49 +905,79 @@ class SessionV1V2(CoreUpgrader):
 
         return software
 
+    def _parse_software_version(
+        self, software_name: Optional[str], version: Optional[str]
+    ) -> tuple[Optional[str], Optional[str]]:
+        """Parse dynamic-foraging-task build details from legacy version text."""
+        if software_name != "dynamic-foraging-task" or not version:
+            return version, None
+
+        parsed_version = re.search(r"\bversion\s*:\s*([^;\s]+)", version, re.IGNORECASE)
+        commit_hash = re.search(r"\bcommit\s+id\s*:\s*([0-9a-f]{7,60})\b", version, re.IGNORECASE)
+
+        if not parsed_version and not commit_hash:
+            return version, None
+
+        return (
+            parsed_version.group(1) if parsed_version else None,
+            commit_hash.group(1) if commit_hash else None,
+        )
+
+    def _get_stimulus_code_parameters(self, epoch: Dict, code_parameters: Optional[Dict] = None) -> Optional[Dict]:
+        """Combine epoch stimulus parameters with script or software parameters."""
+        stimulus_parameters = epoch.get("stimulus_parameters", [])
+        if isinstance(stimulus_parameters, list):
+            if len(stimulus_parameters) == 1:
+                stimulus_parameters = stimulus_parameters[0]
+            elif len(stimulus_parameters) > 1:
+                stimulus_parameters = {
+                    params.get("stimulus_name", f"Stimulus_{index}"): params
+                    for index, params in enumerate(stimulus_parameters)
+                }
+
+        if not stimulus_parameters:
+            stimulus_parameters = None
+        if code_parameters:
+            stimulus_parameters = (stimulus_parameters or {}) | code_parameters
+
+        return stimulus_parameters
+
+    def _create_code_from_script(self, script_data: Dict, software: Optional[Dict], parameters: Optional[Dict]) -> Dict:
+        """Create a Code object from script metadata and optional runtime software."""
+        core_dependency = (
+            Software(name=software.get("name", "unknown"), version=software.get("version")) if software else None
+        )
+        return Code(
+            name=script_data.get("name", "Unknown Script"),
+            version=script_data.get("version", "unknown"),
+            url=script_data.get("url", "unknown") or "",
+            parameters=parameters,
+            core_dependency=core_dependency,
+        ).model_dump()
+
+    def _create_code_from_software(self, software: Dict, parameters: Optional[Dict]) -> Dict:
+        """Create a Code object from software metadata when no script is supplied."""
+        version, commit_hash = self._parse_software_version(software.get("name"), software.get("version"))
+        return Code(
+            name=software.get("name", "Unknown Software"),
+            version=version or "unknown",
+            url=software.get("url", "unknown") or "",
+            commit_hash=commit_hash,
+            parameters=parameters,
+        ).model_dump()
+
     def _create_code_object(self, epoch: Dict) -> Optional[Dict]:
-        """Create code object from epoch script"""
-        code = None
-        if epoch.get("script"):
-            script_data = epoch["script"]
+        """Create code object from epoch script or software metadata."""
+        software = self._get_software(epoch)
+        script_data = epoch.get("script")
+        if not script_data and not software:
+            return None
 
-            stimulus_parameters = epoch.get("stimulus_parameters", [])
-            if isinstance(stimulus_parameters, list):
-                if len(stimulus_parameters) == 1:
-                    stimulus_parameters = stimulus_parameters[0]
-                elif len(stimulus_parameters) > 1:
-                    split_parameters = {}
-                    for i, params in enumerate(stimulus_parameters):
-                        if "stimulus_name" in params:
-                            split_parameters[params["stimulus_name"]] = params
-                        else:
-                            split_parameters[f"Stimulus_{i}"] = params
-                    stimulus_parameters = split_parameters
-
-            if not stimulus_parameters:
-                stimulus_parameters = None
-
-            if "parameters" in script_data:
-                stimulus_parameters = (stimulus_parameters if stimulus_parameters else {}) | script_data["parameters"]
-
-            software = self._get_software(epoch)
-
-            if software:
-                core_dependency = Software(
-                    name=software.get("name", "unknown"),
-                    version=software.get("version", None),
-                )
-            else:
-                core_dependency = None
-
-            code = Code(
-                name=script_data.get("name", "Unknown Script"),
-                version=script_data.get("version", "unknown"),
-                url=script_data.get("url", "unknown") or "",
-                parameters=stimulus_parameters,
-                core_dependency=core_dependency,
-            )
-        return code.model_dump() if code else None
+        source_data = script_data or software
+        parameters = self._get_stimulus_code_parameters(epoch, source_data.get("parameters"))
+        if script_data:
+            return self._create_code_from_script(script_data, software, parameters)
+        return self._create_code_from_software(software, parameters)
 
     def _determine_stimulus_modalities(self, epoch: dict) -> list:
         """Determine stimulus modalities from epoch data"""
