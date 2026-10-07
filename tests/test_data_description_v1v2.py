@@ -1,9 +1,90 @@
 """Tests for data description v1 to v2 upgrade functions"""
 
 import unittest
+from copy import deepcopy
 from unittest.mock import patch
 
+from aind_data_schema.components.identifiers import Person
+from aind_data_schema_models.registries import Registry
+
 from aind_metadata_upgrader.data_description.v1v2 import DataDescriptionV1V2
+
+
+class TestDataDescriptionV1V2People(unittest.TestCase):
+    """Test person conversion and identifier preservation."""
+
+    def setUp(self):
+        """Set up the upgrader and a v1 person with an ORCID."""
+        self.upgrader = DataDescriptionV1V2()
+        self.person = {
+            "name": "Jane Smith",
+            "abbreviation": "JS",
+            "registry": {
+                "name": "Open Researcher and Contributor ID",
+                "abbreviation": "ORCID",
+            },
+            "registry_identifier": "0000-0002-1825-0097",
+        }
+
+    def test_coerce_person_dictionaries(self):
+        """Preserve identifiers and normalize registries without changing input."""
+        expected = Person(name=self.person["name"], registry_identifier=self.person["registry_identifier"])
+        cases = [
+            ("v1", self.person, expected),
+            ("v2", expected.model_dump(), expected),
+            ("v2_json", expected.model_dump(mode="json"), expected),
+            ("null_registry", {**self.person, "registry": None}, expected),
+            ("missing_registry", {key: value for key, value in self.person.items() if key != "registry"}, expected),
+            ("name_only", {"name": self.person["name"]}, Person(name=self.person["name"])),
+            (
+                "non_orcid_registry",
+                {"name": "Jane Smith", "registry": Registry.RRID.value, "registry_identifier": "example-id"},
+                Person(name="Jane Smith", registry=Registry.RRID, registry_identifier="example-id"),
+            ),
+        ]
+        for name, value, expected_person in cases:
+            with self.subTest(name=name):
+                original = deepcopy(value)
+                self.assertEqual(self.upgrader._coerce_person(value), expected_person)
+                self.assertEqual(value, original)
+
+    def test_coerce_person_objects_and_strings(self):
+        """Keep existing Person objects unchanged and support plain names."""
+        person = Person(name=self.person["name"], registry_identifier=self.person["registry_identifier"])
+        self.assertIs(self.upgrader._coerce_person(person), person)
+        self.assertEqual(self.upgrader._coerce_person("Jane Smith"), Person(name="Jane Smith"))
+
+    def test_upgrade_preserves_investigator_and_fundee_identifiers(self):
+        """Retain person identifiers through investigator and both funding paths."""
+        expected = Person(name=self.person["name"], registry_identifier=self.person["registry_identifier"])
+        for funder, count in [("Allen Institute", 1), ("Allen Institute, Allen Institute", 2)]:
+            with self.subTest(funder=funder):
+                data = {
+                    "name": "example",
+                    "data_level": "raw",
+                    "investigators": [deepcopy(self.person), expected.model_dump(mode="json"), expected, "John Smith"],
+                    "funding_source": [
+                        {
+                            "funder": funder,
+                            "fundee": [deepcopy(self.person), expected.model_dump(mode="json"), expected, "John Smith"],
+                        }
+                    ],
+                }
+                original = deepcopy(data)
+                result = self.upgrader.upgrade(data, "2.0.0")
+                expected_people = [expected, expected, expected, Person(name="John Smith")]
+                self.assertEqual(
+                    result["investigators"], [person.model_dump(mode="json") for person in expected_people]
+                )
+                self.assertEqual(len(result["funding_source"]), count)
+                for funding in result["funding_source"]:
+                    self.assertEqual(funding["fundee"], [person.model_dump() for person in expected_people])
+                self.assertEqual(data, original)
+
+    def test_unsupported_investigator(self):
+        """Keep rejecting unsupported investigator values."""
+        with self.assertRaisesRegex(ValueError, "Unsupported investigator type"):
+            self.upgrader._get_investigators({"investigators": [123]})
 
 
 class TestDataDescriptionV1V2FundingSource(unittest.TestCase):

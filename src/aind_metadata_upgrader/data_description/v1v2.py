@@ -41,11 +41,15 @@ class DataDescriptionV1V2(CoreUpgrader):
     """Upgrade data description from v1.4 to v2.0"""
 
     def _coerce_person(self, value) -> Person:
-        """Coerce a value (string or V2-style Person dict) into a Person"""
+        """Coerce a value (string, V2-style Person dict, or V1 name-and-identifier dict) into a Person"""
         if isinstance(value, Person):
             return value
         if isinstance(value, dict):
-            return Person(name=value["name"])
+            person_data = {key: value[key] for key in ("name", "registry", "registry_identifier") if key in value}
+            person_data = upgrade_registry(person_data)
+            if person_data.get("registry") is None:
+                person_data.pop("registry", None)
+            return Person(**person_data)
         return Person(name=value)
 
     def _process_comma_separated_funders(self, funder: str, fundee, grant_number) -> list:
@@ -138,22 +142,11 @@ class DataDescriptionV1V2(CoreUpgrader):
 
     def _get_investigators(self, data: dict) -> list:
         """Build investigators list"""
-        investigators = data.get("investigators", [])
-        for i, investigator in enumerate(investigators):
-            if isinstance(investigator, str):
-                investigators[i] = Person(
-                    name=investigator,
-                )
-            # Already a Person object
-            elif isinstance(investigator, Person):
-                investigators[i] = investigator
-            # Convert from dict to Person
-            elif isinstance(investigator, dict):
-                investigators[i] = Person(
-                    name=investigator["name"],
-                )
-            else:
+        investigators = []
+        for investigator in data.get("investigators", []):
+            if not isinstance(investigator, (str, Person, dict)):
                 raise ValueError(f"Unsupported investigator type: {investigator}")
+            investigators.append(self._coerce_person(investigator))
         return investigators
 
     def _get_creation_time(self, data: dict) -> str | None:
