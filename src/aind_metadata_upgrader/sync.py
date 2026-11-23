@@ -128,16 +128,6 @@ def _get_v2_record(location: str) -> Optional[dict]:
     return records[0] if records else None
 
 
-def _delete_v2_record(location: str, v2_record: Optional[dict] = None) -> None:
-    """Delete the V2 record for a location on upgrade failure."""
-    if v2_record is None:
-        v2_record = _get_v2_record(location)
-    if not v2_record:
-        return
-    print(f"Deleting v2 record due to failed upgrade: {v2_record['_id']}")
-    client_v2.delete_one_record(v2_record["_id"])
-
-
 def upgrade_record(data_dict: dict, existing_v2_id: Optional[str] = None) -> Optional[dict]:
     """Run the upgrader on a v1 record.
 
@@ -156,11 +146,11 @@ def upgrade_record(data_dict: dict, existing_v2_id: Optional[str] = None) -> Opt
     return model
 
 
-def _make_failure_result(data_dict: dict) -> dict:
+def _make_failure_result(data_dict: dict, existing_v2_id: Optional[str] = None) -> dict:
     """Build a tracking dict representing a failed upgrade for a V1 record."""
     return {
         "v1_id": str(data_dict["_id"]),
-        "v2_id": None,
+        "v2_id": str(existing_v2_id) if existing_v2_id is not None else None,
         "upgrader_version": upgrader_version,
         "last_modified": data_dict.get("last_modified"),
         "status": "failed",
@@ -171,13 +161,12 @@ def _attempt_upgrade(
     data_dict: dict,
     v2_record: Optional[dict],
 ) -> tuple[Optional[dict], Optional[dict]]:
-    """Try to upgrade a V1 record, cleaning up V2 on failure.
+    """Try to upgrade a V1 record, leaving any existing V2 record untouched on failure.
 
     Returns (upgraded_model, None) on success, or (None, failure_result) on failure,
     where failure_result is a tracking dict ready to be passed to _save_results.
     """
     record_id = data_dict["_id"]
-    location = data_dict.get("location")
     existing_v2_id = v2_record["_id"] if v2_record else None
 
     upgraded_model = None
@@ -188,9 +177,7 @@ def _attempt_upgrade(
         logging.error(f"Upgrade failed for record {record_id}: {e}")
 
     if upgraded_model is None:
-        if location:
-            _delete_v2_record(location, v2_record)
-        return None, _make_failure_result(data_dict)
+        return None, _make_failure_result(data_dict, existing_v2_id)
 
     return upgraded_model, None
 
@@ -311,7 +298,7 @@ def _flush_pending_upserts(
             )
         except Exception as e:
             logging.error(f"Individual upsert failed for record {record_id}: {e}")
-            upgrade_results.append(_make_failure_result(data_dict))
+            upgrade_results.append(_make_failure_result(data_dict, model["_id"]))
 
 
 def _process_upgrade_batch(
@@ -426,7 +413,7 @@ def run_one(record_id: str):
             client_v2.upsert_one_docdb_record(record=upgraded_model)
         except Exception as e:
             logging.error(f"Failed to upsert record {record_id} to V2: {e}")
-            _save_results(zs_df, [_make_failure_result(data_dict)])
+            _save_results(zs_df, [_make_failure_result(data_dict, existing_v2_id)])
             return
     else:
         try:
