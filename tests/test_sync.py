@@ -115,29 +115,37 @@ class TestAttemptUpgrade(unittest.TestCase):
 
     @patch("aind_metadata_upgrader.sync.Upgrade")
     @patch("aind_metadata_upgrader.sync.client_v2")
-    def test_returns_failure_and_deletes_v2_on_exception(self, mock_v2_client, mock_upgrade_class):
-        """Tests that when upgrade raises an exception, a failure result is returned and the V2 record is deleted."""
-        mock_upgrade_class.side_effect = RuntimeError("boom")
-        mock_v2_client.retrieve_docdb_records.return_value = []
-        existing_v2 = {"_id": "v2_1"}
+    def test_failed_upgrade_leaves_existing_v2_untouched(self, mock_v2_client, mock_upgrade_class):
+        """A raised exception or missing upgrade result must not modify existing V2 metadata."""
+        mock_upgrade_class.return_value = None
+        existing_v2 = {"_id": "v2_1", "quality_control": {"notes": "Curated in V2"}}
 
-        model, failure = sync._attempt_upgrade({"_id": "rec1", "location": "loc1"}, existing_v2)
+        for error in (RuntimeError("boom"), None):
+            with self.subTest(error=error):
+                mock_upgrade_class.side_effect = error
+                mock_v2_client.reset_mock()
 
-        self.assertIsNone(model)
-        self.assertEqual(failure["status"], "failed")
-        self.assertEqual(failure["v1_id"], "rec1")
-        mock_v2_client.delete_one_record.assert_called_once_with("v2_1")
+                model, failure = sync._attempt_upgrade({"_id": "rec1", "location": "loc1"}, existing_v2)
+
+                self.assertIsNone(model)
+                self.assertEqual(mock_v2_client.mock_calls, [])
+                self.assertEqual(failure["status"], "failed")
+                self.assertEqual(failure["v1_id"], "rec1")
+                self.assertEqual(failure["v2_id"], "v2_1")
 
     @patch("aind_metadata_upgrader.sync.Upgrade")
     @patch("aind_metadata_upgrader.sync.client_v2")
-    def test_no_v2_delete_when_no_location(self, mock_v2_client, mock_upgrade_class):
-        """Tests that V2 deletion is skipped when the record has no location field."""
+    def test_failed_upgrade_without_existing_v2(self, mock_v2_client, mock_upgrade_class):
+        """A failed first upgrade records no V2 ID and leaves V2 untouched."""
         mock_upgrade_class.side_effect = RuntimeError("boom")
+        mock_v2_client.retrieve_docdb_records.return_value = []
 
-        model, failure = sync._attempt_upgrade({"_id": "rec1"}, None)
+        model, failure = sync._attempt_upgrade({"_id": "rec1", "location": "loc1"}, None)
 
         self.assertIsNone(model)
-        mock_v2_client.delete_one_record.assert_not_called()
+        self.assertEqual(mock_v2_client.mock_calls, [])
+        self.assertEqual(failure["status"], "failed")
+        self.assertIsNone(failure["v2_id"])
 
 
 class TestProcessRecord(unittest.TestCase):
@@ -244,7 +252,7 @@ class TestFlushPendingUpserts(unittest.TestCase):
     @patch("aind_metadata_upgrader.sync.client_v2")
     @patch("aind_metadata_upgrader.sync.upgrader_version", "1.0.0")
     def test_records_failure_on_upsert_exception(self, mock_v2_client):
-        """Tests that a failed upsert is recorded as a failure result rather than raising."""
+        """A failed upsert is tracked with the existing V2 ID."""
         mock_v2_client.upsert_one_docdb_record.side_effect = RuntimeError("db error")
         model = {"_id": "v2_1"}
         data = {"_id": "rec1", "last_modified": "2024-01-01"}
@@ -253,6 +261,7 @@ class TestFlushPendingUpserts(unittest.TestCase):
         sync._flush_pending_upserts([(model, "loc1", "rec1", data)], results)
 
         self.assertEqual(results[0]["status"], "failed")
+        self.assertEqual(results[0]["v2_id"], "v2_1")
 
     def test_noop_when_empty(self):
         """Tests that passing an empty pending list does nothing."""
